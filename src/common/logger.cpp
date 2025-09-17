@@ -1,45 +1,47 @@
 #include "Logger.h"
+
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/log/expressions/formatters/date_time.hpp>
-
-namespace logging = boost::log;
-namespace keywords = boost::log::keywords;
-namespace logging = boost::log;
-namespace src = boost::log::sources;
-namespace sinks = boost::log::sinks;
-namespace expr = boost::log::expressions;
-namespace attrs = boost::log::attributes;
+#include <boost/log/trivial.hpp>
+#include <boost/log/expressions.hpp>
+#include <boost/log/utility/setup/file.hpp>
+#include <boost/log/utility/setup/common_attributes.hpp>
+#include <boost/log/support/date_time.hpp>
 
 // 初始化静态成员变量
-src::severity_logger<celeritas::severity_level> celeritas::logger::logger_;
+boost::log::sources::severity_logger<celeritas::severity_level> celeritas::logger::logger_;
 
 void celeritas::logger::init(const std::string& log_file_name)
 {
     // 设置日志格式
-    logging::formatter formatter = expr::stream
-        << "[" << expr::format_date_time<boost::posix_time::ptime>("TimeStamp", "%Y-%m-%d %H:%M:%S.%f") << "]"
-        << " [" << logging::trivial::severity << "] "
-        << expr::smessage;
+    const boost::log::formatter formatter = boost::log::expressions::stream
+        << "["
+        << boost::log::expressions::format_date_time<boost::posix_time::ptime>("TimeStamp", "%Y-%m-%d %H:%M:%S.%f")
+        << "]"
+        << " ["
+        << boost::log::trivial::severity
+        << "] "
+        << boost::log::expressions::smessage;
 
     // 添加控制台日志输出
-    auto console_sink = logging::add_console_log(std::clog);
+    const auto console_sink = boost::log::add_console_log(std::clog);
     console_sink->set_formatter(formatter);
 
     // 添加文件日志输出
-    logging::add_file_log(
-        keywords::file_name = log_file_name,
-        keywords::auto_flush = true,
-        keywords::rotation_size = 10 * 1024 * 1024 // 10MB
+    boost::log::add_file_log(
+        boost::log::keywords::file_name = log_file_name,
+        boost::log::keywords::auto_flush = true,
+        boost::log::keywords::rotation_size = 10 * 1024 * 1024 // 10MB
     )->set_formatter(formatter);
 
     // 添加通用属性，如时间戳
-    logging::add_common_attributes();
+    boost::log::add_common_attributes();
 
     // 设置全局日志级别
-    logging::core::get()->set_filter(logging::trivial::severity >= logging::trivial::info);
+    boost::log::core::get()->set_filter(boost::log::trivial::severity >= boost::log::trivial::info);
 }
 
-src::severity_logger<celeritas::severity_level>& celeritas::logger::get()
+boost::log::sources::severity_logger<celeritas::severity_level>& celeritas::logger::get()
 {
     return logger_;
 }
