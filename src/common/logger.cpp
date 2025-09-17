@@ -1,4 +1,4 @@
-#include "Logger.h"
+#include "logger.h"
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/log/expressions/formatters/date_time.hpp>
