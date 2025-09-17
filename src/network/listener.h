@@ -1,15 +1,14 @@
 #pragma once
 
 #include <boost/asio.hpp>
-#include <boost/asio/co_spawn.hpp>
-#include <boost/asio/detached.hpp>
-#include <boost/asio/use_awaitable.hpp>
 
 namespace celeritas
 {
     class listener
     {
     public:
+        using class_type = listener;
+
         // 构造函数：接受 io_context 和监听端口
         listener(boost::asio::io_context& io_context, unsigned short port);
 
@@ -17,11 +16,16 @@ namespace celeritas
         void Start();
 
     private:
-        // 协程：异步接受新连接
-        boost::asio::awaitable<void> AcceptConnections();
+        using awaitable_type = boost::asio::awaitable<void>;
+        using io_context_type = boost::asio::io_context;
+        using acceptor_type = boost::asio::ip::tcp::acceptor;
 
-        boost::asio::io_context& io_context_;
-        boost::asio::ip::tcp::acceptor acceptor_;
+    private:
+        // 协程：异步接受新连接
+        awaitable_type AcceptConnections();
+
+        io_context_type& io_context_;
+        acceptor_type acceptor_;
     };
 }
 

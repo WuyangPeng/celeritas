@@ -1,6 +1,7 @@
 #pragma once
 
 #include <boost/log/sources/severity_logger.hpp>
+#include <boost/log/sources/record_ostream.hpp>
 
 namespace celeritas
 {
@@ -13,10 +14,6 @@ namespace celeritas
         error,
         fatal
     };
-
-    // 全局日志对象
-    // 在你的代码中，使用 LOG(severity_level) << "你的日志信息" 来记录
-    #define LOG(level) BOOST_LOG_SEV(Logger::get(), level)
 
     class logger
     {
@@ -34,3 +31,7 @@ namespace celeritas
         static severity_logger_type logger_;
     };
 }
+
+// 全局日志对象
+// 在你的代码中，使用 LOG(severity_level) << "你的日志信息" 来记录
+#define LOG(level) BOOST_LOG_SEV(logger::get(), level)

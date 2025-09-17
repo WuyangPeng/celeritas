@@ -2,14 +2,8 @@
 
 #include <boost/asio.hpp>
 #include <boost/asio/co_spawn.hpp>
-#include <boost/asio/detached.hpp>
-#include <boost/asio/use_awaitable.hpp>
-#include <boost/asio/ts/buffer.hpp>
 #include <boost/asio/ts/internet.hpp>
 #include <memory>
-#include <vector>
-#include <queue>
-#include <mutex>
 
 namespace celeritas
 {
