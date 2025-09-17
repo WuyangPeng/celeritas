@@ -30,13 +30,14 @@ boost::asio::awaitable<void> celeritas::listener::accept_connections()
         try
         {
             // 等待新连接
-            auto [error, socket] = co_await acceptor_.async_accept(boost::asio::use_awaitable);
-            if (error)
+            auto result = co_await acceptor_.async_accept(boost::asio::as_tuple(boost::asio::use_awaitable));
+            if (auto error = std::get<0>(result))
             {
-                LOG(warning) << "Listener error: " << error.what();
+                LOG(warning) << "Listener error: " << error.message();
             }
             else
             {
+                auto socket = std::move(std::get<1>(result));
                 LOG(info) << "Accepted new connection from: " << socket.remote_endpoint();
 
                 // 为新连接创建一个会话，并启动
