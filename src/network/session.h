@@ -7,24 +7,20 @@
 
 namespace celeritas
 {
-    // 假设我们有一个消息头来指示消息大小
-    struct message_header
-    {
-        uint32_t size;
-    };
-
     class session : public std::enable_shared_from_this<session>
     {
     public:
+        using class_type = session;
+
         // 构造函数：接受一个已连接的 socket
         explicit session(boost::asio::ip::tcp::socket socket);
 
         // 启动会话处理协程
-        void Start();
+        void start();
 
     private:
         // 协程：处理会话的读写循环
-        boost::asio::awaitable<void> HandleSession();
+        boost::asio::awaitable<void> handle_session();
 
         boost::asio::ip::tcp::socket socket_;
     };

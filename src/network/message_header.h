@@ -1,0 +1,14 @@
+#pragma once
+
+#include <cstdint>
+
+namespace celeritas
+{
+    // 假设我们有一个消息头来指示消息大小
+    struct message_header
+    {
+        using class_type = message_header;
+
+        uint32_t size;
+    };
+}
