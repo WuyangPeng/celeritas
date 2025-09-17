@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ipc_session.h"
+
 #include <boost/asio.hpp>
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/use_awaitable.hpp>
@@ -7,8 +9,6 @@
 
 namespace celeritas
 {
-    class ipc_session;
-
     class ipc_manager
     {
     public:
