@@ -16,13 +16,20 @@ include_directories(
 )
 
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/)
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/build/bin/release)
+
+if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
+
+    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/build/bin/debug)
+
+else ()
+
+    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/build/bin/release)
+
+endif ()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-    set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src")
     set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/build/bin/release")
-
     set(Protobuf_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src")
 
     # 查找和添加依赖项
@@ -32,7 +39,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     # 使用 GLOB_RECURSE 递归查找 proto 目录下所有的 .proto 文件
     file(GLOB_RECURSE PROTO_FILES "${CMAKE_CURRENT_SOURCE_DIR}/proto/*.proto")
 
-    set(PROTO_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src") # 自定义输出目录
+    # 自定义输出目录
+    set(PROTO_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
     # 遍历你的 .proto 文件，为每个文件生成 C++ 代码
     foreach (proto_file ${PROTO_FILES})
@@ -47,7 +55,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
         set(output_cc "${PROTO_OUTPUT_DIR}/${output_cc_path}")
         set(output_h "${PROTO_OUTPUT_DIR}/${output_h_path}")
 
-        # 将生成的 文件添加到列表中
+        # 将生成的文件添加到列表中
         list(APPEND PROTO_SRCS_GENERATED ${output_cc})
         list(APPEND PROTO_HDRS_GENERATED ${output_h})
 
@@ -56,7 +64,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
                 OUTPUT ${output_cc} ${output_h}
                 COMMAND ${Protobuf_PROTOC_EXECUTABLE}
                 --proto_path=${CMAKE_CURRENT_SOURCE_DIR} # .proto 文件所在的搜索路径
-                --cpp_out=${PROTO_OUTPUT_DIR}          # C++ 代码输出目录
+                --cpp_out=${PROTO_OUTPUT_DIR} # C++ 代码输出目录
                 ${proto_file}
                 DEPENDS ${proto_file} # 依赖 .proto 文件
                 COMMENT "Generating C++ code from ${proto_file}"
