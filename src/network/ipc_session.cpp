@@ -56,6 +56,6 @@ boost::asio::awaitable<void> celeritas::ipc_session::handle_read()
     }
     catch (const boost::system::system_error& error)
     {
-        LOG(error) << "IPC Session error: " << error.what();
+        LOG(warning) << "IPC Session error: " << error.what();
     }
 }
