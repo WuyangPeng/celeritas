@@ -1,9 +1,6 @@
 #pragma once
 
 #include <boost/asio.hpp>
-#include <boost/asio/co_spawn.hpp>
-#include <boost/asio/ts/internet.hpp>
-#include <memory>
 
 namespace celeritas
 {
