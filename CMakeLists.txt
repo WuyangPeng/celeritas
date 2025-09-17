@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.31)
+cmake_minimum_required(VERSION 3.14)
 project(celeritas)
 
 # C++标准为C++20
