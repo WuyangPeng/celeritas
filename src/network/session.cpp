@@ -1,13 +1,13 @@
 #include "message_header.h"
 #include "session.h"
 #include "common/logger.h"
+#include "proto/common/common.pb.h"
 
-celeritas::session::session(boost::asio::ip::tcp::socket socket)
+celeritas::session::session(socket_type socket)
     : socket_{ std::move(socket) }
 {
 }
 
-// 启动协程来处理会话
 void celeritas::session::start()
 {
     co_spawn(socket_.get_executor(),
@@ -17,12 +17,11 @@ void celeritas::session::start()
              boost::asio::detached);
 }
 
-// 协程：处理会话读写
-boost::asio::awaitable<void> celeritas::session::handle_session()
+celeritas::session::awaitable_type celeritas::session::handle_session()
 {
-    try
+    for (;;)
     {
-        while (true)
+        try
         {
             // 1. 读取消息头
             message_header header{};
@@ -31,27 +30,38 @@ boost::asio::awaitable<void> celeritas::session::handle_session()
                                 boost::asio::use_awaitable);
 
             // 转换字节序
-            header.size = ntohl(header.size);
-            if (header.size == 0)
+            header.header_type = ntohl(header.header_type);
+            header.header_size = ntohl(header.header_size);
+            header.body_size = ntohl(header.body_size);
+            const auto size = header.header_size + header.body_size;
+            if (size == 0)
             {
                 continue;
             }
 
             // 2. 读取消息体
-            std::vector<char> data(header.size);
+            std::vector<char> data(size);
             co_await async_read(socket_,
-                                boost::asio::buffer(data, header.size),
+                                boost::asio::buffer(data, size),
                                 boost::asio::use_awaitable);
 
-            LOG(debug) << "Received message of size: " << header.size;
+            LOG(debug) << "Received message of type: "
+            << header.header_type
+            << ",header size:"
+            << header.header_size
+            << ",body size:"
+            << header.body_size;
+
+            ::message_header proto_message;
+            proto_message.ParseFromArray(data.data(), data.size());
         }
-    }
-    catch (const boost::system::system_error& error)
-    {
-        if (error.code() != boost::asio::error::eof &&
-            error.code() != boost::asio::error::connection_reset)
+        catch (const boost::system::system_error& error)
         {
-            LOG(warning) << "Session error: " << error.what();
+            if (error.code() != boost::asio::error::eof &&
+                error.code() != boost::asio::error::connection_reset)
+            {
+                LOG(warning) << "Session error: " << error.what();
+            }
         }
     }
 }

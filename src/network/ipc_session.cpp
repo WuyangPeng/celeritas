@@ -40,18 +40,26 @@ boost::asio::awaitable<void> celeritas::ipc_session::handle_read()
                                 boost::asio::buffer(&header, sizeof(header)),
                                 boost::asio::use_awaitable);
 
-            header.size = ntohl(header.size);
-            if (header.size == 0)
+            header.header_type = ntohl(header.header_type);
+            header.header_size = ntohl(header.header_size);
+            header.body_size = ntohl(header.body_size);
+            const auto size = header.header_size + header.body_size;
+            if (size == 0)
             {
                 continue;
             }
 
-            std::vector<char> data(header.size);
+            std::vector<char> data(size);
             co_await async_read(socket_,
-                                boost::asio::buffer(data, header.size),
+                                boost::asio::buffer(data, size),
                                 boost::asio::use_awaitable);
 
-            LOG(debug) << "Received IPC message of size: " << header.size;
+            LOG(debug) << "Received IPC message of size: "
+            << header.header_type
+            << ",header size:"
+            << header.header_size
+            << ",body size:"
+            << header.body_size;;
         }
     }
     catch (const boost::system::system_error& error)

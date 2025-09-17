@@ -9,6 +9,8 @@ namespace celeritas
     {
         using class_type = message_header;
 
-        uint32_t size;
+        uint16_t header_type;
+        uint16_t header_size;
+        uint32_t body_size;
     };
 }

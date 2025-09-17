@@ -11,17 +11,20 @@ namespace celeritas
     {
     public:
         using class_type = session;
+        using socket_type = boost::asio::ip::tcp::socket;
 
         // 构造函数：接受一个已连接的 socket
-        explicit session(boost::asio::ip::tcp::socket socket);
+        explicit session(socket_type socket);
 
         // 启动会话处理协程
         void start();
 
     private:
-        // 协程：处理会话的读写循环
-        boost::asio::awaitable<void> handle_session();
+        using awaitable_type = boost::asio::awaitable<void>;
 
-        boost::asio::ip::tcp::socket socket_;
+        // 协程：处理会话的读写循环
+        awaitable_type handle_session();
+
+        socket_type socket_;
     };
 }
