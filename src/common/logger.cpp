@@ -22,7 +22,7 @@ auto get_formatter()
            << boost::log::expressions::smessage;
 }
 
-void celeritas::logger::init(const std::string& log_file_name, severity_level_type file_level)
+void celeritas::logger::init_file(const std::string& log_file_name, severity_level_type file_level)
 {
     // 添加文件日志输出
     boost::log::add_file_log(

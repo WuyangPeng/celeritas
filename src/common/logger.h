@@ -16,7 +16,7 @@ namespace celeritas
         // 初始化日志系统
         static void init_global(severity_level_type level);
         static void init_console(severity_level_type console_level);
-        static void init(const std::string& log_file_name, severity_level_type file_level);
+        static void init_file(const std::string& log_file_name, severity_level_type file_level);
 
         // 获取日志实例
         [[nodiscard]] static severity_logger_type& get();
