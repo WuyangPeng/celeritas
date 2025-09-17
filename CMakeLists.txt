@@ -9,8 +9,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include_directories(
         "${CMAKE_CURRENT_SOURCE_DIR}/include"
         "${CMAKE_CURRENT_SOURCE_DIR}/proto"
-        "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost"
+        "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/"
         # 如果依赖项在本地，添加它们的include路径
 )
@@ -29,6 +29,7 @@ endif ()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
+    set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src")
     set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/build/bin/release")
     set(Protobuf_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src")
 
@@ -104,6 +105,14 @@ add_subdirectory(src/auth_server)
 add_subdirectory(src/game_server)
 add_subdirectory(src/chat_server)
 
-# 安装规则（可选）
-install(TARGETS AuthServer GameServer ChatServer DESTINATION bin)
+# 安装规则
+if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
+
+    install(TARGETS AuthServer GameServer ChatServer DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug")
+
+else ()
+
+    install(TARGETS AuthServer GameServer ChatServer DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release")
+
+endif ()
 
