@@ -10,57 +10,60 @@ include_directories(
         "${CMAKE_CURRENT_SOURCE_DIR}/include"
         "${CMAKE_CURRENT_SOURCE_DIR}/proto"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src"
+        "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/"
         # 如果依赖项在本地，添加它们的include路径
 )
 
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/)
-
-set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src")
-set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/build/bin/Release")
-
-set(Protobuf_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src")
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/build/bin/release)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-# 查找和添加依赖项
-find_package(Protobuf REQUIRED)
+    set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src")
+    set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/build/bin/release")
 
-# Protobuf 编译
-# 使用 GLOB_RECURSE 递归查找 proto 目录下所有的 .proto 文件
-file(GLOB_RECURSE PROTO_FILES "${CMAKE_CURRENT_SOURCE_DIR}/proto/*.proto")
+    set(Protobuf_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src")
 
-set(PROTO_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include") # 自定义输出目录
-set(PROTO_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src") # 自定义输出目录
+    # 查找和添加依赖项
+    find_package(Protobuf REQUIRED)
 
-# 遍历你的 .proto 文件，为每个文件生成 C++ 代码
-foreach (proto_file ${PROTO_FILES})
+    # Protobuf 编译
+    # 使用 GLOB_RECURSE 递归查找 proto 目录下所有的 .proto 文件
+    file(GLOB_RECURSE PROTO_FILES "${CMAKE_CURRENT_SOURCE_DIR}/proto/*.proto")
 
-    file(RELATIVE_PATH relative_proto_path "${CMAKE_CURRENT_SOURCE_DIR}" "${proto_file}")
+    set(PROTO_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src") # 自定义输出目录
 
-    # 替换文件扩展名为 .pb.cc 和 .pb.h
-    string(REPLACE ".proto" ".pb.cc" output_cc_path ${relative_proto_path})
-    string(REPLACE ".proto" ".pb.h" output_h_path ${relative_proto_path})
+    # 遍历你的 .proto 文件，为每个文件生成 C++ 代码
+    foreach (proto_file ${PROTO_FILES})
 
-    # 构建完整的输出文件路径
-    set(output_cc "${PROTO_OUTPUT_DIR}/${output_cc_path}")
-    set(output_h "${PROTO_OUTPUT_DIR}/${output_h_path}")
+        file(RELATIVE_PATH relative_proto_path "${CMAKE_CURRENT_SOURCE_DIR}" "${proto_file}")
 
-    # 将生成的 文件添加到列表中
-    list(APPEND PROTO_SRCS_GENERATED ${output_cc})
-    list(APPEND PROTO_HDRS_GENERATED ${output_h})
+        # 替换文件扩展名为 .pb.cc 和 .pb.h
+        string(REPLACE ".proto" ".pb.cc" output_cc_path ${relative_proto_path})
+        string(REPLACE ".proto" ".pb.h" output_h_path ${relative_proto_path})
 
-    # 调用 protoc 编译器
-    add_custom_command(
-            OUTPUT ${output_cc} ${output_h}
-            COMMAND ${Protobuf_PROTOC_EXECUTABLE}
-            --proto_path=${CMAKE_CURRENT_SOURCE_DIR} # .proto 文件所在的搜索路径
-            --cpp_out=${PROTO_OUTPUT_DIR}          # C++ 代码输出目录
-            ${proto_file}
-            DEPENDS ${proto_file} # 依赖 .proto 文件
-            COMMENT "Generating C++ code from ${proto_file}"
-            VERBATIM # 确保命令按原样执行
-    )
-endforeach ()
+        # 构建完整的输出文件路径
+        set(output_cc "${PROTO_OUTPUT_DIR}/${output_cc_path}")
+        set(output_h "${PROTO_OUTPUT_DIR}/${output_h_path}")
+
+        # 将生成的 文件添加到列表中
+        list(APPEND PROTO_SRCS_GENERATED ${output_cc})
+        list(APPEND PROTO_HDRS_GENERATED ${output_h})
+
+        # 调用 protoc 编译器
+        add_custom_command(
+                OUTPUT ${output_cc} ${output_h}
+                COMMAND ${Protobuf_PROTOC_EXECUTABLE}
+                --proto_path=${CMAKE_CURRENT_SOURCE_DIR} # .proto 文件所在的搜索路径
+                --cpp_out=${PROTO_OUTPUT_DIR}          # C++ 代码输出目录
+                ${proto_file}
+                DEPENDS ${proto_file} # 依赖 .proto 文件
+                COMMENT "Generating C++ code from ${proto_file}"
+                VERBATIM # 确保命令按原样执行
+        )
+
+    endforeach ()
 
 else ()
 
