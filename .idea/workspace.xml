@@ -30,72 +30,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5850c7e5-f227-4f1d-ac6d-9062f215945d" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/celeritas.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/config/BoostConfig.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/developer.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/include/BoostFetch.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/include/BoostInstall.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/include/BoostMessage.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/include/BoostRoot.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/include/BoostTest.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/include/BoostTestJamfile.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/add_subdir/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/add_subdir/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/add_subdir_compat/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/add_subdir_compat/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/add_subdir_exc/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/add_subdir_exc/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/add_subdir_exc_compat/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/add_subdir_exc_compat/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/assert/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/assert/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/atomic/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/atomic/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/bind/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/bind/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_fetch/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_fetch/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/Jamfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/arguments.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/compile.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/compile_fail.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/emits_warning.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/include_subdir.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/link.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/link_fail.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/requires_no_exceptions.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/requires_no_rtti.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/requires_variadic_templates.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/return_exit_code.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/run.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/run_fail.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/run_multi.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/run_multi_2.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/boost_test/subdir/header.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/endian/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/endian/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/iostreams/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/iostreams/test.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/iostreams/test_fd.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/locale/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/locale/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/mp11/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/mp11/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/mysql/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/mysql/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/preprocessor/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/preprocessor/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/system/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/system/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/timer/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/boost/tools/cmake/test/timer/main.cpp" beforeDir="false" />
-    </list>
+    <list default="true" id="5850c7e5-f227-4f1d-ac6d-9062f215945d" name="更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -122,36 +57,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.RadMigrateCodeStyle": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.west.config.association.type.startup.service": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "F:/celeritas1",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CMakeSettings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/celeritas1&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CMakeSettings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="CMake 应用程序.AuthServer">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="AuthServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="celeritas" TARGET_NAME="AuthServer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="celeritas" RUN_TARGET_NAME="AuthServer">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AuthServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="celeritas" TARGET_NAME="AuthServer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="celeritas" RUN_TARGET_NAME="AuthServer">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -320,6 +255,7 @@
       <workItem from="1758086953313" duration="37000" />
       <workItem from="1758086999538" duration="88000" />
       <workItem from="1758087101589" duration="1670000" />
+      <workItem from="1758089577465" duration="2000" />
     </task>
     <servers />
   </component>
