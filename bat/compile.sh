@@ -1,6 +1,5 @@
 cd ..
 
-rm -rf build-debug build-release
 mkdir -p build-debug build-release
 
 cd build-debug
