@@ -98,10 +98,10 @@ add_subdirectory(cmake/chat_server)
 # 安装规则
 if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
 
-    install(TARGETS AuthServer GameServer ChatServer DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug")
+    install(TARGETS auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug")
 
 else ()
 
-    install(TARGETS AuthServer GameServer ChatServer DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release")
+    install(TARGETS auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release")
 
 endif ()
