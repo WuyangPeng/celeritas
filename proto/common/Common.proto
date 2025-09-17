@@ -1,9 +1,0 @@
-syntax = "proto3";
-option java_package = "com.topgame.message.common";
-option csharp_namespace ="HotfixBusiness.UnityWebSocket.Common"; 
-
-message ItemData {
-	int32 type = 1; 
-	int64 value = 2;
-} 
- 

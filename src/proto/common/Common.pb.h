@@ -52,10 +52,10 @@ struct TableStruct_proto_2fcommon_2fCommon_2eproto {
 extern "C" {
 extern const ::google::protobuf::internal::DescriptorTable descriptor_table_proto_2fcommon_2fCommon_2eproto;
 }  // extern "C"
-class ItemData;
-struct ItemDataDefaultTypeInternal;
-extern ItemDataDefaultTypeInternal _ItemData_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull ItemData_class_data_;
+class message_header;
+struct message_headerDefaultTypeInternal;
+extern message_headerDefaultTypeInternal _message_header_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull message_header_class_data_;
 namespace google {
 namespace protobuf {
 }  // namespace protobuf
@@ -67,30 +67,30 @@ namespace protobuf {
 
 // -------------------------------------------------------------------
 
-class ItemData final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:ItemData) */ {
+class message_header final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:message_header) */ {
  public:
-  inline ItemData() : ItemData(nullptr) {}
-  ~ItemData() PROTOBUF_FINAL;
+  inline message_header() : message_header(nullptr) {}
+  ~message_header() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(ItemData* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
+  void operator delete(message_header* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
     SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(ItemData));
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(message_header));
   }
 #endif
 
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR ItemData(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR message_header(::google::protobuf::internal::ConstantInitialized);
 
-  inline ItemData(const ItemData& from) : ItemData(nullptr, from) {}
-  inline ItemData(ItemData&& from) noexcept
-      : ItemData(nullptr, ::std::move(from)) {}
-  inline ItemData& operator=(const ItemData& from) {
+  inline message_header(const message_header& from) : message_header(nullptr, from) {}
+  inline message_header(message_header&& from) noexcept
+      : message_header(nullptr, ::std::move(from)) {}
+  inline message_header& operator=(const message_header& from) {
     CopyFrom(from);
     return *this;
   }
-  inline ItemData& operator=(ItemData&& from) noexcept {
+  inline message_header& operator=(message_header&& from) noexcept {
     if (this == &from) return *this;
     if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
       InternalSwap(&from);
@@ -118,13 +118,13 @@ class ItemData final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const ItemData& default_instance() {
-    return *reinterpret_cast<const ItemData*>(
-        &_ItemData_default_instance_);
+  static const message_header& default_instance() {
+    return *reinterpret_cast<const message_header*>(
+        &_message_header_default_instance_);
   }
   static constexpr int kIndexInFileMessages = 0;
-  friend void swap(ItemData& a, ItemData& b) { a.Swap(&b); }
-  inline void Swap(ItemData* PROTOBUF_NONNULL other) {
+  friend void swap(message_header& a, message_header& b) { a.Swap(&b); }
+  inline void Swap(message_header* PROTOBUF_NONNULL other) {
     if (other == this) return;
     if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
       InternalSwap(other);
@@ -132,7 +132,7 @@ class ItemData final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(ItemData* PROTOBUF_NONNULL other) {
+  void UnsafeArenaSwap(message_header* PROTOBUF_NONNULL other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -140,13 +140,13 @@ class ItemData final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  ItemData* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<ItemData>(arena);
+  message_header* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<message_header>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const ItemData& from);
+  void CopyFrom(const message_header& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const ItemData& from) { ItemData::MergeImpl(*this, from); }
+  void MergeFrom(const message_header& from) { message_header::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(::google::protobuf::MessageLite& to_msg,
@@ -182,18 +182,18 @@ class ItemData final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
   static void SharedDtor(MessageLite& self);
-  void InternalSwap(ItemData* PROTOBUF_NONNULL other);
+  void InternalSwap(message_header* PROTOBUF_NONNULL other);
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "ItemData"; }
+  static ::absl::string_view FullMessageName() { return "message_header"; }
 
  protected:
-  explicit ItemData(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  ItemData(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const ItemData& from);
-  ItemData(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, ItemData&& from) noexcept
-      : ItemData(arena) {
+  explicit message_header(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  message_header(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const message_header& from);
+  message_header(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, message_header&& from) noexcept
+      : message_header(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
@@ -210,34 +210,23 @@ class ItemData final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kValueFieldNumber = 2,
-    kTypeFieldNumber = 1,
+    kSizeFieldNumber = 1,
   };
-  // int64 value = 2;
-  void clear_value() ;
-  ::int64_t value() const;
-  void set_value(::int64_t value);
+  // int32 size = 1;
+  void clear_size() ;
+  ::int32_t size() const;
+  void set_size(::int32_t value);
 
   private:
-  ::int64_t _internal_value() const;
-  void _internal_set_value(::int64_t value);
+  ::int32_t _internal_size() const;
+  void _internal_set_size(::int32_t value);
 
   public:
-  // int32 type = 1;
-  void clear_type() ;
-  ::int32_t type() const;
-  void set_type(::int32_t value);
-
-  private:
-  ::int32_t _internal_type() const;
-  void _internal_set_type(::int32_t value);
-
-  public:
-  // @@protoc_insertion_point(class_scope:ItemData)
+  // @@protoc_insertion_point(class_scope:message_header)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
                                    0, 0,
                                    2>
       _table_;
@@ -256,18 +245,17 @@ class ItemData final : public ::google::protobuf::Message
     inline explicit Impl_(
         ::google::protobuf::internal::InternalVisibility visibility,
         ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const ItemData& from_msg);
+        const message_header& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::int64_t value_;
-    ::int32_t type_;
+    ::int32_t size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_proto_2fcommon_2fCommon_2eproto;
 };
 
-extern const ::google::protobuf::internal::ClassDataFull ItemData_class_data_;
+extern const ::google::protobuf::internal::ClassDataFull message_header_class_data_;
 
 // ===================================================================
 
@@ -283,54 +271,30 @@ extern const ::google::protobuf::internal::ClassDataFull ItemData_class_data_;
 #endif  // __GNUC__
 // -------------------------------------------------------------------
 
-// ItemData
+// message_header
 
-// int32 type = 1;
-inline void ItemData::clear_type() {
+// int32 size = 1;
+inline void message_header::clear_size() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.type_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000002u;
-}
-inline ::int32_t ItemData::type() const {
-  // @@protoc_insertion_point(field_get:ItemData.type)
-  return _internal_type();
-}
-inline void ItemData::set_type(::int32_t value) {
-  _internal_set_type(value);
-  _impl_._has_bits_[0] |= 0x00000002u;
-  // @@protoc_insertion_point(field_set:ItemData.type)
-}
-inline ::int32_t ItemData::_internal_type() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.type_;
-}
-inline void ItemData::_internal_set_type(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.type_ = value;
-}
-
-// int64 value = 2;
-inline void ItemData::clear_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.value_ = ::int64_t{0};
+  _impl_.size_ = 0;
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline ::int64_t ItemData::value() const {
-  // @@protoc_insertion_point(field_get:ItemData.value)
-  return _internal_value();
+inline ::int32_t message_header::size() const {
+  // @@protoc_insertion_point(field_get:message_header.size)
+  return _internal_size();
 }
-inline void ItemData::set_value(::int64_t value) {
-  _internal_set_value(value);
+inline void message_header::set_size(::int32_t value) {
+  _internal_set_size(value);
   _impl_._has_bits_[0] |= 0x00000001u;
-  // @@protoc_insertion_point(field_set:ItemData.value)
+  // @@protoc_insertion_point(field_set:message_header.size)
 }
-inline ::int64_t ItemData::_internal_value() const {
+inline ::int32_t message_header::_internal_size() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.value_;
+  return _impl_.size_;
 }
-inline void ItemData::_internal_set_value(::int64_t value) {
+inline void message_header::_internal_set_size(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.value_ = value;
+  _impl_.size_ = value;
 }
 
 #ifdef __GNUC__

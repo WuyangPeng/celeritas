@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+message message_header {
+	int32 size = 1;  
+} 
+ 
