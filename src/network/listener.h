@@ -21,7 +21,7 @@ namespace celeritas
         using acceptor_type = boost::asio::ip::tcp::acceptor;
 
         // 协程：异步接受新连接
-        awaitable_type accept_connections();
+        [[nodiscard]] awaitable_type accept_connections();
 
         io_context_type& io_context_;
         acceptor_type acceptor_;

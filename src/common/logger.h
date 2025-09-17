@@ -25,7 +25,7 @@ namespace celeritas
         static void init(const std::string& log_file_name);
 
         // 获取日志实例
-        static severity_logger_type& get();
+        [[nodiscard]] static severity_logger_type& get();
 
     private:
         static severity_logger_type logger_;
