@@ -20,6 +20,8 @@ set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/build/bin/Relea
 
 set(Protobuf_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src")
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
 # 查找和添加依赖项
 find_package(Protobuf REQUIRED)
 
@@ -60,11 +62,17 @@ foreach (proto_file ${PROTO_FILES})
     )
 endforeach ()
 
+else ()
+
+    # 其他平台下的操作
+    file(GLOB_RECURSE PROTO_SRCS_GENERATED "src/proto/*.cc")
+
+endif ()
+
 # 定义所有进程共享的库
 # 使用 GLOB 查找源文件，以便自动包含新增的文件
 file(GLOB_RECURSE COMMON_SRC "src/common/*.cpp")
 file(GLOB_RECURSE DB_SRC "src/db/*.cpp")
-file(GLOB_RECURSE PROTO_SRC "src/proto/*.cc")
 file(GLOB_RECURSE WORKER_POOL_SRC "src/worker_pool/*.cpp")
 file(GLOB_RECURSE NETWORK_SRC "src/network/*.cpp")
 

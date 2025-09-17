@@ -30,7 +30,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5850c7e5-f227-4f1d-ac6d-9062f215945d" name="更改" comment="" />
+    <list default="true" id="5850c7e5-f227-4f1d-ac6d-9062f215945d" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deps/protobuf/build/bin/Release/protoc" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -82,11 +86,6 @@
 }</component>
   <component name="RunManager" selected="CMake 应用程序.AuthServer">
     <configuration name="AuthServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="celeritas" TARGET_NAME="AuthServer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="celeritas" RUN_TARGET_NAME="AuthServer">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -238,9 +237,9 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="CMake 应用程序.CommonLib" />
       <item itemvalue="CMake 应用程序.AuthServer" />
       <item itemvalue="CMake 应用程序.ChatServer" />
+      <item itemvalue="CMake 应用程序.CommonLib" />
       <item itemvalue="CMake 应用程序.GameServer" />
     </list>
   </component>
@@ -255,7 +254,8 @@
       <workItem from="1758086953313" duration="37000" />
       <workItem from="1758086999538" duration="88000" />
       <workItem from="1758087101589" duration="1670000" />
-      <workItem from="1758089577465" duration="457000" />
+      <workItem from="1758089577465" duration="556000" />
+      <workItem from="1758090403468" duration="84000" />
     </task>
     <servers />
   </component>
