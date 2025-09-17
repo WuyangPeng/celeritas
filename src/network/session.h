@@ -20,7 +20,8 @@ namespace celeritas
         using awaitable_type = boost::asio::awaitable<void>;
 
         // 协程：处理会话的读写循环
-        awaitable_type handle_session();
+        [[nodiscard]] awaitable_type handle_session();
+        [[nodiscard]] awaitable_type handle_one_message();
 
         socket_type socket_;
     };
