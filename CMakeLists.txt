@@ -105,4 +105,3 @@ else ()
     install(TARGETS AuthServer GameServer ChatServer DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release")
 
 endif ()
-
