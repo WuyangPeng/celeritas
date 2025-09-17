@@ -1,6 +1,20 @@
 syntax = "proto3";
 
-message message_header {
-	int32 size = 1;  
-} 
+package celeritas.common;
+
+enum header_type {
+    client = 0;
+    server = 1;
+}
+
+message client_message_header {
+    int32 message_id = 1;
+    int32 rpc = 2;
+}
+
+message server_message_header {
+    int64 user_id = 1;
+    int32 message_id = 2;
+    int32 code = 3;
+}
  

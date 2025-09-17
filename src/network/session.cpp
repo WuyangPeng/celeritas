@@ -52,8 +52,16 @@ celeritas::session::awaitable_type celeritas::session::handle_session()
             << ",body size:"
             << header.body_size;
 
-            ::message_header proto_message;
-            proto_message.ParseFromArray(data.data(), data.size());
+            if (header.header_type == common::client)
+            {
+                common::client_message_header proto_message{};
+                proto_message.ParseFromArray(data.data(), header.header_size);
+            }
+            else if (header.header_type == common::server)
+            {
+                common::server_message_header proto_message{};
+                proto_message.ParseFromArray(data.data(), header.header_size);
+            }
         }
         catch (const boost::system::system_error& error)
         {
