@@ -80,29 +80,20 @@ else ()
 
 endif ()
 
-# 定义所有进程共享的库
-# 使用 GLOB 查找源文件，以便自动包含新增的文件
-file(GLOB_RECURSE COMMON_SRC "src/common/*.cpp")
-file(GLOB_RECURSE DB_SRC "src/db/*.cpp")
-file(GLOB_RECURSE WORKER_POOL_SRC "src/worker_pool/*.cpp")
-file(GLOB_RECURSE NETWORK_SRC "src/network/*.cpp")
-
-add_library(CommonLib
-        ${COMMON_SRC}
-        ${DB_SRC}
+add_library(protobuf
         ${PROTO_SRCS_GENERATED}
-        ${WORKER_POOL_SRC}
-        ${NETWORK_SRC}
 )
 
-target_link_libraries(CommonLib
+target_link_libraries(protobuf
         ${PROTOBUF_LIBRARIES}
 )
 
-# 添加子目录，让它们各自管理自己的编译
-add_subdirectory(src/auth_server)
-add_subdirectory(src/game_server)
-add_subdirectory(src/chat_server)
+add_subdirectory(cmake/common)
+add_subdirectory(cmake/network)
+
+add_subdirectory(cmake/auth_server)
+add_subdirectory(cmake/game_server)
+add_subdirectory(cmake/chat_server)
 
 # 安装规则
 if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
