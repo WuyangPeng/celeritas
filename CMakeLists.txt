@@ -7,11 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 包含路径
 include_directories(
-        "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/proto"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src"
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/"
         # 如果依赖项在本地，添加它们的include路径
 )
 
