@@ -13,7 +13,7 @@ namespace attrs = boost::log::attributes;
 // 初始化静态成员变量
 src::severity_logger<celeritas::severity_level> celeritas::logger::logger_;
 
-void celeritas::logger::Init(const std::string& log_file_name)
+void celeritas::logger::init(const std::string& log_file_name)
 {
     // 设置日志格式
     logging::formatter formatter = expr::stream
