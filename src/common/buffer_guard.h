@@ -22,8 +22,6 @@ namespace celeritas
         [[nodiscard]] size_t size() const;
 
     private:
-        void swap(buffer_guard& rhs);
-
         buffer_pool_data buffer_data_;
     };
 }

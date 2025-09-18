@@ -1,8 +1,8 @@
 #pragma once
 
+#include "buffer_pool_bucket.h"
 #include "common/buffer_pool_data.h"
 
-#include <list>
 #include <map>
 #include <memory>
 
@@ -19,8 +19,14 @@ namespace celeritas
         // 归还一个缓冲区到池中
         void release(buffer_pool_data buffer);
 
+        void reclaim(std::size_t idle_seconds);
+
     private:
-        std::map<size_t, std::list<buffer_pool_data>> pool_;
+        using pool_type = std::map<size_t, buffer_pool_bucket>;
+
+        [[nodiscard]] buffer_pool_data try_acquire_from_pool(size_t required_size);
+
+        pool_type pool_;
         std::mutex mutex_;
     };
 }

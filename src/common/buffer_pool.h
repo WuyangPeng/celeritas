@@ -19,6 +19,8 @@ namespace celeritas
         // 归还一个缓冲区到池中
         static void release(buffer_pool_data buffer);
 
+        void reclaim(std::size_t idle_seconds);
+
     private:
         [[nodiscard]] static buffer_pool_impl& get_buffer_pool();
     };
