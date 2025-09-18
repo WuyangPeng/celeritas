@@ -2,5 +2,6 @@
 
 namespace celeritas
 {
-    class logger_impl;
+    class celeritas_error;
+    class logger;
 }

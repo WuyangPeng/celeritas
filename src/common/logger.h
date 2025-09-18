@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common_fwd.h"
+#include "detail/common_internal_fwd.h"
 
 #include <boost/log/sources/record_ostream.hpp>
 #include <boost/log/sources/severity_logger.hpp>
@@ -8,7 +8,6 @@
 
 namespace celeritas
 {
-
     class logger
     {
     public:
