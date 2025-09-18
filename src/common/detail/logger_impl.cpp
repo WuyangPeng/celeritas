@@ -82,7 +82,8 @@ celeritas::logger_impl::severity_logger_type& celeritas::logger_impl::get(const 
     const auto iter = loggers.find(channel_name);
     if (iter == loggers.end())
     {
-        throw celeritas_error("Logger channel not registered: " + channel_name);
+        BOOST_LOG_SEV(get_default(), boost::log::trivial::severity_level::debug) << "Logger channel not registered: " << channel_name;
+        return default_logger;
     }
     return iter->second;
 }
