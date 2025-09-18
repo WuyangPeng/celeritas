@@ -7,9 +7,9 @@ celeritas::buffer_pool_data::buffer_pool_data(data_unique_ptr data, size_t size)
 {
 }
 
-celeritas::buffer_pool_data::data_unique_ptr& celeritas::buffer_pool_data::data() noexcept
+char* celeritas::buffer_pool_data::data() noexcept
 {
-    return data_;
+    return data_.get();
 }
 
 size_t celeritas::buffer_pool_data::size() const noexcept

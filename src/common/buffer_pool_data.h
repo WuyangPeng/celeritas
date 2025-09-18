@@ -13,7 +13,7 @@ namespace celeritas
 
         buffer_pool_data(data_unique_ptr data, size_t size);
 
-        [[nodiscard]] data_unique_ptr& data() noexcept;
+        [[nodiscard]] char* data() noexcept;
         [[nodiscard]] size_t size() const noexcept;
 
     private:

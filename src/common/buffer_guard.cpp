@@ -37,7 +37,7 @@ celeritas::buffer_guard::~buffer_guard() noexcept
 
 char* celeritas::buffer_guard::get()
 {
-    return buffer_data_.data().get();
+    return buffer_data_.data();
 }
 
 size_t celeritas::buffer_guard::size() const
