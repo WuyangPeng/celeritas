@@ -1,58 +1,34 @@
 #include "logger.h"
+#include "detail/logger_impl.h"
 
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/log/expressions/formatters/date_time.hpp>
-#include <boost/log/expressions.hpp>
-#include <boost/log/utility/setup/file.hpp>
-#include <boost/log/utility/setup/common_attributes.hpp>
-#include <boost/log/support/date_time.hpp>
-#include <boost/log/sinks/text_ostream_backend.hpp>
-#include <boost/log/utility/setup/console.hpp>
-
-auto get_formatter()
+void celeritas::logger::init_file(const std::string& channel_name, const std::string& log_file_name, severity_level_type file_level, bool also_to_console)
 {
-    // 设置日志格式
-    return boost::log::expressions::stream
-           << "["
-           << boost::log::expressions::format_date_time<boost::posix_time::ptime>("TimeStamp", "%Y-%m-%d %H:%M:%S.%f")
-           << "]"
-           << " ["
-           << boost::log::trivial::severity
-           << "] "
-           << boost::log::expressions::smessage;
+    get_logger_impl().init_file(channel_name, log_file_name, file_level, also_to_console);
 }
 
-void celeritas::logger::init_file(const std::string& log_file_name, severity_level_type file_level)
+celeritas::logger::severity_logger_type& celeritas::logger::get(const std::string& channel_name)
 {
-    // 添加文件日志输出
-    boost::log::add_file_log(
-        boost::log::keywords::file_name = log_file_name,
-        boost::log::keywords::auto_flush = true,
-        boost::log::keywords::rotation_size = 10 * 1024 * 1024, // 10MB
-        boost::log::keywords::filter = boost::log::trivial::severity >= file_level
-        )->set_formatter(get_formatter());
-}
-
-void celeritas::logger::init_global(severity_level_type level)
-{
-    // 添加通用属性，如时间戳
-    boost::log::add_common_attributes();
-
-    // 设置全局日志级别
-    boost::log::core::get()->set_filter(boost::log::trivial::severity >= level);
-}
-
-void celeritas::logger::init_console(severity_level_type console_level)
-{
-    // 添加控制台日志输出
-    const auto console_sink = boost::log::add_console_log(std::clog);
-    console_sink->set_formatter(get_formatter());
-    console_sink->set_filter(boost::log::trivial::severity >= console_level);
+    return get_logger_impl().get(channel_name);
 }
 
 celeritas::logger::severity_logger_type& celeritas::logger::get()
 {
-    static severity_logger_type logger{};
+    return get_logger_impl().get("default");
+}
 
-    return logger;
+celeritas::logger_impl& celeritas::logger::get_logger_impl()
+{
+    static logger_impl logger_impl{};
+
+    return logger_impl;
+}
+
+void celeritas::logger::init_global(severity_level_type level)
+{
+    get_logger_impl().init_global(level);
+}
+
+void celeritas::logger::init_console(severity_level_type console_level)
+{
+    get_logger_impl().init_console(console_level);
 }

@@ -1,11 +1,13 @@
 #pragma once
 
-#include <boost/log/trivial.hpp>
-#include <boost/log/sources/severity_logger.hpp>
 #include <boost/log/sources/record_ostream.hpp>
+#include <boost/log/sources/severity_logger.hpp>
+#include <boost/log/trivial.hpp>
 
 namespace celeritas
 {
+    class logger_impl;
+
     class logger
     {
     public:
@@ -16,10 +18,14 @@ namespace celeritas
         // 初始化日志系统
         static void init_global(severity_level_type level);
         static void init_console(severity_level_type console_level);
-        static void init_file(const std::string& log_file_name, severity_level_type file_level);
+        static void init_file(const std::string& channel_name, const std::string& log_file_name, severity_level_type file_level, bool also_to_console);
 
         // 获取日志实例
+        [[nodiscard]] static severity_logger_type& get(const std::string& channel_name);
         [[nodiscard]] static severity_logger_type& get();
+
+    private:
+        static logger_impl& get_logger_impl();
     };
 }
 
