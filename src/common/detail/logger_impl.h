@@ -27,12 +27,16 @@ namespace celeritas
         [[nodiscard]] severity_logger_type& get_default();
 
     private:
+        using loggers_type = std::unordered_map<std::string, severity_logger_type>;
+        using console_channels_type = std::unordered_set<std::string>;
+        using console_sink_type_shared_ptr = boost::shared_ptr<console_sink_type>;
+
         void register_logger(const std::string& channel_name);
         void update_console_filter();
 
-        std::unordered_map<std::string, severity_logger_type> loggers;
-        std::unordered_set<std::string> console_channels;
-        boost::shared_ptr<console_sink_type> console_sink;
+        loggers_type loggers;
+        console_channels_type console_channels;
+        console_sink_type_shared_ptr console_sink;
         severity_level_type console_level{};
         std::string default_channel{ "default" };
         severity_logger_type default_logger;

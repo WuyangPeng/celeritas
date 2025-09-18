@@ -86,6 +86,7 @@ celeritas::logger_impl::severity_logger_type& celeritas::logger_impl::get(const 
     }
     return iter->second;
 }
+
 celeritas::logger_impl::severity_logger_type& celeritas::logger_impl::get_default()
 {
     return default_logger;
