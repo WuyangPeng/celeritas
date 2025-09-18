@@ -5,6 +5,7 @@
 #include <boost/log/sources/severity_logger.hpp>
 #include <boost/log/trivial.hpp>
 
+#include <shared_mutex>
 #include <unordered_set>
 
 namespace celeritas
@@ -44,6 +45,6 @@ namespace celeritas
         severity_level_type console_level_{};
         severity_logger_type default_logger_;
         severity_logger_type unregistered_logger_;
-        std::mutex mutex_;
+        std::shared_mutex mutex_;
     };
 }

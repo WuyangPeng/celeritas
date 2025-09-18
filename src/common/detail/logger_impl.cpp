@@ -96,7 +96,7 @@ celeritas::logger_impl::severity_logger_type& celeritas::logger_impl::get(const 
         return unregistered_logger_;
     }
 
-    std::lock_guard lock{ mutex_ };
+    std::shared_lock lock{ mutex_ };
     const auto iter = loggers_.find(channel_name.data());
     if (iter == loggers_.end())
     {
