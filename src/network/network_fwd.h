@@ -2,5 +2,5 @@
 
 namespace celeritas
 {
-
+    class session;
 }

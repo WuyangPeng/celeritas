@@ -40,13 +40,13 @@ void celeritas::logger_impl::init_global(severity_level_type level)
     boost::log::core::get()->set_filter(boost::log::trivial::severity >= level);
 }
 
-void celeritas::logger_impl::init_console(const severity_level_type level)
+void celeritas::logger_impl::init_console(const severity_level_type console_level)
 {
     std::lock_guard lock{ mutex_ };
 
     // 添加控制台日志输出
     console_sink_ = boost::log::add_console_log(std::clog);
-    console_level_ = level;
+    console_level_ = console_level;
     console_sink_->set_formatter(get_formatter());
 
     update_console_filter();

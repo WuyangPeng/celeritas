@@ -5,6 +5,7 @@
 namespace celeritas
 {
     class logger_impl;
+    class buffer_pool_impl;
 
     constexpr std::string_view default_channel{ "default" };
     constexpr std::string_view unregistered_channel{ "unregistered" };
