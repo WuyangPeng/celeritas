@@ -52,11 +52,6 @@ void celeritas::logger_impl::init_console(const severity_level_type level)
 
 void celeritas::logger_impl::init_file(const std::string_view& channel_name, const std::string_view& log_file_name, severity_level_type file_level, int rotation_size, const bool also_to_console)
 {
-    if (channel_name == unregistered_channel_)
-    {
-        file_level = boost::log::trivial::severity_level::trace;
-    }
-
     std::lock_guard lock{ mutex_ };
     register_logger(channel_name);
 
