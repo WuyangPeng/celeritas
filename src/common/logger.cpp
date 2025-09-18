@@ -13,7 +13,7 @@ celeritas::logger::severity_logger_type& celeritas::logger::get(const std::strin
 
 celeritas::logger::severity_logger_type& celeritas::logger::get()
 {
-    return get_logger_impl().get("default");
+    return get_logger_impl().get(default_channel);
 }
 
 celeritas::logger_impl& celeritas::logger::get_logger_impl()
@@ -25,7 +25,7 @@ celeritas::logger_impl& celeritas::logger::get_logger_impl()
 
 void celeritas::logger::init_global(severity_level_type level)
 {
-    logger_impl::init_global(level);
+    get_logger_impl().init_global(level);
 }
 
 void celeritas::logger::init_console(const severity_level_type console_level)

@@ -2,6 +2,7 @@
 #include "message_header.h"
 #include "proto/common/common.pb.h"
 #include "session.h"
+#include "detail/network_internal_fwd.h"
 
 celeritas::session::session(socket_type socket)
     : socket_{ std::move(socket) }
@@ -29,7 +30,7 @@ celeritas::session::awaitable_type celeritas::session::handle_session()
             if (error.code() != boost::asio::error::eof &&
                 error.code() != boost::asio::error::connection_reset)
             {
-                LOG(warning) << "Session error: " << error.what();
+                LOG_CHANNEL(network_channel, warning) << "Session error: " << error.what();
             }
         }
     }
@@ -53,10 +54,9 @@ celeritas::session::awaitable_type celeritas::session::handle_one_message()
         co_return;
     }
 
-    constexpr auto max_message_size = 16 * 1024 * 1024;  // 16 MB
     if (header.header_size > 0xFF || header.body_size > max_message_size)
     {
-        LOG(error) << "oversized msg, drop connection";
+        LOG_CHANNEL(network_channel, error) << "oversized msg, drop connection";
         co_return;
     }
 
@@ -67,12 +67,12 @@ celeritas::session::awaitable_type celeritas::session::handle_one_message()
                         boost::asio::use_awaitable);
 
     // 日志
-    LOG(debug) << "Received message of type: "
-               << header.header_type
-               << ",header size:"
-               << header.header_size
-               << ",body size:"
-               << header.body_size;
+    LOG_CHANNEL(network_channel, debug) << "Received message of type: "
+                                        << header.header_type
+                                        << ",header size:"
+                                        << header.header_size
+                                        << ",body size:"
+                                        << header.body_size;
 
     // 按类型反序列化
     if (header.header_type == common::client)

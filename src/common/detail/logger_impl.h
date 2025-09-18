@@ -19,7 +19,7 @@ namespace celeritas
 
         logger_impl();
 
-        static void init_global(severity_level_type level);
+        void init_global(severity_level_type level);
         void init_console(severity_level_type level);
         void init_file(const std::string_view& channel_name,
                        const std::string_view& log_file_name,
@@ -28,7 +28,7 @@ namespace celeritas
                        bool also_to_console);
 
         [[nodiscard]] severity_logger_type& get(const std::string_view& channel_name);
-        [[nodiscard]] severity_logger_type& get_default();
+        [[nodiscard]] severity_logger_type& get_default() noexcept;
 
     private:
         using loggers_type = std::unordered_map<std::string, severity_logger_type>;
