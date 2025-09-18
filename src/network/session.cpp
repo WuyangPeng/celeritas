@@ -1,3 +1,5 @@
+#include "common/buffer_guard.h"
+#include "common/buffer_pool.h"
 #include "common/logger.h"
 #include "message_header.h"
 #include "proto/common/common.pb.h"
@@ -79,9 +81,10 @@ celeritas::session::awaitable_type celeritas::session::handle_one_message()
     }
 
     // 读取消息体
-    std::vector<char> message_data(total_size);
+    buffer_guard buffer_guard{ buffer_pool::acquire(total_size) };
+
     co_await async_read(socket_,
-                        boost::asio::buffer(message_data, total_size),
+                        boost::asio::buffer(buffer_guard.get(), total_size),
                         boost::asio::use_awaitable);
 
     // 日志
@@ -96,7 +99,7 @@ celeritas::session::awaitable_type celeritas::session::handle_one_message()
     if (header.header_type == common::client)
     {
         if (common::client_message_header proto_message{};
-            !proto_message.ParseFromArray(message_data.data(), header.header_size))
+            !proto_message.ParseFromArray(buffer_guard.get(), header.header_size))
         {
             LOG_CHANNEL(network_channel, error) << "Failed to parse client message header.";
         }
@@ -104,7 +107,7 @@ celeritas::session::awaitable_type celeritas::session::handle_one_message()
     else if (header.header_type == common::server)
     {
         if (common::server_message_header proto_message{};
-            !proto_message.ParseFromArray(message_data.data(), header.header_size))
+            !proto_message.ParseFromArray(buffer_guard.get(), header.header_size))
         {
             LOG_CHANNEL(network_channel, error) << "Failed to parse server message header.";
         }
