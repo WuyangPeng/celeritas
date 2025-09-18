@@ -1,9 +1,9 @@
 #include "logger.h"
 #include "detail/logger_impl.h"
 
-void celeritas::logger::init_file(const std::string_view& channel_name, const std::string_view& log_file_name, const severity_level_type file_level, bool also_to_console)
+void celeritas::logger::init_file(const std::string_view& channel_name, const std::string_view& log_file_name, const severity_level_type file_level, int rotation_size, bool also_to_console)
 {
-    get_logger_impl().init_file(channel_name, log_file_name, file_level, also_to_console);
+    get_logger_impl().init_file(channel_name, log_file_name, file_level, rotation_size, also_to_console);
 }
 
 celeritas::logger::severity_logger_type& celeritas::logger::get(const std::string_view& channel_name)

@@ -24,6 +24,7 @@ namespace celeritas
         void init_file(const std::string_view& channel_name,
                        const std::string_view& log_file_name,
                        severity_level_type file_level,
+                       int rotation_size,
                        bool also_to_console);
 
         [[nodiscard]] severity_logger_type& get(const std::string_view& channel_name);

@@ -50,7 +50,7 @@ void celeritas::logger_impl::init_console(const severity_level_type level)
     update_console_filter();
 }
 
-void celeritas::logger_impl::init_file(const std::string_view& channel_name, const std::string_view& log_file_name, severity_level_type file_level, const bool also_to_console)
+void celeritas::logger_impl::init_file(const std::string_view& channel_name, const std::string_view& log_file_name, severity_level_type file_level, int rotation_size, const bool also_to_console)
 {
     if (channel_name == unregistered_channel_)
     {
@@ -64,7 +64,7 @@ void celeritas::logger_impl::init_file(const std::string_view& channel_name, con
     boost::log::add_file_log(
         boost::log::keywords::file_name = log_file_name,
         boost::log::keywords::auto_flush = true,
-        boost::log::keywords::rotation_size = 10 * 1024 * 1024,
+        boost::log::keywords::rotation_size = rotation_size,
         boost::log::keywords::filter = boost::log::expressions::has_attr("Channel") &&
                                        boost::log::expressions::attr<std::string>("Channel") == channel_name &&
                                        boost::log::trivial::severity >= file_level)
