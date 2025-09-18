@@ -9,6 +9,7 @@ celeritas::buffer_pool_data celeritas::buffer_pool_impl::acquire(size_t required
     {
         // 找到最匹配的缓冲区，并从列表中取出
         auto& second = iter->second;
+
         auto buffer = std::move(second.front());
         second.pop_front();
 

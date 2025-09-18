@@ -13,16 +13,8 @@ celeritas::buffer_guard::buffer_guard(buffer_guard&& rhs) noexcept
 
 celeritas::buffer_guard& celeritas::buffer_guard::operator=(buffer_guard&& rhs) noexcept
 {
-    if (this != &rhs)
-    {
-        buffer_pool_data old_data = std::move(buffer_data_);
-        buffer_data_ = std::move(rhs.buffer_data_);
-
-        if (old_data.data())
-        {
-            buffer_pool::release(std::move(old_data));
-        }
-    }
+    auto result{ std::move(rhs) };
+    std::swap(buffer_data_, result.buffer_data_);
 
     return *this;
 }
@@ -43,4 +35,9 @@ char* celeritas::buffer_guard::get()
 size_t celeritas::buffer_guard::size() const
 {
     return buffer_data_.size();
+}
+
+void celeritas::buffer_guard::swap(buffer_guard& rhs)
+{
+    std::swap(buffer_data_, rhs.buffer_data_);
 }
