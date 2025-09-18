@@ -1,12 +1,13 @@
 #pragma once
 
+#include "common_fwd.h"
+
 #include <boost/log/sources/record_ostream.hpp>
 #include <boost/log/sources/severity_logger.hpp>
 #include <boost/log/trivial.hpp>
 
 namespace celeritas
 {
-    class logger_impl;
 
     class logger
     {
@@ -31,4 +32,5 @@ namespace celeritas
 
 // 全局日志对象
 // 在你的代码中，使用 LOG(severity_level) << "你的日志信息" 来记录
-#define LOG(level) BOOST_LOG_SEV(logger::get(), boost::log::trivial::severity_level::level)
+#define LOG(level) BOOST_LOG_SEV(celeritas::logger::get(), boost::log::trivial::severity_level::level)
+#define LOG_CHANNEL(channel, level) BOOST_LOG_SEV(celeritas::logger::get(channel), boost::log::trivial::severity_level::level)

@@ -19,7 +19,7 @@ namespace celeritas
 
         logger_impl();
 
-        void init_global(severity_level_type level);
+        static void init_global(severity_level_type level);
         void init_console(severity_level_type level);
         void init_file(const std::string& channel_name, const std::string& log_file_name, severity_level_type file_level, bool also_to_console);
 

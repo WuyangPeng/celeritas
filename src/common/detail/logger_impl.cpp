@@ -4,7 +4,6 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/log/expressions.hpp>
 #include <boost/log/expressions/formatters/date_time.hpp>
-#include <boost/log/sinks/text_ostream_backend.hpp>
 #include <boost/log/support/date_time.hpp>
 #include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/log/utility/setup/console.hpp>
@@ -25,7 +24,7 @@ auto get_formatter()
 
 celeritas::logger_impl::logger_impl()
 {
-    default_logger.add_attribute("Channel", boost::log::attributes::constant<std::string>(default_channel));
+    default_logger.add_attribute("Channel", boost::log::attributes::constant(default_channel));
 }
 
 void celeritas::logger_impl::init_global(severity_level_type level)
@@ -37,7 +36,7 @@ void celeritas::logger_impl::init_global(severity_level_type level)
     boost::log::core::get()->set_filter(boost::log::trivial::severity >= level);
 }
 
-void celeritas::logger_impl::init_console(severity_level_type level)
+void celeritas::logger_impl::init_console(const severity_level_type level)
 {
     // 添加控制台日志输出
     console_sink = boost::log::add_console_log(std::clog);
@@ -47,7 +46,7 @@ void celeritas::logger_impl::init_console(severity_level_type level)
     update_console_filter();
 }
 
-void celeritas::logger_impl::init_file(const std::string& channel_name, const std::string& log_file_name, severity_level_type file_level, bool also_to_console)
+void celeritas::logger_impl::init_file(const std::string& channel_name, const std::string& log_file_name, severity_level_type file_level, const bool also_to_console)
 {
     register_logger(channel_name);
 
@@ -57,8 +56,8 @@ void celeritas::logger_impl::init_file(const std::string& channel_name, const st
         boost::log::keywords::auto_flush = true,
         boost::log::keywords::rotation_size = 10 * 1024 * 1024,
         boost::log::keywords::filter = boost::log::expressions::has_attr("Channel") &&
-                                       (boost::log::expressions::attr<std::string>("Channel") == channel_name) &&
-                                       (boost::log::trivial::severity >= file_level))
+                                       boost::log::expressions::attr<std::string>("Channel") == channel_name &&
+                                       boost::log::trivial::severity >= file_level)
         ->set_formatter(get_formatter());
 
     if (also_to_console)
@@ -94,11 +93,11 @@ celeritas::logger_impl::severity_logger_type& celeritas::logger_impl::get_defaul
 
 void celeritas::logger_impl::register_logger(const std::string& channel_name)
 {
-    const auto iter = loggers.find(channel_name);
-    if (iter == loggers.end())
+    if (const auto iter = loggers.find(channel_name);
+        iter == loggers.end())
     {
         loggers.emplace(channel_name, severity_logger_type{});
-        loggers.at(channel_name).add_attribute("Channel", boost::log::attributes::constant<std::string>(channel_name));
+        loggers.at(channel_name).add_attribute("Channel", boost::log::attributes::constant(channel_name));
     }
 }
 

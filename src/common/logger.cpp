@@ -28,7 +28,7 @@ void celeritas::logger::init_global(severity_level_type level)
     get_logger_impl().init_global(level);
 }
 
-void celeritas::logger::init_console(severity_level_type console_level)
+void celeritas::logger::init_console(const severity_level_type console_level)
 {
     get_logger_impl().init_console(console_level);
 }
