@@ -46,7 +46,7 @@ void celeritas::logger_impl::init_console(const severity_level_type level)
     update_console_filter();
 }
 
-void celeritas::logger_impl::init_file(const std::string& channel_name, const std::string& log_file_name, severity_level_type file_level, const bool also_to_console)
+void celeritas::logger_impl::init_file(const std::string_view& channel_name, const std::string_view& log_file_name, severity_level_type file_level, const bool also_to_console)
 {
     register_logger(channel_name);
 
@@ -62,24 +62,28 @@ void celeritas::logger_impl::init_file(const std::string& channel_name, const st
 
     if (also_to_console)
     {
-        console_channels.insert(channel_name);
+        if (console_channels.insert(std::string{ channel_name }).second)
+        {
+            update_console_filter();
+        }
     }
     else
     {
-        console_channels.erase(channel_name);
+        if (0 < console_channels.erase(std::string{ channel_name }))
+        {
+            update_console_filter();
+        }
     }
-
-    update_console_filter();
 }
 
-celeritas::logger_impl::severity_logger_type& celeritas::logger_impl::get(const std::string& channel_name)
+celeritas::logger_impl::severity_logger_type& celeritas::logger_impl::get(const std::string_view& channel_name)
 {
     if (channel_name == default_channel)
     {
         return default_logger;
     }
 
-    const auto iter = loggers.find(channel_name);
+    const auto iter = loggers.find(std::string{ channel_name });
     if (iter == loggers.end())
     {
         BOOST_LOG_SEV(get_default(), boost::log::trivial::severity_level::debug) << "Logger channel not registered: " << channel_name;
@@ -93,13 +97,14 @@ celeritas::logger_impl::severity_logger_type& celeritas::logger_impl::get_defaul
     return default_logger;
 }
 
-void celeritas::logger_impl::register_logger(const std::string& channel_name)
+void celeritas::logger_impl::register_logger(const std::string_view& channel_name)
 {
-    if (const auto iter = loggers.find(channel_name);
+    const auto key = std::string{ channel_name };
+    if (const auto iter = loggers.find(key);
         iter == loggers.end())
     {
-        loggers.emplace(channel_name, severity_logger_type{});
-        loggers.at(channel_name).add_attribute("Channel", boost::log::attributes::constant(channel_name));
+        loggers.emplace(key, severity_logger_type{});
+        loggers.at(key).add_attribute("Channel", boost::log::attributes::constant(channel_name));
     }
 }
 
