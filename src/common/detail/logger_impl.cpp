@@ -1,4 +1,5 @@
 #include "common/celeritas_error.h"
+#include "common_internal_fwd.h"
 #include "logger_impl.h"
 
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -24,7 +25,8 @@ auto get_formatter()
 
 celeritas::logger_impl::logger_impl()
 {
-    default_logger.add_attribute("Channel", boost::log::attributes::constant(default_channel));
+    default_logger_.add_attribute("Channel", boost::log::attributes::constant(default_channel_));
+    unregistered_logger_.add_attribute("Channel", boost::log::attributes::constant(unregistered_channel_));
 }
 
 void celeritas::logger_impl::init_global(severity_level_type level)
@@ -38,16 +40,24 @@ void celeritas::logger_impl::init_global(severity_level_type level)
 
 void celeritas::logger_impl::init_console(const severity_level_type level)
 {
+    std::lock_guard lock{ mutex_ };
+
     // 添加控制台日志输出
-    console_sink = boost::log::add_console_log(std::clog);
-    console_level = level;
-    console_sink->set_formatter(get_formatter());
+    console_sink_ = boost::log::add_console_log(std::clog);
+    console_level_ = level;
+    console_sink_->set_formatter(get_formatter());
 
     update_console_filter();
 }
 
 void celeritas::logger_impl::init_file(const std::string_view& channel_name, const std::string_view& log_file_name, severity_level_type file_level, const bool also_to_console)
 {
+    if (channel_name == unregistered_channel_)
+    {
+        file_level = boost::log::trivial::severity_level::trace;
+    }
+
+    std::lock_guard lock{ mutex_ };
     register_logger(channel_name);
 
     // 添加文件日志输出
@@ -62,14 +72,14 @@ void celeritas::logger_impl::init_file(const std::string_view& channel_name, con
 
     if (also_to_console)
     {
-        if (console_channels.insert(std::string{ channel_name }).second)
+        if (console_channels_.insert(std::string{ channel_name }).second)
         {
             update_console_filter();
         }
     }
     else
     {
-        if (0 < console_channels.erase(std::string{ channel_name }))
+        if (0 < console_channels_.erase(std::string{ channel_name }))
         {
             update_console_filter();
         }
@@ -78,51 +88,52 @@ void celeritas::logger_impl::init_file(const std::string_view& channel_name, con
 
 celeritas::logger_impl::severity_logger_type& celeritas::logger_impl::get(const std::string_view& channel_name)
 {
-    if (channel_name == default_channel)
+    if (channel_name == default_channel_)
     {
-        return default_logger;
+        return default_logger_;
     }
 
-    const auto iter = loggers.find(std::string{ channel_name });
-    if (iter == loggers.end())
+    std::lock_guard lock{ mutex_ };
+    const auto iter = loggers_.find(std::string{ channel_name });
+    if (iter == loggers_.end())
     {
-        BOOST_LOG_SEV(get_default(), boost::log::trivial::severity_level::debug) << "Logger channel not registered: " << channel_name;
-        return default_logger;
+        BOOST_LOG_SEV(unregistered_logger_, boost::log::trivial::severity_level::warning) << "Logger channel not registered: " << channel_name;
+        return unregistered_logger_;
     }
     return iter->second;
 }
 
 celeritas::logger_impl::severity_logger_type& celeritas::logger_impl::get_default()
 {
-    return default_logger;
+    return default_logger_;
 }
 
 void celeritas::logger_impl::register_logger(const std::string_view& channel_name)
 {
     const auto key = std::string{ channel_name };
-    if (const auto iter = loggers.find(key);
-        iter == loggers.end())
+    if (const auto iter = loggers_.find(key);
+        iter == loggers_.end())
     {
-        loggers.emplace(key, severity_logger_type{});
-        loggers.at(key).add_attribute("Channel", boost::log::attributes::constant(channel_name));
+        loggers_.emplace(key, severity_logger_type{});
+        loggers_.at(key).add_attribute("Channel", boost::log::attributes::constant(channel_name));
     }
 }
 
 void celeritas::logger_impl::update_console_filter()
 {
-    if (!console_sink)
+    if (!console_sink_)
     {
         return;
     }
 
-    auto console_filter = boost::log::trivial::severity >= console_level;
+    auto console_filter = boost::log::trivial::severity >= console_level_;
 
     auto channel_filter = boost::log::expressions::has_attr("Channel") && boost::log::expressions::attr<std::string>("Channel") == "";
-    for (const auto& channel : console_channels)
+    for (const auto& channel : console_channels_)
     {
         channel_filter = channel_filter || (boost::log::expressions::has_attr("Channel") && boost::log::expressions::attr<std::string>("Channel") == channel);
     }
     console_filter = console_filter && (channel_filter || !boost::log::expressions::has_attr("Channel"));
 
-    console_sink->set_filter(console_filter);
+    console_sink_->set_filter(console_filter);
 }

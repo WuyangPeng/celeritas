@@ -21,7 +21,10 @@ namespace celeritas
 
         static void init_global(severity_level_type level);
         void init_console(severity_level_type level);
-        void init_file(const std::string_view& channel_name, const std::string_view& log_file_name, severity_level_type file_level, bool also_to_console);
+        void init_file(const std::string_view& channel_name,
+                       const std::string_view& log_file_name,
+                       severity_level_type file_level,
+                       bool also_to_console);
 
         [[nodiscard]] severity_logger_type& get(const std::string_view& channel_name);
         [[nodiscard]] severity_logger_type& get_default();
@@ -34,11 +37,12 @@ namespace celeritas
         void register_logger(const std::string_view& channel_name);
         void update_console_filter();
 
-        loggers_type loggers;
-        console_channels_type console_channels;
-        console_sink_type_shared_ptr console_sink;
-        severity_level_type console_level{};
-        std::string default_channel{ "default" };
-        severity_logger_type default_logger;
+        loggers_type loggers_;
+        console_channels_type console_channels_;
+        console_sink_type_shared_ptr console_sink_;
+        severity_level_type console_level_{};
+        severity_logger_type default_logger_;
+        severity_logger_type unregistered_logger_;
+        std::mutex mutex_;
     };
 }
