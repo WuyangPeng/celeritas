@@ -9,15 +9,15 @@ namespace celeritas
     {
     public:
         using class_type = buffer_pool_data;
-        using data_shared_ptr = std::shared_ptr<char[]>;
+        using data_unique_ptr = std::unique_ptr<char[]>;
 
-        buffer_pool_data(data_shared_ptr data, size_t size);
+        buffer_pool_data(data_unique_ptr data, size_t size);
 
-        [[nodiscard]] data_shared_ptr& data();
-        [[nodiscard]] size_t size() const;
+        [[nodiscard]] data_unique_ptr& data() noexcept;
+        [[nodiscard]] size_t size() const noexcept;
 
     private:
-        data_shared_ptr data_;
+        data_unique_ptr data_;
         size_t size_{};
     };
 }

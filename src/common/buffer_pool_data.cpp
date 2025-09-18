@@ -2,17 +2,17 @@
 
 #include <utility>
 
-celeritas::buffer_pool_data::buffer_pool_data(data_shared_ptr data, size_t size)
+celeritas::buffer_pool_data::buffer_pool_data(data_unique_ptr data, size_t size)
     : data_{ std::move(data) }, size_{ size }
 {
 }
 
-celeritas::buffer_pool_data::data_shared_ptr& celeritas::buffer_pool_data::data()
+celeritas::buffer_pool_data::data_unique_ptr& celeritas::buffer_pool_data::data() noexcept
 {
     return data_;
 }
 
-size_t celeritas::buffer_pool_data::size() const
+size_t celeritas::buffer_pool_data::size() const noexcept
 {
     return size_;
 }

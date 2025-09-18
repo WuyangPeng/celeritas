@@ -3,6 +3,7 @@
 #include "common/buffer_pool_data.h"
 
 #include <list>
+#include <map>
 #include <memory>
 
 namespace celeritas
@@ -19,8 +20,7 @@ namespace celeritas
         void release(buffer_pool_data buffer);
 
     private:
-        // 使用 std::list 以便快速删除
-        std::list<buffer_pool_data> pool_;
+        std::map<size_t, std::list<buffer_pool_data>> pool_;
         std::mutex mutex_;
     };
 }

@@ -4,26 +4,27 @@ celeritas::buffer_pool_data celeritas::buffer_pool_impl::acquire(size_t required
 {
     std::lock_guard lock{ mutex_ };
 
-    if (!pool_.empty())
+    if (const auto iter = pool_.lower_bound(required_size);
+        iter != pool_.end())
     {
-        // 优先复用大小匹配的缓冲区
-        for (auto it = pool_.begin(); it != pool_.end(); ++it)
+        // 找到最匹配的缓冲区，并从列表中取出
+        auto& second = iter->second;
+        auto buffer = std::move(second.front());
+        second.pop_front();
+
+        if (second.empty())
         {
-            if (it->size() >= required_size)
-            {
-                auto buffer = std::move(*it);
-                pool_.erase(it);
-                return buffer;
-            }
+            pool_.erase(iter);
         }
+        return buffer;
     }
 
     // 如果池中没有合适的，则创建新的
-    return buffer_pool_data{ std::make_shared<char[]>(required_size), required_size };
+    return buffer_pool_data{ std::make_unique<char[]>(required_size), required_size };
 }
 
 void celeritas::buffer_pool_impl::release(buffer_pool_data buffer)
 {
     std::lock_guard lock{ mutex_ };
-    pool_.emplace_back(std::move(buffer));
+    pool_[buffer.size()].emplace_front(std::move(buffer));
 }
