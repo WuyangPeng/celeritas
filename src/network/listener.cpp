@@ -1,6 +1,6 @@
 #include "common/logger.h"
 #include "listener.h"
-#include "session.h"
+#include "session_base.tpp"
 
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
@@ -12,7 +12,7 @@ celeritas::listener::listener(boost::asio::io_context& io_context, uint16_t port
       message_handler_{ std::move(handler) },
       is_running_{ true }
 {
-    LOG(info) << "Listening on port " << port << "...";
+    LOG_CHANNEL(network_channel, info) << "Listening on port " << port << "...";
 }
 
 // 启动协程来接受连接
@@ -57,7 +57,7 @@ boost::asio::awaitable<void> celeritas::listener::accept_connections()
                 LOG_CHANNEL(network_channel, info) << "Accepted new connection from: " << socket.remote_endpoint();
 
                 // 为新连接创建一个会话，并启动
-                std::make_shared<session<boost::asio::ip::tcp::socket>>(std::move(socket), message_handler_)->start();
+                std::make_shared<session_type>(std::move(socket), message_handler_)->start();
             }
         }
         catch (const boost::system::system_error& error)

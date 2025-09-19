@@ -1,18 +1,20 @@
+#pragma once
+
 #include "common/buffer_guard.h"
 #include "common/buffer_pool.h"
 #include "common/logger.h"
 #include "message_header.h"
-#include "session.h"
+#include "session_base.h"
 #include "detail/network_internal_fwd.h"
 
 template <typename SocketType>
-celeritas::session<SocketType>::session(socket_type socket, message_handler_type handler)
+celeritas::session_base<SocketType>::session_base(socket_type socket, message_handler_type handler)
     : socket_{ std::move(socket) }, message_handler_{ std::move(handler) }
 {
 }
 
 template <typename SocketType>
-void celeritas::session<SocketType>::start()
+void celeritas::session_base<SocketType>::start()
 {
     co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
         return self->handle_session();
@@ -21,7 +23,7 @@ void celeritas::session<SocketType>::start()
 }
 
 template <typename SocketType>
-celeritas::session<SocketType>::awaitable_type celeritas::session<SocketType>::handle_session()
+typename celeritas::session_base<SocketType>::awaitable_type celeritas::session_base<SocketType>::handle_session()
 {
     while (socket_.is_open())
     {
@@ -59,7 +61,7 @@ celeritas::session<SocketType>::awaitable_type celeritas::session<SocketType>::h
 }
 
 template <typename SocketType>
-celeritas::session<SocketType>::read_awaitable_type celeritas::session<SocketType>::read_data_with_timeout(boost::asio::mutable_buffer buffer)
+typename celeritas::session_base<SocketType>::read_awaitable_type celeritas::session_base<SocketType>::read_data_with_timeout(boost::asio::mutable_buffer buffer)
 {
     boost::asio::steady_timer timer{ socket_.get_executor(), std::chrono::steady_clock::now() + timeout_seconds };
     boost::asio::cancellation_signal cancel_signal{};
@@ -95,7 +97,7 @@ celeritas::session<SocketType>::read_awaitable_type celeritas::session<SocketTyp
 }
 
 template <typename SocketType>
-celeritas::session<SocketType>::awaitable_type celeritas::session<SocketType>::handle_one_message()
+typename celeritas::session_base<SocketType>::awaitable_type celeritas::session_base<SocketType>::handle_one_message()
 {
     // 读取消息头
     message_header header{};
@@ -136,7 +138,7 @@ celeritas::session<SocketType>::awaitable_type celeritas::session<SocketType>::h
 }
 
 template <typename SocketType>
-void celeritas::session<SocketType>::write(buffer_guard data)
+void celeritas::session_base<SocketType>::write(buffer_guard data)
 {
     std::lock_guard lock{ write_mutex_ };
     write_queue_.emplace_back(std::move(data));
@@ -152,7 +154,7 @@ void celeritas::session<SocketType>::write(buffer_guard data)
 }
 
 template <typename SocketType>
-celeritas::session<SocketType>::awaitable_type celeritas::session<SocketType>::do_write()
+typename celeritas::session_base<SocketType>::awaitable_type celeritas::session_base<SocketType>::do_write()
 {
     while (socket_.is_open())
     {
@@ -179,7 +181,7 @@ celeritas::session<SocketType>::awaitable_type celeritas::session<SocketType>::d
 }
 
 template <typename SocketType>
-celeritas::session<SocketType>::awaitable_type celeritas::session<SocketType>::do_one_write()
+typename celeritas::session_base<SocketType>::awaitable_type celeritas::session_base<SocketType>::do_one_write()
 {
     // 调用新函数来获取数据，该函数内部处理了加锁和解锁
     auto optional_buffer_guard = get_next_write_buffer();
@@ -194,7 +196,7 @@ celeritas::session<SocketType>::awaitable_type celeritas::session<SocketType>::d
 }
 
 template <typename SocketType>
-celeritas::session<SocketType>::buffer_guard_optional_type celeritas::session<SocketType>::get_next_write_buffer()
+typename celeritas::session_base<SocketType>::buffer_guard_optional_type celeritas::session_base<SocketType>::get_next_write_buffer()
 {
     std::lock_guard lock{ write_mutex_ };
     if (write_queue_.empty())

@@ -8,10 +8,10 @@
 namespace celeritas
 {
     template <typename SocketType>
-    class session : public std::enable_shared_from_this<session<SocketType>>
+    class session_base : public std::enable_shared_from_this<session_base<SocketType>>
     {
     public:
-        using class_type = session;
+        using class_type = session_base;
         using socket_type = SocketType;
 
         // 定义消息处理回调函数的类型
@@ -19,7 +19,7 @@ namespace celeritas
         using message_handler_type = std::function<void(const message_header&, buffer_guard)>;
 
         // 构造函数：接受一个已连接的 socket
-        explicit session(socket_type socket, message_handler_type handler);
+        explicit session_base(socket_type socket, message_handler_type handler);
 
         // 启动会话处理协程
         void start();

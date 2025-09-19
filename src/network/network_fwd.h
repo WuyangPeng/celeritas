@@ -3,7 +3,7 @@
 namespace celeritas
 {
     template <typename SocketType>
-    class session;
+    class session_base;
 
     class listener;
     struct message_header;
