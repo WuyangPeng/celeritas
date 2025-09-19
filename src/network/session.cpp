@@ -151,16 +151,7 @@ celeritas::session::awaitable_type celeritas::session::do_write()
     {
         try
         {
-            // 调用新函数来获取数据，该函数内部处理了加锁和解锁
-            auto optional_buffer_guard = get_next_write_buffer();
-            if (!optional_buffer_guard)
-            {
-                co_return;  // 队列为空，退出协程
-            }
-            auto buffer_guard = std::move(*optional_buffer_guard);
-
-            co_await boost::asio::async_write(socket_, boost::asio::buffer(buffer_guard.get(), buffer_guard.get_effective_size()), boost::asio::use_awaitable);
-            LOG_CHANNEL(network_channel, debug) << "Successfully wrote " << buffer_guard.get_effective_size() << " bytes to client.";
+            co_await do_one_write();
         }
         catch (const boost::system::system_error& error)
         {
@@ -179,7 +170,22 @@ celeritas::session::awaitable_type celeritas::session::do_write()
         }
     }
 }
-std::optional<celeritas::buffer_guard> celeritas::session::get_next_write_buffer()
+
+celeritas::session::awaitable_type celeritas::session::do_one_write()
+{
+    // 调用新函数来获取数据，该函数内部处理了加锁和解锁
+    auto optional_buffer_guard = get_next_write_buffer();
+    if (!optional_buffer_guard)
+    {
+        co_return;  // 队列为空，退出协程
+    }
+    auto buffer_guard = std::move(*optional_buffer_guard);
+
+    co_await boost::asio::async_write(socket_, boost::asio::buffer(buffer_guard.get(), buffer_guard.get_effective_size()), boost::asio::use_awaitable);
+    LOG_CHANNEL(network_channel, debug) << "Successfully wrote " << buffer_guard.get_effective_size() << " bytes to client.";
+}
+
+celeritas::session::buffer_guard_optional_type celeritas::session::get_next_write_buffer()
 {
     std::lock_guard lock{ write_mutex_ };
     if (write_queue_.empty())

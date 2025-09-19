@@ -30,6 +30,7 @@ namespace celeritas
     private:
         using awaitable_type = boost::asio::awaitable<void>;
         using read_awaitable_type = boost::asio::awaitable<size_t>;
+        using buffer_guard_optional_type = std::optional<buffer_guard>;
 
         // 协程：处理带超时的异步读取操作
         [[nodiscard]] read_awaitable_type read_data_with_timeout(boost::asio::mutable_buffer buffer);
@@ -41,8 +42,11 @@ namespace celeritas
         // 协程：处理发送队列
         [[nodiscard]] awaitable_type do_write();
 
+        // 协程：处理单个写入操作
+        [[nodiscard]] awaitable_type do_one_write();
+
         // 从发送队列中获取下一个缓冲区，并在加锁后立即释放锁
-        [[nodiscard]] std::optional<buffer_guard> get_next_write_buffer();
+        [[nodiscard]] buffer_guard_optional_type get_next_write_buffer();
 
         socket_type socket_;
         message_handler_type message_handler_;
