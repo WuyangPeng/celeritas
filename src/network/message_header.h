@@ -1,5 +1,8 @@
 #pragma once
 
+#include "detail/network_internal_fwd.h"
+
+#include <boost/asio/ip/tcp.hpp>
 #include <cstdint>
 
 namespace celeritas
@@ -12,5 +15,10 @@ namespace celeritas
         uint16_t header_type;
         uint16_t header_size;
         uint32_t body_size;
+
+        [[nodiscard]] size_t total_size() const;
+        [[nodiscard]] bool is_effective() const;
+
+        void network_to_host();
     };
 }

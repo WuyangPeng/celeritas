@@ -2,7 +2,6 @@
 #include "common/buffer_pool.h"
 #include "common/logger.h"
 #include "message_header.h"
-#include "proto/common/common.pb.h"
 #include "session.h"
 #include "detail/network_internal_fwd.h"
 
@@ -58,15 +57,13 @@ celeritas::session::awaitable_type celeritas::session::handle_session()
 
 celeritas::session::read_awaitable_type celeritas::session::read_data_with_timeout(boost::asio::mutable_buffer buffer)
 {
-    boost::asio::steady_timer timer{ socket_.get_executor() };
-    timer.expires_at(std::chrono::steady_clock::now() + timeout_seconds);
-
+    boost::asio::steady_timer timer{ socket_.get_executor(), std::chrono::steady_clock::now() + timeout_seconds };
     boost::asio::cancellation_signal cancel_signal{};
 
     co_spawn(socket_.get_executor(), [&]() -> boost::asio::awaitable<void> {
         auto await_token = boost::asio::as_tuple(boost::asio::use_awaitable);
-        auto [ec] = co_await timer.async_wait(await_token);
-        if (ec != boost::asio::error::operation_aborted)
+        if (auto [error_code] = co_await timer.async_wait(await_token);
+            error_code != boost::asio::error::operation_aborted)
         {
             cancel_signal.emit(boost::asio::cancellation_type::all);
         }
@@ -74,8 +71,7 @@ celeritas::session::read_awaitable_type celeritas::session::read_data_with_timeo
     },
              boost::asio::detached);
 
-    auto await_token = boost::asio::as_tuple(boost::asio::bind_cancellation_slot(
-        cancel_signal.slot(), boost::asio::use_awaitable));
+    auto await_token = boost::asio::as_tuple(boost::asio::bind_cancellation_slot(cancel_signal.slot(), boost::asio::use_awaitable));
 
     auto [read_error_code, bytes_read] =
         co_await boost::asio::async_read(socket_, buffer, await_token);
@@ -101,16 +97,14 @@ celeritas::session::awaitable_type celeritas::session::handle_one_message()
     co_await read_data_with_timeout(boost::asio::buffer(&header, sizeof(header)));
 
     // 转换字节序
-    header.header_type = ntohl(header.header_type);
-    header.header_size = ntohl(header.header_size);
-    header.body_size = ntohl(header.body_size);
-    const auto total_size = header.header_size + header.body_size;
+    header.network_to_host();
+    const auto total_size = header.total_size();
     if (total_size == 0)
     {
         co_return;
     }
 
-    if (header.header_size > 0xFF || header.body_size > max_message_size)
+    if (!header.is_effective())
     {
         LOG_CHANNEL(network_channel, error) << "oversized msg, drop connection";
         throw boost::system::system_error(boost::asio::error::message_size);
