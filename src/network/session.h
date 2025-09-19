@@ -1,5 +1,8 @@
 #pragma once
 
+#include "common/common_fwd.h"
+#include "network_fwd.h"
+
 #include <boost/asio.hpp>
 
 namespace celeritas
@@ -10,19 +13,28 @@ namespace celeritas
         using class_type = session;
         using socket_type = boost::asio::ip::tcp::socket;
 
+        // 定义消息处理回调函数的类型
+        // 参数为消息头和消息体的缓冲区，返回void
+        using message_handler_type = std::function<void(const message_header&, buffer_guard)>;
+
         // 构造函数：接受一个已连接的 socket
-        explicit session(socket_type socket);
+        explicit session(socket_type socket, message_handler_type handler);
 
         // 启动会话处理协程
         void start();
 
     private:
         using awaitable_type = boost::asio::awaitable<void>;
+        using read_awaitable_type = boost::asio::awaitable<size_t>;
+
+        // 协程：处理带超时的异步读取操作
+        [[nodiscard]] read_awaitable_type read_data_with_timeout(boost::asio::mutable_buffer buffer);
 
         // 协程：处理会话的读写循环
         [[nodiscard]] awaitable_type handle_session();
         [[nodiscard]] awaitable_type handle_one_message();
 
         socket_type socket_;
+        message_handler_type message_handler_;
     };
 }

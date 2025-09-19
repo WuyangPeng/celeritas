@@ -6,4 +6,5 @@ namespace celeritas
     class logger;
     class buffer_pool_data;
     class buffer_pool;
+    class buffer_guard;
 }

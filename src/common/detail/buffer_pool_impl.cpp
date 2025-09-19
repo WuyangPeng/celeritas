@@ -4,8 +4,8 @@
 celeritas::buffer_pool_data celeritas::buffer_pool_impl::acquire(size_t required_size)
 {
     // 尝试从池中获取（加锁）
-    auto buffer = try_acquire_from_pool(required_size);
-    if (buffer.is_effective())
+    if (auto buffer = try_acquire_from_pool(required_size);
+        buffer.is_effective())
     {
         return buffer;
     }

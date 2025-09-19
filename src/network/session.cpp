@@ -6,8 +6,8 @@
 #include "session.h"
 #include "detail/network_internal_fwd.h"
 
-celeritas::session::session(socket_type socket)
-    : socket_{ std::move(socket) }
+celeritas::session::session(socket_type socket, message_handler_type handler)
+    : socket_{ std::move(socket) }, message_handler_{ std::move(handler) }
 {
 }
 
@@ -56,13 +56,49 @@ celeritas::session::awaitable_type celeritas::session::handle_session()
     }
 }
 
+celeritas::session::read_awaitable_type celeritas::session::read_data_with_timeout(boost::asio::mutable_buffer buffer)
+{
+    boost::asio::steady_timer timer{ socket_.get_executor() };
+    timer.expires_at(std::chrono::steady_clock::now() + timeout_seconds);
+
+    boost::asio::cancellation_signal cancel_signal{};
+
+    co_spawn(socket_.get_executor(), [&]() -> boost::asio::awaitable<void> {
+        auto await_token = boost::asio::as_tuple(boost::asio::use_awaitable);
+        auto [ec] = co_await timer.async_wait(await_token);
+        if (ec != boost::asio::error::operation_aborted)
+        {
+            cancel_signal.emit(boost::asio::cancellation_type::all);
+        }
+        co_return;
+    },
+             boost::asio::detached);
+
+    auto await_token = boost::asio::as_tuple(boost::asio::bind_cancellation_slot(
+        cancel_signal.slot(), boost::asio::use_awaitable));
+
+    auto [read_error_code, bytes_read] =
+        co_await boost::asio::async_read(socket_, buffer, await_token);
+
+    timer.cancel();
+
+    if (read_error_code)
+    {
+        if (read_error_code == boost::asio::error::operation_aborted)
+        {
+            throw boost::system::system_error(boost::asio::error::timed_out, "Read timed out");
+        }
+        throw boost::system::system_error(read_error_code, "Failed to read data");
+    }
+
+    co_return bytes_read;
+}
+
 celeritas::session::awaitable_type celeritas::session::handle_one_message()
 {
     // 读取消息头
     message_header header{};
-    co_await async_read(socket_,
-                        boost::asio::buffer(&header, sizeof(header)),
-                        boost::asio::use_awaitable);
+    co_await read_data_with_timeout(boost::asio::buffer(&header, sizeof(header)));
 
     // 转换字节序
     header.header_type = ntohl(header.header_type);
@@ -80,12 +116,8 @@ celeritas::session::awaitable_type celeritas::session::handle_one_message()
         throw boost::system::system_error(boost::asio::error::message_size);
     }
 
-    // 读取消息体
     buffer_guard buffer_guard{ buffer_pool::acquire(total_size) };
-
-    co_await async_read(socket_,
-                        boost::asio::buffer(buffer_guard.get(), total_size),
-                        boost::asio::use_awaitable);
+    co_await read_data_with_timeout(boost::asio::buffer(buffer_guard.get(), total_size));
 
     // 日志
     LOG_CHANNEL(network_channel, debug) << "Received message of type: "
@@ -95,25 +127,10 @@ celeritas::session::awaitable_type celeritas::session::handle_one_message()
                                         << ",body size:"
                                         << header.body_size;
 
-    // 按类型反序列化
-    if (header.header_type == common::client)
+    // 现在，通知外部处理者一个完整的消息已经接收到
+    // 我们将消息头和消息体数据传递给回调函数
+    if (message_handler_ != nullptr)
     {
-        if (common::client_message_header proto_message{};
-            !proto_message.ParseFromArray(buffer_guard.get(), header.header_size))
-        {
-            LOG_CHANNEL(network_channel, error) << "Failed to parse client message header.";
-        }
-    }
-    else if (header.header_type == common::server)
-    {
-        if (common::server_message_header proto_message{};
-            !proto_message.ParseFromArray(buffer_guard.get(), header.header_size))
-        {
-            LOG_CHANNEL(network_channel, error) << "Failed to parse server message header.";
-        }
-    }
-    else
-    {
-        LOG_CHANNEL(network_channel, warning) << "Unknown message type: " << header.header_type;
+        message_handler_(header, std::move(buffer_guard));
     }
 }
