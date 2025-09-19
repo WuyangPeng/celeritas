@@ -22,7 +22,7 @@ namespace celeritas
         [[nodiscard]] boost::asio::awaitable<void> accept_connections();
 
         // 作为客户端连接到另一个进程
-        [[nodiscard]] boost::asio::awaitable<std::shared_ptr<ipc_session>> connect_to(const std::string& remote_path);
+        [[nodiscard]] boost::asio::awaitable<std::shared_ptr<session<boost::asio::local::stream_protocol::socket>>> connect_to(const std::string& remote_path);
 
     private:
         boost::asio::io_context& io_context_;
