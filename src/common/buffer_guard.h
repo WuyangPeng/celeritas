@@ -9,6 +9,7 @@ namespace celeritas
     public:
         using class_type = buffer_guard;
 
+        buffer_guard() noexcept = default;
         explicit buffer_guard(buffer_pool_data buffer_data);
 
         buffer_guard(const buffer_guard&) = delete;

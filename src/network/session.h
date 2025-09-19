@@ -41,6 +41,9 @@ namespace celeritas
         // 协程：处理发送队列
         [[nodiscard]] awaitable_type do_write();
 
+        // 从发送队列中获取下一个缓冲区，并在加锁后立即释放锁
+        [[nodiscard]] std::optional<buffer_guard> get_next_write_buffer();
+
         socket_type socket_;
         message_handler_type message_handler_;
 
