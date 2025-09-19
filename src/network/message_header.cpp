@@ -1,6 +1,6 @@
 #include "message_header.h"
 
-size_t celeritas::message_header::total_size() const
+size_t celeritas::message_header::get_total_size() const
 {
     return header_size + body_size;
 }

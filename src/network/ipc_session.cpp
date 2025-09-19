@@ -40,7 +40,7 @@ boost::asio::awaitable<void> celeritas::ipc_session::handle_read()
                                 boost::asio::use_awaitable);
 
             header.network_to_host();
-            const auto size = header.total_size();
+            const auto size = header.get_total_size();
             if (size == 0)
             {
                 continue;

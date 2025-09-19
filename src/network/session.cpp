@@ -98,7 +98,7 @@ celeritas::session::awaitable_type celeritas::session::handle_one_message()
 
     // 转换字节序
     header.network_to_host();
-    const auto total_size = header.total_size();
+    const auto total_size = header.get_total_size();
     if (total_size == 0)
     {
         co_return;

@@ -13,7 +13,7 @@ namespace celeritas
     public:
         using class_type = message_header;
 
-        [[nodiscard]] size_t total_size() const;
+        [[nodiscard]] size_t get_total_size() const;
         [[nodiscard]] bool is_effective() const;
         [[nodiscard]] uint16_t get_header_type() const;
         [[nodiscard]] uint16_t get_header_size() const;
