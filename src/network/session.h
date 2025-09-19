@@ -1,18 +1,18 @@
 #pragma once
 
 #include "common/buffer_guard.h"
-#include "network_fwd.h"
 
 #include <boost/asio.hpp>
 #include <deque>
 
 namespace celeritas
 {
-    class session : public std::enable_shared_from_this<session>
+    template <typename SocketType>
+    class session : public std::enable_shared_from_this<session<SocketType>>
     {
     public:
         using class_type = session;
-        using socket_type = boost::asio::ip::tcp::socket;
+        using socket_type = SocketType;
 
         // 定义消息处理回调函数的类型
         // 参数为消息头和消息体的缓冲区，返回void

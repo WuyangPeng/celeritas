@@ -57,7 +57,7 @@ boost::asio::awaitable<void> celeritas::listener::accept_connections()
                 LOG_CHANNEL(network_channel, info) << "Accepted new connection from: " << socket.remote_endpoint();
 
                 // 为新连接创建一个会话，并启动
-                std::make_shared<session>(std::move(socket), message_handler_)->start();
+                std::make_shared<session<boost::asio::ip::tcp::socket>>(std::move(socket), message_handler_)->start();
             }
         }
         catch (const boost::system::system_error& error)

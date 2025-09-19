@@ -5,20 +5,23 @@
 #include "session.h"
 #include "detail/network_internal_fwd.h"
 
-celeritas::session::session(socket_type socket, message_handler_type handler)
+template <typename SocketType>
+celeritas::session<SocketType>::session(socket_type socket, message_handler_type handler)
     : socket_{ std::move(socket) }, message_handler_{ std::move(handler) }
 {
 }
 
-void celeritas::session::start()
+template <typename SocketType>
+void celeritas::session<SocketType>::start()
 {
-    co_spawn(socket_.get_executor(), [self = shared_from_this()] {
+    co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
         return self->handle_session();
     },
              boost::asio::detached);
 }
 
-celeritas::session::awaitable_type celeritas::session::handle_session()
+template <typename SocketType>
+celeritas::session<SocketType>::awaitable_type celeritas::session<SocketType>::handle_session()
 {
     while (socket_.is_open())
     {
@@ -55,7 +58,8 @@ celeritas::session::awaitable_type celeritas::session::handle_session()
     }
 }
 
-celeritas::session::read_awaitable_type celeritas::session::read_data_with_timeout(boost::asio::mutable_buffer buffer)
+template <typename SocketType>
+celeritas::session<SocketType>::read_awaitable_type celeritas::session<SocketType>::read_data_with_timeout(boost::asio::mutable_buffer buffer)
 {
     boost::asio::steady_timer timer{ socket_.get_executor(), std::chrono::steady_clock::now() + timeout_seconds };
     boost::asio::cancellation_signal cancel_signal{};
@@ -90,7 +94,8 @@ celeritas::session::read_awaitable_type celeritas::session::read_data_with_timeo
     co_return bytes_read;
 }
 
-celeritas::session::awaitable_type celeritas::session::handle_one_message()
+template <typename SocketType>
+celeritas::session<SocketType>::awaitable_type celeritas::session<SocketType>::handle_one_message()
 {
     // 读取消息头
     message_header header{};
@@ -130,7 +135,8 @@ celeritas::session::awaitable_type celeritas::session::handle_one_message()
     }
 }
 
-void celeritas::session::write(buffer_guard data)
+template <typename SocketType>
+void celeritas::session<SocketType>::write(buffer_guard data)
 {
     std::lock_guard lock{ write_mutex_ };
     write_queue_.emplace_back(std::move(data));
@@ -138,14 +144,15 @@ void celeritas::session::write(buffer_guard data)
     // 如果发送协程没有在运行，就启动它
     if (write_queue_.size() == 1)
     {
-        co_spawn(socket_.get_executor(), [self = shared_from_this()] {
+        co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
             return self->do_write();
         },
                  boost::asio::detached);
     }
 }
 
-celeritas::session::awaitable_type celeritas::session::do_write()
+template <typename SocketType>
+celeritas::session<SocketType>::awaitable_type celeritas::session<SocketType>::do_write()
 {
     while (socket_.is_open())
     {
@@ -171,7 +178,8 @@ celeritas::session::awaitable_type celeritas::session::do_write()
     }
 }
 
-celeritas::session::awaitable_type celeritas::session::do_one_write()
+template <typename SocketType>
+celeritas::session<SocketType>::awaitable_type celeritas::session<SocketType>::do_one_write()
 {
     // 调用新函数来获取数据，该函数内部处理了加锁和解锁
     auto optional_buffer_guard = get_next_write_buffer();
@@ -185,7 +193,8 @@ celeritas::session::awaitable_type celeritas::session::do_one_write()
     LOG_CHANNEL(network_channel, debug) << "Successfully wrote " << buffer_guard.get_effective_size() << " bytes to client.";
 }
 
-celeritas::session::buffer_guard_optional_type celeritas::session::get_next_write_buffer()
+template <typename SocketType>
+celeritas::session<SocketType>::buffer_guard_optional_type celeritas::session<SocketType>::get_next_write_buffer()
 {
     std::lock_guard lock{ write_mutex_ };
     if (write_queue_.empty())
