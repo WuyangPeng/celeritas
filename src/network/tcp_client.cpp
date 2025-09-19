@@ -9,14 +9,14 @@ celeritas::tcp_client::tcp_client(boost::asio::io_context& io_context, message_h
 
 celeritas::tcp_client::awaitable_type celeritas::tcp_client::connect(const std::string& host, uint16_t port)
 {
-    boost::asio::ip::tcp::resolver resolver(io_context_);
-    socket_type socket(io_context_);
+    boost::asio::ip::tcp::resolver resolver{ io_context_ };
+    socket_type socket{ io_context_ };
 
     // 异步解析主机名
     auto result = co_await resolver.async_resolve(host, std::to_string(port), boost::asio::as_tuple(boost::asio::use_awaitable));
     if (auto error = std::get<0>(result))
     {
-        LOG_CHANNEL(network_channel, warning) << "connected error: " << error.message();
+        throw boost::system::system_error(error);
     }
     else
     {

@@ -30,6 +30,7 @@ namespace celeritas
 
         // 协程：异步接受新连接
         [[nodiscard]] awaitable_type accept_connections();
+        [[nodiscard]] awaitable_type handle_connection();
 
         io_context_type& io_context_;
         acceptor_type acceptor_;

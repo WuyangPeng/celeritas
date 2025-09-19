@@ -6,7 +6,7 @@
 #include <boost/asio/detached.hpp>
 #include <boost/asio/use_awaitable.hpp>
 
-celeritas::tcp_listener::tcp_listener(boost::asio::io_context& io_context, uint16_t port, message_handler_type handler)
+celeritas::tcp_listener::tcp_listener(boost::asio::io_context& io_context, const uint16_t port, message_handler_type handler)
     : io_context_{ io_context },
       acceptor_{ io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port) },
       message_handler_{ std::move(handler) },
@@ -39,26 +39,13 @@ void celeritas::tcp_listener::stop()
 }
 
 // 协程：接受连接
-boost::asio::awaitable<void> celeritas::tcp_listener::accept_connections()
+celeritas::tcp_listener::awaitable_type celeritas::tcp_listener::accept_connections()
 {
     while (is_running_)
     {
         try
         {
-            // 等待新连接
-            auto result = co_await acceptor_.async_accept(boost::asio::as_tuple(boost::asio::use_awaitable));
-            if (auto error = std::get<0>(result))
-            {
-                LOG_CHANNEL(network_channel, warning) << "Listener error: " << error.message();
-            }
-            else
-            {
-                auto socket = std::move(std::get<1>(result));
-                LOG_CHANNEL(network_channel, info) << "Accepted new connection from: " << socket.remote_endpoint();
-
-                // 为新连接创建一个会话，并启动
-                std::make_shared<session_type>(std::move(socket), message_handler_)->start();
-            }
+            co_await handle_connection();
         }
         catch (const boost::system::system_error& error)
         {
@@ -72,5 +59,23 @@ boost::asio::awaitable<void> celeritas::tcp_listener::accept_connections()
         {
             LOG_CHANNEL(network_channel, error) << "Listener unknown error.";
         }
+    }
+}
+
+celeritas::tcp_listener::awaitable_type celeritas::tcp_listener::handle_connection()
+{
+    // 等待新连接
+    auto result = co_await acceptor_.async_accept(boost::asio::as_tuple(boost::asio::use_awaitable));
+    if (auto error = std::get<0>(result))
+    {
+        LOG_CHANNEL(network_channel, warning) << "Listener error: " << error.message();
+    }
+    else
+    {
+        auto socket = std::move(std::get<1>(result));
+        LOG_CHANNEL(network_channel, info) << "Accepted new connection from: " << socket.remote_endpoint();
+
+        // 为新连接创建一个会话，并启动
+        std::make_shared<session_type>(std::move(socket), message_handler_)->start();
     }
 }
