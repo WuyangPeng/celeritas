@@ -7,7 +7,7 @@
 
 namespace celeritas
 {
-    // 一个消息头来指示消息大小
+    // 一个消息头来指示消息大小和类型
     class message_header
     {
     public:

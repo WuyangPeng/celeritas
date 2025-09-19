@@ -5,6 +5,7 @@ namespace celeritas
     template <typename SocketType>
     class session_base;
 
-    class listener;
+    class tcp_listener;
+    class tcp_client;
     struct message_header;
 }

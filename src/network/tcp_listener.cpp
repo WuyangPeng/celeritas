@@ -1,12 +1,12 @@
 #include "common/logger.h"
-#include "listener.h"
 #include "session_base.tpp"
+#include "tcp_listener.h"
 
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
 #include <boost/asio/use_awaitable.hpp>
 
-celeritas::listener::listener(boost::asio::io_context& io_context, uint16_t port, message_handler_type handler)
+celeritas::tcp_listener::tcp_listener(boost::asio::io_context& io_context, uint16_t port, message_handler_type handler)
     : io_context_{ io_context },
       acceptor_{ io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port) },
       message_handler_{ std::move(handler) },
@@ -16,7 +16,7 @@ celeritas::listener::listener(boost::asio::io_context& io_context, uint16_t port
 }
 
 // 启动协程来接受连接
-void celeritas::listener::start()
+void celeritas::tcp_listener::start()
 {
     co_spawn(io_context_, [this] {
         return accept_connections();
@@ -24,7 +24,7 @@ void celeritas::listener::start()
              boost::asio::detached);
 }
 
-void celeritas::listener::stop()
+void celeritas::tcp_listener::stop()
 {
     // 设置标志，通知协程退出
     is_running_ = false;
@@ -39,7 +39,7 @@ void celeritas::listener::stop()
 }
 
 // 协程：接受连接
-boost::asio::awaitable<void> celeritas::listener::accept_connections()
+boost::asio::awaitable<void> celeritas::tcp_listener::accept_connections()
 {
     while (is_running_)
     {
