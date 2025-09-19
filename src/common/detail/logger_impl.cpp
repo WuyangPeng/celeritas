@@ -1,4 +1,4 @@
-#include "common/celeritas_error.h"
+﻿#include "common/celeritas_error.h"
 #include "common_internal_fwd.h"
 #include "logger_impl.h"
 

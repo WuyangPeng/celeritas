@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <boost/log/sinks/sync_frontend.hpp>
 #include <boost/log/sinks/text_ostream_backend.hpp>

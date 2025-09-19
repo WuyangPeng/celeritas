@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "common/common_fwd.h"
 #include "network_fwd.h"

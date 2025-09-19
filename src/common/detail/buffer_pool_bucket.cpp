@@ -1,4 +1,4 @@
-#include "buffer_pool_bucket.h"
+﻿#include "buffer_pool_bucket.h"
 
 size_t celeritas::buffer_pool_bucket::size() const noexcept
 {

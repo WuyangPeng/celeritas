@@ -1,4 +1,4 @@
-#include "buffer_guard.h"
+﻿#include "buffer_guard.h"
 #include "buffer_pool.h"
 
 celeritas::buffer_guard::buffer_guard(buffer_pool_data buffer_data)

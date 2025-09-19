@@ -1,4 +1,4 @@
-#include "message_header.h"
+﻿#include "message_header.h"
 
 size_t celeritas::message_header::get_total_size() const
 {

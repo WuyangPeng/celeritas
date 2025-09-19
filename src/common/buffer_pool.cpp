@@ -1,4 +1,4 @@
-#include "buffer_pool.h"
+﻿#include "buffer_pool.h"
 
 celeritas::buffer_pool_data celeritas::buffer_pool::acquire(size_t required_size)
 {

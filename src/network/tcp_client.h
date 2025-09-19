@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "message_header.h"
 #include "session_base.h"
