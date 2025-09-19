@@ -7,5 +7,5 @@ namespace celeritas
 
     class tcp_listener;
     class tcp_client;
-    struct message_header;
+    class message_header;
 }

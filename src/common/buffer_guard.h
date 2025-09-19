@@ -12,8 +12,8 @@ namespace celeritas
         buffer_guard() noexcept = default;
         explicit buffer_guard(buffer_pool_data buffer_data);
 
-        buffer_guard(const buffer_guard&) = delete;
-        buffer_guard& operator=(const buffer_guard&) = delete;
+        buffer_guard(const buffer_guard& rhs) = delete;
+        buffer_guard& operator=(const buffer_guard& rhs) = delete;
         buffer_guard(buffer_guard&& rhs) noexcept;
         buffer_guard& operator=(buffer_guard&& rhs) noexcept;
 
