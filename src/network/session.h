@@ -1,9 +1,10 @@
 #pragma once
 
-#include "common/common_fwd.h"
+#include "common/buffer_guard.h"
 #include "network_fwd.h"
 
 #include <boost/asio.hpp>
+#include <deque>
 
 namespace celeritas
 {
@@ -23,6 +24,9 @@ namespace celeritas
         // 启动会话处理协程
         void start();
 
+        // 向客户端发送消息
+        void write(buffer_guard data);
+
     private:
         using awaitable_type = boost::asio::awaitable<void>;
         using read_awaitable_type = boost::asio::awaitable<size_t>;
@@ -34,7 +38,14 @@ namespace celeritas
         [[nodiscard]] awaitable_type handle_session();
         [[nodiscard]] awaitable_type handle_one_message();
 
+        // 协程：处理发送队列
+        [[nodiscard]] awaitable_type do_write();
+
         socket_type socket_;
         message_handler_type message_handler_;
+
+        // 发送队列和互斥锁
+        std::deque<buffer_guard> write_queue_;
+        std::mutex write_mutex_;
     };
 }

@@ -1,5 +1,9 @@
 #pragma once
 
+#include "common/buffer_pool_data.h"
+#include "common/common_fwd.h"
+#include "network_fwd.h"
+
 #include <boost/asio/awaitable.hpp>
 #include <boost/asio/local/stream_protocol.hpp>
 
@@ -9,19 +13,21 @@ namespace celeritas
     {
     public:
         using class_type = ipc_session;
+        using socket_type = boost::asio::local::stream_protocol::socket;
+        using awaitable_type = boost::asio::awaitable<void>;
+        using message_handler_type = std::function<void(const message_header&, buffer_guard)>;
 
-        explicit ipc_session(boost::asio::local::stream_protocol::socket socket);
+        ipc_session(socket_type socket, message_handler_type handler);
 
         void start();
 
-        [[nodiscard]] boost::asio::awaitable<void> write(const std::vector<char>& data);
+        [[nodiscard]] awaitable_type write(buffer_pool_data& data);
 
     private:
-        [[nodiscard]] boost::asio::awaitable<void> handle_read();
+        [[nodiscard]] awaitable_type handle_read();
 
     private:
-        boost::asio::local::stream_protocol::socket socket_;
+        socket_type socket_;
+        message_handler_type message_handler_;
     };
 }
-
-

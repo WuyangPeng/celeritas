@@ -11,14 +11,16 @@ namespace celeritas
     {
     public:
         using class_type = listener;
-
         using message_handler_type = std::function<void(const message_header&, buffer_guard)>;
 
         // 构造函数：接受 io_context 和监听端口
-        listener(boost::asio::io_context& io_context, unsigned short port, message_handler_type handler);
+        listener(boost::asio::io_context& io_context, uint16_t port, message_handler_type handler);
 
         // 开始监听新连接
         void start();
+
+        // 停止监听器
+        void stop();
 
     private:
         using awaitable_type = boost::asio::awaitable<void>;
@@ -31,5 +33,6 @@ namespace celeritas
         io_context_type& io_context_;
         acceptor_type acceptor_;
         message_handler_type message_handler_;
+        std::atomic<bool> is_running_;
     };
 }

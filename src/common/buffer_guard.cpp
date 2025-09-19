@@ -38,3 +38,13 @@ size_t celeritas::buffer_guard::size() const
 {
     return buffer_data_.size();
 }
+
+size_t celeritas::buffer_guard::get_effective_size() const
+{
+    return effective_size_;
+}
+
+void celeritas::buffer_guard::set_effective_size(size_t size)
+{
+    effective_size_ = size;
+}

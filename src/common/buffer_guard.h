@@ -20,8 +20,11 @@ namespace celeritas
 
         [[nodiscard]] char* get();
         [[nodiscard]] size_t size() const;
+        [[nodiscard]] size_t get_effective_size() const;
+        void set_effective_size(size_t size);
 
     private:
         buffer_pool_data buffer_data_;
+        size_t effective_size_;
     };
 }

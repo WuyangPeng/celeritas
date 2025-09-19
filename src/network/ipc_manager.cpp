@@ -1,7 +1,7 @@
 #include "ipc_manager.h"
 
-celeritas::ipc_manager::ipc_manager(boost::asio::io_context& io_context, const std::string& socket_path)
-    : io_context_{ io_context }, acceptor_{ io_context, { socket_path } }
+celeritas::ipc_manager::ipc_manager(boost::asio::io_context& io_context, const std::string& socket_path, message_handler_type handler)
+    : io_context_{ io_context }, acceptor_{ io_context, { socket_path } }, message_handler_{ std::move(handler) }
 {
 }
 
@@ -28,8 +28,8 @@ boost::asio::awaitable<std::shared_ptr<celeritas::ipc_session>> celeritas::ipc_m
     {
         boost::asio::local::stream_protocol::socket socket(io_context_);
         co_await socket.async_connect({ remote_path }, boost::asio::use_awaitable);
-        //std::cout << "Connected to IPC server: " << remote_path << std::endl;
-        co_return std::make_shared<ipc_session>(std::move(socket));
+        // std::cout << "Connected to IPC server: " << remote_path << std::endl;
+        co_return std::make_shared<ipc_session>(std::move(socket), message_handler_);
     }
     catch (const boost::system::system_error& e)
     {

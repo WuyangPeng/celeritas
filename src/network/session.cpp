@@ -111,6 +111,7 @@ celeritas::session::awaitable_type celeritas::session::handle_one_message()
     }
 
     buffer_guard buffer_guard{ buffer_pool::acquire(total_size) };
+    buffer_guard.set_effective_size(total_size);
     co_await read_data_with_timeout(boost::asio::buffer(buffer_guard.get(), total_size));
 
     // 日志
@@ -126,5 +127,53 @@ celeritas::session::awaitable_type celeritas::session::handle_one_message()
     if (message_handler_ != nullptr)
     {
         message_handler_(header, std::move(buffer_guard));
+    }
+}
+
+void celeritas::session::write(buffer_guard data)
+{
+    std::lock_guard lock{ write_mutex_ };
+    write_queue_.emplace_back(std::move(data));
+
+    // 如果发送协程没有在运行，就启动它
+    if (write_queue_.size() == 1)
+    {
+        co_spawn(socket_.get_executor(), [self = shared_from_this()] {
+            return self->do_write();
+        },
+                 boost::asio::detached);
+    }
+}
+
+celeritas::session::awaitable_type celeritas::session::do_write()
+{
+    while (socket_.is_open())
+    {
+        try
+        {
+            std::lock_guard lock{ write_mutex_ };
+
+            if (write_queue_.empty())
+            {
+                co_return;  // 队列为空，退出协程
+            }
+            auto buffer_guard = std::move(write_queue_.front());
+            write_queue_.pop_front();
+
+            co_await boost::asio::async_write(socket_, boost::asio::buffer(buffer_guard.get(), buffer_guard.get_effective_size()), boost::asio::use_awaitable);
+            LOG_CHANNEL(network_channel, debug) << "Successfully wrote " << buffer_guard.get_effective_size() << " bytes to client.";
+        }
+        catch (const boost::system::system_error& error)
+        {
+            LOG_CHANNEL(network_channel, warning) << "Write error: " << error.what();
+        }
+        catch (const std::exception& error)
+        {
+            LOG_CHANNEL(network_channel, error) << "Write unknown error: " << error.what();
+        }
+        catch (...)
+        {
+            LOG_CHANNEL(network_channel, fatal) << "Listener unknown error.";
+        }
     }
 }
