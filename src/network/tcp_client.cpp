@@ -18,15 +18,13 @@ celeritas::tcp_client::awaitable_type celeritas::tcp_client::connect(const std::
     {
         throw boost::system::system_error(error);
     }
-    else
-    {
-        auto endpoints = std::get<1>(result);
-        // 异步连接到解析出的端点
-        co_await boost::asio::async_connect(socket, endpoints, boost::asio::use_awaitable);
 
-        LOG_CHANNEL(network_channel, info) << "Successfully connected to " << host << ":" << port;
+    auto endpoints = std::get<1>(result);
+    // 异步连接到解析出的端点
+    co_await boost::asio::async_connect(socket, endpoints, boost::asio::use_awaitable);
 
-        // 创建一个新的会话并返回
-        co_return std::make_shared<session_type>(std::move(socket), message_handler_);
-    }
+    LOG_CHANNEL(network_channel, info) << "Successfully connected to " << host << ":" << port;
+
+    // 创建一个新的会话并返回
+    co_return std::make_shared<session_type>(std::move(socket), message_handler_);
 }
