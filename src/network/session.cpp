@@ -115,11 +115,11 @@ celeritas::session::awaitable_type celeritas::session::handle_one_message()
 
     // 日志
     LOG_CHANNEL(network_channel, debug) << "Received message of type: "
-                                        << header.header_type
+                                        << header.get_header_type()
                                         << ",header size:"
-                                        << header.header_size
+                                        << header.get_header_size()
                                         << ",body size:"
-                                        << header.body_size;
+                                        << header.get_body_size();
 
     // 现在，通知外部处理者一个完整的消息已经接收到
     // 我们将消息头和消息体数据传递给回调函数

@@ -1,11 +1,11 @@
+#include "common/logger.h"
 #include "ipc_session.h"
 #include "message_header.h"
-#include "common/logger.h"
 
-#include <boost/asio/read.hpp>
-#include <boost/asio/write.hpp>
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>
+#include <boost/asio/read.hpp>
+#include <boost/asio/write.hpp>
 
 celeritas::ipc_session::ipc_session(boost::asio::local::stream_protocol::socket socket)
     : socket_{ std::move(socket) }
@@ -14,10 +14,9 @@ celeritas::ipc_session::ipc_session(boost::asio::local::stream_protocol::socket 
 
 void celeritas::ipc_session::start()
 {
-    co_spawn(socket_.get_executor(),
-             [self = shared_from_this()] {
-                 return self->handle_read();
-             },
+    co_spawn(socket_.get_executor(), [self = shared_from_this()] {
+        return self->handle_read();
+    },
              boost::asio::detached);
 }
 
@@ -40,10 +39,8 @@ boost::asio::awaitable<void> celeritas::ipc_session::handle_read()
                                 boost::asio::buffer(&header, sizeof(header)),
                                 boost::asio::use_awaitable);
 
-            header.header_type = ntohl(header.header_type);
-            header.header_size = ntohl(header.header_size);
-            header.body_size = ntohl(header.body_size);
-            const auto size = header.header_size + header.body_size;
+            header.network_to_host();
+            const auto size = header.total_size();
             if (size == 0)
             {
                 continue;
@@ -55,11 +52,12 @@ boost::asio::awaitable<void> celeritas::ipc_session::handle_read()
                                 boost::asio::use_awaitable);
 
             LOG(debug) << "Received IPC message of size: "
-            << header.header_type
-            << ",header size:"
-            << header.header_size
-            << ",body size:"
-            << header.body_size;;
+                       << header.get_header_type()
+                       << ",header size:"
+                       << header.get_header_size()
+                       << ",body size:"
+                       << header.get_body_size();
+            ;
         }
     }
     catch (const boost::system::system_error& error)
