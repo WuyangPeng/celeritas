@@ -11,6 +11,7 @@ include_directories(
         "${CMAKE_CURRENT_SOURCE_DIR}/proto"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src"
+        "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/include"
         # 如果依赖项在本地，添加它们的include路径
 )
 
@@ -91,6 +92,7 @@ target_link_libraries(protobuf
 add_subdirectory(cmake/common)
 add_subdirectory(cmake/network)
 add_subdirectory(cmake/worker_pool)
+add_subdirectory(cmake/database)
 
 add_subdirectory(cmake/auth_server)
 add_subdirectory(cmake/game_server)
