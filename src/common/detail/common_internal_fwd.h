@@ -14,6 +14,7 @@ namespace celeritas
     constexpr std::string_view common_channel{ "common" };
     constexpr std::string_view network_channel{ "network" };
     constexpr std::string_view worker_pool_channel{ "worker_pool" };
+    constexpr std::string_view database_channel{ "database" };
 
     constexpr auto max_idle_per_size = 16;
 }

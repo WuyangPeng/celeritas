@@ -40,6 +40,7 @@ namespace celeritas
 
     private:
         using session_container_type = std::deque<session_shared_ptr>;
+        using waiter_type = boost::asio::any_completion_handler<void(session_shared_ptr)>;
 
         boost::asio::io_context& io_context_;
         boost::asio::ssl::context* ssl_context_;
@@ -51,7 +52,7 @@ namespace celeritas
 
         session_container_type sessions_;
         std::mutex mutex_;
-        std::condition_variable condition_variable_;
+        std::deque<waiter_type> waiters_;
         size_t pool_size_;
     };
 }
