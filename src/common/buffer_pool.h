@@ -3,9 +3,6 @@
 #include "buffer_pool_data.h"
 #include "detail/buffer_pool_impl.h"
 
-#include <list>
-#include <memory>
-
 namespace celeritas
 {
     class buffer_pool

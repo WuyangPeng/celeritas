@@ -7,6 +7,19 @@ celeritas::buffer_pool_data::buffer_pool_data(data_unique_ptr data, size_t size)
 {
 }
 
+celeritas::buffer_pool_data::buffer_pool_data(buffer_pool_data&& rhs) noexcept
+    : data_{ std::move(rhs.data_) }, size_{ rhs.size_ }
+{
+}
+
+celeritas::buffer_pool_data& celeritas::buffer_pool_data::operator=(buffer_pool_data&& rhs) noexcept
+{
+    data_ = std::move(rhs.data_);
+    size_ = rhs.size_;
+
+    return *this;
+}
+
 char* celeritas::buffer_pool_data::data() noexcept
 {
     if (is_effective())

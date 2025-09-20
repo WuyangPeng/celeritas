@@ -60,12 +60,12 @@ void celeritas::logger_impl::init_file(const std::string_view& channel_name, con
 
     // 添加文件日志输出
     boost::log::add_file_log(
-        boost::log::keywords::file_name = log_file_name,
-        boost::log::keywords::auto_flush = true,
-        boost::log::keywords::rotation_size = rotation_size,
-        boost::log::keywords::filter = boost::log::expressions::has_attr(channel.data()) &&
-                                       boost::log::expressions::attr<std::string>(channel.data()) == channel_name &&
-                                       boost::log::trivial::severity >= file_level)
+            boost::log::keywords::file_name = log_file_name,
+            boost::log::keywords::auto_flush = true,
+            boost::log::keywords::rotation_size = rotation_size,
+            boost::log::keywords::filter = boost::log::expressions::has_attr(channel.data()) &&
+                                           boost::log::expressions::attr<std::string>(channel.data()) == channel_name &&
+                                           boost::log::trivial::severity >= file_level)
         ->set_formatter(get_formatter());
 
     if (also_to_console)

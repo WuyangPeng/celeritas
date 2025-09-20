@@ -1,9 +1,6 @@
 ﻿#pragma once
 
-#include "detail/network_internal_fwd.h"
-
 #include <boost/asio/ip/tcp.hpp>
-#include <cstdint>
 
 namespace celeritas
 {
@@ -14,9 +11,13 @@ namespace celeritas
         using class_type = message_header;
 
         [[nodiscard]] size_t get_total_size() const;
+
         [[nodiscard]] bool is_effective() const;
+
         [[nodiscard]] uint16_t get_header_type() const;
+
         [[nodiscard]] uint16_t get_header_size() const;
+
         [[nodiscard]] uint32_t get_body_size() const;
 
         void network_to_host();

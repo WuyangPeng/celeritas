@@ -24,7 +24,7 @@ celeritas::buffer_pool_data celeritas::buffer_pool_bucket::extract()
     return buffer;
 }
 
-std::chrono::steady_clock::time_point celeritas::buffer_pool_bucket::last_take() const
+celeritas::buffer_pool_bucket::time_point_type celeritas::buffer_pool_bucket::last_take() const
 {
     return last_take_;
 }

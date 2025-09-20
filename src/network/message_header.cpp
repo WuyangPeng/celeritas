@@ -1,4 +1,5 @@
 ﻿#include "message_header.h"
+#include "detail/network_internal_fwd.h"
 
 size_t celeritas::message_header::get_total_size() const
 {

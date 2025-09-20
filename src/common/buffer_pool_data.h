@@ -12,10 +12,23 @@ namespace celeritas
         using data_unique_ptr = std::unique_ptr<char[]>;
 
         buffer_pool_data() noexcept = default;
+
         buffer_pool_data(data_unique_ptr data, size_t size);
 
+        ~buffer_pool_data() noexcept = default;
+
+        buffer_pool_data(const buffer_pool_data& rhs) = delete;
+
+        buffer_pool_data& operator=(const buffer_pool_data& rhs) = delete;
+
+        buffer_pool_data(buffer_pool_data&& rhs) noexcept;
+
+        buffer_pool_data& operator=(buffer_pool_data&& rhs) noexcept;
+
         [[nodiscard]] char* data() noexcept;
+
         [[nodiscard]] size_t size() const noexcept;
+
         [[nodiscard]] bool is_effective() const noexcept;
 
     private:

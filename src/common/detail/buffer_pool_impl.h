@@ -13,6 +13,18 @@ namespace celeritas
     public:
         using class_type = buffer_pool_impl;
 
+        buffer_pool_impl() noexcept = default;
+
+        ~buffer_pool_impl() noexcept = default;
+
+        buffer_pool_impl(const buffer_pool_impl& rhs) = delete;
+
+        buffer_pool_impl& operator=(const buffer_pool_impl& rhs) = delete;
+
+        buffer_pool_impl(buffer_pool_impl&& rhs) noexcept = delete;
+
+        buffer_pool_impl& operator=(buffer_pool_impl&& rhs) noexcept = delete;
+
         // 获取一个缓冲区
         [[nodiscard]] buffer_pool_data acquire(size_t required_size);
 

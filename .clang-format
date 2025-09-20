@@ -85,7 +85,7 @@ IncludeCategories:
     Priority: 7
   - Regex: '.*'
     Priority: 8
-IncludeIsMainRegex: '^".*(Export|Dll).h'
+IncludeIsMainRegex: '^".*(export|dll).h'
 IndentCaseLabels: true
 IndentGotoLabels: false
 IndentPPDirectives: BeforeHash

@@ -1,10 +1,10 @@
 ﻿#pragma once
 
+#include "message_header.h"
+#include "session_base.h"
 #include "common/buffer_guard.h"
 #include "common/buffer_pool.h"
 #include "common/logger.h"
-#include "message_header.h"
-#include "session_base.h"
 #include "detail/network_internal_fwd.h"
 
 template <typename SocketType>
@@ -17,13 +17,13 @@ template <typename SocketType>
 void celeritas::session_base<SocketType>::start()
 {
     co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
-        return self->handle_session();
-    },
+                 return self->handle_session();
+             },
              boost::asio::detached);
 }
 
 template <typename SocketType>
-typename celeritas::session_base<SocketType>::awaitable_type celeritas::session_base<SocketType>::handle_session()
+celeritas::session_base<SocketType>::void_awaitable_type celeritas::session_base<SocketType>::handle_session()
 {
     while (socket_.is_open())
     {
@@ -61,20 +61,20 @@ typename celeritas::session_base<SocketType>::awaitable_type celeritas::session_
 }
 
 template <typename SocketType>
-typename celeritas::session_base<SocketType>::read_awaitable_type celeritas::session_base<SocketType>::read_data_with_timeout(boost::asio::mutable_buffer buffer)
+celeritas::session_base<SocketType>::read_awaitable_type celeritas::session_base<SocketType>::read_data_with_timeout(boost::asio::mutable_buffer buffer)
 {
     boost::asio::steady_timer timer{ socket_.get_executor(), std::chrono::steady_clock::now() + timeout_seconds };
     boost::asio::cancellation_signal cancel_signal{};
 
     co_spawn(socket_.get_executor(), [&]() -> boost::asio::awaitable<void> {
-        auto await_token = boost::asio::as_tuple(boost::asio::use_awaitable);
-        if (auto [error_code] = co_await timer.async_wait(await_token);
-            error_code != boost::asio::error::operation_aborted)
-        {
-            cancel_signal.emit(boost::asio::cancellation_type::all);
-        }
-        co_return;
-    },
+                 auto await_token = boost::asio::as_tuple(boost::asio::use_awaitable);
+                 if (auto [error_code] = co_await timer.async_wait(await_token);
+                     error_code != boost::asio::error::operation_aborted)
+                 {
+                     cancel_signal.emit(boost::asio::cancellation_type::all);
+                 }
+                 co_return;
+             },
              boost::asio::detached);
 
     auto await_token = boost::asio::as_tuple(boost::asio::bind_cancellation_slot(cancel_signal.slot(), boost::asio::use_awaitable));
@@ -97,7 +97,7 @@ typename celeritas::session_base<SocketType>::read_awaitable_type celeritas::ses
 }
 
 template <typename SocketType>
-typename celeritas::session_base<SocketType>::awaitable_type celeritas::session_base<SocketType>::handle_one_message()
+celeritas::session_base<SocketType>::void_awaitable_type celeritas::session_base<SocketType>::handle_one_message()
 {
     // 读取消息头
     message_header header{};
@@ -147,14 +147,14 @@ void celeritas::session_base<SocketType>::write(buffer_guard data)
     if (write_queue_.size() == 1)
     {
         co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
-            return self->do_write();
-        },
+                     return self->do_write();
+                 },
                  boost::asio::detached);
     }
 }
 
 template <typename SocketType>
-typename celeritas::session_base<SocketType>::awaitable_type celeritas::session_base<SocketType>::do_write()
+celeritas::session_base<SocketType>::void_awaitable_type celeritas::session_base<SocketType>::do_write()
 {
     while (socket_.is_open())
     {
@@ -181,13 +181,13 @@ typename celeritas::session_base<SocketType>::awaitable_type celeritas::session_
 }
 
 template <typename SocketType>
-typename celeritas::session_base<SocketType>::awaitable_type celeritas::session_base<SocketType>::do_one_write()
+celeritas::session_base<SocketType>::void_awaitable_type celeritas::session_base<SocketType>::do_one_write()
 {
     // 调用新函数来获取数据，该函数内部处理了加锁和解锁
     auto optional_buffer_guard = get_next_write_buffer();
     if (!optional_buffer_guard)
     {
-        co_return;  // 队列为空，退出协程
+        co_return; // 队列为空，退出协程
     }
     auto buffer_guard = std::move(*optional_buffer_guard);
 
@@ -196,12 +196,12 @@ typename celeritas::session_base<SocketType>::awaitable_type celeritas::session_
 }
 
 template <typename SocketType>
-typename celeritas::session_base<SocketType>::buffer_guard_optional_type celeritas::session_base<SocketType>::get_next_write_buffer()
+celeritas::session_base<SocketType>::buffer_guard_optional_type celeritas::session_base<SocketType>::get_next_write_buffer()
 {
     std::lock_guard lock{ write_mutex_ };
     if (write_queue_.empty())
     {
-        return std::nullopt;  // 队列为空，返回一个空对象
+        return std::nullopt; // 队列为空，返回一个空对象
     }
     auto buffer = std::move(write_queue_.front());
     write_queue_.pop_front();

@@ -20,8 +20,20 @@ namespace celeritas
 
         logger_impl();
 
+        ~logger_impl() noexcept = default;
+
+        logger_impl(const logger_impl& rhs) = delete;
+
+        logger_impl& operator=(const logger_impl& rhs) = delete;
+
+        logger_impl(logger_impl&& rhs) noexcept = delete;
+
+        logger_impl& operator=(logger_impl&& rhs) noexcept = delete;
+
         void init_global(severity_level_type level);
+
         void init_console(severity_level_type console_level);
+
         void init_file(const std::string_view& channel_name,
                        const std::string_view& log_file_name,
                        severity_level_type file_level,
@@ -29,6 +41,7 @@ namespace celeritas
                        bool also_to_console);
 
         [[nodiscard]] severity_logger_type& get(const std::string_view& channel_name);
+
         [[nodiscard]] severity_logger_type& get_default() noexcept;
 
     private:
@@ -37,6 +50,7 @@ namespace celeritas
         using console_sink_type_shared_ptr = boost::shared_ptr<console_sink_type>;
 
         void register_logger(const std::string_view& channel_name);
+
         void update_console_filter();
 
         loggers_type loggers_;

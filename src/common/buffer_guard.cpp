@@ -2,12 +2,12 @@
 #include "buffer_pool.h"
 
 celeritas::buffer_guard::buffer_guard(buffer_pool_data buffer_data)
-    : buffer_data_{ std::move(buffer_data) }
+    : buffer_data_{ std::move(buffer_data) }, effective_size_{ 0 }
 {
 }
 
 celeritas::buffer_guard::buffer_guard(buffer_guard&& rhs) noexcept
-    : buffer_data_{ std::move(rhs.buffer_data_) }
+    : buffer_data_{ std::move(rhs.buffer_data_) }, effective_size_{ 0 }
 {
 }
 

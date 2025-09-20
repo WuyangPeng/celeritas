@@ -7,7 +7,7 @@ celeritas::tcp_client::tcp_client(boost::asio::io_context& io_context, message_h
 {
 }
 
-celeritas::tcp_client::awaitable_type celeritas::tcp_client::connect(const std::string& host, uint16_t port)
+celeritas::tcp_client::session_waitable_type celeritas::tcp_client::connect(const std::string& host, uint16_t port)
 {
     boost::asio::ip::tcp::resolver resolver{ io_context_ };
     socket_type socket{ io_context_ };
