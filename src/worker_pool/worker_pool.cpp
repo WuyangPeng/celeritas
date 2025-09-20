@@ -1,18 +1,19 @@
-﻿#include "worker_pool.h"
+﻿#include "common/logger.h"
+#include "worker_pool.h"
 
 celeritas::worker_pool::worker_pool(size_t num_threads)
 {
-    for (size_t i = 0; i < num_threads; ++i)
+    for (auto i = 0u; i < num_threads; ++i)
     {
         workers_.emplace_back([this] {
-            while (true)
+            for (;;)
             {
-                std::function<void()> task;
+                task_type task{};
                 if (!queue_.pop(task))
                 {
                     break;
                 }
-                task();
+                execute_task(task);
             }
         });
     }
@@ -23,23 +24,23 @@ celeritas::worker_pool::~worker_pool() noexcept
     queue_.stop();
 }
 
-celeritas::worker_pool::worker_pool(worker_pool&& rhs) noexcept
-    : queue_(std::move(rhs.queue_)), workers_(std::move(rhs.workers_))
-{
-}
-
-celeritas::worker_pool& celeritas::worker_pool::operator=(worker_pool&& rhs) noexcept
-{
-    if (this != &rhs)
-    {
-        queue_ = std::move(rhs.queue_);
-        workers_ = std::move(rhs.workers_);
-    }
-
-    return *this;
-}
-
-void celeritas::worker_pool::submit(std::function<void()> task)
+void celeritas::worker_pool::submit(task_type task)
 {
     queue_.push(std::move(task));
+}
+
+void celeritas::worker_pool::execute_task(const task_type& task)
+{
+    try
+    {
+        task();
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(worker_pool_channel, error) << "Task threw an exception: " << error.what();
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(worker_pool_channel, fatal) << "Task threw an unknown exception";
+    }
 }
