@@ -4,7 +4,7 @@
 #include "common/buffer_pool_data.h"
 
 #include <map>
-#include <memory>
+#include <mutex>
 
 namespace celeritas
 {
