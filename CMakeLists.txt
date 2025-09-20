@@ -5,6 +5,12 @@ project(celeritas)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if (MSVC)
+    # /W4          -> 4 级警告
+    # /WX          -> 警告视为错误
+    add_compile_options(/W4 /WX)
+endif ()
+
 # 包含路径
 include_directories(
         "${CMAKE_CURRENT_SOURCE_DIR}/src"

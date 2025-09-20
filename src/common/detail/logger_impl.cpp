@@ -133,11 +133,11 @@ void celeritas::logger_impl::update_console_filter()
 
     auto channel_filter = boost::log::expressions::has_attr(channel.data()) &&
                           boost::log::expressions::attr<std::string>(channel.data()) == "";
-    for (const auto& channel : console_channels_)
+    for (const auto& element : console_channels_)
     {
         channel_filter = channel_filter ||
-                         (boost::log::expressions::has_attr(channel.data()) &&
-                          boost::log::expressions::attr<std::string>(channel.data()) == channel);
+                         (boost::log::expressions::has_attr(element.data()) &&
+                          boost::log::expressions::attr<std::string>(element.data()) == element);
     }
     console_filter = console_filter && (channel_filter || !boost::log::expressions::has_attr(channel.data()));
 

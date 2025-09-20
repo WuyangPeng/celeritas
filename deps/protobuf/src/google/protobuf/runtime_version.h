@@ -24,10 +24,6 @@
 #define PROTOBUF_VERSION PROTOBUF_OSS_VERSION
 #define PROTOBUF_VERSION_SUFFIX PROTOBUF_OSS_VERSION_SUFFIX
 
-#ifdef PROTO_BUF_PRAGMA_WARNING
-
-#include "System/Helper/PragmaWarning/ProtoBuf.inl"
-
-#endif
+#include "proto/proto_buf_pragma_warning.inl"  
 
 #endif  // GOOGLE_PROTOBUF_RUNTIME_VERSION_H__
