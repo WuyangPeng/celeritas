@@ -6,14 +6,8 @@ celeritas::worker_pool::worker_pool(size_t num_threads)
     for (auto i = 0u; i < num_threads; ++i)
     {
         workers_.emplace_back([this] {
-            for (;;)
+            while (execute_task())
             {
-                task_type task{};
-                if (!queue_.pop(task))
-                {
-                    break;
-                }
-                execute_task(task);
             }
         });
     }
@@ -29,11 +23,11 @@ void celeritas::worker_pool::submit(task_type task)
     queue_.push(std::move(task));
 }
 
-void celeritas::worker_pool::execute_task(const task_type& task)
+bool celeritas::worker_pool::execute_task()
 {
     try
     {
-        task();
+        return get_and_run_task();
     }
     catch (const std::exception& error)
     {
@@ -43,4 +37,18 @@ void celeritas::worker_pool::execute_task(const task_type& task)
     {
         LOG_CHANNEL(worker_pool_channel, fatal) << "Task threw an unknown exception";
     }
+
+    return true;
+}
+
+bool celeritas::worker_pool::get_and_run_task()
+{
+    task_type task{};
+    if (!queue_.pop(task))
+    {
+        return false;
+    }
+    task();
+
+    return true;
 }

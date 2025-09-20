@@ -28,7 +28,8 @@ namespace celeritas
     private:
         using worker_type = std::vector<std::jthread>;
 
-        static void execute_task(const task_type& task);
+        [[nodiscard]] bool execute_task();
+        [[nodiscard]] bool get_and_run_task();
 
         thread_safe_queue queue_;
         worker_type workers_;
