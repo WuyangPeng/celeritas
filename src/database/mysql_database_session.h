@@ -20,18 +20,20 @@ namespace celeritas
         explicit mysql_database_session(boost::asio::io_context& io_context, boost::asio::ssl::context* ssl_context = nullptr);
 
         // 异步连接到数据库
-        [[nodiscard]] awaitable_type async_connect(const std::string_view& host, const std::string_view& user, const std::string_view& password, const std::string_view& db_name);
+        [[nodiscard]] awaitable_type async_connect(const std::string_view& host,
+                                                   uint16_t port,
+                                                   const std::string_view& user,
+                                                   const std::string_view& password,
+                                                   const std::string_view& db_name);
 
         // 异步执行查询，返回结果集
-        [[nodiscard]] rows_view_type async_query(const std::string& sql);
+        [[nodiscard]] rows_view_type async_query(const std::string_view& sql);
 
     private:
-        using handshake_params_type = std::unique_ptr<boost::mysql::handshake_params>;
+        using connection_type = boost::mysql::any_connection;
 
-        boost::asio::io_context& io_context_;
-        boost::asio::ssl::context* ssl_context_;
-        boost::mysql::any_connection connection_;
-        handshake_params_type params_;
-        boost::mysql::results results_;
+        [[nodiscard]] static connection_type get_any_connection(boost::asio::io_context& io_context, boost::asio::ssl::context* ssl_context);
+
+        connection_type connection_;
     };
 }
