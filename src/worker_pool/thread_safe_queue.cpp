@@ -3,6 +3,7 @@
 void celeritas::thread_safe_queue::push(task_type task)
 {
     std::unique_lock lock{ mutex_ };
+
     tasks_.push(std::move(task));
     condition_.notify_one();
 }
@@ -10,6 +11,7 @@ void celeritas::thread_safe_queue::push(task_type task)
 bool celeritas::thread_safe_queue::pop(task_type& task)
 {
     std::unique_lock lock{ mutex_ };
+
     condition_.wait(lock, [this] {
         return !tasks_.empty() || stop_;
     });

@@ -15,12 +15,11 @@ celeritas::tcp_listener::tcp_listener(boost::asio::io_context& io_context, const
     LOG_CHANNEL(network_channel, info) << "Listening on port " << port << "...";
 }
 
-// 启动协程来接受连接
 void celeritas::tcp_listener::start()
 {
     co_spawn(io_context_, [this] {
-        return accept_connections();
-    },
+                 return accept_connections();
+             },
              boost::asio::detached);
 }
 
@@ -39,7 +38,7 @@ void celeritas::tcp_listener::stop()
 }
 
 // 协程：接受连接
-celeritas::tcp_listener::awaitable_type celeritas::tcp_listener::accept_connections()
+celeritas::tcp_listener::void_awaitable_type celeritas::tcp_listener::accept_connections()
 {
     while (is_running_)
     {
@@ -62,7 +61,7 @@ celeritas::tcp_listener::awaitable_type celeritas::tcp_listener::accept_connecti
     }
 }
 
-celeritas::tcp_listener::awaitable_type celeritas::tcp_listener::handle_connection()
+celeritas::tcp_listener::void_awaitable_type celeritas::tcp_listener::handle_connection()
 {
     // 等待新连接
     auto result = co_await acceptor_.async_accept(boost::asio::as_tuple(boost::asio::use_awaitable));

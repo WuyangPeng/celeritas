@@ -1,6 +1,14 @@
 ﻿#include "common/logger.h"
 #include "worker_pool.h"
 
+celeritas::worker_pool::worker_pool(const int num_threads)
+{
+    for (auto i = 0; i < num_threads; ++i)
+    {
+        add_work();
+    }
+}
+
 void celeritas::worker_pool::add_work()
 {
     workers_.emplace_back([this] {
@@ -8,14 +16,6 @@ void celeritas::worker_pool::add_work()
         {
         }
     });
-}
-
-celeritas::worker_pool::worker_pool(const int num_threads)
-{
-    for (auto i = 0; i < num_threads; ++i)
-    {
-        add_work();
-    }
 }
 
 celeritas::worker_pool::~worker_pool() noexcept

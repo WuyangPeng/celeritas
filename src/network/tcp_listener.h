@@ -1,8 +1,5 @@
 ﻿#pragma once
 
-#include "common/common_fwd.h"
-#include "network_fwd.h"
-
 #include <boost/asio.hpp>
 
 namespace celeritas
@@ -14,8 +11,18 @@ namespace celeritas
         using session_type = session_base<boost::asio::ip::tcp::socket>;
         using message_handler_type = session_type::message_handler_type;
 
-        // 构造函数：接受 io_context 和监听端口
+        // 接受 io_context和监听端口
         tcp_listener(boost::asio::io_context& io_context, uint16_t port, message_handler_type handler);
+
+        ~tcp_listener() noexcept = default;
+
+        tcp_listener(const tcp_listener& rhs) = delete;
+
+        tcp_listener& operator=(const tcp_listener& rhs) = delete;
+
+        tcp_listener(tcp_listener&& rhs) noexcept = delete;
+
+        tcp_listener& operator=(tcp_listener&& rhs) noexcept = delete;
 
         // 开始监听新连接
         void start();
@@ -24,13 +31,14 @@ namespace celeritas
         void stop();
 
     private:
-        using awaitable_type = boost::asio::awaitable<void>;
+        using void_awaitable_type = boost::asio::awaitable<void>;
         using io_context_type = boost::asio::io_context;
         using acceptor_type = boost::asio::ip::tcp::acceptor;
 
         // 协程：异步接受新连接
-        [[nodiscard]] awaitable_type accept_connections();
-        [[nodiscard]] awaitable_type handle_connection();
+        [[nodiscard]] void_awaitable_type accept_connections();
+
+        [[nodiscard]] void_awaitable_type handle_connection();
 
         io_context_type& io_context_;
         acceptor_type acceptor_;
