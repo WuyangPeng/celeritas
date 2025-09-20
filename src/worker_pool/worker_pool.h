@@ -15,11 +15,16 @@ namespace celeritas
         using task_type = thread_safe_queue::task_type;
 
         // 创建指定数量的工作线程
-        explicit worker_pool(size_t num_threads);
+        explicit worker_pool(int num_threads);
+
         ~worker_pool() noexcept;
+
         worker_pool(const worker_pool& rhs) = delete;
+
         worker_pool& operator=(const worker_pool& rhs) = delete;
+
         worker_pool(worker_pool&& rhs) noexcept = delete;
+
         worker_pool& operator=(worker_pool&& rhs) noexcept = delete;
 
         // 提交任务到线程池
@@ -28,7 +33,10 @@ namespace celeritas
     private:
         using worker_type = std::vector<std::jthread>;
 
+        void add_work();
+
         [[nodiscard]] bool execute_task();
+
         [[nodiscard]] bool get_and_run_task();
 
         thread_safe_queue queue_;

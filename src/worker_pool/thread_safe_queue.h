@@ -14,14 +14,21 @@ namespace celeritas
         using task_type = std::function<void()>;
 
         thread_safe_queue() noexcept = default;
+
         ~thread_safe_queue() noexcept = default;
+
         thread_safe_queue(const thread_safe_queue& rhs) = delete;
+
         thread_safe_queue& operator=(const thread_safe_queue& rhs) = delete;
+
         thread_safe_queue(thread_safe_queue&& rhs) noexcept = delete;
+
         thread_safe_queue& operator=(thread_safe_queue&& rhs) noexcept = delete;
 
         void push(task_type task);
+
         bool pop(task_type& task);
+
         void stop();
 
     private:

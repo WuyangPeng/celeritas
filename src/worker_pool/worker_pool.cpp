@@ -1,15 +1,20 @@
 ﻿#include "common/logger.h"
 #include "worker_pool.h"
 
-celeritas::worker_pool::worker_pool(size_t num_threads)
+void celeritas::worker_pool::add_work()
 {
-    for (auto i = 0u; i < num_threads; ++i)
+    workers_.emplace_back([this] {
+        while (execute_task())
+        {
+        }
+    });
+}
+
+celeritas::worker_pool::worker_pool(const int num_threads)
+{
+    for (auto i = 0; i < num_threads; ++i)
     {
-        workers_.emplace_back([this] {
-            while (execute_task())
-            {
-            }
-        });
+        add_work();
     }
 }
 
