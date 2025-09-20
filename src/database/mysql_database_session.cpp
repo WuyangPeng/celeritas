@@ -35,10 +35,10 @@ celeritas::mysql_database_session::awaitable_type celeritas::mysql_database_sess
     co_await connection_.async_connect(connect_params, boost::asio::use_awaitable);
 }
 
-celeritas::mysql_database_session::rows_view_type celeritas::mysql_database_session::async_query(const std::string_view& sql)
+celeritas::mysql_database_session::results_type celeritas::mysql_database_session::async_query(const std::string_view& sql)
 {
     boost::mysql::results results{};
     co_await connection_.async_execute(sql, results, boost::asio::use_awaitable);
 
-    co_return results.rows();
+    co_return results;
 }

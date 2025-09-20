@@ -15,7 +15,7 @@ namespace celeritas
     public:
         using class_type = mysql_database_session;
         using awaitable_type = boost::asio::awaitable<void>;
-        using rows_view_type = boost::asio::awaitable<boost::mysql::rows_view>;
+        using results_type = boost::asio::awaitable<boost::mysql::results>;
 
         explicit mysql_database_session(boost::asio::io_context& io_context, boost::asio::ssl::context* ssl_context = nullptr);
 
@@ -27,7 +27,7 @@ namespace celeritas
                                                    const std::string_view& db_name);
 
         // 异步执行查询，返回结果集
-        [[nodiscard]] rows_view_type async_query(const std::string_view& sql);
+        [[nodiscard]] results_type async_query(const std::string_view& sql);
 
     private:
         using connection_type = boost::mysql::any_connection;
