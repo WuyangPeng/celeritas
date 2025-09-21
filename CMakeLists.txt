@@ -99,7 +99,9 @@ add_subdirectory(cmake/common)
 add_subdirectory(cmake/network)
 add_subdirectory(cmake/worker_pool)
 add_subdirectory(cmake/database)
+add_subdirectory(cmake/service_registry)
 
+add_subdirectory(cmake/service_registry_server)
 add_subdirectory(cmake/auth_server)
 add_subdirectory(cmake/game_server)
 add_subdirectory(cmake/chat_server)
@@ -107,10 +109,10 @@ add_subdirectory(cmake/chat_server)
 # 安装规则
 if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
 
-    install(TARGETS auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug")
+    install(TARGETS service_registry_server auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug")
 
 else ()
 
-    install(TARGETS auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release")
+    install(TARGETS service_registry_server auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release")
 
 endif ()

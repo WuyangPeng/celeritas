@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+
+import "proto/service/registry.proto";
+
+package celeritas.proto.service;
+
+message service_response {
+  oneof payload {
+    service_registry_response registry = 1;
+  }
+}

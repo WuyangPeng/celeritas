@@ -1,0 +1,45 @@
+﻿syntax = "proto3";
+
+package celeritas.proto.service;
+
+// 定义服务注册消息
+message register_request {
+  string service_name = 1;
+  string instance_id = 2;
+  string host = 3;
+  int32 port = 4;
+}
+
+// 定义服务发现消息
+message discover_request {
+  string service_name = 1;
+}
+
+message end_point {
+    string host = 1;
+    int32 port = 2;
+}
+
+message discover_response {
+  repeated end_point endpoints = 1;
+}
+
+// 定义心跳消息
+message heartbeat {
+  string service_name = 1;
+  string instance_id = 2;
+}
+
+message service_registry_request {
+  oneof payload {
+    register_request register = 1;
+    discover_request discover = 2;
+    heartbeat heartbeat = 3;
+  }
+}
+
+message service_registry_response {
+  oneof payload {
+    discover_response discover = 1;
+  }
+}
