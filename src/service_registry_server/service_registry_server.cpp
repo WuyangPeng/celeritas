@@ -12,6 +12,7 @@ int main()
     try
     {
         boost::asio::io_context io_context{};
+
         const auto initializer = celeritas::initializer::create_initializer(celeritas::service_registry_type, celeritas::service_registry_type, io_context);
         initializer->initialize();
 

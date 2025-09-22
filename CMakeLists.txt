@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
+
 project(celeritas)
 
 # C++标准为C++20
@@ -40,7 +41,11 @@ include_directories(
         # 如果依赖项在本地，添加它们的include路径
 )
 
+# 包含boost库
+set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/cmake")
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/)
+
+find_package(Boost 1.89 REQUIRED CONFIG COMPONENTS filesystem timer date_time thread charconv regex log_setup log)
 
 if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
 
@@ -52,6 +57,19 @@ else ()
 
 endif ()
 
+add_library(boost INTERFACE)
+
+target_link_libraries(boost INTERFACE
+        Boost::filesystem
+        Boost::timer
+        Boost::date_time
+        Boost::thread
+        Boost::charconv
+        Boost::regex
+        Boost::log_setup
+        Boost::log)
+
+# 包含protobuf库
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src")
@@ -99,6 +117,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     endforeach ()
 
+    link_libraries(ws2_32)
+
 else ()
 
     # 其他平台下的操作
@@ -114,36 +134,6 @@ target_link_libraries(protobuf
         ${PROTOBUF_LIBRARIES}
 )
 
-add_library(boost INTERFACE)
-
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-
-    target_link_libraries(boost INTERFACE
-            boost_system-mgw13-mt-d-x64-1_88.dll
-            boost_timer-mgw13-mt-d-x64-1_88.dll
-            boost_date_time-mgw13-mt-d-x64-1_88.dll
-            boost_thread-mgw13-mt-d-x64-1_88.dll
-            boost_charconv-mgw13-mt-d-x64-1_88.dll
-            boost_filesystem-mgw13-mt-d-x64-1_88.dll
-            boost_regex-mgw13-mt-d-x64-1_88.dll
-            boost_log_setup-mgw13-mt-d-x64-1_88.dll
-            boost_log-mgw13-mt-d-x64-1_88.dll)
-
-else ()
-
-    target_link_libraries(boost INTERFACE
-            boost_log
-            boost_log_setup
-            boost_system
-            boost_timer
-            boost_date_time
-            boost_thread
-            boost_charconv
-            boost_filesystem
-            boost_regex)
-
-endif ()
-
 add_subdirectory(cmake/common)
 add_subdirectory(cmake/network)
 add_subdirectory(cmake/worker_pool)
@@ -151,12 +141,6 @@ add_subdirectory(cmake/database)
 add_subdirectory(cmake/service_registry)
 add_subdirectory(cmake/initializer)
 add_subdirectory(cmake/config)
-
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-
-    link_libraries(ws2_32)
-
-endif ()
 
 add_subdirectory(cmake/service_registry_server)
 add_subdirectory(cmake/auth_server)
