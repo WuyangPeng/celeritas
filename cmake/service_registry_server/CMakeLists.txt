@@ -11,15 +11,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             worker_pool
             network
             common
-            boost_system-mgw13-mt-d-x64-1_88
-            boost_timer-mgw13-mt-d-x64-1_88
-            boost_date_time-mgw13-mt-d-x64-1_88
-            boost_thread-mgw13-mt-d-x64-1_88
-            boost_charconv-mgw13-mt-d-x64-1_88
-            boost_filesystem-mgw13-mt-d-x64-1_88
-            boost_regex-mgw13-mt-d-x64-1_88
-            boost_log_setup-mgw13-mt-d-x64-1_88
-            boost_log-mgw13-mt-d-x64-1_88)
+            boost)
 
 else ()
 
@@ -30,15 +22,7 @@ else ()
             worker_pool
             network
             common
-            boost_log
-            boost_log_setup
-            boost_system
-            boost_timer
-            boost_date_time
-            boost_thread
-            boost_charconv
-            boost_filesystem
-            boost_regex)
+            boost)
 
 endif ()
 

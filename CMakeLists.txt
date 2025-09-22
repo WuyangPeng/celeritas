@@ -113,6 +113,37 @@ target_link_libraries(protobuf
         ${PROTOBUF_LIBRARIES}
 )
 
+add_library(boost INTERFACE)
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+    target_link_libraries(boost INTERFACE
+            boost_system-mgw13-mt-d-x64-1_88
+            boost_timer-mgw13-mt-d-x64-1_88
+            boost_date_time-mgw13-mt-d-x64-1_88
+            boost_thread-mgw13-mt-d-x64-1_88
+            boost_charconv-mgw13-mt-d-x64-1_88
+            boost_filesystem-mgw13-mt-d-x64-1_88
+            boost_regex-mgw13-mt-d-x64-1_88
+            boost_log_setup-mgw13-mt-d-x64-1_88
+            boost_log-mgw13-mt-d-x64-1_88)
+
+else ()
+
+    target_link_libraries(boost INTERFACE
+            boost_log
+            boost_log_setup
+            boost_system
+            boost_timer
+            boost_date_time
+            boost_thread
+            boost_charconv
+            boost_filesystem
+            boost_regex)
+
+endif ()
+
+
 add_subdirectory(cmake/common)
 add_subdirectory(cmake/network)
 add_subdirectory(cmake/worker_pool)
