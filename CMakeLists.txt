@@ -45,7 +45,7 @@ include_directories(
 set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/cmake")
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/)
 
-find_package(Boost 1.89 REQUIRED CONFIG COMPONENTS filesystem timer date_time thread charconv regex log_setup log)
+find_package(Boost 1.88 REQUIRED CONFIG COMPONENTS filesystem timer date_time thread charconv regex log_setup log)
 
 if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
 
