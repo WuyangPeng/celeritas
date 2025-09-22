@@ -97,7 +97,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     endforeach ()
 
 else ()
-    
+
     # 其他平台下的操作
     file(GLOB_RECURSE PROTO_SRCS_GENERATED "src/proto/*.cc")
 
@@ -122,24 +122,13 @@ add_subdirectory(cmake/config)
 link_libraries(network)
 link_libraries(worker_pool)
 link_libraries(database)
-link_libraries(service_registry)
 link_libraries(initializer)
 link_libraries(config)
-link_libraries(common)
+link_libraries(service_registry)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     link_libraries(ws2_32)
-
-else ()
-
-    link_libraries(libboost_log.so)
-    link_libraries(libboost_log_setup.so)
-    link_libraries(libboost_system.so)
-    link_libraries(libboost_timer.so)
-    link_libraries(libboost_date_time.so)
-    link_libraries(libboost_thread.so)
-    link_libraries(libboost_charconv.so)
 
 endif ()
 
