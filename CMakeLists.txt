@@ -100,6 +100,7 @@ add_subdirectory(cmake/network)
 add_subdirectory(cmake/worker_pool)
 add_subdirectory(cmake/database)
 add_subdirectory(cmake/service_registry)
+add_subdirectory(cmake/initializer)
 
 add_subdirectory(cmake/service_registry_server)
 add_subdirectory(cmake/auth_server)
