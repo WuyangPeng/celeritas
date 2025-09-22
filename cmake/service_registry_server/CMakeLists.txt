@@ -2,4 +2,4 @@
 
 add_executable(service_registry_server ${SRC_DIR_LIST})
 
-target_link_libraries(service_registry_server PRIVATE common)
+target_link_libraries(service_registry_server PRIVATE service_registry config initializer database worker_pool network common)
