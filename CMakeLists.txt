@@ -119,13 +119,6 @@ add_subdirectory(cmake/service_registry)
 add_subdirectory(cmake/initializer)
 add_subdirectory(cmake/config)
 
-link_libraries(network)
-link_libraries(worker_pool)
-link_libraries(database)
-link_libraries(initializer)
-link_libraries(config)
-link_libraries(service_registry)
-
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     link_libraries(ws2_32)
