@@ -28,8 +28,6 @@ namespace celeritas
 
         void register_service(const service_info& info);
 
-        void update_heartbeat(const std::string& instance_id);
-
         [[nodiscard]] service_info_container_type get_services(const std::string& service_name) const;
 
         void start_cleanup_timer(boost::asio::io_context& io_context);
@@ -53,6 +51,6 @@ namespace celeritas
 
         registry_type registry_;
         mutable std::shared_mutex mutex_;
-        steady_timer_unique_ptr cleanup_timer_;
+        steady_timer_unique_ptr cleanup_timer_interval_;
     };
 }

@@ -9,17 +9,14 @@ void celeritas::service_registry_impl::register_service(const service_info& info
 {
     std::unique_lock lock{ mutex_ };
 
-    registry_[info.get_instance_id()] = info;
-}
-
-void celeritas::service_registry_impl::update_heartbeat(const std::string& instance_id)
-{
-    std::unique_lock lock{ mutex_ };
-
-    if (const auto iter = registry_.find(instance_id);
+    if (const auto iter = registry_.find(info.get_instance_id());
         iter != registry_.end())
     {
         iter->second.set_last_heartbeat();
+    }
+    else
+    {
+        registry_[info.get_instance_id()] = info;
     }
 }
 
@@ -39,15 +36,15 @@ celeritas::service_registry_impl::service_info_container_type celeritas::service
 
 void celeritas::service_registry_impl::start_cleanup_timer(boost::asio::io_context& io_context)
 {
-    cleanup_timer_ = std::make_unique<steady_timer_type>(io_context);
+    cleanup_timer_interval_ = std::make_unique<steady_timer_type>(io_context);
 
     start_cleanup_timer(shared_from_this());
 }
 
 void celeritas::service_registry_impl::start_cleanup_timer(const self_shared_ptr& self) const
 {
-    cleanup_timer_->expires_at(std::chrono::steady_clock::now() + cleanup_timer);
-    cleanup_timer_->async_wait(
+    cleanup_timer_interval_->expires_at(std::chrono::steady_clock::now() + cleanup_timer);
+    cleanup_timer_interval_->async_wait(
         [self](const boost::system::error_code& ec) {
             if (!ec)
             {
