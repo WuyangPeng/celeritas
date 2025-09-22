@@ -81,10 +81,12 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     endforeach ()
 
     link_libraries(boost_log)
+    link_libraries(boost_filesystem)
 
 else ()
 
     link_libraries(boost_log)
+    link_libraries(boost_filesystem)
 
     # 其他平台下的操作
     file(GLOB_RECURSE PROTO_SRCS_GENERATED "src/proto/*.cc")
