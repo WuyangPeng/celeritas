@@ -13,7 +13,9 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             boost_timer-mgw13-mt-d-x64-1_88
             boost_date_time-mgw13-mt-d-x64-1_88
             boost_thread-mgw13-mt-d-x64-1_88
-            boost_charconv-mgw13-mt-d-x64-1_88)
+            boost_charconv-mgw13-mt-d-x64-1_88
+            boost_filesystem-mgw13-mt-d-x64-1_88
+            boost_regex-mgw13-mt-d-x64-1_88)
 
 else ()
 

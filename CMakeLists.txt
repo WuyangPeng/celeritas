@@ -119,7 +119,6 @@ add_subdirectory(cmake/service_registry)
 add_subdirectory(cmake/initializer)
 add_subdirectory(cmake/config)
 
-
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     link_libraries(ws2_32)
