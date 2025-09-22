@@ -5,6 +5,8 @@ project(celeritas)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 if (MSVC)
     # /W4          -> 4 级警告
     # /WX          -> 警告视为错误
