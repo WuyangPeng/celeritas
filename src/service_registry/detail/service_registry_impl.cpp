@@ -113,7 +113,7 @@ bool celeritas::service_registry_impl::cleanup_service_entry(const registry_type
     {
         LOG_CHANNEL(service_registry_channel, error)
                 << "[ERROR] Service removed after "
-                << services_heartbeat_remove_time
+                << duration
                 << "s timeout: "
                 << iter->second.get_service_name()
                 << " (id: "
@@ -125,7 +125,7 @@ bool celeritas::service_registry_impl::cleanup_service_entry(const registry_type
     {
         LOG_CHANNEL(service_registry_channel, error)
                 << "[ERROR] Service unresponsive for "
-                << services_heartbeat_error_time
+                << duration
                 << "s: "
                 << iter->second.get_service_name()
                 << " (id: "
@@ -136,7 +136,7 @@ bool celeritas::service_registry_impl::cleanup_service_entry(const registry_type
     {
         LOG_CHANNEL(service_registry_channel, warning)
                 << "[WARN] Service unresponsive for "
-                << services_heartbeat_warning_time
+                << duration
                 << "s: "
                 << iter->second.get_service_name()
                 << " (id: "
