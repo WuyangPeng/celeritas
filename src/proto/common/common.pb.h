@@ -54,7 +54,7 @@ extern "C" {
 extern const ::google::protobuf::internal::DescriptorTable descriptor_table_proto_2fcommon_2fcommon_2eproto;
 }  // extern "C"
 namespace celeritas {
-namespace common {
+namespace proto {
 enum header_type : int;
 extern const uint32_t header_type_internal_data_[];
 class client_message_header;
@@ -65,18 +65,18 @@ class server_message_header;
 struct server_message_headerDefaultTypeInternal;
 extern server_message_headerDefaultTypeInternal _server_message_header_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull server_message_header_class_data_;
-}  // namespace common
+}  // namespace proto
 }  // namespace celeritas
 namespace google {
 namespace protobuf {
 template <>
-internal::EnumTraitsT<::celeritas::common::header_type_internal_data_>
-    internal::EnumTraitsImpl::value<::celeritas::common::header_type>;
+internal::EnumTraitsT<::celeritas::proto::header_type_internal_data_>
+    internal::EnumTraitsImpl::value<::celeritas::proto::header_type>;
 }  // namespace protobuf
 }  // namespace google
 
 namespace celeritas {
-namespace common {
+namespace proto {
 enum header_type : int {
   client = 0,
   server = 1,
@@ -120,7 +120,7 @@ inline bool header_type_Parse(
 // -------------------------------------------------------------------
 
 class server_message_header final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:celeritas.common.server_message_header) */ {
+/* @@protoc_insertion_point(class_definition:celeritas.proto.server_message_header) */ {
  public:
   inline server_message_header() : server_message_header(nullptr) {}
   ~server_message_header() PROTOBUF_FINAL;
@@ -238,7 +238,7 @@ class server_message_header final : public ::google::protobuf::Message
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "celeritas.common.server_message_header"; }
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.server_message_header"; }
 
  protected:
   explicit server_message_header(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
@@ -296,7 +296,7 @@ class server_message_header final : public ::google::protobuf::Message
   void _internal_set_code(::int32_t value);
 
   public:
-  // @@protoc_insertion_point(class_scope:celeritas.common.server_message_header)
+  // @@protoc_insertion_point(class_scope:celeritas.proto.server_message_header)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
@@ -335,7 +335,7 @@ extern const ::google::protobuf::internal::ClassDataFull server_message_header_c
 // -------------------------------------------------------------------
 
 class client_message_header final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:celeritas.common.client_message_header) */ {
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client_message_header) */ {
  public:
   inline client_message_header() : client_message_header(nullptr) {}
   ~client_message_header() PROTOBUF_FINAL;
@@ -453,7 +453,7 @@ class client_message_header final : public ::google::protobuf::Message
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "celeritas.common.client_message_header"; }
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client_message_header"; }
 
  protected:
   explicit client_message_header(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
@@ -500,7 +500,7 @@ class client_message_header final : public ::google::protobuf::Message
   void _internal_set_rpc(::int32_t value);
 
   public:
-  // @@protoc_insertion_point(class_scope:celeritas.common.client_message_header)
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client_message_header)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
@@ -559,13 +559,13 @@ inline void client_message_header::clear_message_id() {
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline ::int32_t client_message_header::message_id() const {
-  // @@protoc_insertion_point(field_get:celeritas.common.client_message_header.message_id)
+  // @@protoc_insertion_point(field_get:celeritas.proto.client_message_header.message_id)
   return _internal_message_id();
 }
 inline void client_message_header::set_message_id(::int32_t value) {
   _internal_set_message_id(value);
   _impl_._has_bits_[0] |= 0x00000001u;
-  // @@protoc_insertion_point(field_set:celeritas.common.client_message_header.message_id)
+  // @@protoc_insertion_point(field_set:celeritas.proto.client_message_header.message_id)
 }
 inline ::int32_t client_message_header::_internal_message_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -583,13 +583,13 @@ inline void client_message_header::clear_rpc() {
   _impl_._has_bits_[0] &= ~0x00000002u;
 }
 inline ::int32_t client_message_header::rpc() const {
-  // @@protoc_insertion_point(field_get:celeritas.common.client_message_header.rpc)
+  // @@protoc_insertion_point(field_get:celeritas.proto.client_message_header.rpc)
   return _internal_rpc();
 }
 inline void client_message_header::set_rpc(::int32_t value) {
   _internal_set_rpc(value);
   _impl_._has_bits_[0] |= 0x00000002u;
-  // @@protoc_insertion_point(field_set:celeritas.common.client_message_header.rpc)
+  // @@protoc_insertion_point(field_set:celeritas.proto.client_message_header.rpc)
 }
 inline ::int32_t client_message_header::_internal_rpc() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -611,13 +611,13 @@ inline void server_message_header::clear_user_id() {
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline ::int64_t server_message_header::user_id() const {
-  // @@protoc_insertion_point(field_get:celeritas.common.server_message_header.user_id)
+  // @@protoc_insertion_point(field_get:celeritas.proto.server_message_header.user_id)
   return _internal_user_id();
 }
 inline void server_message_header::set_user_id(::int64_t value) {
   _internal_set_user_id(value);
   _impl_._has_bits_[0] |= 0x00000001u;
-  // @@protoc_insertion_point(field_set:celeritas.common.server_message_header.user_id)
+  // @@protoc_insertion_point(field_set:celeritas.proto.server_message_header.user_id)
 }
 inline ::int64_t server_message_header::_internal_user_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -635,13 +635,13 @@ inline void server_message_header::clear_message_id() {
   _impl_._has_bits_[0] &= ~0x00000002u;
 }
 inline ::int32_t server_message_header::message_id() const {
-  // @@protoc_insertion_point(field_get:celeritas.common.server_message_header.message_id)
+  // @@protoc_insertion_point(field_get:celeritas.proto.server_message_header.message_id)
   return _internal_message_id();
 }
 inline void server_message_header::set_message_id(::int32_t value) {
   _internal_set_message_id(value);
   _impl_._has_bits_[0] |= 0x00000002u;
-  // @@protoc_insertion_point(field_set:celeritas.common.server_message_header.message_id)
+  // @@protoc_insertion_point(field_set:celeritas.proto.server_message_header.message_id)
 }
 inline ::int32_t server_message_header::_internal_message_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -659,13 +659,13 @@ inline void server_message_header::clear_code() {
   _impl_._has_bits_[0] &= ~0x00000004u;
 }
 inline ::int32_t server_message_header::code() const {
-  // @@protoc_insertion_point(field_get:celeritas.common.server_message_header.code)
+  // @@protoc_insertion_point(field_get:celeritas.proto.server_message_header.code)
   return _internal_code();
 }
 inline void server_message_header::set_code(::int32_t value) {
   _internal_set_code(value);
   _impl_._has_bits_[0] |= 0x00000004u;
-  // @@protoc_insertion_point(field_set:celeritas.common.server_message_header.code)
+  // @@protoc_insertion_point(field_set:celeritas.proto.server_message_header.code)
 }
 inline ::int32_t server_message_header::_internal_code() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -681,7 +681,7 @@ inline void server_message_header::_internal_set_code(::int32_t value) {
 #endif  // __GNUC__
 
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace common
+}  // namespace proto
 }  // namespace celeritas
 
 
@@ -689,10 +689,10 @@ namespace google {
 namespace protobuf {
 
 template <>
-struct is_proto_enum<::celeritas::common::header_type> : std::true_type {};
+struct is_proto_enum<::celeritas::proto::header_type> : std::true_type {};
 template <>
-inline const EnumDescriptor* PROTOBUF_NONNULL GetEnumDescriptor<::celeritas::common::header_type>() {
-  return ::celeritas::common::header_type_descriptor();
+inline const EnumDescriptor* PROTOBUF_NONNULL GetEnumDescriptor<::celeritas::proto::header_type>() {
+  return ::celeritas::proto::header_type_descriptor();
 }
 
 }  // namespace protobuf

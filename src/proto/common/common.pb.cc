@@ -25,7 +25,7 @@ namespace _pb = ::google::protobuf;
 namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
 namespace celeritas {
-namespace common {
+namespace proto {
 
 inline constexpr server_message_header::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -79,7 +79,7 @@ struct client_message_headerDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 client_message_headerDefaultTypeInternal _client_message_header_default_instance_;
-}  // namespace common
+}  // namespace proto
 }  // namespace celeritas
 static const ::_pb::EnumDescriptor* PROTOBUF_NONNULL
     file_level_enum_descriptors_proto_2fcommon_2fcommon_2eproto[1];
@@ -89,18 +89,18 @@ const ::uint32_t
     TableStruct_proto_2fcommon_2fcommon_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
         0x081, // bitmap
-        PROTOBUF_FIELD_OFFSET(::celeritas::common::client_message_header, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client_message_header, _impl_._has_bits_),
         5, // hasbit index offset
-        PROTOBUF_FIELD_OFFSET(::celeritas::common::client_message_header, _impl_.message_id_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::common::client_message_header, _impl_.rpc_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client_message_header, _impl_.message_id_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client_message_header, _impl_.rpc_),
         0,
         1,
         0x081, // bitmap
-        PROTOBUF_FIELD_OFFSET(::celeritas::common::server_message_header, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::server_message_header, _impl_._has_bits_),
         6, // hasbit index offset
-        PROTOBUF_FIELD_OFFSET(::celeritas::common::server_message_header, _impl_.user_id_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::common::server_message_header, _impl_.message_id_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::common::server_message_header, _impl_.code_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::server_message_header, _impl_.user_id_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::server_message_header, _impl_.message_id_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::server_message_header, _impl_.code_),
         0,
         1,
         2,
@@ -108,27 +108,27 @@ const ::uint32_t
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, sizeof(::celeritas::common::client_message_header)},
-        {7, sizeof(::celeritas::common::server_message_header)},
+        {0, sizeof(::celeritas::proto::client_message_header)},
+        {7, sizeof(::celeritas::proto::server_message_header)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
-    &::celeritas::common::_client_message_header_default_instance_._instance,
-    &::celeritas::common::_server_message_header_default_instance_._instance,
+    &::celeritas::proto::_client_message_header_default_instance_._instance,
+    &::celeritas::proto::_server_message_header_default_instance_._instance,
 };
 const char descriptor_table_protodef_proto_2fcommon_2fcommon_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\031proto/common/common.proto\022\020celeritas.c"
-    "ommon\"8\n\025client_message_header\022\022\n\nmessag"
-    "e_id\030\001 \001(\005\022\013\n\003rpc\030\002 \001(\005\"J\n\025server_messag"
-    "e_header\022\017\n\007user_id\030\001 \001(\003\022\022\n\nmessage_id\030"
-    "\002 \001(\005\022\014\n\004code\030\003 \001(\005*%\n\013header_type\022\n\n\006cl"
-    "ient\020\000\022\n\n\006server\020\001b\006proto3"
+    "\n\031proto/common/common.proto\022\017celeritas.p"
+    "roto\"8\n\025client_message_header\022\022\n\nmessage"
+    "_id\030\001 \001(\005\022\013\n\003rpc\030\002 \001(\005\"J\n\025server_message"
+    "_header\022\017\n\007user_id\030\001 \001(\003\022\022\n\nmessage_id\030\002"
+    " \001(\005\022\014\n\004code\030\003 \001(\005*%\n\013header_type\022\n\n\006cli"
+    "ent\020\000\022\n\n\006server\020\001b\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fcommon_2fcommon_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fcommon_2fcommon_2eproto = {
     false,
     false,
-    226,
+    225,
     descriptor_table_protodef_proto_2fcommon_2fcommon_2eproto,
     "proto/common/common.proto",
     &descriptor_table_proto_2fcommon_2fcommon_2eproto_once,
@@ -142,7 +142,7 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fcommon
     file_level_service_descriptors_proto_2fcommon_2fcommon_2eproto,
 };
 namespace celeritas {
-namespace common {
+namespace proto {
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL header_type_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_proto_2fcommon_2fcommon_2eproto);
   return file_level_enum_descriptors_proto_2fcommon_2fcommon_2eproto[0];
@@ -166,7 +166,7 @@ client_message_header::client_message_header(::google::protobuf::Arena* PROTOBUF
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:celeritas.common.client_message_header)
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.client_message_header)
 }
 client_message_header::client_message_header(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const client_message_header& from)
@@ -194,7 +194,7 @@ inline void client_message_header::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE ar
                sizeof(Impl_::rpc_));
 }
 client_message_header::~client_message_header() {
-  // @@protoc_insertion_point(destructor:celeritas.common.client_message_header)
+  // @@protoc_insertion_point(destructor:celeritas.proto.client_message_header)
   SharedDtor(*this);
 }
 inline void client_message_header::SharedDtor(MessageLite& self) {
@@ -263,7 +263,7 @@ client_message_header::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::celeritas::common::client_message_header>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::celeritas::proto::client_message_header>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     // int32 rpc = 2;
@@ -287,7 +287,7 @@ client_message_header::_table_ = {
   }},
 };
 PROTOBUF_NOINLINE void client_message_header::Clear() {
-// @@protoc_insertion_point(message_clear_start:celeritas.common.client_message_header)
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.client_message_header)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -314,7 +314,7 @@ PROTOBUF_NOINLINE void client_message_header::Clear() {
     ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
   const client_message_header& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(serialize_to_array_start:celeritas.common.client_message_header)
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.client_message_header)
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
@@ -341,7 +341,7 @@ PROTOBUF_NOINLINE void client_message_header::Clear() {
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
             this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:celeritas.common.client_message_header)
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.client_message_header)
   return target;
 }
 
@@ -352,7 +352,7 @@ PROTOBUF_NOINLINE void client_message_header::Clear() {
 ::size_t client_message_header::ByteSizeLong() const {
   const client_message_header& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(message_byte_size_start:celeritas.common.client_message_header)
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.client_message_header)
   ::size_t total_size = 0;
 
   ::uint32_t cached_has_bits = 0;
@@ -384,7 +384,7 @@ PROTOBUF_NOINLINE void client_message_header::Clear() {
 void client_message_header::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<client_message_header*>(&to_msg);
   auto& from = static_cast<const client_message_header&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.common.client_message_header)
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.client_message_header)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -407,7 +407,7 @@ void client_message_header::MergeImpl(::google::protobuf::MessageLite& to_msg, c
 }
 
 void client_message_header::CopyFrom(const client_message_header& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.common.client_message_header)
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.client_message_header)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -446,7 +446,7 @@ server_message_header::server_message_header(::google::protobuf::Arena* PROTOBUF
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:celeritas.common.server_message_header)
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.server_message_header)
 }
 server_message_header::server_message_header(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const server_message_header& from)
@@ -474,7 +474,7 @@ inline void server_message_header::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE ar
                sizeof(Impl_::code_));
 }
 server_message_header::~server_message_header() {
-  // @@protoc_insertion_point(destructor:celeritas.common.server_message_header)
+  // @@protoc_insertion_point(destructor:celeritas.proto.server_message_header)
   SharedDtor(*this);
 }
 inline void server_message_header::SharedDtor(MessageLite& self) {
@@ -543,7 +543,7 @@ server_message_header::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::celeritas::common::server_message_header>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::celeritas::proto::server_message_header>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
@@ -574,7 +574,7 @@ server_message_header::_table_ = {
   }},
 };
 PROTOBUF_NOINLINE void server_message_header::Clear() {
-// @@protoc_insertion_point(message_clear_start:celeritas.common.server_message_header)
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.server_message_header)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -601,7 +601,7 @@ PROTOBUF_NOINLINE void server_message_header::Clear() {
     ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
   const server_message_header& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(serialize_to_array_start:celeritas.common.server_message_header)
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.server_message_header)
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
@@ -637,7 +637,7 @@ PROTOBUF_NOINLINE void server_message_header::Clear() {
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
             this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:celeritas.common.server_message_header)
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.server_message_header)
   return target;
 }
 
@@ -648,7 +648,7 @@ PROTOBUF_NOINLINE void server_message_header::Clear() {
 ::size_t server_message_header::ByteSizeLong() const {
   const server_message_header& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(message_byte_size_start:celeritas.common.server_message_header)
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.server_message_header)
   ::size_t total_size = 0;
 
   ::uint32_t cached_has_bits = 0;
@@ -687,7 +687,7 @@ PROTOBUF_NOINLINE void server_message_header::Clear() {
 void server_message_header::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<server_message_header*>(&to_msg);
   auto& from = static_cast<const server_message_header&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.common.server_message_header)
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.server_message_header)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -715,7 +715,7 @@ void server_message_header::MergeImpl(::google::protobuf::MessageLite& to_msg, c
 }
 
 void server_message_header::CopyFrom(const server_message_header& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.common.server_message_header)
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.server_message_header)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -738,7 +738,7 @@ void server_message_header::InternalSwap(server_message_header* PROTOBUF_RESTRIC
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace common
+}  // namespace proto
 }  // namespace celeritas
 namespace google {
 namespace protobuf {

@@ -8,6 +8,7 @@ message register_request {
   string instance_id = 2;
   string host = 3;
   int32 port = 4;
+  string game_server_id = 5;
 }
 
 // 定义服务发现消息

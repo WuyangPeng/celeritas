@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package celeritas.common;
+package celeritas.proto;
 
 enum header_type {
     client = 0;

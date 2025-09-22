@@ -246,6 +246,7 @@ class register_request final : public ::google::protobuf::Message
     kServiceNameFieldNumber = 1,
     kInstanceIdFieldNumber = 2,
     kHostFieldNumber = 3,
+    kGameServerIdFieldNumber = 5,
     kPortFieldNumber = 4,
   };
   // string service_name = 1;
@@ -293,6 +294,21 @@ class register_request final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_host();
 
   public:
+  // string game_server_id = 5;
+  void clear_game_server_id() ;
+  const ::std::string& game_server_id() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_game_server_id(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_game_server_id();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_game_server_id();
+  void set_allocated_game_server_id(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_game_server_id() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_game_server_id(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_game_server_id();
+
+  public:
   // int32 port = 4;
   void clear_port() ;
   ::int32_t port() const;
@@ -307,8 +323,8 @@ class register_request final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 4,
-                                   0, 76,
+  static const ::google::protobuf::internal::TcParseTable<3, 5,
+                                   0, 90,
                                    2>
       _table_;
 
@@ -332,6 +348,7 @@ class register_request final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr service_name_;
     ::google::protobuf::internal::ArenaStringPtr instance_id_;
     ::google::protobuf::internal::ArenaStringPtr host_;
+    ::google::protobuf::internal::ArenaStringPtr game_server_id_;
     ::int32_t port_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -1842,7 +1859,7 @@ inline void register_request::set_allocated_host(::std::string* PROTOBUF_NULLABL
 inline void register_request::clear_port() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.port_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000008u;
+  _impl_._has_bits_[0] &= ~0x00000010u;
 }
 inline ::int32_t register_request::port() const {
   // @@protoc_insertion_point(field_get:celeritas.proto.service.register_request.port)
@@ -1850,7 +1867,7 @@ inline ::int32_t register_request::port() const {
 }
 inline void register_request::set_port(::int32_t value) {
   _internal_set_port(value);
-  _impl_._has_bits_[0] |= 0x00000008u;
+  _impl_._has_bits_[0] |= 0x00000010u;
   // @@protoc_insertion_point(field_set:celeritas.proto.service.register_request.port)
 }
 inline ::int32_t register_request::_internal_port() const {
@@ -1860,6 +1877,71 @@ inline ::int32_t register_request::_internal_port() const {
 inline void register_request::_internal_set_port(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.port_ = value;
+}
+
+// string game_server_id = 5;
+inline void register_request::clear_game_server_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.game_server_id_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000008u;
+}
+inline const ::std::string& register_request::game_server_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.register_request.game_server_id)
+  return _internal_game_server_id();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void register_request::set_game_server_id(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000008u;
+  _impl_.game_server_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.register_request.game_server_id)
+}
+inline ::std::string* PROTOBUF_NONNULL register_request::mutable_game_server_id()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_game_server_id();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.register_request.game_server_id)
+  return _s;
+}
+inline const ::std::string& register_request::_internal_game_server_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.game_server_id_.Get();
+}
+inline void register_request::_internal_set_game_server_id(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000008u;
+  _impl_.game_server_id_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL register_request::_internal_mutable_game_server_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000008u;
+  return _impl_.game_server_id_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE register_request::release_game_server_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.register_request.game_server_id)
+  if ((_impl_._has_bits_[0] & 0x00000008u) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000008u;
+  auto* released = _impl_.game_server_id_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.game_server_id_.Set("", GetArena());
+  }
+  return released;
+}
+inline void register_request::set_allocated_game_server_id(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000008u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000008u;
+  }
+  _impl_.game_server_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.game_server_id_.IsDefault()) {
+    _impl_.game_server_id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.register_request.game_server_id)
 }
 
 // -------------------------------------------------------------------
