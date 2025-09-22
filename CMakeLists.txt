@@ -125,8 +125,6 @@ add_subdirectory(cmake/service_registry)
 add_subdirectory(cmake/initializer)
 add_subdirectory(cmake/config)
 
-link_libraries(common)
-
 add_subdirectory(cmake/service_registry_server)
 add_subdirectory(cmake/auth_server)
 add_subdirectory(cmake/game_server)
