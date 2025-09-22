@@ -30,7 +30,12 @@ std::string celeritas::service_info::get_game_server_id() const
     return game_server_id;
 }
 
-std::chrono::steady_clock::time_point celeritas::service_info::get_last_heartbeat() const
+celeritas::service_info::time_point_type celeritas::service_info::get_last_heartbeat() const
 {
     return last_heartbeat;
+}
+
+void celeritas::service_info::set_last_heartbeat()
+{
+    last_heartbeat = std::chrono::steady_clock::now();
 }

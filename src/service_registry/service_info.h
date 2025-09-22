@@ -8,6 +8,9 @@ namespace celeritas
     class service_info
     {
     public:
+        using class_type = service_info;
+        using time_point_type = std::chrono::steady_clock::time_point;
+
         service_info() noexcept = default;
 
         service_info(std::string instance_id, std::string service_name, std::string host, int port, std::string game_server_id);
@@ -22,7 +25,9 @@ namespace celeritas
 
         [[nodiscard]] std::string get_game_server_id() const;
 
-        [[nodiscard]] std::chrono::steady_clock::time_point get_last_heartbeat() const;
+        [[nodiscard]] time_point_type get_last_heartbeat() const;
+
+        void set_last_heartbeat();
 
     private:
         std::string instance_id;
@@ -30,6 +35,6 @@ namespace celeritas
         std::string host;
         int port = 0;
         std::string game_server_id;
-        std::chrono::steady_clock::time_point last_heartbeat;
+        time_point_type last_heartbeat;
     };
 }
