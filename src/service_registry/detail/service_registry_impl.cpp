@@ -2,6 +2,7 @@
 #include "service_registry_internal_fwd.h"
 #include "boost/asio/deadline_timer.hpp"
 #include "common/logger.h"
+#include "common/common_fwd.h"
 
 #include <ranges>
 

@@ -6,6 +6,7 @@
 #include "common/buffer_pool.h"
 #include "common/logger.h"
 #include "detail/network_internal_fwd.h"
+#include "common/common_fwd.h"
 
 template <typename SocketType>
 celeritas::session_base<SocketType>::session_base(socket_type socket, message_handler_type handler)

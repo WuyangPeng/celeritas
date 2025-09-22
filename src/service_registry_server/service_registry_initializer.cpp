@@ -1,7 +1,7 @@
 ﻿#include "service_registry_initializer.h"
 
-celeritas::service_registry_initializer::service_registry_initializer(std::string config_file_path) noexcept
-    : base_type{ std::move(config_file_path) }
+celeritas::service_registry_initializer::service_registry_initializer(std::string_view config_file_path, boost::asio::io_context& io_context) noexcept
+    : base_type{ config_file_path, io_context }
 {
 }
 

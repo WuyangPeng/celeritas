@@ -1,5 +1,6 @@
 ﻿#include "common/logger.h"
 #include "mysql_database_pool.h"
+#include "common/common_fwd.h"
 
 #include <boost/asio/experimental/promise.hpp>
 #include <utility>

@@ -1,6 +1,7 @@
 ﻿#include "common/celeritas_error.h"
 #include "common_internal_fwd.h"
 #include "logger_impl.h"
+#include "common/common_fwd.h"
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/log/expressions.hpp>

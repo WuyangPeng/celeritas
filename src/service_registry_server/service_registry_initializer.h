@@ -10,7 +10,7 @@ namespace celeritas
         using class_type = service_registry_initializer;
         using base_type = initializer;
 
-        explicit service_registry_initializer(std::string config_file_path) noexcept;
+        explicit service_registry_initializer(std::string_view config_file_path, boost::asio::io_context& io_context) noexcept;
 
         void initialize_config() override;
 
