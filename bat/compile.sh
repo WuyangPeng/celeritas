@@ -5,9 +5,11 @@ mkdir -p build-debug build-release
 cd build-debug
 cmake ..
 cmake -DCMAKE_BUILD_TYPE=Debug ..
-make
+cmake --build . --parallel
+cmake --install . 
 
 cd ../build-release
 cmake ..
 cmake -DCMAKE_BUILD_TYPE=Release ..
-make
+cmake --build . --parallel
+cmake --install . 
