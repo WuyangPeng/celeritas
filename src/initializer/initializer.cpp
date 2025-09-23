@@ -1,7 +1,9 @@
 ﻿#include "initializer.h"
 #include "common/celeritas_error.h"
+#include "common/logger.h"
 #include "server/server_fwd.h"
 #include "service_registry_server/service_registry_initializer.h"
+#include "common/common_fwd.h"
 
 celeritas::initializer::initializer(const std::string_view config_file_path, boost::asio::io_context& io_context) noexcept
     : config_file_path_{ config_file_path },
@@ -21,6 +23,7 @@ void celeritas::initializer::initialize()
 
 void celeritas::initializer::run()
 {
+    LOG_CHANNEL(initializer_channel, info) << "server is start";
     io_context_.run();
 }
 
@@ -41,6 +44,7 @@ void celeritas::initializer::setup_signal_handler()
         [this](const boost::system::error_code& error, int signal_number) {
             if (!error)
             {
+                LOG_CHANNEL(initializer_channel, info) << "server is stop!";
                 io_context_.stop();
             }
         });
