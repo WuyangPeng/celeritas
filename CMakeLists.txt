@@ -8,13 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-if (MSVC)
-    # /W4          -> 4 级警告
-    # /WX          -> 警告视为错误
-    add_compile_options(/W4 /WX)
-
-endif ()
-
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
     # 编译选项（编译器）
@@ -42,11 +35,33 @@ include_directories(
 )
 
 # 包含boost库
-set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/cmake")
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/)
 
-find_package(Boost 1.88 REQUIRED CONFIG COMPONENTS filesystem timer date_time thread charconv regex log_setup log)
+if (MSVC)
 
+    add_library(boost INTERFACE)
+
+else ()
+
+    set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/cmake")
+
+    find_package(Boost 1.88 REQUIRED CONFIG COMPONENTS filesystem timer date_time thread charconv regex log_setup log)
+
+    add_library(boost INTERFACE)
+
+    target_link_libraries(boost INTERFACE
+            Boost::filesystem
+            Boost::timer
+            Boost::date_time
+            Boost::thread
+            Boost::charconv
+            Boost::regex
+            Boost::log_setup
+            Boost::log)
+
+endif ()
+
+# 包含protobuf库
 if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
 
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/build/bin/debug)
@@ -57,19 +72,6 @@ else ()
 
 endif ()
 
-add_library(boost INTERFACE)
-
-target_link_libraries(boost INTERFACE
-        Boost::filesystem
-        Boost::timer
-        Boost::date_time
-        Boost::thread
-        Boost::charconv
-        Boost::regex
-        Boost::log_setup
-        Boost::log)
-
-# 包含protobuf库
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src")
