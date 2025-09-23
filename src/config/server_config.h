@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <string>
 
 namespace celeritas
 {
@@ -6,5 +7,11 @@ namespace celeritas
     {
     public:
         using class_type = server_config;
+
+    private:
+        std::string service_name_;
+        std::string host_;
+        int port_ = 0;
+        std::string game_server_id_;
     };
 }

@@ -10,9 +10,8 @@ namespace celeritas
         using class_type = service_registry_config;
 
     private:
-        std::string ipc_name;
-        std::string host;
-        int port = 0;
+        std::string host_;
+        int port_ = 0;
     };
 }
 
