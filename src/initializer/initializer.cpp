@@ -4,8 +4,12 @@
 #include "service_registry_server/service_registry_initializer.h"
 
 celeritas::initializer::initializer(const std::string_view config_file_path, boost::asio::io_context& io_context) noexcept
-    : config_file_path_{ config_file_path }, io_context_{ io_context }
+    : config_file_path_{ config_file_path },
+      io_context_{ io_context },
+      work_guard_{ boost::asio::make_work_guard(io_context) },
+      signals_{ io_context, SIGINT, SIGTERM }
 {
+    setup_signal_handler();
 }
 
 void celeritas::initializer::initialize()
@@ -28,4 +32,16 @@ celeritas::initializer::initializer_unique_ptr celeritas::initializer::create_in
     }
 
     throw celeritas_error("unrecognized server type");
+}
+
+void celeritas::initializer::setup_signal_handler()
+{
+    // 异步等待信号
+    signals_.async_wait(
+        [this](const boost::system::error_code& error, int signal_number) {
+            if (!error)
+            {
+                io_context_.stop();
+            }
+        });
 }

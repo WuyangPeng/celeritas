@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <boost/asio/io_context.hpp>
+#include <boost/asio/signal_set.hpp>
 #include <memory>
 #include <string>
 
@@ -37,7 +38,14 @@ namespace celeritas
 
         virtual void initialize_application() = 0;
 
+        // 新增一个私有函数用于设置信号处理
+        void setup_signal_handler();
+
         std::string config_file_path_;
         boost::asio::io_context& io_context_;
+        boost::asio::executor_work_guard<boost::asio::io_context::executor_type> work_guard_;
+
+        // 新增一个信号集成员变量
+        boost::asio::signal_set signals_;
     };
 }
