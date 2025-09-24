@@ -15,11 +15,16 @@ namespace celeritas
     public:
         using class_type = app_config;
 
+        void load_service_registry_config(const std::string& filename);
+
     private:
+        using database_config_container = std::vector<database_config>;
+        using logger_config_container = std::vector<logger_config>;
+
         service_registry_config service_registry_;
         server_config server_;
         health_check_url_config health_check_url_;
-        std::vector<database_config> database_;
-        std::vector<logger_config> logger_;
+        database_config_container database_;
+        logger_config_container logger_;
     };
 }

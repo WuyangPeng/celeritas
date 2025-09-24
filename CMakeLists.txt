@@ -128,13 +128,9 @@ else ()
 
 endif ()
 
-add_library(protobuf
-        ${PROTO_SRCS_GENERATED}
-)
+add_library(protobuf ${PROTO_SRCS_GENERATED})
 
-target_link_libraries(protobuf
-        ${PROTOBUF_LIBRARIES}
-)
+target_link_libraries(protobuf ${PROTOBUF_LIBRARIES})
 
 add_subdirectory(cmake/common)
 add_subdirectory(cmake/network)

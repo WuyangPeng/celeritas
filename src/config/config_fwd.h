@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <string_view>
+
 namespace celeritas
 {
     class service_registry_config;
@@ -8,4 +10,11 @@ namespace celeritas
     class database_config;
     class logger_config;
     class app_config;
+
+    constexpr std::string_view default_service_registry_host = "127.0.0.1";
+    constexpr auto default_service_registry_port = 35000;
+
+    constexpr std::string_view config_path = "config";
+    constexpr std::string_view service_registry_xml = "service_registry.xml";
+    constexpr std::string_view server_xml = "server.xml";
 }

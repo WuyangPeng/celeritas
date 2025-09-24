@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <service_registry>
-	<host>consul.example.com</host>
-    <port>8500</port>
+    <host>127.0.0.1</host>
+    <port>30000</port>
 </service_registry>

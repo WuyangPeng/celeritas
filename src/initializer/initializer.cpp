@@ -5,8 +5,14 @@
 #include "service_registry_server/service_registry_initializer.h"
 #include "common/common_fwd.h"
 
+
+using namespace std::literals;
+
 celeritas::initializer::initializer(const std::string_view config_file_path, boost::asio::io_context& io_context) noexcept
     : config_file_path_{ config_file_path },
+      current_path_{ boost::filesystem::current_path() },
+      config_path_{ current_path_ / config_path },
+      app_config_{},
       io_context_{ io_context },
       work_guard_{ boost::asio::make_work_guard(io_context) },
       signals_{ io_context, SIGINT, SIGTERM }
@@ -35,6 +41,19 @@ celeritas::initializer::initializer_unique_ptr celeritas::initializer::create_in
     }
 
     throw celeritas_error("unrecognized server type");
+}
+
+void celeritas::initializer::initialize_config()
+{
+    initialize_service_registry_config();
+    service_initialize_config();
+}
+
+void celeritas::initializer::initialize_service_registry_config()
+{
+    const auto filename = config_path_ / service_registry_xml;
+
+    app_config_.load_service_registry_config(filename.string());
 }
 
 void celeritas::initializer::setup_signal_handler()

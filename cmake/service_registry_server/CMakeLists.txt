@@ -2,28 +2,13 @@
 
 add_executable(service_registry_server ${SRC_DIR_LIST})
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-
-    target_link_libraries(service_registry_server PRIVATE
-            service_registry
-            config initializer
-            database
-            worker_pool
-            network
-            common
-            boost)
-
-else ()
-
-    target_link_libraries(service_registry_server PRIVATE
-            service_registry
-            config initializer
-            database
-            worker_pool
-            network
-            common
-            boost)
-
-endif ()
-
+target_link_libraries(service_registry_server PRIVATE
+        service_registry
+        initializer
+        config
+        database
+        worker_pool
+        network
+        common
+        boost)
 

@@ -12,7 +12,7 @@ namespace celeritas
 
         explicit service_registry_initializer(std::string_view config_file_path, boost::asio::io_context& io_context) noexcept;
 
-        void initialize_config() override;
+        void service_initialize_config() override;
 
         void initialize_resource() override;
 

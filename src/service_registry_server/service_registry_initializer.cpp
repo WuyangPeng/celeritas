@@ -5,7 +5,7 @@ celeritas::service_registry_initializer::service_registry_initializer(std::strin
 {
 }
 
-void celeritas::service_registry_initializer::initialize_config()
+void celeritas::service_registry_initializer::service_initialize_config()
 {
 }
 
