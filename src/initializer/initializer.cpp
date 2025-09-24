@@ -44,7 +44,7 @@ void celeritas::initializer::setup_signal_handler()
         [this](const boost::system::error_code& error, int signal_number) {
             if (!error)
             {
-                LOG_CHANNEL(initializer_channel, info) << "server is stop!";
+                LOG_CHANNEL(initializer_channel, info) << "server is stop! signal_number = " << signal_number;
                 io_context_.stop();
             }
         });
