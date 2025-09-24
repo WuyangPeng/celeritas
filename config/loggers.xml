@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<loggers>    
+    <logger name="unregistered_logger">
+        <level>warning</level>
+        <console_enabled>true</console_enabled>
+        <channel_name>unregistered</channel_name>
+        <log_file_name>unregistered.log</log_file_name>
+        <rotation_size>50</rotation_size>
+    </logger>
+	<logger name="common_logger">
+        <level>warning</level>
+        <console_enabled>true</console_enabled>
+        <channel_name>common</channel_name>
+        <log_file_name>common.log</log_file_name>
+        <rotation_size>50</rotation_size>
+    </logger>
+	<logger name="network_logger">
+        <level>warning</level>
+        <console_enabled>true</console_enabled>
+        <channel_name>network</channel_name>
+        <log_file_name>network.log</log_file_name>
+        <rotation_size>50</rotation_size>
+    </logger>
+	<logger name="worker_pool_logger">
+        <level>warning</level>
+        <console_enabled>true</console_enabled>
+        <channel_name>worker_pool</channel_name>
+        <log_file_name>worker_pool.log</log_file_name>
+        <rotation_size>50</rotation_size>
+    </logger>
+	<logger name="database_logger">
+        <level>warning</level>
+        <console_enabled>true</console_enabled>
+        <channel_name>database</channel_name>
+        <log_file_name>database.log</log_file_name>
+        <rotation_size>50</rotation_size>
+    </logger>
+	<logger name="initializer_logger">
+        <level>warning</level>
+        <console_enabled>true</console_enabled>
+        <channel_name>initializer</channel_name>
+        <log_file_name>initializer.log</log_file_name>
+        <rotation_size>50</rotation_size>
+    </logger>
+</loggers>

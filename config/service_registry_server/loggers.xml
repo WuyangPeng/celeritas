@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<loggers>
+    <logger name="default_logger">
+        <level>info</level>
+        <console_enabled>true</console_enabled>
+        <channel_name>service_registry_server</channel_name>
+        <log_file_name>service_registry_server.log</log_file_name>
+        <rotation_size>10</rotation_size>
+    </logger>
+</loggers>

@@ -10,9 +10,9 @@ namespace celeritas
     class buffer_pool;
     class buffer_guard;
 
+    constexpr std::string_view channel{ "channel" };
     constexpr std::string_view default_channel{ "default" };
     constexpr std::string_view unregistered_channel{ "unregistered" };
-    constexpr std::string_view channel{ "channel" };
     constexpr std::string_view common_channel{ "common" };
     constexpr std::string_view network_channel{ "network" };
     constexpr std::string_view worker_pool_channel{ "worker_pool" };
