@@ -47,6 +47,8 @@ namespace celeritas
 
         void initialize_database_config();
 
+        void initialize_logger_config();
+
         virtual void service_initialize_config() = 0;
 
         virtual void initialize_resource() = 0;

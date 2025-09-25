@@ -10,7 +10,12 @@ namespace celeritas
         using class_type = logger_config;
         using severity_level_type = boost::log::trivial::severity_level;
 
+        [[nodiscard]] std::string get_name() const;
+
+        [[nodiscard]] std::string get_channel_name() const;
+
     private:
+        std::string name_;
         severity_level_type level_ = severity_level_type::trace;
         bool console_enabled_ = false;
         std::string channel_name_;

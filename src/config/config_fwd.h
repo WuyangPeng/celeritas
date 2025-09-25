@@ -26,6 +26,7 @@ namespace celeritas
     constexpr std::string_view server_xml = "server.xml";
     constexpr std::string_view health_check_url_xml = "health_check_url.xml";
     constexpr std::string_view databases_xml = "databases.xml";
+    constexpr std::string_view loggers_xml = "loggers.xml";
 
     constexpr std::string_view logger_extension = ".log";
 }

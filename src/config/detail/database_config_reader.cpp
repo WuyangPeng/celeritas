@@ -26,13 +26,13 @@ celeritas::database_config_reader::database_config_container celeritas::database
 
 celeritas::database_config celeritas::database_config_reader::get_database_node(const boost::property_tree::basic_ptree<std::string, std::string>& node)
 {
-    const auto name = node.get<std::string>("<xmlattr>.name", "");
-
     // 必需配置项
+    const auto name = node.get<std::string>("<xmlattr>.name");
     const auto database_name = node.get<std::string>("database_type");
     const auto database_type = get_database_type(database_name);
     const auto host = node.get<std::string>("host");
     const auto port = node.get<int>("port");
+
     const auto user = node.get<std::string>("user", "");
     const auto password = node.get<std::string>("password", "");
     const auto db_name = node.get<std::string>("db_name", "");

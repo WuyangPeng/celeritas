@@ -25,9 +25,15 @@ namespace celeritas
 
         void load_databases_config(const std::string& filename);
 
+        void load_loggers_config(const std::string& filename);
+
     private:
         using database_config_container = std::map<std::string, database_config>;
-        using logger_config_container = std::vector<logger_config>;
+        using logger_config_container = std::map<std::string, logger_config>;
+
+        void do_load_databases_config(const std::string& filename);
+
+        void do_load_loggers_config(const std::string& filename);
 
         service_registry_config service_registry_;
         server_config server_;
