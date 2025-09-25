@@ -51,11 +51,15 @@ namespace celeritas
 
         virtual void service_initialize_config() = 0;
 
-        virtual void initialize_resource() = 0;
+        void initialize_resource();
 
-        virtual void initialize_application() = 0;
+        virtual void service_initialize_resource() = 0;
 
-        // 新增一个私有函数用于设置信号处理
+        void initialize_application();
+
+        virtual void service_initialize_application() = 0;
+
+        // 设置信号处理
         void setup_signal_handler();
 
         std::string config_file_path_;

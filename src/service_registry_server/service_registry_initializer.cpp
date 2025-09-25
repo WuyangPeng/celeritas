@@ -9,10 +9,10 @@ void celeritas::service_registry_initializer::service_initialize_config()
 {
 }
 
-void celeritas::service_registry_initializer::initialize_resource()
+void celeritas::service_registry_initializer::service_initialize_resource()
 {
 }
 
-void celeritas::service_registry_initializer::initialize_application()
+void celeritas::service_registry_initializer::service_initialize_application()
 {
 }

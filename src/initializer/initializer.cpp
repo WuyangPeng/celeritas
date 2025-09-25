@@ -63,6 +63,7 @@ void celeritas::initializer::initialize_config()
     initialize_health_check_url_config();
     initialize_database_config();
     initialize_logger_config();
+    service_initialize_config();
 }
 
 void celeritas::initializer::initialize_service_registry_config()
@@ -106,6 +107,16 @@ void celeritas::initializer::initialize_logger_config()
     const auto server_filename = config_path_ / config_file_path_ / loggers_xml;
 
     app_config_.load_loggers_config(server_filename.string());
+}
+
+void celeritas::initializer::initialize_resource()
+{
+    service_initialize_resource();
+}
+
+void celeritas::initializer::initialize_application()
+{
+    service_initialize_application();
 }
 
 void celeritas::initializer::setup_signal_handler()

@@ -14,8 +14,8 @@ namespace celeritas
 
         void service_initialize_config() override;
 
-        void initialize_resource() override;
+        void service_initialize_resource() override;
 
-        void initialize_application() override;
+        void service_initialize_application() override;
     };
 }

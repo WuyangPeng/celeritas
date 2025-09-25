@@ -61,7 +61,7 @@ void celeritas::logger_config_reader::load_node(const boost::property_tree::basi
     const auto log_file_name = node.get<std::string>("log_file_name");
 
     const auto console_enabled = node.get<bool>("console_enabled", true);
-    const auto rotation_size = node.get<int>("rotation_size", default_loggers_rotation_size);
+    const auto rotation_size = node.get<int>("rotation_size", default_logger_rotation_size);
 
     logger_config logger{ name, severity_level, console_enabled, channel_name, log_file_name, rotation_size };
     logger_.emplace_back(logger);
