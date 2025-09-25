@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <loggers>
+    <global_level>trace</global_level>
+    <console_level>trace</console_level>
     <logger name="default_logger">
         <level>info</level>
         <console_enabled>true</console_enabled>

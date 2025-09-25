@@ -17,8 +17,15 @@ auto get_formatter()
     return boost::log::expressions::stream
            << "["
            << boost::log::expressions::format_date_time<boost::posix_time::ptime>("TimeStamp", "%Y-%m-%d %H:%M:%S.%f")
-           << "]"
-           << " ["
+           << "]["
+           << boost::log::expressions::attr<boost::log::attributes::current_thread_id::value_type>("ThreadID")
+           << "]["
+           << boost::log::expressions::attr<std::string>("function")
+           << "]["
+           << boost::log::expressions::attr<std::string>("file")
+           << ":"
+           << boost::log::expressions::attr<uint_least32_t>("line")
+           << "]["
            << boost::log::trivial::severity
            << "] "
            << boost::log::expressions::smessage;

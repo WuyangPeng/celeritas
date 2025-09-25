@@ -43,3 +43,15 @@ void celeritas::app_config::load_health_check_url_config(const std::string& file
         throw;
     }
 }
+
+void celeritas::app_config::load_databases_config(const std::string& filename)
+{
+    try
+    {
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(initializer_channel, error) << "load databases config error:" << error.what();
+        throw;
+    }
+}

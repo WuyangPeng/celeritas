@@ -3,6 +3,7 @@
 #include "database_config.h"
 #include "health_check_url_config.h"
 #include "logger_config.h"
+#include "logger_level_config.h"
 #include "server_config.h"
 #include "service_registry_config.h"
 
@@ -21,6 +22,8 @@ namespace celeritas
 
         void load_health_check_url_config(const std::string& filename);
 
+        void load_databases_config(const std::string& filename);
+
     private:
         using database_config_container = std::vector<database_config>;
         using logger_config_container = std::vector<logger_config>;
@@ -28,6 +31,7 @@ namespace celeritas
         service_registry_config service_registry_;
         server_config server_;
         health_check_url_config health_check_url_;
+        logger_level_config logger_level_config_;
         database_config_container database_;
         logger_config_container logger_;
     };

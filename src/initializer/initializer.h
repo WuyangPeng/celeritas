@@ -35,6 +35,8 @@ namespace celeritas
         [[nodiscard]] static initializer_unique_ptr create_initializer(const std::string_view& server_type, const std::string_view& config_file_path, boost::asio::io_context& io_context);
 
     private:
+        void initialize_default_logger();
+
         void initialize_config();
 
         void initialize_service_registry_config();
@@ -42,6 +44,8 @@ namespace celeritas
         void initialize_server_config();
 
         void initialize_health_check_url_config();
+
+        void initialize_database_config();
 
         virtual void service_initialize_config() = 0;
 

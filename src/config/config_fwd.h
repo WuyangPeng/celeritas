@@ -8,6 +8,7 @@ namespace celeritas
     class server_config;
     class health_check_url_config;
     class database_config;
+    class logger_level_config;
     class logger_config;
     class app_config;
 
@@ -15,9 +16,14 @@ namespace celeritas
     constexpr auto default_service_registry_port = 35000;
     constexpr auto default_health_check_interval = 30;
     constexpr auto default_health_check_timeout = 5;
+    constexpr auto default_logger_rotation_size = 50;
 
     constexpr std::string_view config_path = "config";
+    constexpr std::string_view logger_path = "log";
     constexpr std::string_view service_registry_xml = "service_registry.xml";
     constexpr std::string_view server_xml = "server.xml";
     constexpr std::string_view health_check_url_xml = "health_check_url.xml";
+    constexpr std::string_view databases_xml = "databases.xml";
+
+    constexpr std::string_view logger_extension = ".log";
 }

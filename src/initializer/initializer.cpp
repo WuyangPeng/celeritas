@@ -5,7 +5,6 @@
 #include "service_registry_server/service_registry_initializer.h"
 #include "common/common_fwd.h"
 
-
 using namespace std::literals;
 
 celeritas::initializer::initializer(const std::string_view config_file_path, boost::asio::io_context& io_context) noexcept
@@ -22,6 +21,7 @@ celeritas::initializer::initializer(const std::string_view config_file_path, boo
 
 void celeritas::initializer::initialize()
 {
+    initialize_default_logger();
     initialize_config();
     initialize_resource();
     initialize_application();
@@ -43,11 +43,25 @@ celeritas::initializer::initializer_unique_ptr celeritas::initializer::create_in
     throw celeritas_error("unrecognized server type");
 }
 
+void celeritas::initializer::initialize_default_logger()
+{
+    logger::init_global(logger::severity_level_type::trace);
+    logger::init_console(logger::severity_level_type::trace);
+
+    const auto filename = current_path_ / logger_path / (std::string{ initializer_channel } + logger_extension.data());
+    logger::init_file(initializer_channel,
+                      filename.string(),
+                      logger::severity_level_type::trace,
+                      default_logger_rotation_size,
+                      true);
+}
+
 void celeritas::initializer::initialize_config()
 {
     initialize_service_registry_config();
     initialize_server_config();
     initialize_health_check_url_config();
+    initialize_database_config();
 }
 
 void celeritas::initializer::initialize_service_registry_config()
@@ -71,14 +85,21 @@ void celeritas::initializer::initialize_health_check_url_config()
     app_config_.load_health_check_url_config(filename.string());
 }
 
+void celeritas::initializer::initialize_database_config()
+{
+    const auto filename = config_path_ / databases_xml;
+
+    app_config_.load_databases_config(filename.string());
+}
+
 void celeritas::initializer::setup_signal_handler()
 {
     // 异步等待信号
     signals_.async_wait(
-        [this](const boost::system::error_code& error, int signal_number) {
+        [this](const boost::system::error_code& error, const int signal_number) {
             if (!error)
             {
-                LOG_CHANNEL(initializer_channel, info) << "server is stop! signal_number = " << signal_number;
+                LOG_CHANNEL(initializer_channel, info) << "server is stop! signal_number = " << signal_number << ",error = " << error.message();
                 io_context_.stop();
             }
         });
