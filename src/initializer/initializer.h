@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "initializer_factory.h"
 #include "config/app_config.h"
 
 #include <boost/asio/io_context.hpp>
@@ -16,7 +17,7 @@ namespace celeritas
         using class_type = initializer;
         using initializer_unique_ptr = std::unique_ptr<initializer>;
 
-        explicit initializer(std::string_view config_file_path, boost::asio::io_context& io_context) noexcept;
+        initializer(const std::string_view& server_type, std::string_view config_file_path, boost::asio::io_context& io_context);
 
         virtual ~initializer() noexcept = default;
 
@@ -32,24 +33,12 @@ namespace celeritas
 
         void run();
 
-        [[nodiscard]] static initializer_unique_ptr create_initializer(const std::string_view& server_type, const std::string_view& config_file_path, boost::asio::io_context& io_context);
-
     private:
+        using configuration_loader_unique_ptr = initializer_factory::configuration_loader_unique_ptr;
+
         void initialize_default_logger();
 
         void initialize_config();
-
-        void initialize_service_registry_config();
-
-        void initialize_server_config();
-
-        void initialize_health_check_url_config();
-
-        void initialize_database_config();
-
-        void initialize_logger_config();
-
-        virtual void service_initialize_config() = 0;
 
         void initialize_resource();
 
@@ -63,19 +52,14 @@ namespace celeritas
 
         void initialize_service_registry_resource();
 
-        virtual void service_initialize_resource() = 0;
-
         void initialize_application();
-
-        virtual void service_initialize_application() = 0;
 
         // 设置信号处理
         void setup_signal_handler();
 
         std::string config_file_path_;
         boost::filesystem::path current_path_;
-        boost::filesystem::path config_path_;
-        app_config app_config_;
+        configuration_loader_unique_ptr configuration_loader_;
         boost::asio::io_context& io_context_;
         boost::asio::executor_work_guard<boost::asio::io_context::executor_type> work_guard_;
 

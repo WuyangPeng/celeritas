@@ -13,10 +13,10 @@ int main()
     {
         boost::asio::io_context io_context{};
 
-        const auto initializer = celeritas::initializer::create_initializer(celeritas::service_registry_type, celeritas::service_registry_type, io_context);
-        initializer->initialize();
+        celeritas::initializer initializer{ celeritas::service_registry_type, celeritas::service_registry_type, io_context };
+        initializer.initialize();
 
-        initializer->run();
+        initializer.run();
     }
     catch (const std::exception& error)
     {
