@@ -1,7 +1,9 @@
 ﻿#include "resource_loader.h"
 
-celeritas::resource_loader::resource_loader(const app_config& app_config)
-    : app_config_{ app_config }
+#include <utility>
+
+celeritas::resource_loader::resource_loader(app_config app_config)
+    : app_config_{ std::move(app_config) }
 {
 }
 

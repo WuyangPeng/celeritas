@@ -8,7 +8,7 @@ namespace celeritas
     public:
         using class_type = resource_loader;
 
-        explicit resource_loader(const app_config& app_config);
+        explicit resource_loader(app_config app_config);
 
         virtual ~resource_loader() noexcept = default;
 
