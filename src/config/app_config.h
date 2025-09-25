@@ -27,6 +27,8 @@ namespace celeritas
 
         void load_loggers_config(const std::string& filename);
 
+        [[nodiscard]] logger_level_config get_logger_level_config() const;
+
     private:
         using database_config_container = std::map<std::string, database_config>;
         using logger_config_container = std::map<std::string, logger_config>;

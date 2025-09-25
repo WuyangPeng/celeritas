@@ -103,3 +103,8 @@ void celeritas::app_config::do_load_loggers_config(const std::string& filename)
         logger_level_config_.set_console_level(logger_level_config.get_console_level());
     }
 }
+
+celeritas::logger_level_config celeritas::app_config::get_logger_level_config() const
+{
+    return logger_level_config_;
+}
