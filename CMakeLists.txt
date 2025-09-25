@@ -57,9 +57,6 @@ else ()
             Boost::log_setup
             Boost::log)
 
-    set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-    set(CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib")
-
 endif ()
 
 # 包含protobuf库
