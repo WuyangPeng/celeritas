@@ -39,6 +39,10 @@ namespace celeritas
 
         void initialize_service_registry_config();
 
+        void initialize_server_config();
+
+        void initialize_health_check_url_config();
+
         virtual void service_initialize_config() = 0;
 
         virtual void initialize_resource() = 0;

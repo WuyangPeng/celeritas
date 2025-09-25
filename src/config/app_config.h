@@ -17,6 +17,10 @@ namespace celeritas
 
         void load_service_registry_config(const std::string& filename);
 
+        void load_server_config(const std::string& filename);
+
+        void load_health_check_url_config(const std::string& filename);
+
     private:
         using database_config_container = std::vector<database_config>;
         using logger_config_container = std::vector<logger_config>;

@@ -9,6 +9,10 @@ namespace celeritas
     public:
         using class_type = health_check_url_config;
 
+        health_check_url_config() noexcept = default;
+
+        health_check_url_config(std::string url, int interval, int timeout);
+
     private:
         std::string url_;
         int interval_ = 0;

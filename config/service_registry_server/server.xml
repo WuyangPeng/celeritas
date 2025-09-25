@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<server>
-    <service_name>game_server</service_name>
-    <host>0.0.0.0</host>
-    <port>8080</port>
-    <game_server_id>us-east-1a-01</game_server_id>
-</server>

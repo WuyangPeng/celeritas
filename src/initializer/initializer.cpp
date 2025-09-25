@@ -46,7 +46,8 @@ celeritas::initializer::initializer_unique_ptr celeritas::initializer::create_in
 void celeritas::initializer::initialize_config()
 {
     initialize_service_registry_config();
-    service_initialize_config();
+    initialize_server_config();
+    initialize_health_check_url_config();
 }
 
 void celeritas::initializer::initialize_service_registry_config()
@@ -54,6 +55,20 @@ void celeritas::initializer::initialize_service_registry_config()
     const auto filename = config_path_ / service_registry_xml;
 
     app_config_.load_service_registry_config(filename.string());
+}
+
+void celeritas::initializer::initialize_server_config()
+{
+    const auto filename = config_path_ / config_file_path_ / server_xml;
+
+    app_config_.load_server_config(filename.string());
+}
+
+void celeritas::initializer::initialize_health_check_url_config()
+{
+    const auto filename = config_path_ / config_file_path_ / health_check_url_xml;
+
+    app_config_.load_health_check_url_config(filename.string());
 }
 
 void celeritas::initializer::setup_signal_handler()
