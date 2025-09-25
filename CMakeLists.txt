@@ -153,16 +153,6 @@ if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
             PATTERN "*.xml"
     )
 
-    if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-
-        install(
-                DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/"
-                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug/"
-                PATTERN "*.so"
-        )
-
-    endif ()
-
 else ()
 
     install(TARGETS service_registry_server auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release")
@@ -171,16 +161,6 @@ else ()
             DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release/config/"
             PATTERN "*.xml"
     )
-
-    if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-
-        install(
-                DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/"
-                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release/"
-                PATTERN "*.so"
-        )
-
-    endif ()
 
 endif ()
 
