@@ -53,6 +53,16 @@ namespace celeritas
 
         void initialize_resource();
 
+        void initialize_logger_resource();
+
+        void initialize_database_resource();
+
+        void initialize_server_resource();
+
+        void initialize_health_check_url_resource();
+
+        void initialize_service_registry_resource();
+
         virtual void service_initialize_resource() = 0;
 
         void initialize_application();

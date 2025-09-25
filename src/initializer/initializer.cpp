@@ -111,7 +111,32 @@ void celeritas::initializer::initialize_logger_config()
 
 void celeritas::initializer::initialize_resource()
 {
+    initialize_logger_resource();
+    initialize_database_resource();
+    initialize_server_resource();
+    initialize_health_check_url_resource();
+    initialize_service_registry_resource();
     service_initialize_resource();
+}
+
+void celeritas::initializer::initialize_logger_resource()
+{
+}
+
+void celeritas::initializer::initialize_database_resource()
+{
+}
+
+void celeritas::initializer::initialize_server_resource()
+{
+}
+
+void celeritas::initializer::initialize_health_check_url_resource()
+{
+}
+
+void celeritas::initializer::initialize_service_registry_resource()
+{
 }
 
 void celeritas::initializer::initialize_application()
