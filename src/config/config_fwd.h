@@ -19,6 +19,7 @@ namespace celeritas
     constexpr auto default_logger_rotation_size = 50;
     constexpr auto default_database_max_connections = 10;
     constexpr auto default_database_timeout_seconds = 5;
+    constexpr auto default_loggers_rotation_size = 50;
 
     constexpr std::string_view config_path = "config";
     constexpr std::string_view logger_path = "log";

@@ -1,4 +1,5 @@
 ﻿#include "logger_config_reader.h"
+#include "config/config_fwd.h"
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
@@ -6,6 +7,7 @@
 celeritas::logger_config_reader::logger_config_reader(std::string filename)
     : filename_{ std::move(filename) }, logger_{}, logger_level_{}
 {
+    load_config();
 }
 
 celeritas::logger_level_config celeritas::logger_config_reader::get_logger_level_config() const
@@ -32,14 +34,35 @@ void celeritas::logger_config_reader::load_config()
         }
         else if (name == "global_level")
         {
-            logger_level_.set_default_level(node.)
+            if (const auto global_level = node.get<std::string>("", "");
+                !global_level.empty())
+            {
+                logger_level_.set_default_level(logger_config::get_severity_level_type(global_level));
+            }
         }
         else if (name == "console_level")
         {
+            if (const auto console_level = node.get<std::string>("", "");
+                !console_level.empty())
+            {
+                logger_level_.set_console_level(logger_config::get_severity_level_type(console_level));
+            }
         }
     }
 }
 
 void celeritas::logger_config_reader::load_node(const boost::property_tree::basic_ptree<std::string, std::string>& node)
 {
+    // 必需配置项
+    const auto name = node.get<std::string>("<xmlattr>.name");
+    const auto level_name = node.get<std::string>("level");
+    const auto severity_level = logger_config::get_severity_level_type(level_name);
+    const auto channel_name = node.get<std::string>("channel_name");
+    const auto log_file_name = node.get<std::string>("log_file_name");
+
+    const auto console_enabled = node.get<bool>("console_enabled", true);
+    const auto rotation_size = node.get<int>("rotation_size", default_loggers_rotation_size);
+
+    logger_config logger{ name, severity_level, console_enabled, channel_name, log_file_name, rotation_size };
+    logger_.emplace_back(logger);
 }

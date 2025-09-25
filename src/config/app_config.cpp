@@ -69,7 +69,6 @@ void celeritas::app_config::do_load_databases_config(const std::string& filename
     }
 }
 
-
 void celeritas::app_config::load_loggers_config(const std::string& filename)
 {
     try
