@@ -35,6 +35,7 @@ namespace celeritas
 
     private:
         using configuration_loader_unique_ptr = initializer_factory::configuration_loader_unique_ptr;
+        using resource_loader_unique_ptr = initializer_factory::resource_loader_unique_ptr;
 
         void initialize_default_logger();
 
@@ -42,24 +43,14 @@ namespace celeritas
 
         void initialize_resource();
 
-        void initialize_logger_resource();
-
-        void initialize_database_resource();
-
-        void initialize_server_resource();
-
-        void initialize_health_check_url_resource();
-
-        void initialize_service_registry_resource();
-
         void initialize_application();
 
         // 设置信号处理
         void setup_signal_handler();
 
-        std::string config_file_path_;
         boost::filesystem::path current_path_;
         configuration_loader_unique_ptr configuration_loader_;
+        resource_loader_unique_ptr resource_loader_;
         boost::asio::io_context& io_context_;
         boost::asio::executor_work_guard<boost::asio::io_context::executor_type> work_guard_;
 

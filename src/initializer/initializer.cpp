@@ -7,9 +7,9 @@
 using namespace std::literals;
 
 celeritas::initializer::initializer(const std::string_view& server_type, const std::string_view config_file_path, boost::asio::io_context& io_context)
-    : config_file_path_{ config_file_path },
-      current_path_{ boost::filesystem::current_path() },
+    : current_path_{ boost::filesystem::current_path() },
       configuration_loader_{ initializer_factory::create_configuration_loader(server_type, config_file_path) },
+      resource_loader_{ initializer_factory::create_resource_loader(server_type, configuration_loader_->get_app_config()) },
       io_context_{ io_context },
       work_guard_{ boost::asio::make_work_guard(io_context) },
       signals_{ io_context, SIGINT, SIGTERM }
@@ -31,7 +31,6 @@ void celeritas::initializer::run()
     io_context_.run();
 }
 
-
 void celeritas::initializer::initialize_default_logger()
 {
     logger::init_global(logger::severity_level_type::trace);
@@ -52,31 +51,7 @@ void celeritas::initializer::initialize_config()
 
 void celeritas::initializer::initialize_resource()
 {
-    initialize_logger_resource();
-    initialize_database_resource();
-    initialize_server_resource();
-    initialize_health_check_url_resource();
-    initialize_service_registry_resource();
-}
-
-void celeritas::initializer::initialize_logger_resource()
-{
-}
-
-void celeritas::initializer::initialize_database_resource()
-{
-}
-
-void celeritas::initializer::initialize_server_resource()
-{
-}
-
-void celeritas::initializer::initialize_health_check_url_resource()
-{
-}
-
-void celeritas::initializer::initialize_service_registry_resource()
-{
+    resource_loader_->initialize();
 }
 
 void celeritas::initializer::initialize_application()
