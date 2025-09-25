@@ -87,9 +87,13 @@ void celeritas::initializer::initialize_health_check_url_config()
 
 void celeritas::initializer::initialize_database_config()
 {
-    const auto filename = config_path_ / databases_xml;
+    const auto main_filename = config_path_ / databases_xml;
 
-    app_config_.load_databases_config(filename.string());
+    app_config_.load_databases_config(main_filename.string());
+
+    const auto server_filename = config_path_ / config_file_path_ / databases_xml;
+
+    app_config_.load_databases_config(server_filename.string());
 }
 
 void celeritas::initializer::setup_signal_handler()

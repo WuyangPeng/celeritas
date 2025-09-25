@@ -10,12 +10,12 @@ namespace celeritas
 
         server_config() noexcept = default;
 
-        server_config(std::string service_name, std::string host, int port, std::string game_server_id) noexcept;
+        server_config(std::string service_name, std::string host, int tcp_port, std::string game_server_id) noexcept;
 
     private:
         std::string service_name_;
         std::string host_;
-        int port_ = 0;
+        int tcp_port_ = 0;
         std::string game_server_id_;
     };
 }

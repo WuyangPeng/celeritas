@@ -7,6 +7,7 @@
 #include "server_config.h"
 #include "service_registry_config.h"
 
+#include <map>
 #include <vector>
 
 namespace celeritas
@@ -25,7 +26,7 @@ namespace celeritas
         void load_databases_config(const std::string& filename);
 
     private:
-        using database_config_container = std::vector<database_config>;
+        using database_config_container = std::map<std::string, database_config>;
         using logger_config_container = std::vector<logger_config>;
 
         service_registry_config service_registry_;

@@ -10,4 +10,6 @@ namespace celeritas
         mongo,
         redis,
     };
+
+    [[nodiscard]] database_type get_database_type(const std::string& database_name);
 }

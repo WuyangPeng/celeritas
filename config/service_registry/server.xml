@@ -2,6 +2,6 @@
 <server>
     <service_name>service_registry_server</service_name>
     <host>127.0.0.1</host>
-    <port>30000</port>
+    <tcp_port>30000</tcp_port>
     <game_server_id></game_server_id>
 </server>

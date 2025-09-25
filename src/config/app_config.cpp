@@ -4,6 +4,7 @@
 #include "detail/server_config_reader.h"
 #include "detail/service_registry_config_reader.h"
 #include "common/common_fwd.h"
+#include "detail/database_config_reader.h"
 
 void celeritas::app_config::load_service_registry_config(const std::string& filename)
 {
@@ -48,6 +49,11 @@ void celeritas::app_config::load_databases_config(const std::string& filename)
 {
     try
     {
+        for (const auto& result = database_config_reader::load_config(filename);
+             const auto& element : result)
+        {
+            database_[element.get_name()] = element;
+        }
     }
     catch (const std::exception& error)
     {
