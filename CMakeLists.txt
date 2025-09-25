@@ -6,8 +6,6 @@ project(celeritas)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
     # 编译选项（编译器）
@@ -148,10 +146,10 @@ add_subdirectory(cmake/chat_server)
 # 安装规则
 if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
 
-    install(TARGETS service_registry_server auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug")
+    install(TARGETS boost service_registry_server auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug")
 
 else ()
 
-    install(TARGETS service_registry_server auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release")
+    install(TARGETS boost service_registry_server auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release")
 
 endif ()

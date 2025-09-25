@@ -12,3 +12,24 @@ target_link_libraries(service_registry_server PRIVATE
         common
         boost)
 
+file(GLOB CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../config/*")
+
+foreach (config_file IN LISTS CONFIG_FILES)
+    add_custom_command(
+            TARGET service_registry_server POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:service_registry_server>/config"
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${config_file}" "$<TARGET_FILE_DIR:service_registry_server>/config/"
+            COMMENT "Copying config files for ${config_file}"
+    )
+endforeach ()
+
+file(GLOB SERVICE_REGISTRY_CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../config/service_registry/*")
+
+foreach (service_registry_config_file IN LISTS SERVICE_REGISTRY_CONFIG_FILES)
+    add_custom_command(
+            TARGET service_registry_server POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:service_registry_server>/config/service_registry/"
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${service_registry_config_file}" "$<TARGET_FILE_DIR:service_registry_server>/config/service_registry/"
+            COMMENT "Copying config files for ${service_registry_config_file}"
+    )
+endforeach ()
