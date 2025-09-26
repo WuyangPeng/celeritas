@@ -3,10 +3,6 @@
 #include "database_session.h"
 #include "boost/asio/io_context.hpp"
 
-//#include <mongocxx/client.hpp>
-//#include <mongocxx/instance.hpp>
-#include <memory>
-
 namespace celeritas
 {
     class mongo_database_session : public database_session
@@ -27,9 +23,6 @@ namespace celeritas
         mongo_database_session& operator=(mongo_database_session&& rhs) noexcept = default;
 
     private:
-        // using mongo_client = std::unique_ptr<mongocxx::client>;
-
-        //mongo_client client_;
         boost::asio::io_context& io_context_;
 
         std::string uri_;

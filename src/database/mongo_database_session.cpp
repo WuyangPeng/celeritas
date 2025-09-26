@@ -6,3 +6,7 @@ celeritas::mongo_database_session::mongo_database_session(boost::asio::io_contex
     : io_context_{ io_context }, uri_{}, db_name_{}
 {
 }
+
+celeritas::mongo_database_session::~mongo_database_session() noexcept
+{
+}
