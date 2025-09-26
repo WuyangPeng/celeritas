@@ -30,8 +30,8 @@ celeritas::mysql_database_pool::awaitable_type celeritas::mysql_database_pool::a
     {
         try
         {
-            auto session = std::make_shared<mysql_database_session>(io_context_, ssl_context_);
-            co_await session->async_connect(host_, port_, user_, password_, db_name_);
+            auto session = std::make_shared<mysql_database_session>(host_, port_, user_, password_, db_name_, io_context_, ssl_context_);
+            co_await session->async_connect();
             sessions_.emplace_back(session);
         }
         catch (const std::exception& error)

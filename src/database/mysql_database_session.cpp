@@ -1,11 +1,25 @@
 ﻿#include "mysql_database_session.h"
+#include "common/logger.h"
+#include "common/common_fwd.h"
 
-celeritas::mysql_database_session::mysql_database_session(boost::asio::io_context& io_context, boost::asio::ssl::context* ssl_context)
-    : connection_{ get_any_connection(io_context, ssl_context) }
+celeritas::mysql_database_session::mysql_database_session(const std::string_view& host,
+                                                          const uint16_t port,
+                                                          const std::string_view& user,
+                                                          const std::string_view& password,
+                                                          const std::string_view& db_name,
+                                                          boost::asio::io_context& io_context,
+                                                          boost::asio::ssl::context* ssl_context)
+    : host_{ host },
+      port_{ port },
+      user_{ user },
+      password_{ password },
+      db_name_{ db_name },
+      connection_{ get_any_connection(io_context, ssl_context) }
 {
 }
 
-celeritas::mysql_database_session::connection_type celeritas::mysql_database_session::get_any_connection(boost::asio::io_context& io_context, boost::asio::ssl::context* ssl_context)
+celeritas::mysql_database_session::connection_type celeritas::mysql_database_session::get_any_connection(boost::asio::io_context& io_context,
+                                                                                                         boost::asio::ssl::context* ssl_context)
 {
     if (ssl_context == nullptr)
     {
@@ -20,25 +34,75 @@ celeritas::mysql_database_session::connection_type celeritas::mysql_database_ses
     }
 }
 
-celeritas::mysql_database_session::awaitable_type celeritas::mysql_database_session::async_connect(const std::string_view& host,
-                                                                                                   uint16_t port,
-                                                                                                   const std::string_view& user,
-                                                                                                   const std::string_view& password,
-                                                                                                   const std::string_view& db_name)
+celeritas::mysql_database_session::results_type celeritas::mysql_database_session::async_execute_query(const std::string_view& sql)
+{
+    boost::mysql::results results{};
+
+    co_await connection_.async_execute(sql, results, boost::asio::use_awaitable);
+
+    co_return results;
+}
+
+celeritas::mysql_database_session::results_type celeritas::mysql_database_session::async_handle_and_retry(const std::string_view& sql, const boost::system::error_code& error_code)
+{
+    if (error_code == boost::asio::error::eof ||
+        error_code == boost::asio::error::broken_pipe ||
+        error_code == boost::asio::error::connection_reset)
+    {
+        LOG_CHANNEL(database_channel, warning) << "Database connection lost. Trying to reconnect...";
+
+        try
+        {
+            co_await async_connect();
+
+            LOG_CHANNEL(database_channel, info) << "Database reconnected successfully. Retrying query.";
+
+            co_return co_await async_execute_query(sql);
+        }
+        catch (const std::exception& reconnect_error)
+        {
+            LOG_CHANNEL(database_channel, error) << "Reconnection failed: " << reconnect_error.what();
+
+            throw;
+        }
+    }
+
+    throw;
+}
+
+celeritas::mysql_database_session::awaitable_type celeritas::mysql_database_session::async_connect()
 {
     boost::mysql::connect_params connect_params{};
-    connect_params.server_address.emplace_host_and_port(host.data(), port);
-    connect_params.username = user;
-    connect_params.password = password;
-    connect_params.database = db_name;
+    connect_params.server_address.emplace_host_and_port(host_.data(), port_);
+    connect_params.username = user_;
+    connect_params.password = password_;
+    connect_params.database = db_name_;
 
     co_await connection_.async_connect(connect_params, boost::asio::use_awaitable);
 }
 
 celeritas::mysql_database_session::results_type celeritas::mysql_database_session::async_query(const std::string_view& sql)
 {
-    boost::mysql::results results{};
-    co_await connection_.async_execute(sql, results, boost::asio::use_awaitable);
+    std::optional<boost::system::error_code> retry_error;
 
-    co_return results;
+    try
+    {
+        co_return co_await async_execute_query(sql);
+    }
+    catch (const boost::system::system_error& error)
+    {
+        LOG_CHANNEL(database_channel, error) << "async_query exception" << error.what();
+
+        retry_error = error.code();
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(database_channel, fatal) << "async_query unknown exception";
+        throw;
+    }
+
+    if (retry_error.has_value())
+    {
+        co_return co_await async_handle_and_retry(sql, retry_error.value());
+    }
 }

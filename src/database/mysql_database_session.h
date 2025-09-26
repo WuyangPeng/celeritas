@@ -17,14 +17,16 @@ namespace celeritas
         using awaitable_type = boost::asio::awaitable<void>;
         using results_type = boost::asio::awaitable<boost::mysql::results>;
 
-        explicit mysql_database_session(boost::asio::io_context& io_context, boost::asio::ssl::context* ssl_context = nullptr);
+        explicit mysql_database_session(const std::string_view& host,
+                                        uint16_t port,
+                                        const std::string_view& user,
+                                        const std::string_view& password,
+                                        const std::string_view& db_name,
+                                        boost::asio::io_context& io_context,
+                                        boost::asio::ssl::context* ssl_context = nullptr);
 
         // 异步连接到数据库
-        [[nodiscard]] awaitable_type async_connect(const std::string_view& host,
-                                                   uint16_t port,
-                                                   const std::string_view& user,
-                                                   const std::string_view& password,
-                                                   const std::string_view& db_name);
+        [[nodiscard]] awaitable_type async_connect();
 
         // 异步执行查询，返回结果集
         [[nodiscard]] results_type async_query(const std::string_view& sql);
@@ -34,6 +36,15 @@ namespace celeritas
 
         [[nodiscard]] static connection_type get_any_connection(boost::asio::io_context& io_context, boost::asio::ssl::context* ssl_context);
 
+        [[nodiscard]] results_type async_execute_query(const std::string_view& sql);
+
+        [[nodiscard]] results_type async_handle_and_retry(const std::string_view& sql, const boost::system::error_code& error_code);
+
+        const std::string host_;
+        uint16_t port_;
+        const std::string user_;
+        const std::string password_;
+        const std::string db_name_;
         connection_type connection_;
     };
 }
