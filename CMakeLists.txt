@@ -29,6 +29,9 @@ include_directories(
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/src/bsoncxx/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/src/mongocxx/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis"
         # 如果依赖项在本地，添加它们的include路径
 )
 
@@ -133,6 +136,28 @@ endif ()
 add_library(protobuf ${PROTO_SRCS_GENERATED})
 
 target_link_libraries(protobuf ${PROTOBUF_LIBRARIES})
+
+# 包含mongo库
+if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
+
+    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/build/debug)
+
+else ()
+
+    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/build/release)
+
+endif ()
+
+# 包含hiredis库
+if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
+
+    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/debug)
+
+else ()
+
+    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/release)
+
+endif ()
 
 add_subdirectory(cmake/common)
 add_subdirectory(cmake/network)
