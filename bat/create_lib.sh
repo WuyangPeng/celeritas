@@ -33,7 +33,7 @@ if [ ! -f /data/celeritas/Libs/hiredis_installed.txt ]; then
 
     cd /data/celeritas/deps/
 	
-	if [ ! -f /data/celeritas/deps/hiredis_installed_clone.txt ]; then
+	if [ ! -f /data/celeritas/deps/hiredis_clone.txt ]; then
 	
 		rm -rf hiredis
 
@@ -41,13 +41,13 @@ if [ ! -f /data/celeritas/Libs/hiredis_installed.txt ]; then
 		
 		if [ $? -eq 0 ]; then 
 	 
-			touch /data/celeritas/deps/hiredis_installed_clone.txt
+			touch /data/celeritas/deps/hiredis_clone.txt
 	
 		fi
 	
 	fi 
 	
-	if [ -f /data/celeritas/deps/hiredis_installed_clone.txt ]; then
+	if [ -f /data/celeritas/deps/hiredis_clone.txt ]; then
 	
 		cd /data/celeritas/deps/hiredis
 	
@@ -81,7 +81,7 @@ if [ ! -f /data/celeritas/deps/mongo-cxx-driver_installed.txt ]; then
 
     cd /data/celeritas/deps/
 	
-	if [ ! -f /data/celeritas/deps/mongo-cxx-driver_installed_clone.txt ]; then
+	if [ ! -f /data/celeritas/deps/mongo-cxx-driver_clone.txt ]; then
 	
 		rm -rf mongo-cxx-driver
 
@@ -89,13 +89,13 @@ if [ ! -f /data/celeritas/deps/mongo-cxx-driver_installed.txt ]; then
 		
 		if [ $? -eq 0 ]; then 
 	 
-			touch /data/celeritas/deps/mongo-cxx-driver_installed_clone.txt
+			touch /data/celeritas/deps/mongo-cxx-driver_clone.txt
 	
 		fi
 	
 	fi 
 	
-	if [ -f /data/celeritas/deps/mongo-cxx-driver_installed_clone.txt ]; then
+	if [ -f /data/celeritas/deps/mongo-cxx-driver_clone.txt ]; then
 	
 		cd /data/celeritas/deps/mongo-cxx-driver
 	
