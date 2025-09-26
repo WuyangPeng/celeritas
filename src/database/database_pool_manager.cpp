@@ -16,7 +16,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
                                                                                                          const std::string& user,
                                                                                                          const std::string& password,
                                                                                                          const std::string& db_name,
-                                                                                                         size_t pool_size)
+                                                                                                         const size_t pool_size)
 {
     switch (database_type)
     {
