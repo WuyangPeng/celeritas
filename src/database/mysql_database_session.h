@@ -25,6 +25,17 @@ namespace celeritas
                                         boost::asio::io_context& io_context,
                                         boost::asio::ssl::context* ssl_context = nullptr);
 
+
+        virtual ~mysql_database_session() noexcept;
+
+        mysql_database_session(const mysql_database_session& rhs) noexcept = default;
+
+        mysql_database_session& operator=(const mysql_database_session& rhs) noexcept = default;
+
+        mysql_database_session(mysql_database_session&& rhs) noexcept = default;
+
+        mysql_database_session& operator=(mysql_database_session&& rhs) noexcept = default;
+
         // 异步连接到数据库
         [[nodiscard]] awaitable_type async_connect();
 

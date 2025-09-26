@@ -18,6 +18,26 @@ celeritas::mysql_database_session::mysql_database_session(const std::string_view
 {
 }
 
+celeritas::mysql_database_session::~mysql_database_session() noexcept
+{
+    try
+    {
+        connection_.close();
+    }
+    catch (const boost::system::system_error& error)
+    {
+        LOG_CHANNEL(database_channel, warning) << "Error closing MySQL connection in destructor: " << error.what();
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(database_channel, error) << "Unexpected error during MySQL connection close: " << error.what();
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(database_channel, fatal) << "Unexpected error during MySQL connection close unknown exception";
+    }
+}
+
 celeritas::mysql_database_session::connection_type celeritas::mysql_database_session::get_any_connection(boost::asio::io_context& io_context,
                                                                                                          boost::asio::ssl::context* ssl_context)
 {
