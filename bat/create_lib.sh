@@ -102,8 +102,9 @@ if [ ! -f /data/celeritas/deps/mongo-cxx-driver_installed.txt ]; then
 		mkdir -p build
 		cd build
 
-		cmake .. -DCMAKE_BUILD_TYPE=Release
+		cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/data/celeritas/deps/mongo
 		make
+		make install
 	 
 		if [ $? -eq 0 ]; then 
 	 
