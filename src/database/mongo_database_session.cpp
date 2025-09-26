@@ -3,7 +3,7 @@
 #include "common/common_fwd.h"
 
 celeritas::mongo_database_session::mongo_database_session(boost::asio::io_context& io_context)
-    : io_context_{ io_context }, uri_{}, db_name_{}
+    : client_{}, io_context_{ io_context }, uri_{}, db_name_{}
 {
 }
 
