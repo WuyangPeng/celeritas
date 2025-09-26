@@ -56,14 +56,14 @@ if [ ! -f /data/celeritas/Libs/hiredis_installed.txt ]; then
 		mkdir -p debug
 		cd debug
 
-		cmake .. -DCMAKE_BUILD_TYPE=Debug
+		cmake ../.. -DCMAKE_BUILD_TYPE=Debug
 		make 
 		
 		cd /data/celeritas/deps/hiredis/build
 		mkdir -p release
 		cd release
 
-		cmake .. -DCMAKE_BUILD_TYPE=Release
+		cmake ../.. -DCMAKE_BUILD_TYPE=Release
 		make 
 	 
 		if [ $? -eq 0 ]; then 
