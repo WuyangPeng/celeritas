@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "mysql_database_session.h"
+#include "database_pool.h"
 
 #include <boost/asio.hpp>
 #include <boost/asio/awaitable.hpp>
@@ -12,7 +13,7 @@
 
 namespace celeritas
 {
-    class mysql_database_pool
+    class mysql_database_pool : public database_pool
     {
     public:
         using class_type = mysql_database_pool;

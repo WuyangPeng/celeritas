@@ -1,0 +1,1 @@
+﻿#include "database_resource_loader.h"

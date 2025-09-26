@@ -37,6 +37,8 @@ namespace celeritas
         using configuration_loader_unique_ptr = initializer_factory::configuration_loader_unique_ptr;
         using resource_loader_unique_ptr = initializer_factory::resource_loader_unique_ptr;
 
+        [[nodiscard]] std::string get_server_type() const;
+
         void initialize_default_logger();
 
         void initialize_config();
@@ -48,6 +50,7 @@ namespace celeritas
         // 设置信号处理
         void setup_signal_handler();
 
+        std::string server_type_;
         boost::filesystem::path current_path_;
         configuration_loader_unique_ptr configuration_loader_;
         resource_loader_unique_ptr resource_loader_;

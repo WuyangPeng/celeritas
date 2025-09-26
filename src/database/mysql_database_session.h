@@ -1,16 +1,16 @@
 ﻿#pragma once
 
+#include "database_session.h"
+
 #include <boost/asio.hpp>
 #include <boost/asio/awaitable.hpp>
 #include <boost/asio/ssl.hpp>
 #include <boost/mysql.hpp>
 
-#include <string>
-
 namespace celeritas
 {
     // 数据库会话类，代表一个数据库连接
-    class mysql_database_session
+    class mysql_database_session : public database_session
     {
     public:
         using class_type = mysql_database_session;

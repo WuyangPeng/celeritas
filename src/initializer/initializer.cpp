@@ -7,7 +7,8 @@
 using namespace std::literals;
 
 celeritas::initializer::initializer(const std::string_view& server_type, const std::string_view config_file_path, boost::asio::io_context& io_context)
-    : current_path_{ boost::filesystem::current_path() },
+    : server_type_{ server_type },
+      current_path_{ boost::filesystem::current_path() },
       configuration_loader_{ initializer_factory::create_configuration_loader(server_type, config_file_path) },
       resource_loader_{ initializer_factory::create_resource_loader(server_type, configuration_loader_->get_app_config()) },
       io_context_{ io_context },
@@ -27,8 +28,16 @@ void celeritas::initializer::initialize()
 
 void celeritas::initializer::run()
 {
-    LOG_CHANNEL(initializer_channel, info) << "server is start";
+    LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is start";
     io_context_.run();
+}
+
+std::string celeritas::initializer::get_server_type() const
+{
+    auto server_type = server_type_;
+    std::ranges::replace(server_type, '_', ' ');
+
+    return server_type;
 }
 
 void celeritas::initializer::initialize_default_logger()
@@ -65,7 +74,7 @@ void celeritas::initializer::setup_signal_handler()
         [this](const boost::system::error_code& error, const int signal_number) {
             if (!error)
             {
-                LOG_CHANNEL(initializer_channel, info) << "server is stop! signal_number = " << signal_number << ",error = " << error.message();
+                LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop! signal_number = " << signal_number << ",error = " << error.message();
                 io_context_.stop();
             }
         });
