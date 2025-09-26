@@ -16,7 +16,7 @@ namespace celeritas
 
         [[nodiscard]] static database_pool_manager& get_instance();
 
-        [[nodiscard]] database_pool_shared_ptr create_pool(const std::string& key,
+        [[nodiscard]] database_pool_shared_ptr create_pool(const std::string& name,
                                                            database_type database_type,
                                                            boost::asio::io_context& io_context,
                                                            const std::string& host,
@@ -26,14 +26,14 @@ namespace celeritas
                                                            const std::string& db_name,
                                                            size_t pool_size);
 
-        [[nodiscard]] database_pool_shared_ptr get_pool(const std::string& key);
+        [[nodiscard]] database_pool_shared_ptr get_pool(const std::string& name);
 
     private:
         using database_pool_container = std::map<std::string, database_pool_shared_ptr>;
 
         database_pool_manager() noexcept = default;
 
-        [[nodiscard]] database_pool_shared_ptr create_mysql_pool(const std::string& key,
+        [[nodiscard]] database_pool_shared_ptr create_mysql_pool(const std::string& name,
                                                                  boost::asio::io_context& io_context,
                                                                  const std::string& host,
                                                                  uint16_t port,

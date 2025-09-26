@@ -8,7 +8,7 @@ celeritas::database_pool_manager& celeritas::database_pool_manager::get_instance
     return manager;
 }
 
-celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_pool(const std::string& key,
+celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_pool(const std::string& name,
                                                                                                          database_type database_type,
                                                                                                          boost::asio::io_context& io_context,
                                                                                                          const std::string& host,
@@ -22,29 +22,29 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
     {
         case database_type::mysql:
         {
-            return create_mysql_pool(key, io_context, host, port, user, password, db_name, pool_size);
+            return create_mysql_pool(name, io_context, host, port, user, password, db_name, pool_size);
         }
         default:
         {
-            throw new celeritas_error("create pool ,key = " + key + ",database_type =" + std::to_string(static_cast<int>(database_type)) + " is  not exist.");
+            throw new celeritas_error("create pool ,name = " + name + ",database_type =" + std::to_string(static_cast<int>(database_type)) + " is  not exist.");
         }
     }
 }
 
-celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::get_pool(const std::string& key)
+celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::get_pool(const std::string& name)
 {
     std::lock_guard lock{ mutex_ };
 
-    if (const auto pool = pools_.find(key);
+    if (const auto pool = pools_.find(name);
         pool != pools_.cend())
     {
         return pool->second;
     }
 
-    throw new celeritas_error("get pool ,key = " + key + " is  not exist.");
+    throw new celeritas_error("get pool ,name = " + name + " is  not exist.");
 }
 
-celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mysql_pool(const std::string& key,
+celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mysql_pool(const std::string& name,
                                                                                                                boost::asio::io_context& io_context,
                                                                                                                const std::string& host,
                                                                                                                uint16_t port,
@@ -57,7 +57,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
 
     database_pool_shared_ptr pool = std::make_shared<mysql_database_pool>(io_context, host, port, user, password, db_name, pool_size);
 
-    pools_.insert({ key, pool });
+    pools_.insert({ name, pool });
 
     return pool;
 }
