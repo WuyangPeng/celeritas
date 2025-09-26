@@ -75,3 +75,42 @@ if [ ! -f /data/celeritas/Libs/hiredis_installed.txt ]; then
 	fi
 	
 fi
+
+#! 编译mongo库
+if [ ! -f /data/celeritas/deps/mongo-cxx-driver_installed.txt ]; then
+
+    cd /data/celeritas/deps/
+	
+	if [ ! -f /data/celeritas/deps/mongo-cxx-driver_installed_clone.txt ]; then
+	
+		rm -rf mongo-cxx-driver
+
+		git clone https://github.com/mongodb/mongo-cxx-driver.git
+		
+		if [ $? -eq 0 ]; then 
+	 
+			touch /data/celeritas/deps/mongo-cxx-driver_installed_clone.txt
+	
+		fi
+	
+	fi 
+	
+	if [ -f /data/celeritas/deps/mongo-cxx-driver_installed_clone.txt ]; then
+	
+		cd /data/celeritas/deps/mongo-cxx-driver
+	
+		mkdir -p build
+		cd build
+
+		cmake .. -DCMAKE_BUILD_TYPE=Release
+		make
+	 
+		if [ $? -eq 0 ]; then 
+	 
+			touch /data/celeritas/deps/mongo-cxx-driver_installed.txt
+	
+		fi
+	
+	fi
+	
+fi 
