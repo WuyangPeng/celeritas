@@ -41,7 +41,7 @@ if [ ! -f /data/celeritas/Libs/hiredis_installed.txt ]; then
 		
 		if [ $? -eq 0 ]; then 
 	 
-			touch /data/coding/Libs/hiredis_installed_clone.txt
+			touch /data/coding/deps/hiredis_installed_clone.txt
 	
 		fi
 	
