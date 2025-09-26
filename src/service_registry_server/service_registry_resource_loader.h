@@ -10,7 +10,7 @@ namespace celeritas
         using class_type = service_registry_resource_loader;
         using base_type = resource_loader;
 
-        explicit service_registry_resource_loader(app_config app_config);
+        explicit service_registry_resource_loader(const app_config_shared_ptr& app_config);
 
     private:
         void service_initialize_resource() override;

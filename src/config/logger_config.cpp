@@ -16,6 +16,26 @@ std::string celeritas::logger_config::get_channel_name() const
     return channel_name_;
 }
 
+std::string celeritas::logger_config::get_log_file_name() const
+{
+    return log_file_name_;
+}
+
+celeritas::logger_config::severity_level_type celeritas::logger_config::get_severity_level_type() const
+{
+    return level_;
+}
+
+int celeritas::logger_config::get_rotation_size() const
+{
+    return rotation_size_;
+}
+
+bool celeritas::logger_config::is_console_enabled() const
+{
+    return console_enabled_;
+}
+
 celeritas::logger_config::severity_level_type celeritas::logger_config::get_severity_level_type(const std::string& severity_level_name)
 {
     if (severity_level_name == "trace")

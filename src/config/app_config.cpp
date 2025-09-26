@@ -108,3 +108,8 @@ celeritas::logger_level_config celeritas::app_config::get_logger_level_config() 
 {
     return logger_level_config_;
 }
+
+celeritas::app_config::logger_config_container celeritas::app_config::get_logger_config() const
+{
+    return logger_;
+}

@@ -53,9 +53,13 @@ void celeritas::logger_impl::init_console(const severity_level_type console_leve
     std::lock_guard lock{ mutex_ };
 
     // 添加控制台日志输出
-    console_sink_ = boost::log::add_console_log(std::clog);
+    if (console_sink_ == nullptr)
+    {
+        console_sink_ = boost::log::add_console_log(std::clog);
+        console_sink_->set_formatter(get_formatter());
+    }
+
     console_level_ = console_level;
-    console_sink_->set_formatter(get_formatter());
 
     update_console_filter();
 }

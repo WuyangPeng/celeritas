@@ -14,7 +14,7 @@ celeritas::initializer_factory::configuration_loader_unique_ptr celeritas::initi
     throw celeritas_error("unrecognized server type");
 }
 
-celeritas::initializer_factory::resource_loader_unique_ptr celeritas::initializer_factory::create_resource_loader(const std::string_view& server_type, const app_config& app_config)
+celeritas::initializer_factory::resource_loader_unique_ptr celeritas::initializer_factory::create_resource_loader(const std::string_view& server_type, const app_config_shared_ptr& app_config)
 {
     if (server_type == service_registry_type)
     {

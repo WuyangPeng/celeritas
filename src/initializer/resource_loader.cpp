@@ -1,9 +1,11 @@
 ﻿#include "resource_loader.h"
+#include "detail/logger_resource_loader.h"
 
+#include <ranges>
 #include <utility>
 
-celeritas::resource_loader::resource_loader(app_config app_config)
-    : app_config_{ std::move(app_config) }
+celeritas::resource_loader::resource_loader(const app_config_shared_ptr& app_config)
+    : app_config_{ app_config }
 {
 }
 
@@ -19,6 +21,13 @@ void celeritas::resource_loader::initialize()
 
 void celeritas::resource_loader::initialize_logger_resource()
 {
+    logger_resource_loader::loader_level_config(app_config_->get_logger_level_config());
+
+    for (const auto logger = app_config_->get_logger_config();
+         const auto& element : logger | std::views::values)
+    {
+        logger_resource_loader::loader_config(element);
+    }
 }
 
 void celeritas::resource_loader::initialize_database_resource()

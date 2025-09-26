@@ -20,6 +20,14 @@ namespace celeritas
 
         [[nodiscard]] std::string get_channel_name() const;
 
+        [[nodiscard]] std::string get_log_file_name() const;
+
+        [[nodiscard]] severity_level_type get_severity_level_type() const;
+
+        [[nodiscard]] int get_rotation_size() const;
+
+        [[nodiscard]] bool is_console_enabled() const;
+
         [[nodiscard]] static severity_level_type get_severity_level_type(const std::string& severity_level_name);
 
     private:

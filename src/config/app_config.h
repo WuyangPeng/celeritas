@@ -16,6 +16,7 @@ namespace celeritas
     {
     public:
         using class_type = app_config;
+        using logger_config_container = std::map<std::string, logger_config>;
 
         void load_service_registry_config(const std::string& filename);
 
@@ -29,9 +30,10 @@ namespace celeritas
 
         [[nodiscard]] logger_level_config get_logger_level_config() const;
 
+        [[nodiscard]] logger_config_container get_logger_config() const;
+
     private:
         using database_config_container = std::map<std::string, database_config>;
-        using logger_config_container = std::map<std::string, logger_config>;
 
         void do_load_databases_config(const std::string& filename);
 

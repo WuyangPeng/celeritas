@@ -7,8 +7,9 @@ namespace celeritas
     {
     public:
         using class_type = resource_loader;
+        using app_config_shared_ptr = std::shared_ptr<app_config>;
 
-        explicit resource_loader(app_config app_config);
+        explicit resource_loader(const app_config_shared_ptr& app_config);
 
         virtual ~resource_loader() noexcept = default;
 
@@ -35,6 +36,6 @@ namespace celeritas
 
         virtual void service_initialize_resource() = 0;
 
-        app_config app_config_;
+        app_config_shared_ptr app_config_;
     };
 }

@@ -11,6 +11,7 @@ namespace celeritas
     {
     public:
         using class_type = configuration_loader;
+        using app_config_shared_ptr = std::shared_ptr<app_config>;
 
         explicit configuration_loader(std::string_view config_file_path);
 
@@ -26,7 +27,7 @@ namespace celeritas
 
         void initialize();
 
-        [[nodiscard]] app_config get_app_config() const;
+        [[nodiscard]] app_config_shared_ptr get_app_config() const;
 
     private:
         void initialize_service_registry_config();
@@ -44,6 +45,6 @@ namespace celeritas
         std::string config_file_path_;
         boost::filesystem::path current_path_;
         boost::filesystem::path config_path_;
-        app_config app_config_;
+        app_config_shared_ptr app_config_;
     };
 }
