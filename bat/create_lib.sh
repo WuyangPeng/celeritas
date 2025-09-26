@@ -27,3 +27,51 @@ if [ ! -f /data/celeritas/deps/boost_installed.txt ]; then
 	touch /data/celeritas/deps/boost_installed.txt
 	
 fi 
+
+
+if [ ! -f /data/celeritas/Libs/hiredis_installed.txt ]; then
+
+    cd /data/celeritas/deps/
+	
+	if [ ! -f /data/celeritas/deps/hiredis_installed_clone.txt ]; then
+	
+		rm -rf hiredis
+
+		git clone https://github.com/redis/hiredis
+		
+		if [ $? -eq 0 ]; then 
+	 
+			touch /data/coding/Libs/hiredis_installed_clone.txt
+	
+		fi
+	
+	fi 
+	
+	if [ -f /data/celeritas/deps/hiredis_installed_clone.txt ]; then
+	
+		cd /data/celeritas/deps/hiredis
+	
+		mkdir -p build
+		cd build
+		mkdir -p debug
+		cd debug
+
+		cmake .. -DCMAKE_BUILD_TYPE=Debug
+		make 
+		
+		cd /data/celeritas/deps/hiredis/build
+		mkdir -p release
+		cd release
+
+		cmake .. -DCMAKE_BUILD_TYPE=Release
+		make 
+	 
+		if [ $? -eq 0 ]; then 
+	 
+			touch /data/celeritas/deps/hiredis_installed.txt
+	
+		fi
+	
+	fi
+	
+fi
