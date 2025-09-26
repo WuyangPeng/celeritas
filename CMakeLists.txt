@@ -29,11 +29,10 @@ include_directories(
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/include"
-        "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/src/bsoncxx/include"
-        "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/src/mongocxx/include"
-        "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/src/mongocxx/include/mongocxx/v_noabi"
-		"${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/src/bsoncxx/include/bsoncxx/v_noabi"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis"
+        "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/include/"
+        "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/include/mongocxx/v_noabi"
+        "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/include/bsoncxx/v_noabi"
         # 如果依赖项在本地，添加它们的include路径
 )
 
@@ -140,15 +139,7 @@ add_library(protobuf ${PROTO_SRCS_GENERATED})
 target_link_libraries(protobuf ${PROTOBUF_LIBRARIES})
 
 # 包含mongo库
-if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
-
-    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/build/debug)
-
-else ()
-
-    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/build/release)
-
-endif ()
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib)
 
 # 包含hiredis库
 if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
