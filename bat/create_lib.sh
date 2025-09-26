@@ -28,7 +28,7 @@ if [ ! -f /data/celeritas/deps/boost_installed.txt ]; then
 	
 fi 
 
-
+#! 编译hiredis库
 if [ ! -f /data/celeritas/Libs/hiredis_installed.txt ]; then
 
     cd /data/celeritas/deps/
