@@ -31,6 +31,7 @@ include_directories(
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/include"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/src/bsoncxx/include"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/src/mongocxx/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/src/mongocxx/include/mongocxx/v_noabi"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis"
         # 如果依赖项在本地，添加它们的include路径
 )

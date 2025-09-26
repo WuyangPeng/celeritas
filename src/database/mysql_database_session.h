@@ -26,7 +26,7 @@ namespace celeritas
                                         boost::asio::ssl::context* ssl_context = nullptr);
 
 
-        virtual ~mysql_database_session() noexcept;
+        ~mysql_database_session() noexcept override;
 
         mysql_database_session(const mysql_database_session& rhs) noexcept = default;
 
