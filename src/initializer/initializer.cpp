@@ -60,7 +60,7 @@ void celeritas::initializer::initialize_config()
 
 void celeritas::initializer::initialize_resource()
 {
-    resource_loader_->initialize();
+    resource_loader_->initialize(io_context_);
 }
 
 void celeritas::initializer::initialize_application()

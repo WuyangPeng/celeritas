@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "boost/asio/io_context.hpp"
 #include "config/app_config.h"
 
 namespace celeritas
@@ -22,12 +23,12 @@ namespace celeritas
 
         resource_loader& operator=(resource_loader&& rhs) noexcept = delete;
 
-        void initialize();
+        void initialize(boost::asio::io_context& io_context);
 
     private:
         void initialize_logger_resource();
 
-        void initialize_database_resource();
+        void initialize_database_resource(boost::asio::io_context& io_context);
 
         void initialize_server_resource();
 

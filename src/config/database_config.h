@@ -24,6 +24,22 @@ namespace celeritas
 
         [[nodiscard]] std::string get_name() const;
 
+        [[nodiscard]] database_type get_database_type() const;
+
+        [[nodiscard]] std::string get_host() const;
+
+        [[nodiscard]] int get_port() const;
+
+        [[nodiscard]] std::string get_user() const;
+
+        [[nodiscard]] std::string get_password() const;
+
+        [[nodiscard]] std::string get_db_name() const;
+
+        [[nodiscard]] int get_max_connections() const;
+
+        [[nodiscard]] int get_timeout_seconds() const;
+
     private:
         std::string name_;
         database_type database_type_ = database_type::unknown;

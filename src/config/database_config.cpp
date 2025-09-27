@@ -10,3 +10,43 @@ std::string celeritas::database_config::get_name() const
 {
     return name_;
 }
+
+celeritas::database_type celeritas::database_config::get_database_type() const
+{
+    return database_type_;
+}
+
+std::string celeritas::database_config::get_host() const
+{
+    return host_;
+}
+
+int celeritas::database_config::get_port() const
+{
+    return port_;
+}
+
+std::string celeritas::database_config::get_user() const
+{
+    return user_;
+}
+
+std::string celeritas::database_config::get_password() const
+{
+    return password_;
+}
+
+std::string celeritas::database_config::get_db_name() const
+{
+    return db_name_;
+}
+
+int celeritas::database_config::get_max_connections() const
+{
+    return max_connections_;
+}
+
+int celeritas::database_config::get_timeout_seconds() const
+{
+    return timeout_seconds_;
+}

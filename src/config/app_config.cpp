@@ -46,7 +46,6 @@ void celeritas::app_config::load_health_check_url_config(const std::string& file
     }
 }
 
-
 void celeritas::app_config::load_databases_config(const std::string& filename)
 {
     try
@@ -112,4 +111,9 @@ celeritas::logger_level_config celeritas::app_config::get_logger_level_config() 
 celeritas::app_config::logger_config_container celeritas::app_config::get_logger_config() const
 {
     return logger_;
+}
+
+celeritas::app_config::database_config_container celeritas::app_config::get_database_config() const
+{
+    return database_;
 }
