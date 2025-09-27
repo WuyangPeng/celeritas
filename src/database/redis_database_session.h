@@ -2,11 +2,43 @@
 
 #include "database_session.h"
 
+#include <boost/asio.hpp>
+#include <boost/asio/awaitable.hpp>
+#include <string>
+#include <hiredis.h>
+#include <memory>
+
 namespace celeritas
 {
     class redis_database_session : public database_session
     {
     public:
         using class_type = redis_database_session;
+
+        using awaitable_type = boost::asio::awaitable<void>;
+
+        explicit redis_database_session(const std::string_view& host,
+                                        uint16_t port,
+                                        boost::asio::io_context& io_context);
+
+        ~redis_database_session() noexcept override;
+
+        redis_database_session(const redis_database_session& rhs) noexcept = delete;
+
+        redis_database_session& operator=(const redis_database_session& rhs) noexcept = delete;
+
+        redis_database_session(redis_database_session&& rhs) noexcept = delete;
+
+        redis_database_session operator=(redis_database_session&& rhs) noexcept = delete;
+
+        // 异步连接到Redis
+        [[nodiscard]] awaitable_type async_connect();
+
+    private:
+        ::redisContext* connection_;
+        boost::asio::io_context& io_context_;
+
+        std::string host_;
+        uint16_t port_ = 0;
     };
 }
