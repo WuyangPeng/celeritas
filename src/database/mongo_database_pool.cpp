@@ -10,8 +10,8 @@ celeritas::mongo_database_pool::mongo_database_pool(boost::asio::io_context& io_
                                                     const std::string_view& db_name,
                                                     size_t pool_size)
     : io_context_{ io_context },
-      uri_{ std::move(uri) },
-      db_name_{ std::move(db_name) },
+      uri_{ uri },
+      db_name_{ db_name },
       pool_size_{ pool_size }
 {
 }

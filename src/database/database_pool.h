@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-
 namespace celeritas
 {
     class database_pool

@@ -93,7 +93,7 @@ celeritas::mysql_database_session::results_type celeritas::mysql_database_sessio
 celeritas::mysql_database_session::awaitable_type celeritas::mysql_database_session::async_connect()
 {
     boost::mysql::connect_params connect_params{};
-    connect_params.server_address.emplace_host_and_port(host_.data(), port_);
+    connect_params.server_address.emplace_host_and_port(host_, port_);
     connect_params.username = user_;
     connect_params.password = password_;
     connect_params.database = db_name_;

@@ -5,6 +5,7 @@
 #include <boost/asio/awaitable.hpp>
 #include <boost/asio/io_context.hpp>
 #include <mongocxx/client.hpp>
+#include <bsoncxx/builder/basic/document.hpp>
 
 namespace celeritas
 {
@@ -13,6 +14,10 @@ namespace celeritas
     public:
         using class_type = mongo_database_session;
         using awaitable_type = boost::asio::awaitable<void>;
+        using document_awaitable_type = boost::asio::awaitable<std::optional<bsoncxx::document::value> >;
+        using cursor_awaitable_type = boost::asio::awaitable<mongocxx::cursor>;
+        using document_view_type = bsoncxx::document::view;
+
 
         explicit mongo_database_session(const std::string_view& uri,
                                         const std::string_view& db_name,
@@ -30,9 +35,15 @@ namespace celeritas
 
         [[nodiscard]] awaitable_type async_connect();
 
+        [[nodiscard]] cursor_awaitable_type async_find(const std::string_view& collection_name, const document_view_type& filter);
+
     private:
         using mongo_client_unique_ptr = std::unique_ptr<mongocxx::client>;
         using mongo_database_unique_ptr = std::unique_ptr<mongocxx::database>;
+
+        [[nodiscard]] cursor_awaitable_type async_execute_query(const std::string_view& collection_name, const document_view_type& filter);
+
+        [[nodiscard]] cursor_awaitable_type async_handle_and_retry(const std::string_view& collection_name, const document_view_type& filter);
 
         mongo_client_unique_ptr client_;
         mongo_database_unique_ptr database_;

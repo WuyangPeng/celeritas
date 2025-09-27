@@ -3,6 +3,7 @@
 #include "common/common_fwd.h"
 
 #include <boost/asio/use_awaitable.hpp>
+#include <mongocxx/exception/operation_exception.hpp>
 
 celeritas::mongo_database_session::mongo_database_session(const std::string_view& uri,
                                                           const std::string_view& db_name,
@@ -31,3 +32,65 @@ celeritas::mongo_database_session::awaitable_type celeritas::mongo_database_sess
     co_return;
 }
 
+celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_find(const std::string_view& collection_name, const document_view_type& filter)
+{
+    bool is_error = false;
+
+    try
+    {
+        co_return co_await async_execute_query(collection_name, filter);
+    }
+    catch (const mongocxx::operation_exception& error)
+    {
+        LOG_CHANNEL(database_channel, error) << "MongoDB find failed: " << error.what();
+
+        is_error = true;
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(database_channel, error) << "MongoDB find_one failed: " << error.what();
+
+        is_error = true;
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(database_channel, fatal) << "MongoDB find unknown exception";
+        throw;
+    }
+
+    if (is_error)
+    {
+        co_return co_await async_handle_and_retry(collection_name, filter);
+    }
+}
+
+celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_execute_query(const std::string_view& collection_name, const document_view_type& filter)
+{
+    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
+
+    auto collection = (*database_)[collection_name.data()];
+
+    auto cursor = collection.find(filter);
+
+    co_return cursor;
+}
+
+celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_handle_and_retry(const std::string_view& collection_name, const document_view_type& filter)
+{
+    LOG_CHANNEL(database_channel, warning) << "MongoDB connection lost. Trying to reconnect...";
+
+    try
+    {
+        co_await async_connect();
+
+        LOG_CHANNEL(database_channel, info) << "MongoDB reconnected successfully. Retrying query.";
+
+        co_return co_await async_execute_query(collection_name, filter);
+    }
+    catch (const std::exception& reconnect_error)
+    {
+        LOG_CHANNEL(database_channel, error) << "Reconnection failed: " << reconnect_error.what();
+
+        throw;
+    }
+}

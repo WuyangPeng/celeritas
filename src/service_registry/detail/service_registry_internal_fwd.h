@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <chrono>
+
 namespace celeritas
 {
     constexpr auto services_heartbeat_remove_time = 120;

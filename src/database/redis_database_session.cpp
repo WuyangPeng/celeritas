@@ -9,14 +9,21 @@ celeritas::redis_database_session::redis_database_session(const std::string_view
 
 celeritas::redis_database_session::~redis_database_session() noexcept
 {
-    ::redisFree(connection_);
-
-    connection_ = nullptr;
+    close_connection();
 }
 
 celeritas::redis_database_session::awaitable_type celeritas::redis_database_session::async_connect()
 {
+    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
+
     connection_ = ::redisConnect(host_.c_str(), port_);
 
     co_return;
+}
+
+void celeritas::redis_database_session::close_connection()
+{
+    ::redisFree(connection_);
+
+    connection_ = nullptr;
 }

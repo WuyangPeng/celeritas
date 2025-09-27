@@ -12,7 +12,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
                                                                                                          database_type database_type,
                                                                                                          boost::asio::io_context& io_context,
                                                                                                          const std::string& host,
-                                                                                                         uint16_t port,
+                                                                                                         const uint16_t port,
                                                                                                          const std::string& user,
                                                                                                          const std::string& password,
                                                                                                          const std::string& db_name,

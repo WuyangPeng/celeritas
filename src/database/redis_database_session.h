@@ -16,6 +16,7 @@ namespace celeritas
         using class_type = redis_database_session;
 
         using awaitable_type = boost::asio::awaitable<void>;
+        using command_awaitable_type = boost::asio::awaitable<std::shared_ptr<::redisReply> >;
 
         explicit redis_database_session(const std::string_view& host,
                                         uint16_t port,
@@ -37,6 +38,8 @@ namespace celeritas
     private:
         ::redisContext* connection_;
         boost::asio::io_context& io_context_;
+
+        void close_connection();
 
         std::string host_;
         uint16_t port_ = 0;
