@@ -18,8 +18,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,defs")
 
-    add_compile_definitions(BOOST_ALL_DYN_LINK)
-
 endif ()
 
 # 包含路径
@@ -50,6 +48,12 @@ if (MSVC)
     add_library(boost INTERFACE)
 
 else ()
+
+    if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+
+        add_compile_definitions(BOOST_ALL_DYN_LINK)
+
+    endif ()
 
     set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/cmake")
 
