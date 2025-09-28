@@ -36,6 +36,12 @@ include_directories(
         # 如果依赖项在本地，添加它们的include路径
 )
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+    link_libraries(ws2_32)
+
+endif ()
+
 # 包含boost库
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/)
 
@@ -125,8 +131,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     endforeach ()
 
-    link_libraries(ws2_32)
-
 else ()
 
     # 其他平台下的操作
@@ -149,6 +153,29 @@ if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
 else ()
 
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/release)
+
+endif ()
+
+# 包含openssl库
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+    if (MSVC)
+
+        link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/lib)
+
+    else ()
+
+        link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/lib64)
+
+    endif ()
+
+    add_library(openssl INTERFACE)
+    target_link_libraries(openssl INTERFACE ssl crypto)
+
+else ()
+
+    add_library(openssl INTERFACE)
 
 endif ()
 
