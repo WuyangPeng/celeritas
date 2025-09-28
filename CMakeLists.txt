@@ -148,7 +148,7 @@ add_library(mongo INTERFACE)
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib)
-    #target_link_libraries(mongo INTERFACE bsoncxx-static mongocxx-static)
+    target_link_libraries(mongo INTERFACE bsoncxx-static mongocxx-static bson2 mongoc2)
 
 else ()
 
