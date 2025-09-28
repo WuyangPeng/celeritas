@@ -51,6 +51,15 @@ namespace celeritas
                                const std::string& db_name,
                                size_t pool_size);
 
+        void create_redis_pool(const std::string& name,
+                               boost::asio::io_context& io_context,
+                               const std::string& host,
+                               uint16_t port,
+                               const std::string& user,
+                               const std::string& password,
+                               const std::string& db_name,
+                               size_t pool_size);
+
         database_pool_container pools_;
         std::mutex mutex_;
     };

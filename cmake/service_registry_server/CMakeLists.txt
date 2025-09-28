@@ -12,7 +12,8 @@ target_link_libraries(service_registry_server PRIVATE
         common
         boost
         openssl
-        mongo)
+        mongo
+        redis)
 
 file(GLOB CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../config/*")
 
@@ -55,6 +56,24 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
                 TARGET service_registry_server POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different "${mongo_dll_file}" "$<TARGET_FILE_DIR:service_registry_server>/"
                 COMMENT "Copying dll files for ${mongo_dll_file}"
+        )
+    endforeach ()
+
+    if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
+
+        file(GLOB HIREDIS_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/hiredis/build/debug/*.dll")
+
+    else ()
+
+        file(GLOB MONGO_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/hiredis/build/release/*.dll")
+
+    endif ()
+
+    foreach (hiredis_dll_file IN LISTS HIREDIS_DLL_FILES)
+        add_custom_command(
+                TARGET service_registry_server POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${hiredis_dll_file}" "$<TARGET_FILE_DIR:service_registry_server>/"
+                COMMENT "Copying dll files for ${hiredis_dll_file}"
         )
     endforeach ()
 

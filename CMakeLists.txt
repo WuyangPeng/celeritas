@@ -165,13 +165,17 @@ else ()
 endif ()
 
 # 包含hiredis库
+add_library(redis INTERFACE)
+
 if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
 
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/debug)
+    target_link_libraries(redis INTERFACE hiredisd)
 
 else ()
 
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/release)
+    target_link_libraries(redis INTERFACE hiredis)
 
 endif ()
 
@@ -228,6 +232,10 @@ if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
                 DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug"
         )
 
+        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/debug/"
+                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug"
+        )
+
     endif ()
 
 else ()
@@ -246,6 +254,10 @@ else ()
         )
 
         install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/bin/"
+                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release"
+        )
+
+        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/release/"
                 DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release"
         )
 
