@@ -68,5 +68,5 @@ celeritas::logger_config::severity_level_type celeritas::logger_config::get_seve
         return boost::log::trivial::fatal;
     }
 
-    throw new celeritas_error("get_severity_level_type error,name =" + severity_level_name);
+    throw celeritas_error("get_severity_level_type error,name =" + severity_level_name);
 }

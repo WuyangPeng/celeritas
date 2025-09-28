@@ -1,4 +1,7 @@
 ﻿#include "database_resource_loader.h"
+#include "common/celeritas_error.h"
+#include "common/common_fwd.h"
+#include "common/logger.h"
 #include "database/database_pool_manager.h"
 
 void celeritas::database_resource_loader::loader_config(boost::asio::io_context& io_context, const database_config& database_config)

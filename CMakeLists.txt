@@ -145,6 +145,18 @@ target_link_libraries(protobuf ${PROTOBUF_LIBRARIES})
 # 包含mongo库
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib)
 
+add_library(mongo INTERFACE)
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+    target_link_libraries(mongo INTERFACE bsoncxx-static mongocxx-static)
+
+else ()
+
+    target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
+
+endif ()
+
 # 包含hiredis库
 if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
 

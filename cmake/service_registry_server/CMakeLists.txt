@@ -11,7 +11,8 @@ target_link_libraries(service_registry_server PRIVATE
         network
         common
         boost
-        openssl)
+        openssl
+        mongo)
 
 file(GLOB CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../config/*")
 
