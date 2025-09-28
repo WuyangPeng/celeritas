@@ -24,10 +24,12 @@ void celeritas::database_pool_manager::create_pool(const std::string& name,
         case database_type::mysql:
         {
             create_mysql_pool(name, io_context, host, port, user, password, db_name, pool_size);
+            break;
         }
         case database_type::mongo:
         {
             create_mongo_pool(name, io_context, host, port, user, password, db_name, pool_size);
+            break;
         }
         default:
         {
