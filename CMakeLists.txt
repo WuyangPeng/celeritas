@@ -176,6 +176,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 else ()
 
     add_library(openssl INTERFACE)
+    target_link_libraries(openssl INTERFACE ssl crypto)
 
 endif ()
 
