@@ -220,8 +220,12 @@ if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
 
     if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
+        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/bin64/"
+                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug"
+        )
+
         install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/bin/"
-                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug/"
+                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug"
         )
 
     endif ()
@@ -237,8 +241,12 @@ else ()
 
     if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
+        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/bin64/"
+                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release"
+        )
+
         install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/bin/"
-                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release/"
+                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release"
         )
 
     endif ()
