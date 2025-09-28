@@ -143,16 +143,16 @@ add_library(protobuf ${PROTO_SRCS_GENERATED})
 target_link_libraries(protobuf ${PROTOBUF_LIBRARIES})
 
 # 包含mongo库
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib)
-
 add_library(mongo INTERFACE)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-    target_link_libraries(mongo INTERFACE bsoncxx-static mongocxx-static)
+    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib)
+    #target_link_libraries(mongo INTERFACE bsoncxx-static mongocxx-static)
 
 else ()
 
+    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib64)
     target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
 
 endif ()
