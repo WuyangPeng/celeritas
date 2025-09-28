@@ -14,8 +14,6 @@
 
 #pragma once
 
-#include <bsoncxx/v1/array/value-fwd.hpp>
-
 #include <bsoncxx/config/prelude.hpp>
 
 namespace bsoncxx {
@@ -31,7 +29,7 @@ class value;
 namespace bsoncxx {
 namespace array {
 
-using v_noabi::array::value;
+using ::bsoncxx::v_noabi::array::value;
 
 } // namespace array
 } // namespace bsoncxx
@@ -41,7 +39,4 @@ using v_noabi::array::value;
 ///
 /// @file
 /// Declares @ref bsoncxx::v_noabi::array::value.
-///
-/// @par Includes
-/// - @ref bsoncxx/v1/array/value-fwd.hpp
 ///

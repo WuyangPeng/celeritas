@@ -27,7 +27,7 @@ enum class error_code : std::int32_t;
 
 namespace bsoncxx {
 
-using v_noabi::error_code;
+using ::bsoncxx::v_noabi::error_code;
 
 } // namespace bsoncxx
 
@@ -41,7 +41,4 @@ struct is_error_code_enum<bsoncxx::v_noabi::error_code>;
 ///
 /// @file
 /// Declares @ref bsoncxx::v_noabi::error_code.
-///
-/// @par Includes
-/// - @ref bsoncxx/v1/exception-fwd.hpp
 ///

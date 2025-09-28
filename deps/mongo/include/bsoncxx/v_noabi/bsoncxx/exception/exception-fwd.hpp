@@ -14,8 +14,6 @@
 
 #pragma once
 
-#include <bsoncxx/v1/exception-fwd.hpp>
-
 #include <bsoncxx/config/prelude.hpp>
 
 namespace bsoncxx {
@@ -28,7 +26,7 @@ class BSONCXX_ABI_EXPORT exception;
 
 namespace bsoncxx {
 
-using v_noabi::exception;
+using ::bsoncxx::v_noabi::exception;
 
 } // namespace bsoncxx
 
@@ -37,7 +35,4 @@ using v_noabi::exception;
 ///
 /// @file
 /// Declares @ref bsoncxx::v_noabi::exception.
-///
-/// @par Includes
-/// - @ref bsoncxx/v1/exception-fwd.hpp
 ///

@@ -152,7 +152,7 @@ add_library(mongo INTERFACE)
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib)
-    target_link_libraries(mongo INTERFACE bsoncxx-static mongocxx-static bson2 mongoc2)
+    target_link_libraries(mongo INTERFACE bsoncxx.dll mongocxx.dll bson2 mongoc2)
 
 else ()
 
@@ -218,6 +218,14 @@ if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
             PATTERN "*.xml"
     )
 
+    if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/bin/"
+                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug/"
+        )
+
+    endif ()
+
 else ()
 
     install(TARGETS service_registry_server auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release")
@@ -226,5 +234,13 @@ else ()
             DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release/config/"
             PATTERN "*.xml"
     )
+
+    if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/bin/"
+                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release/"
+        )
+
+    endif ()
 
 endif ()

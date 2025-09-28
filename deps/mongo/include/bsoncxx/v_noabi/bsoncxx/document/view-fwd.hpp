@@ -14,8 +14,6 @@
 
 #pragma once
 
-#include <bsoncxx/v1/document/view-fwd.hpp>
-
 #include <bsoncxx/config/prelude.hpp>
 
 namespace bsoncxx {
@@ -31,7 +29,7 @@ class view;
 namespace bsoncxx {
 namespace document {
 
-using v_noabi::document::view;
+using ::bsoncxx::v_noabi::document::view;
 
 } // namespace document
 } // namespace bsoncxx
@@ -41,7 +39,4 @@ using v_noabi::document::view;
 ///
 /// @file
 /// Declares @ref bsoncxx::v_noabi::document::view.
-///
-/// @par Includes
-/// - @ref bsoncxx/v1/document/view-fwd.hpp
 ///

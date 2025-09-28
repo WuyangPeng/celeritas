@@ -48,4 +48,14 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
         )
     endforeach ()
 
+    file(GLOB MONGO_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/mongo/bin/*.dll")
+
+    foreach (mongo_dll_file IN LISTS MONGO_DLL_FILES)
+        add_custom_command(
+                TARGET service_registry_server POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${mongo_dll_file}" "$<TARGET_FILE_DIR:service_registry_server>/"
+                COMMENT "Copying dll files for ${mongo_dll_file}"
+        )
+    endforeach ()
+
 endif ()

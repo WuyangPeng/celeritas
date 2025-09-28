@@ -8,11 +8,11 @@
 #else
 #  ifndef MONGOCXX_ABI_EXPORT
 #    ifdef MONGOCXX_EXPORTS
-        /* We are building this library */
-#      define MONGOCXX_ABI_EXPORT 
+/* We are building this library */
+#      define MONGOCXX_ABI_EXPORT __declspec(dllexport)
 #    else
-        /* We are using this library */
-#      define MONGOCXX_ABI_EXPORT 
+/* We are using this library */
+#      define MONGOCXX_ABI_EXPORT __declspec(dllimport)
 #    endif
 #  endif
 
@@ -49,7 +49,7 @@
 #define MONGOCXX_ABI_CDECL
 #endif
 
-#define MONGOCXX_ABI_EXPORT_CDECL(...) MONGOCXX_ABI_EXPORT __VA_ARGS__ MONGOCXX_ABI_CDECL
+#define MONGOCXX_ABI_EXPORT_CDECL(...)  __VA_ARGS__
 
 ///
 /// @file
