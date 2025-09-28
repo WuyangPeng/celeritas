@@ -40,6 +40,9 @@ if [ ! -f /data/celeritas/Libs/hiredis_installed.txt ]; then
 		git clone https://github.com/redis/hiredis
 		
 		if [ $? -eq 0 ]; then 
+		
+			cd hiredis
+            git checkout v1.3.0
 	 
 			touch /data/celeritas/deps/hiredis_clone.txt
 	
@@ -88,6 +91,9 @@ if [ ! -f /data/celeritas/deps/mongo-cxx-driver_installed.txt ]; then
 		git clone https://github.com/mongodb/mongo-cxx-driver.git
 		
 		if [ $? -eq 0 ]; then 
+		
+			cd mongo-cxx-driver
+            git checkout releases/v4.1
 	 
 			touch /data/celeritas/deps/mongo-cxx-driver_clone.txt
 	
