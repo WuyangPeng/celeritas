@@ -157,7 +157,6 @@ else ()
 endif ()
 
 # 包含openssl库
-
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     if (MSVC)
@@ -170,16 +169,12 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     endif ()
 
-    add_library(openssl INTERFACE)
-    target_link_libraries(openssl INTERFACE ssl crypto)
-
-else ()
-
-    add_library(openssl INTERFACE)
-    target_link_libraries(openssl INTERFACE ssl crypto)
-
 endif ()
 
+add_library(openssl INTERFACE)
+target_link_libraries(openssl INTERFACE ssl crypto)
+
+# 静态库
 add_subdirectory(cmake/common)
 add_subdirectory(cmake/network)
 add_subdirectory(cmake/worker_pool)
@@ -188,6 +183,7 @@ add_subdirectory(cmake/service_registry)
 add_subdirectory(cmake/initializer)
 add_subdirectory(cmake/config)
 
+# 服务器
 add_subdirectory(cmake/service_registry_server)
 add_subdirectory(cmake/auth_server)
 add_subdirectory(cmake/game_server)
