@@ -36,12 +36,16 @@ foreach (service_registry_config_file IN LISTS SERVICE_REGISTRY_CONFIG_FILES)
     )
 endforeach ()
 
-file(GLOB OPENSSL_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/openssl/bin64/*.dll")
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-foreach (openssl_dll_file IN LISTS OPENSSL_DLL_FILES)
-    add_custom_command(
-            TARGET service_registry_server POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${openssl_dll_file}" "$<TARGET_FILE_DIR:service_registry_server>/"
-            COMMENT "Copying dll files for ${openssl_dll_file}"
-    )
-endforeach ()
+    file(GLOB OPENSSL_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/openssl/bin64/*.dll")
+
+    foreach (openssl_dll_file IN LISTS OPENSSL_DLL_FILES)
+        add_custom_command(
+                TARGET service_registry_server POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${openssl_dll_file}" "$<TARGET_FILE_DIR:service_registry_server>/"
+                COMMENT "Copying dll files for ${openssl_dll_file}"
+        )
+    endforeach ()
+
+endif ()

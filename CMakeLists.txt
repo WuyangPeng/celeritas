@@ -152,6 +152,9 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
 else ()
 
+    list(APPEND CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib64")
+    list(APPEND CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib64")
+
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib64)
     target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
 
