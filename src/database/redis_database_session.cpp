@@ -1,5 +1,4 @@
 ﻿#include "redis_database_session.h"
-#include "common/logger.h"
 #include "common/common_fwd.h"
 
 celeritas::redis_database_session::redis_database_session(const std::string_view& host, uint16_t port, boost::asio::io_context& io_context)

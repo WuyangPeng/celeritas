@@ -1,8 +1,8 @@
 ﻿
-#include "common/logger.h"
-#include "common/common_fwd.h"
-#include "initializer/initializer.h"
 #include "service_registry_server.h"
+#include "common/common_fwd.h"
+#include "common/logger.h"
+#include "initializer/initializer.h"
 #include "server/server_fwd.h"
 
 #include <boost/asio/io_context.hpp>

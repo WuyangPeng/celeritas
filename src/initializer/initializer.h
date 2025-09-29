@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "initializer_factory.h"
-#include "config/app_config.h"
 
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/signal_set.hpp>

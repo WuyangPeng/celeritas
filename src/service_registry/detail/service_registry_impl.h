@@ -3,8 +3,8 @@
 #include "service_registry/service_info.h"
 
 #include <boost/asio/steady_timer.hpp>
-#include <unordered_map>
 #include <shared_mutex>
+#include <unordered_map>
 
 namespace celeritas
 {

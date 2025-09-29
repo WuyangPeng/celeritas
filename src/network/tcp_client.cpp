@@ -1,6 +1,6 @@
-﻿#include "common/logger.h"
-#include "session_base.tpp"
+﻿#include "session_base.tpp"
 #include "tcp_client.h"
+#include "common/logger.h"
 
 celeritas::tcp_client::tcp_client(boost::asio::io_context& io_context, message_handler_type handler)
     : io_context_{ io_context }, message_handler_{ std::move(handler) }

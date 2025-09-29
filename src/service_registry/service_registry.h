@@ -4,7 +4,6 @@
 #include "boost/asio/io_context.hpp"
 #include "detail/service_registry_internal_fwd.h"
 
-#include <boost/asio/steady_timer.hpp>
 #include <vector>
 
 namespace celeritas

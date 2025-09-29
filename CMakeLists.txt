@@ -10,13 +10,23 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
     # 编译选项（编译器）
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}   -fPIC")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
 
     # 符号可见性
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}   -fvisibility=hidden")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
 
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,defs")
+
+endif ()
+
+if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
+
+    set(BUILD_TYPE_DIRECTORY debug)
+
+else ()
+
+    set(BUILD_TYPE_DIRECTORY release)
 
 endif ()
 
@@ -34,6 +44,7 @@ include_directories(
         # 如果依赖项在本地，添加它们的include路径
 )
 
+# 包含网络库
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     link_libraries(ws2_32)
@@ -78,15 +89,7 @@ else ()
 endif ()
 
 # 包含protobuf库
-if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
-
-    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/build/bin/debug)
-
-else ()
-
-    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/build/bin/release)
-
-endif ()
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/build/bin/${BUILD_TYPE_DIRECTORY})
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
@@ -167,17 +170,8 @@ endif ()
 # 包含hiredis库
 add_library(redis INTERFACE)
 
-if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
-
-    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/debug)
-    target_link_libraries(redis INTERFACE hiredisd)
-
-else ()
-
-    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/release)
-    target_link_libraries(redis INTERFACE hiredis)
-
-endif ()
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY})
+target_link_libraries(redis INTERFACE hiredisd)
 
 # 包含openssl库
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -213,54 +207,25 @@ add_subdirectory(cmake/game_server)
 add_subdirectory(cmake/chat_server)
 
 # 安装规则
-if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
+install(TARGETS service_registry_server auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
 
-    install(TARGETS service_registry_server auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug")
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/config/"
+        DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}/config/"
+        PATTERN "*.xml"
+)
 
-    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/config/"
-            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug/config/"
-            PATTERN "*.xml"
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/bin64/"
+            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}"
     )
 
-    if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-
-        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/bin64/"
-                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug"
-        )
-
-        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/bin/"
-                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug"
-        )
-
-        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/debug/"
-                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/debug"
-        )
-
-    endif ()
-
-else ()
-
-    install(TARGETS service_registry_server auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release")
-
-    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/config/"
-            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release/config/"
-            PATTERN "*.xml"
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/bin/"
+            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}"
     )
 
-    if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-
-        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/bin64/"
-                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release"
-        )
-
-        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/bin/"
-                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release"
-        )
-
-        install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/release/"
-                DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/release"
-        )
-
-    endif ()
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY}/"
+            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}"
+    )
 
 endif ()

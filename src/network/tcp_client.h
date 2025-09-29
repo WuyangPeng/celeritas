@@ -3,7 +3,6 @@
 #include "message_header.h"
 #include "session_base.h"
 
-#include <boost/asio.hpp>
 #include <boost/asio/awaitable.hpp>
 #include <functional>
 

@@ -8,4 +8,3 @@ celeritas::service_registry_configuration_loader::service_registry_configuration
 void celeritas::service_registry_configuration_loader::service_initialize_config()
 {
 }
-
