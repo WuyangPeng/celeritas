@@ -1,4 +1,15 @@
-﻿file(GLOB_RECURSE SRC_DIR_LIST "${CMAKE_CURRENT_SOURCE_DIR}/../../src/service_registry_server/*.cpp")
+﻿if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
+
+    set(BUILD_TYPE_DIRECTORY debug)
+
+else ()
+
+    set(BUILD_TYPE_DIRECTORY release)
+
+endif ()
+
+
+file(GLOB_RECURSE SRC_DIR_LIST "${CMAKE_CURRENT_SOURCE_DIR}/../../src/service_registry_server/*.cpp")
 
 add_executable(service_registry_server ${SRC_DIR_LIST})
 
@@ -59,15 +70,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
         )
     endforeach ()
 
-    if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
-
-        file(GLOB HIREDIS_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/hiredis/build/debug/*.dll")
-
-    else ()
-
-        file(GLOB MONGO_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/hiredis/build/release/*.dll")
-
-    endif ()
+    file(GLOB HIREDIS_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/hiredis/build/${BUILD_TYPE_DIRECTORY}/*.dll")
 
     foreach (hiredis_dll_file IN LISTS HIREDIS_DLL_FILES)
         add_custom_command(

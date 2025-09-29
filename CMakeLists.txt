@@ -23,10 +23,12 @@ endif ()
 if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
 
     set(BUILD_TYPE_DIRECTORY debug)
+    set(BUILD_LIB_SUFFIX d)
 
 else ()
 
     set(BUILD_TYPE_DIRECTORY release)
+    set(BUILD_LIB_SUFFIX)
 
 endif ()
 
@@ -155,7 +157,7 @@ add_library(mongo INTERFACE)
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib)
-    target_link_libraries(mongo INTERFACE bsoncxx.dll mongocxx.dll bson2 mongoc2)
+    target_link_libraries(mongo INTERFACE bsoncxx.dll mongocxx.dll)
 
 else ()
 
@@ -179,15 +181,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
 endif ()
 
-if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
-
-    target_link_libraries(redis INTERFACE hiredisd)
-
-else ()
-
-    target_link_libraries(redis INTERFACE hiredis)
-
-endif ()
+target_link_libraries(redis INTERFACE hiredis${BUILD_LIB_SUFFIX})
 
 # 包含openssl库
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
