@@ -10,32 +10,29 @@ celeritas::database_pool_manager& celeritas::database_pool_manager::get_instance
     return manager;
 }
 
-void celeritas::database_pool_manager::create_pool(const std::string& name,
-                                                   database_type database_type,
-                                                   boost::asio::io_context& io_context,
-                                                   const std::string& host,
-                                                   const uint16_t port,
-                                                   const std::string& user,
-                                                   const std::string& password,
-                                                   const std::string& db_name,
-                                                   const size_t pool_size)
+celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_pool(const std::string& name,
+                                                                                                         database_type database_type,
+                                                                                                         boost::asio::io_context& io_context,
+                                                                                                         const std::string& host,
+                                                                                                         const uint16_t port,
+                                                                                                         const std::string& user,
+                                                                                                         const std::string& password,
+                                                                                                         const std::string& db_name,
+                                                                                                         const size_t pool_size)
 {
     switch (database_type)
     {
         case database_type::mysql:
         {
-            create_mysql_pool(name, io_context, host, port, user, password, db_name, pool_size);
-            break;
+            return create_mysql_pool(name, io_context, host, port, user, password, db_name, pool_size);
         }
         case database_type::mongo:
         {
-            create_mongo_pool(name, io_context, host, port, user, password, db_name, pool_size);
-            break;
+            return create_mongo_pool(name, io_context, host, port, user, password, db_name, pool_size);
         }
         case database_type::redis:
         {
-            create_redis_pool(name, io_context, host, port, user, password, db_name, pool_size);
-            break;
+            return create_redis_pool(name, io_context, host, port, user, password, db_name, pool_size);
         }
         default:
         {
@@ -57,23 +54,25 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
     throw celeritas_error("get pool ,name = " + name + " is  not exist.");
 }
 
-void celeritas::database_pool_manager::create_mysql_pool(const std::string& name,
-                                                         boost::asio::io_context& io_context,
-                                                         const std::string& host,
-                                                         uint16_t port,
-                                                         const std::string& user,
-                                                         const std::string& password,
-                                                         const std::string& db_name,
-                                                         size_t pool_size)
+celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mysql_pool(const std::string& name,
+                                                                                                               boost::asio::io_context& io_context,
+                                                                                                               const std::string& host,
+                                                                                                               uint16_t port,
+                                                                                                               const std::string& user,
+                                                                                                               const std::string& password,
+                                                                                                               const std::string& db_name,
+                                                                                                               size_t pool_size)
 {
     std::lock_guard lock{ mutex_ };
 
     database_pool_shared_ptr pool = std::make_shared<mysql_database_pool>(io_context, host, port, user, password, db_name, pool_size);
 
     pools_.insert({ name, pool });
+
+    return pool;
 }
 
-void celeritas::database_pool_manager::create_mongo_pool(const std::string& name, boost::asio::io_context& io_context, const std::string& host, uint16_t port, const std::string& user, const std::string& password, const std::string& db_name, size_t pool_size)
+celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mongo_pool(const std::string& name, boost::asio::io_context& io_context, const std::string& host, uint16_t port, const std::string& user, const std::string& password, const std::string& db_name, size_t pool_size)
 {
     const auto url = "mongodb://" + user + ":" + password + "@" + host + ":" + std::to_string(port) + "/" + db_name;
 
@@ -82,13 +81,17 @@ void celeritas::database_pool_manager::create_mongo_pool(const std::string& name
     database_pool_shared_ptr pool = std::make_shared<mongo_database_pool>(io_context, url, db_name, pool_size);
 
     pools_.insert({ name, pool });
+
+    return pool;
 }
 
-void celeritas::database_pool_manager::create_redis_pool(const std::string& name, boost::asio::io_context& io_context, const std::string& host, uint16_t port, const std::string& user, const std::string& password, const std::string& db_name, size_t pool_size)
+celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_redis_pool(const std::string& name, boost::asio::io_context& io_context, const std::string& host, uint16_t port, const std::string& user, const std::string& password, const std::string& db_name, size_t pool_size)
 {
     std::lock_guard lock{ mutex_ };
 
     database_pool_shared_ptr pool = std::make_shared<redis_database_pool>(io_context, host, port, pool_size);
 
     pools_.insert({ name, pool });
+
+    return pool;
 }

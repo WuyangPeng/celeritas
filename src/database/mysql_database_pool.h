@@ -31,7 +31,7 @@ namespace celeritas
                             boost::asio::ssl::context* ssl_context = nullptr);
 
         // 异步初始化连接池
-        [[nodiscard]] awaitable_type async_initialize();
+        [[nodiscard]] awaitable_type async_initialize() override;
 
         // 异步获取一个数据库会话
         [[nodiscard]] session_awaitable_type async_get_session();

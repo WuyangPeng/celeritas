@@ -4,7 +4,7 @@
         <database_type>mysql</database_type>
         <host>127.0.0.1</host>
         <port>3306</port>
-        <user>admin</user>
+        <user>test</user>
         <password>pass</password>
         <db_name>game</db_name>
         <max_connections>50</max_connections>
@@ -14,7 +14,7 @@
         <database_type>mongo</database_type>
         <host>127.0.0.1</host>
         <port>27017</port>
-        <user>admin</user>
+        <user>test</user>
         <password>pass</password>
         <db_name>game</db_name>
         <max_connections>20</max_connections>
@@ -24,7 +24,7 @@
         <database_type>redis</database_type>
         <host>127.0.0.1</host>
         <port>7001</port>
-        <user>admin</user>
+        <user>test</user>
         <password>pass</password>
         <db_name>game</db_name>
         <max_connections>20</max_connections>
