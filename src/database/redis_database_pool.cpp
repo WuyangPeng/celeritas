@@ -13,7 +13,7 @@ celeritas::redis_database_pool::redis_database_pool(boost::asio::io_context& io_
                                                     uint16_t port,
                                                     size_t pool_size)
     : io_context_{ io_context },
-      host_{ std::move(host) },
+      host_{ host },
       port_{ port },
       pool_size_{ pool_size }
 {
