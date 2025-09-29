@@ -61,7 +61,8 @@ namespace celeritas
                                                                  const std::string& user,
                                                                  const std::string& password,
                                                                  const std::string& db_name,
-                                                                 size_t pool_size);
+                                                                 int min_connections,
+                                                                 int max_connections);
 
         database_pool_container pools_;
         bool is_init_mongo = false;

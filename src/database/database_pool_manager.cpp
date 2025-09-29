@@ -96,11 +96,11 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
     return pool;
 }
 
-celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_redis_pool(const std::string& name, boost::asio::io_context& io_context, const std::string& host, uint16_t port, const std::string& user, const std::string& password, const std::string& db_name, size_t pool_size)
+celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_redis_pool(const std::string& name, boost::asio::io_context& io_context, const std::string& host, uint16_t port, const std::string& user, const std::string& password, const std::string& db_name, int min_connections, int max_connections)
 {
     std::lock_guard lock{ mutex_ };
 
-    database_pool_shared_ptr pool = std::make_shared<redis_database_pool>(io_context, host, port, pool_size);
+    database_pool_shared_ptr pool = std::make_shared<redis_database_pool>(io_context, host, port, min_connections, max_connections);
 
     pools_.insert({ name, pool });
 
