@@ -30,6 +30,7 @@ bool celeritas::thread_safe_queue::pop(task_type& task)
 void celeritas::thread_safe_queue::stop()
 {
     std::unique_lock lock{ mutex_ };
+
     stop_ = true;
     condition_.notify_all();
 }

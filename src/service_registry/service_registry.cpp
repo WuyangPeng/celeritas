@@ -11,7 +11,7 @@ celeritas::service_registry::service_info_container_type celeritas::service_regi
     return get_service_registry_impl().get_services(service_name);
 }
 
-void celeritas::service_registry::start_cleanup_timer(boost::asio::io_context& io_context)
+void celeritas::service_registry::start_cleanup_timer(io_context_type& io_context)
 {
     return get_service_registry_impl().start_cleanup_timer(io_context);
 }

@@ -24,6 +24,7 @@ void celeritas::service_registry_impl::register_service(const service_info& info
 celeritas::service_registry_impl::service_info_container_type celeritas::service_registry_impl::get_services(const std::string& service_name) const
 {
     std::shared_lock lock{ mutex_ };
+
     service_info_container_type services{};
     for (const auto& element : registry_ | std::views::values)
     {
@@ -35,7 +36,7 @@ celeritas::service_registry_impl::service_info_container_type celeritas::service
     return services;
 }
 
-void celeritas::service_registry_impl::start_cleanup_timer(boost::asio::io_context& io_context)
+void celeritas::service_registry_impl::start_cleanup_timer(io_context_type& io_context)
 {
     cleanup_timer_interval_ = std::make_unique<steady_timer_type>(io_context);
 
@@ -46,7 +47,7 @@ void celeritas::service_registry_impl::start_cleanup_timer(const self_shared_ptr
 {
     cleanup_timer_interval_->expires_at(std::chrono::steady_clock::now() + cleanup_timer);
     cleanup_timer_interval_->async_wait(
-        [self](const boost::system::error_code& ec) {
+        [self](const error_code_type& ec) {
             if (!ec)
             {
                 self->cleanup_expired_services(ec);
@@ -54,7 +55,7 @@ void celeritas::service_registry_impl::start_cleanup_timer(const self_shared_ptr
         });
 }
 
-void celeritas::service_registry_impl::cleanup_expired_services(const boost::system::error_code& error_code)
+void celeritas::service_registry_impl::cleanup_expired_services(const error_code_type& error_code)
 {
     if (error_code == boost::asio::error::operation_aborted)
     {
@@ -103,14 +104,14 @@ void celeritas::service_registry_impl::cleanup_services_by_duration()
     }
 }
 
-bool celeritas::service_registry_impl::cleanup_service_entry(const registry_type_iterator& iter, const service_info::time_point_type& now)
+bool celeritas::service_registry_impl::cleanup_service_entry(const registry_type_iterator& iter, const time_point_type& now)
 {
     const auto last_heartbeat = iter->second.get_last_heartbeat();
     if (const auto duration = std::chrono::duration_cast<std::chrono::seconds>(now - last_heartbeat).count();
         duration > services_heartbeat_remove_time)
     {
         LOG_CHANNEL(service_registry_channel, error)
-                << "[ERROR] Service removed after "
+                << "Service removed after "
                 << duration
                 << "s timeout: "
                 << iter->second.get_service_name()
@@ -122,7 +123,7 @@ bool celeritas::service_registry_impl::cleanup_service_entry(const registry_type
     else if (duration > services_heartbeat_error_time)
     {
         LOG_CHANNEL(service_registry_channel, error)
-                << "[ERROR] Service unresponsive for "
+                << "Service unresponsive for "
                 << duration
                 << "s: "
                 << iter->second.get_service_name()
@@ -133,7 +134,7 @@ bool celeritas::service_registry_impl::cleanup_service_entry(const registry_type
     else if (duration > services_heartbeat_warning_time)
     {
         LOG_CHANNEL(service_registry_channel, warning)
-                << "[WARN] Service unresponsive for "
+                << "Service unresponsive for "
                 << duration
                 << "s: "
                 << iter->second.get_service_name()

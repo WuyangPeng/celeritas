@@ -13,6 +13,7 @@ namespace celeritas
     public:
         using class_type = service_registry_impl;
         using service_info_container_type = std::vector<service_info>;
+        using io_context_type = boost::asio::io_context;
 
         service_registry_impl() noexcept = default;
 
@@ -30,7 +31,7 @@ namespace celeritas
 
         [[nodiscard]] service_info_container_type get_services(const std::string& service_name) const;
 
-        void start_cleanup_timer(boost::asio::io_context& io_context);
+        void start_cleanup_timer(io_context_type& io_context);
 
     private:
         using registry_type = std::unordered_map<std::string, service_info>;
@@ -38,16 +39,18 @@ namespace celeritas
         using steady_timer_type = boost::asio::steady_timer;
         using steady_timer_unique_ptr = std::unique_ptr<steady_timer_type>;
         using registry_type_iterator = registry_type::iterator;
+        using error_code_type = boost::system::error_code;
+        using time_point_type = service_info::time_point_type;
 
         void start_cleanup_timer(const self_shared_ptr& self) const;
 
-        void cleanup_expired_services(const boost::system::error_code& error_code);
+        void cleanup_expired_services(const error_code_type& error_code);
 
         void process_cleanup_logic();
 
         void cleanup_services_by_duration();
 
-        [[nodiscard]] static bool cleanup_service_entry(const registry_type_iterator& iter, const service_info::time_point_type& now);
+        [[nodiscard]] static bool cleanup_service_entry(const registry_type_iterator& iter, const time_point_type& now);
 
         registry_type registry_;
         mutable std::shared_mutex mutex_;
