@@ -11,11 +11,13 @@
 celeritas::redis_database_pool::redis_database_pool(boost::asio::io_context& io_context,
                                                     const std::string_view& host,
                                                     uint16_t port,
+                                                    const std::string_view& password,
                                                     int min_connections,
                                                     int max_connections)
     : io_context_{ io_context },
       host_{ host },
       port_{ port },
+      password_{ password },
       connections_{ 0 },
       min_connections_{ min_connections },
       max_connections_{ max_connections }
@@ -95,7 +97,7 @@ celeritas::redis_database_pool::awaitable_type celeritas::redis_database_pool::a
 {
     try
     {
-        auto session = std::make_shared<redis_database_session>(host_, port_, io_context_);
+        auto session = std::make_shared<redis_database_session>(host_, port_, password_, io_context_);
         co_await session->async_connect();
         sessions_.emplace_back(session);
 

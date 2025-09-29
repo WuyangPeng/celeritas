@@ -23,6 +23,7 @@ namespace celeritas
         redis_database_pool(boost::asio::io_context& io_context,
                             const std::string_view& host,
                             uint16_t port,
+                            const std::string_view& password,
                             int min_connections,
                             int max_connections);
 
@@ -42,8 +43,9 @@ namespace celeritas
         [[nodiscard]] awaitable_type async_one_initialize();
 
         boost::asio::io_context& io_context_;
-        const std::string host_;
+        std::string host_;
         uint16_t port_;
+        std::string password_;
 
         session_container_type sessions_;
         std::mutex mutex_;

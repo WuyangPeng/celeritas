@@ -100,7 +100,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
 {
     std::lock_guard lock{ mutex_ };
 
-    database_pool_shared_ptr pool = std::make_shared<redis_database_pool>(io_context, host, port, min_connections, max_connections);
+    database_pool_shared_ptr pool = std::make_shared<redis_database_pool>(io_context, host, port, password, min_connections, max_connections);
 
     pools_.insert({ name, pool });
 

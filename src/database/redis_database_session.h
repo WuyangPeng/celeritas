@@ -20,6 +20,7 @@ namespace celeritas
 
         explicit redis_database_session(const std::string_view& host,
                                         uint16_t port,
+                                        const std::string_view& password,
                                         boost::asio::io_context& io_context);
 
         ~redis_database_session() noexcept override;
@@ -43,5 +44,6 @@ namespace celeritas
 
         std::string host_;
         uint16_t port_ = 0;
+        std::string password_;
     };
 }
