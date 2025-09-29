@@ -18,21 +18,22 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
                                                                                                          const std::string& user,
                                                                                                          const std::string& password,
                                                                                                          const std::string& db_name,
-                                                                                                         const size_t pool_size)
+                                                                                                         int min_connections,
+                                                                                                         int max_connections)
 {
     switch (database_type)
     {
         case database_type::mysql:
         {
-            return create_mysql_pool(name, io_context, host, port, user, password, db_name, pool_size);
+            return create_mysql_pool(name, io_context, host, port, user, password, db_name, min_connections, max_connections);
         }
         case database_type::mongo:
         {
-            return create_mongo_pool(name, io_context, host, port, user, password, db_name, pool_size);
+            return create_mongo_pool(name, io_context, host, port, user, password, db_name, max_connections);
         }
         case database_type::redis:
         {
-            return create_redis_pool(name, io_context, host, port, user, password, db_name, pool_size);
+            return create_redis_pool(name, io_context, host, port, user, password, db_name, max_connections);
         }
         default:
         {
@@ -61,11 +62,12 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
                                                                                                                const std::string& user,
                                                                                                                const std::string& password,
                                                                                                                const std::string& db_name,
-                                                                                                               size_t pool_size)
+                                                                                                               int min_connections,
+                                                                                                               int max_connections)
 {
     std::lock_guard lock{ mutex_ };
 
-    database_pool_shared_ptr pool = std::make_shared<mysql_database_pool>(io_context, host, port, user, password, db_name, pool_size);
+    database_pool_shared_ptr pool = std::make_shared<mysql_database_pool>(io_context, host, port, user, password, db_name, min_connections, max_connections);
 
     pools_.insert({ name, pool });
 

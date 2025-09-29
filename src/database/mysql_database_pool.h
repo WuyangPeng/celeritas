@@ -27,7 +27,8 @@ namespace celeritas
                             std::string user,
                             std::string password,
                             std::string db_name,
-                            size_t pool_size,
+                            int min_connections,
+                            int max_connections,
                             boost::asio::ssl::context* ssl_context = nullptr);
 
         // 异步初始化连接池
@@ -43,6 +44,8 @@ namespace celeritas
         using session_container_type = std::deque<session_shared_ptr>;
         using waiter_type = boost::asio::any_completion_handler<void(session_shared_ptr)>;
 
+        [[nodiscard]] awaitable_type async_one_initialize();
+
         boost::asio::io_context& io_context_;
         boost::asio::ssl::context* ssl_context_;
         const std::string host_;
@@ -54,6 +57,8 @@ namespace celeritas
         session_container_type sessions_;
         std::mutex mutex_;
         std::deque<waiter_type> waiters_;
-        size_t pool_size_;
+        int connections_;
+        int min_connections_;
+        int max_connections_;
     };
 }

@@ -19,6 +19,7 @@ namespace celeritas
                         std::string user,
                         std::string password,
                         std::string db_name,
+                        int min_connections,
                         int max_connections,
                         int timeout_seconds);
 
@@ -36,6 +37,8 @@ namespace celeritas
 
         [[nodiscard]] std::string get_db_name() const;
 
+        [[nodiscard]] int get_min_connections() const;
+
         [[nodiscard]] int get_max_connections() const;
 
         [[nodiscard]] int get_timeout_seconds() const;
@@ -48,6 +51,7 @@ namespace celeritas
         std::string user_;
         std::string password_;
         std::string db_name_;
+        int min_connections_ = 4;
         int max_connections_ = 10;
         int timeout_seconds_ = 5;
     };

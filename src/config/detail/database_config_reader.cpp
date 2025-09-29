@@ -4,7 +4,6 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
-
 celeritas::database_config_reader::database_config_container celeritas::database_config_reader::load_config(const std::string& filename)
 {
     database_config_container container{};
@@ -36,10 +35,11 @@ celeritas::database_config celeritas::database_config_reader::get_database_node(
     const auto user = node.get<std::string>("user", "");
     const auto password = node.get<std::string>("password", "");
     const auto db_name = node.get<std::string>("db_name", "");
+    const auto min_connections = node.get<int>("min_connections", default_database_min_connections);
     const auto max_connections = node.get<int>("max_connections", default_database_max_connections);
     const auto timeout_seconds = node.get<int>("timeout_seconds", default_database_timeout_seconds);
 
-    database_config database{ name, database_type, host, port, user, password, db_name, max_connections, timeout_seconds };
+    database_config database{ name, database_type, host, port, user, password, db_name, min_connections, max_connections, timeout_seconds };
 
     return database;
 }

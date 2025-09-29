@@ -17,6 +17,7 @@ namespace celeritas
     constexpr auto default_health_check_interval = 30;
     constexpr auto default_health_check_timeout = 5;
     constexpr auto default_logger_rotation_size = 50;
+    constexpr auto default_database_min_connections = 4;
     constexpr auto default_database_max_connections = 10;
     constexpr auto default_database_timeout_seconds = 5;
 

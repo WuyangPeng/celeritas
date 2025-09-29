@@ -11,7 +11,8 @@ celeritas::mysql_database_pool::mysql_database_pool(boost::asio::io_context& io_
                                                     std::string user,
                                                     std::string password,
                                                     std::string db_name,
-                                                    const size_t pool_size,
+                                                    int min_connections,
+                                                    int max_connections,
                                                     boost::asio::ssl::context* ssl_context)
     : io_context_{ io_context },
       ssl_context_{ ssl_context },
@@ -20,28 +21,17 @@ celeritas::mysql_database_pool::mysql_database_pool(boost::asio::io_context& io_
       user_{ std::move(user) },
       password_{ std::move(password) },
       db_name_{ std::move(db_name) },
-      pool_size_{ pool_size }
+      min_connections_{ min_connections },
+      max_connections_{ max_connections }
 {
 }
 
 celeritas::mysql_database_pool::awaitable_type celeritas::mysql_database_pool::async_initialize()
 {
-    for (auto i = 0u; i < pool_size_; ++i)
+    for (auto i = 0u; i < min_connections_; ++i)
     {
-        try
-        {
-            auto session = std::make_shared<mysql_database_session>(host_, port_, user_, password_, db_name_, io_context_, ssl_context_);
-            co_await session->async_connect();
-            sessions_.emplace_back(session);
-        }
-        catch (const std::exception& error)
-        {
-            LOG_CHANNEL(database_channel, error) << "connect host:" << host_ << ",port:" << port_ << " error:" << error.what();
-        }
-        catch (...)
-        {
-            LOG_CHANNEL(database_channel, fatal) << "connect host:" << host_ << ",port:" << port_ << " unknown exception";
-        }
+        co_await async_one_initialize();
+        ++connections_;
     }
 }
 
@@ -55,6 +45,19 @@ celeritas::mysql_database_pool::session_awaitable_type celeritas::mysql_database
         sessions_.pop_front();
 
         co_return session;
+    }
+
+    if (connections_ < max_connections_)
+    {
+        co_await async_one_initialize();
+
+        if (!sessions_.empty())
+        {
+            auto session = sessions_.front();
+            sessions_.pop_front();
+
+            co_return session;
+        }
     }
 
     // 如果没有可用会话，将当前协程挂起并加入等待队列。
@@ -89,5 +92,25 @@ void celeritas::mysql_database_pool::release_session(const session_shared_ptr& s
     else
     {
         sessions_.emplace_back(session);
+    }
+}
+
+celeritas::mysql_database_pool::awaitable_type celeritas::mysql_database_pool::async_one_initialize()
+{
+    try
+    {
+        auto session = std::make_shared<mysql_database_session>(host_, port_, user_, password_, db_name_, io_context_, ssl_context_);
+        co_await session->async_connect();
+        sessions_.emplace_back(session);
+
+        LOG_CHANNEL(database_channel, info) << "connect host:" << host_ << ",port:" << port_ << " success.";
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(database_channel, error) << "connect host:" << host_ << ",port:" << port_ << " error:" << error.what();
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(database_channel, fatal) << "connect host:" << host_ << ",port:" << port_ << " unknown exception";
     }
 }

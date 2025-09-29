@@ -14,6 +14,7 @@ void celeritas::database_resource_loader::loader_config(boost::asio::io_context&
                                                                   database_config.get_user(),
                                                                   database_config.get_password(),
                                                                   database_config.get_db_name(),
+                                                                  database_config.get_min_connections(),
                                                                   database_config.get_max_connections());
 
     boost::asio::co_spawn(

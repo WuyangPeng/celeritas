@@ -24,7 +24,8 @@ namespace celeritas
                                                            const std::string& user,
                                                            const std::string& password,
                                                            const std::string& db_name,
-                                                           size_t pool_size);
+                                                           int min_connections,
+                                                           int max_connections);
 
         [[nodiscard]] database_pool_shared_ptr get_pool(const std::string& name);
 
@@ -40,7 +41,8 @@ namespace celeritas
                                                                  const std::string& user,
                                                                  const std::string& password,
                                                                  const std::string& db_name,
-                                                                 size_t pool_size);
+                                                                 int min_connections,
+                                                                 int max_connections);
 
         [[nodiscard]] database_pool_shared_ptr create_mongo_pool(const std::string& name,
                                                                  boost::asio::io_context& io_context,

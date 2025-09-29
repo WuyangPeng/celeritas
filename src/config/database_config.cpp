@@ -1,7 +1,7 @@
 ﻿#include "database_config.h"
 
-celeritas::database_config::database_config(std::string name, database_type database_type, std::string host, int port, std::string user, std::string password, std::string db_name, int max_connections, int timeout_seconds)
-    : name_{ name }, database_type_{ database_type }, host_{ host }, port_{ port }, user_{ user }, password_{ password }, db_name_{ db_name }, max_connections_{ max_connections }, timeout_seconds_{ timeout_seconds }
+celeritas::database_config::database_config(std::string name, database_type database_type, std::string host, int port, std::string user, std::string password, std::string db_name, int min_connections, int max_connections, int timeout_seconds)
+    : name_{ name }, database_type_{ database_type }, host_{ host }, port_{ port }, user_{ user }, password_{ password }, db_name_{ db_name }, min_connections_{ min_connections }, max_connections_{ max_connections }, timeout_seconds_{ timeout_seconds }
 
 {
 }
@@ -39,6 +39,11 @@ std::string celeritas::database_config::get_password() const
 std::string celeritas::database_config::get_db_name() const
 {
     return db_name_;
+}
+
+int celeritas::database_config::get_min_connections() const
+{
+    return min_connections_;
 }
 
 int celeritas::database_config::get_max_connections() const
