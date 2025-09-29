@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databases>
+    <database name="redis_db">
+        <database_type>redis</database_type>
+        <host>127.0.0.1</host>
+        <port>7001</port>
+        <user>admin</user>
+        <password>celeritas_pass</password>
+        <db_name>game</db_name>
+        <min_connections>4</min_connections>
+        <max_connections>10</max_connections>
+        <timeout_seconds>5</timeout_seconds>
+    </database>
 </databases>

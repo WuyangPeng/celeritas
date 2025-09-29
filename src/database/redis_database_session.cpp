@@ -17,6 +17,11 @@ celeritas::redis_database_session::awaitable_type celeritas::redis_database_sess
 
     connection_ = ::redisConnect(host_.c_str(), port_);
 
+    if (connection_ == nullptr)
+    {
+        throw std::runtime_error("failed to connect to redis server");
+    }
+
     co_return;
 }
 

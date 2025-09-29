@@ -28,6 +28,8 @@ celeritas::redis_database_pool::awaitable_type celeritas::redis_database_pool::a
             auto session = std::make_shared<redis_database_session>(host_, port_, io_context_);
             co_await session->async_connect();
             sessions_.emplace_back(session);
+
+            LOG_CHANNEL(database_channel, info) << "connect host:" << host_ << ",port:" << port_ << " success.";
         }
         catch (const std::exception& error)
         {
