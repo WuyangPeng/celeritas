@@ -172,6 +172,13 @@ add_library(redis INTERFACE)
 
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY})
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+
+    list(APPEND CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY})
+    list(APPEND CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY}")
+
+endif ()
+
 if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
 
     target_link_libraries(redis INTERFACE hiredisd)
