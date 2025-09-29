@@ -32,8 +32,8 @@ void celeritas::resource_loader::initialize_logger_resource()
 
 void celeritas::resource_loader::initialize_database_resource(boost::asio::io_context& io_context)
 {
-    for (const auto logger = app_config_->get_database_config();
-         const auto& element : logger | std::views::values)
+    for (const auto database = app_config_->get_database_config();
+         const auto& element : database | std::views::values)
     {
         database_resource_loader::loader_config(io_context, element);
     }

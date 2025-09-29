@@ -3,6 +3,8 @@
 #include "redis_database_pool.h"
 #include "common/celeritas_error.h"
 
+#include <mongocxx/instance.hpp>
+
 celeritas::database_pool_manager& celeritas::database_pool_manager::get_instance()
 {
     static database_pool_manager manager{};
@@ -29,7 +31,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
         }
         case database_type::mongo:
         {
-            return create_mongo_pool(name, io_context, host, port, user, password, db_name, max_connections);
+            return create_mongo_pool(name, io_context, host, port, user, password, db_name, min_connections, max_connections);
         }
         case database_type::redis:
         {
@@ -74,13 +76,20 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
     return pool;
 }
 
-celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mongo_pool(const std::string& name, boost::asio::io_context& io_context, const std::string& host, uint16_t port, const std::string& user, const std::string& password, const std::string& db_name, size_t pool_size)
+celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mongo_pool(const std::string& name, boost::asio::io_context& io_context, const std::string& host, uint16_t port, const std::string& user, const std::string& password, const std::string& db_name, int min_connections, int max_connections)
 {
+    if (!is_init_mongo)
+    {
+        mongocxx::instance instance{};
+
+        is_init_mongo = true;
+    }
+
     const auto url = "mongodb://" + user + ":" + password + "@" + host + ":" + std::to_string(port) + "/" + db_name;
 
     std::lock_guard lock{ mutex_ };
 
-    database_pool_shared_ptr pool = std::make_shared<mongo_database_pool>(io_context, url, db_name, pool_size);
+    database_pool_shared_ptr pool = std::make_shared<mongo_database_pool>(io_context, url, db_name, min_connections, max_connections);
 
     pools_.insert({ name, pool });
 

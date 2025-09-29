@@ -8,32 +8,23 @@
 celeritas::mongo_database_pool::mongo_database_pool(boost::asio::io_context& io_context,
                                                     const std::string_view& uri,
                                                     const std::string_view& db_name,
-                                                    size_t pool_size)
+                                                    int min_connections,
+                                                    int max_connections)
     : io_context_{ io_context },
       uri_{ uri },
       db_name_{ db_name },
-      pool_size_{ pool_size }
+      connections_{ 0 },
+      min_connections_{ min_connections },
+      max_connections_{ max_connections }
 {
 }
 
 celeritas::mongo_database_pool::awaitable_type celeritas::mongo_database_pool::async_initialize()
 {
-    for (auto i = 0u; i < pool_size_; ++i)
+    for (auto i = 0u; i < min_connections_; ++i)
     {
-        try
-        {
-            auto session = std::make_shared<mongo_database_session>(uri_, db_name_, io_context_);
-            co_await session->async_connect();
-            sessions_.emplace_back(session);
-        }
-        catch (const std::exception& error)
-        {
-            LOG_CHANNEL(database_channel, error) << "connect uri:" << uri_ << ",db_name:" << db_name_ << " error:" << error.what();
-        }
-        catch (...)
-        {
-            LOG_CHANNEL(database_channel, fatal) << "connect uri:" << uri_ << ",db_name:" << db_name_ << " unknown exception";
-        }
+        co_await async_one_initialize();
+        ++connections_;
     }
 }
 
@@ -47,6 +38,19 @@ celeritas::mongo_database_pool::session_awaitable_type celeritas::mongo_database
         sessions_.pop_front();
 
         co_return session;
+    }
+
+    if (connections_ < max_connections_)
+    {
+        co_await async_one_initialize();
+
+        if (!sessions_.empty())
+        {
+            auto session = sessions_.front();
+            sessions_.pop_front();
+
+            co_return session;
+        }
     }
 
     // 如果没有可用会话，将当前协程挂起并加入等待队列。
@@ -81,5 +85,23 @@ void celeritas::mongo_database_pool::release_session(const session_shared_ptr& s
     else
     {
         sessions_.emplace_back(session);
+    }
+}
+
+celeritas::mongo_database_pool::awaitable_type celeritas::mongo_database_pool::async_one_initialize()
+{
+    try
+    {
+        auto session = std::make_shared<mongo_database_session>(uri_, db_name_, io_context_);
+        co_await session->async_connect();
+        sessions_.emplace_back(session);
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(database_channel, error) << "connect uri:" << uri_ << ",db_name:" << db_name_ << " error:" << error.what();
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(database_channel, fatal) << "connect uri:" << uri_ << ",db_name:" << db_name_ << " unknown exception";
     }
 }

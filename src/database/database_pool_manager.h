@@ -51,7 +51,8 @@ namespace celeritas
                                                                  const std::string& user,
                                                                  const std::string& password,
                                                                  const std::string& db_name,
-                                                                 size_t pool_size);
+                                                                 int min_connections,
+                                                                 int max_connections);
 
         [[nodiscard]] database_pool_shared_ptr create_redis_pool(const std::string& name,
                                                                  boost::asio::io_context& io_context,
@@ -63,6 +64,7 @@ namespace celeritas
                                                                  size_t pool_size);
 
         database_pool_container pools_;
+        bool is_init_mongo = false;
         std::mutex mutex_;
     };
 }

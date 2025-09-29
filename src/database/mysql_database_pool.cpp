@@ -21,6 +21,7 @@ celeritas::mysql_database_pool::mysql_database_pool(boost::asio::io_context& io_
       user_{ std::move(user) },
       password_{ std::move(password) },
       db_name_{ std::move(db_name) },
+      connections_{ 0 },
       min_connections_{ min_connections },
       max_connections_{ max_connections }
 {
