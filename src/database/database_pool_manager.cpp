@@ -35,7 +35,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
         }
         case database_type::redis:
         {
-            return create_redis_pool(name, io_context, host, port, user, password, db_name, max_connections);
+            return create_redis_pool(name, io_context, host, port, user, password, db_name, min_connections, max_connections);
         }
         default:
         {
