@@ -1,9 +1,9 @@
 ﻿#pragma once
 
 #include "service_info.h"
-#include "boost/asio/io_context.hpp"
 #include "detail/service_registry_internal_fwd.h"
 
+#include <boost/asio/io_context.hpp>
 #include <vector>
 
 namespace celeritas
@@ -12,8 +12,8 @@ namespace celeritas
     {
     public:
         using class_type = service_registry;
-        using service_info_container_type = std::vector<service_info>;
         using io_context_type = boost::asio::io_context;
+        using service_info_container_type = std::vector<service_info>;
 
         static void register_service(const service_info& info);
 

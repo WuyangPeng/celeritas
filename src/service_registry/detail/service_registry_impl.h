@@ -12,8 +12,8 @@ namespace celeritas
     {
     public:
         using class_type = service_registry_impl;
-        using service_info_container_type = std::vector<service_info>;
         using io_context_type = boost::asio::io_context;
+        using service_info_container_type = std::vector<service_info>;
 
         service_registry_impl() noexcept = default;
 
