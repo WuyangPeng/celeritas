@@ -1,39 +1,66 @@
-﻿#include "common/logger.h"
-#include "redis_database_pool.h"
-#include "common/common_fwd.h"
+﻿#pragma once
 
+#include "connection_pool_base.h"
 #include "common/logger.h"
 #include "common/common_fwd.h"
 
-#include <boost/asio/experimental/promise.hpp>
-#include <utility>
-
-celeritas::redis_database_pool::redis_database_pool(boost::asio::io_context& io_context,
-                                                    const std::string_view& host,
-                                                    uint16_t port,
-                                                    const std::string_view& password,
-                                                    int min_connections,
-                                                    int max_connections)
+template <typename SessionType>
+celeritas::connection_pool_base<SessionType>::connection_pool_base(boost::asio::io_context& io_context, std::string host, uint16_t port, std::string user, std::string password, std::string db_name, int min_connections, int max_connections)
     : io_context_{ io_context },
-      host_{ host },
+      host_{ std::move(host) },
       port_{ port },
-      password_{ password },
+      user_{ std::move(user) },
+      password_{ std::move(password) },
+      uri_{},
+      db_name_{ std::move(db_name) },
       connections_{ 0 },
       min_connections_{ min_connections },
       max_connections_{ max_connections }
 {
 }
 
-celeritas::redis_database_pool::awaitable_type celeritas::redis_database_pool::async_initialize()
+template <typename SessionType>
+celeritas::connection_pool_base<SessionType>::connection_pool_base(boost::asio::io_context& io_context, std::string host, uint16_t port, std::string password, int min_connections, int max_connections)
+    : io_context_{ io_context },
+      host_{ std::move(host) },
+      port_{ port },
+      user_{},
+      password_{ std::move(password) },
+      uri_{},
+      db_name_{},
+      connections_{ 0 },
+      min_connections_{ min_connections },
+      max_connections_{ max_connections }
+{
+}
+
+template <typename SessionType>
+celeritas::connection_pool_base<SessionType>::connection_pool_base(boost::asio::io_context& io_context, std::string uri, std::string db_name, int min_connections, int max_connections)
+    : io_context_{ io_context },
+      host_{},
+      port_{},
+      user_{},
+      password_{},
+      uri_{ std::move(uri) },
+      db_name_{ std::move(db_name) },
+      connections_{ 0 },
+      min_connections_{ min_connections },
+      max_connections_{ max_connections }
+{
+}
+
+template <typename SessionType>
+typename celeritas::connection_pool_base<SessionType>::awaitable_type celeritas::connection_pool_base<SessionType>::async_initialize()
 {
     for (auto i = 0u; i < min_connections_; ++i)
     {
-        co_await async_one_initialize();
+        co_await this->async_one_initialize();
         ++connections_;
     }
 }
 
-celeritas::redis_database_pool::session_awaitable_type celeritas::redis_database_pool::async_get_session()
+template <typename SessionType>
+typename celeritas::connection_pool_base<SessionType>::session_awaitable_type celeritas::connection_pool_base<SessionType>::async_get_session()
 {
     std::lock_guard lock{ mutex_ };
 
@@ -47,7 +74,7 @@ celeritas::redis_database_pool::session_awaitable_type celeritas::redis_database
 
     if (connections_ < max_connections_)
     {
-        co_await async_one_initialize();
+        co_await this->async_one_initialize();
 
         if (!sessions_.empty())
         {
@@ -76,7 +103,8 @@ celeritas::redis_database_pool::session_awaitable_type celeritas::redis_database
         boost::asio::use_awaitable);
 }
 
-void celeritas::redis_database_pool::release_session(const session_shared_ptr& session)
+template <typename SessionType>
+void celeritas::connection_pool_base<SessionType>::release_session(const session_shared_ptr& session)
 {
     std::lock_guard lock{ mutex_ };
 
@@ -93,11 +121,12 @@ void celeritas::redis_database_pool::release_session(const session_shared_ptr& s
     }
 }
 
-celeritas::redis_database_pool::awaitable_type celeritas::redis_database_pool::async_one_initialize()
+template <typename SessionType>
+typename celeritas::connection_pool_base<SessionType>::awaitable_type celeritas::connection_pool_base<SessionType>::async_one_initialize()
 {
     try
     {
-        auto session = std::make_shared<redis_database_session>(host_, port_, password_, io_context_);
+        auto session = std::make_shared<SessionType>(host_, port_, user_, password_, uri_, db_name_, io_context_);
         co_await session->async_connect();
         sessions_.emplace_back(session);
 

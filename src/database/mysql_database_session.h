@@ -17,14 +17,14 @@ namespace celeritas
         using awaitable_type = boost::asio::awaitable<void>;
         using results_type = boost::asio::awaitable<boost::mysql::results>;
 
-        explicit mysql_database_session(const std::string_view& host,
-                                        uint16_t port,
-                                        const std::string_view& user,
-                                        const std::string_view& password,
-                                        const std::string_view& db_name,
-                                        boost::asio::io_context& io_context,
-                                        boost::asio::ssl::context* ssl_context = nullptr);
-
+        mysql_database_session(const std::string_view& host,
+                               uint16_t port,
+                               const std::string_view& user,
+                               const std::string_view& password,
+                               const std::string_view& uri,
+                               const std::string_view& db_name,
+                               boost::asio::io_context& io_context,
+                               boost::asio::ssl::context* ssl_context = nullptr);
 
         ~mysql_database_session() noexcept override;
 

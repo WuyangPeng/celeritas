@@ -1,6 +1,8 @@
-﻿#include "database_pool_manager.h"
-#include "mongo_database_pool.h"
-#include "redis_database_pool.h"
+﻿#include "connection_pool_base.tpp"
+#include "database_pool_manager.h"
+#include "mongo_database_session.h"
+#include "mysql_database_session.h"
+#include "redis_database_session.h"
 #include "common/celeritas_error.h"
 
 celeritas::database_pool_manager& celeritas::database_pool_manager::get_instance()
@@ -67,7 +69,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
 {
     std::lock_guard lock{ mutex_ };
 
-    auto pool = std::make_shared<mysql_database_pool>(io_context, host, port, user, password, db_name, min_connections, max_connections);
+    auto pool = std::make_shared<connection_pool_base<mysql_database_session> >(io_context, host, port, user, password, db_name, min_connections, max_connections);
 
     pools_.insert({ name, pool });
 
@@ -85,7 +87,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
 
     std::lock_guard lock{ mutex_ };
 
-    database_pool_shared_ptr pool = std::make_shared<mongo_database_pool>(io_context, url, db_name, min_connections, max_connections);
+    auto pool = std::make_shared<connection_pool_base<mongo_database_session> >(io_context, url, db_name, min_connections, max_connections);
 
     pools_.insert({ name, pool });
 
@@ -96,7 +98,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
 {
     std::lock_guard lock{ mutex_ };
 
-    database_pool_shared_ptr pool = std::make_shared<redis_database_pool>(io_context, host, port, password, min_connections, max_connections);
+    auto pool = std::make_shared<connection_pool_base<redis_database_session> >(io_context, host, port, password, min_connections, max_connections);
 
     pools_.insert({ name, pool });
 

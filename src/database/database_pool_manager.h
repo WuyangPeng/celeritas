@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "mysql_database_pool.h"
 #include "config/database_type.h"
+#include "database_pool.h"
 
 #include <mongocxx/instance.hpp>
 #include <map>

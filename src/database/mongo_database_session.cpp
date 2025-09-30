@@ -6,7 +6,11 @@
 #include <boost/asio/use_awaitable.hpp>
 #include <mongocxx/exception/operation_exception.hpp>
 
-celeritas::mongo_database_session::mongo_database_session(const std::string_view& uri,
+celeritas::mongo_database_session::mongo_database_session(const std::string_view& host,
+                                                          uint16_t port,
+                                                          const std::string_view& user,
+                                                          const std::string_view& password,
+                                                          const std::string_view& uri,
                                                           const std::string_view& db_name,
                                                           boost::asio::io_context& io_context)
     : client_{}, database_{}, io_context_{ io_context }, uri_{ uri }, db_name_{ db_name }

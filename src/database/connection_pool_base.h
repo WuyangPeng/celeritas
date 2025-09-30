@@ -29,6 +29,19 @@ namespace celeritas
                              int min_connections,
                              int max_connections);
 
+        connection_pool_base(boost::asio::io_context& io_context,
+                             std::string host,
+                             uint16_t port,
+                             std::string password,
+                             int min_connections,
+                             int max_connections);
+
+        connection_pool_base(boost::asio::io_context& io_context,
+                             std::string url,
+                             std::string db_name,
+                             int min_connections,
+                             int max_connections);
+
         // 异步初始化连接池
         [[nodiscard]] awaitable_type async_initialize() override;
 
@@ -45,11 +58,12 @@ namespace celeritas
         [[nodiscard]] awaitable_type async_one_initialize();
 
         boost::asio::io_context& io_context_;
-        const std::string host_;
+        std::string host_;
         uint16_t port_;
-        const std::string user_;
-        const std::string password_;
-        const std::string db_name_;
+        std::string user_;
+        std::string password_;
+        std::string uri_;
+        std::string db_name_;
 
         session_container_type sessions_;
         std::mutex mutex_;

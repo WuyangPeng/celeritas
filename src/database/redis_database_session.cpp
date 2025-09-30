@@ -5,7 +5,13 @@
 
 using namespace std::literals;
 
-celeritas::redis_database_session::redis_database_session(const std::string_view& host, uint16_t port, const std::string_view& password, boost::asio::io_context& io_context)
+celeritas::redis_database_session::redis_database_session(const std::string_view& host,
+                                                          uint16_t port,
+                                                          const std::string_view& user,
+                                                          const std::string_view& password,
+                                                          const std::string_view& uri,
+                                                          const std::string_view& db_name,
+                                                          boost::asio::io_context& io_context)
     : connection_{}, io_context_{ io_context }, host_{ host }, password_{ password }, port_{ port }
 {
 }
@@ -47,7 +53,7 @@ celeritas::redis_database_session::awaitable_type celeritas::redis_database_sess
     // AUTH 成功会返回状态回复 (REDIS_REPLY_STATUS) 且内容为 "OK"
     if (reply->type == REDIS_REPLY_STATUS && strcasecmp(reply->str, "OK") == 0)
     {
-        LOG_CHANNEL(database_channel, error) << "Authentication successful (AUTH: OK).";
+        LOG_CHANNEL(database_channel, info) << "Authentication successful (AUTH: OK).";
 
         freeReplyObject(reply);
 

@@ -6,6 +6,7 @@ celeritas::mysql_database_session::mysql_database_session(const std::string_view
                                                           const uint16_t port,
                                                           const std::string_view& user,
                                                           const std::string_view& password,
+                                                          const std::string_view& uri,
                                                           const std::string_view& db_name,
                                                           boost::asio::io_context& io_context,
                                                           boost::asio::ssl::context* ssl_context)

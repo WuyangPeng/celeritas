@@ -1,6 +1,8 @@
 ﻿#include "database_resource_loader.h"
-#include "common/logger.h"
 #include "database/database_pool_manager.h"
+
+#include <boost/asio/co_spawn.hpp>
+#include <boost/asio/detached.hpp>
 
 void celeritas::database_resource_loader::loader_database(boost::asio::io_context& io_context, const database_config& database_config)
 {

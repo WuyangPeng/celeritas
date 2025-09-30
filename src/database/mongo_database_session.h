@@ -18,8 +18,11 @@ namespace celeritas
         using cursor_awaitable_type = boost::asio::awaitable<mongocxx::cursor>;
         using document_view_type = bsoncxx::document::view;
 
-
-        explicit mongo_database_session(const std::string_view& uri,
+        explicit mongo_database_session(const std::string_view& host,
+                                        uint16_t port,
+                                        const std::string_view& user,
+                                        const std::string_view& password,
+                                        const std::string_view& uri,
                                         const std::string_view& db_name,
                                         boost::asio::io_context& io_context);
 
