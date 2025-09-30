@@ -13,6 +13,7 @@ namespace celeritas
     {
     public:
         using class_type = mongo_database_session;
+        using base_type = database_session;
         using awaitable_type = boost::asio::awaitable<void>;
         using document_awaitable_type = boost::asio::awaitable<std::optional<bsoncxx::document::value> >;
         using cursor_awaitable_type = boost::asio::awaitable<mongocxx::cursor>;

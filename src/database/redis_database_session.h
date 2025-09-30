@@ -15,6 +15,7 @@ namespace celeritas
     {
     public:
         using class_type = redis_database_session;
+        using base_type = database_session;
 
         using awaitable_type = boost::asio::awaitable<void>;
         using command_awaitable_type = boost::asio::awaitable<std::shared_ptr<::redisReply> >;

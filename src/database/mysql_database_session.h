@@ -14,6 +14,7 @@ namespace celeritas
     {
     public:
         using class_type = mysql_database_session;
+        using base_type = database_session;
         using awaitable_type = boost::asio::awaitable<void>;
         using results_type = boost::asio::awaitable<boost::mysql::results>;
 
