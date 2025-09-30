@@ -13,11 +13,7 @@ celeritas::redis_database_session::redis_database_session(const std::string_view
                                                           const std::string_view& uri,
                                                           const std::string_view& db_name,
                                                           boost::asio::io_context& io_context)
-    : redis_context_{}, io_context_{ io_context }, host_{ host }, password_{ password }, user_{ user }, port_{ port }
-{
-}
-
-celeritas::redis_database_session::~redis_database_session() noexcept
+    : redis_context_{}, io_context_{ io_context }, host_{ host }, password_{ password }, user_{ user }, port_{ port }, db_name_{ db_name }
 {
 }
 
@@ -27,7 +23,7 @@ celeritas::redis_database_session::awaitable_type celeritas::redis_database_sess
 
     redis_context_ = std::make_unique<redis_context>(host_, port_);
 
-    auto command = (user_.empty()) ? "AUTH " + password_ : "AUTH " + user_ + " " + password_;
+    auto command = user_.empty() ? "AUTH " + password_ : "AUTH " + user_ + " " + password_;
 
     redis_reply redis_reply{ *redis_context_.get(), command };
 
