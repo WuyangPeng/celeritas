@@ -5,9 +5,9 @@
 
 #include <boost/asio.hpp>
 #include <boost/asio/awaitable.hpp>
-#include <string>
 #include <hiredis.h>
 #include <memory>
+#include <string>
 
 namespace celeritas
 {
