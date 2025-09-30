@@ -14,7 +14,7 @@ void celeritas::logger_resource_loader::loader_level_config(const logger_level_c
     }
 }
 
-void celeritas::logger_resource_loader::loader_config(const logger_config& logger_config)
+void celeritas::logger_resource_loader::loader_logger(const logger_config& logger_config)
 {
     logger::init_file(logger_config.get_channel_name(), logger_config.get_log_file_name(), logger_config.get_severity_level_type(), logger_config.get_rotation_size(), logger_config.is_console_enabled());
 }

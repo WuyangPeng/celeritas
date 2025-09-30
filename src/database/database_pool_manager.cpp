@@ -3,8 +3,6 @@
 #include "redis_database_pool.h"
 #include "common/celeritas_error.h"
 
-#include <mongocxx/instance.hpp>
-
 celeritas::database_pool_manager& celeritas::database_pool_manager::get_instance()
 {
     static database_pool_manager manager{};
@@ -78,11 +76,9 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
 
 celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mongo_pool(const std::string& name, boost::asio::io_context& io_context, const std::string& host, uint16_t port, const std::string& user, const std::string& password, const std::string& db_name, int min_connections, int max_connections)
 {
-    if (!is_init_mongo)
+    if (!mongo_instance_)
     {
-        mongocxx::instance instance{};
-
-        is_init_mongo = true;
+        mongo_instance_ = std::make_unique<mongocxx::instance>();
     }
 
     const auto url = "mongodb://" + user + ":" + password + "@" + host + ":" + std::to_string(port) + "/" + db_name;

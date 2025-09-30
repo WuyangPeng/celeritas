@@ -1,4 +1,5 @@
 ﻿#include "mongo_database_session.h"
+#include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "common/common_fwd.h"
 
@@ -21,9 +22,14 @@ celeritas::mongo_database_session::awaitable_type celeritas::mongo_database_sess
         client_ = std::make_unique<mongocxx::client>(mongocxx::uri{ uri_ });
         database_ = std::make_unique<mongocxx::database>((*client_)[db_name_]);
 
+        bsoncxx::builder::basic::document ping_cmd{};
+        ping_cmd.append(bsoncxx::builder::basic::kvp("ping", 1));
+
+        database_->run_command(ping_cmd.view());
+
         LOG_CHANNEL(database_channel, info) << "MongoDB session connected to: " << uri_ << "/" << client_;
     }
-    catch (const std::exception& error)
+    catch (const mongocxx::exception& error)
     {
         LOG_CHANNEL(database_channel, error) << "MongoDB connection failed: " << error.what();
         throw;

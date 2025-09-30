@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 #include "config/service_registry_config.h"
 
 namespace celeritas

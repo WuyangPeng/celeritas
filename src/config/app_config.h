@@ -8,7 +8,6 @@
 #include "service_registry_config.h"
 
 #include <map>
-#include <vector>
 
 namespace celeritas
 {

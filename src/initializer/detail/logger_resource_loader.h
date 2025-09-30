@@ -12,6 +12,6 @@ namespace celeritas
 
         static void loader_level_config(const logger_level_config& logger_level_config);
 
-        static void loader_config(const logger_config& logger_config);
+        static void loader_logger(const logger_config& logger_config);
     };
 }

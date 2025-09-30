@@ -1,15 +1,21 @@
 ﻿#include "database_type.h"
+#include "common/celeritas_error.h"
+
+#include <map>
 
 celeritas::database_type celeritas::get_database_type(const std::string& database_name)
 {
-    if (database_name == "mysql")
-        return database_type::mysql;
+    using database_container_type = std::map<std::string, database_type>;
 
-    if (database_name == "mongo")
-        return database_type::mongo;
+    static database_container_type database{ { "mysql", database_type::mysql },
+                                             { "mongo", database_type::mongo },
+                                             { "redis", database_type::redis }, };
 
-    if (database_name == "redis")
-        return database_type::redis;
+    const auto iter = database.find(database_name);
+    if (iter != database.end())
+    {
+        return iter->second;
+    }
 
-    return database_type::unknown;
+    throw celeritas_error("database_type error,name =" + database_name);
 }

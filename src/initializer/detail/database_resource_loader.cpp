@@ -1,10 +1,8 @@
 ﻿#include "database_resource_loader.h"
-#include "common/celeritas_error.h"
-#include "common/common_fwd.h"
 #include "common/logger.h"
 #include "database/database_pool_manager.h"
 
-void celeritas::database_resource_loader::loader_config(boost::asio::io_context& io_context, const database_config& database_config)
+void celeritas::database_resource_loader::loader_database(boost::asio::io_context& io_context, const database_config& database_config)
 {
     auto pool = database_pool_manager::get_instance().create_pool(database_config.get_name(),
                                                                   database_config.get_database_type(),

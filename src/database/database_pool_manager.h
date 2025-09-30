@@ -3,6 +3,7 @@
 #include "mysql_database_pool.h"
 #include "config/database_type.h"
 
+#include <mongocxx/instance.hpp>
 #include <map>
 
 namespace celeritas
@@ -31,6 +32,7 @@ namespace celeritas
 
     private:
         using database_pool_container = std::map<std::string, database_pool_shared_ptr>;
+        using mongocxx_instance_un_ptr = std::unique_ptr<mongocxx::instance>;
 
         database_pool_manager() noexcept = default;
 
@@ -65,7 +67,7 @@ namespace celeritas
                                                                  int max_connections);
 
         database_pool_container pools_;
-        bool is_init_mongo = false;
+        mongocxx_instance_un_ptr mongo_instance_;
         std::mutex mutex_;
     };
 }

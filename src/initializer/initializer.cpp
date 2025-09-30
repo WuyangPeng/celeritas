@@ -1,8 +1,7 @@
 ﻿#include "initializer.h"
-#include "common/celeritas_error.h"
+#include "common/common_fwd.h"
 #include "common/logger.h"
 #include "server/server_fwd.h"
-#include "common/common_fwd.h"
 
 using namespace std::literals;
 

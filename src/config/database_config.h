@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 #include "database_type.h"
 
 #include <string>

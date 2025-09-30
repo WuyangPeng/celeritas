@@ -18,15 +18,15 @@ auto get_formatter()
            << "["
            << boost::log::expressions::format_date_time<boost::posix_time::ptime>("TimeStamp", "%Y-%m-%d %H:%M:%S.%f")
            << "]["
-           << boost::log::expressions::attr<boost::log::attributes::current_thread_id::value_type>("ThreadID")
+           << boost::log::trivial::severity
            << "]["
-           << boost::log::expressions::attr<std::string>("function")
+           << boost::log::expressions::attr<boost::log::attributes::current_thread_id::value_type>("ThreadID")
            << "]["
            << boost::log::expressions::attr<std::string>("file")
            << ":"
            << boost::log::expressions::attr<uint_least32_t>("line")
            << "]["
-           << boost::log::trivial::severity
+           << boost::log::expressions::attr<std::string>("function")
            << "] "
            << boost::log::expressions::smessage;
 }
@@ -109,6 +109,7 @@ celeritas::logger_impl::severity_logger_type& celeritas::logger_impl::get(const 
     }
 
     std::shared_lock lock{ mutex_ };
+
     const auto iter = loggers_.find(channel_name.data());
     if (iter == loggers_.end())
     {

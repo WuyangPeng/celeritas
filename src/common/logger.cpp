@@ -1,6 +1,6 @@
 ﻿#include "logger.h"
-#include "detail/logger_impl.h"
 #include "common/common_fwd.h"
+#include "detail/logger_impl.h"
 
 void celeritas::logger::init_file(const std::string_view& channel_name, const std::string_view& log_file_name, const severity_level_type file_level, int rotation_size, bool also_to_console)
 {

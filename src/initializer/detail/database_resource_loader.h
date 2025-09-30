@@ -10,7 +10,8 @@ namespace celeritas
     {
     public:
         using class_type = database_resource_loader;
+        using io_context_type = boost::asio::io_context;
 
-        static void loader_config(boost::asio::io_context& io_context, const database_config& database_config);
+        static void loader_database(io_context_type& io_context, const database_config& database_config);
     };
 }

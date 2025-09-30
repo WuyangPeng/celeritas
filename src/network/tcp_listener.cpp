@@ -1,6 +1,6 @@
-﻿#include "common/logger.h"
-#include "session_base.tpp"
+﻿#include "session_base.tpp"
 #include "tcp_listener.h"
+#include "common/logger.h"
 
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/detached.hpp>

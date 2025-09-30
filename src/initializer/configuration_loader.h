@@ -30,6 +30,8 @@ namespace celeritas
         [[nodiscard]] app_config_shared_ptr get_app_config() const;
 
     private:
+        using path_type = boost::filesystem::path;
+
         void initialize_service_registry_config();
 
         void initialize_server_config();
@@ -43,8 +45,8 @@ namespace celeritas
         virtual void service_initialize_config() = 0;
 
         std::string config_file_path_;
-        boost::filesystem::path current_path_;
-        boost::filesystem::path config_path_;
+        path_type current_path_;
+        path_type config_path_;
         app_config_shared_ptr app_config_;
     };
 }
