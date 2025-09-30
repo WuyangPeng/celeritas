@@ -30,6 +30,8 @@ namespace celeritas
 
         [[nodiscard]] database_pool_shared_ptr get_pool(const std::string& name);
 
+        void start_cleanup_timer(boost::asio::io_context& io_context);
+
     private:
         using database_pool_container = std::map<std::string, database_pool_shared_ptr>;
         using mongocxx_instance_un_ptr = std::unique_ptr<mongocxx::instance>;

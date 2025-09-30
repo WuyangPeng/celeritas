@@ -67,7 +67,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
 {
     std::lock_guard lock{ mutex_ };
 
-    database_pool_shared_ptr pool = std::make_shared<mysql_database_pool>(io_context, host, port, user, password, db_name, min_connections, max_connections);
+    auto pool = std::make_shared<mysql_database_pool>(io_context, host, port, user, password, db_name, min_connections, max_connections);
 
     pools_.insert({ name, pool });
 
@@ -101,4 +101,14 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
     pools_.insert({ name, pool });
 
     return pool;
+}
+
+void celeritas::database_pool_manager::start_cleanup_timer(boost::asio::io_context& io_context)
+{
+    std::lock_guard lock{ mutex_ };
+
+    for (const auto& pool : pools_)
+    {
+        pool.second->start_cleanup_timer(io_context);
+    }
 }

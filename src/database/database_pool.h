@@ -23,5 +23,7 @@ namespace celeritas
         database_pool& operator=(database_pool&& rhs) noexcept = default;
 
         [[nodiscard]] virtual awaitable_type async_initialize() = 0;
+
+        void start_cleanup_timer(const boost::asio::io_context& io_context);
     };
 }
