@@ -32,6 +32,7 @@ namespace celeritas
         connection_pool_base(boost::asio::io_context& io_context,
                              std::string host,
                              uint16_t port,
+                             std::string user,
                              std::string password,
                              int min_connections,
                              int max_connections);

@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "database_session.h"
+#include "detail/redis_context.h"
 
 #include <boost/asio.hpp>
 #include <boost/asio/awaitable.hpp>
@@ -40,13 +41,14 @@ namespace celeritas
         [[nodiscard]] awaitable_type async_connect();
 
     private:
-        ::redisContext* connection_;
-        boost::asio::io_context& io_context_;
+        using redis_context_unique_ptr = std::unique_ptr<redis_context>;
 
-        void close_connection();
+        redis_context_unique_ptr redis_context_;
+        boost::asio::io_context& io_context_;
 
         std::string host_;
         uint16_t port_ = 0;
+        std::string user_;
         std::string password_;
     };
 }

@@ -20,11 +20,11 @@ celeritas::connection_pool_base<SessionType>::connection_pool_base(boost::asio::
 }
 
 template <typename SessionType>
-celeritas::connection_pool_base<SessionType>::connection_pool_base(boost::asio::io_context& io_context, std::string host, uint16_t port, std::string password, int min_connections, int max_connections)
+celeritas::connection_pool_base<SessionType>::connection_pool_base(boost::asio::io_context& io_context, std::string host, uint16_t port, std::string user, std::string password, int min_connections, int max_connections)
     : io_context_{ io_context },
       host_{ std::move(host) },
       port_{ port },
-      user_{},
+      user_{ user },
       password_{ std::move(password) },
       uri_{},
       db_name_{},
