@@ -24,7 +24,7 @@ void celeritas::session_base<SocketType>::start()
 }
 
 template <typename SocketType>
-celeritas::session_base<SocketType>::void_awaitable_type celeritas::session_base<SocketType>::handle_session()
+typename celeritas::session_base<SocketType>::void_awaitable_type celeritas::session_base<SocketType>::handle_session()
 {
     while (socket_.is_open())
     {
@@ -80,8 +80,7 @@ typename celeritas::session_base<SocketType>::read_awaitable_type celeritas::ses
 
     auto await_token = boost::asio::as_tuple(boost::asio::bind_cancellation_slot(cancel_signal.slot(), boost::asio::use_awaitable));
 
-    auto [read_error_code, bytes_read] =
-        co_await boost::asio::async_read(socket_, buffer, await_token);
+    auto [read_error_code, bytes_read] = co_await boost::asio::async_read(socket_, buffer, await_token);
 
     timer.cancel();
 

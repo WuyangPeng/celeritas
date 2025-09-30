@@ -31,9 +31,9 @@ namespace celeritas
         void stop();
 
     private:
-        using void_awaitable_type = boost::asio::awaitable<void>;
         using io_context_type = boost::asio::io_context;
         using acceptor_type = boost::asio::ip::tcp::acceptor;
+        using void_awaitable_type = boost::asio::awaitable<void>;
 
         // 协程：异步接受新连接
         [[nodiscard]] void_awaitable_type accept_connections();
