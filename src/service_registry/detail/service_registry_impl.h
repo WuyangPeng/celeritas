@@ -3,6 +3,7 @@
 #include "service_registry/service_info.h"
 
 #include <boost/asio/steady_timer.hpp>
+#include <boost/log/trivial.hpp>
 #include <shared_mutex>
 #include <unordered_map>
 
@@ -40,7 +41,9 @@ namespace celeritas
         using steady_timer_unique_ptr = std::unique_ptr<steady_timer_type>;
         using registry_type_iterator = registry_type::iterator;
         using error_code_type = boost::system::error_code;
+        using seconds_type = std::chrono::seconds;
         using time_point_type = service_info::time_point_type;
+        using severity_level_type = boost::log::trivial::severity_level;
 
         void start_cleanup_timer(const self_shared_ptr& self) const;
 
@@ -51,6 +54,8 @@ namespace celeritas
         void cleanup_services_by_duration();
 
         [[nodiscard]] static bool cleanup_service_entry(const registry_type_iterator& iter, const time_point_type& now);
+
+        static void log_server_unresponsive(const registry_type_iterator& iter, int64_t duration, severity_level_type level, const std::string& description);
 
         registry_type registry_;
         mutable std::shared_mutex mutex_;

@@ -1,8 +1,8 @@
 ﻿#include "service_registry_impl.h"
 #include "service_registry_internal_fwd.h"
 #include "boost/asio/deadline_timer.hpp"
-#include "common/logger.h"
 #include "common/common_fwd.h"
+#include "common/logger.h"
 
 #include <ranges>
 
@@ -104,43 +104,51 @@ void celeritas::service_registry_impl::cleanup_services_by_duration()
     }
 }
 
+void celeritas::service_registry_impl::log_server_unresponsive(const registry_type_iterator& iter, int64_t duration, severity_level_type level, const std::string& description)
+{
+    if (level == severity_level_type::warning)
+    {
+        LOG_CHANNEL(service_registry_channel, warning)
+               << "Service "
+               << description
+               << duration
+               << "s: timeout: "
+               << iter->second.get_service_name()
+               << " (id: "
+               << iter->second.get_instance_id()
+               << ")";
+    }
+    else
+    {
+        LOG_CHANNEL(service_registry_channel, error)
+               << "Service "
+               << description
+               << duration
+               << "s: timeout: "
+               << iter->second.get_service_name()
+               << " (id: "
+               << iter->second.get_instance_id()
+               << ")";
+    }
+}
+
 bool celeritas::service_registry_impl::cleanup_service_entry(const registry_type_iterator& iter, const time_point_type& now)
 {
     const auto last_heartbeat = iter->second.get_last_heartbeat();
-    if (const auto duration = std::chrono::duration_cast<std::chrono::seconds>(now - last_heartbeat).count();
+    if (const auto duration = std::chrono::duration_cast<seconds_type>(now - last_heartbeat).count();
         duration > services_heartbeat_remove_time)
     {
-        LOG_CHANNEL(service_registry_channel, error)
-                << "Service removed after "
-                << duration
-                << "s timeout: "
-                << iter->second.get_service_name()
-                << " (id: "
-                << iter->second.get_instance_id()
-                << ")";
+        log_server_unresponsive(iter, duration, boost::log::trivial::error, "removed after ");
         return true;
     }
     else if (duration > services_heartbeat_error_time)
     {
-        LOG_CHANNEL(service_registry_channel, error)
-                << "Service unresponsive for "
-                << duration
-                << "s: "
-                << iter->second.get_service_name()
-                << " (id: "
-                << iter->second.get_instance_id()
-                << ")";
+        log_server_unresponsive(iter, duration, boost::log::trivial::error, "unresponsive for ");
     }
     else if (duration > services_heartbeat_warning_time)
     {
-        LOG_CHANNEL(service_registry_channel, warning)
-                << "Service unresponsive for "
-                << duration
-                << "s: "
-                << iter->second.get_service_name()
-                << " (id: "
-                << iter->second.get_instance_id()
-                << ")";
+        log_server_unresponsive(iter, duration, boost::log::trivial::warning, "unresponsive for ");
     }
+
     return false;
 }
