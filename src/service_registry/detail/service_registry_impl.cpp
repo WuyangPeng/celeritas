@@ -104,7 +104,7 @@ void celeritas::service_registry_impl::cleanup_services_by_duration()
     }
 }
 
-void celeritas::service_registry_impl::log_server_unresponsive(const registry_type_iterator& iter, int64_t duration, severity_level_type level, const std::string& description)
+void celeritas::service_registry_impl::log_server_unresponsive(const registry_type_iterator& iter, const int64_t duration, severity_level_type level, const std::string& description)
 {
     if (level == severity_level_type::warning)
     {
