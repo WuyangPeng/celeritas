@@ -14,29 +14,19 @@
 auto get_formatter(bool is_console)
 {
     // 设置日志格式
-    auto result = boost::log::expressions::stream
-                  << "["
-                  << boost::log::expressions::format_date_time<boost::posix_time::ptime>("TimeStamp", "%Y-%m-%d %H:%M:%S.%f")
-                  << "]["
-                  << boost::log::trivial::severity
-                  << "]["
-                  << boost::log::expressions::attr<boost::log::attributes::current_thread_id::value_type>("ThreadID")
-                  << "]["
-                  << boost::log::expressions::attr<std::string>("file")
-                  << ":"
-                  << boost::log::expressions::attr<uint_least32_t>("line")
-                  << "]";
-
-    if (!is_console)
-    {
-        result << "["
-            << boost::log::expressions::attr<std::string>("function")
-            << "]";
-    }
-
-    result << boost::log::expressions::smessage;
-
-    return result;
+    return boost::log::expressions::stream
+           << "["
+           << boost::log::expressions::format_date_time<boost::posix_time::ptime>("TimeStamp", "%Y-%m-%d %H:%M:%S.%f")
+           << "]["
+           << boost::log::trivial::severity
+           << "]["
+           << boost::log::expressions::attr<boost::log::attributes::current_thread_id::value_type>("ThreadID")
+           << "]["
+           << boost::log::expressions::attr<std::string>("file")
+           << ":"
+           << boost::log::expressions::attr<uint_least32_t>("line")
+           << "]"
+           << boost::log::expressions::smessage;
 }
 
 celeritas::logger_impl::logger_impl()
