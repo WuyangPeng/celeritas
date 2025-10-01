@@ -11,24 +11,31 @@
 #include <boost/log/utility/setup/console.hpp>
 #include <boost/log/utility/setup/file.hpp>
 
-auto get_formatter()
+auto get_formatter(bool is_console)
 {
     // 设置日志格式
-    return boost::log::expressions::stream
-           << "["
-           << boost::log::expressions::format_date_time<boost::posix_time::ptime>("TimeStamp", "%Y-%m-%d %H:%M:%S.%f")
-           << "]["
-           << boost::log::trivial::severity
-           << "]["
-           << boost::log::expressions::attr<boost::log::attributes::current_thread_id::value_type>("ThreadID")
-           << "]["
-           << boost::log::expressions::attr<std::string>("file")
-           << ":"
-           << boost::log::expressions::attr<uint_least32_t>("line")
-           << "]["
-           << boost::log::expressions::attr<std::string>("function")
-           << "] "
-           << boost::log::expressions::smessage;
+    auto result = boost::log::expressions::stream
+                  << "["
+                  << boost::log::expressions::format_date_time<boost::posix_time::ptime>("TimeStamp", "%Y-%m-%d %H:%M:%S.%f")
+                  << "]["
+                  << boost::log::trivial::severity
+                  << "]["
+                  << boost::log::expressions::attr<boost::log::attributes::current_thread_id::value_type>("ThreadID")
+                  << "]["
+                  << boost::log::expressions::attr<std::string>("file")
+                  << ":"
+                  << boost::log::expressions::attr<uint_least32_t>("line")
+                  << "]";
+
+    if (!is_console)
+    {
+        result << "["
+            << boost::log::expressions::attr<std::string>("function");
+    }
+
+    result << boost::log::expressions::smessage;
+
+    return result;
 }
 
 celeritas::logger_impl::logger_impl()
@@ -56,7 +63,7 @@ void celeritas::logger_impl::init_console(const severity_level_type console_leve
     if (console_sink_ == nullptr)
     {
         console_sink_ = boost::log::add_console_log(std::clog);
-        console_sink_->set_formatter(get_formatter());
+        console_sink_->set_formatter(get_formatter(true));
     }
 
     console_level_ = console_level;
@@ -78,7 +85,7 @@ void celeritas::logger_impl::init_file(const std::string_view& channel_name, con
             boost::log::keywords::filter = boost::log::expressions::has_attr(channel.data()) &&
                                            boost::log::expressions::attr<std::string>(channel.data()) == channel_name &&
                                            boost::log::trivial::severity >= file_level)
-        ->set_formatter(get_formatter());
+        ->set_formatter(get_formatter(false));
 
     if (also_to_console)
     {
