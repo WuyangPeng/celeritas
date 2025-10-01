@@ -6,10 +6,10 @@
 #include <boost/asio/detached.hpp>
 #include <boost/asio/use_awaitable.hpp>
 
-celeritas::tcp_listener::tcp_listener(boost::asio::io_context& io_context, const uint16_t port, message_handler_type handler)
+celeritas::tcp_listener::tcp_listener(boost::asio::io_context& io_context, const uint16_t port, const network_message_callback_shared_ptr& callback)
     : io_context_{ io_context },
       acceptor_{ io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port) },
-      message_handler_{ std::move(handler) },
+      network_message_callback_{ callback },
       is_running_{ true }
 {
     LOG_CHANNEL(network_channel, info) << "Listening on port " << port << "...";
@@ -75,6 +75,6 @@ celeritas::tcp_listener::void_awaitable_type celeritas::tcp_listener::handle_con
         LOG_CHANNEL(network_channel, info) << "Accepted new connection from: " << socket.remote_endpoint();
 
         // 为新连接创建一个会话，并启动
-        std::make_shared<session_type>(std::move(socket), message_handler_)->start();
+        std::make_shared<session_type>(std::move(socket), network_message_callback_)->start();
     }
 }

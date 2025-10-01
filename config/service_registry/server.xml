@@ -11,5 +11,10 @@
         <host>127.0.0.1</host>
         <port>30001</port>
     </network>
+    <network>
+        <network_type>websocket</network_type>
+        <host>127.0.0.1</host>
+        <port>30002</port>
+    </network>
     <game_server_id></game_server_id>
 </server>

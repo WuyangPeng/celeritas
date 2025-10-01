@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "network_message_callback.h"
 #include "common/buffer_guard.h"
 
 #include <boost/asio.hpp>
@@ -14,12 +15,10 @@ namespace celeritas
         using class_type = session_base;
         using socket_type = SocketType;
 
-        // 定义消息处理回调函数的类型
-        // 参数为消息头和消息体的缓冲区，返回void
-        using message_handler_type = std::function<void(const message_header&, buffer_guard)>;
+        using network_message_callback_shared_ptr = std::shared_ptr<network_message_callback>;
 
         // 构造函数：接受一个已连接的 socket
-        explicit session_base(socket_type socket, message_handler_type handler);
+        explicit session_base(socket_type socket, const network_message_callback_shared_ptr& callback);
 
         ~session_base() noexcept = default;
 
@@ -60,7 +59,7 @@ namespace celeritas
         [[nodiscard]] buffer_guard_optional_type get_next_write_buffer();
 
         socket_type socket_;
-        message_handler_type message_handler_;
+        network_message_callback_shared_ptr network_message_callback_;
 
         // 发送队列和互斥锁
         std::deque<buffer_guard> write_queue_;

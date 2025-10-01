@@ -59,7 +59,7 @@ void celeritas::initializer::initialize_config()
 
 void celeritas::initializer::initialize_resource()
 {
-    resource_loader_->initialize(io_context_);
+    resource_loader_->initialize(io_context_, shared_from_this());
 }
 
 void celeritas::initializer::initialize_application()
@@ -77,4 +77,8 @@ void celeritas::initializer::setup_signal_handler()
                 io_context_.stop();
             }
         });
+}
+
+void celeritas::initializer::call_back(const message_header& message_header, buffer_guard buffer_guard)
+{
 }

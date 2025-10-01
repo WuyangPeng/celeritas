@@ -14,11 +14,11 @@ namespace celeritas
         using class_type = tcp_client;
         using socket_type = boost::asio::ip::tcp::socket;
         using session_type = session_base<socket_type>;
-        using message_handler_type = session_type::message_handler_type;
+        using network_message_callback_shared_ptr = std::shared_ptr<network_message_callback>;
         using session_waitable_type = boost::asio::awaitable<std::shared_ptr<session_type> >;
 
         // 构造函数：接受 io_context 和消息处理回调
-        tcp_client(boost::asio::io_context& io_context, message_handler_type handler);
+        tcp_client(boost::asio::io_context& io_context, const network_message_callback_shared_ptr& callback);
 
         ~tcp_client() noexcept = default;
 
@@ -35,6 +35,6 @@ namespace celeritas
 
     private:
         boost::asio::io_context& io_context_;
-        message_handler_type message_handler_;
+        network_message_callback_shared_ptr callback_;
     };
 }

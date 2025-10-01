@@ -2,8 +2,8 @@
 #include "tcp_client.h"
 #include "common/logger.h"
 
-celeritas::tcp_client::tcp_client(boost::asio::io_context& io_context, message_handler_type handler)
-    : io_context_{ io_context }, message_handler_{ std::move(handler) }
+celeritas::tcp_client::tcp_client(boost::asio::io_context& io_context, const network_message_callback_shared_ptr& callback)
+    : io_context_{ io_context }, callback_{ callback }
 {
 }
 
@@ -26,5 +26,5 @@ celeritas::tcp_client::session_waitable_type celeritas::tcp_client::connect(cons
     LOG_CHANNEL(network_channel, info) << "Successfully connected to " << host << ":" << port;
 
     // 创建一个新的会话并返回
-    co_return std::make_shared<session_type>(std::move(socket), message_handler_);
+    co_return std::make_shared<session_type>(std::move(socket), callback_);
 }

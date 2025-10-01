@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "config/app_config.h"
+#include "network/network_message_callback.h"
 
 #include <boost/asio/io_context.hpp>
 
@@ -11,6 +12,7 @@ namespace celeritas
     public:
         using class_type = resource_loader;
         using app_config_shared_ptr = std::shared_ptr<app_config>;
+        using network_message_callback_shared_ptr = std::shared_ptr<network_message_callback>;
 
         explicit resource_loader(const app_config_shared_ptr& app_config);
 
@@ -24,14 +26,14 @@ namespace celeritas
 
         resource_loader& operator=(resource_loader&& rhs) noexcept = delete;
 
-        void initialize(boost::asio::io_context& io_context);
+        void initialize(boost::asio::io_context& io_context, const network_message_callback_shared_ptr& network_message_callback);
 
     private:
         void initialize_logger_resource();
 
         void initialize_database_resource(boost::asio::io_context& io_context);
 
-        void initialize_server_resource();
+        void initialize_server_resource(boost::asio::io_context& io_context, const network_message_callback_shared_ptr& network_message_callback);
 
         void initialize_health_check_url_resource();
 

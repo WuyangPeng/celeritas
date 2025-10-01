@@ -8,4 +8,5 @@ namespace celeritas
     class tcp_listener;
     class tcp_client;
     class message_header;
+    class network_message_callback;
 }

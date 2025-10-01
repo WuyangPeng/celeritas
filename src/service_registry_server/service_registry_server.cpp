@@ -12,10 +12,10 @@ void celeritas::service_registry_server::run()
 {
     boost::asio::io_context io_context{};
 
-    initializer initializer{ service_registry_type, service_registry_type, io_context };
-    initializer.initialize();
+    const auto server_context = std::make_shared<initializer>(service_registry_type, service_registry_type, io_context);
+    server_context->initialize();
 
-    initializer.run();
+    server_context->run();
 }
 
 int main()

@@ -117,3 +117,8 @@ celeritas::app_config::database_config_container celeritas::app_config::get_data
 {
     return database_;
 }
+
+celeritas::server_config celeritas::app_config::get_server_config() const
+{
+    return server_;
+}

@@ -9,8 +9,8 @@
 #include "detail/network_internal_fwd.h"
 
 template <typename SocketType>
-celeritas::session_base<SocketType>::session_base(socket_type socket, message_handler_type handler)
-    : socket_{ std::move(socket) }, message_handler_{ std::move(handler) }
+celeritas::session_base<SocketType>::session_base(socket_type socket, const network_message_callback_shared_ptr& callback)
+    : socket_{ std::move(socket) }, network_message_callback_{ callback }
 {
 }
 
@@ -131,9 +131,9 @@ typename celeritas::session_base<SocketType>::void_awaitable_type celeritas::ses
 
     // 现在，通知外部处理者一个完整的消息已经接收到
     // 我们将消息头和消息体数据传递给回调函数
-    if (message_handler_ != nullptr)
+    if (network_message_callback_ != nullptr)
     {
-        message_handler_(header, std::move(buffer_guard));
+        network_message_callback_->call_back(header, std::move(buffer_guard));
     }
 }
 

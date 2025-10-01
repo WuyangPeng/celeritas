@@ -9,10 +9,10 @@ namespace celeritas
     public:
         using class_type = tcp_listener;
         using session_type = session_base<boost::asio::ip::tcp::socket>;
-        using message_handler_type = session_type::message_handler_type;
+        using network_message_callback_shared_ptr = std::shared_ptr<network_message_callback>;
 
         // 接受 io_context和监听端口
-        tcp_listener(boost::asio::io_context& io_context, uint16_t port, message_handler_type handler);
+        tcp_listener(boost::asio::io_context& io_context, uint16_t port, const network_message_callback_shared_ptr& callback);
 
         ~tcp_listener() noexcept = default;
 
@@ -42,7 +42,7 @@ namespace celeritas
 
         io_context_type& io_context_;
         acceptor_type acceptor_;
-        message_handler_type message_handler_;
+        network_message_callback_shared_ptr network_message_callback_;
         std::atomic<bool> is_running_;
     };
 }

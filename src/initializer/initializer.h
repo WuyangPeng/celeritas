@@ -1,6 +1,9 @@
 ﻿#pragma once
 
 #include "initializer_factory.h"
+#include "common/buffer_guard.h"
+#include "network/message_header.h"
+#include "network/network_message_callback.h"
 
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/signal_set.hpp>
@@ -10,10 +13,11 @@
 
 namespace celeritas
 {
-    class initializer
+    class initializer : public network_message_callback
     {
     public:
         using class_type = initializer;
+        using base_type = network_message_callback;
         using initializer_unique_ptr = std::unique_ptr<initializer>;
 
         initializer(const std::string_view& server_type, std::string_view config_file_path, boost::asio::io_context& io_context);
@@ -31,6 +35,8 @@ namespace celeritas
         void initialize();
 
         void run();
+
+        void call_back(const message_header& message_header, buffer_guard buffer_guard) override;
 
     private:
         using configuration_loader_unique_ptr = initializer_factory::configuration_loader_unique_ptr;

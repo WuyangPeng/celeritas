@@ -4,3 +4,13 @@ celeritas::server_config::server_config(std::string service_name, server_network
     : service_name_{ std::move(service_name) }, server_network_config_{ std::move(server_network_config) }, game_server_id_{ std::move(game_server_id) }
 {
 }
+
+celeritas::server_config::server_network_config_const_iterator celeritas::server_config::begin() const noexcept
+{
+    return server_network_config_.begin();
+}
+
+celeritas::server_config::server_network_config_const_iterator celeritas::server_config::end() const noexcept
+{
+    return server_network_config_.end();
+}
