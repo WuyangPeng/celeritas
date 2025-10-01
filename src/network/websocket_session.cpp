@@ -38,61 +38,6 @@ void celeritas::websocket_session::write(std::string message)
     }
 }
 
-celeritas::websocket_session::void_awaitable_type celeritas::websocket_session::run()
-{
-    try
-    {
-        // 1. HTTP 握手
-        // 这是 WebSocket 独有的步骤，它将会把原始的 TCP 连接升级为 WebSocket 连接
-        co_await ws_.async_accept(boost::asio::use_awaitable);
-
-        LOG_CHANNEL(network_channel, info) << "WS Session [" << session_id_ << "] upgraded to WebSocket.";
-
-        // 2. 读消息循环
-        boost::beast::flat_buffer buffer;
-        while (ws_.is_open())
-        {
-            // 异步读取数据帧
-            co_await ws_.async_read(buffer, boost::asio::use_awaitable);
-
-            // 处理接收到的消息：这里我们简单地回显 (echo) 消息
-            if (ws_.got_text())
-            {
-                // 将数据转为字符串
-                std::string received_message = boost::beast::buffers_to_string(buffer.data());
-
-                // 示例：将消息回显给客户端
-                write(std::move(received_message));
-
-                // TODO: 实际应用中，您应该在这里调用 network_message_callback_ 处理业务逻辑
-            }
-            // 清空 buffer 以准备下一次读取
-            buffer.consume(buffer.size());
-        }
-    }
-    catch (const boost::system::system_error& error)
-    {
-        if (error.code() != boost::beast::websocket::error::closed &&
-            error.code() != boost::asio::error::operation_aborted)
-        {
-            LOG_CHANNEL(network_channel, warning) << "WS Session [" << session_id_ << "] run error: " << error.what();
-        }
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(network_channel, error) << "WS Session unknown error: " << error.what();
-    }
-
-    // WebSocket 正常或异常关闭后，执行 TCP 层的关闭
-    auto result = co_await ws_.async_close(boost::beast::websocket::close_code::normal, boost::asio::as_tuple(boost::asio::use_awaitable));
-    if (auto error = std::get<0>(result))
-    {
-        throw boost::system::system_error(error);
-    }
-
-    LOG_CHANNEL(network_channel, info) << "WS Session [" << session_id_ << "] terminated.";
-}
-
 celeritas::websocket_session::void_awaitable_type celeritas::websocket_session::do_write()
 {
     while (ws_.is_open())
@@ -124,4 +69,61 @@ celeritas::websocket_session::void_awaitable_type celeritas::websocket_session::
             break;
         }
     }
+}
+
+celeritas::websocket_session::void_awaitable_type celeritas::websocket_session::run()
+{
+    try
+    {
+        // 1. HTTP 握手
+        // 这是 WebSocket 独有的步骤，它将会把原始的 TCP 连接升级为 WebSocket 连接
+        /*  co_await ws_.async_accept(boost::asio::use_awaitable);
+
+        LOG_CHANNEL(network_channel, info) << "WS Session [" << session_id_ << "] upgraded to WebSocket.";
+
+        // 2. 读消息循环
+        boost::beast::flat_buffer buffer;
+          while (ws_.is_open())
+          {
+              // 异步读取数据帧
+              co_await ws_.async_read(buffer, boost::asio::use_awaitable);
+
+              // 处理接收到的消息：这里我们简单地回显 (echo) 消息
+              if (ws_.got_text())
+              {
+                  // 将数据转为字符串
+                  std::string received_message = boost::beast::buffers_to_string(buffer.data());
+
+                  // 示例：将消息回显给客户端
+                  write(std::move(received_message));
+
+                  // TODO: 实际应用中，您应该在这里调用 network_message_callback_ 处理业务逻辑
+              }
+              // 清空 buffer 以准备下一次读取
+              buffer.consume(buffer.size());
+          }*/
+    }
+    catch (const boost::system::system_error& error)
+    {
+        if (error.code() != boost::beast::websocket::error::closed &&
+            error.code() != boost::asio::error::operation_aborted)
+        {
+            LOG_CHANNEL(network_channel, warning) << "WS Session [" << session_id_ << "] run error: " << error.what();
+        }
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(network_channel, error) << "WS Session unknown error: " << error.what();
+    }
+
+    // WebSocket 正常或异常关闭后，执行 TCP 层的关闭
+    /*    auto result = co_await ws_.async_close(boost::beast::websocket::close_code::normal, boost::asio::as_tuple(boost::asio::use_awaitable));
+        if (auto error = std::get<0>(result))
+        {
+            throw boost::system::system_error(error);
+        }
+
+        LOG_CHANNEL(network_channel, info) << "WS Session [" << session_id_ << "] terminated.";*/
+
+    co_return;
 }
