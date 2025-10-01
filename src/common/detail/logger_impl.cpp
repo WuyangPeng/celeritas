@@ -30,7 +30,8 @@ auto get_formatter(bool is_console)
     if (!is_console)
     {
         result << "["
-            << boost::log::expressions::attr<std::string>("function");
+            << boost::log::expressions::attr<std::string>("function")
+            << "]";
     }
 
     result << boost::log::expressions::smessage;
