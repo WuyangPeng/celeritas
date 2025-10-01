@@ -13,12 +13,31 @@ celeritas::server_config celeritas::server_config_reader::load_config(const std:
 
     // 必需配置项
     const auto service_name = node.get<std::string>("service_name");
-    const auto host = node.get<std::string>("host");
-    const auto tcp_port = node.get<int>("tcp_port");
 
     const auto game_server_id = node.get<std::string>("game_server_id", "");
 
-    server_config server_config{ service_name, host, tcp_port, game_server_id };
+    server_config::server_network_config_container_type container{};
+
+    for (const auto& [name , element] : node)
+    {
+        if (name == "network")
+        {
+            container.emplace_back(get_server_network_config(element));
+        }
+    }
+
+    server_config server_config{ service_name, container, game_server_id };
 
     return server_config;
+}
+
+celeritas::server_network_config celeritas::server_config_reader::get_server_network_config(const boost::property_tree::basic_ptree<std::string, std::string>& node)
+{
+    const auto network_node = node.get<std::string>("network_type");
+    const auto network_type = get_server_network_type(network_node);
+
+    const auto host = node.get<std::string>("host");
+    const auto port = node.get<int>("port");
+
+    return server_network_config{ network_type, host, port };
 }

@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <server>
     <service_name>service_registry_server</service_name>
-    <host>127.0.0.1</host>
-    <tcp_port>30000</tcp_port>
+    <network>
+        <network_type>tcp</network_type>
+        <host>127.0.0.1</host>
+        <port>30000</port>
+    </network>
+    <network>
+        <network_type>http</network_type>
+        <host>127.0.0.1</host>
+        <port>30001</port>
+    </network>
     <game_server_id></game_server_id>
 </server>

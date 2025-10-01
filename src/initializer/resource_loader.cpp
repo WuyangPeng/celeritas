@@ -13,8 +13,8 @@ celeritas::resource_loader::resource_loader(const app_config_shared_ptr& app_con
 void celeritas::resource_loader::initialize(boost::asio::io_context& io_context)
 {
     initialize_logger_resource();
-    initialize_database_resource(io_context);
     initialize_server_resource();
+    initialize_database_resource(io_context);
     initialize_health_check_url_resource();
     initialize_service_registry_resource();
     service_initialize_resource();
