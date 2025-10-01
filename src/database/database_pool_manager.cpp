@@ -114,3 +114,10 @@ void celeritas::database_pool_manager::start_cleanup_timer(io_context_type& io_c
         pool.second->start_cleanup_timer(io_context);
     }
 }
+
+void celeritas::database_pool_manager::release_pool()
+{
+    std::unique_lock lock{ mutex_ };
+
+    pools_.clear();
+}

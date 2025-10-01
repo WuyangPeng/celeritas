@@ -1,6 +1,7 @@
 ﻿#include "initializer.h"
 #include "common/common_fwd.h"
 #include "common/logger.h"
+#include "database/database_pool_manager.h"
 #include "server/server_fwd.h"
 
 using namespace std::literals;
@@ -74,6 +75,8 @@ void celeritas::initializer::setup_signal_handler()
             if (!error)
             {
                 LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop! signal_number = " << signal_number << ",error = " << error.message();
+                database_pool_manager::get_instance().release_pool();
+                resource_loader_->release_resource();
                 io_context_.stop();
             }
         });

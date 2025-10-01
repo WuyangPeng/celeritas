@@ -21,6 +21,11 @@ void celeritas::resource_loader::initialize(boost::asio::io_context& io_context,
     service_initialize_resource();
 }
 
+void celeritas::resource_loader::release_resource()
+{
+    listener_.clear();
+}
+
 void celeritas::resource_loader::initialize_logger_resource()
 {
     logger_resource_loader::loader_level_config(app_config_->get_logger_level_config());

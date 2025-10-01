@@ -32,6 +32,8 @@ namespace celeritas
 
         void start_cleanup_timer(io_context_type& io_context);
 
+        void release_pool();
+
     private:
         using database_pool_container = std::map<std::string, database_pool_shared_ptr>;
         using mongocxx_instance_unique_ptr = std::unique_ptr<mongocxx::instance>;

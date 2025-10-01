@@ -29,6 +29,8 @@ namespace celeritas
 
         void initialize(boost::asio::io_context& io_context, const network_message_callback_shared_ptr& network_message_callback);
 
+        void release_resource();
+
     private:
         using listener_shared_ptr = std::shared_ptr<listener>;
         using listener_container_type = std::vector<listener_shared_ptr>;
