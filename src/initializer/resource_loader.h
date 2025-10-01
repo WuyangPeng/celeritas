@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "config/app_config.h"
+#include "network/listener.h"
 #include "network/network_message_callback.h"
 
 #include <boost/asio/io_context.hpp>
@@ -29,6 +30,9 @@ namespace celeritas
         void initialize(boost::asio::io_context& io_context, const network_message_callback_shared_ptr& network_message_callback);
 
     private:
+        using listener_shared_ptr = std::shared_ptr<listener>;
+        using listener_container_type = std::vector<listener_shared_ptr>;
+
         void initialize_logger_resource();
 
         void initialize_database_resource(boost::asio::io_context& io_context);
@@ -42,5 +46,6 @@ namespace celeritas
         virtual void service_initialize_resource() = 0;
 
         app_config_shared_ptr app_config_;
+        listener_container_type listener_;
     };
 }

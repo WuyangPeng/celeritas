@@ -7,7 +7,7 @@
 #include <ranges>
 
 celeritas::resource_loader::resource_loader(const app_config_shared_ptr& app_config)
-    : app_config_{ app_config }
+    : app_config_{ app_config }, listener_{}
 {
 }
 
@@ -52,7 +52,9 @@ void celeritas::resource_loader::initialize_server_resource(boost::asio::io_cont
 
     for (const auto& element : server)
     {
-        server_resource_loader::loader_server(io_context, server, element, network_message_callback);
+        const auto listener = server_resource_loader::loader_server(io_context, server, element, network_message_callback);
+
+        listener_.emplace_back(listener);
     }
 }
 

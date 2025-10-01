@@ -17,6 +17,8 @@ namespace celeritas
 
         [[nodiscard]] server_network_type get_server_network_type() const noexcept;
 
+        [[nodiscard]] int get_port() const noexcept;
+
     private:
         server_network_type server_network_type_;
         std::string host_;

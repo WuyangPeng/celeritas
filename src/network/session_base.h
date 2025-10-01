@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "listener.h"
 #include "network_message_callback.h"
 #include "common/buffer_guard.h"
 
@@ -16,9 +17,10 @@ namespace celeritas
         using socket_type = SocketType;
 
         using network_message_callback_shared_ptr = std::shared_ptr<network_message_callback>;
+        using listener_shared_ptr = std::shared_ptr<listener>;
 
         // 构造函数：接受一个已连接的 socket
-        explicit session_base(socket_type socket, const network_message_callback_shared_ptr& callback);
+        explicit session_base(socket_type socket, long session_id, const network_message_callback_shared_ptr& callback, const listener_shared_ptr& listener);
 
         ~session_base() noexcept = default;
 
@@ -36,10 +38,14 @@ namespace celeritas
         // 向客户端发送消息
         void write(buffer_guard data);
 
+        [[nodiscard]] long get_session_id() const;
+
     private:
         using void_awaitable_type = boost::asio::awaitable<void>;
         using read_awaitable_type = boost::asio::awaitable<size_t>;
         using buffer_guard_optional_type = std::optional<buffer_guard>;
+        using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
+        using listener_weak_ptr = std::weak_ptr<listener>;
 
         // 协程：处理带超时的异步读取操作
         [[nodiscard]] read_awaitable_type read_data_with_timeout(boost::asio::mutable_buffer buffer);
@@ -59,10 +65,12 @@ namespace celeritas
         [[nodiscard]] buffer_guard_optional_type get_next_write_buffer();
 
         socket_type socket_;
-        network_message_callback_shared_ptr network_message_callback_;
+        network_message_callback_weak_ptr network_message_callback_;
+        listener_weak_ptr listener_;
 
         // 发送队列和互斥锁
         std::deque<buffer_guard> write_queue_;
         std::mutex write_mutex_;
+        long session_id_;
     };
 }

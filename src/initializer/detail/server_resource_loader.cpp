@@ -2,24 +2,25 @@
 #include "common/celeritas_error.h"
 #include "network/tcp_client.h"
 #include "config/server_network_type.h"
+#include "network/tcp_listener.h"
 
-void celeritas::server_resource_loader::loader_server(io_context_type& io_context, const server_config& server_config, const server_network_config& server_network_config, const network_message_callback_shared_ptr& network_message_callback)
+celeritas::server_resource_loader::listener_shared_ptr celeritas::server_resource_loader::loader_server(io_context_type& io_context, const server_config& server_config, const server_network_config& server_network_config, const network_message_callback_shared_ptr& network_message_callback)
 {
     switch (server_network_config.get_server_network_type())
     {
         case server_network_type::tcp:
         {
-            break;
+            return std::make_shared<tcp_listener>(io_context, server_network_config.get_port(), network_message_callback);
         }
 
         case server_network_type::http:
         {
-            break;
+            return nullptr;
         }
 
         case server_network_type::websocket:
         {
-            break;
+            return nullptr;
         }
         default:
         {

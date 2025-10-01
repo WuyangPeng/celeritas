@@ -9,3 +9,8 @@ celeritas::server_network_type celeritas::server_network_config::get_server_netw
 {
     return server_network_type_;
 }
+
+int celeritas::server_network_config::get_port() const noexcept
+{
+    return port_;
+}

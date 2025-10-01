@@ -8,7 +8,7 @@
 
 namespace celeritas
 {
-    class tcp_client
+    class tcp_client : public listener
     {
     public:
         using class_type = tcp_client;
@@ -36,5 +36,6 @@ namespace celeritas
     private:
         boost::asio::io_context& io_context_;
         network_message_callback_shared_ptr callback_;
+        long session_id_;
     };
 }
