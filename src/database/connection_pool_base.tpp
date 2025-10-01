@@ -229,6 +229,11 @@ void celeritas::connection_pool_base<SessionType>::cleanup_database_by_duration(
 
     for (auto iter = sessions_.begin(); iter != sessions_.end();)
     {
+        if (sessions_.size() <= min_connections_)
+        {
+            return;
+        }
+
         if ((*iter)->is_expired())
         {
             iter = sessions_.erase(iter);
