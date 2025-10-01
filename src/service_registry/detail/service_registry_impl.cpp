@@ -47,10 +47,10 @@ void celeritas::service_registry_impl::start_cleanup_timer(const self_shared_ptr
 {
     cleanup_timer_interval_->expires_at(std::chrono::steady_clock::now() + cleanup_timer);
     cleanup_timer_interval_->async_wait(
-        [self](const error_code_type& ec) {
-            if (!ec)
+        [self](const error_code_type& error_code) {
+            if (!error_code)
             {
-                self->cleanup_expired_services(ec);
+                self->cleanup_expired_services(error_code);
             }
         });
 }

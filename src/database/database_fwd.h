@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <chrono>
+
 namespace celeritas
 {
     template <typename SessionType>
@@ -11,4 +13,7 @@ namespace celeritas
     class mysql_database_session;
     class mongo_database_session;
     class redis_database_session;
+
+    constexpr auto cleanup_database_timer = std::chrono::hours(1);
+    constexpr auto cleanup_database_expired_timer = std::chrono::hours(1);
 }

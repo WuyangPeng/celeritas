@@ -1,14 +1,17 @@
 ﻿#pragma once
 
+#include <boost/asio/steady_timer.hpp>
 #include <boost/asio/awaitable.hpp>
 
 namespace celeritas
 {
-    class database_pool
+    class database_pool : public std::enable_shared_from_this<database_pool>
     {
     public:
         using class_type = database_pool;
-        using awaitable_type = boost::asio::awaitable<void>;
+        using io_context_type = boost::asio::io_context;
+        using void_awaitable_type = boost::asio::awaitable<void>;
+        using error_code_type = boost::system::error_code;
 
         database_pool() noexcept = default;
 
@@ -22,8 +25,10 @@ namespace celeritas
 
         database_pool& operator=(database_pool&& rhs) noexcept = default;
 
-        [[nodiscard]] virtual awaitable_type async_initialize() = 0;
+        [[nodiscard]] virtual void_awaitable_type async_initialize() = 0;
 
-        void start_cleanup_timer(const boost::asio::io_context& io_context);
+        virtual void start_cleanup_timer(io_context_type& io_context) = 0;
+
+        virtual void cleanup_expired_database(const error_code_type& error_code) = 0;
     };
 }

@@ -1,11 +1,12 @@
 ﻿#pragma once
 
 #include "connection_pool_base.h"
-#include "common/logger.h"
+#include "database_fwd.h"
 #include "common/common_fwd.h"
+#include "common/logger.h"
 
 template <typename SessionType>
-celeritas::connection_pool_base<SessionType>::connection_pool_base(boost::asio::io_context& io_context, std::string host, uint16_t port, std::string user, std::string password, std::string db_name, int min_connections, int max_connections)
+celeritas::connection_pool_base<SessionType>::connection_pool_base(io_context_type& io_context, std::string host, int port, std::string user, std::string password, std::string db_name, int min_connections, int max_connections)
     : io_context_{ io_context },
       host_{ std::move(host) },
       port_{ port },
@@ -20,7 +21,7 @@ celeritas::connection_pool_base<SessionType>::connection_pool_base(boost::asio::
 }
 
 template <typename SessionType>
-celeritas::connection_pool_base<SessionType>::connection_pool_base(boost::asio::io_context& io_context, std::string host, uint16_t port, std::string user, std::string password, int min_connections, int max_connections)
+celeritas::connection_pool_base<SessionType>::connection_pool_base(io_context_type& io_context, std::string host, int port, std::string user, std::string password, int min_connections, int max_connections)
     : io_context_{ io_context },
       host_{ std::move(host) },
       port_{ port },
@@ -35,7 +36,7 @@ celeritas::connection_pool_base<SessionType>::connection_pool_base(boost::asio::
 }
 
 template <typename SessionType>
-celeritas::connection_pool_base<SessionType>::connection_pool_base(boost::asio::io_context& io_context, std::string uri, std::string db_name, int min_connections, int max_connections)
+celeritas::connection_pool_base<SessionType>::connection_pool_base(io_context_type& io_context, std::string uri, std::string db_name, int min_connections, int max_connections)
     : io_context_{ io_context },
       host_{},
       port_{},
@@ -50,46 +51,39 @@ celeritas::connection_pool_base<SessionType>::connection_pool_base(boost::asio::
 }
 
 template <typename SessionType>
-typename celeritas::connection_pool_base<SessionType>::awaitable_type celeritas::connection_pool_base<SessionType>::async_initialize()
+typename celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::connection_pool_base<SessionType>::async_initialize()
 {
     for (auto i = 0u; i < min_connections_; ++i)
     {
         co_await this->async_one_initialize();
-        ++connections_;
     }
 }
 
 template <typename SessionType>
-typename celeritas::connection_pool_base<SessionType>::session_awaitable_type celeritas::connection_pool_base<SessionType>::async_get_session()
+typename celeritas::connection_pool_base<SessionType>::session_shared_ptr celeritas::connection_pool_base<SessionType>::try_get_existing_session()
 {
-    std::lock_guard lock{ mutex_ };
+    std::unique_lock lock{ mutex_ };
 
     if (!sessions_.empty())
     {
         auto session = sessions_.front();
+        session->set_last_heartbeat();
         sessions_.pop_front();
 
-        co_return session;
+        return session;
     }
 
-    if (connections_ < max_connections_)
-    {
-        co_await this->async_one_initialize();
+    return nullptr;
+}
 
-        if (!sessions_.empty())
-        {
-            auto session = sessions_.front();
-            sessions_.pop_front();
-
-            co_return session;
-        }
-    }
-
+template <typename SessionType>
+typename celeritas::connection_pool_base<SessionType>::session_awaitable_type celeritas::connection_pool_base<SessionType>::async_initiate_session()
+{
     // 如果没有可用会话，将当前协程挂起并加入等待队列。
     // 使用 async_initiate 创建一个自定义的异步操作。
-    co_return co_await boost::asio::async_initiate<decltype(boost::asio::use_awaitable), void(session_shared_ptr)>(
+    co_return boost::asio::async_initiate<decltype(boost::asio::use_awaitable), void(session_shared_ptr)>(
         [&](auto handler) {
-            std::lock_guard lock_guard{ mutex_ };
+            std::unique_lock lock{ mutex_ };
             waiters_.emplace_back(
                 [handler = std::move(handler)](session_shared_ptr session) mutable {
                     // 当会话被释放时，使用 dispatch 确保 handler 在其原始的执行器上运行，
@@ -104,15 +98,39 @@ typename celeritas::connection_pool_base<SessionType>::session_awaitable_type ce
 }
 
 template <typename SessionType>
+typename celeritas::connection_pool_base<SessionType>::session_awaitable_type celeritas::connection_pool_base<SessionType>::async_get_session()
+{
+    auto session = try_get_existing_session();
+    if (session != nullptr)
+    {
+        co_return session;
+    }
+
+    if (connections_ < max_connections_)
+    {
+        co_await this->async_one_initialize();
+
+        session = try_get_existing_session();
+        if (session != nullptr)
+        {
+            co_return session;
+        }
+    }
+
+    co_return co_await async_initiate_session();
+}
+
+template <typename SessionType>
 void celeritas::connection_pool_base<SessionType>::release_session(const session_shared_ptr& session)
 {
-    std::lock_guard lock{ mutex_ };
+    std::unique_lock lock{ mutex_ };
 
     if (!waiters_.empty())
     {
         // 如果有等待的协程，直接将会话给它
         auto waiter = std::move(waiters_.front());
         waiters_.pop_front();
+        session->set_last_heartbeat();
         waiter(session);
     }
     else
@@ -122,15 +140,14 @@ void celeritas::connection_pool_base<SessionType>::release_session(const session
 }
 
 template <typename SessionType>
-typename celeritas::connection_pool_base<SessionType>::awaitable_type celeritas::connection_pool_base<SessionType>::async_one_initialize()
+typename celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::connection_pool_base<SessionType>::async_one_initialize()
 {
+    std::unique_lock lock{ mutex_ };
+
     try
     {
-        auto session = std::make_shared<SessionType>(host_, port_, user_, password_, uri_, db_name_, io_context_);
-        co_await session->async_connect();
-        sessions_.emplace_back(session);
-
-        LOG_CHANNEL(database_channel, info) << "connect host:" << host_ << ",port:" << port_ << " success.";
+        co_await this->do_async_one_initialize();
+        ++connections_;
     }
     catch (const std::exception& error)
     {
@@ -139,5 +156,86 @@ typename celeritas::connection_pool_base<SessionType>::awaitable_type celeritas:
     catch (...)
     {
         LOG_CHANNEL(database_channel, fatal) << "connect host:" << host_ << ",port:" << port_ << " unknown exception";
+    }
+}
+
+template <typename SessionType>
+typename celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::connection_pool_base<SessionType>::do_async_one_initialize()
+{
+    auto session = std::make_shared<SessionType>(host_, port_, user_, password_, uri_, db_name_, io_context_);
+    co_await session->async_connect();
+    sessions_.emplace_back(session);
+
+    LOG_CHANNEL(database_channel, info) << "connect host:" << host_ << ",port:" << port_ << " success.";
+}
+
+template <typename SessionType>
+void celeritas::connection_pool_base<SessionType>::start_cleanup_timer(io_context_type& io_context)
+{
+    cleanup_timer_interval_ = std::make_unique<steady_timer_type>(io_context);
+
+    start_cleanup_timer(shared_from_this());
+}
+
+template <typename SessionType>
+void celeritas::connection_pool_base<SessionType>::cleanup_expired_database(const error_code_type& error_code)
+{
+    if (error_code == boost::asio::error::operation_aborted)
+    {
+        return;
+    }
+
+    const auto self{ shared_from_this() };
+
+    process_cleanup_logic();
+
+    start_cleanup_timer(self);
+}
+
+template <typename SessionType>
+void celeritas::connection_pool_base<SessionType>::start_cleanup_timer(const self_shared_ptr& self) const
+{
+    cleanup_timer_interval_->expires_at(std::chrono::steady_clock::now() + cleanup_database_timer);
+    cleanup_timer_interval_->async_wait(
+        [self](const boost::system::error_code& error_code) {
+            if (!error_code)
+            {
+                self->cleanup_expired_database(error_code);
+            }
+        });
+}
+
+template <typename SessionType>
+void celeritas::connection_pool_base<SessionType>::process_cleanup_logic()
+{
+    try
+    {
+        cleanup_database_by_duration();
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(database_channel, error) << "Cleanup error: " << error.what();
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(database_channel, fatal) << "Cleanup error: an unknown exception";
+    }
+}
+
+template <typename SessionType>
+void celeritas::connection_pool_base<SessionType>::cleanup_database_by_duration()
+{
+    std::unique_lock lock{ mutex_ };
+
+    for (auto iter = sessions_.begin(); iter != sessions_.end();)
+    {
+        if ((*iter)->is_expired())
+        {
+            iter = sessions_.erase(iter);
+        }
+        else
+        {
+            ++iter;
+        }
     }
 }

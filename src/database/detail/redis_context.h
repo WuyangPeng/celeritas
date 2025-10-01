@@ -11,7 +11,7 @@ namespace celeritas
     public:
         using class_type = redis_context;
 
-        redis_context(const std::string& host, uint16_t port);
+        redis_context(const std::string& host, int port);
 
         ~redis_context() noexcept;
 

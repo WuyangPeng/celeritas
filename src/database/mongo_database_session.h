@@ -4,8 +4,8 @@
 
 #include <boost/asio/awaitable.hpp>
 #include <boost/asio/io_context.hpp>
-#include <mongocxx/client.hpp>
 #include <bsoncxx/builder/basic/document.hpp>
+#include <mongocxx/client.hpp>
 
 namespace celeritas
 {
@@ -14,18 +14,19 @@ namespace celeritas
     public:
         using class_type = mongo_database_session;
         using base_type = database_session;
-        using awaitable_type = boost::asio::awaitable<void>;
+        using io_context_type = boost::asio::io_context;
+        using void_awaitable_type = boost::asio::awaitable<void>;
         using document_awaitable_type = boost::asio::awaitable<std::optional<bsoncxx::document::value> >;
         using cursor_awaitable_type = boost::asio::awaitable<mongocxx::cursor>;
         using document_view_type = bsoncxx::document::view;
 
         explicit mongo_database_session(const std::string_view& host,
-                                        uint16_t port,
+                                        int port,
                                         const std::string_view& user,
                                         const std::string_view& password,
                                         const std::string_view& uri,
                                         const std::string_view& db_name,
-                                        boost::asio::io_context& io_context);
+                                        io_context_type& io_context);
 
         ~mongo_database_session() noexcept override = default;
 
@@ -37,7 +38,7 @@ namespace celeritas
 
         mongo_database_session& operator=(mongo_database_session&& rhs) noexcept = delete;
 
-        [[nodiscard]] awaitable_type async_connect();
+        [[nodiscard]] void_awaitable_type async_connect();
 
         [[nodiscard]] cursor_awaitable_type async_find(const std::string_view& collection_name, const document_view_type& filter);
 
@@ -49,9 +50,11 @@ namespace celeritas
 
         [[nodiscard]] cursor_awaitable_type async_handle_and_retry(const std::string_view& collection_name, const document_view_type& filter);
 
+        [[nodiscard]] void_awaitable_type do_async_connect();
+
         mongo_client_unique_ptr client_;
         mongo_database_unique_ptr database_;
-        boost::asio::io_context& io_context_;
+        io_context_type& io_context_;
 
         std::string uri_;
         std::string db_name_;

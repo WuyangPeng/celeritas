@@ -1,37 +1,29 @@
 ﻿#include "mongo_database_session.h"
 #include "common/celeritas_error.h"
-#include "common/logger.h"
 #include "common/common_fwd.h"
+#include "common/logger.h"
 
 #include <boost/asio/use_awaitable.hpp>
 #include <mongocxx/exception/operation_exception.hpp>
 
 celeritas::mongo_database_session::mongo_database_session(const std::string_view& host,
-                                                          uint16_t port,
+                                                          int port,
                                                           const std::string_view& user,
                                                           const std::string_view& password,
                                                           const std::string_view& uri,
                                                           const std::string_view& db_name,
-                                                          boost::asio::io_context& io_context)
+                                                          io_context_type& io_context)
     : client_{}, database_{}, io_context_{ io_context }, uri_{ uri }, db_name_{ db_name }
 {
 }
 
-celeritas::mongo_database_session::awaitable_type celeritas::mongo_database_session::async_connect()
+celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database_session::async_connect()
 {
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
 
     try
     {
-        client_ = std::make_unique<mongocxx::client>(mongocxx::uri{ uri_ });
-        database_ = std::make_unique<mongocxx::database>((*client_)[db_name_]);
-
-        bsoncxx::builder::basic::document ping_cmd{};
-        ping_cmd.append(bsoncxx::builder::basic::kvp("ping", 1));
-
-        database_->run_command(ping_cmd.view());
-
-        LOG_CHANNEL(database_channel, info) << "MongoDB session connected to: " << uri_ << "/" << client_;
+        co_await do_async_connect();
     }
     catch (const mongocxx::exception& error)
     {
@@ -103,4 +95,19 @@ celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_databa
 
         throw;
     }
+}
+
+celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database_session::do_async_connect()
+{
+    client_ = std::make_unique<mongocxx::client>(mongocxx::uri{ uri_ });
+    database_ = std::make_unique<mongocxx::database>((*client_)[db_name_]);
+
+    bsoncxx::builder::basic::document ping_cmd{};
+    ping_cmd.append(bsoncxx::builder::basic::kvp("ping", 1));
+
+    database_->run_command(ping_cmd.view());
+
+    LOG_CHANNEL(database_channel, info) << "MongoDB session connected to: " << uri_ << "/" << client_;
+
+    co_return;
 }

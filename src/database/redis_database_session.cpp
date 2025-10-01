@@ -7,17 +7,17 @@
 using namespace std::literals;
 
 celeritas::redis_database_session::redis_database_session(const std::string_view& host,
-                                                          uint16_t port,
+                                                          int port,
                                                           const std::string_view& user,
                                                           const std::string_view& password,
                                                           const std::string_view& uri,
                                                           const std::string_view& db_name,
-                                                          boost::asio::io_context& io_context)
+                                                          io_context_type& io_context)
     : redis_context_{}, io_context_{ io_context }, host_{ host }, password_{ password }, user_{ user }, port_{ port }, db_name_{ db_name }
 {
 }
 
-celeritas::redis_database_session::awaitable_type celeritas::redis_database_session::async_connect()
+celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::async_connect()
 {
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
 

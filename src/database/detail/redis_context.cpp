@@ -3,7 +3,7 @@
 
 using namespace std::literals;
 
-celeritas::redis_context::redis_context(const std::string& host, uint16_t port)
+celeritas::redis_context::redis_context(const std::string& host, int port)
     : redis_context_{ ::redisConnect(host.c_str(), port) }
 {
     if (redis_context_ == nullptr)

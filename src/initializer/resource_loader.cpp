@@ -1,4 +1,5 @@
 ﻿#include "resource_loader.h"
+#include "database/database_pool_manager.h"
 #include "detail/database_resource_loader.h"
 #include "detail/logger_resource_loader.h"
 
@@ -32,10 +33,15 @@ void celeritas::resource_loader::initialize_logger_resource()
 
 void celeritas::resource_loader::initialize_database_resource(boost::asio::io_context& io_context)
 {
-    for (const auto database = app_config_->get_database_config();
-         const auto& element : database | std::views::values)
+    const auto database = app_config_->get_database_config();
+    for (const auto& element : database | std::views::values)
     {
         database_resource_loader::loader_database(io_context, element);
+    }
+
+    if (!database.empty())
+    {
+        database_pool_manager::get_instance().start_cleanup_timer(io_context);
     }
 }
 
