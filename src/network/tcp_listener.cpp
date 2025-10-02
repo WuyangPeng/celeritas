@@ -39,6 +39,11 @@ void celeritas::tcp_listener::stop()
     }
 }
 
+void celeritas::tcp_listener::remove_session(long session_id)
+{
+    sessions_.erase(session_id);
+}
+
 // 协程：接受连接
 celeritas::tcp_listener::void_awaitable_type celeritas::tcp_listener::accept_connections()
 {

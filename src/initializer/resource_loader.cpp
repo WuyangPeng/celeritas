@@ -23,6 +23,11 @@ void celeritas::resource_loader::initialize(boost::asio::io_context& io_context,
 
 void celeritas::resource_loader::release_resource()
 {
+    for (const auto& element : listener_)
+    {
+        element->stop();
+    }
+
     listener_.clear();
 }
 

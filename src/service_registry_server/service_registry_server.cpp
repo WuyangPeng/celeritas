@@ -5,16 +5,13 @@
 #include "initializer/initializer.h"
 #include "server/server_fwd.h"
 
-#include <boost/asio/io_context.hpp>
 #include <exception>
 
 void celeritas::service_registry_server::run()
 {
-    boost::asio::io_context io_context{};
+    const auto server_context = initializer::create(service_registry_type, service_registry_type);
 
-    const auto server_context = std::make_shared<initializer>(service_registry_type, service_registry_type, io_context);
     server_context->initialize();
-
     server_context->run();
 }
 

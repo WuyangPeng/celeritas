@@ -36,6 +36,11 @@ void celeritas::http_listener::stop()
     }
 }
 
+void celeritas::http_listener::remove_session(long session_id)
+{
+    sessions_.erase(session_id);
+}
+
 celeritas::http_listener::void_awaitable_type celeritas::http_listener::accept_connections()
 {
     while (is_running_)

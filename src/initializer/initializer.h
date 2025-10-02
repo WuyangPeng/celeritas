@@ -18,11 +18,13 @@ namespace celeritas
     public:
         using class_type = initializer;
         using base_type = network_message_callback;
-        using initializer_unique_ptr = std::unique_ptr<initializer>;
+        using initializer_shared_ptr = std::shared_ptr<initializer>;
 
-        initializer(const std::string_view& server_type, std::string_view config_file_path, boost::asio::io_context& io_context);
+        [[nodiscard]] static initializer_shared_ptr create(const std::string_view& server_type, std::string_view config_file_path);
 
-        virtual ~initializer() noexcept = default;
+        initializer(const std::string_view& server_type, std::string_view config_file_path);
+
+        ~initializer() noexcept override = default;
 
         initializer(const initializer& rhs) noexcept = delete;
 
@@ -64,7 +66,7 @@ namespace celeritas
         path_type current_path_;
         configuration_loader_unique_ptr configuration_loader_;
         resource_loader_unique_ptr resource_loader_;
-        io_context_type& io_context_;
+        io_context_type io_context_;
         executor_work_guard_type work_guard_;
 
         // 新增一个信号集成员变量

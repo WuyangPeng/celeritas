@@ -2,7 +2,7 @@
 #include "common/logger.h"
 #include "common/common_fwd.h"
 
-celeritas::websocket_listener::websocket_listener(boost::asio::io_context& io_context, int port, const network_message_callback_shared_ptr& callback)
+celeritas::websocket_listener::websocket_listener(boost::asio::io_context& io_context, int port, const network_message_callback_shared_ptr& callback, std::string game_server_id)
     : io_context_{ io_context },
       acceptor_{ io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port) },
       network_message_callback_{ callback },
@@ -16,9 +16,10 @@ celeritas::websocket_listener::websocket_listener(boost::asio::io_context& io_co
 
 void celeritas::websocket_listener::start()
 {
-    boost::asio::co_spawn(io_context_, [this] {
-        return accept_connections();
-    }, boost::asio::detached);
+    boost::asio::co_spawn(io_context_,
+                          [this] {
+                              return accept_connections();
+                          }, boost::asio::detached);
 }
 
 void celeritas::websocket_listener::stop()
@@ -32,6 +33,11 @@ void celeritas::websocket_listener::stop()
     {
         LOG_CHANNEL(network_channel, warning) << "Failed to cancel acceptor: " << error_code.message();
     }
+}
+
+void celeritas::websocket_listener::remove_session(long session_id)
+{
+    sessions_.erase(session_id);
 }
 
 celeritas::websocket_listener::void_awaitable_type celeritas::websocket_listener::accept_connections()
@@ -79,13 +85,12 @@ celeritas::websocket_listener::void_awaitable_type celeritas::websocket_listener
                                               << "] from: " << socket.remote_endpoint();
 
         // 创建新的 websocket_session
-        auto new_session = std::make_shared<session_type>(
-            std::move(socket), current_session_id, network_message_callback_);
+        auto session = std::make_shared<session_type>(std::move(socket), current_session_id, network_message_callback_, game_server_id_, shared_from_this());
 
         // 将 session 存储起来
-        sessions_[current_session_id] = new_session;
+        sessions_[current_session_id] = session;
 
         // 启动 websocket_session 协程
-        new_session->start();
+        session->start();
     }
 }

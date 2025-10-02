@@ -14,3 +14,8 @@ celeritas::server_config::server_network_config_const_iterator celeritas::server
 {
     return server_network_config_.end();
 }
+
+std::string celeritas::server_config::get_game_server_id() const noexcept
+{
+    return game_server_id_;
+}

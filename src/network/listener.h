@@ -20,6 +20,10 @@ namespace celeritas
         listener(listener&& rhs) noexcept = delete;
 
         listener& operator=(listener&& rhs) noexcept = delete;
+
+        virtual void remove_session(long session_id) = 0;
+
+        virtual void stop() = 0;
     };
 }
 
