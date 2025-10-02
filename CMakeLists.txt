@@ -54,9 +54,9 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 endif ()
 
 # 包含boost库
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/)
-
 if (MSVC)
+
+    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/)
 
     add_library(boost INTERFACE)
 
@@ -156,8 +156,17 @@ add_library(mongo INTERFACE)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib)
-    target_link_libraries(mongo INTERFACE bsoncxx.dll mongocxx.dll)
+    if (MSVC)
+
+        link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib)
+        target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
+
+    else ()
+
+        link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib)
+        target_link_libraries(mongo INTERFACE bsoncxx.dll mongocxx.dll)
+
+    endif ()
 
 else ()
 
@@ -184,22 +193,23 @@ endif ()
 target_link_libraries(redis INTERFACE hiredis${BUILD_LIB_SUFFIX})
 
 # 包含openssl库
+add_library(openssl INTERFACE)
+
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     if (MSVC)
 
         link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/lib)
+        target_link_libraries(openssl INTERFACE libssl libcrypto)
 
     else ()
 
         link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/lib64)
+        target_link_libraries(openssl INTERFACE ssl crypto)
 
     endif ()
 
 endif ()
-
-add_library(openssl INTERFACE)
-target_link_libraries(openssl INTERFACE ssl crypto)
 
 # 静态库
 add_subdirectory(cmake/common)
