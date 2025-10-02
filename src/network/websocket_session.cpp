@@ -38,6 +38,11 @@ void celeritas::websocket_session::start()
                           boost::asio::detached);
 }
 
+long celeritas::websocket_session::get_session_id() const noexcept
+{
+    return session_id_;
+}
+
 void celeritas::websocket_session::close_web_socket()
 {
     // WebSocket 正常或异常关闭后，执行 TCP 层的关闭

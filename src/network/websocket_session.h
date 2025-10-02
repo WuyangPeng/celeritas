@@ -30,6 +30,8 @@ namespace celeritas
         // 启动会话处理协程
         void start();
 
+        [[nodiscard]] long get_session_id() const noexcept;
+
     private:
         using void_awaitable_type = boost::asio::awaitable<void>;
 

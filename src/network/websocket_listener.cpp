@@ -1,4 +1,8 @@
 ﻿#include "websocket_listener.h"
+
+#include <utility>
+
+#include <utility>
 #include "common/logger.h"
 #include "common/common_fwd.h"
 
@@ -8,9 +12,11 @@ celeritas::websocket_listener::websocket_listener(boost::asio::io_context& io_co
       network_message_callback_{ callback },
       is_running_{ true },
       sessions_{},
-      session_id_{ 0 }
+      session_id_{ 0 },
+      game_server_id_{ std::move(game_server_id) }
 {
     acceptor_.set_option(boost::asio::socket_base::reuse_address(true));
+
     LOG_CHANNEL(network_channel, info) << "WebSocket Listening on port " << port << "...";
 }
 
@@ -79,16 +85,15 @@ celeritas::websocket_listener::void_awaitable_type celeritas::websocket_listener
     {
         // 成功接受连接
         auto socket = std::move(std::get<1>(result));
-        long current_session_id = ++session_id_;
+        const auto current_session_id = ++session_id_;
 
-        LOG_CHANNEL(network_channel, info) << "Accepted new WS connection [" << current_session_id
-                                              << "] from: " << socket.remote_endpoint();
+        LOG_CHANNEL(network_channel, info) << "Accepted new WS connection [" << current_session_id << "] from: " << socket.remote_endpoint();
 
         // 创建新的 websocket_session
         auto session = std::make_shared<session_type>(std::move(socket), current_session_id, network_message_callback_, game_server_id_, shared_from_this());
 
         // 将 session 存储起来
-        sessions_[current_session_id] = session;
+        sessions_[session->get_session_id()] = session;
 
         // 启动 websocket_session 协程
         session->start();
