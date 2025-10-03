@@ -1,13 +1,13 @@
-﻿#include "websocket_session_handle_one_message.h"
+﻿#include "web_socket_session_handle_one_message.h"
 #include "common/logger.h"
 #include "common/common_fwd.h"
 
-celeritas::websocket_session_handle_one_message::websocket_session_handle_one_message(web_socket_stream_type& web_socket, int64_t session_id, network_message_callback_weak_ptr callback)
+celeritas::web_socket_session_handle_one_message::web_socket_session_handle_one_message(web_socket_stream_type& web_socket, int64_t session_id, network_message_callback_weak_ptr callback)
     : web_socket_{ web_socket }, session_id_{ session_id }, callback_{ std::move(callback) }
 {
 }
 
-celeritas::websocket_session_handle_one_message::void_awaitable_type celeritas::websocket_session_handle_one_message::run()
+celeritas::web_socket_session_handle_one_message::void_awaitable_type celeritas::web_socket_session_handle_one_message::run()
 {
     boost::beast::flat_buffer buffer{};
     while (web_socket_.is_open())

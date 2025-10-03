@@ -6,8 +6,9 @@
 #include <boost/asio/detached.hpp>
 #include <boost/asio/use_awaitable.hpp>
 
-celeritas::tcp_listener::tcp_listener(boost::asio::io_context& io_context, const int port, const network_message_callback_shared_ptr& callback)
-    : io_context_{ io_context },
+celeritas::tcp_listener::tcp_listener(boost::asio::io_context& io_context, const int port, const network_message_callback_weak_ptr& callback)
+    : base_type{ io_context, callback, "" },
+      io_context_{ io_context },
       acceptor_{ io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port) },
       network_message_callback_{ callback },
       is_running_{ true },
@@ -15,14 +16,6 @@ celeritas::tcp_listener::tcp_listener(boost::asio::io_context& io_context, const
       session_id_{ 0 }
 {
     LOG_CHANNEL(network_channel, info) << "Listening on port " << port << "...";
-}
-
-void celeritas::tcp_listener::start()
-{
-    co_spawn(io_context_, [this] {
-                 return accept_connections();
-             },
-             boost::asio::detached);
 }
 
 void celeritas::tcp_listener::stop()

@@ -16,11 +16,11 @@ namespace celeritas
         using class_type = session_base;
         using socket_type = SocketType;
 
-        using network_message_callback_shared_ptr = std::shared_ptr<network_message_callback>;
+        using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
         using listener_shared_ptr = std::shared_ptr<listener>;
 
         // 构造函数：接受一个已连接的 socket
-        explicit session_base(socket_type socket, long session_id, const network_message_callback_shared_ptr& callback, const listener_shared_ptr& listener);
+        explicit session_base(socket_type socket, long session_id, const network_message_callback_weak_ptr& callback, const listener_shared_ptr& listener);
 
         ~session_base() noexcept = default;
 
@@ -44,7 +44,6 @@ namespace celeritas
         using void_awaitable_type = boost::asio::awaitable<void>;
         using read_awaitable_type = boost::asio::awaitable<size_t>;
         using buffer_guard_optional_type = std::optional<buffer_guard>;
-        using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
         using listener_weak_ptr = std::weak_ptr<listener>;
 
         // 协程：处理带超时的异步读取操作

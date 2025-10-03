@@ -9,7 +9,7 @@
 #include "detail/network_internal_fwd.h"
 
 template <typename SocketType>
-celeritas::session_base<SocketType>::session_base(socket_type socket, const long session_id, const network_message_callback_shared_ptr& callback, const listener_shared_ptr& listener)
+celeritas::session_base<SocketType>::session_base(socket_type socket, const long session_id, const network_message_callback_weak_ptr& callback, const listener_shared_ptr& listener)
     : socket_{ std::move(socket) }, session_id_{ session_id }, network_message_callback_{ callback }, listener_{ listener }
 {
 }

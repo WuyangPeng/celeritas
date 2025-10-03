@@ -1,31 +1,27 @@
 ﻿#include "websocket_listener.h"
-
-#include <utility>
-
-#include <utility>
-#include "common/logger.h"
 #include "common/common_fwd.h"
+#include "common/logger.h"
 
-celeritas::websocket_listener::websocket_listener(boost::asio::io_context& io_context, int port, const network_message_callback_shared_ptr& callback, std::string game_server_id)
-    : io_context_{ io_context },
-      acceptor_{ io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port) },
-      network_message_callback_{ callback },
+#include <utility>
+
+celeritas::websocket_listener::websocket_listener(io_context_type& io_context,
+                                                  network_message_callback_weak_ptr callback,
+                                                  std::string game_server_id,
+                                                  int port)
+    : base_type{ io_context, std::move(callback), std::move(game_server_id) },
+      acceptor_{ io_context, boost::asio::ip::tcp::endpoint{ boost::asio::ip::tcp::v4(), boost::numeric_cast<uint_least16_t>(port) } },
       is_running_{ true },
       sessions_{},
-      session_id_{ 0 },
-      game_server_id_{ std::move(game_server_id) }
+      session_id_{ 0 }
+{
+    set_option(port);
+}
+
+void celeritas::websocket_listener::set_option(int port)
 {
     acceptor_.set_option(boost::asio::socket_base::reuse_address(true));
 
-    LOG_CHANNEL(network_channel, info) << "WebSocket Listening on port " << port << "...";
-}
-
-void celeritas::websocket_listener::start()
-{
-    boost::asio::co_spawn(io_context_,
-                          [this] {
-                              return accept_connections();
-                          }, boost::asio::detached);
+    LOG_CHANNEL(network_channel, info) << "WebSocket listening on port " << port << "...";
 }
 
 void celeritas::websocket_listener::stop()
@@ -66,6 +62,7 @@ celeritas::websocket_listener::void_awaitable_type celeritas::websocket_listener
             LOG_CHANNEL(network_channel, error) << "WS Listener unknown error.";
         }
     }
+
     LOG_CHANNEL(network_channel, info) << "WS Listener stopped.";
 }
 
@@ -90,7 +87,7 @@ celeritas::websocket_listener::void_awaitable_type celeritas::websocket_listener
         LOG_CHANNEL(network_channel, info) << "Accepted new WS connection [" << current_session_id << "] from: " << socket.remote_endpoint();
 
         // 创建新的 websocket_session
-        auto session = std::make_shared<websocket_session>(std::move(socket), current_session_id, game_server_id_, session_callback{ shared_from_this(), network_message_callback_ });
+        auto session = std::make_shared<websocket_session>(std::move(socket), current_session_id, get_game_server_id(), get_session_callback());
 
         // 将 session 存储起来
         sessions_[session->get_session_id()] = session;

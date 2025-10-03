@@ -11,7 +11,7 @@ celeritas::resource_loader::resource_loader(const app_config_shared_ptr& app_con
 {
 }
 
-void celeritas::resource_loader::initialize(boost::asio::io_context& io_context, const network_message_callback_shared_ptr& network_message_callback)
+void celeritas::resource_loader::initialize(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback)
 {
     initialize_logger_resource();
     initialize_server_resource(io_context, network_message_callback);
@@ -56,7 +56,7 @@ void celeritas::resource_loader::initialize_database_resource(boost::asio::io_co
     }
 }
 
-void celeritas::resource_loader::initialize_server_resource(boost::asio::io_context& io_context, const network_message_callback_shared_ptr& network_message_callback)
+void celeritas::resource_loader::initialize_server_resource(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback)
 {
     const auto server = app_config_->get_server_config();
 

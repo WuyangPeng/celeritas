@@ -5,7 +5,7 @@
 #include "network/tcp_listener.h"
 #include "network/websocket_listener.h"
 
-celeritas::server_resource_loader::listener_shared_ptr celeritas::server_resource_loader::loader_server(io_context_type& io_context, const server_config& server_config, const server_network_config& server_network_config, const network_message_callback_shared_ptr& network_message_callback)
+celeritas::server_resource_loader::listener_shared_ptr celeritas::server_resource_loader::loader_server(io_context_type& io_context, const server_config& server_config, const server_network_config& server_network_config, const network_message_callback_weak_ptr& network_message_callback)
 {
     switch (server_network_config.get_server_network_type())
     {
@@ -21,7 +21,7 @@ celeritas::server_resource_loader::listener_shared_ptr celeritas::server_resourc
 
         case server_network_type::websocket:
         {
-            return std::make_shared<websocket_listener>(io_context, server_network_config.get_port(), network_message_callback, server_config.get_game_server_id());
+            return std::make_shared<websocket_listener>(io_context, network_message_callback, server_config.get_game_server_id(), server_network_config.get_port());
         }
         default:
         {

@@ -12,11 +12,11 @@ namespace celeritas
     {
     public:
         using class_type = http_session;
-        using network_message_callback_shared_ptr = std::shared_ptr<network_message_callback>;
+        using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
 
         explicit http_session(boost::asio::ip::tcp::socket socket,
                               long session_id,
-                              const network_message_callback_shared_ptr& callback);
+                              const network_message_callback_weak_ptr& callback);
 
         // 启动会话处理协程
         void start();
@@ -32,7 +32,7 @@ namespace celeritas
 
         boost::asio::ip::tcp::socket socket_;
         long session_id_;
-        network_message_callback_shared_ptr network_message_callback_;
+        network_message_callback_weak_ptr network_message_callback_;
     };
 }
 

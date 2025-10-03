@@ -1,7 +1,7 @@
 ﻿#include "websocket_session.h"
 #include "common/common_fwd.h"
 #include "common/logger.h"
-#include "detail/websocket_session_handle_session.h"
+#include "detail/web_socket_session_handle_session.h"
 
 celeritas::websocket_session::websocket_session(socket_type socket,
                                                 const int64_t session_id,
@@ -36,7 +36,7 @@ void celeritas::websocket_session::start()
 
 celeritas::websocket_session::void_awaitable_type celeritas::websocket_session::run()
 {
-    websocket_session_handle_session handle{ web_socket_, get_session_id(), get_network_message_callback() };
+    web_socket_session_handle_session handle{ web_socket_, get_session_id(), get_network_message_callback() };
 
     co_await handle.run();
 
@@ -56,7 +56,7 @@ void celeritas::websocket_session::close_web_socket()
 
     if (error_code)
     {
-        LOG_CHANNEL(network_channel, info) << "WS Session [" << get_session_id() << "] terminated error, code = " << error_code;
+        LOG_CHANNEL(network_channel, info) << "WS Session [" << get_session_id() << "] terminated error, code = " << error_code.message();
     }
     else
     {

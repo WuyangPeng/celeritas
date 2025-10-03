@@ -3,7 +3,8 @@
 #include "common/logger.h"
 
 celeritas::tcp_client::tcp_client(boost::asio::io_context& io_context, const network_message_callback_shared_ptr& callback)
-    : io_context_{ io_context }, callback_{ callback }, session_id_{ 0 }
+    : base_type{ io_context, callback, "" },
+      io_context_{ io_context }, callback_{ callback }, session_id_{ 0 }
 {
 }
 

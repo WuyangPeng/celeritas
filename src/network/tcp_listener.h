@@ -14,10 +14,10 @@ namespace celeritas
         using class_type = tcp_listener;
         using base_type = listener;
         using session_type = session_base<boost::asio::ip::tcp::socket>;
-        using network_message_callback_shared_ptr = std::shared_ptr<network_message_callback>;
+        using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
 
         // 接受 io_context和监听端口
-        tcp_listener(boost::asio::io_context& io_context, int port, const network_message_callback_shared_ptr& callback);
+        tcp_listener(boost::asio::io_context& io_context, int port, const network_message_callback_weak_ptr& callback);
 
         ~tcp_listener() noexcept override = default;
 
@@ -28,9 +28,6 @@ namespace celeritas
         tcp_listener(tcp_listener&& rhs) noexcept = delete;
 
         tcp_listener& operator=(tcp_listener&& rhs) noexcept = delete;
-
-        // 开始监听新连接
-        void start();
 
         // 停止监听器
         void stop() override;
@@ -51,7 +48,7 @@ namespace celeritas
 
         io_context_type& io_context_;
         acceptor_type acceptor_;
-        network_message_callback_shared_ptr network_message_callback_;
+        network_message_callback_weak_ptr network_message_callback_;
         std::atomic<bool> is_running_;
         session_type_container_type sessions_;
         long session_id_;

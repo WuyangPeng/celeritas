@@ -2,7 +2,7 @@
 
 #include "session.h"
 #include "session_callback.h"
-#include "detail/websocket_session_write.h"
+#include "detail/web_socket_session_write.h"
 
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
@@ -41,7 +41,7 @@ namespace celeritas
         void close_web_socket();
 
         web_socket_stream_type web_socket_;
-        websocket_session_write websocket_session_write_;
+        web_socket_session_write websocket_session_write_;
     };
 }
 

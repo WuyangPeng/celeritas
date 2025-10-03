@@ -2,8 +2,9 @@
 #include "common/logger.h"
 #include "common/common_fwd.h"
 
-celeritas::http_listener::http_listener(boost::asio::io_context& io_context, int port, const network_message_callback_shared_ptr& callback)
-    : io_context_{ io_context },
+celeritas::http_listener::http_listener(boost::asio::io_context& io_context, int port, const network_message_callback_weak_ptr& callback)
+    : base_type{ io_context, callback, "" },
+      io_context_{ io_context },
       acceptor_{ io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port) },
       network_message_callback_{ callback },
       is_running_{ true },
@@ -14,13 +15,6 @@ celeritas::http_listener::http_listener(boost::asio::io_context& io_context, int
     acceptor_.set_option(boost::asio::socket_base::reuse_address(true));
 
     LOG_CHANNEL(network_channel, info) << "HTTP Listening on port " << port << "...";
-}
-
-void celeritas::http_listener::start()
-{
-    boost::asio::co_spawn(io_context_, [this] {
-        return accept_connections();
-    }, boost::asio::detached);
 }
 
 void celeritas::http_listener::stop()

@@ -2,7 +2,7 @@
 #include "common/logger.h"
 #include "common/common_fwd.h"
 
-celeritas::http_session::http_session(boost::asio::ip::tcp::socket socket, long session_id, const network_message_callback_shared_ptr& callback)
+celeritas::http_session::http_session(boost::asio::ip::tcp::socket socket, long session_id, const network_message_callback_weak_ptr& callback)
     : socket_{ std::move(socket) },
       session_id_{ session_id },
       network_message_callback_{ callback }

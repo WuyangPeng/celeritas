@@ -13,7 +13,7 @@ namespace celeritas
     public:
         using class_type = resource_loader;
         using app_config_shared_ptr = std::shared_ptr<app_config>;
-        using network_message_callback_shared_ptr = std::shared_ptr<network_message_callback>;
+        using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
 
         explicit resource_loader(const app_config_shared_ptr& app_config);
 
@@ -27,7 +27,7 @@ namespace celeritas
 
         resource_loader& operator=(resource_loader&& rhs) noexcept = delete;
 
-        void initialize(boost::asio::io_context& io_context, const network_message_callback_shared_ptr& network_message_callback);
+        void initialize(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback);
 
         void release_resource();
 
@@ -39,7 +39,7 @@ namespace celeritas
 
         void initialize_database_resource(boost::asio::io_context& io_context);
 
-        void initialize_server_resource(boost::asio::io_context& io_context, const network_message_callback_shared_ptr& network_message_callback);
+        void initialize_server_resource(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback);
 
         void initialize_health_check_url_resource();
 

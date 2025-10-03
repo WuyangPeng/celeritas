@@ -12,6 +12,8 @@ namespace celeritas
     {
     public:
         using class_type = tcp_client;
+        using base_type = listener;
+
         using socket_type = boost::asio::ip::tcp::socket;
         using session_type = session_base<socket_type>;
         using network_message_callback_shared_ptr = std::shared_ptr<network_message_callback>;
