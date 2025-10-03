@@ -14,3 +14,8 @@ void celeritas::session_callback::remove_session(int64_t session_id)
         listener->remove_session(session_id);
     }
 }
+
+celeritas::session_callback::network_message_callback_weak_ptr celeritas::session_callback::get_network_message_callback()
+{
+    return network_message_callback_;
+}

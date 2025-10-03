@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#include "session_callback.h"
+#include "common/buffer_guard.h"
+
 #include <boost/asio/awaitable.hpp>
 #include <memory>
 
@@ -11,7 +14,7 @@ namespace celeritas
         using class_type = session;
         using void_awaitable_type = boost::asio::awaitable<void>;
 
-        explicit session(int64_t session_id) noexcept;
+        session(int64_t session_id, session_callback session_callback);
 
         virtual ~session() noexcept = default;
 
@@ -29,9 +32,19 @@ namespace celeritas
         // 协程：处理会话的读写循环
         [[nodiscard]] virtual void_awaitable_type run() = 0;
 
+        virtual void write(buffer_guard data) = 0;
+
         [[nodiscard]] int64_t get_session_id() const noexcept;
+
+    protected:
+        using network_message_callback_weak_ptr = session_callback::network_message_callback_weak_ptr;
+
+        void remove_session();
+
+        [[nodiscard]] network_message_callback_weak_ptr get_network_message_callback();
 
     private:
         int64_t session_id_;
+        session_callback session_callback_;
     };
 }

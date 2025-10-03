@@ -7,9 +7,9 @@ celeritas::websocket_session::websocket_session(socket_type socket,
                                                 const int64_t session_id,
                                                 const std::string& game_server_id,
                                                 session_callback session_callback)
-    : base_type{ session_id },
+    : base_type{ session_id, std::move(session_callback) },
       web_socket_{ std::move(socket) },
-      session_callback_{ std::move(session_callback) }
+      websocket_session_write_{ web_socket_ }
 {
     set_option(game_server_id);
 }
@@ -36,11 +36,16 @@ void celeritas::websocket_session::start()
 
 celeritas::websocket_session::void_awaitable_type celeritas::websocket_session::run()
 {
-    websocket_session_handle_session handle{ web_socket_, get_session_id(), session_callback_ };
+    websocket_session_handle_session handle{ web_socket_, get_session_id(), get_network_message_callback() };
 
     co_await handle.run();
 
     close_web_socket();
+}
+
+void celeritas::websocket_session::write(buffer_guard data)
+{
+    websocket_session_write_.write(std::move(data));
 }
 
 void celeritas::websocket_session::close_web_socket()
@@ -58,5 +63,5 @@ void celeritas::websocket_session::close_web_socket()
         LOG_CHANNEL(network_channel, info) << "WS Session [" << get_session_id() << "] terminated.";
     }
 
-    session_callback_.remove_session(get_session_id());
+    remove_session();
 }

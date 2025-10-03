@@ -2,7 +2,7 @@
 #include "common/logger.h"
 #include "common/common_fwd.h"
 
-celeritas::websocket_session_handle_one_message::websocket_session_handle_one_message(web_socket_stream_type& web_socket, int64_t session_id, session_callback callback)
+celeritas::websocket_session_handle_one_message::websocket_session_handle_one_message(web_socket_stream_type& web_socket, int64_t session_id, network_message_callback_weak_ptr callback)
     : web_socket_{ web_socket }, session_id_{ session_id }, callback_{ std::move(callback) }
 {
 }

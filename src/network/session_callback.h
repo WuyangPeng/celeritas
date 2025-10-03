@@ -17,6 +17,8 @@ namespace celeritas
 
         void remove_session(int64_t session_id);
 
+        [[nodiscard]] network_message_callback_weak_ptr get_network_message_callback();
+
     private:
         listener_weak_ptr listener_;
         network_message_callback_weak_ptr network_message_callback_;

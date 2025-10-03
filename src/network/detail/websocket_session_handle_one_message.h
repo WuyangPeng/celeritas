@@ -16,13 +16,13 @@ namespace celeritas
         using web_socket_stream_type = boost::beast::websocket::stream<boost::beast::tcp_stream>;
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
 
-        websocket_session_handle_one_message(web_socket_stream_type& web_socket, int64_t session_id, session_callback callback);
+        websocket_session_handle_one_message(web_socket_stream_type& web_socket, int64_t session_id, network_message_callback_weak_ptr callback);
 
         [[nodiscard]] void_awaitable_type run();
 
     private:
         web_socket_stream_type& web_socket_;
         int64_t session_id_;
-        session_callback callback_;
+        network_message_callback_weak_ptr callback_;
     };
 }

@@ -2,6 +2,7 @@
 
 #include "session.h"
 #include "session_callback.h"
+#include "detail/websocket_session_write.h"
 
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
@@ -10,7 +11,7 @@ namespace celeritas
 {
     namespace beast_websocket = boost::beast::websocket;
 
-    class websocket_session : public session
+    class websocket_session final : public session
     {
     public:
         using class_type = websocket_session;
@@ -32,13 +33,15 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type run() override;
 
+        void write(buffer_guard data) override;
+
     private:
         void set_option(const std::string& game_server_id);
 
         void close_web_socket();
 
         web_socket_stream_type web_socket_;
-        session_callback session_callback_;
+        websocket_session_write websocket_session_write_;
     };
 }
 
