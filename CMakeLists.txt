@@ -209,6 +209,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     endif ()
 
+else ()
+    
+    target_link_libraries(openssl INTERFACE ssl crypto)
+
 endif ()
 
 # 静态库
