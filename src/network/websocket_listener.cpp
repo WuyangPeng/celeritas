@@ -41,7 +41,7 @@ void celeritas::websocket_listener::stop()
     }
 }
 
-void celeritas::websocket_listener::remove_session(long session_id)
+void celeritas::websocket_listener::remove_session(int64_t session_id)
 {
     sessions_.erase(session_id);
 }
@@ -90,7 +90,7 @@ celeritas::websocket_listener::void_awaitable_type celeritas::websocket_listener
         LOG_CHANNEL(network_channel, info) << "Accepted new WS connection [" << current_session_id << "] from: " << socket.remote_endpoint();
 
         // 创建新的 websocket_session
-        auto session = std::make_shared<session_type>(std::move(socket), current_session_id, network_message_callback_, game_server_id_, shared_from_this());
+        auto session = std::make_shared<websocket_session>(std::move(socket), current_session_id, game_server_id_, session_callback{ shared_from_this(), network_message_callback_ });
 
         // 将 session 存储起来
         sessions_[session->get_session_id()] = session;

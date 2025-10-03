@@ -35,7 +35,7 @@ namespace celeritas
         // 停止监听器
         void stop() override;
 
-        void remove_session(long session_id) override;
+        void remove_session(int64_t session_id) override;
 
     private:
         using io_context_type = boost::asio::io_context;

@@ -36,7 +36,7 @@ void celeritas::http_listener::stop()
     }
 }
 
-void celeritas::http_listener::remove_session(long session_id)
+void celeritas::http_listener::remove_session(int64_t session_id)
 {
     sessions_.erase(session_id);
 }

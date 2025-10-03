@@ -13,7 +13,7 @@ namespace celeritas
     public:
         using class_type = websocket_listener;
         using base_type = listener;
-        using session_type = websocket_session;
+        using session_type = session;
         using network_message_callback_shared_ptr = std::shared_ptr<network_message_callback>;
 
         // 接受io_context和监听端口
@@ -38,14 +38,14 @@ namespace celeritas
         // 停止监听器
         void stop() override;
 
-        void remove_session(long session_id) override;
+        void remove_session(int64_t session_id) override;
 
     private:
         using io_context_type = boost::asio::io_context;
         using acceptor_type = boost::asio::ip::tcp::acceptor;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using session_shared_ptr = std::shared_ptr<session_type>;
-        using session_type_container_type = std::map<long, session_shared_ptr>;
+        using session_type_container_type = std::map<int64_t, session_shared_ptr>;
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
 
         // 协程：异步接受新连接

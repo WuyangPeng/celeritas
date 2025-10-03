@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 #include "message_header.h"
 #include "common/buffer_guard.h"
 

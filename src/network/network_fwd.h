@@ -14,4 +14,5 @@ namespace celeritas
     class http_listener;
     class websocket_session;
     class websocket_listener;
+    class session_callback;
 }

@@ -1,51 +1,44 @@
 ﻿#pragma once
 
-#include "listener.h"
-#include "network_message_callback.h"
+#include "session.h"
+#include "session_callback.h"
 
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
-#include <deque>
-#include <memory>
 
 namespace celeritas
 {
-    class websocket_session : public std::enable_shared_from_this<websocket_session>
+    namespace beast_websocket = boost::beast::websocket;
+
+    class websocket_session : public session
     {
     public:
         using class_type = websocket_session;
+        using base_type = session;
+
         using socket_type = boost::asio::ip::tcp::socket;
-        using listener_weak_ptr = std::weak_ptr<listener>;
-        using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
 
         // WebSocket 流的类型
-        using web_socket_stream_type = boost::beast::websocket::stream<boost::beast::tcp_stream>;
+        using tcp_stream_type = boost::beast::tcp_stream;
+        using web_socket_stream_type = beast_websocket::stream<tcp_stream_type>;
 
-        explicit websocket_session(socket_type socket,
-                                   long session_id,
-                                   network_message_callback_weak_ptr network_message_callback,
-                                   const std::string& game_server_id,
-                                   listener_weak_ptr listener);
+        websocket_session(socket_type socket,
+                          int64_t session_id,
+                          const std::string& game_server_id,
+                          session_callback session_callback);
 
         // 启动会话处理协程
-        void start();
+        void start() override;
 
-        [[nodiscard]] long get_session_id() const noexcept;
+        [[nodiscard]] void_awaitable_type run() override;
 
     private:
-        using void_awaitable_type = boost::asio::awaitable<void>;
-
-        // 协程：处理会话的读写循环
-        [[nodiscard]] void_awaitable_type run();
-
         void set_option(const std::string& game_server_id);
 
         void close_web_socket();
 
         web_socket_stream_type web_socket_;
-        long session_id_;
-        network_message_callback_weak_ptr network_message_callback_;
-        listener_weak_ptr listener_;
+        session_callback session_callback_;
     };
 }
 
