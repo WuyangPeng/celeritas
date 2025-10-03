@@ -19,8 +19,8 @@ void celeritas::websocket_session::set_option(const std::string& game_server_id)
     // 配置 WebSocket 选项
     web_socket_.set_option(beast_websocket::stream_base::timeout::suggested(boost::beast::role_type::server));
     web_socket_.set_option(beast_websocket::stream_base::decorator(
-        [game_server_id](beast_websocket::response_type& res) {
-            res.set(boost::beast::http::field::server, std::string{ BOOST_BEAST_VERSION_STRING } + " " + game_server_id);
+        [game_server_id](beast_websocket::response_type& response) {
+            response.set(boost::beast::http::field::server, std::string{ BOOST_BEAST_VERSION_STRING } + " " + game_server_id);
         }));
 }
 
