@@ -2,8 +2,6 @@
 #include "tcp_listener.h"
 #include "common/logger.h"
 
-#include <boost/asio/co_spawn.hpp>
-#include <boost/asio/detached.hpp>
 #include <boost/asio/use_awaitable.hpp>
 
 celeritas::tcp_listener::tcp_listener(io_context_type& io_context,
@@ -63,15 +61,19 @@ celeritas::tcp_listener::void_awaitable_type celeritas::tcp_listener::handle_con
     }
     else
     {
-        auto socket = std::move(std::get<1>(result));
-        LOG_CHANNEL(network_channel, info) << "Accepted new connection from: " << socket.remote_endpoint();
-
-        const auto current_session_id = get_next_session_id();
-
-        // 为新连接创建一个会话，并启动
-        auto session = std::make_shared<session_type>(std::move(socket), current_session_id, get_game_server_id(), get_session_callback());
-        session->start();
-
-        add_session(session);
+        start_new_session(std::move(std::get<1>(result)));
     }
+}
+
+void celeritas::tcp_listener::start_new_session(socket_type socket)
+{
+    const auto current_session_id = get_next_session_id();
+
+    LOG_CHANNEL(network_channel, info) << "Accepted new connection from: " << socket.remote_endpoint();
+
+    // 为新连接创建一个会话，并启动
+    auto session = std::make_shared<session_type>(std::move(socket), current_session_id, get_game_server_id(), get_session_callback());
+    session->start();
+
+    add_session(session);
 }

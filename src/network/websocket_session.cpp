@@ -57,11 +57,11 @@ void celeritas::websocket_session::close_web_socket()
 
     if (error_code)
     {
-        LOG_CHANNEL(network_channel, info) << "WS Session [" << get_session_id() << "] terminated error, code = " << error_code.message();
+        LOG_CHANNEL(network_channel, info) << "web socket session [" << get_session_id() << "] terminated error, code = " << error_code.message();
     }
     else
     {
-        LOG_CHANNEL(network_channel, info) << "WS Session [" << get_session_id() << "] terminated.";
+        LOG_CHANNEL(network_channel, info) << "web socket session [" << get_session_id() << "] terminated.";
     }
 
     remove_session();

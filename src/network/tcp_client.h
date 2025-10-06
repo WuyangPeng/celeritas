@@ -22,7 +22,7 @@ namespace celeritas
         // 构造函数：接受 io_context 和消息处理回调
         tcp_client(boost::asio::io_context& io_context, const network_message_callback_shared_ptr& callback);
 
-        ~tcp_client() noexcept = default;
+        ~tcp_client() noexcept override = default;
 
         tcp_client(const tcp_client& rhs) = delete;
 

@@ -18,10 +18,6 @@ namespace celeritas
 
         using socket_type = boost::asio::ip::tcp::socket;
 
-        // WebSocket 流的类型
-        using tcp_stream_type = boost::beast::tcp_stream;
-        using web_socket_stream_type = beast_websocket::stream<tcp_stream_type>;
-
         websocket_session(socket_type socket,
                           int64_t session_id,
                           const std::string& game_server_id,
@@ -35,6 +31,10 @@ namespace celeritas
         void write(buffer_guard data) override;
 
     private:
+        // WebSocket 流的类型
+        using tcp_stream_type = boost::beast::tcp_stream;
+        using web_socket_stream_type = beast_websocket::stream<tcp_stream_type>;
+
         using session_write_shared_ptr = std::shared_ptr<session_write>;
 
         void set_option(const std::string& game_server_id);

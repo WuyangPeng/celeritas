@@ -44,16 +44,34 @@ celeritas::websocket_listener::void_awaitable_type celeritas::websocket_listener
         {
             if (error.code() != boost::asio::error::operation_aborted)
             {
-                LOG_CHANNEL(network_channel, warning) << "WS Listener error: " << error.what();
+                LOG_CHANNEL(network_channel, warning) << "web socket listener error: " << error.what();
             }
         }
         catch (...)
         {
-            LOG_CHANNEL(network_channel, error) << "WS Listener unknown error.";
+            LOG_CHANNEL(network_channel, error) << "web socket listener unknown error.";
         }
     }
 
-    LOG_CHANNEL(network_channel, info) << "WS Listener stopped.";
+    LOG_CHANNEL(network_channel, info) << "web socket listener stopped.";
+}
+
+celeritas::websocket_listener::void_awaitable_type celeritas::websocket_listener::handle_connection()
+{
+    // 等待新连接
+    auto result = co_await acceptor_.async_accept(boost::asio::as_tuple(boost::asio::use_awaitable));
+
+    if (const auto error = std::get<0>(result))
+    {
+        if (error != boost::asio::error::operation_aborted)
+        {
+            LOG_CHANNEL(network_channel, warning) << "websocket listener accept error: " << error.message();
+        }
+    }
+    else
+    {
+        start_new_session(std::move(std::get<1>(result)));
+    }
 }
 
 void celeritas::websocket_listener::start_new_session(socket_type socket)
@@ -66,22 +84,4 @@ void celeritas::websocket_listener::start_new_session(socket_type socket)
     add_session(session);
 
     session->start();
-}
-
-celeritas::websocket_listener::void_awaitable_type celeritas::websocket_listener::handle_connection()
-{
-    // 等待新连接
-    auto result = co_await acceptor_.async_accept(boost::asio::as_tuple(boost::asio::use_awaitable));
-
-    if (auto error = std::get<0>(result))
-    {
-        if (error != boost::asio::error::operation_aborted)
-        {
-            LOG_CHANNEL(network_channel, warning) << "websocket listener accept error: " << error.message();
-        }
-    }
-    else
-    {
-        start_new_session(std::move(std::get<1>(result)));
-    }
 }

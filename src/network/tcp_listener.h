@@ -1,19 +1,15 @@
 ﻿#pragma once
 
-#include "listener.h"
 #include "session_base.h"
 #include "session_listener.h"
 
-#include <boost/asio.hpp>
-
 namespace celeritas
 {
-    class tcp_listener : public session_listener
+    class tcp_listener final : public session_listener
     {
     public:
         using class_type = tcp_listener;
         using base_type = session_listener;
-        using session_type = session_base<boost::asio::ip::tcp::socket>;
 
         tcp_listener(io_context_type& io_context,
                      network_message_callback_weak_ptr callback,
@@ -38,8 +34,12 @@ namespace celeritas
 
     private:
         using acceptor_type = boost::asio::ip::tcp::acceptor;
+        using socket_type = boost::asio::ip::tcp::socket;
+        using session_type = session_base<socket_type>;
 
         [[nodiscard]] void_awaitable_type handle_connection();
+
+        void start_new_session(socket_type socket);
 
         acceptor_type acceptor_;
     };

@@ -1,10 +1,7 @@
 ﻿#pragma once
 
-#include "listener.h"
 #include "session_listener.h"
 #include "websocket_session.h"
-
-#include <boost/asio.hpp>
 
 namespace celeritas
 {
