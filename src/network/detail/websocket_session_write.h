@@ -22,7 +22,7 @@ namespace celeritas
         // 向客户端发送消息
         void write(buffer_guard data) override;
 
-        [[nodiscard]] void_awaitable_type do_write();
+        [[nodiscard]] void_awaitable_type do_write() override;
 
     private:
         web_socket_stream_type& web_socket_;

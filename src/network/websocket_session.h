@@ -2,6 +2,7 @@
 
 #include "session.h"
 #include "network_fwd.h"
+#include "session_run.h"
 
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
@@ -26,8 +27,6 @@ namespace celeritas
         // 启动会话处理协程
         void start() override;
 
-        [[nodiscard]] void_awaitable_type run() override;
-
         void write(buffer_guard data) override;
 
     private:
@@ -36,13 +35,13 @@ namespace celeritas
         using web_socket_stream_type = beast_websocket::stream<tcp_stream_type>;
 
         using session_write_shared_ptr = std::shared_ptr<session_write>;
+        using session_run_shared_ptr = std::shared_ptr<session_run>;
 
         void set_option(const std::string& game_server_id);
 
-        void close_web_socket();
-
         web_socket_stream_type web_socket_;
         session_write_shared_ptr websocket_session_write_;
+        session_run_shared_ptr websocket_session_run_;
     };
 }
 

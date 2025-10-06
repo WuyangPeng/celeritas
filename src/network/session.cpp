@@ -5,6 +5,11 @@ celeritas::session::session(int64_t session_id, session_callback session_callbac
 {
 }
 
+celeritas::session::void_awaitable_type celeritas::session::run()
+{
+    co_return;
+}
+
 int64_t celeritas::session::get_session_id() const noexcept
 {
     return session_id_;
@@ -18,4 +23,9 @@ void celeritas::session::remove_session()
 celeritas::session::network_message_callback_weak_ptr celeritas::session::get_network_message_callback()
 {
     return session_callback_.get_network_message_callback();
+}
+
+celeritas::session_callback celeritas::session::get_session_callback() const
+{
+    return session_callback_;
 }

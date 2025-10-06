@@ -30,7 +30,7 @@ namespace celeritas
         virtual void start() = 0;
 
         // 协程：处理会话的读写循环
-        [[nodiscard]] virtual void_awaitable_type run() = 0;
+        [[nodiscard]] virtual void_awaitable_type run();
 
         virtual void write(buffer_guard data) = 0;
 
@@ -42,6 +42,8 @@ namespace celeritas
         void remove_session();
 
         [[nodiscard]] network_message_callback_weak_ptr get_network_message_callback();
+
+        [[nodiscard]] session_callback get_session_callback() const;
 
     private:
         int64_t session_id_;
