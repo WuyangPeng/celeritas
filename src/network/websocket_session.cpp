@@ -1,7 +1,7 @@
 ﻿#include "websocket_session.h"
 #include "common/common_fwd.h"
 #include "common/logger.h"
-#include "detail/web_socket_session_handle_session.h"
+#include "detail/websocket_session_handle_session.h"
 
 celeritas::websocket_session::websocket_session(socket_type socket,
                                                 const int64_t session_id,
@@ -9,7 +9,7 @@ celeritas::websocket_session::websocket_session(socket_type socket,
                                                 session_callback session_callback)
     : base_type{ session_id, std::move(session_callback) },
       web_socket_{ std::move(socket) },
-      websocket_session_write_{ web_socket_ }
+      websocket_session_write_{ std::make_shared<websocket_session_write>(web_socket_) }
 {
     set_option(game_server_id);
 }
@@ -36,7 +36,7 @@ void celeritas::websocket_session::start()
 
 celeritas::websocket_session::void_awaitable_type celeritas::websocket_session::run()
 {
-    web_socket_session_handle_session handle{ web_socket_, get_session_id(), get_network_message_callback() };
+    websocket_session_handle_session handle{ web_socket_, get_session_id(), get_network_message_callback() };
 
     co_await handle.run();
 
@@ -45,7 +45,7 @@ celeritas::websocket_session::void_awaitable_type celeritas::websocket_session::
 
 void celeritas::websocket_session::write(buffer_guard data)
 {
-    websocket_session_write_.write(std::move(data));
+    websocket_session_write_->write(std::move(data));
 }
 
 void celeritas::websocket_session::close_web_socket()

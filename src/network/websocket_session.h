@@ -1,8 +1,7 @@
 ﻿#pragma once
 
 #include "session.h"
-#include "session_callback.h"
-#include "detail/web_socket_session_write.h"
+#include "network_fwd.h"
 
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
@@ -36,12 +35,14 @@ namespace celeritas
         void write(buffer_guard data) override;
 
     private:
+        using session_write_shared_ptr = std::shared_ptr<session_write>;
+
         void set_option(const std::string& game_server_id);
 
         void close_web_socket();
 
         web_socket_stream_type web_socket_;
-        web_socket_session_write websocket_session_write_;
+        session_write_shared_ptr websocket_session_write_;
     };
 }
 

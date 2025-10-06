@@ -1,14 +1,14 @@
-﻿#include "web_socket_session_handle_one_message.h"
-#include "web_socket_session_handle_session.h"
+﻿#include "websocket_session_handle_one_message.h"
+#include "websocket_session_handle_session.h"
 #include "common/logger.h"
 #include "common/common_fwd.h"
 
-celeritas::web_socket_session_handle_session::web_socket_session_handle_session(web_socket_stream_type& web_socket, int64_t session_id, network_message_callback_weak_ptr callback)
+celeritas::websocket_session_handle_session::websocket_session_handle_session(web_socket_stream_type& web_socket, int64_t session_id, network_message_callback_weak_ptr callback)
     : web_socket_{ web_socket }, session_id_{ session_id }, callback_{ std::move(callback) }
 {
 }
 
-celeritas::web_socket_session_handle_session::void_awaitable_type celeritas::web_socket_session_handle_session::run()
+celeritas::websocket_session_handle_session::void_awaitable_type celeritas::websocket_session_handle_session::run()
 {
     while (web_socket_.is_open())
     {
@@ -41,13 +41,13 @@ celeritas::web_socket_session_handle_session::void_awaitable_type celeritas::web
     }
 }
 
-celeritas::web_socket_session_handle_session::void_awaitable_type celeritas::web_socket_session_handle_session::handle_one_message()
+celeritas::websocket_session_handle_session::void_awaitable_type celeritas::websocket_session_handle_session::handle_one_message()
 {
     co_await web_socket_.async_accept(boost::asio::use_awaitable);
 
     LOG_CHANNEL(network_channel, info) << "WS Session [" << session_id_ << "] upgraded to WebSocket.";
 
-    web_socket_session_handle_one_message handler{ web_socket_, session_id_, callback_ };
+    websocket_session_handle_one_message handler{ web_socket_, session_id_, callback_ };
     co_await handler.run();
 }
 
