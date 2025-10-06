@@ -10,4 +10,7 @@ namespace celeritas
 
     class websocket_session_handle_session;
     class websocket_session_handle_one_message;
+
+    template <typename SocketType>
+    class tcp_session_write;
 }

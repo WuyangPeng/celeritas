@@ -2,13 +2,13 @@
 
 #include "message_header.h"
 #include "session_base.h"
+#include "session_write.h"
+#include "detail/tcp_session_write.tpp"
 #include "common/buffer_guard.h"
 #include "common/buffer_pool.h"
 #include "common/common_fwd.h"
 #include "common/logger.h"
 #include "detail/network_internal_fwd.h"
-
-#include <boost/polymorphic_pointer_cast.hpp>
 
 template <typename SocketType>
 celeritas::session_base<SocketType>::session_base(socket_type socket,
@@ -17,6 +17,7 @@ celeritas::session_base<SocketType>::session_base(socket_type socket,
                                                   session_callback session_callback)
     : session{ session_id, std::move(session_callback) },
       socket_{ std::move(socket) },
+      session_write_{ std::make_shared<tcp_session_write<socket_type> >(socket_) },
       game_server_id_{ std::move(game_server_id) }
 {
 }
@@ -148,72 +149,5 @@ typename celeritas::session_base<SocketType>::void_awaitable_type celeritas::ses
 template <typename SocketType>
 void celeritas::session_base<SocketType>::write(buffer_guard data)
 {
-    std::lock_guard lock{ write_mutex_ };
-    write_queue_.emplace_back(std::move(data));
-
-    // 如果发送协程没有在运行，就启动它
-    if (write_queue_.size() == 1)
-    {
-        co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
-                     auto current = boost::polymorphic_pointer_cast<class_type>(self);
-                     return current->do_write();
-                 },
-                 boost::asio::detached);
-    }
-}
-
-template <typename SocketType>
-typename celeritas::session_base<SocketType>::void_awaitable_type celeritas::session_base<SocketType>::do_write()
-{
-    while (socket_.is_open())
-    {
-        try
-        {
-            co_await do_one_write();
-        }
-        catch (const boost::system::system_error& error)
-        {
-            LOG_CHANNEL(network_channel, warning) << "Write error: " << error.what();
-            break;
-        }
-        catch (const std::exception& error)
-        {
-            LOG_CHANNEL(network_channel, error) << "Write unknown error: " << error.what();
-            break;
-        }
-        catch (...)
-        {
-            LOG_CHANNEL(network_channel, fatal) << "Listener unknown error.";
-            break;
-        }
-    }
-}
-
-template <typename SocketType>
-typename celeritas::session_base<SocketType>::void_awaitable_type celeritas::session_base<SocketType>::do_one_write()
-{
-    // 调用新函数来获取数据，该函数内部处理了加锁和解锁
-    auto optional_buffer_guard = get_next_write_buffer();
-    if (!optional_buffer_guard)
-    {
-        co_return; // 队列为空，退出协程
-    }
-    auto buffer_guard = std::move(*optional_buffer_guard);
-
-    co_await boost::asio::async_write(socket_, boost::asio::buffer(buffer_guard.get(), buffer_guard.get_effective_size()), boost::asio::use_awaitable);
-    LOG_CHANNEL(network_channel, debug) << "Successfully wrote " << buffer_guard.get_effective_size() << " bytes to client.";
-}
-
-template <typename SocketType>
-typename celeritas::session_base<SocketType>::buffer_guard_optional_type celeritas::session_base<SocketType>::get_next_write_buffer()
-{
-    std::lock_guard lock{ write_mutex_ };
-    if (write_queue_.empty())
-    {
-        return std::nullopt; // 队列为空，返回一个空对象
-    }
-    auto buffer = std::move(write_queue_.front());
-    write_queue_.pop_front();
-
-    return buffer;
+    session_write_->write(std::move(data));
 }

@@ -37,7 +37,7 @@ namespace celeritas
         session_base& operator=(session_base&& rhs) noexcept = delete;
 
         // 启动会话处理协程
-        void start();
+        void start() override;
 
         // 向客户端发送消息
         void write(buffer_guard data) override;
@@ -47,6 +47,7 @@ namespace celeritas
         using read_awaitable_type = boost::asio::awaitable<size_t>;
         using buffer_guard_optional_type = std::optional<buffer_guard>;
         using listener_weak_ptr = std::weak_ptr<listener>;
+        using session_write_shared_ptr = std::shared_ptr<session_write>;
 
         // 协程：处理带超时的异步读取操作
         [[nodiscard]] read_awaitable_type read_data_with_timeout(boost::asio::mutable_buffer buffer);
@@ -56,20 +57,8 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type handle_one_message();
 
-        // 协程：处理发送队列
-        [[nodiscard]] void_awaitable_type do_write();
-
-        // 协程：处理单个写入操作
-        [[nodiscard]] void_awaitable_type do_one_write();
-
-        // 从发送队列中获取下一个缓冲区，并在加锁后立即释放锁
-        [[nodiscard]] buffer_guard_optional_type get_next_write_buffer();
-
         socket_type socket_;
-
-        // 发送队列和互斥锁
-        std::deque<buffer_guard> write_queue_;
-        std::mutex write_mutex_;
+        session_write_shared_ptr session_write_;
         std::string game_server_id_;
     };
 }

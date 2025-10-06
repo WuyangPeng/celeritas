@@ -8,3 +8,8 @@ celeritas::websocket_session_write::websocket_session_write(web_socket_stream_ty
 void celeritas::websocket_session_write::write(buffer_guard data)
 {
 }
+
+celeritas::session_write::void_awaitable_type celeritas::websocket_session_write::do_write()
+{
+    co_return;
+}

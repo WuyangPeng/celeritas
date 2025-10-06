@@ -3,7 +3,6 @@
 #include "common/buffer_guard.h"
 #include "network/session_write.h"
 
-#include <boost/asio.hpp>
 #include <boost/beast.hpp>
 
 namespace celeritas
@@ -22,6 +21,8 @@ namespace celeritas
 
         // 向客户端发送消息
         void write(buffer_guard data) override;
+
+        [[nodiscard]] void_awaitable_type do_write();
 
     private:
         web_socket_stream_type& web_socket_;

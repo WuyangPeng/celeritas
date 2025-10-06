@@ -2,12 +2,15 @@
 
 #include "common/buffer_guard.h"
 
+#include <boost/asio/awaitable.hpp>
+
 namespace celeritas
 {
-    class session_write
+    class session_write : public std::enable_shared_from_this<session_write>
     {
     public:
         using class_type = session_write;
+        using void_awaitable_type = boost::asio::awaitable<void>;
 
         session_write() noexcept = default;
 
@@ -23,5 +26,8 @@ namespace celeritas
 
         // 向客户端发送消息
         virtual void write(buffer_guard data) = 0;
+
+        // 协程：处理发送队列
+        [[nodiscard]] virtual void_awaitable_type do_write() = 0;
     };
 }
