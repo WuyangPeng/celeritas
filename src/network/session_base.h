@@ -21,7 +21,10 @@ namespace celeritas
         using listener_shared_ptr = std::shared_ptr<listener>;
 
         // 构造函数：接受一个已连接的 socket
-        explicit session_base(socket_type socket, long session_id, const network_message_callback_weak_ptr& callback, const listener_shared_ptr& listener);
+        explicit session_base(socket_type socket,
+                              long session_id,
+                              const std::string& game_server_id,
+                              session_callback session_callback);
 
         ~session_base() noexcept = default;
 
@@ -63,12 +66,11 @@ namespace celeritas
         [[nodiscard]] buffer_guard_optional_type get_next_write_buffer();
 
         socket_type socket_;
-        network_message_callback_weak_ptr network_message_callback_;
-        listener_weak_ptr listener_;
 
         // 发送队列和互斥锁
         std::deque<buffer_guard> write_queue_;
         std::mutex write_mutex_;
         long session_id_;
+        std::string game_server_id_;
     };
 }

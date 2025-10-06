@@ -27,5 +27,5 @@ celeritas::tcp_client::session_waitable_type celeritas::tcp_client::connect(cons
     LOG_CHANNEL(network_channel, info) << "Successfully connected to " << host << ":" << port;
 
     // 创建一个新的会话并返回
-    co_return std::make_shared<session_type>(std::move(socket), ++session_id_, callback_, shared_from_this());
+    co_return std::make_shared<session_type>(std::move(socket), ++session_id_, "", session_callback{ shared_from_this(), callback_ });
 }

@@ -11,7 +11,7 @@ celeritas::server_resource_loader::listener_shared_ptr celeritas::server_resourc
     {
         case server_network_type::tcp:
         {
-            return std::make_shared<tcp_listener>(io_context, server_network_config.get_port(), network_message_callback);
+            return std::make_shared<tcp_listener>(io_context, network_message_callback, server_config.get_game_server_id(), server_network_config.get_port());
         }
 
         case server_network_type::http:

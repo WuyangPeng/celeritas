@@ -6,22 +6,19 @@
 #include <boost/asio/detached.hpp>
 #include <boost/asio/use_awaitable.hpp>
 
-celeritas::tcp_listener::tcp_listener(boost::asio::io_context& io_context, const int port, const network_message_callback_weak_ptr& callback)
-    : base_type{ io_context, callback, "" },
-      io_context_{ io_context },
-      acceptor_{ io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port) },
-      network_message_callback_{ callback },
-      is_running_{ true },
-      sessions_{},
-      session_id_{ 0 }
+celeritas::tcp_listener::tcp_listener(io_context_type& io_context,
+                                      network_message_callback_weak_ptr callback,
+                                      std::string game_server_id,
+                                      const int port)
+    : base_type{ io_context, std::move(callback), std::move(game_server_id) },
+      acceptor_{ io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port) }
 {
     LOG_CHANNEL(network_channel, info) << "Listening on port " << port << "...";
 }
 
 void celeritas::tcp_listener::stop()
 {
-    // 设置标志，通知协程退出
-    is_running_ = false;
+    set_stop();
 
     // 取消 acceptor，这会立即中断 async_accept 调用
     boost::system::error_code error_code{};
@@ -32,15 +29,10 @@ void celeritas::tcp_listener::stop()
     }
 }
 
-void celeritas::tcp_listener::remove_session(int64_t session_id)
-{
-    sessions_.erase(session_id);
-}
-
 // 协程：接受连接
 celeritas::tcp_listener::void_awaitable_type celeritas::tcp_listener::accept_connections()
 {
-    while (is_running_)
+    while (is_running())
     {
         try
         {
@@ -74,10 +66,12 @@ celeritas::tcp_listener::void_awaitable_type celeritas::tcp_listener::handle_con
         auto socket = std::move(std::get<1>(result));
         LOG_CHANNEL(network_channel, info) << "Accepted new connection from: " << socket.remote_endpoint();
 
+        const auto current_session_id = get_next_session_id();
+
         // 为新连接创建一个会话，并启动
-        auto session = std::make_shared<session_type>(std::move(socket), ++session_id_, network_message_callback_, shared_from_this());
+        auto session = std::make_shared<session_type>(std::move(socket), current_session_id, get_game_server_id(), get_session_callback());
         session->start();
 
-        sessions_.insert({ session->get_session_id(), std::move(session) });
+        add_session(session);
     }
 }

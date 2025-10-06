@@ -11,8 +11,11 @@
 #include <boost/polymorphic_pointer_cast.hpp>
 
 template <typename SocketType>
-celeritas::session_base<SocketType>::session_base(socket_type socket, const long session_id, const network_message_callback_weak_ptr& callback, const listener_shared_ptr& listener)
-    : session{ session_id, session_callback{ listener, callback } }, socket_{ std::move(socket) }, session_id_{ session_id }, network_message_callback_{ callback }, listener_{ listener }
+celeritas::session_base<SocketType>::session_base(socket_type socket,
+                                                  long session_id,
+                                                  const std::string& game_server_id,
+                                                  session_callback session_callback)
+    : session{ session_id, std::move(session_callback) }, socket_{ std::move(socket) }, session_id_{ session_id }, game_server_id_{ std::move(game_server_id) }
 {
 }
 
@@ -133,7 +136,7 @@ typename celeritas::session_base<SocketType>::void_awaitable_type celeritas::ses
 
     // 现在，通知外部处理者一个完整的消息已经接收到
     // 我们将消息头和消息体数据传递给回调函数
-    const auto callback = network_message_callback_.lock();
+    const auto callback = get_network_message_callback().lock();
     if (callback != nullptr)
     {
         callback->call_back(header, std::move(buffer_guard));
