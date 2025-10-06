@@ -29,3 +29,8 @@ celeritas::session_callback celeritas::listener::get_session_callback()
 {
     return session_callback{ shared_from_this(), network_message_callback_ };
 }
+
+celeritas::listener::io_context_type& celeritas::listener::get_io_context()
+{
+    return io_context_;
+}

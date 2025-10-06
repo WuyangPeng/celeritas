@@ -44,6 +44,8 @@ namespace celeritas
 
         [[nodiscard]] session_callback get_session_callback();
 
+        [[nodiscard]] io_context_type& get_io_context();
+
     private:
         io_context_type& io_context_;
         network_message_callback_weak_ptr network_message_callback_;

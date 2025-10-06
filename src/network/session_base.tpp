@@ -15,7 +15,9 @@ celeritas::session_base<SocketType>::session_base(socket_type socket,
                                                   long session_id,
                                                   const std::string& game_server_id,
                                                   session_callback session_callback)
-    : session{ session_id, std::move(session_callback) }, socket_{ std::move(socket) }, session_id_{ session_id }, game_server_id_{ std::move(game_server_id) }
+    : session{ session_id, std::move(session_callback) },
+      socket_{ std::move(socket) },
+      game_server_id_{ std::move(game_server_id) }
 {
 }
 

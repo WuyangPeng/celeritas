@@ -70,7 +70,6 @@ namespace celeritas
         // 发送队列和互斥锁
         std::deque<buffer_guard> write_queue_;
         std::mutex write_mutex_;
-        long session_id_;
         std::string game_server_id_;
     };
 }
