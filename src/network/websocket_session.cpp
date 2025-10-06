@@ -2,6 +2,7 @@
 #include "common/common_fwd.h"
 #include "common/logger.h"
 #include "detail/websocket_session_handle_session.h"
+#include "detail/websocket_session_write.h"
 
 celeritas::websocket_session::websocket_session(socket_type socket,
                                                 const int64_t session_id,
