@@ -2,6 +2,7 @@
 
 #include "listener.h"
 #include "network_message_callback.h"
+#include "session.h"
 #include "common/buffer_guard.h"
 
 #include <boost/asio.hpp>
@@ -10,7 +11,7 @@
 namespace celeritas
 {
     template <typename SocketType>
-    class session_base : public std::enable_shared_from_this<session_base<SocketType> >
+    class session_base : public session
     {
     public:
         using class_type = session_base;
@@ -36,9 +37,7 @@ namespace celeritas
         void start();
 
         // 向客户端发送消息
-        void write(buffer_guard data);
-
-        [[nodiscard]] long get_session_id() const;
+        void write(buffer_guard data) override;
 
     private:
         using void_awaitable_type = boost::asio::awaitable<void>;
@@ -50,7 +49,7 @@ namespace celeritas
         [[nodiscard]] read_awaitable_type read_data_with_timeout(boost::asio::mutable_buffer buffer);
 
         // 协程：处理会话的读写循环
-        [[nodiscard]] void_awaitable_type handle_session();
+        [[nodiscard]] void_awaitable_type run();
 
         [[nodiscard]] void_awaitable_type handle_one_message();
 

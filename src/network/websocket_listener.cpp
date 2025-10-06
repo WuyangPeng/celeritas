@@ -2,17 +2,12 @@
 #include "common/common_fwd.h"
 #include "common/logger.h"
 
-#include <utility>
-
 celeritas::websocket_listener::websocket_listener(io_context_type& io_context,
                                                   network_message_callback_weak_ptr callback,
                                                   std::string game_server_id,
-                                                  int port)
+                                                  const int port)
     : base_type{ io_context, std::move(callback), std::move(game_server_id) },
-      acceptor_{ io_context, boost::asio::ip::tcp::endpoint{ boost::asio::ip::tcp::v4(), boost::numeric_cast<uint_least16_t>(port) } },
-      is_running_{ true },
-      sessions_{},
-      session_id_{ 0 }
+      acceptor_{ io_context, boost::asio::ip::tcp::endpoint{ boost::asio::ip::tcp::v4(), boost::numeric_cast<uint_least16_t>(port) } }
 {
     set_option(port);
 }
@@ -21,12 +16,12 @@ void celeritas::websocket_listener::set_option(int port)
 {
     acceptor_.set_option(boost::asio::socket_base::reuse_address(true));
 
-    LOG_CHANNEL(network_channel, info) << "WebSocket listening on port " << port << "...";
+    LOG_CHANNEL(network_channel, info) << "web socket listening on port " << port << "...";
 }
 
 void celeritas::websocket_listener::stop()
 {
-    is_running_ = false;
+    set_stop();
 
     // 取消 acceptor
     boost::system::error_code error_code{};
@@ -37,14 +32,9 @@ void celeritas::websocket_listener::stop()
     }
 }
 
-void celeritas::websocket_listener::remove_session(int64_t session_id)
-{
-    sessions_.erase(session_id);
-}
-
 celeritas::websocket_listener::void_awaitable_type celeritas::websocket_listener::accept_connections()
 {
-    while (is_running_)
+    while (is_running())
     {
         try
         {
@@ -66,6 +56,18 @@ celeritas::websocket_listener::void_awaitable_type celeritas::websocket_listener
     LOG_CHANNEL(network_channel, info) << "WS Listener stopped.";
 }
 
+void celeritas::websocket_listener::start_new_session(socket_type socket)
+{
+    const auto current_session_id = get_next_session_id();
+
+    LOG_CHANNEL(network_channel, info) << "Accepted new web socket connection [" << current_session_id << "] from: " << socket.remote_endpoint();
+
+    const auto session = std::make_shared<websocket_session>(std::move(socket), current_session_id, get_game_server_id(), get_session_callback());
+    add_session(session);
+
+    session->start();
+}
+
 celeritas::websocket_listener::void_awaitable_type celeritas::websocket_listener::handle_connection()
 {
     // 等待新连接
@@ -75,24 +77,11 @@ celeritas::websocket_listener::void_awaitable_type celeritas::websocket_listener
     {
         if (error != boost::asio::error::operation_aborted)
         {
-            LOG_CHANNEL(network_channel, warning) << "WS Listener accept error: " << error.message();
+            LOG_CHANNEL(network_channel, warning) << "websocket listener accept error: " << error.message();
         }
     }
     else
     {
-        // 成功接受连接
-        auto socket = std::move(std::get<1>(result));
-        const auto current_session_id = ++session_id_;
-
-        LOG_CHANNEL(network_channel, info) << "Accepted new WS connection [" << current_session_id << "] from: " << socket.remote_endpoint();
-
-        // 创建新的 websocket_session
-        auto session = std::make_shared<websocket_session>(std::move(socket), current_session_id, get_game_server_id(), get_session_callback());
-
-        // 将 session 存储起来
-        sessions_[session->get_session_id()] = session;
-
-        // 启动 websocket_session 协程
-        session->start();
+        start_new_session(std::move(std::get<1>(result)));
     }
 }

@@ -8,9 +8,11 @@
 #include "common/logger.h"
 #include "detail/network_internal_fwd.h"
 
+#include <boost/polymorphic_pointer_cast.hpp>
+
 template <typename SocketType>
 celeritas::session_base<SocketType>::session_base(socket_type socket, const long session_id, const network_message_callback_weak_ptr& callback, const listener_shared_ptr& listener)
-    : socket_{ std::move(socket) }, session_id_{ session_id }, network_message_callback_{ callback }, listener_{ listener }
+    : session{ session_id, session_callback{ listener, callback } }, socket_{ std::move(socket) }, session_id_{ session_id }, network_message_callback_{ callback }, listener_{ listener }
 {
 }
 
@@ -18,13 +20,13 @@ template <typename SocketType>
 void celeritas::session_base<SocketType>::start()
 {
     co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
-                 return self->handle_session();
+                 return self->run();
              },
              boost::asio::detached);
 }
 
 template <typename SocketType>
-typename celeritas::session_base<SocketType>::void_awaitable_type celeritas::session_base<SocketType>::handle_session()
+typename celeritas::session_base<SocketType>::void_awaitable_type celeritas::session_base<SocketType>::run()
 {
     while (socket_.is_open())
     {
@@ -148,16 +150,11 @@ void celeritas::session_base<SocketType>::write(buffer_guard data)
     if (write_queue_.size() == 1)
     {
         co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
-                     return self->do_write();
+                     auto current = boost::polymorphic_pointer_cast<class_type>(self);
+                     return current->do_write();
                  },
                  boost::asio::detached);
     }
-}
-
-template <typename SocketType>
-long celeritas::session_base<SocketType>::get_session_id() const
-{
-    return session_id_;
 }
 
 template <typename SocketType>
