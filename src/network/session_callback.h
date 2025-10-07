@@ -15,15 +15,17 @@ namespace celeritas
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
         using listener_accept_weak_ptr = std::weak_ptr<listener_accept>;
 
+        session_callback(listener_accept_weak_ptr listener_accept, network_message_callback_weak_ptr network_message_callback);
+
+        // 待删除
         session_callback() noexcept = default;
 
+        // 待删除
         session_callback(listener_weak_ptr listener, network_message_callback_weak_ptr network_message_callback);
 
         void remove_session(int64_t session_id);
 
         [[nodiscard]] network_message_callback_weak_ptr get_network_message_callback();
-
-        void set_listener_accept(listener_accept_weak_ptr listener_accept);
 
     private:
         listener_weak_ptr listener_;

@@ -13,6 +13,7 @@ namespace celeritas
     public:
         using class_type = listener_accept;
         using void_awaitable_type = boost::asio::awaitable<void>;
+        using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
 
         listener_accept() noexcept = default;
 

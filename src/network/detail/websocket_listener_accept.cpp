@@ -2,8 +2,8 @@
 #include "common/logger.h"
 #include "common/common_fwd.h"
 
-celeritas::websocket_listener_accept::websocket_listener_accept(acceptor_type& acceptor, std::string game_server_id)
-    : base_type{}, acceptor_{ acceptor }, game_server_id_{ std::move(game_server_id) }
+celeritas::websocket_listener_accept::websocket_listener_accept(acceptor_type& acceptor, std::string game_server_id, network_message_callback_weak_ptr callback)
+    : base_type{}, acceptor_{ acceptor }, game_server_id_{ std::move(game_server_id) }, callback_{ std::move(callback) }
 {
 }
 
@@ -68,7 +68,7 @@ void celeritas::websocket_listener_accept::start_new_session(socket_type socket)
 
     LOG_CHANNEL(network_channel, info) << "Accepted new web socket connection [" << current_session_id << "] from: " << socket.remote_endpoint();
 
-    const auto session = std::make_shared<websocket_session>(std::move(socket), current_session_id, game_server_id_, session_callback_);
+    const auto session = std::make_shared<websocket_session>(std::move(socket), current_session_id, game_server_id_, session_callback{ shared_from_this(), callback_ });
     add_session(session);
 
     session->start();
