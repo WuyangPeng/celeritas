@@ -1,6 +1,7 @@
 ﻿#include "websocket_listener.h"
 #include "common/common_fwd.h"
 #include "common/logger.h"
+#include "detail/websocket_listener_accept.h"
 
 celeritas::websocket_listener::websocket_listener(io_context_type& io_context,
                                                   network_message_callback_weak_ptr callback,

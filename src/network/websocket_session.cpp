@@ -1,6 +1,4 @@
 ﻿#include "websocket_session.h"
-#include "common/logger.h"
-#include "detail/websocket_session_handle_session.h"
 #include "detail/websocket_session_run.h"
 #include "detail/websocket_session_write.h"
 
@@ -10,8 +8,8 @@ celeritas::websocket_session::websocket_session(socket_type socket,
                                                 session_callback session_callback)
     : base_type{ session_id, std::move(session_callback) },
       websocket_{ std::move(socket) },
-      websocket_write_{ std::make_shared<websocket_session_write>(websocket_) },
-      websocket_run_{ std::make_shared<websocket_session_run>(websocket_, session_id, get_session_callback()) }
+      websocket_run_{ std::make_shared<websocket_session_run>(websocket_, session_id, get_session_callback()) },
+      websocket_write_{ std::make_shared<websocket_session_write>(websocket_) }
 {
     set_option(game_server_id);
 }

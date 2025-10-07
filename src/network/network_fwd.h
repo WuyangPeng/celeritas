@@ -18,4 +18,5 @@ namespace celeritas
     class session_callback;
     class session_write;
     class listener_accept;
+    class session_run;
 }

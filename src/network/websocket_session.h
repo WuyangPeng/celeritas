@@ -2,7 +2,6 @@
 
 #include "session.h"
 #include "network_fwd.h"
-#include "session_run.h"
 
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
@@ -34,14 +33,14 @@ namespace celeritas
         using tcp_stream_type = boost::beast::tcp_stream;
         using web_socket_stream_type = beast_websocket::stream<tcp_stream_type>;
 
-        using session_write_shared_ptr = std::shared_ptr<session_write>;
         using session_run_shared_ptr = std::shared_ptr<session_run>;
+        using session_write_shared_ptr = std::shared_ptr<session_write>;
 
         void set_option(const std::string& game_server_id);
 
         web_socket_stream_type websocket_;
-        session_write_shared_ptr websocket_write_;
         session_run_shared_ptr websocket_run_;
+        session_write_shared_ptr websocket_write_;
     };
 }
 

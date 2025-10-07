@@ -1,8 +1,7 @@
 ﻿#pragma once
 
-#include "session_listener.h"
-#include "websocket_session.h"
-#include "detail/websocket_listener_accept.h"
+#include "listener.h"
+#include "network_fwd.h"
 
 namespace celeritas
 {
