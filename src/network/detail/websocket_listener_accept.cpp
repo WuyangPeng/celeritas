@@ -2,10 +2,8 @@
 #include "common/logger.h"
 #include "common/common_fwd.h"
 
-celeritas::websocket_listener_accept::websocket_listener_accept(acceptor_type& acceptor,
-                                                                std::string game_server_id,
-                                                                session_callback session_callback)
-    : base_type{}, acceptor_{ acceptor }, game_server_id_{ std::move(game_server_id) }, session_callback_{ std::move(session_callback) }
+celeritas::websocket_listener_accept::websocket_listener_accept(acceptor_type& acceptor, std::string game_server_id)
+    : base_type{}, acceptor_{ acceptor }, game_server_id_{ std::move(game_server_id) }
 {
 }
 
