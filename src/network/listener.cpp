@@ -12,6 +12,10 @@ celeritas::listener::listener(io_context_type& io_context, network_message_callb
 {
 }
 
+void celeritas::listener::remove_session(int64_t session_id)
+{
+}
+
 void celeritas::listener::start()
 {
     boost::asio::co_spawn(io_context_,

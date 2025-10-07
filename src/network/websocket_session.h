@@ -39,9 +39,9 @@ namespace celeritas
 
         void set_option(const std::string& game_server_id);
 
-        web_socket_stream_type web_socket_;
-        session_write_shared_ptr websocket_session_write_;
-        session_run_shared_ptr websocket_session_run_;
+        web_socket_stream_type websocket_;
+        session_write_shared_ptr websocket_write_;
+        session_run_shared_ptr websocket_run_;
     };
 }
 

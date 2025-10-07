@@ -9,9 +9,9 @@ celeritas::websocket_session::websocket_session(socket_type socket,
                                                 const std::string& game_server_id,
                                                 session_callback session_callback)
     : base_type{ session_id, std::move(session_callback) },
-      web_socket_{ std::move(socket) },
-      websocket_session_write_{ std::make_shared<websocket_session_write>(web_socket_) },
-      websocket_session_run_{ std::make_shared<websocket_session_run>(web_socket_, session_id, get_session_callback()) }
+      websocket_{ std::move(socket) },
+      websocket_write_{ std::make_shared<websocket_session_write>(websocket_) },
+      websocket_run_{ std::make_shared<websocket_session_run>(websocket_, session_id, get_session_callback()) }
 {
     set_option(game_server_id);
 }
@@ -19,8 +19,8 @@ celeritas::websocket_session::websocket_session(socket_type socket,
 void celeritas::websocket_session::set_option(const std::string& game_server_id)
 {
     // 配置 WebSocket 选项
-    web_socket_.set_option(beast_websocket::stream_base::timeout::suggested(boost::beast::role_type::server));
-    web_socket_.set_option(beast_websocket::stream_base::decorator(
+    websocket_.set_option(beast_websocket::stream_base::timeout::suggested(boost::beast::role_type::server));
+    websocket_.set_option(beast_websocket::stream_base::decorator(
         [game_server_id](beast_websocket::response_type& response) {
             response.set(boost::beast::http::field::server, std::string{ BOOST_BEAST_VERSION_STRING } + " " + game_server_id);
         }));
@@ -28,10 +28,10 @@ void celeritas::websocket_session::set_option(const std::string& game_server_id)
 
 void celeritas::websocket_session::start()
 {
-    websocket_session_run_->start();
+    websocket_run_->start();
 }
 
 void celeritas::websocket_session::write(buffer_guard data)
 {
-    websocket_session_write_->write(std::move(data));
+    websocket_write_->write(std::move(data));
 }

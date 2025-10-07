@@ -29,7 +29,7 @@ namespace celeritas
 
         listener& operator=(listener&& rhs) noexcept = delete;
 
-        virtual void remove_session(int64_t session_id) = 0;
+        virtual void remove_session(int64_t session_id);
 
         virtual void stop() = 0;
 

@@ -5,6 +5,7 @@ namespace celeritas
     template <typename SocketType>
     class session_base;
 
+    class session;
     class listener;
     class tcp_listener;
     class tcp_client;
@@ -16,4 +17,5 @@ namespace celeritas
     class websocket_listener;
     class session_callback;
     class session_write;
+    class listener_accept;
 }

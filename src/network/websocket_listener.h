@@ -2,14 +2,15 @@
 
 #include "session_listener.h"
 #include "websocket_session.h"
+#include "detail/websocket_listener_accept.h"
 
 namespace celeritas
 {
-    class websocket_listener final : public session_listener
+    class websocket_listener final : public listener
     {
     public:
         using class_type = websocket_listener;
-        using base_type = session_listener;
+        using base_type = listener;
 
         websocket_listener(io_context_type& io_context,
                            network_message_callback_weak_ptr callback,
@@ -34,15 +35,11 @@ namespace celeritas
 
     private:
         using acceptor_type = boost::asio::ip::tcp::acceptor;
-        using socket_type = websocket_session::socket_type;
+        using listener_accept_shared_ptr = std::shared_ptr<listener_accept>;
 
         void set_option(int port);
 
-        // 协程：处理单个连接
-        [[nodiscard]] void_awaitable_type handle_connection();
-
-        void start_new_session(socket_type socket);
-
         acceptor_type acceptor_;
+        listener_accept_shared_ptr listener_accept_;
     };
 }
