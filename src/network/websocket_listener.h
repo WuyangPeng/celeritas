@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "listener.h"
-#include "network_fwd.h"
 
 namespace celeritas
 {
@@ -15,16 +14,6 @@ namespace celeritas
                            network_message_callback_weak_ptr callback,
                            std::string game_server_id,
                            int port);
-
-        ~websocket_listener() noexcept override = default;
-
-        websocket_listener(const websocket_listener& rhs) = delete;
-
-        websocket_listener& operator=(const websocket_listener& rhs) = delete;
-
-        websocket_listener(websocket_listener&& rhs) noexcept = delete;
-
-        websocket_listener& operator=(websocket_listener&& rhs) noexcept = delete;
 
         // 停止监听器
         void stop() override;

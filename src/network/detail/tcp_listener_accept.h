@@ -1,20 +1,19 @@
 ﻿#pragma once
 
 #include "network/listener_accept.h"
-#include "network/websocket_session.h"
 
 #include <boost/asio/ip/tcp.hpp>
 
 namespace celeritas
 {
-    class websocket_listener_accept final : public listener_accept
+    class tcp_listener_accept final : public listener_accept
     {
     public:
-        using class_type = websocket_listener_accept;
+        using class_type = tcp_listener_accept;
         using base_type = listener_accept;
         using acceptor_type = boost::asio::ip::tcp::acceptor;
 
-        websocket_listener_accept(acceptor_type& acceptor, std::string game_server_id, network_message_callback_weak_ptr callback);
+        tcp_listener_accept(acceptor_type& acceptor, std::string game_server_id, network_message_callback_weak_ptr callback);
 
         // 停止监听器
         void stop() override;
@@ -23,7 +22,8 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type accept_connections() override;
 
     private:
-        using socket_type = websocket_session::socket_type;
+        using socket_type = boost::asio::ip::tcp::socket;
+        using session_type = session_base<socket_type>;
 
         // 协程：处理单个连接
         [[nodiscard]] void_awaitable_type handle_connection();
