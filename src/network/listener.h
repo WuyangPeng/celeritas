@@ -29,8 +29,6 @@ namespace celeritas
 
         listener& operator=(listener&& rhs) noexcept = delete;
 
-        virtual void remove_session(int64_t session_id);
-
         virtual void stop() = 0;
 
         // 开始监听新连接
@@ -41,8 +39,6 @@ namespace celeritas
 
     protected:
         [[nodiscard]] std::string get_game_server_id() const;
-
-        [[nodiscard]] session_callback get_session_callback();
 
         [[nodiscard]] network_message_callback_weak_ptr get_network_message_callback();
 
