@@ -70,7 +70,8 @@ void celeritas::tcp_listener_accept::start_new_session(socket_type socket)
 
     // 为新连接创建一个会话，并启动
     auto session = std::make_shared<session_type>(std::move(socket), current_session_id, game_server_id_, session_callback{ shared_from_this(), callback_ });
-    session->start();
 
     add_session(session);
+
+    session->start();
 }
