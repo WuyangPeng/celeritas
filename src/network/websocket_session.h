@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "session.h"
 #include "network_fwd.h"
+#include "session.h"
 
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>

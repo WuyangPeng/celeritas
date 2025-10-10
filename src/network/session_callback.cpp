@@ -1,8 +1,10 @@
 ﻿#include "listener.h"
 #include "session_callback.h"
 
+#include <utility>
+
 celeritas::session_callback::session_callback(listener_accept_weak_ptr listener_accept, network_message_callback_weak_ptr network_message_callback)
-    : network_message_callback_{ std::move(network_message_callback) }, listener_accept_{ listener_accept }
+    : listener_accept_{ std::move(listener_accept) }, network_message_callback_{ std::move(network_message_callback) }
 {
 }
 

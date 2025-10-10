@@ -29,9 +29,6 @@ namespace celeritas
         // 启动会话处理协程
         virtual void start() = 0;
 
-        // 协程：处理会话的读写循环
-        [[nodiscard]] virtual void_awaitable_type run();
-
         virtual void write(buffer_guard data) = 0;
 
         [[nodiscard]] int64_t get_session_id() const noexcept;

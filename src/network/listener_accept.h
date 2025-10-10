@@ -3,8 +3,8 @@
 #include "network/network_fwd.h"
 
 #include <boost/asio/awaitable.hpp>
-#include <memory>
 #include <map>
+#include <memory>
 
 namespace celeritas
 {
@@ -19,13 +19,13 @@ namespace celeritas
 
         virtual ~listener_accept() noexcept = default;
 
-        listener_accept(const listener_accept& rhs) = default;
+        listener_accept(const listener_accept& rhs) = delete;
 
-        listener_accept& operator=(const listener_accept& rhs) = default;
+        listener_accept& operator=(const listener_accept& rhs) = delete;
 
-        listener_accept(listener_accept&& rhs) noexcept = default;
+        listener_accept(listener_accept&& rhs) noexcept = delete;
 
-        listener_accept& operator=(listener_accept&& rhs) noexcept = default;
+        listener_accept& operator=(listener_accept&& rhs) noexcept = delete;
 
         virtual void stop() = 0;
 

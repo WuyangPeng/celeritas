@@ -6,17 +6,17 @@ namespace celeritas
     class session_base;
 
     class session;
-    class listener;
-    class tcp_listener;
-    class tcp_client;
-    class message_header;
-    class network_message_callback;
-    class http_session;
-    class http_listener;
     class websocket_session;
+    class http_session;
+    class listener;
     class websocket_listener;
-    class session_callback;
+    class tcp_listener;
+    class http_listener;
+    class tcp_client;
     class session_write;
-    class listener_accept;
     class session_run;
+    class session_callback;
+    class network_message_callback;
+    class message_header;
+    class listener_accept;
 }

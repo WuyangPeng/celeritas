@@ -19,7 +19,6 @@ void celeritas::tcp_listener::stop()
     listener_accept_->stop();
 }
 
-// 协程：接受连接
 celeritas::tcp_listener::void_awaitable_type celeritas::tcp_listener::accept_connections()
 {
     co_return co_await listener_accept_->accept_connections();

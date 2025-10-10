@@ -21,7 +21,7 @@ namespace celeritas
         [[nodiscard]] network_message_callback_weak_ptr get_network_message_callback();
 
     private:
-        network_message_callback_weak_ptr network_message_callback_;
         listener_accept_weak_ptr listener_accept_;
+        network_message_callback_weak_ptr network_message_callback_;
     };
 }

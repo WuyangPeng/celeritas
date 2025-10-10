@@ -1,13 +1,8 @@
 ﻿#include "session.h"
 
-celeritas::session::session(int64_t session_id, session_callback session_callback)
+celeritas::session::session(const int64_t session_id, session_callback session_callback)
     : session_id_{ session_id }, session_callback_{ std::move(session_callback) }
 {
-}
-
-celeritas::session::void_awaitable_type celeritas::session::run()
-{
-    co_return;
 }
 
 int64_t celeritas::session::get_session_id() const noexcept
