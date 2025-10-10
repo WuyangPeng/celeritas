@@ -1,4 +1,5 @@
 ﻿#include "websocket_session_handle_one_message.h"
+#include "common/buffer_pool.h"
 #include "common/logger.h"
 #include "common/common_fwd.h"
 
@@ -15,11 +16,38 @@ celeritas::websocket_session_handle_one_message::void_awaitable_type celeritas::
         // 异步读取数据帧
         co_await web_socket_.async_read(buffer, boost::asio::use_awaitable);
 
-        /* const auto callback = callback_.lock();
-         if (callback != nullptr)
-         {
-             // callback->call_back();
-         }*/
+        const auto payload_size = buffer.size();
+        auto* payload_data = static_cast<const uint8_t*>(buffer.data().data());
+
+        message_header base{};
+        if (payload_size < sizeof(base))
+        {
+            LOG_CHANNEL(network_channel, error) << "websocket frame too small for header";
+            buffer.consume(payload_size);
+            continue;
+        }
+
+        std::memcpy(&base, payload_data, sizeof(base));
+        base.network_to_host();
+
+        const auto total_size = base.get_total_size();
+
+        if (payload_size < total_size - sizeof(base))
+        {
+            LOG_CHANNEL(network_channel, error) << "websocket frame incomplete";
+            buffer.consume(payload_size);
+            continue;
+        }
+
+        buffer_guard buffer_guard{ buffer_pool::acquire(total_size) };
+        buffer_guard.set_effective_size(total_size);
+        std::memcpy(buffer_guard.get(), payload_data, total_size);
+
+        if (const auto callback = callback_.lock();
+            callback != nullptr)
+        {
+            callback->call_back(base, std::move(buffer_guard));
+        }
 
         buffer.consume(buffer.size());
     }

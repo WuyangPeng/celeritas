@@ -23,6 +23,8 @@ namespace celeritas
     private:
         void close_socket();
 
+        [[nodiscard]] void_awaitable_type handle_one_message();
+
         socket_type& socket_;
         int64_t session_id_;
         session_callback session_callback_;

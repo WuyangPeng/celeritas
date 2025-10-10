@@ -16,7 +16,7 @@ namespace celeritas
         // 接受一个已连接的 socket
         session_base(socket_type socket,
                      long session_id,
-                     const std::string& game_server_id,
+                     std::string game_server_id,
                      session_callback session_callback);
 
         // 启动会话处理协程

@@ -45,7 +45,7 @@ celeritas::websocket_session_handle_session::void_awaitable_type celeritas::webs
 {
     co_await web_socket_.async_accept(boost::asio::use_awaitable);
 
-    LOG_CHANNEL(network_channel, info) << "WS Session [" << session_id_ << "] upgraded to WebSocket.";
+    LOG_CHANNEL(network_channel, info) << "socket session [" << session_id_ << "] upgraded to websocket.";
 
     websocket_session_handle_one_message handler{ web_socket_, session_id_, callback_ };
     co_await handler.run();

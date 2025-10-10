@@ -7,7 +7,7 @@
 template <typename SocketType>
 celeritas::session_base<SocketType>::session_base(socket_type socket,
                                                   const long session_id,
-                                                  const std::string& game_server_id,
+                                                  std::string game_server_id,
                                                   session_callback session_callback)
     : base_type{ session_id, std::move(session_callback) },
       socket_{ std::move(socket) },

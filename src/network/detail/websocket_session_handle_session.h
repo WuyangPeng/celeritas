@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "../websocket_session.h"
+#include "network/network_fwd.h"
 
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>

@@ -18,7 +18,7 @@ void celeritas::http_listener::set_option(const int port)
 {
     acceptor_.set_option(boost::asio::socket_base::reuse_address(true));
 
-    LOG_CHANNEL(network_channel, info) << "HTTP Listening on port " << port << "...";
+    LOG_CHANNEL(network_channel, info) << "http listening on port " << port << "...";
 }
 
 void celeritas::http_listener::stop()

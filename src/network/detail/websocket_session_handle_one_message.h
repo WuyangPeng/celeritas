@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "network/network_message_callback.h"
-#include "network/session_callback.h"
 
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>

@@ -3,6 +3,7 @@
 #include "network/session_write.h"
 
 #include <boost/beast.hpp>
+#include <deque>
 
 namespace celeritas
 {
@@ -21,6 +22,15 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type do_write() override;
 
     private:
+        using buffer_guard_container_type = std::deque<buffer_guard>;
+        using buffer_guard_optional_type = std::optional<buffer_guard>;
+
+        [[nodiscard]] void_awaitable_type do_one_write();
+
+        [[nodiscard]] buffer_guard_optional_type get_next_write_buffer();
+
         socket_type& socket_;
+        buffer_guard_container_type write_queue_;
+        std::mutex write_mutex_;
     };
 }

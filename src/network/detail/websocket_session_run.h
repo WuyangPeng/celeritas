@@ -1,12 +1,14 @@
 ﻿#pragma once
 
-#include "network/network_message_callback.h"
 #include "network/session_run.h"
+#include "network/session_callback.h"
 
 #include <boost/beast.hpp>
 
 namespace celeritas
 {
+    namespace beast_websocket = boost::beast::websocket;
+
     class websocket_session_run : public session_run
     {
     public:
