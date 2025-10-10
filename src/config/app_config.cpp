@@ -122,3 +122,13 @@ celeritas::server_config celeritas::app_config::get_server_config() const
 {
     return server_;
 }
+
+celeritas::health_check_url_config celeritas::app_config::get_health_check_url_config() const
+{
+    return health_check_url_;
+}
+
+celeritas::service_registry_config celeritas::app_config::get_service_registry_config() const
+{
+    return service_registry_;
+}

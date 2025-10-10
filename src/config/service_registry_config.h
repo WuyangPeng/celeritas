@@ -15,6 +15,10 @@ namespace celeritas
 
         service_registry_config(std::string host, int port) noexcept;
 
+        [[nodiscard]] std::string get_host() const;
+
+        [[nodiscard]] int get_port() const noexcept;
+
     private:
         std::string host_ = default_service_registry_host.data();
         int port_ = default_service_registry_port;

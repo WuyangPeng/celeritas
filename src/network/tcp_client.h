@@ -25,6 +25,10 @@ namespace celeritas
         // 异步连接到指定的远程地址和端口
         [[nodiscard]] session_waitable_type connect(const std::string& host, int port);
 
+        void stop() override;
+
+        [[nodiscard]] void_awaitable_type accept_connections() override;
+
     private:
         io_context_type& io_context_;
         network_message_callback_weak_ptr network_message_callback_;

@@ -24,6 +24,10 @@ namespace celeritas
 
         [[nodiscard]] std::string get_game_server_id() const noexcept;
 
+        [[nodiscard]] std::string service_name() const noexcept;
+
+        [[nodiscard]] bool is_service_registry_server() const;
+
     private:
         std::string service_name_;
         server_network_config_container_type server_network_config_;

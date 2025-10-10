@@ -34,6 +34,8 @@ namespace celeritas
     private:
         using listener_shared_ptr = std::shared_ptr<listener>;
         using listener_container_type = std::vector<listener_shared_ptr>;
+        using tcp_client_ptr = std::shared_ptr<tcp_client>;
+        using tcp_client_container_type = std::vector<tcp_client_ptr>;
 
         void initialize_logger_resource();
 
@@ -43,11 +45,14 @@ namespace celeritas
 
         void initialize_health_check_url_resource();
 
-        void initialize_service_registry_resource();
+        void initialize_service_registry_resource(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback);
 
         virtual void service_initialize_resource() = 0;
 
         app_config_shared_ptr app_config_;
         listener_container_type listener_;
+        tcp_client_container_type tcp_clients_;
+        bool is_service_registry_;
+        std::string game_server_id_;
     };
 }

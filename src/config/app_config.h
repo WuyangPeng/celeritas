@@ -36,6 +36,10 @@ namespace celeritas
 
         [[nodiscard]] server_config get_server_config() const;
 
+        [[nodiscard]] health_check_url_config get_health_check_url_config() const;
+
+        [[nodiscard]] service_registry_config get_service_registry_config() const;
+
     private:
         void do_load_databases_config(const std::string& filename);
 

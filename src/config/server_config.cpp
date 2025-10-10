@@ -19,3 +19,13 @@ std::string celeritas::server_config::get_game_server_id() const noexcept
 {
     return game_server_id_;
 }
+
+std::string celeritas::server_config::service_name() const noexcept
+{
+    return service_name_;
+}
+
+bool celeritas::server_config::is_service_registry_server() const
+{
+    return service_name_.find("service_registry") != std::string::npos;
+}
