@@ -87,8 +87,11 @@ void celeritas::resource_loader::initialize_service_registry_resource(boost::asi
     {
         const auto service_registry = app_config_->get_service_registry_config();
 
-        const auto client = service_registry_loader::loader_service_registry(io_context, service_registry, network_message_callback, game_server_id_);
+        for (const auto& element : service_registry | std::views::values)
+        {
+            const auto client = service_registry_loader::loader_service_registry(io_context, element, network_message_callback, game_server_id_);
 
-        tcp_clients_.emplace_back(client);
+            tcp_clients_.emplace_back(client);
+        }
     }
 }

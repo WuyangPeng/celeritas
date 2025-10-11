@@ -11,7 +11,7 @@ void celeritas::app_config::load_service_registry_config(const std::string& file
 {
     try
     {
-        service_registry_ = service_registry_config_reader::load_config(filename);
+        do_load_service_registry_config(filename);
     }
     catch (const std::exception& error)
     {
@@ -103,6 +103,16 @@ void celeritas::app_config::do_load_loggers_config(const std::string& filename)
     }
 }
 
+void celeritas::app_config::do_load_service_registry_config(const std::string& filename)
+{
+    const service_registry_config_reader service_registry_config_reader{ filename };
+    for (const auto& result = service_registry_config_reader.get_service_registry_config_container();
+         const auto& element : result)
+    {
+        service_registry_[element.get_name()] = element;
+    }
+}
+
 celeritas::logger_level_config celeritas::app_config::get_logger_level_config() const
 {
     return logger_level_config_;
@@ -128,7 +138,7 @@ celeritas::health_check_url_config celeritas::app_config::get_health_check_url_c
     return health_check_url_;
 }
 
-celeritas::service_registry_config celeritas::app_config::get_service_registry_config() const
+celeritas::app_config::service_registry_config_container celeritas::app_config::get_service_registry_config() const
 {
     return service_registry_;
 }

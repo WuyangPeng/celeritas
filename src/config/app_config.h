@@ -17,6 +17,7 @@ namespace celeritas
         using class_type = app_config;
         using logger_config_container = std::map<std::string, logger_config>;
         using database_config_container = std::map<std::string, database_config>;
+        using service_registry_config_container = std::map<std::string, service_registry_config>;
 
         void load_service_registry_config(const std::string& filename);
 
@@ -38,14 +39,16 @@ namespace celeritas
 
         [[nodiscard]] health_check_url_config get_health_check_url_config() const;
 
-        [[nodiscard]] service_registry_config get_service_registry_config() const;
+        [[nodiscard]] service_registry_config_container get_service_registry_config() const;
 
     private:
         void do_load_databases_config(const std::string& filename);
 
         void do_load_loggers_config(const std::string& filename);
 
-        service_registry_config service_registry_;
+        void do_load_service_registry_config(const std::string& filename);
+
+        service_registry_config_container service_registry_;
         server_config server_;
         health_check_url_config health_check_url_;
         logger_level_config logger_level_config_;
