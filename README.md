@@ -20,3 +20,7 @@
 - openssl 3.5.1
 - mongo v4.1
 - hiredis v1.3.0
+
+## Server（服务器）:
+
+- service registry 服务注册中心
