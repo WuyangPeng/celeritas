@@ -24,3 +24,12 @@
 ## Server（服务器）:
 
 - service registry 服务注册中心
+- auth 认证
+- gateway 网关
+- player 玩家
+- logic 逻辑
+- game 游戏
+- payment 支付
+- admin 后台
+- cross 跨服
+- chat 聊天
