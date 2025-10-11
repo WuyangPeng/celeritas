@@ -24,7 +24,7 @@ void celeritas::service_registry_config_reader::load_config()
 
     for (const auto& [name , node] : tree.get_child("service_registry"))
     {
-        const auto server_name = node.get<std::string>("<xmlattr>.name");
+        const auto server_name = node.get<std::string>("<xmlattr>.instance_id");
 
         const auto host = node.get<std::string>("host", default_service_registry_host.data());
         const auto port = node.get("port", default_service_registry_port);

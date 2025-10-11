@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <server>
+    <instance_id>service_registry_server-1</instance_id>
     <service_name>service_registry_server</service_name>
+    <game_server_id></game_server_id>
     <network>
         <network_type>tcp</network_type>
         <host>127.0.0.1</host>
@@ -16,5 +18,4 @@
         <host>127.0.0.1</host>
         <port>30002</port>
     </network>
-    <game_server_id></game_server_id>
 </server>

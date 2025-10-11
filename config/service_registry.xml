@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <service_registry>
-    <network name="service_registry_server-1">
+    <network instance_id="service_registry_server-1">
         <host>127.0.0.1</host>
         <port>30000</port>
     </network>
