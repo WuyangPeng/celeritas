@@ -159,7 +159,7 @@ if [ ! -f /data/celeritas/deps/protobuf_installed.txt ]; then
 		make
 
 		rm -rf /data/celeritas/deps/protobuf
-    make install
+		make install
 
 		if [ $? -eq 0 ]; then
 
