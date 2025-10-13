@@ -16,7 +16,7 @@
 ## Dependency Library（依赖库）:
 
 - boost 1.88.0
-- protobuf 31.1
+- protobuf 32.1
 - openssl 3.5.1
 - mongo v4.1
 - hiredis v1.3.0

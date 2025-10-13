@@ -25,7 +25,8 @@ target_link_libraries(service_registry_server PRIVATE
         openssl
         mongo
         redis
-        protobuf)
+        proto_generated
+        proto)
 
 file(GLOB CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../config/*")
 
@@ -49,6 +50,16 @@ foreach (service_registry_config_file IN LISTS SERVICE_REGISTRY_CONFIG_FILES)
 endforeach ()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+    file(GLOB PROTOBUF_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/protobuf/bin/*.dll")
+
+    foreach (protobuf_dll_file IN LISTS PROTOBUF_DLL_FILES)
+        add_custom_command(
+                TARGET service_registry_server POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${protobuf_dll_file}" "$<TARGET_FILE_DIR:service_registry_server>/"
+                COMMENT "Copying dll files for ${protobuf_dll_file}"
+        )
+    endforeach ()
 
     file(GLOB OPENSSL_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/openssl/bin64/*.dll")
 

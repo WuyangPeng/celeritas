@@ -37,7 +37,7 @@ include_directories(
         "${CMAKE_CURRENT_SOURCE_DIR}/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/proto"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost"
-        "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src"
+        "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/include"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/include"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/include/"
@@ -91,13 +91,13 @@ else ()
 endif ()
 
 # 包含protobuf库
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/build/bin/${BUILD_TYPE_DIRECTORY})
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/bin/)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-    set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src")
-    set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/build/bin/release")
-    set(Protobuf_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/src")
+    set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/bin")
+    set(Protobuf_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/include")
+    set(Protobuf_LIBRARIES "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/lib")
 
     # 查找和添加依赖项
     find_package(Protobuf REQUIRED)
@@ -140,6 +140,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     endforeach ()
 
+
 else ()
 
     # 其他平台下的操作
@@ -147,9 +148,27 @@ else ()
 
 endif ()
 
-add_library(protobuf ${PROTO_SRCS_GENERATED})
+add_library(proto_generated ${PROTO_SRCS_GENERATED})
 
-target_link_libraries(protobuf ${PROTOBUF_LIBRARIES})
+add_library(proto INTERFACE)
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+
+    target_link_libraries(proto INTERFACE
+            protobuf
+            absl_log_internal_message
+            absl_log_internal_check_op
+            absl_log_internal_nullguard)
+
+else ()
+
+    target_link_libraries(proto INTERFACE
+            protobuf
+            absl_log_internal_message.dll
+            absl_log_internal_check_op.dll
+            absl_log_internal_nullguard.dll)
+
+endif ()
 
 # 包含mongo库
 add_library(mongo INTERFACE)
@@ -210,7 +229,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     endif ()
 
 else ()
-    
+
     target_link_libraries(openssl INTERFACE ssl crypto)
 
 endif ()
@@ -239,6 +258,10 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/config/"
 )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/bin/"
+            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}"
+    )
 
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/bin64/"
             DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}"

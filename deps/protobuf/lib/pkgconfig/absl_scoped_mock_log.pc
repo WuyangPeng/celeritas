@@ -1,0 +1,12 @@
+prefix=C:/Program Files (x86)/protobuf
+exec_prefix=${prefix}
+libdir=C:/Program Files (x86)/protobuf/lib
+includedir=C:/Program Files (x86)/protobuf/include
+
+Name: absl_scoped_mock_log
+Description: Abseil scoped_mock_log library
+URL: https://abseil.io/
+Version: 20250512
+Requires: absl_config = 20250512, absl_log_entry = 20250512, absl_log_severity = 20250512, absl_log_sink = 20250512, absl_log_sink_registry = 20250512, absl_raw_logging_internal = 20250512, absl_strings = 20250512
+Libs: -L${libdir}  -labsl_scoped_mock_log 
+Cflags: -I${includedir} -DNOMINMAX

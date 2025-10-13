@@ -1,0 +1,12 @@
+prefix=C:/Program Files (x86)/protobuf
+exec_prefix=${prefix}
+libdir=C:/Program Files (x86)/protobuf/lib
+includedir=C:/Program Files (x86)/protobuf/include
+
+Name: absl_node_hash_map
+Description: Abseil node_hash_map library
+URL: https://abseil.io/
+Version: 20250512
+Requires: absl_container_memory = 20250512, absl_core_headers = 20250512, absl_hash_container_defaults = 20250512, absl_node_slot_policy = 20250512, absl_raw_hash_map = 20250512, absl_algorithm_container = 20250512, absl_memory = 20250512, absl_type_traits = 20250512
+Libs: -L${libdir}  
+Cflags: -I${includedir} -DNOMINMAX

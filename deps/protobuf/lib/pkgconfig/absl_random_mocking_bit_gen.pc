@@ -1,0 +1,12 @@
+prefix=C:/Program Files (x86)/protobuf
+exec_prefix=${prefix}
+libdir=C:/Program Files (x86)/protobuf/lib
+includedir=C:/Program Files (x86)/protobuf/include
+
+Name: absl_random_mocking_bit_gen
+Description: Abseil random_mocking_bit_gen library
+URL: https://abseil.io/
+Version: 20250512
+Requires: absl_config = 20250512, absl_core_headers = 20250512, absl_fast_type_id = 20250512, absl_flat_hash_map = 20250512, absl_raw_logging_internal = 20250512, absl_random_internal_mock_helpers = 20250512, absl_random_random = 20250512, absl_type_traits = 20250512, absl_utility = 20250512
+Libs: -L${libdir}  
+Cflags: -I${includedir} -DNOMINMAX

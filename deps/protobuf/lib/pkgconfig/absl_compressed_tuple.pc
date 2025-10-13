@@ -1,0 +1,12 @@
+prefix=C:/Program Files (x86)/protobuf
+exec_prefix=${prefix}
+libdir=C:/Program Files (x86)/protobuf/lib
+includedir=C:/Program Files (x86)/protobuf/include
+
+Name: absl_compressed_tuple
+Description: Abseil compressed_tuple library
+URL: https://abseil.io/
+Version: 20250512
+Requires: absl_utility = 20250512
+Libs: -L${libdir}  
+Cflags: -I${includedir} -DNOMINMAX

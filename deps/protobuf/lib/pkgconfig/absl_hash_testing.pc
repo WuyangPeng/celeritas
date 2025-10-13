@@ -1,0 +1,12 @@
+prefix=C:/Program Files (x86)/protobuf
+exec_prefix=${prefix}
+libdir=C:/Program Files (x86)/protobuf/lib
+includedir=C:/Program Files (x86)/protobuf/include
+
+Name: absl_hash_testing
+Description: Abseil hash_testing library
+URL: https://abseil.io/
+Version: 20250512
+Requires: absl_spy_hash_state = 20250512, absl_meta = 20250512, absl_strings = 20250512, absl_variant = 20250512
+Libs: -L${libdir}  
+Cflags: -I${includedir} -DNOMINMAX -Wno-deprecated-declarations -Wno-missing-declarations -Wno-self-move -Wno-sign-compare -Wno-unused-function -Wno-unused-parameter -Wno-unused-private-field
