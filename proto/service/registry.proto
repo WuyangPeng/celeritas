@@ -25,22 +25,15 @@ message discover_response {
   repeated end_point endpoints = 1;
 }
 
-// 定义心跳消息
-message heartbeat {
-  string service_name = 1;
-  string instance_id = 2;
-}
-
 message service_registry_request {
   oneof payload {
     register_request register = 1;
     discover_request discover = 2;
-    heartbeat heartbeat = 3;
   }
 }
 
 message service_registry_response {
   oneof payload {
-    discover_response discover = 1;
+    discover_response discover = 2;
   }
 }

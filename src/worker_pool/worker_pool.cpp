@@ -56,5 +56,7 @@ bool celeritas::worker_pool::get_and_run_task()
     }
     task();
 
+    LOG_CHANNEL(worker_pool_channel, debug) << "Task is run.";
+
     return true;
 }

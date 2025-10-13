@@ -2,6 +2,8 @@
 #include "common/common_fwd.h"
 #include "common/logger.h"
 #include "database/database_pool_manager.h"
+#include "proto/common/common.pb.h"
+#include "proto/request.pb.h"
 #include "server/server_fwd.h"
 
 using namespace std::literals;
@@ -95,4 +97,56 @@ void celeritas::initializer::setup_signal_handler()
 
 void celeritas::initializer::call_back(const message_header& message_header, buffer_guard buffer_guard)
 {
+    proto::header_request header_request{};
+
+    if (!header_request.ParseFromArray(buffer_guard.get(), message_header.get_header_size()))
+    {
+        LOG_CHANNEL(initializer_channel, error) << "Failed to parse header_request from binary data.";
+        return;
+    }
+
+    switch (header_request.payload_case())
+    {
+        case proto::header_request::PayloadCase::kClient:
+        {
+            const auto& client_header = header_request.client();
+            break;
+        }
+
+        case proto::header_request::PayloadCase::kServer:
+        {
+            // 获取 server_message_header 对象
+            const auto& server_header = header_request.server();
+            break;
+        }
+
+        case proto::header_request::PayloadCase::PAYLOAD_NOT_SET:
+        {
+            LOG_CHANNEL(initializer_channel, error) << "消息头为空.";
+            break;
+        }
+    }
+
+    proto::request request{};
+
+    if (!request.ParseFromArray(buffer_guard.get() + message_header.get_header_size(), message_header.get_body_size()))
+    {
+        LOG_CHANNEL(initializer_channel, error) << "Failed to parse request from binary data.";
+        return;
+    }
+
+    switch (request.payload_case())
+    {
+        case proto::request::PayloadCase::kService:
+        {
+            const auto& service = request.service();
+            break;
+        }
+
+        case proto::request::PayloadCase::PAYLOAD_NOT_SET:
+        {
+            LOG_CHANNEL(initializer_channel, error) << "消息体为空.";
+            break;
+        }
+    }
 }

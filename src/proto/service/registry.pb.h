@@ -67,10 +67,6 @@ class end_point;
 struct end_pointDefaultTypeInternal;
 extern end_pointDefaultTypeInternal _end_point_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull end_point_class_data_;
-class heartbeat;
-struct heartbeatDefaultTypeInternal;
-extern heartbeatDefaultTypeInternal _heartbeat_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull heartbeat_class_data_;
 class register_request;
 struct register_requestDefaultTypeInternal;
 extern register_requestDefaultTypeInternal _register_request_default_instance_;
@@ -357,219 +353,6 @@ class register_request final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull register_request_class_data_;
-// -------------------------------------------------------------------
-
-class heartbeat final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:celeritas.proto.service.heartbeat) */ {
- public:
-  inline heartbeat() : heartbeat(nullptr) {}
-  ~heartbeat() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(heartbeat* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(heartbeat));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR heartbeat(::google::protobuf::internal::ConstantInitialized);
-
-  inline heartbeat(const heartbeat& from) : heartbeat(nullptr, from) {}
-  inline heartbeat(heartbeat&& from) noexcept
-      : heartbeat(nullptr, ::std::move(from)) {}
-  inline heartbeat& operator=(const heartbeat& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline heartbeat& operator=(heartbeat&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const heartbeat& default_instance() {
-    return *reinterpret_cast<const heartbeat*>(
-        &_heartbeat_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 4;
-  friend void swap(heartbeat& a, heartbeat& b) { a.Swap(&b); }
-  inline void Swap(heartbeat* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(heartbeat* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  heartbeat* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<heartbeat>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const heartbeat& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const heartbeat& from) { heartbeat::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
-                        const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(heartbeat* PROTOBUF_NONNULL other);
- private:
-  template <typename T>
-  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "celeritas.proto.service.heartbeat"; }
-
- protected:
-  explicit heartbeat(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  heartbeat(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const heartbeat& from);
-  heartbeat(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, heartbeat&& from) noexcept
-      : heartbeat(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
-  static void* PROTOBUF_NONNULL PlacementNew_(
-      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static constexpr auto InternalNewImpl_();
-
- public:
-  static constexpr auto InternalGenerateClassData_();
-
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kServiceNameFieldNumber = 1,
-    kInstanceIdFieldNumber = 2,
-  };
-  // string service_name = 1;
-  void clear_service_name() ;
-  const ::std::string& service_name() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_service_name(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_service_name();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_service_name();
-  void set_allocated_service_name(::std::string* PROTOBUF_NULLABLE value);
-
-  private:
-  const ::std::string& _internal_service_name() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_service_name(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_service_name();
-
-  public:
-  // string instance_id = 2;
-  void clear_instance_id() ;
-  const ::std::string& instance_id() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_instance_id(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_instance_id();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_instance_id();
-  void set_allocated_instance_id(::std::string* PROTOBUF_NULLABLE value);
-
-  private:
-  const ::std::string& _internal_instance_id() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_instance_id(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_instance_id();
-
-  public:
-  // @@protoc_insertion_point(class_scope:celeritas.proto.service.heartbeat)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
-                                   0, 65,
-                                   2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const heartbeat& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr service_name_;
-    ::google::protobuf::internal::ArenaStringPtr instance_id_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_proto_2fservice_2fregistry_2eproto;
-};
-
-extern const ::google::protobuf::internal::ClassDataFull heartbeat_class_data_;
 // -------------------------------------------------------------------
 
 class end_point final : public ::google::protobuf::Message
@@ -1034,10 +817,9 @@ class service_registry_request final : public ::google::protobuf::Message
   enum PayloadCase {
     kRegister = 1,
     kDiscover = 2,
-    kHeartbeat = 3,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(service_registry_request& a, service_registry_request& b) { a.Swap(&b); }
   inline void Swap(service_registry_request* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1127,7 +909,6 @@ class service_registry_request final : public ::google::protobuf::Message
   enum : int {
     kRegisterFieldNumber = 1,
     kDiscoverFieldNumber = 2,
-    kHeartbeatFieldNumber = 3,
   };
   // .celeritas.proto.service.register_request register = 1;
   bool has_register_() const;
@@ -1167,25 +948,6 @@ class service_registry_request final : public ::google::protobuf::Message
   ::celeritas::proto::service::discover_request* PROTOBUF_NONNULL _internal_mutable_discover();
 
   public:
-  // .celeritas.proto.service.heartbeat heartbeat = 3;
-  bool has_heartbeat() const;
-  private:
-  bool _internal_has_heartbeat() const;
-
-  public:
-  void clear_heartbeat() ;
-  const ::celeritas::proto::service::heartbeat& heartbeat() const;
-  [[nodiscard]] ::celeritas::proto::service::heartbeat* PROTOBUF_NULLABLE release_heartbeat();
-  ::celeritas::proto::service::heartbeat* PROTOBUF_NONNULL mutable_heartbeat();
-  void set_allocated_heartbeat(::celeritas::proto::service::heartbeat* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_heartbeat(::celeritas::proto::service::heartbeat* PROTOBUF_NULLABLE value);
-  ::celeritas::proto::service::heartbeat* PROTOBUF_NULLABLE unsafe_arena_release_heartbeat();
-
-  private:
-  const ::celeritas::proto::service::heartbeat& _internal_heartbeat() const;
-  ::celeritas::proto::service::heartbeat* PROTOBUF_NONNULL _internal_mutable_heartbeat();
-
-  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.service.service_registry_request)
@@ -1193,12 +955,11 @@ class service_registry_request final : public ::google::protobuf::Message
   class _Internal;
   void set_has_register_();
   void set_has_discover();
-  void set_has_heartbeat();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 3,
-                                   3, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 2,
+                                   2, 0,
                                    2>
       _table_;
 
@@ -1220,9 +981,8 @@ class service_registry_request final : public ::google::protobuf::Message
     union PayloadUnion {
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE register__;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE discover_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE heartbeat_;
+      ::celeritas::proto::service::register_request* PROTOBUF_NULLABLE register__;
+      ::celeritas::proto::service::discover_request* PROTOBUF_NULLABLE discover_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -1488,10 +1248,10 @@ class service_registry_response final : public ::google::protobuf::Message
         &_service_registry_response_default_instance_);
   }
   enum PayloadCase {
-    kDiscover = 1,
+    kDiscover = 2,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(service_registry_response& a, service_registry_response& b) { a.Swap(&b); }
   inline void Swap(service_registry_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1579,9 +1339,9 @@ class service_registry_response final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kDiscoverFieldNumber = 1,
+    kDiscoverFieldNumber = 2,
   };
-  // .celeritas.proto.service.discover_response discover = 1;
+  // .celeritas.proto.service.discover_response discover = 2;
   bool has_discover() const;
   private:
   bool _internal_has_discover() const;
@@ -2162,140 +1922,6 @@ discover_response::_internal_mutable_endpoints() {
 
 // -------------------------------------------------------------------
 
-// heartbeat
-
-// string service_name = 1;
-inline void heartbeat::clear_service_name() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.service_name_.ClearToEmpty();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::std::string& heartbeat::service_name() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.heartbeat.service_name)
-  return _internal_service_name();
-}
-template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void heartbeat::set_service_name(Arg_&& arg, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000001u;
-  _impl_.service_name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:celeritas.proto.service.heartbeat.service_name)
-}
-inline ::std::string* PROTOBUF_NONNULL heartbeat::mutable_service_name()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::std::string* _s = _internal_mutable_service_name();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.heartbeat.service_name)
-  return _s;
-}
-inline const ::std::string& heartbeat::_internal_service_name() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.service_name_.Get();
-}
-inline void heartbeat::_internal_set_service_name(const ::std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000001u;
-  _impl_.service_name_.Set(value, GetArena());
-}
-inline ::std::string* PROTOBUF_NONNULL heartbeat::_internal_mutable_service_name() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000001u;
-  return _impl_.service_name_.Mutable( GetArena());
-}
-inline ::std::string* PROTOBUF_NULLABLE heartbeat::release_service_name() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.heartbeat.service_name)
-  if ((_impl_._has_bits_[0] & 0x00000001u) == 0) {
-    return nullptr;
-  }
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  auto* released = _impl_.service_name_.Release();
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.service_name_.Set("", GetArena());
-  }
-  return released;
-}
-inline void heartbeat::set_allocated_service_name(::std::string* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  _impl_.service_name_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.service_name_.IsDefault()) {
-    _impl_.service_name_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.heartbeat.service_name)
-}
-
-// string instance_id = 2;
-inline void heartbeat::clear_instance_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.instance_id_.ClearToEmpty();
-  _impl_._has_bits_[0] &= ~0x00000002u;
-}
-inline const ::std::string& heartbeat::instance_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.heartbeat.instance_id)
-  return _internal_instance_id();
-}
-template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void heartbeat::set_instance_id(Arg_&& arg, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000002u;
-  _impl_.instance_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:celeritas.proto.service.heartbeat.instance_id)
-}
-inline ::std::string* PROTOBUF_NONNULL heartbeat::mutable_instance_id()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::std::string* _s = _internal_mutable_instance_id();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.heartbeat.instance_id)
-  return _s;
-}
-inline const ::std::string& heartbeat::_internal_instance_id() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.instance_id_.Get();
-}
-inline void heartbeat::_internal_set_instance_id(const ::std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000002u;
-  _impl_.instance_id_.Set(value, GetArena());
-}
-inline ::std::string* PROTOBUF_NONNULL heartbeat::_internal_mutable_instance_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000002u;
-  return _impl_.instance_id_.Mutable( GetArena());
-}
-inline ::std::string* PROTOBUF_NULLABLE heartbeat::release_instance_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.heartbeat.instance_id)
-  if ((_impl_._has_bits_[0] & 0x00000002u) == 0) {
-    return nullptr;
-  }
-  _impl_._has_bits_[0] &= ~0x00000002u;
-  auto* released = _impl_.instance_id_.Release();
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.instance_id_.Set("", GetArena());
-  }
-  return released;
-}
-inline void heartbeat::set_allocated_instance_id(::std::string* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000002u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000002u;
-  }
-  _impl_.instance_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.instance_id_.IsDefault()) {
-    _impl_.instance_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.heartbeat.instance_id)
-}
-
-// -------------------------------------------------------------------
-
 // service_registry_request
 
 // .celeritas.proto.service.register_request register = 1;
@@ -2323,7 +1949,7 @@ inline ::celeritas::proto::service::register_request* PROTOBUF_NULLABLE service_
   // @@protoc_insertion_point(field_release:celeritas.proto.service.service_registry_request.register)
   if (payload_case() == kRegister) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::service::register_request*>(_impl_.payload_.register__);
+    auto* temp = _impl_.payload_.register__;
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -2334,7 +1960,7 @@ inline ::celeritas::proto::service::register_request* PROTOBUF_NULLABLE service_
   }
 }
 inline const ::celeritas::proto::service::register_request& service_registry_request::_internal_register_() const {
-  return payload_case() == kRegister ? *reinterpret_cast<::celeritas::proto::service::register_request*>(_impl_.payload_.register__) : reinterpret_cast<::celeritas::proto::service::register_request&>(::celeritas::proto::service::_register_request_default_instance_);
+  return payload_case() == kRegister ? *_impl_.payload_.register__ : reinterpret_cast<::celeritas::proto::service::register_request&>(::celeritas::proto::service::_register_request_default_instance_);
 }
 inline const ::celeritas::proto::service::register_request& service_registry_request::register_() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:celeritas.proto.service.service_registry_request.register)
@@ -2344,7 +1970,7 @@ inline ::celeritas::proto::service::register_request* PROTOBUF_NULLABLE service_
   // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_registry_request.register)
   if (payload_case() == kRegister) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::service::register_request*>(_impl_.payload_.register__);
+    auto* temp = _impl_.payload_.register__;
     _impl_.payload_.register__ = nullptr;
     return temp;
   } else {
@@ -2359,7 +1985,7 @@ inline void service_registry_request::unsafe_arena_set_allocated_register_(
   clear_payload();
   if (value) {
     set_has_register_();
-    _impl_.payload_.register__ = reinterpret_cast<::google::protobuf::Message*>(value);
+    _impl_.payload_.register__ = value;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_registry_request.register)
 }
@@ -2367,10 +1993,10 @@ inline ::celeritas::proto::service::register_request* PROTOBUF_NONNULL service_r
   if (payload_case() != kRegister) {
     clear_payload();
     set_has_register_();
-    _impl_.payload_.register__ = reinterpret_cast<::google::protobuf::Message*>(
-        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::service::register_request>(GetArena()));
+    _impl_.payload_.register__ = 
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::service::register_request>(GetArena());
   }
-  return reinterpret_cast<::celeritas::proto::service::register_request*>(_impl_.payload_.register__);
+  return _impl_.payload_.register__;
 }
 inline ::celeritas::proto::service::register_request* PROTOBUF_NONNULL service_registry_request::mutable_register_()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -2404,7 +2030,7 @@ inline ::celeritas::proto::service::discover_request* PROTOBUF_NULLABLE service_
   // @@protoc_insertion_point(field_release:celeritas.proto.service.service_registry_request.discover)
   if (payload_case() == kDiscover) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::service::discover_request*>(_impl_.payload_.discover_);
+    auto* temp = _impl_.payload_.discover_;
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -2415,7 +2041,7 @@ inline ::celeritas::proto::service::discover_request* PROTOBUF_NULLABLE service_
   }
 }
 inline const ::celeritas::proto::service::discover_request& service_registry_request::_internal_discover() const {
-  return payload_case() == kDiscover ? *reinterpret_cast<::celeritas::proto::service::discover_request*>(_impl_.payload_.discover_) : reinterpret_cast<::celeritas::proto::service::discover_request&>(::celeritas::proto::service::_discover_request_default_instance_);
+  return payload_case() == kDiscover ? *_impl_.payload_.discover_ : reinterpret_cast<::celeritas::proto::service::discover_request&>(::celeritas::proto::service::_discover_request_default_instance_);
 }
 inline const ::celeritas::proto::service::discover_request& service_registry_request::discover() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:celeritas.proto.service.service_registry_request.discover)
@@ -2425,7 +2051,7 @@ inline ::celeritas::proto::service::discover_request* PROTOBUF_NULLABLE service_
   // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_registry_request.discover)
   if (payload_case() == kDiscover) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::service::discover_request*>(_impl_.payload_.discover_);
+    auto* temp = _impl_.payload_.discover_;
     _impl_.payload_.discover_ = nullptr;
     return temp;
   } else {
@@ -2440,7 +2066,7 @@ inline void service_registry_request::unsafe_arena_set_allocated_discover(
   clear_payload();
   if (value) {
     set_has_discover();
-    _impl_.payload_.discover_ = reinterpret_cast<::google::protobuf::Message*>(value);
+    _impl_.payload_.discover_ = value;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_registry_request.discover)
 }
@@ -2448,96 +2074,15 @@ inline ::celeritas::proto::service::discover_request* PROTOBUF_NONNULL service_r
   if (payload_case() != kDiscover) {
     clear_payload();
     set_has_discover();
-    _impl_.payload_.discover_ = reinterpret_cast<::google::protobuf::Message*>(
-        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::service::discover_request>(GetArena()));
+    _impl_.payload_.discover_ = 
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::service::discover_request>(GetArena());
   }
-  return reinterpret_cast<::celeritas::proto::service::discover_request*>(_impl_.payload_.discover_);
+  return _impl_.payload_.discover_;
 }
 inline ::celeritas::proto::service::discover_request* PROTOBUF_NONNULL service_registry_request::mutable_discover()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::discover_request* _msg = _internal_mutable_discover();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_registry_request.discover)
-  return _msg;
-}
-
-// .celeritas.proto.service.heartbeat heartbeat = 3;
-inline bool service_registry_request::has_heartbeat() const {
-  return payload_case() == kHeartbeat;
-}
-inline bool service_registry_request::_internal_has_heartbeat() const {
-  return payload_case() == kHeartbeat;
-}
-inline void service_registry_request::set_has_heartbeat() {
-  _impl_._oneof_case_[0] = kHeartbeat;
-}
-inline void service_registry_request::clear_heartbeat() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kHeartbeat) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.heartbeat_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.heartbeat_);
-    }
-    clear_has_payload();
-  }
-}
-inline ::celeritas::proto::service::heartbeat* PROTOBUF_NULLABLE service_registry_request::release_heartbeat() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_registry_request.heartbeat)
-  if (payload_case() == kHeartbeat) {
-    clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::service::heartbeat*>(_impl_.payload_.heartbeat_);
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.heartbeat_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::celeritas::proto::service::heartbeat& service_registry_request::_internal_heartbeat() const {
-  return payload_case() == kHeartbeat ? *reinterpret_cast<::celeritas::proto::service::heartbeat*>(_impl_.payload_.heartbeat_) : reinterpret_cast<::celeritas::proto::service::heartbeat&>(::celeritas::proto::service::_heartbeat_default_instance_);
-}
-inline const ::celeritas::proto::service::heartbeat& service_registry_request::heartbeat() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_registry_request.heartbeat)
-  return _internal_heartbeat();
-}
-inline ::celeritas::proto::service::heartbeat* PROTOBUF_NULLABLE service_registry_request::unsafe_arena_release_heartbeat() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_registry_request.heartbeat)
-  if (payload_case() == kHeartbeat) {
-    clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::service::heartbeat*>(_impl_.payload_.heartbeat_);
-    _impl_.payload_.heartbeat_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void service_registry_request::unsafe_arena_set_allocated_heartbeat(
-    ::celeritas::proto::service::heartbeat* PROTOBUF_NULLABLE value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_heartbeat();
-    _impl_.payload_.heartbeat_ = reinterpret_cast<::google::protobuf::Message*>(value);
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_registry_request.heartbeat)
-}
-inline ::celeritas::proto::service::heartbeat* PROTOBUF_NONNULL service_registry_request::_internal_mutable_heartbeat() {
-  if (payload_case() != kHeartbeat) {
-    clear_payload();
-    set_has_heartbeat();
-    _impl_.payload_.heartbeat_ = reinterpret_cast<::google::protobuf::Message*>(
-        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::service::heartbeat>(GetArena()));
-  }
-  return reinterpret_cast<::celeritas::proto::service::heartbeat*>(_impl_.payload_.heartbeat_);
-}
-inline ::celeritas::proto::service::heartbeat* PROTOBUF_NONNULL service_registry_request::mutable_heartbeat()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::celeritas::proto::service::heartbeat* _msg = _internal_mutable_heartbeat();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_registry_request.heartbeat)
   return _msg;
 }
 
@@ -2554,7 +2099,7 @@ inline service_registry_request::PayloadCase service_registry_request::payload_c
 
 // service_registry_response
 
-// .celeritas.proto.service.discover_response discover = 1;
+// .celeritas.proto.service.discover_response discover = 2;
 inline bool service_registry_response::has_discover() const {
   return payload_case() == kDiscover;
 }

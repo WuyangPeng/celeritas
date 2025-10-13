@@ -24,7 +24,8 @@ target_link_libraries(service_registry_server PRIVATE
         boost
         openssl
         mongo
-        redis)
+        redis
+        protobuf)
 
 file(GLOB CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../config/*")
 

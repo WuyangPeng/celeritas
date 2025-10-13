@@ -65,36 +65,6 @@ struct register_requestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 register_requestDefaultTypeInternal _register_request_default_instance_;
 
-inline constexpr heartbeat::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        service_name_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        instance_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()) {}
-
-template <typename>
-PROTOBUF_CONSTEXPR heartbeat::heartbeat(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(heartbeat_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct heartbeatDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR heartbeatDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~heartbeatDefaultTypeInternal() {}
-  union {
-    heartbeat _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 heartbeatDefaultTypeInternal _heartbeat_default_instance_;
-
 inline constexpr end_point::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -263,16 +233,8 @@ const ::uint32_t
         1,
         0x000, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::discover_response, _impl_.endpoints_),
-        0x081, // bitmap
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::heartbeat, _impl_._has_bits_),
-        5, // hasbit index offset
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::heartbeat, _impl_.service_name_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::heartbeat, _impl_.instance_id_),
-        0,
-        1,
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_registry_request, _impl_._oneof_case_[0]),
-        ::_pbi::kInvalidFieldOffsetTag,
         ::_pbi::kInvalidFieldOffsetTag,
         ::_pbi::kInvalidFieldOffsetTag,
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_registry_request, _impl_.payload_),
@@ -288,16 +250,14 @@ static const ::_pbi::MigrationSchema
         {13, sizeof(::celeritas::proto::service::discover_request)},
         {18, sizeof(::celeritas::proto::service::end_point)},
         {25, sizeof(::celeritas::proto::service::discover_response)},
-        {27, sizeof(::celeritas::proto::service::heartbeat)},
-        {34, sizeof(::celeritas::proto::service::service_registry_request)},
-        {40, sizeof(::celeritas::proto::service::service_registry_response)},
+        {27, sizeof(::celeritas::proto::service::service_registry_request)},
+        {32, sizeof(::celeritas::proto::service::service_registry_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::service::_register_request_default_instance_._instance,
     &::celeritas::proto::service::_discover_request_default_instance_._instance,
     &::celeritas::proto::service::_end_point_default_instance_._instance,
     &::celeritas::proto::service::_discover_response_default_instance_._instance,
-    &::celeritas::proto::service::_heartbeat_default_instance_._instance,
     &::celeritas::proto::service::_service_registry_request_default_instance_._instance,
     &::celeritas::proto::service::_service_registry_response_default_instance_._instance,
 };
@@ -311,28 +271,26 @@ const char descriptor_table_protodef_proto_2fservice_2fregistry_2eproto[] ABSL_A
     "e_name\030\001 \001(\t\"\'\n\tend_point\022\014\n\004host\030\001 \001(\t\022"
     "\014\n\004port\030\002 \001(\005\"J\n\021discover_response\0225\n\ten"
     "dpoints\030\001 \003(\0132\".celeritas.proto.service."
-    "end_point\"6\n\theartbeat\022\024\n\014service_name\030\001"
-    " \001(\t\022\023\n\013instance_id\030\002 \001(\t\"\334\001\n\030service_re"
-    "gistry_request\022=\n\010register\030\001 \001(\0132).celer"
-    "itas.proto.service.register_requestH\000\022=\n"
-    "\010discover\030\002 \001(\0132).celeritas.proto.servic"
-    "e.discover_requestH\000\0227\n\theartbeat\030\003 \001(\0132"
-    "\".celeritas.proto.service.heartbeatH\000B\t\n"
-    "\007payload\"f\n\031service_registry_response\022>\n"
-    "\010discover\030\001 \001(\0132*.celeritas.proto.servic"
-    "e.discover_responseH\000B\t\n\007payloadb\006proto3"
+    "end_point\"\243\001\n\030service_registry_request\022="
+    "\n\010register\030\001 \001(\0132).celeritas.proto.servi"
+    "ce.register_requestH\000\022=\n\010discover\030\002 \001(\0132"
+    ").celeritas.proto.service.discover_reque"
+    "stH\000B\t\n\007payload\"f\n\031service_registry_resp"
+    "onse\022>\n\010discover\030\002 \001(\0132*.celeritas.proto"
+    ".service.discover_responseH\000B\t\n\007payloadb"
+    "\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fservice_2fregistry_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fregistry_2eproto = {
     false,
     false,
-    720,
+    607,
     descriptor_table_protodef_proto_2fservice_2fregistry_2eproto,
     "proto/service/registry.proto",
     &descriptor_table_proto_2fservice_2fregistry_2eproto_once,
     nullptr,
     0,
-    7,
+    6,
     schemas,
     file_default_instances,
     TableStruct_proto_2fservice_2fregistry_2eproto::offsets,
@@ -1575,313 +1533,6 @@ void discover_response::InternalSwap(discover_response* PROTOBUF_RESTRICT PROTOB
 }
 // ===================================================================
 
-class heartbeat::_Internal {
- public:
-  using HasBits =
-      decltype(::std::declval<heartbeat>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(heartbeat, _impl_._has_bits_);
-};
-
-heartbeat::heartbeat(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, heartbeat_class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.heartbeat)
-}
-PROTOBUF_NDEBUG_INLINE heartbeat::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-    const ::celeritas::proto::service::heartbeat& from_msg)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0},
-        service_name_(arena, from.service_name_),
-        instance_id_(arena, from.instance_id_) {}
-
-heartbeat::heartbeat(
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
-    const heartbeat& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, heartbeat_class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  heartbeat* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.heartbeat)
-}
-PROTOBUF_NDEBUG_INLINE heartbeat::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-      : _cached_size_{0},
-        service_name_(arena),
-        instance_id_(arena) {}
-
-inline void heartbeat::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-heartbeat::~heartbeat() {
-  // @@protoc_insertion_point(destructor:celeritas.proto.service.heartbeat)
-  SharedDtor(*this);
-}
-inline void heartbeat::SharedDtor(MessageLite& self) {
-  heartbeat& this_ = static_cast<heartbeat&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.service_name_.Destroy();
-  this_._impl_.instance_id_.Destroy();
-  this_._impl_.~Impl_();
-}
-
-inline void* PROTOBUF_NONNULL heartbeat::PlacementNew_(
-    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
-  return ::new (mem) heartbeat(arena);
-}
-constexpr auto heartbeat::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(heartbeat),
-                                            alignof(heartbeat));
-}
-constexpr auto heartbeat::InternalGenerateClassData_() {
-  return ::google::protobuf::internal::ClassDataFull{
-      ::google::protobuf::internal::ClassData{
-          &_heartbeat_default_instance_._instance,
-          &_table_.header,
-          nullptr,  // OnDemandRegisterArenaDtor
-          nullptr,  // IsInitialized
-          &heartbeat::MergeImpl,
-          ::google::protobuf::Message::GetNewImpl<heartbeat>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-          &heartbeat::SharedDtor,
-          ::google::protobuf::Message::GetClearImpl<heartbeat>(), &heartbeat::ByteSizeLong,
-              &heartbeat::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          PROTOBUF_FIELD_OFFSET(heartbeat, _impl_._cached_size_),
-          false,
-      },
-      &heartbeat::kDescriptorMethods,
-      &descriptor_table_proto_2fservice_2fregistry_2eproto,
-      nullptr,  // tracker
-  };
-}
-
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
-    ::google::protobuf::internal::ClassDataFull heartbeat_class_data_ =
-        heartbeat::InternalGenerateClassData_();
-
-PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
-heartbeat::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&heartbeat_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(heartbeat_class_data_.tc_table);
-  return heartbeat_class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 65, 2>
-heartbeat::_table_ = {
-  {
-    PROTOBUF_FIELD_OFFSET(heartbeat, _impl_._has_bits_),
-    0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    heartbeat_class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::celeritas::proto::service::heartbeat>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    // string instance_id = 2;
-    {::_pbi::TcParser::FastUS1,
-     {18, 1, 0, PROTOBUF_FIELD_OFFSET(heartbeat, _impl_.instance_id_)}},
-    // string service_name = 1;
-    {::_pbi::TcParser::FastUS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(heartbeat, _impl_.service_name_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // string service_name = 1;
-    {PROTOBUF_FIELD_OFFSET(heartbeat, _impl_.service_name_), _Internal::kHasBitsOffset + 0, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string instance_id = 2;
-    {PROTOBUF_FIELD_OFFSET(heartbeat, _impl_.instance_id_), _Internal::kHasBitsOffset + 1, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-  }},
-  // no aux_entries
-  {{
-    "\41\14\13\0\0\0\0\0"
-    "celeritas.proto.service.heartbeat"
-    "service_name"
-    "instance_id"
-  }},
-};
-PROTOBUF_NOINLINE void heartbeat::Clear() {
-// @@protoc_insertion_point(message_clear_start:celeritas.proto.service.heartbeat)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000003u) != 0) {
-    if ((cached_has_bits & 0x00000001u) != 0) {
-      _impl_.service_name_.ClearNonDefaultToEmpty();
-    }
-    if ((cached_has_bits & 0x00000002u) != 0) {
-      _impl_.instance_id_.ClearNonDefaultToEmpty();
-    }
-  }
-  _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* PROTOBUF_NONNULL heartbeat::_InternalSerialize(
-    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
-    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
-  const heartbeat& this_ = static_cast<const heartbeat&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* PROTOBUF_NONNULL heartbeat::_InternalSerialize(
-    ::uint8_t* PROTOBUF_NONNULL target,
-    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-  const heartbeat& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.service.heartbeat)
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  // string service_name = 1;
-  if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    if (!this_._internal_service_name().empty()) {
-      const ::std::string& _s = this_._internal_service_name();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.service.heartbeat.service_name");
-      target = stream->WriteStringMaybeAliased(1, _s, target);
-    }
-  }
-
-  // string instance_id = 2;
-  if ((this_._impl_._has_bits_[0] & 0x00000002u) != 0) {
-    if (!this_._internal_instance_id().empty()) {
-      const ::std::string& _s = this_._internal_instance_id();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.service.heartbeat.instance_id");
-      target = stream->WriteStringMaybeAliased(2, _s, target);
-    }
-  }
-
-  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-    target =
-        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.service.heartbeat)
-  return target;
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t heartbeat::ByteSizeLong(const MessageLite& base) {
-  const heartbeat& this_ = static_cast<const heartbeat&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-::size_t heartbeat::ByteSizeLong() const {
-  const heartbeat& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.service.heartbeat)
-  ::size_t total_size = 0;
-
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void)cached_has_bits;
-
-  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-  cached_has_bits = this_._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000003u) != 0) {
-    // string service_name = 1;
-    if ((cached_has_bits & 0x00000001u) != 0) {
-      if (!this_._internal_service_name().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_service_name());
-      }
-    }
-    // string instance_id = 2;
-    if ((cached_has_bits & 0x00000002u) != 0) {
-      if (!this_._internal_instance_id().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_instance_id());
-      }
-    }
-  }
-  return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                             &this_._impl_._cached_size_);
-}
-
-void heartbeat::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<heartbeat*>(&to_msg);
-  auto& from = static_cast<const heartbeat&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.service.heartbeat)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000003u) != 0) {
-    if ((cached_has_bits & 0x00000001u) != 0) {
-      if (!from._internal_service_name().empty()) {
-        _this->_internal_set_service_name(from._internal_service_name());
-      } else {
-        if (_this->_impl_.service_name_.IsDefault()) {
-          _this->_internal_set_service_name("");
-        }
-      }
-    }
-    if ((cached_has_bits & 0x00000002u) != 0) {
-      if (!from._internal_instance_id().empty()) {
-        _this->_internal_set_instance_id(from._internal_instance_id());
-      } else {
-        if (_this->_impl_.instance_id_.IsDefault()) {
-          _this->_internal_set_instance_id("");
-        }
-      }
-    }
-  }
-  _this->_impl_._has_bits_[0] |= cached_has_bits;
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void heartbeat::CopyFrom(const heartbeat& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.service.heartbeat)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void heartbeat::InternalSwap(heartbeat* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
-  using ::std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.service_name_, &other->_impl_.service_name_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.instance_id_, &other->_impl_.instance_id_, arena);
-}
-
-::google::protobuf::Metadata heartbeat::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
 class service_registry_request::_Internal {
  public:
   static constexpr ::int32_t kOneofCaseOffset =
@@ -1913,19 +1564,6 @@ void service_registry_request::set_allocated_discover(::celeritas::proto::servic
     _impl_.payload_.discover_ = discover;
   }
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_registry_request.discover)
-}
-void service_registry_request::set_allocated_heartbeat(::celeritas::proto::service::heartbeat* PROTOBUF_NULLABLE heartbeat) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  clear_payload();
-  if (heartbeat) {
-    ::google::protobuf::Arena* submessage_arena = heartbeat->GetArena();
-    if (message_arena != submessage_arena) {
-      heartbeat = ::google::protobuf::internal::GetOwnedMessage(message_arena, heartbeat, submessage_arena);
-    }
-    set_has_heartbeat();
-    _impl_.payload_.heartbeat_ = heartbeat;
-  }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_registry_request.heartbeat)
 }
 service_registry_request::service_registry_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
@@ -1965,9 +1603,6 @@ service_registry_request::service_registry_request(
         break;
       case kDiscover:
         _impl_.payload_.discover_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.discover_);
-        break;
-      case kHeartbeat:
-        _impl_.payload_.heartbeat_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.heartbeat_);
         break;
   }
 
@@ -2014,14 +1649,6 @@ void service_registry_request::clear_payload() {
         delete _impl_.payload_.discover_;
       } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
         ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.discover_);
-      }
-      break;
-    }
-    case kHeartbeat: {
-      if (GetArena() == nullptr) {
-        delete _impl_.payload_.heartbeat_;
-      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.heartbeat_);
       }
       break;
     }
@@ -2076,17 +1703,17 @@ service_registry_request::GetClassData() const {
   return service_registry_request_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 3, 3, 0, 2>
+const ::_pbi::TcParseTable<0, 2, 2, 0, 2>
 service_registry_request::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    3, 0,  // max_field_number, fast_idx_mask
+    2, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    3,  // num_aux_entries
+    2,  // num_field_entries
+    2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     service_registry_request_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -2105,14 +1732,10 @@ service_registry_request::_table_ = {
     // .celeritas.proto.service.discover_request discover = 2;
     {PROTOBUF_FIELD_OFFSET(service_registry_request, _impl_.payload_.discover_), _Internal::kOneofCaseOffset + 0, 1,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .celeritas.proto.service.heartbeat heartbeat = 3;
-    {PROTOBUF_FIELD_OFFSET(service_registry_request, _impl_.payload_.heartbeat_), _Internal::kOneofCaseOffset + 0, 2,
-    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::register_request>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::discover_request>()},
-      {::_pbi::TcParser::GetTable<::celeritas::proto::service::heartbeat>()},
   }},
   {{
   }},
@@ -2156,12 +1779,6 @@ PROTOBUF_NOINLINE void service_registry_request::Clear() {
           stream);
       break;
     }
-    case kHeartbeat: {
-      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          3, *this_._impl_.payload_.heartbeat_, this_._impl_.payload_.heartbeat_->GetCachedSize(), target,
-          stream);
-      break;
-    }
     default:
       break;
   }
@@ -2199,12 +1816,6 @@ PROTOBUF_NOINLINE void service_registry_request::Clear() {
     case kDiscover: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.discover_);
-      break;
-    }
-    // .celeritas.proto.service.heartbeat heartbeat = 3;
-    case kHeartbeat: {
-      total_size += 1 +
-                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.heartbeat_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -2248,14 +1859,6 @@ void service_registry_request::MergeImpl(::google::protobuf::MessageLite& to_msg
           _this->_impl_.payload_.discover_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.discover_);
         } else {
           _this->_impl_.payload_.discover_->MergeFrom(*from._impl_.payload_.discover_);
-        }
-        break;
-      }
-      case kHeartbeat: {
-        if (oneof_needs_init) {
-          _this->_impl_.payload_.heartbeat_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.heartbeat_);
-        } else {
-          _this->_impl_.payload_.heartbeat_->MergeFrom(*from._impl_.payload_.heartbeat_);
         }
         break;
       }
@@ -2437,9 +2040,9 @@ service_registry_response::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    2, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
+    4294967293,  // skipmap
     offsetof(decltype(_table_), field_entries),
     1,  // num_field_entries
     1,  // num_aux_entries
@@ -2455,7 +2058,7 @@ service_registry_response::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // .celeritas.proto.service.discover_response discover = 1;
+    // .celeritas.proto.service.discover_response discover = 2;
     {PROTOBUF_FIELD_OFFSET(service_registry_response, _impl_.payload_.discover_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
@@ -2491,10 +2094,10 @@ PROTOBUF_NOINLINE void service_registry_response::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // .celeritas.proto.service.discover_response discover = 1;
+  // .celeritas.proto.service.discover_response discover = 2;
   if (this_.payload_case() == kDiscover) {
     target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, *this_._impl_.payload_.discover_, this_._impl_.payload_.discover_->GetCachedSize(), target,
+        2, *this_._impl_.payload_.discover_, this_._impl_.payload_.discover_->GetCachedSize(), target,
         stream);
   }
 
@@ -2522,7 +2125,7 @@ PROTOBUF_NOINLINE void service_registry_response::Clear() {
   (void)cached_has_bits;
 
   switch (this_.payload_case()) {
-    // .celeritas.proto.service.discover_response discover = 1;
+    // .celeritas.proto.service.discover_response discover = 2;
     case kDiscover: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.discover_);
