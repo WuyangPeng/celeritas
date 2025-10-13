@@ -163,8 +163,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
             protobuf
             absl_log_internal_message
             absl_log_internal_check_op
-            absl_log_internal_nullguard
-            absl_str_format_internal)
+            absl_log_internal_nullguard)
 
 else ()
 
