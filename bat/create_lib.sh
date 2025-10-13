@@ -122,4 +122,48 @@ if [ ! -f /data/celeritas/deps/mongo-cxx-driver_installed.txt ]; then
 	
 	fi
 	
-fi 
+fi
+
+#! 编译protobuf库
+if [ ! -f /data/celeritas/deps/protobuf_installed.txt ]; then
+
+    cd /data/celeritas/deps/
+
+	if [ ! -f /data/celeritas/deps/protobuf_installed_clone.txt ]; then
+
+		rm -rf protobuf
+
+		git clone https://github.com/protocolbuffers/protobuf.git
+
+		if [ $? -eq 0 ]; then
+
+			cd protobuf
+            git checkout v32.1
+			git submodule update --init --recursive
+            cd ..
+
+			touch /data/celeritas/deps/protobuf_installed_clone.txt
+
+		fi
+
+	fi
+
+	if [ -f /data/celeritas/deps/protobuf_installed_clone.txt ]; then
+
+		cd /data/celeritas/deps/protobuf
+
+		mkdir -p build
+		cd build
+
+		cmake .. -DCMAKE_BUILD_TYPE=Release
+		make
+
+		if [ $? -eq 0 ]; then
+
+			touch /data/celeritas/deps/protobuf_installed.txt
+
+		fi
+
+	fi
+
+fi
