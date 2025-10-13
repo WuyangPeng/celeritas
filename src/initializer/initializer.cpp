@@ -16,6 +16,7 @@ celeritas::initializer::initializer(const std::string_view& server_type, const s
       current_path_{ boost::filesystem::current_path() },
       configuration_loader_{ initializer_factory::create_configuration_loader(server_type, config_file_path) },
       resource_loader_{ initializer_factory::create_resource_loader(server_type, configuration_loader_->get_app_config()) },
+      application_loader_{ initializer_factory::create_application_loader(server_type, configuration_loader_->get_app_config()) },
       io_context_{},
       work_guard_{ boost::asio::make_work_guard(io_context_) },
       signals_{ io_context_, SIGINT, SIGTERM }
@@ -70,6 +71,7 @@ void celeritas::initializer::initialize_resource()
 
 void celeritas::initializer::initialize_application()
 {
+    application_loader_->initialize();
 }
 
 void celeritas::initializer::setup_signal_handler()
@@ -80,9 +82,13 @@ void celeritas::initializer::setup_signal_handler()
             if (!error)
             {
                 LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop! signal_number = " << signal_number << ",error = " << error.message();
+
+                io_context_.stop();
                 database_pool_manager::get_instance().release_pool();
                 resource_loader_->release_resource();
-                io_context_.stop();
+                application_loader_->stop();
+
+                LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop finish!";
             }
         });
 }

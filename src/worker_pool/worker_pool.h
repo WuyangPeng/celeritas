@@ -2,8 +2,6 @@
 
 #include "thread_safe_queue.h"
 
-#include <functional>
-#include <queue>
 #include <thread>
 
 namespace celeritas

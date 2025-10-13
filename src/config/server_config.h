@@ -16,7 +16,7 @@ namespace celeritas
 
         server_config() noexcept = default;
 
-        server_config(std::string service_name, server_network_config_container_type server_network_config, std::string game_server_id) noexcept;
+        server_config(std::string service_name, server_network_config_container_type server_network_config, std::string game_server_id, std::string host, int worker_pool_size) noexcept;
 
         [[nodiscard]] server_network_config_const_iterator begin() const noexcept;
 
@@ -28,9 +28,13 @@ namespace celeritas
 
         [[nodiscard]] bool is_service_registry_server() const;
 
+        [[nodiscard]] int get_worker_pool_size() const noexcept;
+
     private:
         std::string service_name_;
         server_network_config_container_type server_network_config_;
         std::string game_server_id_;
+        std::string host_;
+        int worker_pool_size_;
     };
 }

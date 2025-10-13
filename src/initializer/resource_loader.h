@@ -15,7 +15,7 @@ namespace celeritas
         using app_config_shared_ptr = std::shared_ptr<app_config>;
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
 
-        explicit resource_loader(const app_config_shared_ptr& app_config);
+        explicit resource_loader(app_config_shared_ptr app_config);
 
         virtual ~resource_loader() noexcept = default;
 

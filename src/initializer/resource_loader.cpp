@@ -6,9 +6,10 @@
 #include "detail/service_registry_loader.h"
 
 #include <ranges>
+#include <utility>
 
-celeritas::resource_loader::resource_loader(const app_config_shared_ptr& app_config)
-    : app_config_{ app_config }, listener_{}, tcp_clients_{}, is_service_registry_{ false }, game_server_id_{}
+celeritas::resource_loader::resource_loader(app_config_shared_ptr app_config)
+    : app_config_{ std::move(app_config) }, listener_{}, tcp_clients_{}, is_service_registry_{ false }, game_server_id_{}
 {
 }
 
