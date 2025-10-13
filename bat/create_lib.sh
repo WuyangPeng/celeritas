@@ -137,7 +137,7 @@ if [ ! -f /data/celeritas/deps/protobuf_installed.txt ]; then
 
 		if [ $? -eq 0 ]; then
 
-			cd protobuf
+			cd protobuf_src
             git checkout v32.1
 			git submodule update --init --recursive
             cd ..
