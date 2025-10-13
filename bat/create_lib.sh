@@ -131,9 +131,9 @@ if [ ! -f /data/celeritas/deps/protobuf_installed.txt ]; then
 
 	if [ ! -f /data/celeritas/deps/protobuf_installed_clone.txt ]; then
 
-		rm -rf protobuf
+		rm -rf protobuf_src
 
-		git clone https://github.com/protocolbuffers/protobuf.git
+		git clone https://github.com/protocolbuffers/protobuf.git protobuf_src
 
 		if [ $? -eq 0 ]; then
 
@@ -150,13 +150,16 @@ if [ ! -f /data/celeritas/deps/protobuf_installed.txt ]; then
 
 	if [ -f /data/celeritas/deps/protobuf_installed_clone.txt ]; then
 
-		cd /data/celeritas/deps/protobuf
+		cd /data/celeritas/deps/protobuf_src
 
 		mkdir -p build
 		cd build
 
-		cmake .. -DCMAKE_BUILD_TYPE=Release
+		cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/data/celeritas/deps/protobuf
 		make
+
+		rm -rf /data/celeritas/deps/protobuf
+    make install
 
 		if [ $? -eq 0 ]; then
 
