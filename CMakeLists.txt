@@ -146,6 +146,9 @@ else ()
     # 其他平台下的操作
     file(GLOB_RECURSE PROTO_SRCS_GENERATED "src/proto/*.cc")
 
+    list(APPEND CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/lib64")
+    list(APPEND CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/bin")
+
 endif ()
 
 add_library(proto_generated ${PROTO_SRCS_GENERATED})
