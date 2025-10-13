@@ -155,7 +155,7 @@ if [ ! -f /data/celeritas/deps/protobuf_installed.txt ]; then
 		mkdir -p build
 		cd build
 
-		cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/data/celeritas/deps/protobuf
+		cmake .. -DCMAKE_BUILD_TYPE=Release -Dprotobuf_BUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=/data/celeritas/deps/protobuf
 		make
 
 		rm -rf /data/celeritas/deps/protobuf
