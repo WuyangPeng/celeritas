@@ -27,6 +27,8 @@ namespace celeritas
 
         [[nodiscard]] char* data() noexcept;
 
+        [[nodiscard]] const char* data() const noexcept;
+
         [[nodiscard]] size_t size() const noexcept;
 
         [[nodiscard]] bool is_effective() const noexcept;

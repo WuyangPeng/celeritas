@@ -140,7 +140,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     endforeach ()
 
-
 else ()
 
     # 其他平台下的操作
@@ -224,20 +223,16 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     if (MSVC)
 
         link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/lib)
-        target_link_libraries(openssl INTERFACE libssl libcrypto)
 
     else ()
 
         link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/lib64)
-        target_link_libraries(openssl INTERFACE ssl crypto)
 
     endif ()
 
-else ()
-
-    target_link_libraries(openssl INTERFACE ssl crypto)
-
 endif ()
+
+target_link_libraries(openssl INTERFACE ssl crypto)
 
 # 静态库
 add_subdirectory(cmake/common)
@@ -247,6 +242,7 @@ add_subdirectory(cmake/database)
 add_subdirectory(cmake/service_registry)
 add_subdirectory(cmake/initializer)
 add_subdirectory(cmake/config)
+add_subdirectory(cmake/message)
 
 # 服务器
 add_subdirectory(cmake/service_registry_server)

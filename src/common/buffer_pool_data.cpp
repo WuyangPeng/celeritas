@@ -30,6 +30,16 @@ char* celeritas::buffer_pool_data::data() noexcept
     return nullptr;
 }
 
+const char* celeritas::buffer_pool_data::data() const noexcept
+{
+    if (is_effective())
+    {
+        return data_.get();
+    }
+
+    return nullptr;
+}
+
 size_t celeritas::buffer_pool_data::size() const noexcept
 {
     return size_;

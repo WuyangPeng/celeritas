@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "config/app_config.h"
+#include "message/message_registry.h"
 #include "worker_pool/worker_pool.h"
 
 namespace celeritas
@@ -10,6 +11,8 @@ namespace celeritas
     public:
         using class_type = application_loader;
         using app_config_shared_ptr = std::shared_ptr<app_config>;
+        using base_message_handler_shared_ptr = std::shared_ptr<base_message_handler>;
+        using protobuf_message_shared_ptr = std::shared_ptr<google::protobuf::Message>;
 
         explicit application_loader(app_config_shared_ptr app_config);
 
@@ -27,8 +30,13 @@ namespace celeritas
 
         void stop();
 
+        void registerHandler(const base_message_handler_shared_ptr& handler);
+
+        [[nodiscard]] bool dispatch(const header& header, const protobuf_message_shared_ptr& message);
+
     private:
         using worker_pool_unique_ptr = std::unique_ptr<worker_pool>;
+        using message_registry_unique_ptr = std::unique_ptr<message_registry>;
 
         void initialize_worker_pool();
 
@@ -36,5 +44,6 @@ namespace celeritas
 
         app_config_shared_ptr app_config_;
         worker_pool_unique_ptr worker_pool_;
+        message_registry_unique_ptr message_registry_;
     };
 }

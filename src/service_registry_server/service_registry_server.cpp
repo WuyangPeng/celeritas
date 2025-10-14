@@ -1,5 +1,4 @@
-﻿
-#include "service_registry_server.h"
+﻿#include "service_registry_server.h"
 #include "common/common_fwd.h"
 #include "common/logger.h"
 #include "initializer/initializer.h"

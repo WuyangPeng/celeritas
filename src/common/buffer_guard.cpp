@@ -34,6 +34,11 @@ char* celeritas::buffer_guard::get()
     return buffer_data_.data();
 }
 
+const char* celeritas::buffer_guard::get() const
+{
+    return buffer_data_.data();
+}
+
 size_t celeritas::buffer_guard::size() const
 {
     return buffer_data_.size();

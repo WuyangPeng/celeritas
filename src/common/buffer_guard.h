@@ -25,6 +25,8 @@ namespace celeritas
 
         [[nodiscard]] char* get();
 
+        [[nodiscard]] const char* get() const;
+
         [[nodiscard]] size_t size() const;
 
         [[nodiscard]] size_t get_effective_size() const;

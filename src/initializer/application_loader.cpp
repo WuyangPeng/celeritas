@@ -2,7 +2,7 @@
 #include "service_registry/service_registry.h"
 
 celeritas::application_loader::application_loader(app_config_shared_ptr app_config)
-    : app_config_{ std::move(app_config) }, worker_pool_{}
+    : app_config_{ std::move(app_config) }, worker_pool_{}, message_registry_{ std::make_unique<message_registry>() }
 {
 }
 
@@ -16,6 +16,16 @@ void celeritas::application_loader::initialize()
 void celeritas::application_loader::stop()
 {
     worker_pool_.reset();
+}
+
+void celeritas::application_loader::registerHandler(const base_message_handler_shared_ptr& handler)
+{
+    message_registry_->registerHandler(handler);
+}
+
+bool celeritas::application_loader::dispatch(const header& header, const protobuf_message_shared_ptr& message)
+{
+    return message_registry_->dispatch(header, message);
 }
 
 void celeritas::application_loader::initialize_worker_pool()

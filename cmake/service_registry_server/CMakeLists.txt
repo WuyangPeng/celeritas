@@ -19,6 +19,7 @@ target_link_libraries(service_registry_server PRIVATE
         config
         database
         worker_pool
+        message
         network
         common
         boost

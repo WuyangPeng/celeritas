@@ -4,7 +4,7 @@
 #include "database/database_pool_manager.h"
 #include "proto/common/common.pb.h"
 #include "proto/request.pb.h"
-#include "server/server_fwd.h"
+#include "common/celeritas_error.h"
 
 using namespace std::literals;
 
@@ -95,14 +95,13 @@ void celeritas::initializer::setup_signal_handler()
         });
 }
 
-void celeritas::initializer::call_back(const message_header& message_header, buffer_guard buffer_guard)
+celeritas::header celeritas::initializer::get_header(const message_header& message_header, const buffer_guard& buffer_guard) const
 {
     proto::header_request header_request{};
 
     if (!header_request.ParseFromArray(buffer_guard.get(), message_header.get_header_size()))
     {
-        LOG_CHANNEL(initializer_channel, error) << "Failed to parse header_request from binary data.";
-        return;
+        throw celeritas_error("Failed to parse header_request from binary data.");
     }
 
     switch (header_request.payload_case())
@@ -110,22 +109,25 @@ void celeritas::initializer::call_back(const message_header& message_header, buf
         case proto::header_request::PayloadCase::kClient:
         {
             const auto& client_header = header_request.client();
-            break;
+            return header(client_header);
         }
 
         case proto::header_request::PayloadCase::kServer:
         {
-            // 获取 server_message_header 对象
             const auto& server_header = header_request.server();
-            break;
+            return header(server_header);
         }
 
-        case proto::header_request::PayloadCase::PAYLOAD_NOT_SET:
+        default:
         {
-            LOG_CHANNEL(initializer_channel, error) << "消息头为空.";
-            break;
+            throw celeritas_error("消息头为空.");
         }
     }
+}
+
+void celeritas::initializer::call_back(const message_header& message_header, buffer_guard buffer_guard)
+{
+    const auto header = get_header(message_header, buffer_guard);
 
     proto::request request{};
 
@@ -140,6 +142,13 @@ void celeritas::initializer::call_back(const message_header& message_header, buf
         case proto::request::PayloadCase::kService:
         {
             const auto& service = request.service();
+            const auto service_request = std::make_shared<proto::service::service_request>();
+            service_request->CopyFrom(service);
+
+            if (!application_loader_->dispatch(header, service_request))
+            {
+                LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch service request.";
+            }
             break;
         }
 
