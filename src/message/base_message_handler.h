@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "header.h"
+#include "message_registry.h"
 #include "network/message_header.h"
 
 #include <google/protobuf/message.h>
@@ -13,6 +14,7 @@ namespace celeritas
     public:
         using class_type = base_message_handler;
         using protobuf_message_shared_ptr = std::shared_ptr<google::protobuf::Message>;
+        using message_registry_weak_ptr = std::weak_ptr<message_registry>;
 
         base_message_handler() noexcept = default;
 
@@ -28,6 +30,6 @@ namespace celeritas
 
         [[nodiscard]] virtual std::string get_supported_type_name() const = 0;
 
-        [[nodiscard]] virtual bool handle(const header& header, const protobuf_message_shared_ptr& message) = 0;
+        [[nodiscard]] virtual bool handle(const header& header, const protobuf_message_shared_ptr& message, const message_registry_weak_ptr& message_registry) = 0;
     };
 }

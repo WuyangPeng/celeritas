@@ -1,4 +1,5 @@
-﻿#include "message_registry.h"
+﻿#include "base_message_handler.h"
+#include "message_registry.h"
 
 void celeritas::message_registry::registerHandler(const base_message_handler_shared_ptr& handler)
 {
@@ -18,7 +19,9 @@ bool celeritas::message_registry::dispatch(const header& header, const protobuf_
     if (const auto iter = registry_.find(typeName.data());
         iter != registry_.end())
     {
-        return iter->second->handle(header, message);
+        lock.unlock();
+
+        return iter->second->handle(header, message, shared_from_this());
     }
 
     return false;

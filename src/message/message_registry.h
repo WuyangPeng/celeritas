@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "base_message_handler.h"
 #include "header.h"
+#include "message_fwd.h"
 
 #include <google/protobuf/message.h>
 #include <shared_mutex>
@@ -9,12 +9,13 @@
 
 namespace celeritas
 {
-    class message_registry
+    class message_registry : public std::enable_shared_from_this<message_registry>
     {
     public:
         using class_type = message_registry;
         using base_message_handler_shared_ptr = std::shared_ptr<base_message_handler>;
         using protobuf_message_shared_ptr = std::shared_ptr<google::protobuf::Message>;
+        using message_registry_weak_ptr = std::weak_ptr<message_registry>;
 
         void registerHandler(const base_message_handler_shared_ptr& handler);
 
