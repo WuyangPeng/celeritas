@@ -1,7 +1,12 @@
 ﻿#include "service_info.h"
 
 celeritas::service_info::service_info(std::string instance_id, std::string service_name, std::string host, const int port, std::string game_server_id)
-    : instance_id{ std::move(instance_id) }, service_name{ std::move(service_name) }, host{ std::move(host) }, port{ port }, game_server_id{ std::move(game_server_id) }, last_heartbeat{ std::chrono::steady_clock::now() }
+    : instance_id{ std::move(instance_id) },
+      service_name{ std::move(service_name) },
+      host{ std::move(host) },
+      port{ port },
+      game_server_id{ std::move(game_server_id) },
+      last_heartbeat{ std::chrono::steady_clock::now() }
 {
 }
 

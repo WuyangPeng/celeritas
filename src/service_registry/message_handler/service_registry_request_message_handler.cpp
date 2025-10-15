@@ -1,7 +1,6 @@
 ﻿#include "service_registry_request_message_handler.h"
-#include "message/concrete_message_handler.tpp"
 #include "common/logger.h"
-#include "common/common_fwd.h"
+#include "message/concrete_message_handler.tpp"
 
 bool celeritas::service_registry_request_message_handler::handle_concrete(const header& header, const message_shared_ptr& message, const message_registry_weak_ptr& message_registry)
 {
