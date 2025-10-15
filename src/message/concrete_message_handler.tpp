@@ -18,3 +18,17 @@ bool celeritas::concrete_message_handler<Message>::handle(const header& header, 
 
     return handle_concrete(header, concrete_message, message_registry);
 }
+
+template <typename Message>
+template <typename T>
+bool celeritas::concrete_message_handler<Message>::dispatch(const header& header, const T& message, const message_registry_shared_ptr& message_registry)
+{
+    const auto request = std::make_shared<T>();
+    request->CopyFrom(message);
+
+    if (!message_registry->dispatch(header, request))
+    {
+        return false;
+    }
+    return true;
+}

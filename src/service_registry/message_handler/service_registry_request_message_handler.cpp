@@ -14,11 +14,8 @@ bool celeritas::service_registry_request_message_handler::handle_concrete(const 
     {
         case proto::service::service_registry_request::PayloadCase::kRegister:
         {
-            const auto& service = message->register_();
-            const auto register_request = std::make_shared<proto::service::register_request>();
-            register_request->CopyFrom(service);
-
-            if (!message_registry_shared_ptr->dispatch(header, register_request))
+            if (const auto& service = message->register_();
+                !dispatch<proto::service::register_request>(header, service, message_registry_shared_ptr))
             {
                 LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch service register request.";
                 return false;
@@ -28,11 +25,8 @@ bool celeritas::service_registry_request_message_handler::handle_concrete(const 
 
         case proto::service::service_registry_request::PayloadCase::kDiscover:
         {
-            const auto& service = message->discover();
-            const auto discover_request = std::make_shared<proto::service::discover_request>();
-            discover_request->CopyFrom(service);
-
-            if (!message_registry_shared_ptr->dispatch(header, discover_request))
+            if (const auto& discover = message->discover();
+                !dispatch<proto::service::discover_request>(header, discover, message_registry_shared_ptr))
             {
                 LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch discover request.";
                 return false;

@@ -17,8 +17,12 @@ namespace celeritas
 
     protected:
         using message_shared_ptr = std::shared_ptr<Message>;
+        using message_registry_shared_ptr = std::shared_ptr<message_registry>;
 
         [[nodiscard]] virtual bool handle_concrete(const header& header, const message_shared_ptr& message, const message_registry_weak_ptr& message_registry) = 0;
+
+        template <typename T>
+        [[nodiscard]] bool dispatch(const header& header, const T& message, const message_registry_shared_ptr& message_registry);
     };
 }
 
