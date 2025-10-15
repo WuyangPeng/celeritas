@@ -12,26 +12,14 @@ bool celeritas::service_registry_request_message_handler::handle_concrete(const 
 
     switch (message->payload_case())
     {
-        case proto::service::service_registry_request::PayloadCase::kRegister:
+        case proto::service::service_registry_request::PayloadCase::kServerRegister:
         {
-            if (const auto& service = message->register_();
-                !dispatch<proto::service::register_request>(header, service, message_registry_shared_ptr))
-            {
-                LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch service register request.";
-                return false;
-            }
-            return true;
+            return handle_server_register(header, message, message_registry_shared_ptr);
         }
 
-        case proto::service::service_registry_request::PayloadCase::kDiscover:
+        case proto::service::service_registry_request::PayloadCase::kServerDiscover:
         {
-            if (const auto& discover = message->discover();
-                !dispatch<proto::service::discover_request>(header, discover, message_registry_shared_ptr))
-            {
-                LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch discover request.";
-                return false;
-            }
-            return true;
+            return handle_server_discover(header, message, message_registry_shared_ptr);
         }
 
         default:
@@ -40,4 +28,27 @@ bool celeritas::service_registry_request_message_handler::handle_concrete(const 
             return false;
         }
     }
+}
+
+bool celeritas::service_registry_request_message_handler::handle_server_register(const header& header, const message_shared_ptr& message, const message_registry_shared_ptr& message_registry)
+{
+    if (const auto& server_register = message->server_register();
+        !dispatch<proto::service::register_request>(header, server_register, message_registry))
+    {
+        LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch service register request.";
+        return false;
+    }
+
+    return true;
+}
+
+bool celeritas::service_registry_request_message_handler::handle_server_discover(const header& header, const message_shared_ptr& message, const message_registry_shared_ptr& message_registry)
+{
+    if (const auto& server_discover = message->server_discover();
+        !dispatch<proto::service::discover_request>(header, server_discover, message_registry))
+    {
+        LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch discover request.";
+        return false;
+    }
+    return true;
 }

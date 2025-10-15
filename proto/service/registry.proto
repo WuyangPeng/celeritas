@@ -27,8 +27,8 @@ message discover_response {
 
 message service_registry_request {
   oneof payload {
-    register_request register = 1;
-    discover_request discover = 2;
+    register_request server_register = 1;
+    discover_request server_discover = 2;
   }
 }
 

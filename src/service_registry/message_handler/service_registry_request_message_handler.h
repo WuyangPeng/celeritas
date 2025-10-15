@@ -13,6 +13,11 @@ namespace celeritas
 
     protected:
         [[nodiscard]] bool handle_concrete(const header& header, const message_shared_ptr& message, const message_registry_weak_ptr& message_registry) override;
+
+    private:
+        [[nodiscard]] bool handle_server_register(const header& header, const message_shared_ptr& message, const message_registry_shared_ptr& message_registry);
+
+        [[nodiscard]] bool handle_server_discover(const header& header, const message_shared_ptr& message, const message_registry_shared_ptr& message_registry);
     };
 }
 
