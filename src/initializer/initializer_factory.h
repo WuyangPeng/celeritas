@@ -17,7 +17,7 @@ namespace celeritas
         using application_loader_unique_ptr = std::unique_ptr<application_loader>;
         using app_config_shared_ptr = std::shared_ptr<app_config>;
 
-        [[nodiscard]] static configuration_loader_unique_ptr create_configuration_loader(const std::string_view& server_type, const std::string_view& config_file_path);
+        [[nodiscard]] static configuration_loader_unique_ptr create_configuration_loader(const std::string_view& server_type, std::string config_file_path);
 
         [[nodiscard]] static resource_loader_unique_ptr create_resource_loader(const std::string_view& server_type, const app_config_shared_ptr& app_config);
 

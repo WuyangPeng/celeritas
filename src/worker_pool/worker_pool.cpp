@@ -1,5 +1,4 @@
 ﻿#include "worker_pool.h"
-#include "common/common_fwd.h"
 #include "common/logger.h"
 
 celeritas::worker_pool::worker_pool(const int num_threads)

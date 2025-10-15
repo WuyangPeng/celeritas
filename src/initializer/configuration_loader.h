@@ -13,7 +13,7 @@ namespace celeritas
         using class_type = configuration_loader;
         using app_config_shared_ptr = std::shared_ptr<app_config>;
 
-        explicit configuration_loader(std::string_view config_file_path);
+        explicit configuration_loader(std::string config_file_path);
 
         virtual ~configuration_loader() noexcept = default;
 

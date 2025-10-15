@@ -3,8 +3,8 @@
 
 using namespace std::literals;
 
-celeritas::configuration_loader::configuration_loader(const std::string_view config_file_path)
-    : config_file_path_{ config_file_path },
+celeritas::configuration_loader::configuration_loader(std::string config_file_path)
+    : config_file_path_{ std::move(config_file_path) },
       current_path_{ boost::filesystem::current_path() },
       config_path_{ current_path_ / config_path },
       app_config_{ std::make_shared<app_config>() }

@@ -6,9 +6,9 @@ project(celeritas)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+if (!MSVC)
 
-    # 编译选项（编译器）
+    # 编译选项
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
 
@@ -16,6 +16,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
 
+    # 共享库不允许未定义符号
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,defs")
 
 endif ()
@@ -70,7 +71,7 @@ else ()
 
     set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/cmake")
 
-    find_package(Boost 1.88 REQUIRED CONFIG COMPONENTS filesystem timer date_time thread charconv regex log_setup log)
+    find_package(Boost 1.88 REQUIRED CONFIG COMPONENTS filesystem timer date_time thread charconv regex log_setup log program_options)
 
     add_library(boost INTERFACE)
 
@@ -82,7 +83,8 @@ else ()
             Boost::charconv
             Boost::regex
             Boost::log_setup
-            Boost::log)
+            Boost::log
+            Boost::program_options)
 
     set(CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib")
     set(CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib")
@@ -179,14 +181,14 @@ add_library(mongo INTERFACE)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
+    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib)
+
     if (MSVC)
 
-        link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib)
         target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
 
     else ()
 
-        link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib)
         target_link_libraries(mongo INTERFACE bsoncxx.dll mongocxx.dll)
 
     endif ()

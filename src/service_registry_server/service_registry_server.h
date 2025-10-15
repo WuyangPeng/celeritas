@@ -7,6 +7,6 @@ namespace celeritas
     public:
         using class_type = service_registry_server;
 
-        static void run();
+        static void run(int argc, char** argv);
     };
 }

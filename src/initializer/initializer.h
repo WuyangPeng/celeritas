@@ -20,9 +20,9 @@ namespace celeritas
         using base_type = network_message_callback;
         using initializer_shared_ptr = std::shared_ptr<initializer>;
 
-        [[nodiscard]] static initializer_shared_ptr create(const std::string_view& server_type, std::string_view config_file_path);
+        [[nodiscard]] static initializer_shared_ptr create(const std::string_view& server_type, std::string config_file_path);
 
-        initializer(const std::string_view& server_type, std::string_view config_file_path);
+        initializer(const std::string_view& server_type, std::string config_file_path);
 
         ~initializer() noexcept override = default;
 

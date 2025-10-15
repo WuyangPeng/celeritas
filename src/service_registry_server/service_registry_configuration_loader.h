@@ -10,7 +10,7 @@ namespace celeritas
         using class_type = service_registry_configuration_loader;
         using base_type = configuration_loader;
 
-        explicit service_registry_configuration_loader(std::string_view config_file_path);
+        explicit service_registry_configuration_loader(std::string config_file_path);
 
     private:
         void service_initialize_config() override;

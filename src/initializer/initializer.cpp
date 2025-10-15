@@ -8,15 +8,15 @@
 
 using namespace std::literals;
 
-celeritas::initializer::initializer_shared_ptr celeritas::initializer::create(const std::string_view& server_type, std::string_view config_file_path)
+celeritas::initializer::initializer_shared_ptr celeritas::initializer::create(const std::string_view& server_type, std::string config_file_path)
 {
-    return std::make_shared<initializer>(server_type, config_file_path);
+    return std::make_shared<initializer>(server_type, std::move(config_file_path));
 }
 
-celeritas::initializer::initializer(const std::string_view& server_type, const std::string_view config_file_path)
+celeritas::initializer::initializer(const std::string_view& server_type, std::string config_file_path)
     : server_type_{ server_type },
       current_path_{ boost::filesystem::current_path() },
-      configuration_loader_{ initializer_factory::create_configuration_loader(server_type, config_file_path) },
+      configuration_loader_{ initializer_factory::create_configuration_loader(server_type, std::move(config_file_path)) },
       resource_loader_{ initializer_factory::create_resource_loader(server_type, configuration_loader_->get_app_config()) },
       application_loader_{ initializer_factory::create_application_loader(server_type, configuration_loader_->get_app_config()) },
       io_context_{},

@@ -1,10 +1,11 @@
 ﻿#pragma once
 
+#include "common/common_fwd.h"
 #include "detail/common_internal_fwd.h"
 
+#include <boost/log/trivial.hpp>
 #include <boost/log/sources/record_ostream.hpp>
 #include <boost/log/sources/severity_logger.hpp>
-#include <boost/log/trivial.hpp>
 #include <boost/log/utility/manipulators/add_value.hpp>
 
 namespace celeritas
@@ -40,11 +41,11 @@ namespace celeritas
 // 全局日志对象
 // 在你的代码中，使用 LOG(severity_level) << "你的日志信息" 来记录
 #define LOG(level) BOOST_LOG_STREAM_SEV(celeritas::logger::get(), boost::log::trivial::severity_level::level) \
-    << boost::log::add_value("function", std::source_location::current().function_name()) \
-    << boost::log::add_value("file", std::source_location::current().file_name()) \
-    << boost::log::add_value("line", std::source_location::current().line())
+    << boost::log::add_value(celeritas::log_function.data(), std::source_location::current().function_name()) \
+    << boost::log::add_value(celeritas::log_file.data(), std::source_location::current().file_name()) \
+    << boost::log::add_value(celeritas::log_line.data(), std::source_location::current().line())
 
 #define LOG_CHANNEL(channel, level) BOOST_LOG_STREAM_SEV(celeritas::logger::get(channel), boost::log::trivial::severity_level::level) \
-    << boost::log::add_value("function", std::source_location::current().function_name()) \
-    << boost::log::add_value("file", std::source_location::current().file_name()) \
-    << boost::log::add_value("line", std::source_location::current().line())
+    << boost::log::add_value(celeritas::log_function.data(), std::source_location::current().function_name()) \
+    << boost::log::add_value(celeritas::log_file.data(), std::source_location::current().file_name()) \
+    << boost::log::add_value(celeritas::log_line.data(), std::source_location::current().line())

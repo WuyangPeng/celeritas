@@ -1,24 +1,31 @@
 ﻿#include "service_registry_server.h"
-#include "common/common_fwd.h"
+#include "common/command_line_config.tpp"
 #include "common/logger.h"
 #include "initializer/initializer.h"
 #include "server/server_fwd.h"
 
 #include <exception>
 
-void celeritas::service_registry_server::run()
+void celeritas::service_registry_server::run(int argc, char** argv)
 {
-    const auto server_context = initializer::create(service_registry_type, service_registry_type);
+    const command_line_config command_line_config{ argc, argv, service_registry_type };
+
+    if (command_line_config.is_exit_requested())
+    {
+        return;
+    }
+
+    const auto server_context = initializer::create(service_registry_type, command_line_config.get<std::string>(config_file_path_command_line.data()));
 
     server_context->initialize();
     server_context->run();
 }
 
-int main()
+int main(int argc, char** argv)
 {
     try
     {
-        celeritas::service_registry_server::run();
+        celeritas::service_registry_server::run(argc, argv);
     }
     catch (const std::exception& error)
     {
