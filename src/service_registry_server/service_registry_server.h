@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "common/common_fwd.h"
+
 namespace celeritas
 {
     class service_registry_server
@@ -8,5 +10,8 @@ namespace celeritas
         using class_type = service_registry_server;
 
         static void run(int argc, char** argv);
+
+    private:
+        static void create_initializer(const command_line_config& command_line_config);
     };
 }

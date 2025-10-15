@@ -20,7 +20,7 @@ void celeritas::application_loader::stop()
     worker_pool_.reset();
 }
 
-void celeritas::application_loader::registerHandler(const base_message_handler_shared_ptr& handler)
+void celeritas::application_loader::register_handler(const base_message_handler_shared_ptr& handler)
 {
     message_registry_->registerHandler(handler);
 }

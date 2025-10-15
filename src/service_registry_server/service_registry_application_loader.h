@@ -14,6 +14,8 @@ namespace celeritas
 
     private:
         void service_initialize_application() override;
+
+        void register_message_handler();
     };
 }
 

@@ -6,22 +6,24 @@
 
 #include <exception>
 
-void celeritas::service_registry_server::run(int argc, char** argv)
+void celeritas::service_registry_server::run(const int argc, char** argv)
 {
-    const command_line_config command_line_config{ argc, argv, service_registry_type };
-
-    if (command_line_config.is_exit_requested())
+    if (const command_line_config command_line_config{ argc, argv, service_registry_type };
+        !command_line_config.is_exit_requested())
     {
-        return;
+        create_initializer(command_line_config);
     }
+}
 
+void celeritas::service_registry_server::create_initializer(const command_line_config& command_line_config)
+{
     const auto server_context = initializer::create(service_registry_type, command_line_config.get<std::string>(config_file_path_command_line.data()));
 
     server_context->initialize();
     server_context->run();
 }
 
-int main(int argc, char** argv)
+int main(const int argc, char** argv)
 {
     try
     {

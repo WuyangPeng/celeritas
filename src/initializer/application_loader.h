@@ -31,7 +31,7 @@ namespace celeritas
 
         void stop();
 
-        void registerHandler(const base_message_handler_shared_ptr& handler);
+        void register_handler(const base_message_handler_shared_ptr& handler);
 
         [[nodiscard]] bool dispatch(const header& header, const protobuf_message_shared_ptr& message);
 

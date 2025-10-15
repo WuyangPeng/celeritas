@@ -10,7 +10,12 @@ celeritas::service_registry_application_loader::service_registry_application_loa
 
 void celeritas::service_registry_application_loader::service_initialize_application()
 {
-    registerHandler(std::make_shared<service_registry_request_message_handler>());
-    registerHandler(std::make_shared<register_request_message_handler>());
-    registerHandler(std::make_shared<discover_request_message_handler>());
+    register_message_handler();
+}
+
+void celeritas::service_registry_application_loader::register_message_handler()
+{
+    register_handler(std::make_shared<service_registry_request_message_handler>());
+    register_handler(std::make_shared<register_request_message_handler>());
+    register_handler(std::make_shared<discover_request_message_handler>());
 }

@@ -1,6 +1,6 @@
 ﻿#include "service_registry_configuration_loader.h"
 
-celeritas::service_registry_configuration_loader::service_registry_configuration_loader(const std::string config_file_path)
+celeritas::service_registry_configuration_loader::service_registry_configuration_loader(std::string config_file_path)
     : base_type{ std::move(config_file_path) }
 {
 }
