@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "celeritas_error.h"
+#include "common/celeritas_error.h"
 #include "command_line_config.h"
 
 template <typename T>

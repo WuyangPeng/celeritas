@@ -1,5 +1,5 @@
 ﻿#include "command_line_config.h"
-#include "logger.h"
+#include "common/logger.h"
 
 celeritas::command_line_config::command_line_config(const int argc, char** argv, const std::string_view& server_type)
     : options_desc_{ "Allowed options" }, variables_{}, exit_requested_{ false }
@@ -17,14 +17,14 @@ celeritas::command_line_config::command_line_config(const int argc, char** argv,
     }
     catch (const boost::program_options::error& error)
     {
-        LOG_CHANNEL(common_channel, error) << "Command line parsing error: " << error.what();
+        LOG_CHANNEL(initializer_channel, error) << "Command line parsing error: " << error.what();
         exit_requested_ = true;
         return;
     }
 
     if (variables_.contains("help"))
     {
-        LOG_CHANNEL(common_channel, info) << options_desc_;
+        LOG_CHANNEL(initializer_channel, info) << options_desc_;
         exit_requested_ = true;
     }
 }
