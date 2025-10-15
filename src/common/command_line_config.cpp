@@ -17,14 +17,14 @@ celeritas::command_line_config::command_line_config(const int argc, char** argv,
     }
     catch (const boost::program_options::error& error)
     {
-        LOG_CHANNEL(initializer_channel, error) << "Command line parsing error: " << error.what();
+        LOG(error) << "Command line parsing error: " << error.what();
         exit_requested_ = true;
         return;
     }
 
     if (variables_.contains("help"))
     {
-        LOG_CHANNEL(initializer_channel, info) << options_desc_;
+        LOG(info) << options_desc_;
         exit_requested_ = true;
     }
 }

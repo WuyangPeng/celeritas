@@ -1,5 +1,5 @@
 ﻿#include "service_registry_server.h"
-#include "initializer/command_line_config.tpp"
+#include "common/command_line_config.tpp"
 #include "common/logger.h"
 #include "initializer/initializer.h"
 #include "server/server_fwd.h"
