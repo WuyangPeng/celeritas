@@ -5,7 +5,7 @@
 
 namespace celeritas
 {
-    class register_request_message_handler : public concrete_message_handler<proto::service::register_request>
+    class register_request_message_handler final : public concrete_message_handler<proto::service::register_request>
     {
     public:
         using class_type = register_request_message_handler;

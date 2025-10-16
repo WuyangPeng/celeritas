@@ -5,7 +5,7 @@
 
 namespace celeritas
 {
-    class discover_request_message_handler : public concrete_message_handler<proto::service::discover_request>
+    class discover_request_message_handler final : public concrete_message_handler<proto::service::discover_request>
     {
     public:
         using class_type = discover_request_message_handler;
