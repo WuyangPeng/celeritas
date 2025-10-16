@@ -1,4 +1,7 @@
-﻿#include "session.h"
+﻿#include "message_header.h"
+#include "session.h"
+#include "common/buffer_pool.h"
+#include "common/logger.h"
 
 celeritas::session::session(const int64_t session_id, session_callback session_callback)
     : session_id_{ session_id }, session_callback_{ std::move(session_callback) }
@@ -7,6 +10,29 @@ celeritas::session::session(const int64_t session_id, session_callback session_c
 
 void celeritas::session::write(const header& header, const proto::response& response)
 {
+    const auto header_request = header.get_message();
+
+    const message_header message_header{ header_request->ByteSizeLong(), response.ByteSizeLong() };
+
+    const auto total_size = message_header.get_total_size() + sizeof(message_header);
+    buffer_guard buffer_guard{ buffer_pool::acquire(total_size) };
+    buffer_guard.set_effective_size(total_size);
+
+    std::memcpy(buffer_guard.get(), &message_header, sizeof(message_header));
+
+    if (!header_request->SerializeToArray(buffer_guard.get() + sizeof(message_header), header_request->ByteSizeLong()))
+    {
+        LOG_CHANNEL(network_channel, error) << "序列化失败！";
+        return;
+    }
+
+    if (!response.SerializeToArray(buffer_guard.get() + sizeof(message_header) + header_request->ByteSizeLong(), response.ByteSizeLong()))
+    {
+        LOG_CHANNEL(network_channel, error) << "序列化失败！";
+        return;
+    }
+
+    write(std::move(buffer_guard));
 }
 
 int64_t celeritas::session::get_session_id() const noexcept

@@ -10,6 +10,10 @@ namespace celeritas
     public:
         using class_type = message_header;
 
+        message_header() noexcept = default;
+
+        message_header(size_t header_size, size_t body_size);
+
         [[nodiscard]] size_t get_total_size() const;
 
         [[nodiscard]] bool is_effective() const;

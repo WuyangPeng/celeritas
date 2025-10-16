@@ -106,6 +106,12 @@ celeritas::header celeritas::initializer::get_header(const message_header& messa
 
     switch (header_request.payload_case())
     {
+        case proto::header_request::PayloadCase::kEmpty:
+        {
+            const auto& empty_header = header_request.empty();
+            return header(empty_header);
+        }
+
         case proto::header_request::PayloadCase::kClient:
         {
             const auto& client_header = header_request.client();
