@@ -67,16 +67,7 @@ else ()
 
     set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/cmake")
 
-    find_package(Boost 1.88 REQUIRED CONFIG COMPONENTS
-            filesystem
-            timer
-            date_time
-            thread
-            charconv
-            regex
-            log_setup
-            log
-            program_options)
+    find_package(Boost 1.88 REQUIRED CONFIG COMPONENTS filesystem timer date_time thread charconv regex log_setup log program_options)
 
     target_link_libraries(boost INTERFACE
             Boost::filesystem
@@ -90,7 +81,7 @@ else ()
             Boost::program_options)
 
     set(CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib")
-    #set(CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib")
+    set(CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib")
     set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 endif ()
@@ -276,11 +267,5 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY}/"
             DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
 
-else ()
-
-    set(CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/bin/{BUILD_TYPE_DIRECTORY}/lib")
-
-    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/"
-            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}/lib/")
 
 endif ()
