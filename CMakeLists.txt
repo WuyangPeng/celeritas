@@ -8,13 +8,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (!MSVC)
 
-    # 编译选项
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
-
-    # 符号可见性
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
+    # 编译选项和符号可见性
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -fvisibility=hidden")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -fvisibility=hidden")
 
     # 共享库不允许未定义符号
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,defs")
@@ -39,11 +35,11 @@ include_directories(
         "${CMAKE_CURRENT_SOURCE_DIR}/proto"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/include"
-        "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/include"
-        "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/include/"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/include/mongocxx/v_noabi"
         "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/include/bsoncxx/v_noabi"
+        "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis"
+        "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/include"
         # 如果依赖项在本地，添加它们的include路径
 )
 
@@ -55,11 +51,11 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 endif ()
 
 # 包含boost库
+add_library(boost INTERFACE)
+
 if (MSVC)
 
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/)
-
-    add_library(boost INTERFACE)
 
 else ()
 
@@ -73,8 +69,6 @@ else ()
 
     find_package(Boost 1.88 REQUIRED CONFIG COMPONENTS filesystem timer date_time thread charconv regex log_setup log program_options)
 
-    add_library(boost INTERFACE)
-
     target_link_libraries(boost INTERFACE
             Boost::filesystem
             Boost::timer
@@ -87,7 +81,7 @@ else ()
             Boost::program_options)
 
     set(CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib")
-    set(CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib")
+    #set(CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib")
     set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 endif ()
@@ -276,6 +270,14 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY}/"
             DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}"
+    )
+
+else ()
+
+    set(CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/bin/{BUILD_TYPE_DIRECTORY}/lib")
+
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib"
+            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}/lib"
     )
 
 endif ()
