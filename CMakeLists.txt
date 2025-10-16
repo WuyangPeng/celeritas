@@ -263,6 +263,16 @@ install(TARGETS
         chat_server
         DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
 
+set(APP_RUNTIME_RPATH "$ORIGIN/lib")
+
+set_target_properties(
+        service_registry_server
+        auth_server
+        game_server
+        hat_server
+        PROPERTIES INSTALL_RPATH "${APP_RUNTIME_RPATH}"
+)
+
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/config/"
         DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}/config/"
         PATTERN "*.xml")
@@ -310,7 +320,5 @@ else ()
     install(FILES ${HIREDIS_LIBS}
             DESTINATION ${APP_LIB_INSTALL_DIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-
-    list(APPEND CMAKE_INSTALL_RPATH "${APP_LIB_INSTALL_DIR}")
 
 endif ()
