@@ -269,7 +269,7 @@ set_target_properties(
         service_registry_server
         auth_server
         game_server
-        hat_server
+        chat_server
         PROPERTIES INSTALL_RPATH "${APP_RUNTIME_RPATH}"
 )
 
