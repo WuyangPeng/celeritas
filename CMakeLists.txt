@@ -90,7 +90,7 @@ else ()
             Boost::program_options)
 
     set(CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib")
-    set(CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib")
+    #set(CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib")
     set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 endif ()
@@ -151,7 +151,7 @@ else ()
     file(GLOB_RECURSE PROTO_SRCS_GENERATED "src/proto/*.cc")
 
     list(APPEND CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/lib64")
-    list(APPEND CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/lib64")
+    #list(APPEND CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/lib64")
 
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/lib64)
 
@@ -199,7 +199,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 else ()
 
     list(APPEND CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib64")
-    list(APPEND CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib64")
+    #list(APPEND CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib64")
 
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib64)
     target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
@@ -214,7 +214,7 @@ link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIR
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
     list(APPEND CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY}")
-    list(APPEND CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY}")
+    #list(APPEND CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY}")
 
 endif ()
 
@@ -310,5 +310,7 @@ else ()
     install(FILES ${HIREDIS_LIBS}
             DESTINATION ${APP_LIB_INSTALL_DIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+
+    list(APPEND CMAKE_INSTALL_RPATH "${APP_LIB_INSTALL_DIR}")
 
 endif ()
