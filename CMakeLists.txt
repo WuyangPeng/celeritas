@@ -89,7 +89,7 @@ else ()
             Boost::log
             Boost::program_options)
 
-    set(CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib")
+    #set(CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib")
     set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 endif ()
