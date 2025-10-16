@@ -15,9 +15,9 @@ namespace celeritas
         [[nodiscard]] bool handle_concrete(const header& header, const message_type& current_message, const protobuf_message_shared_ptr& request_message, const message_registry_weak_ptr& message_registry, const session_shared_ptr& session) override;
 
     private:
-        [[nodiscard]] bool handle_server_register(const header& header, const message_type& current_message, const protobuf_message_shared_ptr& request_message, const message_registry_shared_ptr& message_registry, const session_shared_ptr& session);
+        [[nodiscard]] static bool handle_server_register(const header& header, const message_type& current_message, const protobuf_message_shared_ptr& request_message, const message_registry_shared_ptr& message_registry, const session_shared_ptr& session);
 
-        [[nodiscard]] bool handle_server_discover(const header& header, const message_type& current_message, const protobuf_message_shared_ptr& request_message, const message_registry_shared_ptr& message_registry, const session_shared_ptr& session);
+        [[nodiscard]] static bool handle_server_discover(const header& header, const message_type& current_message, const protobuf_message_shared_ptr& request_message, const message_registry_shared_ptr& message_registry, const session_shared_ptr& session);
     };
 }
 

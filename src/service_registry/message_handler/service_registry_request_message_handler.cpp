@@ -35,7 +35,7 @@ bool celeritas::service_registry_request_message_handler::handle_server_register
     if (const auto& server_register = current_message.server_register();
         !message_registry->dispatch(header, server_register, request_message, session))
     {
-        LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch service register request.";
+        LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch server register request.";
         return false;
     }
 
@@ -47,7 +47,7 @@ bool celeritas::service_registry_request_message_handler::handle_server_discover
     if (const auto& server_discover = current_message.server_discover();
         !message_registry->dispatch(header, server_discover, request_message, session))
     {
-        LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch discover request.";
+        LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch server discover request.";
         return false;
     }
     return true;

@@ -30,7 +30,7 @@ namespace celeritas
 
         void register_service(const service_info& info);
 
-        [[nodiscard]] service_info_container_type get_services(const std::string& service_name) const;
+        [[nodiscard]] service_info_container_type get_services(const std::string& service_name);
 
         void start_cleanup_timer(io_context_type& io_context);
 
@@ -45,7 +45,7 @@ namespace celeritas
         using time_point_type = service_info::time_point_type;
         using severity_level_type = boost::log::trivial::severity_level;
 
-        void start_cleanup_timer(const self_shared_ptr& self) const;
+        void start_cleanup_timer(const self_shared_ptr& self);
 
         void cleanup_expired_services(const error_code_type& error_code);
 
@@ -58,7 +58,7 @@ namespace celeritas
         static void log_server_unresponsive(const registry_type_iterator& iter, int64_t duration, severity_level_type level, const std::string& description);
 
         registry_type registry_;
-        mutable std::shared_mutex mutex_;
+        std::shared_mutex mutex_;
         steady_timer_unique_ptr cleanup_timer_interval_;
     };
 }

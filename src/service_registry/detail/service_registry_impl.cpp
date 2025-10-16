@@ -21,7 +21,7 @@ void celeritas::service_registry_impl::register_service(const service_info& info
     }
 }
 
-celeritas::service_registry_impl::service_info_container_type celeritas::service_registry_impl::get_services(const std::string& service_name) const
+celeritas::service_registry_impl::service_info_container_type celeritas::service_registry_impl::get_services(const std::string& service_name)
 {
     std::shared_lock lock{ mutex_ };
 
@@ -43,7 +43,7 @@ void celeritas::service_registry_impl::start_cleanup_timer(io_context_type& io_c
     start_cleanup_timer(shared_from_this());
 }
 
-void celeritas::service_registry_impl::start_cleanup_timer(const self_shared_ptr& self) const
+void celeritas::service_registry_impl::start_cleanup_timer(const self_shared_ptr& self)
 {
     cleanup_timer_interval_->expires_at(std::chrono::steady_clock::now() + cleanup_timer);
     cleanup_timer_interval_->async_wait(
