@@ -129,23 +129,21 @@ void celeritas::initializer::call_back(const message_header& message_header, buf
 {
     const auto header = get_header(message_header, buffer_guard);
 
-    proto::request request{};
+    const auto request = std::make_shared<proto::request>();
 
-    if (!request.ParseFromArray(buffer_guard.get() + message_header.get_header_size(), message_header.get_body_size()))
+    if (!request->ParseFromArray(buffer_guard.get() + message_header.get_header_size(), message_header.get_body_size()))
     {
         LOG_CHANNEL(initializer_channel, error) << "Failed to parse request from binary data.";
         return;
     }
 
-    switch (request.payload_case())
+    switch (request->payload_case())
     {
         case proto::request::PayloadCase::kService:
         {
-            const auto& service = request.service();
-            const auto service_request = std::make_shared<proto::service::service_request>();
-            service_request->CopyFrom(service);
+            const auto& service = request->service();
 
-            if (!application_loader_->dispatch(header, service_request))
+            if (!application_loader_->dispatch(header, service, request))
             {
                 LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch service request.";
             }

@@ -2,7 +2,7 @@
 #include "common/logger.h"
 #include "message/concrete_message_handler.tpp"
 
-bool celeritas::service_registry_request_message_handler::handle_concrete(const header& header, const message_shared_ptr& message, const message_registry_weak_ptr& message_registry)
+bool celeritas::service_registry_request_message_handler::handle_concrete(const header& header, const message_type& current_message, const protobuf_message_shared_ptr& request_message, const message_registry_weak_ptr& message_registry)
 {
     const auto message_registry_shared_ptr = message_registry.lock();
     if (message_registry_shared_ptr == nullptr)
@@ -10,16 +10,16 @@ bool celeritas::service_registry_request_message_handler::handle_concrete(const 
         return false;
     }
 
-    switch (message->payload_case())
+    switch (current_message.payload_case())
     {
         case proto::service::service_registry_request::PayloadCase::kServerRegister:
         {
-            return handle_server_register(header, message, message_registry_shared_ptr);
+            return handle_server_register(header, current_message, request_message, message_registry_shared_ptr);
         }
 
         case proto::service::service_registry_request::PayloadCase::kServerDiscover:
         {
-            return handle_server_discover(header, message, message_registry_shared_ptr);
+            return handle_server_discover(header, current_message, request_message, message_registry_shared_ptr);
         }
 
         default:
@@ -30,10 +30,10 @@ bool celeritas::service_registry_request_message_handler::handle_concrete(const 
     }
 }
 
-bool celeritas::service_registry_request_message_handler::handle_server_register(const header& header, const message_shared_ptr& message, const message_registry_shared_ptr& message_registry)
+bool celeritas::service_registry_request_message_handler::handle_server_register(const header& header, const message_type& current_message, const protobuf_message_shared_ptr& request_message, const message_registry_shared_ptr& message_registry)
 {
-    if (const auto& server_register = message->server_register();
-        !dispatch<proto::service::register_request>(header, server_register, message_registry))
+    if (const auto& server_register = current_message.server_register();
+        !message_registry->dispatch(header, server_register, request_message))
     {
         LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch service register request.";
         return false;
@@ -42,10 +42,10 @@ bool celeritas::service_registry_request_message_handler::handle_server_register
     return true;
 }
 
-bool celeritas::service_registry_request_message_handler::handle_server_discover(const header& header, const message_shared_ptr& message, const message_registry_shared_ptr& message_registry)
+bool celeritas::service_registry_request_message_handler::handle_server_discover(const header& header, const message_type& current_message, const protobuf_message_shared_ptr& request_message, const message_registry_shared_ptr& message_registry)
 {
-    if (const auto& server_discover = message->server_discover();
-        !dispatch<proto::service::discover_request>(header, server_discover, message_registry))
+    if (const auto& server_discover = current_message.server_discover();
+        !message_registry->dispatch(header, server_discover, request_message))
     {
         LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch discover request.";
         return false;

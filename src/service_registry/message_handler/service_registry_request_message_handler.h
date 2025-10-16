@@ -12,12 +12,12 @@ namespace celeritas
         using base_type = concrete_message_handler;
 
     protected:
-        [[nodiscard]] bool handle_concrete(const header& header, const message_shared_ptr& message, const message_registry_weak_ptr& message_registry) override;
+        [[nodiscard]] bool handle_concrete(const header& header, const message_type& message, const protobuf_message_shared_ptr& request_message, const message_registry_weak_ptr& message_registry) override;
 
     private:
-        [[nodiscard]] bool handle_server_register(const header& header, const message_shared_ptr& message, const message_registry_shared_ptr& message_registry);
+        [[nodiscard]] bool handle_server_register(const header& header, const message_type& message, const protobuf_message_shared_ptr& request_message, const message_registry_shared_ptr& message_registry);
 
-        [[nodiscard]] bool handle_server_discover(const header& header, const message_shared_ptr& message, const message_registry_shared_ptr& message_registry);
+        [[nodiscard]] bool handle_server_discover(const header& header, const message_type& message, const protobuf_message_shared_ptr& request_message, const message_registry_shared_ptr& message_registry);
     };
 }
 

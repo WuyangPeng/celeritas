@@ -19,7 +19,7 @@ namespace celeritas
 
         void registerHandler(const base_message_handler_shared_ptr& handler);
 
-        [[nodiscard]] bool dispatch(const header& header, const protobuf_message_shared_ptr& message);
+        [[nodiscard]] bool dispatch(const header& header, const google::protobuf::Message& current_message, const protobuf_message_shared_ptr& request_message);
 
     private:
         using registry_type = std::unordered_map<std::string, base_message_handler_shared_ptr>;
