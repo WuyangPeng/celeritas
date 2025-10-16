@@ -146,8 +146,6 @@ else ()
     # 其他平台下的操作
     file(GLOB_RECURSE PROTO_SRCS_GENERATED "src/proto/*.cc")
 
-    #list(APPEND CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/lib64")
-
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/lib64)
 
 endif ()
@@ -193,8 +191,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
 else ()
 
-    list(APPEND CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib64")
-
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib64)
     target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
 
@@ -204,12 +200,6 @@ endif ()
 add_library(redis INTERFACE)
 
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY})
-
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-
-    list(APPEND CMAKE_BUILD_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY}")
-
-endif ()
 
 target_link_libraries(redis INTERFACE hiredis${BUILD_LIB_SUFFIX})
 
