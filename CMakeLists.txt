@@ -67,7 +67,16 @@ else ()
 
     set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/cmake")
 
-    find_package(Boost 1.88 REQUIRED CONFIG COMPONENTS filesystem timer date_time thread charconv regex log_setup log program_options)
+    find_package(Boost 1.88 REQUIRED CONFIG COMPONENTS
+            filesystem
+            timer
+            date_time
+            thread
+            charconv
+            regex
+            log_setup
+            log
+            program_options)
 
     target_link_libraries(boost INTERFACE
             Boost::filesystem
@@ -247,7 +256,12 @@ add_subdirectory(cmake/game_server)
 add_subdirectory(cmake/chat_server)
 
 # 安装规则
-install(TARGETS service_registry_server auth_server game_server chat_server DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
+install(TARGETS
+        service_registry_server
+        auth_server
+        game_server
+        chat_server
+        DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/config/"
         DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}/config/"
@@ -266,6 +280,5 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY}/"
             DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
-
 
 endif ()
