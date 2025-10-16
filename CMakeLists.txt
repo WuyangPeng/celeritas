@@ -253,8 +253,7 @@ set_target_properties(
         auth_server
         game_server
         chat_server
-        PROPERTIES INSTALL_RPATH "${APP_RUNTIME_RPATH}"
-)
+        PROPERTIES INSTALL_RPATH "${APP_RUNTIME_RPATH}")
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/config/"
         DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}/config/"
