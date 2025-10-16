@@ -67,7 +67,16 @@ else ()
 
     set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/cmake")
 
-    find_package(Boost 1.88 REQUIRED CONFIG COMPONENTS filesystem timer date_time thread charconv regex log_setup log program_options)
+    find_package(Boost 1.88 REQUIRED CONFIG COMPONENTS
+            filesystem
+            timer
+            date_time
+            thread
+            charconv
+            regex
+            log_setup
+            log
+            program_options)
 
     target_link_libraries(boost INTERFACE
             Boost::filesystem
@@ -251,33 +260,27 @@ install(TARGETS service_registry_server auth_server game_server chat_server DEST
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/config/"
         DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}/config/"
-        PATTERN "*.xml"
-)
+        PATTERN "*.xml")
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/bin/"
-            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}"
-    )
+            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
 
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/bin64/"
-            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}"
-    )
+            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
 
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/bin/"
-            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}"
-    )
+            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
 
     install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY}/"
-            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}"
-    )
+            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
 
 else ()
 
     set(CMAKE_INSTALL_RPATH "${CMAKE_CURRENT_SOURCE_DIR}/bin/{BUILD_TYPE_DIRECTORY}/lib")
 
-    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib"
-            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}/lib"
-    )
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/"
+            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}/lib/")
 
 endif ()
