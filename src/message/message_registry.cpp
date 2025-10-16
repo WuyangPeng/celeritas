@@ -10,7 +10,7 @@ void celeritas::message_registry::registerHandler(const base_message_handler_sha
     registry_[typeName] = handler;
 }
 
-bool celeritas::message_registry::dispatch(const header& header, const google::protobuf::Message& current_message, const protobuf_message_shared_ptr& request_message)
+bool celeritas::message_registry::dispatch(const header& header, const google::protobuf::Message& current_message, const protobuf_message_shared_ptr& request_message, const session_shared_ptr& session)
 {
     std::unique_lock lock{ mutex_ };
 
@@ -21,7 +21,7 @@ bool celeritas::message_registry::dispatch(const header& header, const google::p
     {
         lock.unlock();
 
-        return iter->second->handle(header, current_message, request_message, shared_from_this());
+        return iter->second->handle(header, current_message, request_message, shared_from_this(), session);
     }
 
     return false;

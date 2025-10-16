@@ -18,7 +18,7 @@ celeritas::tcp_session_run<SocketType>::tcp_session_run(socket_type& socket, ses
 }
 
 template <typename SocketType>
-void celeritas::tcp_session_run<SocketType>::start()
+void celeritas::tcp_session_run<SocketType>::do_start()
 {
     co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
                  return self->run();
@@ -97,12 +97,14 @@ celeritas::session_run::void_awaitable_type celeritas::tcp_session_run<SocketTyp
                                         << ",body size:"
                                         << header.get_body_size();
 
+    auto session = get_session();
+
     // 现在，通知外部处理者一个完整的消息已经接收到
     // 我们将消息头和消息体数据传递给回调函数
     const auto callback = session_callback_.get_network_message_callback().lock();
-    if (callback != nullptr)
+    if (callback != nullptr && session != nullptr)
     {
-        callback->call_back(header, std::move(buffer_guard));
+        callback->call_back(header, std::move(buffer_guard), session);
     }
 }
 

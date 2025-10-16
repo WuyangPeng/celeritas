@@ -2,6 +2,8 @@
 
 #include "session_callback.h"
 #include "common/buffer_guard.h"
+#include "message/header.h"
+#include "proto/response.pb.h"
 
 #include <boost/asio/awaitable.hpp>
 #include <memory>
@@ -28,6 +30,8 @@ namespace celeritas
 
         // 启动会话处理协程
         virtual void start() = 0;
+
+        virtual void write(const header& header, const proto::response& response);
 
         virtual void write(buffer_guard data) = 0;
 

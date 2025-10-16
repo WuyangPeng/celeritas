@@ -5,6 +5,10 @@ celeritas::session::session(const int64_t session_id, session_callback session_c
 {
 }
 
+void celeritas::session::write(const header& header, const proto::response& response)
+{
+}
+
 int64_t celeritas::session::get_session_id() const noexcept
 {
     return session_id_;

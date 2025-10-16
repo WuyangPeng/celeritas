@@ -2,6 +2,7 @@
 
 #include "header.h"
 #include "message_fwd.h"
+#include "network/network_fwd.h"
 
 #include <google/protobuf/message.h>
 #include <shared_mutex>
@@ -16,10 +17,11 @@ namespace celeritas
         using base_message_handler_shared_ptr = std::shared_ptr<base_message_handler>;
         using protobuf_message_shared_ptr = std::shared_ptr<google::protobuf::Message>;
         using message_registry_weak_ptr = std::weak_ptr<message_registry>;
+        using session_shared_ptr = std::shared_ptr<session>;
 
         void registerHandler(const base_message_handler_shared_ptr& handler);
 
-        [[nodiscard]] bool dispatch(const header& header, const google::protobuf::Message& current_message, const protobuf_message_shared_ptr& request_message);
+        [[nodiscard]] bool dispatch(const header& header, const google::protobuf::Message& current_message, const protobuf_message_shared_ptr& request_message, const session_shared_ptr& session);
 
     private:
         using registry_type = std::unordered_map<std::string, base_message_handler_shared_ptr>;

@@ -38,7 +38,7 @@ namespace celeritas
 
         void run();
 
-        void call_back(const message_header& message_header, buffer_guard buffer_guard) override;
+        void call_back(const message_header& message_header, buffer_guard buffer_guard, const session_shared_ptr& session) override;
 
     private:
         using configuration_loader_unique_ptr = initializer_factory::configuration_loader_unique_ptr;

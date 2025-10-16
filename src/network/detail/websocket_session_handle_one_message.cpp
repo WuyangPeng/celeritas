@@ -3,8 +3,8 @@
 #include "common/logger.h"
 #include "common/common_fwd.h"
 
-celeritas::websocket_session_handle_one_message::websocket_session_handle_one_message(web_socket_stream_type& web_socket, int64_t session_id, network_message_callback_weak_ptr callback)
-    : web_socket_{ web_socket }, session_id_{ session_id }, callback_{ std::move(callback) }
+celeritas::websocket_session_handle_one_message::websocket_session_handle_one_message(web_socket_stream_type& web_socket, int64_t session_id, network_message_callback_weak_ptr callback, session_weak_ptr session)
+    : web_socket_{ web_socket }, session_id_{ session_id }, callback_{ std::move(callback) }, session_{ std::move(session) }
 {
 }
 
@@ -43,10 +43,12 @@ celeritas::websocket_session_handle_one_message::void_awaitable_type celeritas::
         buffer_guard.set_effective_size(total_size);
         std::memcpy(buffer_guard.get(), payload_data, total_size);
 
+        auto session = session_.lock();
+
         if (const auto callback = callback_.lock();
-            callback != nullptr)
+            callback != nullptr && session != nullptr)
         {
-            callback->call_back(base, std::move(buffer_guard));
+            callback->call_back(base, std::move(buffer_guard), session);
         }
 
         buffer.consume(buffer.size());

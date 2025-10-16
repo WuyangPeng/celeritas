@@ -17,7 +17,7 @@ celeritas::http_session::http_session(socket_type socket,
 
 void celeritas::http_session::start()
 {
-    http_run_->start();
+    http_run_->start(shared_from_this());
 }
 
 void celeritas::http_session::write(buffer_guard data)

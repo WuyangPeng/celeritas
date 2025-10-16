@@ -18,7 +18,7 @@ namespace celeritas
 
         websocket_session_run(web_socket_stream_type& web_socket, int64_t session_id, session_callback session_callback);
 
-        void start() override;
+        void do_start() override;
 
         [[nodiscard]] void_awaitable_type run() override;
 

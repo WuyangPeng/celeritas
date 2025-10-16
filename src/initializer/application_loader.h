@@ -3,6 +3,7 @@
 #include "config/app_config.h"
 #include "message/message_registry.h"
 #include "worker_pool/worker_pool.h"
+#include "network/network_fwd.h"
 
 namespace celeritas
 {
@@ -14,6 +15,7 @@ namespace celeritas
         using base_message_handler_shared_ptr = std::shared_ptr<base_message_handler>;
         using protobuf_message_shared_ptr = std::shared_ptr<google::protobuf::Message>;
         using message_registry_weak_ptr = std::weak_ptr<message_registry>;
+        using session_shared_ptr = std::shared_ptr<session>;
 
         explicit application_loader(app_config_shared_ptr app_config);
 
@@ -33,7 +35,7 @@ namespace celeritas
 
         void register_handler(const base_message_handler_shared_ptr& handler);
 
-        [[nodiscard]] bool dispatch(const header& header, const google::protobuf::Message& current_message, const protobuf_message_shared_ptr& request_message);
+        [[nodiscard]] bool dispatch(const header& header, const google::protobuf::Message& current_message, const protobuf_message_shared_ptr& request_message, const session_shared_ptr& session);
 
         [[nodiscard]] message_registry_weak_ptr get_message_registry();
 

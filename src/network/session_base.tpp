@@ -20,7 +20,7 @@ celeritas::session_base<SocketType>::session_base(socket_type socket,
 template <typename SocketType>
 void celeritas::session_base<SocketType>::start()
 {
-    session_run_->start();
+    session_run_->start(shared_from_this());
 }
 
 template <typename SocketType>

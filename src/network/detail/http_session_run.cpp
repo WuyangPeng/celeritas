@@ -13,7 +13,7 @@ celeritas::http_session_run::http_session_run(socket_type& socket, const int64_t
 {
 }
 
-void celeritas::http_session_run::start()
+void celeritas::http_session_run::do_start()
 {
     boost::asio::co_spawn(socket_.get_executor(),
                           [self = shared_from_this()] {
@@ -112,10 +112,11 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_
     buffer_guard.set_effective_size(total_size);
     std::memcpy(buffer_guard.get(), payload_data, total_size);
 
+    auto session = get_session();
     if (const auto callback = session_callback_.get_network_message_callback().lock();
-        callback != nullptr)
+        callback != nullptr && session != nullptr)
     {
-        callback->call_back(base, std::move(buffer_guard));
+        callback->call_back(base, std::move(buffer_guard), session);
     }
 
     buffer.consume(buffer.size());

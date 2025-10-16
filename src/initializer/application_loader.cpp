@@ -25,9 +25,9 @@ void celeritas::application_loader::register_handler(const base_message_handler_
     message_registry_->registerHandler(handler);
 }
 
-bool celeritas::application_loader::dispatch(const header& header, const google::protobuf::Message& current_message, const protobuf_message_shared_ptr& request_message)
+bool celeritas::application_loader::dispatch(const header& header, const google::protobuf::Message& current_message, const protobuf_message_shared_ptr& request_message, const session_shared_ptr& session)
 {
-    return message_registry_->dispatch(header, current_message, request_message);
+    return message_registry_->dispatch(header, current_message, request_message, session);
 }
 
 celeritas::application_loader::message_registry_weak_ptr celeritas::application_loader::get_message_registry()

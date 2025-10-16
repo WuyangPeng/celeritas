@@ -1,10 +1,12 @@
 ﻿#include "websocket_session_handle_one_message.h"
 #include "websocket_session_handle_session.h"
+
+#include <utility>
 #include "common/logger.h"
 #include "common/common_fwd.h"
 
-celeritas::websocket_session_handle_session::websocket_session_handle_session(web_socket_stream_type& web_socket, int64_t session_id, network_message_callback_weak_ptr callback)
-    : web_socket_{ web_socket }, session_id_{ session_id }, callback_{ std::move(callback) }
+celeritas::websocket_session_handle_session::websocket_session_handle_session(web_socket_stream_type& web_socket, int64_t session_id, network_message_callback_weak_ptr callback, session_weak_ptr session)
+    : web_socket_{ web_socket }, session_id_{ session_id }, callback_{ std::move(callback) }, session_{ std::move(session) }
 {
 }
 
@@ -47,7 +49,7 @@ celeritas::websocket_session_handle_session::void_awaitable_type celeritas::webs
 
     LOG_CHANNEL(network_channel, info) << "socket session [" << session_id_ << "] upgraded to websocket.";
 
-    websocket_session_handle_one_message handler{ web_socket_, session_id_, callback_ };
+    websocket_session_handle_one_message handler{ web_socket_, session_id_, callback_, session_ };
     co_await handler.run();
 }
 

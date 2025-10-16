@@ -17,7 +17,7 @@ namespace celeritas
 
         tcp_session_run(socket_type& socket, session_callback session_callback);
 
-        void start() override;
+        void do_start() override;
 
         [[nodiscard]] void_awaitable_type run() override;
 

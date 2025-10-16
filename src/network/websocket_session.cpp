@@ -26,7 +26,7 @@ void celeritas::websocket_session::set_option(const std::string& game_server_id)
 
 void celeritas::websocket_session::start()
 {
-    websocket_run_->start();
+    websocket_run_->start(shared_from_this());
 }
 
 void celeritas::websocket_session::write(buffer_guard data)

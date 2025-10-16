@@ -8,7 +8,7 @@ celeritas::websocket_session_run::websocket_session_run(web_socket_stream_type& 
 {
 }
 
-void celeritas::websocket_session_run::start()
+void celeritas::websocket_session_run::do_start()
 {
     // 启动主运行协程
     boost::asio::co_spawn(web_socket_.get_executor(),
@@ -20,7 +20,7 @@ void celeritas::websocket_session_run::start()
 
 celeritas::session_run::void_awaitable_type celeritas::websocket_session_run::run()
 {
-    websocket_session_handle_session handle{ web_socket_, session_id_, session_callback_.get_network_message_callback() };
+    websocket_session_handle_session handle{ web_socket_, session_id_, session_callback_.get_network_message_callback(), get_session() };
 
     co_await handle.run();
 

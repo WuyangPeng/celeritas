@@ -125,7 +125,7 @@ celeritas::header celeritas::initializer::get_header(const message_header& messa
     }
 }
 
-void celeritas::initializer::call_back(const message_header& message_header, buffer_guard buffer_guard)
+void celeritas::initializer::call_back(const message_header& message_header, buffer_guard buffer_guard, const session_shared_ptr& session)
 {
     const auto header = get_header(message_header, buffer_guard);
 
@@ -143,7 +143,7 @@ void celeritas::initializer::call_back(const message_header& message_header, buf
         {
             const auto& service = request->service();
 
-            if (!application_loader_->dispatch(header, service, request))
+            if (!application_loader_->dispatch(header, service, request, session))
             {
                 LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch service request.";
             }

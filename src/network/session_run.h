@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "network/network_fwd.h"
+
 #include <boost/asio/awaitable.hpp>
 #include <memory>
 
@@ -10,6 +12,7 @@ namespace celeritas
     public:
         using class_type = session_run;
         using void_awaitable_type = boost::asio::awaitable<void>;
+        using session_weak_ptr = std::weak_ptr<session>;
 
         session_run() noexcept = default;
 
@@ -23,8 +26,18 @@ namespace celeritas
 
         session_run& operator=(session_run&& rhs) noexcept = default;
 
-        virtual void start() = 0;
+        void start(const session_weak_ptr& session);
 
         [[nodiscard]] virtual void_awaitable_type run() = 0;
+
+    protected:
+        using session_shared_ptr = std::shared_ptr<session>;
+
+        [[nodiscard]] session_shared_ptr get_session();
+
+    private:
+        virtual void do_start() = 0;
+
+        session_weak_ptr session_;
     };
 }
