@@ -200,7 +200,15 @@ endif ()
 # 包含mongo库
 add_library(mongo INTERFACE)
 
-link_directories(${MONGO_DIR}/lib)
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+    link_directories(${MONGO_DIR}/lib)
+
+else ()
+
+    link_directories(${MONGO_DIR}/lib64)
+    
+endif ()
 
 target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
 
