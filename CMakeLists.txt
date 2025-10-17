@@ -114,7 +114,6 @@ else ()
 endif ()
 
 # 包含protobuf库
-
 set(PROTOBUF_BIN_DIR "${PROTOBUF_DIR}/bin64/")
 
 link_directories(${PROTOBUF_BIN_DIR})
@@ -207,7 +206,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 else ()
 
     link_directories(${MONGO_DIR}/lib64)
-    
+
 endif ()
 
 target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
