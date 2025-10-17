@@ -12,13 +12,15 @@ void celeritas::session::write(const header& header, const proto::response& resp
 {
     const auto header_request = header.get_message();
 
-    const message_header message_header{ header_request->ByteSizeLong(), response.ByteSizeLong() };
+    message_header message_header{ header_request->ByteSizeLong(), response.ByteSizeLong() };
 
     const auto header_size = message_header.get_self_size();
 
     const auto total_size = message_header.get_total_size() + header_size;
     buffer_guard buffer_guard{ buffer_pool::acquire(total_size) };
     buffer_guard.set_effective_size(total_size);
+
+    message_header.host_to_network();
 
     std::memcpy(buffer_guard.get(), &message_header, header_size);
 

@@ -9,6 +9,7 @@ namespace celeritas
     class websocket_session;
     class http_session;
     class listener;
+    class listener_accept;
     class websocket_listener;
     class tcp_listener;
     class http_listener;

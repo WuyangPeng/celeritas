@@ -14,7 +14,7 @@ namespace celeritas
 
         message_header(size_t header_size, size_t body_size);
 
-        [[nodiscard]] size_t get_self_size() const;
+        [[nodiscard]] static size_t get_self_size();
 
         [[nodiscard]] size_t get_total_size() const;
 
@@ -27,6 +27,8 @@ namespace celeritas
         [[nodiscard]] uint32_t get_body_size() const;
 
         void network_to_host();
+
+        void host_to_network();
 
     private:
         uint16_t header_type = 0;

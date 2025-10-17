@@ -6,7 +6,7 @@ celeritas::message_header::message_header(const size_t header_size, const size_t
 {
 }
 
-size_t celeritas::message_header::get_self_size() const
+size_t celeritas::message_header::get_self_size()
 {
     return sizeof(message_header);
 }
@@ -41,4 +41,11 @@ void celeritas::message_header::network_to_host()
     header_type = ntohs(header_type);
     header_size = ntohs(header_size);
     body_size = ntohl(body_size);
+}
+
+void celeritas::message_header::host_to_network()
+{
+    header_type = htons(header_type);
+    header_size = htons(header_size);
+    body_size = htonl(body_size);
 }
