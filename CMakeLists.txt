@@ -206,11 +206,12 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
         link_directories(${OPENSSL_DIR}/lib64)
 
+
     endif ()
 
 endif ()
 
-target_link_libraries(openssl INTERFACE ssl crypto)
+target_link_libraries(openssl INTERFACE libssl libcrypto)
 
 # 静态库
 add_subdirectory(cmake/common)
