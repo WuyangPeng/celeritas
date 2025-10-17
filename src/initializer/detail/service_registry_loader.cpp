@@ -8,11 +8,11 @@ celeritas::service_registry_loader::tcp_client_shared_ptr celeritas::service_reg
                                                                                                                       const std::string& game_server_id,
                                                                                                                       const std::string& server_type)
 {
-    const auto client = std::make_shared<tcp_client>(io_context, network_message_callback, game_server_id, server_type);
+    const auto client = std::make_shared<tcp_client>(io_context, network_message_callback, game_server_id, service_registry_config.get_host(), service_registry_config.get_port(), server_type);
 
     boost::asio::co_spawn(
         io_context,
-        client->connect(service_registry_config.get_host(), service_registry_config.get_port()),
+        client->connect(),
         boost::asio::detached
         );
 

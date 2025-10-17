@@ -19,11 +19,15 @@ namespace celeritas
         using session_type_shared_type = std::shared_ptr<session_type>;
         using session_waitable_type = boost::asio::awaitable<session_type_shared_type>;
 
-        // 构造函数：接受 io_context 和消息处理回调
-        tcp_client(io_context_type& io_context, network_message_callback_weak_ptr callback, std::string game_server_id, std::string server_type);
+        tcp_client(io_context_type& io_context,
+                   network_message_callback_weak_ptr callback,
+                   std::string game_server_id,
+                   std::string host,
+                   int port,
+                   std::string server_type);
 
         // 异步连接到指定的远程地址和端口
-        [[nodiscard]] session_waitable_type connect(const std::string& host, int port);
+        [[nodiscard]] session_waitable_type connect();
 
         [[nodiscard]] bool is_open() const;
 

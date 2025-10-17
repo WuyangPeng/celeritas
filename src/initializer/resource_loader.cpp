@@ -174,7 +174,7 @@ void celeritas::resource_loader::process_check_tcp_clients_by_duration(boost::as
             {
                 boost::asio::co_spawn(
                     io_context,
-                    tcp_client->connect(tcp_client->get_host(), tcp_client->get_port()),
+                    tcp_client->connect(),
                     boost::asio::detached
                     );
 
