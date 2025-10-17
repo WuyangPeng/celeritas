@@ -49,6 +49,6 @@ namespace celeritas
 
         std::atomic<bool> is_running_;
         session_type_container_type sessions_;
-        int64_t session_id_;
+        int64_t session_id_ = 0;
     };
 }
