@@ -62,7 +62,7 @@ set_target_properties(protobuf::libprotobuf-lite PROPERTIES
   INTERFACE_COMPILE_DEFINITIONS "PROTOBUF_USE_DLLS"
   INTERFACE_COMPILE_FEATURES "cxx_std_17"
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
-  INTERFACE_LINK_LIBRARIES "absl::absl_check;absl::absl_log;absl::algorithm;absl::base;absl::bind_front;absl::bits;absl::btree;absl::cleanup;absl::cord;absl::core_headers;absl::debugging;absl::die_if_null;absl::dynamic_annotations;absl::flags;absl::flat_hash_map;absl::flat_hash_set;absl::function_ref;absl::hash;absl::layout;absl::log_initialize;absl::log_globals;absl::log_severity;absl::memory;absl::node_hash_map;absl::node_hash_set;absl::random_distributions;absl::random_random;absl::span;absl::status;absl::statusor;absl::strings;absl::synchronization;absl::time;absl::type_traits;absl::utility"
+  INTERFACE_LINK_LIBRARIES "absl::abseil_dll"
 )
 
 # Create imported target protobuf::libprotobuf
@@ -72,7 +72,7 @@ set_target_properties(protobuf::libprotobuf PROPERTIES
   INTERFACE_COMPILE_DEFINITIONS "PROTOBUF_USE_DLLS"
   INTERFACE_COMPILE_FEATURES "cxx_std_17"
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
-  INTERFACE_LINK_LIBRARIES "absl::absl_check;absl::absl_log;absl::algorithm;absl::base;absl::bind_front;absl::bits;absl::btree;absl::cleanup;absl::cord;absl::core_headers;absl::debugging;absl::die_if_null;absl::dynamic_annotations;absl::flags;absl::flat_hash_map;absl::flat_hash_set;absl::function_ref;absl::hash;absl::layout;absl::log_initialize;absl::log_globals;absl::log_severity;absl::memory;absl::node_hash_map;absl::node_hash_set;absl::random_distributions;absl::random_random;absl::span;absl::status;absl::statusor;absl::strings;absl::synchronization;absl::time;absl::type_traits;absl::utility"
+  INTERFACE_LINK_LIBRARIES "absl::abseil_dll"
 )
 
 # Create imported target protobuf::libprotoc
@@ -81,7 +81,7 @@ add_library(protobuf::libprotoc SHARED IMPORTED)
 set_target_properties(protobuf::libprotoc PROPERTIES
   INTERFACE_COMPILE_DEFINITIONS "PROTOBUF_USE_DLLS"
   INTERFACE_COMPILE_FEATURES "cxx_std_17"
-  INTERFACE_LINK_LIBRARIES "protobuf::libupb;absl::absl_check;absl::absl_log;absl::algorithm;absl::base;absl::bind_front;absl::bits;absl::btree;absl::cleanup;absl::cord;absl::core_headers;absl::debugging;absl::die_if_null;absl::dynamic_annotations;absl::flags;absl::flat_hash_map;absl::flat_hash_set;absl::function_ref;absl::hash;absl::layout;absl::log_initialize;absl::log_globals;absl::log_severity;absl::memory;absl::node_hash_map;absl::node_hash_set;absl::random_distributions;absl::random_random;absl::span;absl::status;absl::statusor;absl::strings;absl::synchronization;absl::time;absl::type_traits;absl::utility"
+  INTERFACE_LINK_LIBRARIES "protobuf::libupb;absl::abseil_dll"
 )
 
 # Create imported target protobuf::libupb
@@ -156,7 +156,7 @@ unset(_cmake_import_check_targets)
 # Make sure the targets which have been exported in some other
 # export set exist.
 unset(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE_targets)
-foreach(_target "absl::absl_check" "absl::absl_log" "absl::algorithm" "absl::base" "absl::bind_front" "absl::bits" "absl::btree" "absl::cleanup" "absl::cord" "absl::core_headers" "absl::debugging" "absl::die_if_null" "absl::dynamic_annotations" "absl::flags" "absl::flat_hash_map" "absl::flat_hash_set" "absl::function_ref" "absl::hash" "absl::layout" "absl::log_initialize" "absl::log_globals" "absl::log_severity" "absl::memory" "absl::node_hash_map" "absl::node_hash_set" "absl::random_distributions" "absl::random_random" "absl::span" "absl::status" "absl::statusor" "absl::strings" "absl::synchronization" "absl::time" "absl::type_traits" "absl::utility" "utf8_range::utf8_range" )
+foreach(_target "absl::abseil_dll" "utf8_range::utf8_range" )
   if(NOT TARGET "${_target}" )
     set(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE_targets "${${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE_targets} ${_target}")
   endif()

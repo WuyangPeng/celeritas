@@ -29,6 +29,20 @@ else ()
 
 endif ()
 
+if (MSVC)
+
+    set(LIB_DIRECTORY lib)
+    set(BIN_DIRECTORY bin)
+    set(LIB_PREFIX lib)
+
+else ()
+
+    set(LIB_DIRECTORY lib64)
+    set(BIN_DIRECTORY bin64)
+    set(LIB_PREFIX)
+
+endif ()
+
 set(BOOST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost")
 set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf")
 set(MONGO_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo")
@@ -101,7 +115,7 @@ endif ()
 
 # 包含protobuf库
 
-set(PROTOBUF_BIN_DIR "${PROTOBUF_DIR}/bin/")
+set(PROTOBUF_BIN_DIR "${PROTOBUF_DIR}/bin64/")
 
 link_directories(${PROTOBUF_BIN_DIR})
 
@@ -109,7 +123,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     set(CMAKE_PREFIX_PATH "${PROTOBUF_BIN_DIR}")
     set(Protobuf_INCLUDE_DIR "${PROTOBUF_DIR}/include")
-    set(Protobuf_LIBRARIES "${PROTOBUF_DIR}/lib")
+    set(Protobuf_LIBRARIES "${PROTOBUF_DIR}/lib64")
 
     # 查找和添加依赖项
     find_package(Protobuf REQUIRED)
@@ -165,24 +179,28 @@ add_library(proto_generated ${PROTO_SRCS_GENERATED})
 
 add_library(proto INTERFACE)
 
-target_link_libraries(proto INTERFACE
-        protobuf
-        absl_log_internal_message
-        absl_log_internal_check_op
-        absl_log_internal_nullguard)
+if (MSVC)
+
+    link_directories(${PROTOBUF_DIR}/${LIB_DIRECTORY})
+
+    target_link_libraries(proto INTERFACE
+            libprotobuf
+            abseil_dll)
+
+else ()
+
+    target_link_libraries(proto INTERFACE
+            protobuf
+            absl_log_internal_message
+            absl_log_internal_check_op
+            absl_log_internal_nullguard)
+
+endif ()
 
 # 包含mongo库
 add_library(mongo INTERFACE)
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-
-    link_directories(${MONGO_DIR}/lib)
-
-else ()
-
-    link_directories(${MONGO_DIR}/lib64)
-
-endif ()
+link_directories(${MONGO_DIR}/lib)
 
 target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
 
@@ -198,27 +216,11 @@ add_library(openssl INTERFACE)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-    if (MSVC)
-
-        link_directories(${OPENSSL_DIR}/lib)
-
-    else ()
-
-        link_directories(${OPENSSL_DIR}/lib64)
-
-    endif ()
+    link_directories(${OPENSSL_DIR}/${LIB_DIRECTORY})
 
 endif ()
 
-if (MSVC)
-
-    target_link_libraries(openssl INTERFACE libssl libcrypto)
-
-else ()
-
-    target_link_libraries(openssl INTERFACE ssl crypto)
-
-endif ()
+target_link_libraries(openssl INTERFACE ${LIB_PREFIX}ssl ${LIB_PREFIX}crypto)
 
 # 静态库
 add_subdirectory(cmake/common)
@@ -262,12 +264,12 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     # 定义库的最终安装目标目录
     set(APP_LIB_INSTALL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
 
-    file(GLOB PROTOBUF_LIBS "${OPENSSL_DIR}/bin64/*.dll*")
+    file(GLOB PROTOBUF_LIBS "${OPENSSL_DIR}/${BIN_DIRECTORY}/*.dll*")
     install(FILES ${PROTOBUF_LIBS}
             DESTINATION ${APP_LIB_INSTALL_DIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
-    file(GLOB PROTOBUF_LIBS "${PROTOBUF_DIR}/bin/*.dll*")
+    file(GLOB PROTOBUF_LIBS "${PROTOBUF_DIR}/${BIN_DIRECTORY}/*.dll*")
     install(FILES ${PROTOBUF_LIBS}
             DESTINATION ${APP_LIB_INSTALL_DIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)

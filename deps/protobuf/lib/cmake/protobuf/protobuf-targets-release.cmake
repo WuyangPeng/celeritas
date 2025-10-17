@@ -8,45 +8,45 @@ set(CMAKE_IMPORT_FILE_VERSION 1)
 # Import target "protobuf::libprotobuf-lite" for configuration "Release"
 set_property(TARGET protobuf::libprotobuf-lite APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(protobuf::libprotobuf-lite PROPERTIES
-  IMPORTED_IMPLIB_RELEASE "${_IMPORT_PREFIX}/lib/libprotobuf-lite.dll.a"
+  IMPORTED_IMPLIB_RELEASE "${_IMPORT_PREFIX}/lib/libprotobuf-lite.lib"
   IMPORTED_LINK_DEPENDENT_LIBRARIES_RELEASE "utf8_range::utf8_validity"
   IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/bin/libprotobuf-lite.dll"
   )
 
 list(APPEND _cmake_import_check_targets protobuf::libprotobuf-lite )
-list(APPEND _cmake_import_check_files_for_protobuf::libprotobuf-lite "${_IMPORT_PREFIX}/lib/libprotobuf-lite.dll.a" "${_IMPORT_PREFIX}/bin/libprotobuf-lite.dll" )
+list(APPEND _cmake_import_check_files_for_protobuf::libprotobuf-lite "${_IMPORT_PREFIX}/lib/libprotobuf-lite.lib" "${_IMPORT_PREFIX}/bin/libprotobuf-lite.dll" )
 
 # Import target "protobuf::libprotobuf" for configuration "Release"
 set_property(TARGET protobuf::libprotobuf APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(protobuf::libprotobuf PROPERTIES
-  IMPORTED_IMPLIB_RELEASE "${_IMPORT_PREFIX}/lib/libprotobuf.dll.a"
+  IMPORTED_IMPLIB_RELEASE "${_IMPORT_PREFIX}/lib/libprotobuf.lib"
   IMPORTED_LINK_DEPENDENT_LIBRARIES_RELEASE "utf8_range::utf8_validity"
   IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/bin/libprotobuf.dll"
   )
 
 list(APPEND _cmake_import_check_targets protobuf::libprotobuf )
-list(APPEND _cmake_import_check_files_for_protobuf::libprotobuf "${_IMPORT_PREFIX}/lib/libprotobuf.dll.a" "${_IMPORT_PREFIX}/bin/libprotobuf.dll" )
+list(APPEND _cmake_import_check_files_for_protobuf::libprotobuf "${_IMPORT_PREFIX}/lib/libprotobuf.lib" "${_IMPORT_PREFIX}/bin/libprotobuf.dll" )
 
 # Import target "protobuf::libprotoc" for configuration "Release"
 set_property(TARGET protobuf::libprotoc APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(protobuf::libprotoc PROPERTIES
-  IMPORTED_IMPLIB_RELEASE "${_IMPORT_PREFIX}/lib/libprotoc.dll.a"
+  IMPORTED_IMPLIB_RELEASE "${_IMPORT_PREFIX}/lib/libprotoc.lib"
   IMPORTED_LINK_DEPENDENT_LIBRARIES_RELEASE "protobuf::libprotobuf"
   IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/bin/libprotoc.dll"
   )
 
 list(APPEND _cmake_import_check_targets protobuf::libprotoc )
-list(APPEND _cmake_import_check_files_for_protobuf::libprotoc "${_IMPORT_PREFIX}/lib/libprotoc.dll.a" "${_IMPORT_PREFIX}/bin/libprotoc.dll" )
+list(APPEND _cmake_import_check_files_for_protobuf::libprotoc "${_IMPORT_PREFIX}/lib/libprotoc.lib" "${_IMPORT_PREFIX}/bin/libprotoc.dll" )
 
 # Import target "protobuf::libupb" for configuration "Release"
 set_property(TARGET protobuf::libupb APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(protobuf::libupb PROPERTIES
-  IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "C"
-  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/lib/libupb.a"
+  IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "C;RC"
+  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/lib/libupb.lib"
   )
 
 list(APPEND _cmake_import_check_targets protobuf::libupb )
-list(APPEND _cmake_import_check_files_for_protobuf::libupb "${_IMPORT_PREFIX}/lib/libupb.a" )
+list(APPEND _cmake_import_check_files_for_protobuf::libupb "${_IMPORT_PREFIX}/lib/libupb.lib" )
 
 # Import target "protobuf::protoc" for configuration "Release"
 set_property(TARGET protobuf::protoc APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)

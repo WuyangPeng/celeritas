@@ -1,0 +1,12 @@
+prefix=C:/Program Files (x86)/protobuf
+exec_prefix=${prefix}
+libdir=C:/Program Files (x86)/protobuf/lib
+includedir=C:/Program Files (x86)/protobuf/include
+
+Name: absl_random_internal_randen
+Description: Abseil random_internal_randen library
+URL: https://abseil.io/
+Version: 20250512
+Requires: absl_random_internal_platform = 20250512, absl_random_internal_randen_hwaes = 20250512, absl_random_internal_randen_slow = 20250512
+Libs: -L${libdir}  -labsl_random_internal_randen 
+Cflags: -I${includedir} -DNOMINMAX
