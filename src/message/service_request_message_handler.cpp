@@ -3,7 +3,7 @@
 #include "common/logger.h"
 #include "common/common_fwd.h"
 
-bool celeritas::service_request_message_handler::handle_concrete(const header& header, const message_type& current_message, const protobuf_message_shared_ptr& request_message, const message_registry_weak_ptr& message_registry, const session_shared_ptr& session)
+bool celeritas::service_request_message_handler::handle_concrete(const handle_parameter& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
 {
     const auto message_registry_shared_ptr = message_registry.lock();
     if (message_registry_shared_ptr == nullptr)
@@ -17,7 +17,7 @@ bool celeritas::service_request_message_handler::handle_concrete(const header& h
         {
             const auto& service = current_message.registry();
 
-            if (!message_registry_shared_ptr->dispatch(header, service, request_message, session))
+            if (!message_registry_shared_ptr->dispatch(handle_parameter, service))
             {
                 LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch service request.";
                 return false;

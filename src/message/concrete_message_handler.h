@@ -13,13 +13,13 @@ namespace celeritas
 
         [[nodiscard]] std::string get_supported_type_name() const override;
 
-        [[nodiscard]] bool handle(const header& header, const google::protobuf::Message& current_message, const protobuf_message_shared_ptr& request_message, const message_registry_weak_ptr& message_registry, const session_shared_ptr& session) override;
+        [[nodiscard]] bool handle(const handle_parameter& handle_parameter, const google::protobuf::Message& current_message, const message_registry_weak_ptr& message_registry) override;
 
     protected:
         using message_type = Message;
         using message_registry_shared_ptr = std::shared_ptr<message_registry>;
 
-        [[nodiscard]] virtual bool handle_concrete(const header& header, const message_type& current_message, const protobuf_message_shared_ptr& request_message, const message_registry_weak_ptr& message_registry, const session_shared_ptr& session) = 0;
+        [[nodiscard]] virtual bool handle_concrete(const handle_parameter& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry) = 0;
     };
 }
 

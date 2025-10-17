@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "handle_parameter.h"
 #include "header.h"
 #include "message_registry.h"
 #include "network/message_header.h"
@@ -31,6 +32,6 @@ namespace celeritas
 
         [[nodiscard]] virtual std::string get_supported_type_name() const = 0;
 
-        [[nodiscard]] virtual bool handle(const header& header, const google::protobuf::Message& current_message, const protobuf_message_shared_ptr& request_message, const message_registry_weak_ptr& message_registry, const session_shared_ptr& session) = 0;
+        [[nodiscard]] virtual bool handle(const handle_parameter& handle_parameter, const google::protobuf::Message& current_message, const message_registry_weak_ptr& message_registry) = 0;
     };
 }
