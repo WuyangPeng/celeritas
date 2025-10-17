@@ -26,6 +26,8 @@ namespace celeritas
         // 启动会话处理协程
         void start() override;
 
+        [[nodiscard]] bool is_open() const override;
+
     private:
         // WebSocket 流的类型
         using tcp_stream_type = boost::beast::tcp_stream;
@@ -38,6 +40,7 @@ namespace celeritas
 
         void write(buffer_guard data) override;
 
+    private:
         web_socket_stream_type websocket_;
         session_run_shared_ptr websocket_run_;
         session_write_shared_ptr websocket_write_;

@@ -22,6 +22,8 @@ namespace celeritas
         // 启动会话处理协程
         void start() override;
 
+        [[nodiscard]] bool is_open() const override;
+
     private:
         using session_write_shared_ptr = std::shared_ptr<session_write>;
         using session_run_shared_ptr = std::shared_ptr<session_run>;
@@ -29,6 +31,7 @@ namespace celeritas
         // 向客户端发送消息
         void write(buffer_guard data) override;
 
+    private:
         socket_type socket_;
         session_write_shared_ptr session_write_;
         session_run_shared_ptr session_run_;

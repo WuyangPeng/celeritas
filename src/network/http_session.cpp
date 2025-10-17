@@ -20,6 +20,11 @@ void celeritas::http_session::start()
     http_run_->start(shared_from_this());
 }
 
+bool celeritas::http_session::is_open() const
+{
+    return socket_.is_open();
+}
+
 void celeritas::http_session::write(buffer_guard data)
 {
     http_write_->write(std::move(data));

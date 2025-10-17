@@ -1,15 +1,20 @@
 ﻿#include "resource_loader.h"
+#include "common/logger.h"
+#include "common/random_helper.h"
 #include "database/database_pool_manager.h"
 #include "detail/database_resource_loader.h"
 #include "detail/logger_resource_loader.h"
 #include "detail/server_resource_loader.h"
 #include "detail/service_registry_loader.h"
+#include "network/tcp_client.h"
+#include "server/server_fwd.h"
+#include "service_registry/detail/service_registry_internal_fwd.h"
 
 #include <ranges>
 #include <utility>
 
 celeritas::resource_loader::resource_loader(app_config_shared_ptr app_config)
-    : app_config_{ std::move(app_config) }, listener_{}, tcp_clients_{}, is_service_registry_{ false }, game_server_id_{}
+    : app_config_{ std::move(app_config) }, listener_{}, tcp_clients_{}, is_service_registry_{ false }, game_server_id_{}, timer_interval_{}
 {
 }
 
@@ -20,6 +25,7 @@ void celeritas::resource_loader::initialize(boost::asio::io_context& io_context,
     initialize_database_resource(io_context);
     initialize_health_check_url_resource();
     initialize_service_registry_resource(io_context, network_message_callback);
+    start_check_tcp_clients_timer(io_context);
     service_initialize_resource();
 }
 
@@ -88,11 +94,96 @@ void celeritas::resource_loader::initialize_service_registry_resource(boost::asi
     {
         const auto service_registry = app_config_->get_service_registry_config();
 
-        for (const auto& element : service_registry | std::views::values)
+        if (!service_registry.empty())
         {
-            const auto client = service_registry_loader::loader_service_registry(io_context, element, network_message_callback, game_server_id_);
+            const auto random_index = random_helper::get_random_int(service_registry.size());
+
+            auto iter = service_registry.begin();
+            std::advance(iter, random_index);
+
+            const auto client = service_registry_loader::loader_service_registry(io_context, iter->second, network_message_callback, game_server_id_, service_registry_type.data());
 
             tcp_clients_.emplace_back(client);
+        }
+    }
+}
+
+void celeritas::resource_loader::start_check_tcp_clients_timer(boost::asio::io_context& io_context)
+{
+    timer_interval_ = std::make_unique<steady_timer_type>(io_context);
+
+    start_check_tcp_clients_timer(io_context, shared_from_this());
+}
+
+void celeritas::resource_loader::start_check_tcp_clients_timer(boost::asio::io_context& io_context, const self_shared_ptr& self)
+{
+    timer_interval_->expires_at(std::chrono::steady_clock::now() + check_tcp_clients_timer);
+    timer_interval_->async_wait(
+        [self,&io_context](const error_code_type& error_code) {
+            if (!error_code)
+            {
+                self->check_tcp_clients(io_context, error_code);
+            }
+        });
+}
+
+void celeritas::resource_loader::check_tcp_clients(boost::asio::io_context& io_context, const error_code_type& error_code)
+{
+    if (error_code == boost::asio::error::operation_aborted)
+    {
+        return;
+    }
+
+    const auto self{ shared_from_this() };
+
+    process_check_tcp_clients(io_context);
+
+    start_check_tcp_clients_timer(io_context, self);
+}
+
+void celeritas::resource_loader::process_check_tcp_clients(boost::asio::io_context& io_context)
+{
+    try
+    {
+        process_check_tcp_clients_by_duration(io_context);
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(initializer_channel, error) << "check tcp clients error: " << error.what();
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(initializer_channel, fatal) << "check tcp clients error: an unknown exception";
+    }
+}
+
+void celeritas::resource_loader::process_check_tcp_clients_by_duration(boost::asio::io_context& io_context)
+{
+    for (auto iter = tcp_clients_.begin(); iter != tcp_clients_.end();)
+    {
+        auto& tcp_client = *iter;
+        if (!tcp_client->is_open())
+        {
+            if (tcp_client->get_server_type() == service_registry_type)
+            {
+                iter = tcp_clients_.erase(iter);
+
+                initialize_service_registry_resource(io_context, tcp_client->get_network_message_callback());
+            }
+            else
+            {
+                boost::asio::co_spawn(
+                    io_context,
+                    tcp_client->connect(tcp_client->get_host(), tcp_client->get_port()),
+                    boost::asio::detached
+                    );
+
+                ++iter;
+            }
+        }
+        else
+        {
+            ++iter;
         }
     }
 }

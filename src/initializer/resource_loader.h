@@ -8,7 +8,7 @@
 
 namespace celeritas
 {
-    class resource_loader
+    class resource_loader : public std::enable_shared_from_this<resource_loader>
     {
     public:
         using class_type = resource_loader;
@@ -34,8 +34,12 @@ namespace celeritas
     private:
         using listener_shared_ptr = std::shared_ptr<listener>;
         using listener_container_type = std::vector<listener_shared_ptr>;
-        using tcp_client_ptr = std::shared_ptr<tcp_client>;
-        using tcp_client_container_type = std::vector<tcp_client_ptr>;
+        using tcp_client_shared_ptr = std::shared_ptr<tcp_client>;
+        using tcp_client_container_type = std::vector<tcp_client_shared_ptr>;
+        using steady_timer_type = boost::asio::steady_timer;
+        using steady_timer_unique_ptr = std::unique_ptr<steady_timer_type>;
+        using self_shared_ptr = std::shared_ptr<resource_loader>;
+        using error_code_type = boost::system::error_code;
 
         void initialize_logger_resource();
 
@@ -49,10 +53,21 @@ namespace celeritas
 
         virtual void service_initialize_resource() = 0;
 
+        void start_check_tcp_clients_timer(boost::asio::io_context& io_context);
+
+        void start_check_tcp_clients_timer(boost::asio::io_context& io_context, const self_shared_ptr& self);
+
+        void check_tcp_clients(boost::asio::io_context& io_context, const error_code_type& error_code);
+
+        void process_check_tcp_clients(boost::asio::io_context& io_context);
+
+        void process_check_tcp_clients_by_duration(boost::asio::io_context& io_context);
+
         app_config_shared_ptr app_config_;
         listener_container_type listener_;
         tcp_client_container_type tcp_clients_;
         bool is_service_registry_;
         std::string game_server_id_;
+        steady_timer_unique_ptr timer_interval_;
     };
 }

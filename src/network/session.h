@@ -35,6 +35,8 @@ namespace celeritas
 
         [[nodiscard]] int64_t get_session_id() const noexcept;
 
+        [[noreturn]] virtual bool is_open() const = 0;
+
     protected:
         using network_message_callback_weak_ptr = session_callback::network_message_callback_weak_ptr;
 

@@ -19,7 +19,8 @@ namespace celeritas
         static tcp_client_shared_ptr loader_service_registry(io_context_type& io_context,
                                                              const service_registry_config& service_registry_config,
                                                              const network_message_callback_weak_ptr& network_message_callback,
-                                                             const std::string& game_server_id);
+                                                             const std::string& game_server_id,
+                                                             const std::string& server_type);
     };
 }
 

@@ -33,3 +33,8 @@ void celeritas::websocket_session::write(buffer_guard data)
 {
     websocket_write_->write(std::move(data));
 }
+
+bool celeritas::websocket_session::is_open() const
+{
+    return websocket_.is_open();
+}
