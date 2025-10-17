@@ -29,17 +29,23 @@ else ()
 
 endif ()
 
+set(BOOST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost")
+set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf")
+set(MONGO_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo")
+set(HIREDIS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis")
+set(OPENSSL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl")
+
 # 包含路径
 include_directories(
         "${CMAKE_CURRENT_SOURCE_DIR}/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/proto"
-        "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost"
-        "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/include"
-        "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/include/"
-        "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/include/mongocxx/v_noabi"
-        "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/include/bsoncxx/v_noabi"
-        "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis"
-        "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/include"
+        "${BOOST_DIR}"
+        "${PROTOBUF_DIR}/include"
+        "${MONGO_DIR}/include/"
+        "${MONGO_DIR}/include/mongocxx/v_noabi"
+        "${MONGO_DIR}/include/bsoncxx/v_noabi"
+        "${HIREDIS_DIR}"
+        "${OPENSSL_DIR}/include"
         # 如果依赖项在本地，添加它们的include路径
 )
 
@@ -53,9 +59,11 @@ endif ()
 # 包含boost库
 add_library(boost INTERFACE)
 
+set(BOOST_LIB_DIR "${BOOST_DIR}/stage/lib/")
+
 if (MSVC)
 
-    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/)
+    link_directories(${BOOST_LIB_DIR}/)
 
 else ()
 
@@ -65,7 +73,7 @@ else ()
 
     endif ()
 
-    set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/cmake")
+    set(CMAKE_PREFIX_PATH "${BOOST_LIB_DIR}/cmake")
 
     find_package(Boost 1.88 REQUIRED CONFIG COMPONENTS
             filesystem
@@ -92,13 +100,16 @@ else ()
 endif ()
 
 # 包含protobuf库
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/bin/)
+
+set(PROTOBUF_BIN_DIR "${PROTOBUF_DIR}/bin/")
+
+link_directories(${PROTOBUF_BIN_DIR})
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-    set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/bin")
-    set(Protobuf_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/include")
-    set(Protobuf_LIBRARIES "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/lib")
+    set(CMAKE_PREFIX_PATH "${PROTOBUF_BIN_DIR}")
+    set(Protobuf_INCLUDE_DIR "${PROTOBUF_DIR}/include")
+    set(Protobuf_LIBRARIES "${PROTOBUF_DIR}/lib")
 
     # 查找和添加依赖项
     find_package(Protobuf REQUIRED)
@@ -146,7 +157,7 @@ else ()
     # 其他平台下的操作
     file(GLOB_RECURSE PROTO_SRCS_GENERATED "src/proto/*.cc")
 
-    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/lib64)
+    link_directories(${PROTOBUF_DIR}/lib64)
 
 endif ()
 
@@ -154,52 +165,31 @@ add_library(proto_generated ${PROTO_SRCS_GENERATED})
 
 add_library(proto INTERFACE)
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-
-    target_link_libraries(proto INTERFACE
-            protobuf
-            absl_log_internal_message
-            absl_log_internal_check_op
-            absl_log_internal_nullguard)
-
-else ()
-
-    target_link_libraries(proto INTERFACE
-            protobuf
-            absl_log_internal_message.dll
-            absl_log_internal_check_op.dll
-            absl_log_internal_nullguard.dll)
-
-endif ()
+target_link_libraries(proto INTERFACE
+        protobuf
+        absl_log_internal_message
+        absl_log_internal_check_op
+        absl_log_internal_nullguard)
 
 # 包含mongo库
 add_library(mongo INTERFACE)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib)
-
-    if (MSVC)
-
-        target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
-
-    else ()
-
-        target_link_libraries(mongo INTERFACE bsoncxx.dll mongocxx.dll)
-
-    endif ()
+    link_directories(${MONGO_DIR}/lib)
 
 else ()
 
-    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib64)
-    target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
+    link_directories(${MONGO_DIR}/lib64)
 
 endif ()
+
+target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
 
 # 包含hiredis库
 add_library(redis INTERFACE)
 
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY})
+link_directories(${HIREDIS_DIR}/build/${BUILD_TYPE_DIRECTORY})
 
 target_link_libraries(redis INTERFACE hiredis${BUILD_LIB_SUFFIX})
 
@@ -210,11 +200,11 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     if (MSVC)
 
-        link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/lib)
+        link_directories(${OPENSSL_DIR}/lib)
 
     else ()
 
-        link_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/lib64)
+        link_directories(${OPENSSL_DIR}/lib64)
 
     endif ()
 
@@ -264,22 +254,22 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     # 定义库的最终安装目标目录
     set(APP_LIB_INSTALL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
 
-    file(GLOB PROTOBUF_LIBS "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl/bin64/*.dll*")
+    file(GLOB PROTOBUF_LIBS "${OPENSSL_DIR}/bin64/*.dll*")
     install(FILES ${PROTOBUF_LIBS}
             DESTINATION ${APP_LIB_INSTALL_DIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
-    file(GLOB PROTOBUF_LIBS "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/bin/*.dll*")
+    file(GLOB PROTOBUF_LIBS "${PROTOBUF_DIR}/bin/*.dll*")
     install(FILES ${PROTOBUF_LIBS}
             DESTINATION ${APP_LIB_INSTALL_DIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
-    file(GLOB MONGO_LIBS "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/bin/*.dll*")
+    file(GLOB MONGO_LIBS "${MONGO_DIR}/bin/*.dll*")
     install(FILES ${MONGO_LIBS}
             DESTINATION ${APP_LIB_INSTALL_DIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
-    file(GLOB HIREDIS_LIBS "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY}/libhiredis${BUILD_LIB_SUFFIX}.dll*")
+    file(GLOB HIREDIS_LIBS "${HIREDIS_DIR}/build/${BUILD_TYPE_DIRECTORY}/libhiredis${BUILD_LIB_SUFFIX}.dll*")
     install(FILES ${HIREDIS_LIBS}
             DESTINATION ${APP_LIB_INSTALL_DIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
@@ -289,22 +279,22 @@ else ()
     # 定义库的最终安装目标目录
     set(APP_LIB_INSTALL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}/lib")
 
-    file(GLOB BOOST_LIBS "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost/stage/lib/*.so*")
+    file(GLOB BOOST_LIBS "${BOOST_DIR}/stage/lib/*.so*")
     install(FILES ${BOOST_LIBS}
             DESTINATION ${APP_LIB_INSTALL_DIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
-    file(GLOB PROTOBUF_LIBS "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf/lib64/*.so*")
+    file(GLOB PROTOBUF_LIBS "${PROTOBUF_DIR}/lib64/*.so*")
     install(FILES ${PROTOBUF_LIBS}
             DESTINATION ${APP_LIB_INSTALL_DIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
-    file(GLOB MONGO_LIBS "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo/lib64/*.so*")
+    file(GLOB MONGO_LIBS "${MONGO_DIR}/lib64/*.so*")
     install(FILES ${MONGO_LIBS}
             DESTINATION ${APP_LIB_INSTALL_DIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
-    file(GLOB HIREDIS_LIBS "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis/build/${BUILD_TYPE_DIRECTORY}/libhiredis${BUILD_LIB_SUFFIX}.so*")
+    file(GLOB HIREDIS_LIBS "${HIREDIS_DIR}/build/${BUILD_TYPE_DIRECTORY}/libhiredis${BUILD_LIB_SUFFIX}.so*")
     install(FILES ${HIREDIS_LIBS}
             DESTINATION ${APP_LIB_INSTALL_DIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
