@@ -1,5 +1,4 @@
 ﻿#include "websocket_listener.h"
-#include "common/common_fwd.h"
 #include "common/logger.h"
 #include "detail/websocket_listener_accept.h"
 
@@ -14,7 +13,7 @@ celeritas::websocket_listener::websocket_listener(io_context_type& io_context,
     set_option(port);
 }
 
-void celeritas::websocket_listener::set_option(int port)
+void celeritas::websocket_listener::set_option(const int port)
 {
     acceptor_.set_option(boost::asio::socket_base::reuse_address(true));
 
