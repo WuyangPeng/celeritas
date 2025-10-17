@@ -25,7 +25,7 @@ void celeritas::tcp_listener_accept::stop()
     }
 }
 
-celeritas::listener_accept::void_awaitable_type celeritas::tcp_listener_accept::accept_connections()
+celeritas::listener_sessions::void_awaitable_type celeritas::tcp_listener_accept::accept_connections()
 {
     while (is_running())
     {

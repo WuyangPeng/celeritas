@@ -18,5 +18,5 @@ namespace celeritas
     class session_callback;
     class network_message_callback;
     class message_header;
-    class listener_accept;
+    class listener_sessions;
 }

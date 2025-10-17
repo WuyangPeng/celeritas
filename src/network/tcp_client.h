@@ -7,11 +7,11 @@
 
 namespace celeritas
 {
-    class tcp_client : public listener_accept
+    class tcp_client : public listener_sessions
     {
     public:
         using class_type = tcp_client;
-        using base_type = listener_accept;
+        using base_type = listener_sessions;
 
         using io_context_type = boost::asio::io_context;
         using socket_type = boost::asio::ip::tcp::socket;
@@ -24,10 +24,6 @@ namespace celeritas
 
         // 异步连接到指定的远程地址和端口
         [[nodiscard]] session_waitable_type connect(const std::string& host, int port);
-
-        void stop() override;
-
-        [[nodiscard]] void_awaitable_type accept_connections() override;
 
     private:
         io_context_type& io_context_;

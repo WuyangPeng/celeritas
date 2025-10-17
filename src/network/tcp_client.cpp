@@ -33,11 +33,3 @@ celeritas::tcp_client::session_waitable_type celeritas::tcp_client::connect(cons
     co_return std::make_shared<session_type>(std::move(socket), ++session_id_, game_server_id_, session_callback{ shared_from_this(), network_message_callback_ });
 }
 
-void celeritas::tcp_client::stop()
-{
-}
-
-celeritas::listener_accept::void_awaitable_type celeritas::tcp_client::accept_connections()
-{
-    co_return;
-}

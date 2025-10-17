@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "listener_accept.h"
+#include "listener_sessions.h"
 #include "network_fwd.h"
 
 #include <memory>
@@ -12,7 +12,7 @@ namespace celeritas
     public:
         using class_type = session_callback;
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
-        using listener_accept_weak_ptr = std::weak_ptr<listener_accept>;
+        using listener_accept_weak_ptr = std::weak_ptr<listener_sessions>;
 
         session_callback(listener_accept_weak_ptr listener_accept, network_message_callback_weak_ptr network_message_callback);
 

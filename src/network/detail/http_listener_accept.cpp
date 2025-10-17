@@ -21,7 +21,7 @@ void celeritas::http_listener_accept::stop()
     }
 }
 
-celeritas::listener_accept::void_awaitable_type celeritas::http_listener_accept::accept_connections()
+celeritas::listener_sessions::void_awaitable_type celeritas::http_listener_accept::accept_connections()
 {
     while (is_running())
     {
@@ -48,7 +48,7 @@ celeritas::listener_accept::void_awaitable_type celeritas::http_listener_accept:
     LOG_CHANNEL(network_channel, info) << "HTTP Listener stopped.";
 }
 
-celeritas::listener_accept::void_awaitable_type celeritas::http_listener_accept::handle_connection()
+celeritas::listener_sessions::void_awaitable_type celeritas::http_listener_accept::handle_connection()
 {
     // 等待新连接
     auto result = co_await acceptor_.async_accept(boost::asio::as_tuple(boost::asio::use_awaitable));
