@@ -16,6 +16,10 @@ namespace celeritas
 
         explicit header(const proto::common::client_message_header& client_message_header);
 
+        explicit header(const proto::common::gateway_message_header& gateway_message_header);
+
+        explicit header(const proto::common::to_gateway_message_header& to_gateway_message_header);
+
         [[nodiscard]] message_shared_ptr get_message() const;
 
     private:

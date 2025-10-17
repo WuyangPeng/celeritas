@@ -52,7 +52,7 @@ endforeach ()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-    file(GLOB PROTOBUF_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/protobuf/bin/*.dll")
+    file(GLOB PROTOBUF_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/protobuf/bin64/*.dll")
 
     foreach (protobuf_dll_file IN LISTS PROTOBUF_DLL_FILES)
         add_custom_command(

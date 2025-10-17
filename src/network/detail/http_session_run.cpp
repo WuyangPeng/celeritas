@@ -113,7 +113,7 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_
     std::memcpy(buffer_guard.get(), payload_data, total_size);
 
     auto session = get_session();
-    if (const auto callback = session_callback_.get_network_message_callback().lock();
+    if (const auto callback = session_callback_.get_network_message_callback_shared_ptr();
         callback != nullptr && session != nullptr)
     {
         callback->call_back(base, std::move(buffer_guard), session);

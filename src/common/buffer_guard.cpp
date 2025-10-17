@@ -53,3 +53,8 @@ void celeritas::buffer_guard::set_effective_size(size_t size)
 {
     effective_size_ = size;
 }
+
+char* celeritas::buffer_guard::get(const int offset)
+{
+    return buffer_data_.get(offset);
+}

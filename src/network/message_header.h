@@ -14,6 +14,8 @@ namespace celeritas
 
         message_header(size_t header_size, size_t body_size);
 
+        [[nodiscard]] size_t get_self_size() const;
+
         [[nodiscard]] size_t get_total_size() const;
 
         [[nodiscard]] bool is_effective() const;

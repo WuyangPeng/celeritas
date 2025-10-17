@@ -14,19 +14,22 @@ void celeritas::session::write(const header& header, const proto::response& resp
 
     const message_header message_header{ header_request->ByteSizeLong(), response.ByteSizeLong() };
 
-    const auto total_size = message_header.get_total_size() + sizeof(message_header);
+    const auto header_size = message_header.get_self_size();
+
+    const auto total_size = message_header.get_total_size() + header_size;
     buffer_guard buffer_guard{ buffer_pool::acquire(total_size) };
     buffer_guard.set_effective_size(total_size);
 
-    std::memcpy(buffer_guard.get(), &message_header, sizeof(message_header));
+    std::memcpy(buffer_guard.get(), &message_header, header_size);
 
-    if (!header_request->SerializeToArray(buffer_guard.get() + sizeof(message_header), header_request->ByteSizeLong()))
+    if (!header_request->SerializeToArray(buffer_guard.get(header_size), header_request->ByteSizeLong()))
     {
         LOG_CHANNEL(network_channel, error) << "序列化失败！";
         return;
     }
 
-    if (!response.SerializeToArray(buffer_guard.get() + sizeof(message_header) + header_request->ByteSizeLong(), response.ByteSizeLong()))
+    if (const auto offset = header_size + header_request->ByteSizeLong();
+        !response.SerializeToArray(buffer_guard.get(offset), response.ByteSizeLong()))
     {
         LOG_CHANNEL(network_channel, error) << "序列化失败！";
         return;

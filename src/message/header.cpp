@@ -6,7 +6,7 @@ celeritas::header::header(const proto::common::empty_message_header& empty_messa
 }
 
 celeritas::header::header(const proto::common::server_message_header& server_message_header)
-    : rpc{}, user_id{ server_message_header.user_id() }, code{ server_message_header.code() }
+    : rpc{}, user_id{ server_message_header.user_id() }, code{}
 {
 }
 
@@ -15,14 +15,44 @@ celeritas::header::header(const proto::common::client_message_header& client_mes
 {
 }
 
+celeritas::header::header(const proto::common::gateway_message_header& gateway_message_header)
+    : rpc{ gateway_message_header.rpc() }, user_id{ gateway_message_header.user_id() }, code{}
+{
+}
+
+celeritas::header::header(const proto::common::to_gateway_message_header& to_gateway_message_header)
+    : rpc{ to_gateway_message_header.rpc() }, user_id{ to_gateway_message_header.user_id() }, code{ to_gateway_message_header.code() }
+{
+}
+
 celeritas::header::message_shared_ptr celeritas::header::get_message() const
 {
+    if (code > 0)
+    {
+        auto to_gateway_message_header = std::make_shared<proto::common::to_gateway_message_header>();
+
+        to_gateway_message_header->set_user_id(user_id);
+        to_gateway_message_header->set_rpc(rpc);
+        to_gateway_message_header->set_code(code);
+
+        return to_gateway_message_header;
+    }
+
+    if (user_id > 0 && rpc > 0)
+    {
+        auto gateway_message_header = std::make_shared<proto::common::gateway_message_header>();
+
+        gateway_message_header->set_user_id(user_id);
+        gateway_message_header->set_rpc(rpc);
+
+        return gateway_message_header;
+    }
+
     if (user_id > 0)
     {
         auto server_message_header = std::make_shared<proto::common::server_message_header>();
 
         server_message_header->set_user_id(user_id);
-        server_message_header->set_code(code);
 
         return server_message_header;
     }

@@ -11,7 +11,17 @@ message client_message_header {
 
 message server_message_header {
     int64 user_id = 1;
-    int32 code = 2;
+}
+
+message gateway_message_header {
+    int64 user_id = 1;
+    int32 rpc = 2;
+}
+
+message to_gateway_message_header {
+    int64 user_id = 1;
+    int32 rpc = 2;
+    int32 code = 3;
 }
 
 message header {
@@ -19,6 +29,8 @@ message header {
     empty_message_header empty = 1;
     client_message_header client = 2;
     server_message_header server = 3;
+    gateway_message_header gateway = 4;
+    to_gateway_message_header to_gateway = 5;
   }
 }
  

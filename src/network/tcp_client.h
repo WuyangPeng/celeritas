@@ -7,7 +7,7 @@
 
 namespace celeritas
 {
-    class tcp_client : public listener_sessions
+    class tcp_client final : public listener_sessions
     {
     public:
         using class_type = tcp_client;

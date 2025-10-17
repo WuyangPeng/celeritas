@@ -28,11 +28,37 @@ namespace celeritas {
 namespace proto {
 namespace common {
 
-inline constexpr server_message_header::Impl_::Impl_(
+inline constexpr to_gateway_message_header::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
         user_id_{::int64_t{0}},
+        rpc_{0},
         code_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR to_gateway_message_header::to_gateway_message_header(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(to_gateway_message_header_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct to_gateway_message_headerDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR to_gateway_message_headerDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~to_gateway_message_headerDefaultTypeInternal() {}
+  union {
+    to_gateway_message_header _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 to_gateway_message_headerDefaultTypeInternal _to_gateway_message_header_default_instance_;
+
+inline constexpr server_message_header::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        user_id_{::int64_t{0}} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR server_message_header::server_message_header(::_pbi::ConstantInitialized)
@@ -53,6 +79,32 @@ struct server_message_headerDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 server_message_headerDefaultTypeInternal _server_message_header_default_instance_;
+
+inline constexpr gateway_message_header::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        user_id_{::int64_t{0}},
+        rpc_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR gateway_message_header::gateway_message_header(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(gateway_message_header_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct gateway_message_headerDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR gateway_message_headerDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~gateway_message_headerDefaultTypeInternal() {}
+  union {
+    gateway_message_header _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 gateway_message_headerDefaultTypeInternal _gateway_message_header_default_instance_;
 template <typename>
 PROTOBUF_CONSTEXPR empty_message_header::empty_message_header(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
@@ -140,13 +192,29 @@ const ::uint32_t
         0,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::server_message_header, _impl_._has_bits_),
-        5, // hasbit index offset
+        4, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::server_message_header, _impl_.user_id_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::server_message_header, _impl_.code_),
+        0,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::gateway_message_header, _impl_._has_bits_),
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::gateway_message_header, _impl_.user_id_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::gateway_message_header, _impl_.rpc_),
         0,
         1,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::to_gateway_message_header, _impl_._has_bits_),
+        6, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::to_gateway_message_header, _impl_.user_id_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::to_gateway_message_header, _impl_.rpc_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::to_gateway_message_header, _impl_.code_),
+        0,
+        1,
+        2,
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::header, _impl_._oneof_case_[0]),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::header, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::header, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::header, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::header, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::header, _impl_.payload_),
@@ -158,38 +226,49 @@ static const ::_pbi::MigrationSchema
         {0, sizeof(::celeritas::proto::common::empty_message_header)},
         {1, sizeof(::celeritas::proto::common::client_message_header)},
         {6, sizeof(::celeritas::proto::common::server_message_header)},
-        {13, sizeof(::celeritas::proto::common::header)},
+        {11, sizeof(::celeritas::proto::common::gateway_message_header)},
+        {18, sizeof(::celeritas::proto::common::to_gateway_message_header)},
+        {27, sizeof(::celeritas::proto::common::header)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::common::_empty_message_header_default_instance_._instance,
     &::celeritas::proto::common::_client_message_header_default_instance_._instance,
     &::celeritas::proto::common::_server_message_header_default_instance_._instance,
+    &::celeritas::proto::common::_gateway_message_header_default_instance_._instance,
+    &::celeritas::proto::common::_to_gateway_message_header_default_instance_._instance,
     &::celeritas::proto::common::_header_default_instance_._instance,
 };
 const char descriptor_table_protodef_proto_2fcommon_2fcommon_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\031proto/common/common.proto\022\026celeritas.p"
     "roto.common\"\026\n\024empty_message_header\"$\n\025c"
-    "lient_message_header\022\013\n\003rpc\030\001 \001(\005\"6\n\025ser"
-    "ver_message_header\022\017\n\007user_id\030\001 \001(\003\022\014\n\004c"
-    "ode\030\002 \001(\005\"\324\001\n\006header\022=\n\005empty\030\001 \001(\0132,.ce"
-    "leritas.proto.common.empty_message_heade"
-    "rH\000\022\?\n\006client\030\002 \001(\0132-.celeritas.proto.co"
-    "mmon.client_message_headerH\000\022\?\n\006server\030\003"
-    " \001(\0132-.celeritas.proto.common.server_mes"
-    "sage_headerH\000B\t\n\007payloadb\006proto3"
+    "lient_message_header\022\013\n\003rpc\030\001 \001(\005\"(\n\025ser"
+    "ver_message_header\022\017\n\007user_id\030\001 \001(\003\"6\n\026g"
+    "ateway_message_header\022\017\n\007user_id\030\001 \001(\003\022\013"
+    "\n\003rpc\030\002 \001(\005\"G\n\031to_gateway_message_header"
+    "\022\017\n\007user_id\030\001 \001(\003\022\013\n\003rpc\030\002 \001(\005\022\014\n\004code\030\003"
+    " \001(\005\"\340\002\n\006header\022=\n\005empty\030\001 \001(\0132,.celerit"
+    "as.proto.common.empty_message_headerH\000\022\?"
+    "\n\006client\030\002 \001(\0132-.celeritas.proto.common."
+    "client_message_headerH\000\022\?\n\006server\030\003 \001(\0132"
+    "-.celeritas.proto.common.server_message_"
+    "headerH\000\022A\n\007gateway\030\004 \001(\0132..celeritas.pr"
+    "oto.common.gateway_message_headerH\000\022G\n\nt"
+    "o_gateway\030\005 \001(\01321.celeritas.proto.common"
+    ".to_gateway_message_headerH\000B\t\n\007payloadb"
+    "\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fcommon_2fcommon_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fcommon_2fcommon_2eproto = {
     false,
     false,
-    392,
+    647,
     descriptor_table_protodef_proto_2fcommon_2fcommon_2eproto,
     "proto/common/common.proto",
     &descriptor_table_proto_2fcommon_2fcommon_2eproto_once,
     nullptr,
     0,
-    4,
+    6,
     schemas,
     file_default_instances,
     TableStruct_proto_2fcommon_2fcommon_2eproto::offsets,
@@ -588,12 +667,7 @@ PROTOBUF_NDEBUG_INLINE server_message_header::Impl_::Impl_(
 
 inline void server_message_header::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, user_id_),
-           0,
-           offsetof(Impl_, code_) -
-               offsetof(Impl_, user_id_) +
-               sizeof(Impl_::code_));
+  _impl_.user_id_ = {};
 }
 server_message_header::~server_message_header() {
   // @@protoc_insertion_point(destructor:celeritas.proto.common.server_message_header)
@@ -652,16 +726,16 @@ server_message_header::GetClassData() const {
   return server_message_header_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 0, 2>
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
 server_message_header::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(server_message_header, _impl_._has_bits_),
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    1, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967294,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    1,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     server_message_header_class_data_.base(),
@@ -671,9 +745,6 @@ server_message_header::_table_ = {
     ::_pbi::TcParser::GetTable<::celeritas::proto::common::server_message_header>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 code = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(server_message_header, _impl_.code_), 1>(),
-     {16, 1, 0, PROTOBUF_FIELD_OFFSET(server_message_header, _impl_.code_)}},
     // int64 user_id = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(server_message_header, _impl_.user_id_), 0>(),
      {8, 0, 0, PROTOBUF_FIELD_OFFSET(server_message_header, _impl_.user_id_)}},
@@ -682,8 +753,6 @@ server_message_header::_table_ = {
   }}, {{
     // int64 user_id = 1;
     {PROTOBUF_FIELD_OFFSET(server_message_header, _impl_.user_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
-    // int32 code = 2;
-    {PROTOBUF_FIELD_OFFSET(server_message_header, _impl_.code_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
@@ -696,12 +765,7 @@ PROTOBUF_NOINLINE void server_message_header::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  cached_has_bits = _impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000003U) != 0) {
-    ::memset(&_impl_.user_id_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.code_) -
-        reinterpret_cast<char*>(&_impl_.user_id_)) + sizeof(_impl_.code_));
-  }
+  _impl_.user_id_ = ::int64_t{0};
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -733,15 +797,6 @@ PROTOBUF_NOINLINE void server_message_header::Clear() {
     }
   }
 
-  // int32 code = 2;
-  if ((this_._impl_._has_bits_[0] & 0x00000002U) != 0) {
-    if (this_._internal_code() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
-              stream, this_._internal_code(), target);
-    }
-  }
-
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -765,21 +820,13 @@ PROTOBUF_NOINLINE void server_message_header::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void)cached_has_bits;
 
-  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-  cached_has_bits = this_._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000003U) != 0) {
+   {
     // int64 user_id = 1;
+    cached_has_bits = this_._impl_._has_bits_[0];
     if ((cached_has_bits & 0x00000001U) != 0) {
       if (this_._internal_user_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
             this_._internal_user_id());
-      }
-    }
-    // int32 code = 2;
-    if ((cached_has_bits & 0x00000002U) != 0) {
-      if (this_._internal_code() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_code());
       }
     }
   }
@@ -799,16 +846,9 @@ void server_message_header::MergeImpl(::google::protobuf::MessageLite& to_msg, c
   (void) cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000003U) != 0) {
-    if ((cached_has_bits & 0x00000001U) != 0) {
-      if (from._internal_user_id() != 0) {
-        _this->_impl_.user_id_ = from._impl_.user_id_;
-      }
-    }
-    if ((cached_has_bits & 0x00000002U) != 0) {
-      if (from._internal_code() != 0) {
-        _this->_impl_.code_ = from._impl_.code_;
-      }
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    if (from._internal_user_id() != 0) {
+      _this->_impl_.user_id_ = from._impl_.user_id_;
     }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
@@ -827,15 +867,611 @@ void server_message_header::InternalSwap(server_message_header* PROTOBUF_RESTRIC
   using ::std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.user_id_, other->_impl_.user_id_);
+}
+
+::google::protobuf::Metadata server_message_header::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class gateway_message_header::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<gateway_message_header>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(gateway_message_header, _impl_._has_bits_);
+};
+
+gateway_message_header::gateway_message_header(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, gateway_message_header_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.common.gateway_message_header)
+}
+gateway_message_header::gateway_message_header(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const gateway_message_header& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, gateway_message_header_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+PROTOBUF_NDEBUG_INLINE gateway_message_header::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void gateway_message_header::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, user_id_),
+           0,
+           offsetof(Impl_, rpc_) -
+               offsetof(Impl_, user_id_) +
+               sizeof(Impl_::rpc_));
+}
+gateway_message_header::~gateway_message_header() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.common.gateway_message_header)
+  SharedDtor(*this);
+}
+inline void gateway_message_header::SharedDtor(MessageLite& self) {
+  gateway_message_header& this_ = static_cast<gateway_message_header&>(self);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL gateway_message_header::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) gateway_message_header(arena);
+}
+constexpr auto gateway_message_header::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(gateway_message_header),
+                                            alignof(gateway_message_header));
+}
+constexpr auto gateway_message_header::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_gateway_message_header_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &gateway_message_header::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<gateway_message_header>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &gateway_message_header::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<gateway_message_header>(), &gateway_message_header::ByteSizeLong,
+              &gateway_message_header::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(gateway_message_header, _impl_._cached_size_),
+          false,
+      },
+      &gateway_message_header::kDescriptorMethods,
+      &descriptor_table_proto_2fcommon_2fcommon_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull gateway_message_header_class_data_ =
+        gateway_message_header::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+gateway_message_header::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&gateway_message_header_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(gateway_message_header_class_data_.tc_table);
+  return gateway_message_header_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2>
+gateway_message_header::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(gateway_message_header, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    gateway_message_header_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::common::gateway_message_header>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int32 rpc = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(gateway_message_header, _impl_.rpc_), 1>(),
+     {16, 1, 0, PROTOBUF_FIELD_OFFSET(gateway_message_header, _impl_.rpc_)}},
+    // int64 user_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(gateway_message_header, _impl_.user_id_), 0>(),
+     {8, 0, 0, PROTOBUF_FIELD_OFFSET(gateway_message_header, _impl_.user_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int64 user_id = 1;
+    {PROTOBUF_FIELD_OFFSET(gateway_message_header, _impl_.user_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // int32 rpc = 2;
+    {PROTOBUF_FIELD_OFFSET(gateway_message_header, _impl_.rpc_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void gateway_message_header::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.common.gateway_message_header)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003U) != 0) {
+    ::memset(&_impl_.user_id_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.rpc_) -
+        reinterpret_cast<char*>(&_impl_.user_id_)) + sizeof(_impl_.rpc_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL gateway_message_header::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const gateway_message_header& this_ = static_cast<const gateway_message_header&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL gateway_message_header::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const gateway_message_header& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.common.gateway_message_header)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // int64 user_id = 1;
+  if ((this_._impl_._has_bits_[0] & 0x00000001U) != 0) {
+    if (this_._internal_user_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<1>(
+              stream, this_._internal_user_id(), target);
+    }
+  }
+
+  // int32 rpc = 2;
+  if ((this_._impl_._has_bits_[0] & 0x00000002U) != 0) {
+    if (this_._internal_rpc() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
+              stream, this_._internal_rpc(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.common.gateway_message_header)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t gateway_message_header::ByteSizeLong(const MessageLite& base) {
+  const gateway_message_header& this_ = static_cast<const gateway_message_header&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t gateway_message_header::ByteSizeLong() const {
+  const gateway_message_header& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.common.gateway_message_header)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003U) != 0) {
+    // int64 user_id = 1;
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      if (this_._internal_user_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+            this_._internal_user_id());
+      }
+    }
+    // int32 rpc = 2;
+    if ((cached_has_bits & 0x00000002U) != 0) {
+      if (this_._internal_rpc() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_rpc());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void gateway_message_header::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<gateway_message_header*>(&to_msg);
+  auto& from = static_cast<const gateway_message_header&>(from_msg);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    from.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.common.gateway_message_header)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003U) != 0) {
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      if (from._internal_user_id() != 0) {
+        _this->_impl_.user_id_ = from._impl_.user_id_;
+      }
+    }
+    if ((cached_has_bits & 0x00000002U) != 0) {
+      if (from._internal_rpc() != 0) {
+        _this->_impl_.rpc_ = from._impl_.rpc_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void gateway_message_header::CopyFrom(const gateway_message_header& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.common.gateway_message_header)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void gateway_message_header::InternalSwap(gateway_message_header* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(server_message_header, _impl_.code_)
-      + sizeof(server_message_header::_impl_.code_)
-      - PROTOBUF_FIELD_OFFSET(server_message_header, _impl_.user_id_)>(
+      PROTOBUF_FIELD_OFFSET(gateway_message_header, _impl_.rpc_)
+      + sizeof(gateway_message_header::_impl_.rpc_)
+      - PROTOBUF_FIELD_OFFSET(gateway_message_header, _impl_.user_id_)>(
           reinterpret_cast<char*>(&_impl_.user_id_),
           reinterpret_cast<char*>(&other->_impl_.user_id_));
 }
 
-::google::protobuf::Metadata server_message_header::GetMetadata() const {
+::google::protobuf::Metadata gateway_message_header::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class to_gateway_message_header::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<to_gateway_message_header>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(to_gateway_message_header, _impl_._has_bits_);
+};
+
+to_gateway_message_header::to_gateway_message_header(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, to_gateway_message_header_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.common.to_gateway_message_header)
+}
+to_gateway_message_header::to_gateway_message_header(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const to_gateway_message_header& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, to_gateway_message_header_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+PROTOBUF_NDEBUG_INLINE to_gateway_message_header::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void to_gateway_message_header::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, user_id_),
+           0,
+           offsetof(Impl_, code_) -
+               offsetof(Impl_, user_id_) +
+               sizeof(Impl_::code_));
+}
+to_gateway_message_header::~to_gateway_message_header() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.common.to_gateway_message_header)
+  SharedDtor(*this);
+}
+inline void to_gateway_message_header::SharedDtor(MessageLite& self) {
+  to_gateway_message_header& this_ = static_cast<to_gateway_message_header&>(self);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL to_gateway_message_header::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) to_gateway_message_header(arena);
+}
+constexpr auto to_gateway_message_header::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(to_gateway_message_header),
+                                            alignof(to_gateway_message_header));
+}
+constexpr auto to_gateway_message_header::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_to_gateway_message_header_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &to_gateway_message_header::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<to_gateway_message_header>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &to_gateway_message_header::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<to_gateway_message_header>(), &to_gateway_message_header::ByteSizeLong,
+              &to_gateway_message_header::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(to_gateway_message_header, _impl_._cached_size_),
+          false,
+      },
+      &to_gateway_message_header::kDescriptorMethods,
+      &descriptor_table_proto_2fcommon_2fcommon_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull to_gateway_message_header_class_data_ =
+        to_gateway_message_header::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+to_gateway_message_header::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&to_gateway_message_header_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(to_gateway_message_header_class_data_.tc_table);
+  return to_gateway_message_header_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2>
+to_gateway_message_header::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(to_gateway_message_header, _impl_._has_bits_),
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    to_gateway_message_header_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::common::to_gateway_message_header>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // int64 user_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(to_gateway_message_header, _impl_.user_id_), 0>(),
+     {8, 0, 0, PROTOBUF_FIELD_OFFSET(to_gateway_message_header, _impl_.user_id_)}},
+    // int32 rpc = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(to_gateway_message_header, _impl_.rpc_), 1>(),
+     {16, 1, 0, PROTOBUF_FIELD_OFFSET(to_gateway_message_header, _impl_.rpc_)}},
+    // int32 code = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(to_gateway_message_header, _impl_.code_), 2>(),
+     {24, 2, 0, PROTOBUF_FIELD_OFFSET(to_gateway_message_header, _impl_.code_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int64 user_id = 1;
+    {PROTOBUF_FIELD_OFFSET(to_gateway_message_header, _impl_.user_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // int32 rpc = 2;
+    {PROTOBUF_FIELD_OFFSET(to_gateway_message_header, _impl_.rpc_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 code = 3;
+    {PROTOBUF_FIELD_OFFSET(to_gateway_message_header, _impl_.code_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void to_gateway_message_header::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.common.to_gateway_message_header)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000007U) != 0) {
+    ::memset(&_impl_.user_id_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.code_) -
+        reinterpret_cast<char*>(&_impl_.user_id_)) + sizeof(_impl_.code_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL to_gateway_message_header::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const to_gateway_message_header& this_ = static_cast<const to_gateway_message_header&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL to_gateway_message_header::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const to_gateway_message_header& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.common.to_gateway_message_header)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // int64 user_id = 1;
+  if ((this_._impl_._has_bits_[0] & 0x00000001U) != 0) {
+    if (this_._internal_user_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<1>(
+              stream, this_._internal_user_id(), target);
+    }
+  }
+
+  // int32 rpc = 2;
+  if ((this_._impl_._has_bits_[0] & 0x00000002U) != 0) {
+    if (this_._internal_rpc() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
+              stream, this_._internal_rpc(), target);
+    }
+  }
+
+  // int32 code = 3;
+  if ((this_._impl_._has_bits_[0] & 0x00000004U) != 0) {
+    if (this_._internal_code() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<3>(
+              stream, this_._internal_code(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.common.to_gateway_message_header)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t to_gateway_message_header::ByteSizeLong(const MessageLite& base) {
+  const to_gateway_message_header& this_ = static_cast<const to_gateway_message_header&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t to_gateway_message_header::ByteSizeLong() const {
+  const to_gateway_message_header& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.common.to_gateway_message_header)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000007U) != 0) {
+    // int64 user_id = 1;
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      if (this_._internal_user_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+            this_._internal_user_id());
+      }
+    }
+    // int32 rpc = 2;
+    if ((cached_has_bits & 0x00000002U) != 0) {
+      if (this_._internal_rpc() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_rpc());
+      }
+    }
+    // int32 code = 3;
+    if ((cached_has_bits & 0x00000004U) != 0) {
+      if (this_._internal_code() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_code());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void to_gateway_message_header::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<to_gateway_message_header*>(&to_msg);
+  auto& from = static_cast<const to_gateway_message_header&>(from_msg);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    from.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.common.to_gateway_message_header)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000007U) != 0) {
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      if (from._internal_user_id() != 0) {
+        _this->_impl_.user_id_ = from._impl_.user_id_;
+      }
+    }
+    if ((cached_has_bits & 0x00000002U) != 0) {
+      if (from._internal_rpc() != 0) {
+        _this->_impl_.rpc_ = from._impl_.rpc_;
+      }
+    }
+    if ((cached_has_bits & 0x00000004U) != 0) {
+      if (from._internal_code() != 0) {
+        _this->_impl_.code_ = from._impl_.code_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void to_gateway_message_header::CopyFrom(const to_gateway_message_header& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.common.to_gateway_message_header)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void to_gateway_message_header::InternalSwap(to_gateway_message_header* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(to_gateway_message_header, _impl_.code_)
+      + sizeof(to_gateway_message_header::_impl_.code_)
+      - PROTOBUF_FIELD_OFFSET(to_gateway_message_header, _impl_.user_id_)>(
+          reinterpret_cast<char*>(&_impl_.user_id_),
+          reinterpret_cast<char*>(&other->_impl_.user_id_));
+}
+
+::google::protobuf::Metadata to_gateway_message_header::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
@@ -885,6 +1521,32 @@ void header::set_allocated_server(::celeritas::proto::common::server_message_hea
   }
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.common.header.server)
 }
+void header::set_allocated_gateway(::celeritas::proto::common::gateway_message_header* PROTOBUF_NULLABLE gateway) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (gateway) {
+    ::google::protobuf::Arena* submessage_arena = gateway->GetArena();
+    if (message_arena != submessage_arena) {
+      gateway = ::google::protobuf::internal::GetOwnedMessage(message_arena, gateway, submessage_arena);
+    }
+    set_has_gateway();
+    _impl_.payload_.gateway_ = gateway;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.common.header.gateway)
+}
+void header::set_allocated_to_gateway(::celeritas::proto::common::to_gateway_message_header* PROTOBUF_NULLABLE to_gateway) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (to_gateway) {
+    ::google::protobuf::Arena* submessage_arena = to_gateway->GetArena();
+    if (message_arena != submessage_arena) {
+      to_gateway = ::google::protobuf::internal::GetOwnedMessage(message_arena, to_gateway, submessage_arena);
+    }
+    set_has_to_gateway();
+    _impl_.payload_.to_gateway_ = to_gateway;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.common.header.to_gateway)
+}
 header::header(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, header_class_data_.base()) {
@@ -926,6 +1588,12 @@ header::header(
         break;
       case kServer:
         _impl_.payload_.server_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.server_);
+        break;
+      case kGateway:
+        _impl_.payload_.gateway_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.gateway_);
+        break;
+      case kToGateway:
+        _impl_.payload_.to_gateway_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.to_gateway_);
         break;
   }
 
@@ -986,6 +1654,22 @@ void header::clear_payload() {
       }
       break;
     }
+    case kGateway: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.gateway_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.gateway_);
+      }
+      break;
+    }
+    case kToGateway: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.to_gateway_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.to_gateway_);
+      }
+      break;
+    }
     case PAYLOAD_NOT_SET: {
       break;
     }
@@ -1037,17 +1721,17 @@ header::GetClassData() const {
   return header_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 3, 3, 0, 2>
+const ::_pbi::TcParseTable<0, 5, 5, 0, 2>
 header::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    3, 0,  // max_field_number, fast_idx_mask
+    5, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    3,  // num_aux_entries
+    5,  // num_field_entries
+    5,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     header_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -1066,11 +1750,17 @@ header::_table_ = {
     {PROTOBUF_FIELD_OFFSET(header, _impl_.payload_.client_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.common.server_message_header server = 3;
     {PROTOBUF_FIELD_OFFSET(header, _impl_.payload_.server_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.common.gateway_message_header gateway = 4;
+    {PROTOBUF_FIELD_OFFSET(header, _impl_.payload_.gateway_), _Internal::kOneofCaseOffset + 0, 3, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.common.to_gateway_message_header to_gateway = 5;
+    {PROTOBUF_FIELD_OFFSET(header, _impl_.payload_.to_gateway_), _Internal::kOneofCaseOffset + 0, 4, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::common::empty_message_header>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::common::client_message_header>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::common::server_message_header>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::common::gateway_message_header>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::common::to_gateway_message_header>()},
   }},
   {{
   }},
@@ -1123,6 +1813,18 @@ PROTOBUF_NOINLINE void header::Clear() {
           stream);
       break;
     }
+    case kGateway: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          4, *this_._impl_.payload_.gateway_, this_._impl_.payload_.gateway_->GetCachedSize(), target,
+          stream);
+      break;
+    }
+    case kToGateway: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          5, *this_._impl_.payload_.to_gateway_, this_._impl_.payload_.to_gateway_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     default:
       break;
   }
@@ -1166,6 +1868,18 @@ PROTOBUF_NOINLINE void header::Clear() {
     case kServer: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.server_);
+      break;
+    }
+    // .celeritas.proto.common.gateway_message_header gateway = 4;
+    case kGateway: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.gateway_);
+      break;
+    }
+    // .celeritas.proto.common.to_gateway_message_header to_gateway = 5;
+    case kToGateway: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.to_gateway_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -1220,6 +1934,22 @@ void header::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::
           _this->_impl_.payload_.server_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.server_);
         } else {
           _this->_impl_.payload_.server_->MergeFrom(*from._impl_.payload_.server_);
+        }
+        break;
+      }
+      case kGateway: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.gateway_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.gateway_);
+        } else {
+          _this->_impl_.payload_.gateway_->MergeFrom(*from._impl_.payload_.gateway_);
+        }
+        break;
+      }
+      case kToGateway: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.to_gateway_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.to_gateway_);
+        } else {
+          _this->_impl_.payload_.to_gateway_->MergeFrom(*from._impl_.payload_.to_gateway_);
         }
         break;
       }

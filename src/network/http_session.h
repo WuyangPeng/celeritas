@@ -24,11 +24,11 @@ namespace celeritas
         // 启动会话处理协程
         void start() override;
 
-        void write(buffer_guard data) override;
-
     private:
         using session_run_shared_ptr = std::shared_ptr<session_run>;
         using session_write_shared_ptr = std::shared_ptr<session_write>;
+
+        void write(buffer_guard data) override;
 
         socket_type socket_;
         session_run_shared_ptr http_run_;

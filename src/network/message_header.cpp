@@ -6,6 +6,11 @@ celeritas::message_header::message_header(const size_t header_size, const size_t
 {
 }
 
+size_t celeritas::message_header::get_self_size() const
+{
+    return sizeof(message_header);
+}
+
 size_t celeritas::message_header::get_total_size() const
 {
     return header_size + body_size;

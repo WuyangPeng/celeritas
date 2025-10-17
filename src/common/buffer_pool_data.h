@@ -33,6 +33,8 @@ namespace celeritas
 
         [[nodiscard]] bool is_effective() const noexcept;
 
+        [[nodiscard]] char* get(int offset);
+
     private:
         data_unique_ptr data_;
         size_t size_{};

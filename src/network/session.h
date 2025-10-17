@@ -33,8 +33,6 @@ namespace celeritas
 
         virtual void write(const header& header, const proto::response& response);
 
-        virtual void write(buffer_guard data) = 0;
-
         [[nodiscard]] int64_t get_session_id() const noexcept;
 
     protected:
@@ -47,6 +45,8 @@ namespace celeritas
         [[nodiscard]] session_callback get_session_callback() const;
 
     private:
+        virtual void write(buffer_guard data) = 0;
+
         int64_t session_id_;
         session_callback session_callback_;
     };
