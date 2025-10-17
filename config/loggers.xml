@@ -37,6 +37,13 @@
         <log_file_name>database.log</log_file_name>
         <rotation_size>50</rotation_size>
     </logger>
+    <logger name="message_logger">
+        <level>trace</level>
+        <console_enabled>true</console_enabled>
+        <channel_name>message</channel_name>
+        <log_file_name>message.log</log_file_name>
+        <rotation_size>50</rotation_size>
+    </logger>
     <logger name="initializer_logger">
         <level>trace</level>
         <console_enabled>true</console_enabled>

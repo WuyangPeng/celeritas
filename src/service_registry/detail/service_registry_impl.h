@@ -45,7 +45,7 @@ namespace celeritas
         using time_point_type = service_info::time_point_type;
         using severity_level_type = boost::log::trivial::severity_level;
 
-        void start_cleanup_timer(const self_shared_ptr& self);
+        void start_cleanup_timer(const self_shared_ptr& self) const;
 
         void cleanup_expired_services(const error_code_type& error_code);
 

@@ -55,6 +55,7 @@ extern const ::google::protobuf::internal::DescriptorTable descriptor_table_prot
 }  // extern "C"
 namespace celeritas {
 namespace proto {
+namespace common {
 class client_message_header;
 struct client_message_headerDefaultTypeInternal;
 extern client_message_headerDefaultTypeInternal _client_message_header_default_instance_;
@@ -63,14 +64,15 @@ class empty_message_header;
 struct empty_message_headerDefaultTypeInternal;
 extern empty_message_headerDefaultTypeInternal _empty_message_header_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull empty_message_header_class_data_;
-class header_request;
-struct header_requestDefaultTypeInternal;
-extern header_requestDefaultTypeInternal _header_request_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull header_request_class_data_;
+class header;
+struct headerDefaultTypeInternal;
+extern headerDefaultTypeInternal _header_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull header_class_data_;
 class server_message_header;
 struct server_message_headerDefaultTypeInternal;
 extern server_message_headerDefaultTypeInternal _server_message_header_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull server_message_header_class_data_;
+}  // namespace common
 }  // namespace proto
 }  // namespace celeritas
 namespace google {
@@ -80,6 +82,7 @@ namespace protobuf {
 
 namespace celeritas {
 namespace proto {
+namespace common {
 
 // ===================================================================
 
@@ -87,7 +90,7 @@ namespace proto {
 // -------------------------------------------------------------------
 
 class server_message_header final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:celeritas.proto.server_message_header) */ {
+/* @@protoc_insertion_point(class_definition:celeritas.proto.common.server_message_header) */ {
  public:
   inline server_message_header() : server_message_header(nullptr) {}
   ~server_message_header() PROTOBUF_FINAL;
@@ -205,7 +208,7 @@ class server_message_header final : public ::google::protobuf::Message
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "celeritas.proto.server_message_header"; }
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.common.server_message_header"; }
 
  protected:
   explicit server_message_header(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
@@ -252,7 +255,7 @@ class server_message_header final : public ::google::protobuf::Message
   void _internal_set_code(::int32_t value);
 
   public:
-  // @@protoc_insertion_point(class_scope:celeritas.proto.server_message_header)
+  // @@protoc_insertion_point(class_scope:celeritas.proto.common.server_message_header)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
@@ -290,7 +293,7 @@ extern const ::google::protobuf::internal::ClassDataFull server_message_header_c
 // -------------------------------------------------------------------
 
 class empty_message_header final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:celeritas.proto.empty_message_header) */ {
+/* @@protoc_insertion_point(class_definition:celeritas.proto.common.empty_message_header) */ {
  public:
   inline empty_message_header() : empty_message_header(nullptr) {}
 
@@ -380,7 +383,7 @@ class empty_message_header final : public ::google::protobuf::internal::ZeroFiel
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "celeritas.proto.empty_message_header"; }
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.common.empty_message_header"; }
 
  protected:
   explicit empty_message_header(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
@@ -403,7 +406,7 @@ class empty_message_header final : public ::google::protobuf::internal::ZeroFiel
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:celeritas.proto.empty_message_header)
+  // @@protoc_insertion_point(class_scope:celeritas.proto.common.empty_message_header)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
@@ -425,7 +428,7 @@ extern const ::google::protobuf::internal::ClassDataFull empty_message_header_cl
 // -------------------------------------------------------------------
 
 class client_message_header final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:celeritas.proto.client_message_header) */ {
+/* @@protoc_insertion_point(class_definition:celeritas.proto.common.client_message_header) */ {
  public:
   inline client_message_header() : client_message_header(nullptr) {}
   ~client_message_header() PROTOBUF_FINAL;
@@ -543,7 +546,7 @@ class client_message_header final : public ::google::protobuf::Message
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "celeritas.proto.client_message_header"; }
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.common.client_message_header"; }
 
  protected:
   explicit client_message_header(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
@@ -579,7 +582,7 @@ class client_message_header final : public ::google::protobuf::Message
   void _internal_set_rpc(::int32_t value);
 
   public:
-  // @@protoc_insertion_point(class_scope:celeritas.proto.client_message_header)
+  // @@protoc_insertion_point(class_scope:celeritas.proto.common.client_message_header)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
@@ -615,30 +618,30 @@ class client_message_header final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull client_message_header_class_data_;
 // -------------------------------------------------------------------
 
-class header_request final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:celeritas.proto.header_request) */ {
+class header final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.common.header) */ {
  public:
-  inline header_request() : header_request(nullptr) {}
-  ~header_request() PROTOBUF_FINAL;
+  inline header() : header(nullptr) {}
+  ~header() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(header_request* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+  void operator delete(header* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
     SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(header_request));
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(header));
   }
 #endif
 
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR header_request(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR header(::google::protobuf::internal::ConstantInitialized);
 
-  inline header_request(const header_request& from) : header_request(nullptr, from) {}
-  inline header_request(header_request&& from) noexcept
-      : header_request(nullptr, ::std::move(from)) {}
-  inline header_request& operator=(const header_request& from) {
+  inline header(const header& from) : header(nullptr, from) {}
+  inline header(header&& from) noexcept
+      : header(nullptr, ::std::move(from)) {}
+  inline header& operator=(const header& from) {
     CopyFrom(from);
     return *this;
   }
-  inline header_request& operator=(header_request&& from) noexcept {
+  inline header& operator=(header&& from) noexcept {
     if (this == &from) return *this;
     if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
       InternalSwap(&from);
@@ -666,9 +669,9 @@ class header_request final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const header_request& default_instance() {
-    return *reinterpret_cast<const header_request*>(
-        &_header_request_default_instance_);
+  static const header& default_instance() {
+    return *reinterpret_cast<const header*>(
+        &_header_default_instance_);
   }
   enum PayloadCase {
     kEmpty = 1,
@@ -677,8 +680,8 @@ class header_request final : public ::google::protobuf::Message
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 3;
-  friend void swap(header_request& a, header_request& b) { a.Swap(&b); }
-  inline void Swap(header_request* PROTOBUF_NONNULL other) {
+  friend void swap(header& a, header& b) { a.Swap(&b); }
+  inline void Swap(header* PROTOBUF_NONNULL other) {
     if (other == this) return;
     if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
       InternalSwap(other);
@@ -686,7 +689,7 @@ class header_request final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(header_request* PROTOBUF_NONNULL other) {
+  void UnsafeArenaSwap(header* PROTOBUF_NONNULL other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -694,13 +697,13 @@ class header_request final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  header_request* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<header_request>(arena);
+  header* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<header>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const header_request& from);
+  void CopyFrom(const header& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const header_request& from) { header_request::MergeImpl(*this, from); }
+  void MergeFrom(const header& from) { header::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(::google::protobuf::MessageLite& to_msg,
@@ -736,18 +739,18 @@ class header_request final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
   static void SharedDtor(MessageLite& self);
-  void InternalSwap(header_request* PROTOBUF_NONNULL other);
+  void InternalSwap(header* PROTOBUF_NONNULL other);
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "celeritas.proto.header_request"; }
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.common.header"; }
 
  protected:
-  explicit header_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  header_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const header_request& from);
-  header_request(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, header_request&& from) noexcept
-      : header_request(arena) {
+  explicit header(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  header(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const header& from);
+  header(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, header&& from) noexcept
+      : header(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
@@ -768,66 +771,66 @@ class header_request final : public ::google::protobuf::Message
     kClientFieldNumber = 2,
     kServerFieldNumber = 3,
   };
-  // .celeritas.proto.empty_message_header empty = 1;
+  // .celeritas.proto.common.empty_message_header empty = 1;
   bool has_empty() const;
   private:
   bool _internal_has_empty() const;
 
   public:
   void clear_empty() ;
-  const ::celeritas::proto::empty_message_header& empty() const;
-  [[nodiscard]] ::celeritas::proto::empty_message_header* PROTOBUF_NULLABLE release_empty();
-  ::celeritas::proto::empty_message_header* PROTOBUF_NONNULL mutable_empty();
-  void set_allocated_empty(::celeritas::proto::empty_message_header* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_empty(::celeritas::proto::empty_message_header* PROTOBUF_NULLABLE value);
-  ::celeritas::proto::empty_message_header* PROTOBUF_NULLABLE unsafe_arena_release_empty();
+  const ::celeritas::proto::common::empty_message_header& empty() const;
+  [[nodiscard]] ::celeritas::proto::common::empty_message_header* PROTOBUF_NULLABLE release_empty();
+  ::celeritas::proto::common::empty_message_header* PROTOBUF_NONNULL mutable_empty();
+  void set_allocated_empty(::celeritas::proto::common::empty_message_header* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_empty(::celeritas::proto::common::empty_message_header* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::common::empty_message_header* PROTOBUF_NULLABLE unsafe_arena_release_empty();
 
   private:
-  const ::celeritas::proto::empty_message_header& _internal_empty() const;
-  ::celeritas::proto::empty_message_header* PROTOBUF_NONNULL _internal_mutable_empty();
+  const ::celeritas::proto::common::empty_message_header& _internal_empty() const;
+  ::celeritas::proto::common::empty_message_header* PROTOBUF_NONNULL _internal_mutable_empty();
 
   public:
-  // .celeritas.proto.client_message_header client = 2;
+  // .celeritas.proto.common.client_message_header client = 2;
   bool has_client() const;
   private:
   bool _internal_has_client() const;
 
   public:
   void clear_client() ;
-  const ::celeritas::proto::client_message_header& client() const;
-  [[nodiscard]] ::celeritas::proto::client_message_header* PROTOBUF_NULLABLE release_client();
-  ::celeritas::proto::client_message_header* PROTOBUF_NONNULL mutable_client();
-  void set_allocated_client(::celeritas::proto::client_message_header* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_client(::celeritas::proto::client_message_header* PROTOBUF_NULLABLE value);
-  ::celeritas::proto::client_message_header* PROTOBUF_NULLABLE unsafe_arena_release_client();
+  const ::celeritas::proto::common::client_message_header& client() const;
+  [[nodiscard]] ::celeritas::proto::common::client_message_header* PROTOBUF_NULLABLE release_client();
+  ::celeritas::proto::common::client_message_header* PROTOBUF_NONNULL mutable_client();
+  void set_allocated_client(::celeritas::proto::common::client_message_header* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_client(::celeritas::proto::common::client_message_header* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::common::client_message_header* PROTOBUF_NULLABLE unsafe_arena_release_client();
 
   private:
-  const ::celeritas::proto::client_message_header& _internal_client() const;
-  ::celeritas::proto::client_message_header* PROTOBUF_NONNULL _internal_mutable_client();
+  const ::celeritas::proto::common::client_message_header& _internal_client() const;
+  ::celeritas::proto::common::client_message_header* PROTOBUF_NONNULL _internal_mutable_client();
 
   public:
-  // .celeritas.proto.server_message_header server = 3;
+  // .celeritas.proto.common.server_message_header server = 3;
   bool has_server() const;
   private:
   bool _internal_has_server() const;
 
   public:
   void clear_server() ;
-  const ::celeritas::proto::server_message_header& server() const;
-  [[nodiscard]] ::celeritas::proto::server_message_header* PROTOBUF_NULLABLE release_server();
-  ::celeritas::proto::server_message_header* PROTOBUF_NONNULL mutable_server();
-  void set_allocated_server(::celeritas::proto::server_message_header* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_server(::celeritas::proto::server_message_header* PROTOBUF_NULLABLE value);
-  ::celeritas::proto::server_message_header* PROTOBUF_NULLABLE unsafe_arena_release_server();
+  const ::celeritas::proto::common::server_message_header& server() const;
+  [[nodiscard]] ::celeritas::proto::common::server_message_header* PROTOBUF_NULLABLE release_server();
+  ::celeritas::proto::common::server_message_header* PROTOBUF_NONNULL mutable_server();
+  void set_allocated_server(::celeritas::proto::common::server_message_header* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_server(::celeritas::proto::common::server_message_header* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::common::server_message_header* PROTOBUF_NULLABLE unsafe_arena_release_server();
 
   private:
-  const ::celeritas::proto::server_message_header& _internal_server() const;
-  ::celeritas::proto::server_message_header* PROTOBUF_NONNULL _internal_mutable_server();
+  const ::celeritas::proto::common::server_message_header& _internal_server() const;
+  ::celeritas::proto::common::server_message_header* PROTOBUF_NONNULL _internal_mutable_server();
 
   public:
   void clear_payload();
   PayloadCase payload_case() const;
-  // @@protoc_insertion_point(class_scope:celeritas.proto.header_request)
+  // @@protoc_insertion_point(class_scope:celeritas.proto.common.header)
  private:
   class _Internal;
   void set_has_empty();
@@ -855,7 +858,7 @@ class header_request final : public ::google::protobuf::Message
     inline explicit Impl_(
         ::google::protobuf::internal::InternalVisibility visibility,
         ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const header_request& from_msg);
+        const header& from_msg);
     union PayloadUnion {
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
@@ -871,7 +874,7 @@ class header_request final : public ::google::protobuf::Message
   friend struct ::TableStruct_proto_2fcommon_2fcommon_2eproto;
 };
 
-extern const ::google::protobuf::internal::ClassDataFull header_request_class_data_;
+extern const ::google::protobuf::internal::ClassDataFull header_class_data_;
 
 // ===================================================================
 
@@ -900,13 +903,13 @@ inline void client_message_header::clear_rpc() {
   _impl_._has_bits_[0] &= ~0x00000001U;
 }
 inline ::int32_t client_message_header::rpc() const {
-  // @@protoc_insertion_point(field_get:celeritas.proto.client_message_header.rpc)
+  // @@protoc_insertion_point(field_get:celeritas.proto.common.client_message_header.rpc)
   return _internal_rpc();
 }
 inline void client_message_header::set_rpc(::int32_t value) {
   _internal_set_rpc(value);
   _impl_._has_bits_[0] |= 0x00000001U;
-  // @@protoc_insertion_point(field_set:celeritas.proto.client_message_header.rpc)
+  // @@protoc_insertion_point(field_set:celeritas.proto.common.client_message_header.rpc)
 }
 inline ::int32_t client_message_header::_internal_rpc() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -928,13 +931,13 @@ inline void server_message_header::clear_user_id() {
   _impl_._has_bits_[0] &= ~0x00000001U;
 }
 inline ::int64_t server_message_header::user_id() const {
-  // @@protoc_insertion_point(field_get:celeritas.proto.server_message_header.user_id)
+  // @@protoc_insertion_point(field_get:celeritas.proto.common.server_message_header.user_id)
   return _internal_user_id();
 }
 inline void server_message_header::set_user_id(::int64_t value) {
   _internal_set_user_id(value);
   _impl_._has_bits_[0] |= 0x00000001U;
-  // @@protoc_insertion_point(field_set:celeritas.proto.server_message_header.user_id)
+  // @@protoc_insertion_point(field_set:celeritas.proto.common.server_message_header.user_id)
 }
 inline ::int64_t server_message_header::_internal_user_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -952,13 +955,13 @@ inline void server_message_header::clear_code() {
   _impl_._has_bits_[0] &= ~0x00000002U;
 }
 inline ::int32_t server_message_header::code() const {
-  // @@protoc_insertion_point(field_get:celeritas.proto.server_message_header.code)
+  // @@protoc_insertion_point(field_get:celeritas.proto.common.server_message_header.code)
   return _internal_code();
 }
 inline void server_message_header::set_code(::int32_t value) {
   _internal_set_code(value);
   _impl_._has_bits_[0] |= 0x00000002U;
-  // @@protoc_insertion_point(field_set:celeritas.proto.server_message_header.code)
+  // @@protoc_insertion_point(field_set:celeritas.proto.common.server_message_header.code)
 }
 inline ::int32_t server_message_header::_internal_code() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -971,19 +974,19 @@ inline void server_message_header::_internal_set_code(::int32_t value) {
 
 // -------------------------------------------------------------------
 
-// header_request
+// header
 
-// .celeritas.proto.empty_message_header empty = 1;
-inline bool header_request::has_empty() const {
+// .celeritas.proto.common.empty_message_header empty = 1;
+inline bool header::has_empty() const {
   return payload_case() == kEmpty;
 }
-inline bool header_request::_internal_has_empty() const {
+inline bool header::_internal_has_empty() const {
   return payload_case() == kEmpty;
 }
-inline void header_request::set_has_empty() {
+inline void header::set_has_empty() {
   _impl_._oneof_case_[0] = kEmpty;
 }
-inline void header_request::clear_empty() {
+inline void header::clear_empty() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (payload_case() == kEmpty) {
     if (GetArena() == nullptr) {
@@ -994,11 +997,11 @@ inline void header_request::clear_empty() {
     clear_has_payload();
   }
 }
-inline ::celeritas::proto::empty_message_header* PROTOBUF_NULLABLE header_request::release_empty() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.header_request.empty)
+inline ::celeritas::proto::common::empty_message_header* PROTOBUF_NULLABLE header::release_empty() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.common.header.empty)
   if (payload_case() == kEmpty) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::empty_message_header*>(_impl_.payload_.empty_);
+    auto* temp = reinterpret_cast<::celeritas::proto::common::empty_message_header*>(_impl_.payload_.empty_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -1008,26 +1011,26 @@ inline ::celeritas::proto::empty_message_header* PROTOBUF_NULLABLE header_reques
     return nullptr;
   }
 }
-inline const ::celeritas::proto::empty_message_header& header_request::_internal_empty() const {
-  return payload_case() == kEmpty ? *reinterpret_cast<::celeritas::proto::empty_message_header*>(_impl_.payload_.empty_) : reinterpret_cast<::celeritas::proto::empty_message_header&>(::celeritas::proto::_empty_message_header_default_instance_);
+inline const ::celeritas::proto::common::empty_message_header& header::_internal_empty() const {
+  return payload_case() == kEmpty ? *reinterpret_cast<::celeritas::proto::common::empty_message_header*>(_impl_.payload_.empty_) : reinterpret_cast<::celeritas::proto::common::empty_message_header&>(::celeritas::proto::common::_empty_message_header_default_instance_);
 }
-inline const ::celeritas::proto::empty_message_header& header_request::empty() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.header_request.empty)
+inline const ::celeritas::proto::common::empty_message_header& header::empty() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.common.header.empty)
   return _internal_empty();
 }
-inline ::celeritas::proto::empty_message_header* PROTOBUF_NULLABLE header_request::unsafe_arena_release_empty() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.header_request.empty)
+inline ::celeritas::proto::common::empty_message_header* PROTOBUF_NULLABLE header::unsafe_arena_release_empty() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.common.header.empty)
   if (payload_case() == kEmpty) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::empty_message_header*>(_impl_.payload_.empty_);
+    auto* temp = reinterpret_cast<::celeritas::proto::common::empty_message_header*>(_impl_.payload_.empty_);
     _impl_.payload_.empty_ = nullptr;
     return temp;
   } else {
     return nullptr;
   }
 }
-inline void header_request::unsafe_arena_set_allocated_empty(
-    ::celeritas::proto::empty_message_header* PROTOBUF_NULLABLE value) {
+inline void header::unsafe_arena_set_allocated_empty(
+    ::celeritas::proto::common::empty_message_header* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
   // set the new value.
@@ -1036,35 +1039,35 @@ inline void header_request::unsafe_arena_set_allocated_empty(
     set_has_empty();
     _impl_.payload_.empty_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.header_request.empty)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.common.header.empty)
 }
-inline ::celeritas::proto::empty_message_header* PROTOBUF_NONNULL header_request::_internal_mutable_empty() {
+inline ::celeritas::proto::common::empty_message_header* PROTOBUF_NONNULL header::_internal_mutable_empty() {
   if (payload_case() != kEmpty) {
     clear_payload();
     set_has_empty();
     _impl_.payload_.empty_ = reinterpret_cast<::google::protobuf::Message*>(
-        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::empty_message_header>(GetArena()));
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::common::empty_message_header>(GetArena()));
   }
-  return reinterpret_cast<::celeritas::proto::empty_message_header*>(_impl_.payload_.empty_);
+  return reinterpret_cast<::celeritas::proto::common::empty_message_header*>(_impl_.payload_.empty_);
 }
-inline ::celeritas::proto::empty_message_header* PROTOBUF_NONNULL header_request::mutable_empty()
+inline ::celeritas::proto::common::empty_message_header* PROTOBUF_NONNULL header::mutable_empty()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::celeritas::proto::empty_message_header* _msg = _internal_mutable_empty();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.header_request.empty)
+  ::celeritas::proto::common::empty_message_header* _msg = _internal_mutable_empty();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.common.header.empty)
   return _msg;
 }
 
-// .celeritas.proto.client_message_header client = 2;
-inline bool header_request::has_client() const {
+// .celeritas.proto.common.client_message_header client = 2;
+inline bool header::has_client() const {
   return payload_case() == kClient;
 }
-inline bool header_request::_internal_has_client() const {
+inline bool header::_internal_has_client() const {
   return payload_case() == kClient;
 }
-inline void header_request::set_has_client() {
+inline void header::set_has_client() {
   _impl_._oneof_case_[0] = kClient;
 }
-inline void header_request::clear_client() {
+inline void header::clear_client() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (payload_case() == kClient) {
     if (GetArena() == nullptr) {
@@ -1075,11 +1078,11 @@ inline void header_request::clear_client() {
     clear_has_payload();
   }
 }
-inline ::celeritas::proto::client_message_header* PROTOBUF_NULLABLE header_request::release_client() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.header_request.client)
+inline ::celeritas::proto::common::client_message_header* PROTOBUF_NULLABLE header::release_client() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.common.header.client)
   if (payload_case() == kClient) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::client_message_header*>(_impl_.payload_.client_);
+    auto* temp = reinterpret_cast<::celeritas::proto::common::client_message_header*>(_impl_.payload_.client_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -1089,26 +1092,26 @@ inline ::celeritas::proto::client_message_header* PROTOBUF_NULLABLE header_reque
     return nullptr;
   }
 }
-inline const ::celeritas::proto::client_message_header& header_request::_internal_client() const {
-  return payload_case() == kClient ? *reinterpret_cast<::celeritas::proto::client_message_header*>(_impl_.payload_.client_) : reinterpret_cast<::celeritas::proto::client_message_header&>(::celeritas::proto::_client_message_header_default_instance_);
+inline const ::celeritas::proto::common::client_message_header& header::_internal_client() const {
+  return payload_case() == kClient ? *reinterpret_cast<::celeritas::proto::common::client_message_header*>(_impl_.payload_.client_) : reinterpret_cast<::celeritas::proto::common::client_message_header&>(::celeritas::proto::common::_client_message_header_default_instance_);
 }
-inline const ::celeritas::proto::client_message_header& header_request::client() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.header_request.client)
+inline const ::celeritas::proto::common::client_message_header& header::client() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.common.header.client)
   return _internal_client();
 }
-inline ::celeritas::proto::client_message_header* PROTOBUF_NULLABLE header_request::unsafe_arena_release_client() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.header_request.client)
+inline ::celeritas::proto::common::client_message_header* PROTOBUF_NULLABLE header::unsafe_arena_release_client() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.common.header.client)
   if (payload_case() == kClient) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::client_message_header*>(_impl_.payload_.client_);
+    auto* temp = reinterpret_cast<::celeritas::proto::common::client_message_header*>(_impl_.payload_.client_);
     _impl_.payload_.client_ = nullptr;
     return temp;
   } else {
     return nullptr;
   }
 }
-inline void header_request::unsafe_arena_set_allocated_client(
-    ::celeritas::proto::client_message_header* PROTOBUF_NULLABLE value) {
+inline void header::unsafe_arena_set_allocated_client(
+    ::celeritas::proto::common::client_message_header* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
   // set the new value.
@@ -1117,35 +1120,35 @@ inline void header_request::unsafe_arena_set_allocated_client(
     set_has_client();
     _impl_.payload_.client_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.header_request.client)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.common.header.client)
 }
-inline ::celeritas::proto::client_message_header* PROTOBUF_NONNULL header_request::_internal_mutable_client() {
+inline ::celeritas::proto::common::client_message_header* PROTOBUF_NONNULL header::_internal_mutable_client() {
   if (payload_case() != kClient) {
     clear_payload();
     set_has_client();
     _impl_.payload_.client_ = reinterpret_cast<::google::protobuf::Message*>(
-        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client_message_header>(GetArena()));
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::common::client_message_header>(GetArena()));
   }
-  return reinterpret_cast<::celeritas::proto::client_message_header*>(_impl_.payload_.client_);
+  return reinterpret_cast<::celeritas::proto::common::client_message_header*>(_impl_.payload_.client_);
 }
-inline ::celeritas::proto::client_message_header* PROTOBUF_NONNULL header_request::mutable_client()
+inline ::celeritas::proto::common::client_message_header* PROTOBUF_NONNULL header::mutable_client()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::celeritas::proto::client_message_header* _msg = _internal_mutable_client();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.header_request.client)
+  ::celeritas::proto::common::client_message_header* _msg = _internal_mutable_client();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.common.header.client)
   return _msg;
 }
 
-// .celeritas.proto.server_message_header server = 3;
-inline bool header_request::has_server() const {
+// .celeritas.proto.common.server_message_header server = 3;
+inline bool header::has_server() const {
   return payload_case() == kServer;
 }
-inline bool header_request::_internal_has_server() const {
+inline bool header::_internal_has_server() const {
   return payload_case() == kServer;
 }
-inline void header_request::set_has_server() {
+inline void header::set_has_server() {
   _impl_._oneof_case_[0] = kServer;
 }
-inline void header_request::clear_server() {
+inline void header::clear_server() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (payload_case() == kServer) {
     if (GetArena() == nullptr) {
@@ -1156,11 +1159,11 @@ inline void header_request::clear_server() {
     clear_has_payload();
   }
 }
-inline ::celeritas::proto::server_message_header* PROTOBUF_NULLABLE header_request::release_server() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.header_request.server)
+inline ::celeritas::proto::common::server_message_header* PROTOBUF_NULLABLE header::release_server() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.common.header.server)
   if (payload_case() == kServer) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::server_message_header*>(_impl_.payload_.server_);
+    auto* temp = reinterpret_cast<::celeritas::proto::common::server_message_header*>(_impl_.payload_.server_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -1170,26 +1173,26 @@ inline ::celeritas::proto::server_message_header* PROTOBUF_NULLABLE header_reque
     return nullptr;
   }
 }
-inline const ::celeritas::proto::server_message_header& header_request::_internal_server() const {
-  return payload_case() == kServer ? *reinterpret_cast<::celeritas::proto::server_message_header*>(_impl_.payload_.server_) : reinterpret_cast<::celeritas::proto::server_message_header&>(::celeritas::proto::_server_message_header_default_instance_);
+inline const ::celeritas::proto::common::server_message_header& header::_internal_server() const {
+  return payload_case() == kServer ? *reinterpret_cast<::celeritas::proto::common::server_message_header*>(_impl_.payload_.server_) : reinterpret_cast<::celeritas::proto::common::server_message_header&>(::celeritas::proto::common::_server_message_header_default_instance_);
 }
-inline const ::celeritas::proto::server_message_header& header_request::server() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.header_request.server)
+inline const ::celeritas::proto::common::server_message_header& header::server() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.common.header.server)
   return _internal_server();
 }
-inline ::celeritas::proto::server_message_header* PROTOBUF_NULLABLE header_request::unsafe_arena_release_server() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.header_request.server)
+inline ::celeritas::proto::common::server_message_header* PROTOBUF_NULLABLE header::unsafe_arena_release_server() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.common.header.server)
   if (payload_case() == kServer) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::server_message_header*>(_impl_.payload_.server_);
+    auto* temp = reinterpret_cast<::celeritas::proto::common::server_message_header*>(_impl_.payload_.server_);
     _impl_.payload_.server_ = nullptr;
     return temp;
   } else {
     return nullptr;
   }
 }
-inline void header_request::unsafe_arena_set_allocated_server(
-    ::celeritas::proto::server_message_header* PROTOBUF_NULLABLE value) {
+inline void header::unsafe_arena_set_allocated_server(
+    ::celeritas::proto::common::server_message_header* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
   // set the new value.
@@ -1198,38 +1201,39 @@ inline void header_request::unsafe_arena_set_allocated_server(
     set_has_server();
     _impl_.payload_.server_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.header_request.server)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.common.header.server)
 }
-inline ::celeritas::proto::server_message_header* PROTOBUF_NONNULL header_request::_internal_mutable_server() {
+inline ::celeritas::proto::common::server_message_header* PROTOBUF_NONNULL header::_internal_mutable_server() {
   if (payload_case() != kServer) {
     clear_payload();
     set_has_server();
     _impl_.payload_.server_ = reinterpret_cast<::google::protobuf::Message*>(
-        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::server_message_header>(GetArena()));
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::common::server_message_header>(GetArena()));
   }
-  return reinterpret_cast<::celeritas::proto::server_message_header*>(_impl_.payload_.server_);
+  return reinterpret_cast<::celeritas::proto::common::server_message_header*>(_impl_.payload_.server_);
 }
-inline ::celeritas::proto::server_message_header* PROTOBUF_NONNULL header_request::mutable_server()
+inline ::celeritas::proto::common::server_message_header* PROTOBUF_NONNULL header::mutable_server()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::celeritas::proto::server_message_header* _msg = _internal_mutable_server();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.header_request.server)
+  ::celeritas::proto::common::server_message_header* _msg = _internal_mutable_server();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.common.header.server)
   return _msg;
 }
 
-inline bool header_request::has_payload() const {
+inline bool header::has_payload() const {
   return payload_case() != PAYLOAD_NOT_SET;
 }
-inline void header_request::clear_has_payload() {
+inline void header::clear_has_payload() {
   _impl_._oneof_case_[0] = PAYLOAD_NOT_SET;
 }
-inline header_request::PayloadCase header_request::payload_case() const {
-  return header_request::PayloadCase(_impl_._oneof_case_[0]);
+inline header::PayloadCase header::payload_case() const {
+  return header::PayloadCase(_impl_._oneof_case_[0]);
 }
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif  // __GNUC__
 
 // @@protoc_insertion_point(namespace_scope)
+}  // namespace common
 }  // namespace proto
 }  // namespace celeritas
 

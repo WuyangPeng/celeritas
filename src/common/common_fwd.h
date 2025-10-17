@@ -19,6 +19,7 @@ namespace celeritas
     constexpr std::string_view worker_pool_channel{ "worker_pool" };
     constexpr std::string_view database_channel{ "database" };
     constexpr std::string_view initializer_channel{ "initializer" };
+    constexpr std::string_view message_channel{ "message" };
     constexpr std::string_view service_registry_channel{ "service_registry" };
 
     constexpr std::string_view log_function{ "function" };

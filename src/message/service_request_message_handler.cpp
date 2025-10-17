@@ -19,7 +19,7 @@ bool celeritas::service_request_message_handler::handle_concrete(const handle_pa
 
             if (!message_registry_shared_ptr->dispatch(handle_parameter, service))
             {
-                LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch service request.";
+                LOG_CHANNEL(message_channel, error) << "Failed to dispatch service request.";
                 return false;
             }
             return true;
@@ -27,7 +27,7 @@ bool celeritas::service_request_message_handler::handle_concrete(const handle_pa
 
         default:
         {
-            LOG_CHANNEL(initializer_channel, error) << "消息体为空.";
+            LOG_CHANNEL(message_channel, error) << "消息体为空.";
             return false;
         }
     }

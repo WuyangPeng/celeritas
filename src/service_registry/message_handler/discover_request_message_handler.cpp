@@ -1,6 +1,5 @@
 ﻿#include "discover_request_message_handler.h"
 #include "message/concrete_message_handler.tpp"
-#include "network/session.h"
 #include "service_registry/service_registry.h"
 #include "proto/response.pb.h"
 

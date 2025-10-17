@@ -1,7 +1,6 @@
 ﻿#include "service_registry_impl.h"
 #include "service_registry_internal_fwd.h"
 #include "boost/asio/deadline_timer.hpp"
-#include "common/common_fwd.h"
 #include "common/logger.h"
 
 #include <ranges>
@@ -43,7 +42,7 @@ void celeritas::service_registry_impl::start_cleanup_timer(io_context_type& io_c
     start_cleanup_timer(shared_from_this());
 }
 
-void celeritas::service_registry_impl::start_cleanup_timer(const self_shared_ptr& self)
+void celeritas::service_registry_impl::start_cleanup_timer(const self_shared_ptr& self) const
 {
     cleanup_timer_interval_->expires_at(std::chrono::steady_clock::now() + cleanup_timer);
     cleanup_timer_interval_->async_wait(
@@ -104,7 +103,7 @@ void celeritas::service_registry_impl::cleanup_services_by_duration()
     }
 }
 
-void celeritas::service_registry_impl::log_server_unresponsive(const registry_type_iterator& iter, const int64_t duration, severity_level_type level, const std::string& description)
+void celeritas::service_registry_impl::log_server_unresponsive(const registry_type_iterator& iter, const int64_t duration, const severity_level_type level, const std::string& description)
 {
     if (level == severity_level_type::warning)
     {

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package celeritas.proto;
+package celeritas.proto.common;
 
 message empty_message_header {
 }
@@ -14,7 +14,7 @@ message server_message_header {
     int32 code = 2;
 }
 
-message header_request {
+message header {
   oneof payload {
     empty_message_header empty = 1;
     client_message_header client = 2;

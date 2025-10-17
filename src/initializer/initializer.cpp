@@ -97,7 +97,7 @@ void celeritas::initializer::setup_signal_handler()
 
 celeritas::header celeritas::initializer::get_header(const message_header& message_header, const buffer_guard& buffer_guard) const
 {
-    proto::header_request header_request{};
+    proto::common::header header_request{};
 
     if (!header_request.ParseFromArray(buffer_guard.get(), message_header.get_header_size()))
     {
@@ -106,19 +106,19 @@ celeritas::header celeritas::initializer::get_header(const message_header& messa
 
     switch (header_request.payload_case())
     {
-        case proto::header_request::PayloadCase::kEmpty:
+        case proto::common::header::PayloadCase::kEmpty:
         {
             const auto& empty_header = header_request.empty();
             return header(empty_header);
         }
 
-        case proto::header_request::PayloadCase::kClient:
+        case proto::common::header::PayloadCase::kClient:
         {
             const auto& client_header = header_request.client();
             return header(client_header);
         }
 
-        case proto::header_request::PayloadCase::kServer:
+        case proto::common::header::PayloadCase::kServer:
         {
             const auto& server_header = header_request.server();
             return header(server_header);
