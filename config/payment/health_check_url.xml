@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<health_check_url>
+    <url>health</url>
+    <interval>30</interval>
+    <timeout>5</timeout>
+</health_check_url>

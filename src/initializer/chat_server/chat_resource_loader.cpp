@@ -1,0 +1,10 @@
+﻿#include "chat_resource_loader.h"
+
+celeritas::chat_resource_loader::chat_resource_loader(app_config_shared_ptr app_config)
+    : base_type{ std::move(app_config) }
+{
+}
+
+void celeritas::chat_resource_loader::service_initialize_resource()
+{
+}

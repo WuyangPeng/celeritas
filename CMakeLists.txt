@@ -260,14 +260,26 @@ target_link_libraries(celeritas_lib INTERFACE
 # 服务器
 add_subdirectory(cmake/service_registry_server)
 add_subdirectory(cmake/auth_server)
+add_subdirectory(cmake/gateway_server)
+add_subdirectory(cmake/player_server)
+add_subdirectory(cmake/logic_server)
 add_subdirectory(cmake/game_server)
+add_subdirectory(cmake/payment_server)
+add_subdirectory(cmake/admin_server)
+add_subdirectory(cmake/cross_server)
 add_subdirectory(cmake/chat_server)
 
 # 安装规则
 install(TARGETS
         service_registry_server
         auth_server
+        gateway_server
+        player_server
+        logic_server
         game_server
+        payment_server
+        admin_server
+        cross_server
         chat_server
         DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
 
@@ -276,7 +288,13 @@ set(APP_RUNTIME_RPATH "$ORIGIN/lib")
 set_target_properties(
         service_registry_server
         auth_server
+        gateway_server
+        player_server
+        logic_server
         game_server
+        payment_server
+        admin_server
+        cross_server
         chat_server
         PROPERTIES INSTALL_RPATH "${APP_RUNTIME_RPATH}")
 
@@ -333,5 +351,49 @@ else ()
     install(FILES ${HIREDIS_LIBS}
             DESTINATION ${APP_LIB_INSTALL_DIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+
+endif ()
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+    file(GLOB PROTOBUF_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/protobuf/bin64/*.dll")
+
+    foreach (protobuf_dll_file IN LISTS PROTOBUF_DLL_FILES)
+        add_custom_command(
+                TARGET service_registry_server POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${protobuf_dll_file}" "$<TARGET_FILE_DIR:service_registry_server>/"
+                COMMENT "Copying dll files for ${protobuf_dll_file}"
+        )
+    endforeach ()
+
+    file(GLOB OPENSSL_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/openssl/bin64/*.dll")
+
+    foreach (openssl_dll_file IN LISTS OPENSSL_DLL_FILES)
+        add_custom_command(
+                TARGET service_registry_server POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${openssl_dll_file}" "$<TARGET_FILE_DIR:service_registry_server>/"
+                COMMENT "Copying dll files for ${openssl_dll_file}"
+        )
+    endforeach ()
+
+    file(GLOB MONGO_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/mongo/bin/*.dll")
+
+    foreach (mongo_dll_file IN LISTS MONGO_DLL_FILES)
+        add_custom_command(
+                TARGET service_registry_server POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${mongo_dll_file}" "$<TARGET_FILE_DIR:service_registry_server>/"
+                COMMENT "Copying dll files for ${mongo_dll_file}"
+        )
+    endforeach ()
+
+    file(GLOB HIREDIS_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/hiredis/build/${BUILD_TYPE_DIRECTORY}/*.dll")
+
+    foreach (hiredis_dll_file IN LISTS HIREDIS_DLL_FILES)
+        add_custom_command(
+                TARGET service_registry_server POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${hiredis_dll_file}" "$<TARGET_FILE_DIR:service_registry_server>/"
+                COMMENT "Copying dll files for ${hiredis_dll_file}"
+        )
+    endforeach ()
 
 endif ()
