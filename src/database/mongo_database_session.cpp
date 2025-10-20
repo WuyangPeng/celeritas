@@ -1,6 +1,5 @@
 ﻿#include "mongo_database_session.h"
 #include "common/celeritas_error.h"
-#include "common/common_fwd.h"
 #include "common/logger.h"
 
 #include <boost/asio/use_awaitable.hpp>

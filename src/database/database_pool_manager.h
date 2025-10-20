@@ -1,10 +1,10 @@
 ﻿#pragma once
 
-#include "config/database_type.h"
 #include "database_pool.h"
+#include "config/database_type.h"
 
-#include <mongocxx/instance.hpp>
 #include <map>
+#include <mongocxx/instance.hpp>
 
 namespace celeritas
 {

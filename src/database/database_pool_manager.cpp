@@ -5,6 +5,8 @@
 #include "redis_database_session.h"
 #include "common/celeritas_error.h"
 
+#include <ranges>
+
 celeritas::database_pool_manager& celeritas::database_pool_manager::get_instance()
 {
     static database_pool_manager manager{};
@@ -109,9 +111,9 @@ void celeritas::database_pool_manager::start_cleanup_timer(io_context_type& io_c
 {
     std::unique_lock lock{ mutex_ };
 
-    for (const auto& pool : pools_)
+    for (const auto& pool : pools_ | std::views::values)
     {
-        pool.second->start_cleanup_timer(io_context);
+        pool->start_cleanup_timer(io_context);
     }
 }
 

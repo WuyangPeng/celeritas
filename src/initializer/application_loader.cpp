@@ -1,6 +1,5 @@
 ﻿#include "application_loader.h"
 #include "message/service_request_message_handler.h"
-#include "service_registry/service_registry.h"
 
 celeritas::application_loader::application_loader(app_config_shared_ptr app_config)
     : app_config_{ std::move(app_config) }, worker_pool_{}, message_registry_{ std::make_shared<message_registry>() }

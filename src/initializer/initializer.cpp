@@ -1,5 +1,4 @@
 ﻿#include "initializer.h"
-#include "common/common_fwd.h"
 #include "common/logger.h"
 #include "database/database_pool_manager.h"
 #include "proto/common/common.pb.h"

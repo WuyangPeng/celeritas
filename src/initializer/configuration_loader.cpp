@@ -1,5 +1,4 @@
 ﻿#include "configuration_loader.h"
-#include "server/server_fwd.h"
 
 using namespace std::literals;
 

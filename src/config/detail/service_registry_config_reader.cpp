@@ -3,6 +3,8 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+
+#include <ranges>
 #include <utility>
 
 celeritas::service_registry_config_reader::service_registry_config_reader(std::string filename)
@@ -22,7 +24,7 @@ void celeritas::service_registry_config_reader::load_config()
 
     boost::property_tree::xml_parser::read_xml(filename_, tree);
 
-    for (const auto& [name , node] : tree.get_child("service_registry"))
+    for (const auto& node : tree.get_child("service_registry") | std::views::values)
     {
         const auto server_name = node.get<std::string>("<xmlattr>.instance_id");
 

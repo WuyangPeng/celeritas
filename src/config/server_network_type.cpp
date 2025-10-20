@@ -11,8 +11,8 @@ celeritas::server_network_type celeritas::get_server_network_type(const std::str
                                                          { "http", server_network_type::http },
                                                          { "websocket", server_network_type::websocket }, };
 
-    const auto iter = server_network.find(server_network_name);
-    if (iter != server_network.end())
+    if (const auto iter = server_network.find(server_network_name);
+        iter != server_network.end())
     {
         return iter->second;
     }

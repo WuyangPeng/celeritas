@@ -23,7 +23,7 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
 
     redis_context_ = std::make_unique<redis_context>(host_, port_);
 
-    auto command = user_.empty() ? "AUTH " + password_ : "AUTH " + user_ + " " + password_;
+    const auto command = user_.empty() ? "AUTH " + password_ : "AUTH " + user_ + " " + password_;
 
     redis_reply redis_reply{ *redis_context_.get(), command };
 

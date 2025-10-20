@@ -35,6 +35,6 @@ namespace celeritas
         server_network_config_container_type server_network_config_;
         std::string game_server_id_;
         std::string host_;
-        int worker_pool_size_;
+        int worker_pool_size_ = 0;
     };
 }

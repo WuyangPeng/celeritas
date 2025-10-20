@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "common/celeritas_error.h"
 #include "command_line_config.h"
+#include "common/celeritas_error.h"
 
 template <typename T>
 T celeritas::command_line_config::get(const std::string& key) const

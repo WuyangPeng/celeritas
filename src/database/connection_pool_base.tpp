@@ -2,7 +2,6 @@
 
 #include "connection_pool_base.h"
 #include "database_fwd.h"
-#include "common/common_fwd.h"
 #include "common/logger.h"
 
 template <typename SessionType>

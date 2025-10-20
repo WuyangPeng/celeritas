@@ -2,7 +2,6 @@
 
 #include "database_session.h"
 
-#include <boost/asio.hpp>
 #include <boost/mysql.hpp>
 #include <boost/asio/awaitable.hpp>
 #include <boost/asio/ssl.hpp>

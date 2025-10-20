@@ -1,5 +1,4 @@
 ﻿#include "app_config.h"
-#include "common/common_fwd.h"
 #include "common/logger.h"
 #include "detail/database_config_reader.h"
 #include "detail/health_check_url_config_reader.h"

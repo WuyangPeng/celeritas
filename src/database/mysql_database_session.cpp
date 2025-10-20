@@ -1,6 +1,7 @@
 ﻿#include "mysql_database_session.h"
-#include "common/common_fwd.h"
 #include "common/logger.h"
+
+#include <boost/asio/use_awaitable.hpp>
 
 celeritas::mysql_database_session::mysql_database_session(const std::string_view& host,
                                                           const int port,
