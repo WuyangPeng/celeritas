@@ -1,4 +1,16 @@
-cd /data/celeritas/deps
+# 获取脚本的绝对路径
+SCRIPT_PATH="$(readlink -f "$0")"
+
+# 脚本所在的目录
+SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
+
+# 脚本父目录
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+
+# 定义关键子目录变量
+DEPS_DIR="${ROOT_DIR}/deps"
+
+cd ${DEPS_DIR}
 
 #! 编译boost库
 version="1.88.0" 
