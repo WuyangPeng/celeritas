@@ -1,22 +1,25 @@
 # 获取脚本的绝对路径
-SCRIPT_PATH="$(readlink -f "$0")"
+script_path="$(readlink -f "$0")"
 
 # 脚本所在的目录
-SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
+script_dir="$(dirname "$script_path")"
 
 # 脚本父目录
-ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+root_dir="$(dirname "$script_dir")"
 
 # 定义关键子目录变量
-DEPS_DIR="${ROOT_DIR}/deps"
+deps_dir="${root_dir}/deps"
 
-echo "DEPS_DIR path is: ${DEPS_DIR}"
+echo "deps_dir path is: ${deps_dir}"
 
-cd ${DEPS_DIR}
+cd ${deps_dir}
 
 #! 编译boost库
 version="1.88.0" 
-boost_dir="boost_1_88_0" 
+boost_dir="boost_$(echo ${version} | sed 's/\./_/g')"
+
+echo "Boost version: ${version}"
+echo "Boost directory name: ${boost_dir}"
 
 if [ ! -f ${DEPS_DIR}/boost_installed.txt ]; then
 
