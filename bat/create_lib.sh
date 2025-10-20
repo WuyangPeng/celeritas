@@ -18,8 +18,7 @@ cd ${deps_dir}
 version="1.88.0" 
 boost_dir="boost_$(echo ${version} | sed 's/\./_/g')"
 
-echo "Boost version: ${version}"
-echo "Boost directory name: ${boost_dir}"
+echo "boost version: ${version}"
 
 if [ ! -f ${deps_dir}/boost_installed.txt ]; then
 
