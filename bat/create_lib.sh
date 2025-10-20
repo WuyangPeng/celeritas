@@ -45,6 +45,10 @@ if [ ! -f ${deps_dir}/boost_installed.txt ]; then
 fi 
 
 #! 编译hiredis库
+hiredis_version="v1.3.0"
+
+echo "hiredis version: ${hiredis_version}"
+
 if [ ! -f ${deps_dir}/hiredis_installed.txt ]; then
 
     cd ${deps_dir}/
@@ -58,7 +62,7 @@ if [ ! -f ${deps_dir}/hiredis_installed.txt ]; then
 		if [ $? -eq 0 ]; then 
 		
 			cd hiredis
-            git checkout v1.3.0
+            git checkout ${hiredis_version}
 	 
 			touch ${deps_dir}/hiredis_clone.txt
 	
@@ -96,6 +100,10 @@ if [ ! -f ${deps_dir}/hiredis_installed.txt ]; then
 fi
 
 #! 编译mongo库
+mongo_version="v4.1"
+
+echo "mongo version: ${mongo_version}"
+
 if [ ! -f ${deps_dir}/mongo-cxx-driver_installed.txt ]; then
 
     cd ${deps_dir}/
@@ -109,7 +117,7 @@ if [ ! -f ${deps_dir}/mongo-cxx-driver_installed.txt ]; then
 		if [ $? -eq 0 ]; then 
 		
 			cd mongo-cxx-driver
-            git checkout releases/v4.1
+      git checkout releases/${mongo_version}
 	 
 			touch ${deps_dir}/mongo-cxx-driver_clone.txt
 	
@@ -141,6 +149,10 @@ if [ ! -f ${deps_dir}/mongo-cxx-driver_installed.txt ]; then
 fi
 
 #! 编译protobuf库
+protobuf_version="v32.1"
+
+echo "protobuf version: ${protobuf_version}"
+
 if [ ! -f ${deps_dir}/protobuf_installed.txt ]; then
 
     cd ${deps_dir}/
@@ -154,7 +166,7 @@ if [ ! -f ${deps_dir}/protobuf_installed.txt ]; then
 		if [ $? -eq 0 ]; then
 
 			cd protobuf_src
-            git checkout v32.1
+            git checkout ${protobuf_version}
 			git submodule update --init --recursive
             cd ..
 
