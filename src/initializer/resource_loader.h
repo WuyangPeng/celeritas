@@ -68,6 +68,7 @@ namespace celeritas
         tcp_client_container_type tcp_clients_;
         bool is_service_registry_;
         std::string game_server_id_;
+        std::string instance_id_;
         steady_timer_unique_ptr timer_interval_;
     };
 }

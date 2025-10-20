@@ -14,7 +14,7 @@
 #include <utility>
 
 celeritas::resource_loader::resource_loader(app_config_shared_ptr app_config)
-    : app_config_{ std::move(app_config) }, listener_{}, tcp_clients_{}, is_service_registry_{ false }, game_server_id_{}, timer_interval_{}
+    : app_config_{ std::move(app_config) }, listener_{}, tcp_clients_{}, is_service_registry_{ false }, instance_id_{}, game_server_id_{}, timer_interval_{}
 {
 }
 
@@ -74,6 +74,7 @@ void celeritas::resource_loader::initialize_server_resource(boost::asio::io_cont
     }
 
     game_server_id_ = server.get_game_server_id();
+    instance_id_ = server.get_instance_id();
 
     for (const auto& element : server)
     {
@@ -90,10 +91,10 @@ void celeritas::resource_loader::initialize_health_check_url_resource()
 
 void celeritas::resource_loader::initialize_service_registry_resource(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback)
 {
+    const auto service_registry = app_config_->get_service_registry_config();
+
     if (!is_service_registry_)
     {
-        const auto service_registry = app_config_->get_service_registry_config();
-
         if (!service_registry.empty())
         {
             const auto random_index = random_helper::get_random_int(service_registry.size());
@@ -104,6 +105,18 @@ void celeritas::resource_loader::initialize_service_registry_resource(boost::asi
             const auto client = service_registry_loader::loader_service_registry(io_context, iter->second, network_message_callback, game_server_id_, service_registry_type.data());
 
             tcp_clients_.emplace_back(client);
+        }
+    }
+    else
+    {
+        for (const auto& element : service_registry | std::views::values)
+        {
+            if (element.get_name() != instance_id_)
+            {
+                const auto client = service_registry_loader::loader_service_registry(io_context, element, network_message_callback, game_server_id_, service_registry_type.data());
+
+                tcp_clients_.emplace_back(client);
+            }
         }
     }
 }
@@ -164,7 +177,7 @@ void celeritas::resource_loader::process_check_tcp_clients_by_duration(boost::as
         auto& tcp_client = *iter;
         if (!tcp_client->is_open())
         {
-            if (tcp_client->get_server_type() == service_registry_type)
+            if (!is_service_registry_ && tcp_client->get_server_type() == service_registry_type)
             {
                 iter = tcp_clients_.erase(iter);
 

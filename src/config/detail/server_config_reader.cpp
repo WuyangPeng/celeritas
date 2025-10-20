@@ -13,6 +13,7 @@ celeritas::server_config celeritas::server_config_reader::load_config(const std:
     const auto node = tree.get_child("server");
 
     // 必需配置项
+    const auto instance_id = node.get<std::string>("instance_id");
     const auto service_name = node.get<std::string>("service_name");
 
     const auto game_server_id = node.get<std::string>("game_server_id", "");
@@ -31,7 +32,7 @@ celeritas::server_config celeritas::server_config_reader::load_config(const std:
         }
     }
 
-    server_config server_config{ service_name, container, game_server_id, host, worker_pool };
+    server_config server_config{ instance_id, service_name, container, game_server_id, host, worker_pool };
 
     return server_config;
 }
