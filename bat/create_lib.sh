@@ -21,17 +21,17 @@ boost_dir="boost_$(echo ${version} | sed 's/\./_/g')"
 echo "Boost version: ${version}"
 echo "Boost directory name: ${boost_dir}"
 
-if [ ! -f ${DEPS_DIR}/boost_installed.txt ]; then
+if [ ! -f ${deps_dir}/boost_installed.txt ]; then
 
 	if [ ! -f ${boost_dir}.tar.gz ]; then
 		wget https://archives.boost.io/release/${version}/source/${boost_dir}.tar.gz
 	fi 
 	
-	if [ ! -f ${DEPS_DIR}/boost_download.txt ]; then
+	if [ ! -f ${deps_dir}/boost_download.txt ]; then
 		tar -zxvf ${boost_dir}.tar.gz
 		rm -rf boost
 		mv ${boost_dir} boost
-		touch ${DEPS_DIR}/boost_download.txt
+		touch ${deps_dir}/boost_download.txt
 	fi 
 	
 	cd boost
@@ -40,17 +40,17 @@ if [ ! -f ${DEPS_DIR}/boost_installed.txt ]; then
 		./bootstrap.sh --with-libraries=all --with-toolset=gcc
 	fi 
 	
-	./b2 install --prefix=${DEPS_DIR}/boost/stage/ cxxflags="-std=c++20"
-	touch ${DEPS_DIR}/boost_installed.txt
+	./b2 install --prefix=${deps_dir}/boost/stage/ cxxflags="-std=c++20"
+	touch ${deps_dir}/boost_installed.txt
 	
 fi 
 
 #! 编译hiredis库
-if [ ! -f ${DEPS_DIR}/hiredis_installed.txt ]; then
+if [ ! -f ${deps_dir}/hiredis_installed.txt ]; then
 
-    cd ${DEPS_DIR}/
+    cd ${deps_dir}/
 	
-	if [ ! -f ${DEPS_DIR}/hiredis_clone.txt ]; then
+	if [ ! -f ${deps_dir}/hiredis_clone.txt ]; then
 	
 		rm -rf hiredis
 
@@ -61,15 +61,15 @@ if [ ! -f ${DEPS_DIR}/hiredis_installed.txt ]; then
 			cd hiredis
             git checkout v1.3.0
 	 
-			touch ${DEPS_DIR}/hiredis_clone.txt
+			touch ${deps_dir}/hiredis_clone.txt
 	
 		fi
 	
 	fi 
 	
-	if [ -f ${DEPS_DIR}/hiredis_clone.txt ]; then
+	if [ -f ${deps_dir}/hiredis_clone.txt ]; then
 	
-		cd ${DEPS_DIR}/hiredis
+		cd ${deps_dir}/hiredis
 	
 		mkdir -p build
 		cd build
@@ -79,7 +79,7 @@ if [ ! -f ${DEPS_DIR}/hiredis_installed.txt ]; then
 		cmake ../.. -DCMAKE_BUILD_TYPE=Debug
 		make 
 		
-		cd ${DEPS_DIR}/hiredis/build
+		cd ${deps_dir}/hiredis/build
 		mkdir -p release
 		cd release
 
@@ -88,7 +88,7 @@ if [ ! -f ${DEPS_DIR}/hiredis_installed.txt ]; then
 	 
 		if [ $? -eq 0 ]; then 
 	 
-			touch ${DEPS_DIR}/hiredis_installed.txt
+			touch ${deps_dir}/hiredis_installed.txt
 	
 		fi
 	
@@ -97,11 +97,11 @@ if [ ! -f ${DEPS_DIR}/hiredis_installed.txt ]; then
 fi
 
 #! 编译mongo库
-if [ ! -f ${DEPS_DIR}/mongo-cxx-driver_installed.txt ]; then
+if [ ! -f ${deps_dir}/mongo-cxx-driver_installed.txt ]; then
 
-    cd ${DEPS_DIR}/
+    cd ${deps_dir}/
 	
-	if [ ! -f ${DEPS_DIR}/mongo-cxx-driver_clone.txt ]; then
+	if [ ! -f ${deps_dir}/mongo-cxx-driver_clone.txt ]; then
 	
 		rm -rf mongo-cxx-driver
 
@@ -112,28 +112,28 @@ if [ ! -f ${DEPS_DIR}/mongo-cxx-driver_installed.txt ]; then
 			cd mongo-cxx-driver
             git checkout releases/v4.1
 	 
-			touch ${DEPS_DIR}/mongo-cxx-driver_clone.txt
+			touch ${deps_dir}/mongo-cxx-driver_clone.txt
 	
 		fi
 	
 	fi 
 	
-	if [ -f ${DEPS_DIR}/mongo-cxx-driver_clone.txt ]; then
+	if [ -f ${deps_dir}/mongo-cxx-driver_clone.txt ]; then
 	
-		cd ${DEPS_DIR}/mongo-cxx-driver
+		cd ${deps_dir}/mongo-cxx-driver
 	
 		mkdir -p build
 		cd build
 
-		cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}/mongo
+		cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${deps_dir}/mongo
 		make
 		
-		rm -rf ${DEPS_DIR}/mongo
+		rm -rf ${deps_dir}/mongo
 		make install
 	 
 		if [ $? -eq 0 ]; then 
 	 
-			touch ${DEPS_DIR}/mongo-cxx-driver_installed.txt
+			touch ${deps_dir}/mongo-cxx-driver_installed.txt
 	
 		fi
 	
@@ -142,11 +142,11 @@ if [ ! -f ${DEPS_DIR}/mongo-cxx-driver_installed.txt ]; then
 fi
 
 #! 编译protobuf库
-if [ ! -f ${DEPS_DIR}/protobuf_installed.txt ]; then
+if [ ! -f ${deps_dir}/protobuf_installed.txt ]; then
 
-    cd ${DEPS_DIR}/
+    cd ${deps_dir}/
 
-	if [ ! -f ${DEPS_DIR}/protobuf_installed_clone.txt ]; then
+	if [ ! -f ${deps_dir}/protobuf_installed_clone.txt ]; then
 
 		rm -rf protobuf_src
 
@@ -159,28 +159,28 @@ if [ ! -f ${DEPS_DIR}/protobuf_installed.txt ]; then
 			git submodule update --init --recursive
             cd ..
 
-			touch ${DEPS_DIR}/protobuf_installed_clone.txt
+			touch ${deps_dir}/protobuf_installed_clone.txt
 
 		fi
 
 	fi
 
-	if [ -f ${DEPS_DIR}/protobuf_installed_clone.txt ]; then
+	if [ -f ${deps_dir}/protobuf_installed_clone.txt ]; then
 
-		cd ${DEPS_DIR}/protobuf_src
+		cd ${deps_dir}/protobuf_src
 
 		mkdir -p build
 		cd build
 
-		cmake .. -DCMAKE_BUILD_TYPE=Release -Dprotobuf_BUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=${DEPS_DIR}/protobuf
+		cmake .. -DCMAKE_BUILD_TYPE=Release -Dprotobuf_BUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=${deps_dir}/protobuf
 		make
 
-		rm -rf ${DEPS_DIR}/protobuf
+		rm -rf ${deps_dir}/protobuf
 		make install
 
 		if [ $? -eq 0 ]; then
 
-			touch ${DEPS_DIR}/protobuf_installed.txt
+			touch ${deps_dir}/protobuf_installed.txt
 
 		fi
 
