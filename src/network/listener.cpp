@@ -1,7 +1,4 @@
 ﻿#include "listener.h"
-#include "session_callback.h"
-
-#include <utility>
 
 celeritas::listener::listener(io_context_type& io_context, network_message_callback_weak_ptr callback, std::string game_server_id)
     : io_context_{ io_context }, network_message_callback_{ std::move(callback) }, game_server_id_{ std::move(game_server_id) }

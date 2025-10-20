@@ -15,7 +15,7 @@ namespace celeritas
         using protobuf_message_shared_ptr = std::shared_ptr<google::protobuf::Message>;
         using session_shared_ptr = std::shared_ptr<session>;
 
-        handle_parameter(const header& header, const protobuf_message_shared_ptr& request_message, const session_shared_ptr& session);
+        handle_parameter(const header& header, protobuf_message_shared_ptr request_message, session_shared_ptr session);
 
         void write(const proto::response& response) const;
 

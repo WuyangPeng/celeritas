@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "handle_parameter.h"
-#include "header.h"
 #include "message_registry.h"
 #include "network/message_header.h"
 

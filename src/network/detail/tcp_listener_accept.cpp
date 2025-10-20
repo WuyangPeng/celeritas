@@ -52,7 +52,7 @@ celeritas::tcp_listener_accept::void_awaitable_type celeritas::tcp_listener_acce
 {
     // 等待新连接
     auto result = co_await acceptor_.async_accept(boost::asio::as_tuple(boost::asio::use_awaitable));
-    if (auto error = std::get<0>(result))
+    if (const auto& error = std::get<0>(result))
     {
         LOG_CHANNEL(network_channel, warning) << "Listener error: " << error.message();
     }
@@ -69,7 +69,7 @@ void celeritas::tcp_listener_accept::start_new_session(socket_type socket)
     LOG_CHANNEL(network_channel, info) << "Accepted new connection from: " << socket.remote_endpoint();
 
     // 为新连接创建一个会话，并启动
-    auto session = std::make_shared<session_type>(std::move(socket), current_session_id, game_server_id_, session_callback{ shared_from_this(), callback_ });
+    const auto session = std::make_shared<session_type>(std::move(socket), current_session_id, game_server_id_, session_callback{ shared_from_this(), callback_ });
 
     add_session(session);
 

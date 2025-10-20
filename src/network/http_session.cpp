@@ -1,5 +1,4 @@
 ﻿#include "http_session.h"
-#include "common/logger.h"
 #include "detail/http_session_run.h"
 #include "detail/http_session_write.h"
 

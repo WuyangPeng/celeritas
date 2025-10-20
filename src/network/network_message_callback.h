@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "network/network_fwd.h"
 #include "common/buffer_guard.h"
+#include "network/network_fwd.h"
 
 namespace celeritas
 {

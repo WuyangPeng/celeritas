@@ -1,6 +1,5 @@
 ﻿#include "http_listener.h"
 #include "common/logger.h"
-#include "common/common_fwd.h"
 #include "detail/http_listener_accept.h"
 
 celeritas::http_listener::http_listener(io_context_type& io_context,
