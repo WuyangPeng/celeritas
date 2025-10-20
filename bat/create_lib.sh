@@ -10,7 +10,7 @@ ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 # 定义关键子目录变量
 DEPS_DIR="${ROOT_DIR}/deps"
 
-echo "DEPS_DIR 路径为: ${DEPS_DIR}"
+echo "DEPS_DIR path is: ${DEPS_DIR}"
 
 cd ${DEPS_DIR}
 
