@@ -38,7 +38,7 @@ namespace celeritas
 
         void set_option(const std::string& game_server_id);
 
-        void write(buffer_guard data) override;
+        void do_write(buffer_guard data) override;
 
     private:
         web_socket_stream_type websocket_;

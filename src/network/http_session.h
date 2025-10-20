@@ -30,7 +30,7 @@ namespace celeritas
         using session_run_shared_ptr = std::shared_ptr<session_run>;
         using session_write_shared_ptr = std::shared_ptr<session_write>;
 
-        void write(buffer_guard data) override;
+        void do_write(buffer_guard data) override;
 
     private:
         socket_type socket_;

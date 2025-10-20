@@ -148,7 +148,7 @@ void celeritas::initializer::call_back(const message_header& message_header, buf
         {
             const auto& service = request->service();
 
-            if (!application_loader_->dispatch(header, service, request, session))
+            if (!application_loader_->dispatch(header, service, request, session, resource_loader_))
             {
                 LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch service request.";
             }

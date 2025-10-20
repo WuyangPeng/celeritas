@@ -1,10 +1,11 @@
 ﻿#pragma once
 
 #include "config/app_config.h"
+#include "message/header.h"
 #include "network/listener.h"
 #include "network/network_message_callback.h"
-
-#include <boost/asio/io_context.hpp>
+#include "proto/response.pb.h"
+#include "proto/request.pb.h"
 
 namespace celeritas
 {
@@ -30,6 +31,8 @@ namespace celeritas
         void initialize(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback);
 
         void release_resource();
+
+        void write(const std::string& server_type, const header& header, const google::protobuf::Message& request) const;
 
     private:
         using listener_shared_ptr = std::shared_ptr<listener>;

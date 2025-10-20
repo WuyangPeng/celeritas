@@ -24,7 +24,7 @@ bool celeritas::http_session::is_open() const
     return socket_.is_open();
 }
 
-void celeritas::http_session::write(buffer_guard data)
+void celeritas::http_session::do_write(buffer_guard data)
 {
     http_write_->write(std::move(data));
 }

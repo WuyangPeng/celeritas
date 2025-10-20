@@ -4,6 +4,7 @@
 #include "common/buffer_guard.h"
 #include "message/header.h"
 #include "proto/response.pb.h"
+#include "proto/request.pb.h"
 
 #include <boost/asio/awaitable.hpp>
 #include <memory>
@@ -31,7 +32,7 @@ namespace celeritas
         // 启动会话处理协程
         virtual void start() = 0;
 
-        virtual void write(const header& header, const proto::response& response);
+        virtual void write(const header& header, const google::protobuf::Message& response);
 
         [[nodiscard]] int64_t get_session_id() const noexcept;
 
@@ -47,7 +48,7 @@ namespace celeritas
         [[nodiscard]] session_callback get_session_callback() const;
 
     private:
-        virtual void write(buffer_guard data) = 0;
+        virtual void do_write(buffer_guard data) = 0;
 
         int64_t session_id_;
         session_callback session_callback_;

@@ -67,3 +67,8 @@ celeritas::listener_sessions::network_message_callback_weak_ptr celeritas::tcp_c
     return network_message_callback_;
 }
 
+void celeritas::tcp_client::write(const header& header, const google::protobuf::Message& request)
+{
+    session_->write(header, request);
+}
+

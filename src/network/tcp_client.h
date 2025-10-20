@@ -2,6 +2,7 @@
 
 #include "message_header.h"
 #include "session_base.h"
+#include "proto/request.pb.h"
 
 #include <boost/asio/awaitable.hpp>
 
@@ -38,6 +39,8 @@ namespace celeritas
         [[nodiscard]] std::string get_server_type() const;
 
         [[nodiscard]] network_message_callback_weak_ptr get_network_message_callback();
+
+        void write(const header& header, const google::protobuf::Message& request);
 
     private:
         io_context_type& io_context_;

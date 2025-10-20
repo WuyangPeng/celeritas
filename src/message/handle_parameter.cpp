@@ -1,12 +1,31 @@
 ﻿#include "handle_parameter.h"
+#include "initializer/resource_loader.h"
 #include "network/session.h"
 
-celeritas::handle_parameter::handle_parameter(const header& header, protobuf_message_shared_ptr request_message, session_shared_ptr session)
-    : header_{ header }, request_message_{ std::move(request_message) }, session_{ std::move(session) }
+celeritas::handle_parameter::handle_parameter(const header& header, protobuf_message_shared_ptr request_message, session_shared_ptr session, resource_loader_shared_ptr resource_loader)
+    : header_{ header }, request_message_{ std::move(request_message) }, session_{ std::move(session) }, resource_loader_{ resource_loader }
 {
 }
 
 void celeritas::handle_parameter::write(const proto::response& response) const
 {
-    session_->write(header_, response);
+    if (const auto session_shared_ptr = session_.lock();
+        session_shared_ptr != nullptr)
+    {
+        session_shared_ptr->write(header_, response);
+    }
+}
+
+void celeritas::handle_parameter::write(const std::string& server_type, const google::protobuf::Message& request) const
+{
+    if (const auto resource_loader_shared_ptr = resource_loader_.lock();
+        resource_loader_shared_ptr != nullptr)
+    {
+        resource_loader_shared_ptr->write(server_type, header_, request);
+    }
+}
+
+celeritas::handle_parameter::protobuf_message_shared_ptr celeritas::handle_parameter::get_protobuf_message() const
+{
+    return request_message_;
 }

@@ -39,6 +39,17 @@ void celeritas::resource_loader::release_resource()
     listener_.clear();
 }
 
+void celeritas::resource_loader::write(const std::string& server_type, const header& header, const google::protobuf::Message& request) const
+{
+    for (const auto& element : tcp_clients_)
+    {
+        if (element->get_server_type() == server_type)
+        {
+            element->write(header, request);
+        }
+    }
+}
+
 void celeritas::resource_loader::initialize_logger_resource()
 {
     logger_resource_loader::loader_level_config(app_config_->get_logger_level_config());

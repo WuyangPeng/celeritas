@@ -8,7 +8,7 @@ celeritas::session::session(const int64_t session_id, session_callback session_c
 {
 }
 
-void celeritas::session::write(const header& header, const proto::response& response)
+void celeritas::session::write(const header& header, const google::protobuf::Message& response)
 {
     const auto header_request = header.get_message();
 
@@ -37,7 +37,7 @@ void celeritas::session::write(const header& header, const proto::response& resp
         return;
     }
 
-    write(std::move(buffer_guard));
+    do_write(std::move(buffer_guard));
 }
 
 int64_t celeritas::session::get_session_id() const noexcept

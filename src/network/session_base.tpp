@@ -30,7 +30,7 @@ bool celeritas::session_base<SocketType>::is_open() const
 }
 
 template <typename SocketType>
-void celeritas::session_base<SocketType>::write(buffer_guard data)
+void celeritas::session_base<SocketType>::do_write(buffer_guard data)
 {
     session_write_->write(std::move(data));
 }

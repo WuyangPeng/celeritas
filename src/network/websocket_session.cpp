@@ -29,7 +29,7 @@ void celeritas::websocket_session::start()
     websocket_run_->start(shared_from_this());
 }
 
-void celeritas::websocket_session::write(buffer_guard data)
+void celeritas::websocket_session::do_write(buffer_guard data)
 {
     websocket_write_->write(std::move(data));
 }
