@@ -239,6 +239,24 @@ add_subdirectory(cmake/initializer)
 add_subdirectory(cmake/config)
 add_subdirectory(cmake/message)
 
+add_library(celeritas_lib INTERFACE)
+
+target_link_libraries(celeritas_lib INTERFACE
+        initializer
+        service_registry
+        config
+        database
+        worker_pool
+        message
+        network
+        common
+        boost
+        openssl
+        mongo
+        redis
+        proto_generated
+        proto)
+
 # 服务器
 add_subdirectory(cmake/service_registry_server)
 add_subdirectory(cmake/auth_server)

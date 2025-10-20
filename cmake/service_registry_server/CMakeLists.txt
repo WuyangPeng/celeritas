@@ -13,21 +13,7 @@ file(GLOB_RECURSE SRC_DIR_LIST "${CMAKE_CURRENT_SOURCE_DIR}/../../src/service_re
 
 add_executable(service_registry_server ${SRC_DIR_LIST})
 
-target_link_libraries(service_registry_server PRIVATE
-        service_registry
-        initializer
-        config
-        database
-        worker_pool
-        message
-        network
-        common
-        boost
-        openssl
-        mongo
-        redis
-        proto_generated
-        proto)
+target_link_libraries(service_registry_server PRIVATE celeritas_lib)
 
 file(GLOB CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../config/*")
 

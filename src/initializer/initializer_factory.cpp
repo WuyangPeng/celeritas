@@ -1,4 +1,7 @@
 ﻿#include "initializer_factory.h"
+#include "auth_server/auth_application_loader.h"
+#include "auth_server/auth_configuration_loader.h"
+#include "auth_server/auth_resource_loader.h"
 #include "common/celeritas_error.h"
 #include "server/server_fwd.h"
 #include "service_registry_server/service_registry_application_loader.h"
@@ -11,6 +14,10 @@ celeritas::initializer_factory::configuration_loader_unique_ptr celeritas::initi
     {
         return std::make_unique<service_registry_configuration_loader>(config_file_path);
     }
+    else if (server_type == auth_type)
+    {
+        return std::make_unique<auth_configuration_loader>(config_file_path);
+    }
 
     throw celeritas_error("unrecognized server type");
 }
@@ -21,6 +28,10 @@ celeritas::initializer_factory::resource_loader_shared_ptr celeritas::initialize
     {
         return std::make_shared<service_registry_resource_loader>(app_config);
     }
+    else if (server_type == auth_type)
+    {
+        return std::make_unique<auth_resource_loader>(app_config);
+    }
 
     throw celeritas_error("unrecognized server type");
 }
@@ -30,6 +41,10 @@ celeritas::initializer_factory::application_loader_unique_ptr celeritas::initial
     if (server_type == service_registry_type)
     {
         return std::make_unique<service_registry_application_loader>(app_config);
+    }
+    else if (server_type == auth_type)
+    {
+        return std::make_unique<auth_application_loader>(app_config);
     }
 
     throw celeritas_error("unrecognized server type");
