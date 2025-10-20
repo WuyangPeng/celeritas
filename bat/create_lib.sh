@@ -15,15 +15,15 @@ echo "deps_dir path is: ${deps_dir}"
 cd ${deps_dir}
 
 #! 编译boost库
-version="1.88.0" 
-boost_dir="boost_$(echo ${version} | sed 's/\./_/g')"
+boost_version="1.88.0"
+boost_dir="boost_$(echo ${boost_version} | sed 's/\./_/g')"
 
-echo "boost version: ${version}"
+echo "boost version: ${boost_version}"
 
 if [ ! -f ${deps_dir}/boost_installed.txt ]; then
 
 	if [ ! -f ${boost_dir}.tar.gz ]; then
-		wget https://archives.boost.io/release/${version}/source/${boost_dir}.tar.gz
+		wget https://archives.boost.io/release/${boost_version}/source/${boost_dir}.tar.gz
 	fi 
 	
 	if [ ! -f ${deps_dir}/boost_download.txt ]; then
