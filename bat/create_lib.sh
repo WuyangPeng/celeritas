@@ -20,17 +20,20 @@ boost_dir="boost_$(echo ${boost_version} | sed 's/\./_/g')"
 
 echo "boost version: ${boost_version}"
 
-if [ ! -f ${deps_dir}/boost_installed.txt ]; then
+boost_installed_txt="${deps_dir}/boost_installed.txt"
+boost_download_txt="${deps_dir}/boost_download.txt"
+
+if [ ! -f ${boost_installed_txt} ]; then
 
 	if [ ! -f ${boost_dir}.tar.gz ]; then
 		wget https://archives.boost.io/release/${boost_version}/source/${boost_dir}.tar.gz
 	fi 
 	
-	if [ ! -f ${deps_dir}/boost_download.txt ]; then
+	if [ ! -f ${boost_download_txt} ]; then
 		tar -zxvf ${boost_dir}.tar.gz
 		rm -rf boost
 		mv ${boost_dir} boost
-		touch ${deps_dir}/boost_download.txt
+		touch ${boost_download_txt}
 	fi 
 	
 	cd boost
@@ -40,7 +43,7 @@ if [ ! -f ${deps_dir}/boost_installed.txt ]; then
 	fi 
 	
 	./b2 install --prefix=${deps_dir}/boost/stage/ cxxflags="-std=c++20"
-	touch ${deps_dir}/boost_installed.txt
+	touch ${boost_installed_txt}
 	
 fi 
 
@@ -49,11 +52,14 @@ hiredis_version="v1.3.0"
 
 echo "hiredis version: ${hiredis_version}"
 
-if [ ! -f ${deps_dir}/hiredis_installed.txt ]; then
+hiredis_installed_txt="${deps_dir}/hiredis_installed.txt"
+hiredis_clone_txt="${deps_dir}/hiredis_clone.txt"
+
+if [ ! -f ${hiredis_installed_txt} ]; then
 
     cd ${deps_dir}/
 	
-	if [ ! -f ${deps_dir}/hiredis_clone.txt ]; then
+	if [ ! -f ${hiredis_clone_txt} ]; then
 	
 		rm -rf hiredis
 
@@ -62,15 +68,15 @@ if [ ! -f ${deps_dir}/hiredis_installed.txt ]; then
 		if [ $? -eq 0 ]; then 
 		
 			cd hiredis
-            git checkout ${hiredis_version}
+      git checkout ${hiredis_version}
 	 
-			touch ${deps_dir}/hiredis_clone.txt
+			touch ${hiredis_clone_txt}
 	
 		fi
 	
 	fi 
 	
-	if [ -f ${deps_dir}/hiredis_clone.txt ]; then
+	if [ -f ${hiredis_clone_txt} ]; then
 	
 		cd ${deps_dir}/hiredis
 	
@@ -91,7 +97,7 @@ if [ ! -f ${deps_dir}/hiredis_installed.txt ]; then
 	 
 		if [ $? -eq 0 ]; then 
 	 
-			touch ${deps_dir}/hiredis_installed.txt
+			touch ${hiredis_installed_txt}
 	
 		fi
 	
@@ -104,11 +110,14 @@ mongo_version="v4.1"
 
 echo "mongo version: ${mongo_version}"
 
-if [ ! -f ${deps_dir}/mongo-cxx-driver_installed.txt ]; then
+mongo_installed_txt="${deps_dir}/mongo-cxx-driver_installed.txt"
+mongo_clone_txt="${deps_dir}/mongo-cxx-driver_clone.txt"
+
+if [ ! -f ${mongo_installed_txt} ]; then
 
     cd ${deps_dir}/
 	
-	if [ ! -f ${deps_dir}/mongo-cxx-driver_clone.txt ]; then
+	if [ ! -f ${mongo_clone_txt} ]; then
 	
 		rm -rf mongo-cxx-driver
 
@@ -119,13 +128,13 @@ if [ ! -f ${deps_dir}/mongo-cxx-driver_installed.txt ]; then
 			cd mongo-cxx-driver
       git checkout releases/${mongo_version}
 	 
-			touch ${deps_dir}/mongo-cxx-driver_clone.txt
+			touch ${mongo_clone_txt}
 	
 		fi
 	
 	fi 
 	
-	if [ -f ${deps_dir}/mongo-cxx-driver_clone.txt ]; then
+	if [ -f ${mongo_clone_txt} ]; then
 	
 		cd ${deps_dir}/mongo-cxx-driver
 	
@@ -140,7 +149,7 @@ if [ ! -f ${deps_dir}/mongo-cxx-driver_installed.txt ]; then
 	 
 		if [ $? -eq 0 ]; then 
 	 
-			touch ${deps_dir}/mongo-cxx-driver_installed.txt
+			touch ${mongo_installed_txt}
 	
 		fi
 	
@@ -153,11 +162,14 @@ protobuf_version="v32.1"
 
 echo "protobuf version: ${protobuf_version}"
 
-if [ ! -f ${deps_dir}/protobuf_installed.txt ]; then
+protobuf_installed_txt="${deps_dir}/protobuf_installed.txt"
+protobuf_clone_txt="${deps_dir}/protobuf_clone.txt"
+
+if [ ! -f ${protobuf_installed_txt} ]; then
 
     cd ${deps_dir}/
 
-	if [ ! -f ${deps_dir}/protobuf_installed_clone.txt ]; then
+	if [ ! -f ${protobuf_clone_txt} ]; then
 
 		rm -rf protobuf_src
 
@@ -166,17 +178,17 @@ if [ ! -f ${deps_dir}/protobuf_installed.txt ]; then
 		if [ $? -eq 0 ]; then
 
 			cd protobuf_src
-            git checkout ${protobuf_version}
+      git checkout ${protobuf_version}
 			git submodule update --init --recursive
-            cd ..
+      cd ..
 
-			touch ${deps_dir}/protobuf_installed_clone.txt
+			touch ${protobuf_clone_txt}
 
 		fi
 
 	fi
 
-	if [ -f ${deps_dir}/protobuf_installed_clone.txt ]; then
+	if [ -f ${protobuf_clone_txt} ]; then
 
 		cd ${deps_dir}/protobuf_src
 
@@ -191,7 +203,7 @@ if [ ! -f ${deps_dir}/protobuf_installed.txt ]; then
 
 		if [ $? -eq 0 ]; then
 
-			touch ${deps_dir}/protobuf_installed.txt
+			touch ${protobuf_installed_txt}
 
 		fi
 
