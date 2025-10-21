@@ -16,16 +16,16 @@ server_root_dir="/data/celeritas/bin/debug"
 # 注意：冒号前是用于命令行的“唯一名称”
 # ----------------------------------------------------
 declare -A servers=(
-    ["service registry"]="/data/celeritas/bin/debug/service_registry_server:service_registry.pid"
-    ["auth"]="/data/celeritas/bin/debug/auth_server:auth.pid"
-    ["payment"]="/data/celeritas/bin/debug/payment_server:payment.pid"
-    ["admin"]="/data/celeritas/bin/debug/admin_server:admin.pid"
-    ["chat"]="/data/celeritas/bin/debug/chat_server:chat.pid"
-    ["gateway"]="/data/celeritas/bin/debug/gateway_server:gateway.pid"
-    ["player"]="/data/celeritas/bin/debug/player_server:player.pid"
-    ["logic"]="/data/celeritas/bin/debug/logic_server:logic.pid"
-    ["game"]="/data/celeritas/bin/debug/game_server:game.pid"
-    ["cross"]="/data/celeritas/bin/debug/cross_server:cross.pid"
+    ["service registry"]="/data/celeritas/bin/debug/service_registry_server:/data/celeritas/bin/debug/service_registry.pid"
+    ["auth"]="/data/celeritas/bin/debug/auth_server:/data/celeritas/bin/debug/auth.pid"
+    ["payment"]="/data/celeritas/bin/debug/payment_server:/data/celeritas/bin/debug/payment.pid"
+    ["admin"]="/data/celeritas/bin/debug/admin_server:/data/celeritas/bin/debug/admin.pid"
+    ["chat"]="/data/celeritas/bin/debug/chat_server:/data/celeritas/bin/debug/chat.pid"
+    ["gateway"]="/data/celeritas/bin/debug/gateway_server:/data/celeritas/bin/debug/gateway.pid"
+    ["player"]="/data/celeritas/bin/debug/player_server:/data/celeritas/bin/debug/player.pid"
+    ["logic"]="/data/celeritas/bin/debug/logic_server:/data/celeritas/bin/debug/logic.pid"
+    ["game"]="/data/celeritas/bin/debug/game_server:/data/celeritas/bin/debug/game.pid"
+    ["cross"]="/data/celeritas/bin/debug/cross_server:/data/celeritas/bin/debug/cross.pid"
 )
 # ----------------------------------------------------
 
