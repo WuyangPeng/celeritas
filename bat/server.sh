@@ -70,7 +70,8 @@ get_target_servers() {
 parse_server_config() {
     local server_name="$1"
     local config="${servers[$server_name]}"
-    local IFS=':' read -r executable pid_file <<< "$config"
+    local IFS=':'
+    read -r executable pid_file <<< "$config"
     echo "$executable" "$pid_file"
 }
 
