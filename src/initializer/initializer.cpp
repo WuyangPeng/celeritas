@@ -20,7 +20,7 @@ celeritas::initializer::initializer(const std::string_view& server_type, std::st
       application_loader_{ initializer_factory::create_application_loader(server_type, configuration_loader_->get_app_config()) },
       io_context_{},
       work_guard_{ boost::asio::make_work_guard(io_context_) },
-      daemon_{ std::make_unique<daemon>() },
+      daemon_{ std::make_unique<daemon>(server_type) },
       signals_{ io_context_, SIGINT, SIGTERM }
 {
     setup_signal_handler();

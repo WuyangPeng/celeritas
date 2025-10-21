@@ -7,7 +7,7 @@ namespace celeritas
     class daemon
     {
     public:
-        daemon();
+        daemon(const std::string_view& server_type);
 
         ~daemon();
 
@@ -18,5 +18,8 @@ namespace celeritas
         daemon(daemon&& rhs) = delete;
 
         daemon& operator=(daemon&& rhs) = delete;
+
+    private:
+        std::string server_type_;
     };
 }
