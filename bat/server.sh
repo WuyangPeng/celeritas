@@ -8,6 +8,8 @@
 # 示例: ./server.sh stop all # 停止指定服务
 # ====================================================================
 
+server_root_dir="/data/celeritas/bin/debug"
+
 # ----------------------------------------------------
 # 【请在此处定义你的服务器列表】
 # 格式: "唯一名称:可执行文件名:PID文件名"
@@ -123,7 +125,9 @@ start_server() {
     fi
     
     # 2. 启动程序
-    nohup "$exe" > "$name.log" 2>&1 &
+    local exe_basename=$(basename "$exe")
+
+    (cd "$server_root_dir" && nohup "./exe_basename" > "$name.log" 2>&1 &)
     
     sleep 1
 
