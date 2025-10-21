@@ -16,7 +16,25 @@ root_dir="$(dirname "$script_dir")"
 
 bin_dir="${root_dir}/bin"
 
-server_root_dir="${bin_dir}/debug"
+action="$1"
+target="$2" # server_name 或 all
+build_type="$3" # 接收可选的第三个参数
+
+# 检查参数数量（允许 2 或 3 个参数）
+if [ "$#" -lt 2 ] || [ "$#" -gt 3 ]; then
+    echo "用法: $0 <start|stop|restart|status> <server_name|all> [build_type]"
+    echo "注意: build_type 是可选的，默认值：release"
+    # 注意：可用服务器列表的打印必须在 servers 数组定义之后
+    # 暂时省略，将在下方定义数组后修正 usage 提示
+    exit 1
+fi
+
+# 设置默认 build_type
+if [ -z "$build_type" ]; then
+    build_type="release"
+fi
+
+server_root_dir="${bin_dir}/${build_type}"
 
 # ----------------------------------------------------
 # 【请在此处定义你的服务器列表】
@@ -35,17 +53,6 @@ declare -A servers=(
     ["game"]="${server_root_dir}/game_server:${server_root_dir}/game.pid"
     ["cross"]="${server_root_dir}/cross_server:${server_root_dir}/cross.pid"
 )
-# ----------------------------------------------------
-
-action="$1"
-target="$2" # server_name 或 all
-
-# 检查参数数量
-if [ "$#" -ne 2 ]; then
-    echo "用法: $0 <start|stop|restart|status> <server_name|all>"
-    echo "可用服务器: all, ${!servers[@]}"
-    exit 1
-fi
 
 # 检查操作是否有效
 if [[ ! "$action" =~ ^(start|stop|restart|status)$ ]]; then
