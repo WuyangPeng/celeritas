@@ -127,7 +127,7 @@ start_server() {
     # 2. 启动程序
     local exe_basename=$(basename "$exe")
 
-    (cd "$server_root_dir" && nohup "./exe_basename" > "$name.log" 2>&1 &)
+    (cd "$server_root_dir" && nohup "./$exe_basename" > "$name.log" 2>&1 &)
     
     sleep 1
 
