@@ -8,7 +8,15 @@
 # 示例: ./server.sh stop all # 停止指定服务
 # ====================================================================
 
-server_root_dir="/data/celeritas/bin/debug"
+script_path="$(readlink -f "$0")"
+
+script_dir="$(dirname "$script_path")"
+
+root_dir="$(dirname "$script_dir")"
+
+bin_dir="${root_dir}/bin"
+
+server_root_dir="${bin_dir}/debug"
 
 # ----------------------------------------------------
 # 【请在此处定义你的服务器列表】
@@ -16,16 +24,16 @@ server_root_dir="/data/celeritas/bin/debug"
 # 注意：冒号前是用于命令行的“唯一名称”
 # ----------------------------------------------------
 declare -A servers=(
-    ["service registry"]="/data/celeritas/bin/debug/service_registry_server:/data/celeritas/bin/debug/service_registry.pid"
-    ["auth"]="/data/celeritas/bin/debug/auth_server:/data/celeritas/bin/debug/auth.pid"
-    ["payment"]="/data/celeritas/bin/debug/payment_server:/data/celeritas/bin/debug/payment.pid"
-    ["admin"]="/data/celeritas/bin/debug/admin_server:/data/celeritas/bin/debug/admin.pid"
-    ["chat"]="/data/celeritas/bin/debug/chat_server:/data/celeritas/bin/debug/chat.pid"
-    ["gateway"]="/data/celeritas/bin/debug/gateway_server:/data/celeritas/bin/debug/gateway.pid"
-    ["player"]="/data/celeritas/bin/debug/player_server:/data/celeritas/bin/debug/player.pid"
-    ["logic"]="/data/celeritas/bin/debug/logic_server:/data/celeritas/bin/debug/logic.pid"
-    ["game"]="/data/celeritas/bin/debug/game_server:/data/celeritas/bin/debug/game.pid"
-    ["cross"]="/data/celeritas/bin/debug/cross_server:/data/celeritas/bin/debug/cross.pid"
+    ["registry"]="${server_root_dir}/service_registry_server:${server_root_dir}/service_registry.pid"
+    ["auth"]="${server_root_dir}/auth_server:${server_root_dir}/auth.pid"
+    ["payment"]="${server_root_dir}/payment_server:${server_root_dir}/payment.pid"
+    ["admin"]="${server_root_dir}/admin_server:${server_root_dir}/admin.pid"
+    ["chat"]="${server_root_dir}/chat_server:${server_root_dir}/chat.pid"
+    ["gateway"]="${server_root_dir}/gateway_server:${server_root_dir}/gateway.pid"
+    ["player"]="${server_root_dir}/player_server:${server_root_dir}/player.pid"
+    ["logic"]="${server_root_dir}/logic_server:${server_root_dir}/logic.pid"
+    ["game"]="${server_root_dir}/game_server:${server_root_dir}/game.pid"
+    ["cross"]="${server_root_dir}/cross_server:${server_root_dir}/cross.pid"
 )
 # ----------------------------------------------------
 
