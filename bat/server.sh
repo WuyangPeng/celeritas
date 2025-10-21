@@ -133,7 +133,7 @@ start_server() {
     local current_wait=0
     local success=0
 
-    while [ current_wait -lt $max_wait ]; do
+    while [ $current_wait -lt $max_wait ]; do
         if [ -f "$pid_file" ]; then
             success=1
             break
@@ -143,7 +143,7 @@ start_server() {
     done
 
     # 3. 检查 PID 文件是否成功创建
-    if [ success -eq 1 ]; then
+    if [ $success -eq 1 ]; then
         local pid=$(cat "$pid_file")
         echo "✅ 成功启动 $name。pid: pid"
     else
