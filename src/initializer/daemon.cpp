@@ -10,7 +10,7 @@ celeritas::daemon::daemon(const std::string_view& server_type)
 {
     const auto pid = std::filesystem::path::preferred_separator == '\\' ? _getpid() : getpid();
 
-    std::ofstream process_id{ boost::filesystem::current_path().string() + server_type_ };
+    std::ofstream process_id{ boost::filesystem::current_path() / (server_type_ + ".txt") };
     process_id << pid << std::endl;
 }
 
