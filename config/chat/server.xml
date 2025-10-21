@@ -7,14 +7,14 @@
     <worker_pool>4</worker_pool>
     <network>
         <network_type>tcp</network_type>
-        <port>30900</port>
+        <port>30400</port>
     </network>
     <network>
         <network_type>http</network_type>
-        <port>30901</port>
+        <port>30401</port>
     </network>
     <network>
         <network_type>websocket</network_type>
-        <port>30902</port>
+        <port>30402</port>
     </network>
 </server>

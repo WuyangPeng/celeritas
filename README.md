@@ -25,11 +25,34 @@
 
 - service registry 服务注册中心
 - auth 认证
+- payment 支付
+- admin 后台
+- chat 聊天
 - gateway 网关
 - player 玩家
 - logic 逻辑
 - game 游戏
-- payment 支付
-- admin 后台
 - cross 跨服
-- chat 聊天
+
+## Port Allocation（端口分配）
+
+- 百位服务
+    - 服务注册中心 0
+    - 认证 1
+    - 支付 2
+    - 后台 3
+    - 聊天 4
+    - 网关 5
+    - 玩家 6
+    - 逻辑 7
+    - 游戏 8
+    - 跨服 9
+- 十位实例
+    - 0 - 9
+- 个位协议
+    - TCP 0
+    - HTTP 1
+    - Websocket 2
+    - TCP + SSL 5
+    - HTTP + SSL 6
+    - Websocket + SSL 7
