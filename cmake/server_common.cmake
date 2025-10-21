@@ -8,28 +8,28 @@ add_executable(${SERVER_NAME}_server ${SRC_DIR_LIST})
 
 target_link_libraries(${SERVER_NAME}_server PRIVATE celeritas_lib)
 
-file(GLOB CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../config/*")
-
-foreach (config_file IN LISTS CONFIG_FILES)
-    add_custom_command(
-            TARGET ${SERVER_NAME}_server POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${SERVER_NAME}_server>/config"
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${config_file}" "$<TARGET_FILE_DIR:${SERVER_NAME}_server>/config/"
-            COMMENT "Copying config files for ${config_file}"
-    )
-endforeach ()
-
-file(GLOB SERVER_CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../config/${SERVER_NAME}/*")
-
-foreach (service_config_file IN LISTS SERVER_CONFIG_FILES)
-    add_custom_command(
-            TARGET ${SERVER_NAME}_server POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${service_config_file}" "$<TARGET_FILE_DIR:${SERVER_NAME}_server>/config/${SERVER_NAME}/"
-            COMMENT "Copying config files for ${service_config_file}"
-    )
-endforeach ()
-
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+    file(GLOB CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../config/*.xml")
+
+    foreach (config_file IN LISTS CONFIG_FILES)
+        add_custom_command(
+                TARGET ${SERVER_NAME}_server POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${SERVER_NAME}_server>/config"
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${config_file}" "$<TARGET_FILE_DIR:${SERVER_NAME}_server>/config/"
+                COMMENT "Copying config files for ${config_file}"
+        )
+    endforeach ()
+
+    file(GLOB SERVER_CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../config/${SERVER_NAME}/*.xml")
+
+    foreach (service_config_file IN LISTS SERVER_CONFIG_FILES)
+        add_custom_command(
+                TARGET ${SERVER_NAME}_server POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${service_config_file}" "$<TARGET_FILE_DIR:${SERVER_NAME}_server>/config/${SERVER_NAME}/"
+                COMMENT "Copying config files for ${service_config_file}"
+        )
+    endforeach ()
 
     file(GLOB PROTOBUF_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/protobuf/bin64/*.dll")
 
