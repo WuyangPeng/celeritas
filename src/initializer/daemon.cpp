@@ -6,7 +6,7 @@
 #include <fstream>
 
 celeritas::daemon::daemon(const std::string_view& server_type)
-    : server_type_{ server_type }, pid_file_name_{ (boost::filesystem::current_path() / (server_type_ + ".txt")).string() }
+    : server_type_{ server_type }, pid_file_name_{ (boost::filesystem::current_path() / (server_type_ + ".pid")).string() }
 {
     const auto pid = getpid();
 
