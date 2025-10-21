@@ -2,7 +2,7 @@
 <server>
     <instance_id>player_server-1</instance_id>
     <service_name>player_server</service_name>
-    <game_server_id></game_server_id>
+    <game_server_id>test-1</game_server_id>
     <host>127.0.0.1</host>
     <worker_pool>4</worker_pool>
     <network>
@@ -12,9 +12,5 @@
     <network>
         <network_type>http</network_type>
         <port>30601</port>
-    </network>
-    <network>
-        <network_type>websocket</network_type>
-        <port>30602</port>
     </network>
 </server>

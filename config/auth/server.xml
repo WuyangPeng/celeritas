@@ -13,8 +13,4 @@
         <network_type>http</network_type>
         <port>30101</port>
     </network>
-    <network>
-        <network_type>websocket</network_type>
-        <port>30102</port>
-    </network>
 </server>
