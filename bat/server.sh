@@ -24,8 +24,6 @@ build_type="$3" # 接收可选的第三个参数
 if [ "$#" -lt 2 ] || [ "$#" -gt 3 ]; then
     echo "用法: $0 <start|stop|restart|status> <server_name|all> [build_type]"
     echo "注意: build_type 是可选的，默认值：release"
-    # 注意：可用服务器列表的打印必须在 servers 数组定义之后
-    # 暂时省略，将在下方定义数组后修正 usage 提示
     exit 1
 fi
 
@@ -79,9 +77,7 @@ get_target_servers() {
     fi
 }
 
-# ----------------------------------------------------
 # 辅助函数：解析服务器配置
-# ----------------------------------------------------
 # 输入: server_name
 # 输出: executable pid_file
 parse_server_config() {
@@ -92,9 +88,7 @@ parse_server_config() {
     echo "$executable" "$pid_file"
 }
 
-#########################################################
 # 函数：检查单个进程状态
-#########################################################
 check_status() {
     local name="$1"
     local exe="$2"
@@ -117,9 +111,7 @@ check_status() {
     fi
 }
 
-#########################################################
 # 函数：启动服务
-#########################################################
 start_server() {
     local name="$1"
     local exe="$2"
@@ -129,12 +121,12 @@ start_server() {
 
     # 1. 检查是否已运行
     if [ -f "$pid_file" ]; then
-        local PID=$(cat "$pid_file")
-        if ps -p "$PID" > /dev/null; then
-            echo "警告: $name 正在运行 (PID: $PID)。跳过启动。"
+        local pid=$(cat "$pid_file")
+        if ps -p "$pid" > /dev/null; then
+            echo "警告: $name 正在运行 (pid: $pid)。跳过启动。"
             return 0
         else
-            echo "警告: PID 文件存在，但进程已停止。清理后重新启动。"
+            echo "警告: pid 文件存在，但进程已停止。清理后重新启动。"
             rm -f "$pid_file"
         fi
     fi
@@ -166,9 +158,7 @@ start_server() {
     fi
 }
 
-#########################################################
 # 函数：停止服务
-#########################################################
 stop_server() {
     local name="$1"
     local exe="$2"
@@ -181,17 +171,17 @@ stop_server() {
         return 0
     fi
     
-    local PID=$(cat "$pid_file")
+    local pid=$(cat "$pid_file")
     
-    if ps -p "$PID" > /dev/null; then
-        echo "正在发送 SIGTERM 信号给 PID: $PID..."
-        kill "$PID"
+    if ps -p "$pid" > /dev/null; then
+        echo "正在发送 SIGTERM 信号给 PID: $pid..."
+        kill "$pid"
         
         sleep 2
         
-        if ps -p "$PID" > /dev/null; then
-            echo "进程 $PID 未退出，发送 SIGKILL 信号..."
-            kill -9 "$PID"
+        if ps -p "$pid" > /dev/null; then
+            echo "进程 $pid 未退出，发送 SIGKILL 信号..."
+            kill -9 "$pid"
         fi
         
         if [ -f "$pid_file" ]; then
@@ -201,14 +191,12 @@ stop_server() {
         
         echo "✅ $name 已停止。"
     else
-        echo "警告: PID 文件中记录的进程 $PID 不存在。清理 PID 文件 $pid_file。"
+        echo "警告: pid 文件中记录的进程 $pid 不存在。清理 pid 文件 $pid_file。"
         rm -f "$pid_file"
     fi
 }
 
-#########################################################
 # 主逻辑开始
-#########################################################
 
 # 确定要操作的服务器列表
 declare -a target_list
