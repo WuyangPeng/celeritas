@@ -129,12 +129,23 @@ start_server() {
 
     (cd "$server_root_dir" && nohup "./$exe_basename" > "$name.log" 2>&1 &)
     
-    sleep 1
+    local max_wait=5
+    local current_wait=0
+    local success=0
+
+    while [ current_wait -lt $max_wait ]; do
+        if [ -f "$pid_file" ]; then
+            success=1
+            break
+        fi
+        sleep 0.5
+        current_wait=$((current_wait + 1))
+    done
 
     # 3. 检查 PID 文件是否成功创建
-    if [ -f "$pid_file" ]; then
-        local PID=$(cat "$pid_file")
-        echo "✅ 成功启动 $name。PID: $PID"
+    if [ success -eq 1 ]; then
+        local pid=$(cat "$pid_file")
+        echo "✅ 成功启动 $name。pid: pid"
     else
         echo "❌ 启动失败！$name 未创建 $pid_file。请检查程序路径和权限。"
     fi
