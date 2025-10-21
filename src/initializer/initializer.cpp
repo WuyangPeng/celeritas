@@ -1,9 +1,9 @@
 ﻿#include "initializer.h"
+#include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "database/database_pool_manager.h"
-#include "proto/common/common.pb.h"
 #include "proto/request.pb.h"
-#include "common/celeritas_error.h"
+#include "proto/common/common.pb.h"
 
 using namespace std::literals;
 
@@ -20,6 +20,7 @@ celeritas::initializer::initializer(const std::string_view& server_type, std::st
       application_loader_{ initializer_factory::create_application_loader(server_type, configuration_loader_->get_app_config()) },
       io_context_{},
       work_guard_{ boost::asio::make_work_guard(io_context_) },
+      daemon_{ std::make_unique<daemon>() },
       signals_{ io_context_, SIGINT, SIGTERM }
 {
     setup_signal_handler();
@@ -84,6 +85,7 @@ void celeritas::initializer::setup_signal_handler()
             {
                 LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop! signal_number = " << signal_number << ",error = " << error.message();
 
+                daemon_.reset();
                 io_context_.stop();
                 database_pool_manager::get_instance().release_pool();
                 resource_loader_->release_resource();
@@ -123,6 +125,18 @@ celeritas::header celeritas::initializer::get_header(const message_header& messa
             return header(server_header);
         }
 
+        case proto::common::header::PayloadCase::kGateway:
+        {
+            const auto& gateway_header = header_request.gateway();
+            return header(gateway_header);
+        }
+
+        case proto::common::header::PayloadCase::kToGateway:
+        {
+            const auto& to_gateway_header = header_request.to_gateway();
+            return header(to_gateway_header);
+        }
+
         default:
         {
             throw celeritas_error("消息头为空.");
@@ -146,9 +160,8 @@ void celeritas::initializer::call_back(const message_header& message_header, buf
     {
         case proto::request::PayloadCase::kService:
         {
-            const auto& service = request->service();
-
-            if (!application_loader_->dispatch(header, service, request, session, resource_loader_))
+            if (const auto& service = request->service();
+                !application_loader_->dispatch(header, service, request, session, resource_loader_))
             {
                 LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch service request.";
             }

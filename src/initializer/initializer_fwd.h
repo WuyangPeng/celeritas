@@ -7,6 +7,7 @@ namespace celeritas
     class initializer_factory;
     class application_loader;
     class resource_loader;
+    class daemon;
 
     class service_registry_resource_loader;
     class service_registry_configuration_loader;

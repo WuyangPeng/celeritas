@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "daemon.h"
 #include "initializer_factory.h"
 #include "common/buffer_guard.h"
 #include "network/message_header.h"
@@ -49,6 +50,7 @@ namespace celeritas
         using executor_type = boost::asio::io_context::executor_type;
         using executor_work_guard_type = boost::asio::executor_work_guard<executor_type>;
         using signal_set_type = boost::asio::signal_set;
+        using daemon_unique_ptr = std::unique_ptr<daemon>;
 
         [[nodiscard]] std::string get_server_type() const;
 
@@ -72,6 +74,7 @@ namespace celeritas
         application_loader_unique_ptr application_loader_;
         io_context_type io_context_;
         executor_work_guard_type work_guard_;
+        daemon_unique_ptr daemon_;
 
         // 新增一个信号集成员变量
         signal_set_type signals_;
