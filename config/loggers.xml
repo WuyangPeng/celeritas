@@ -51,4 +51,11 @@
         <log_file_name>initializer.log</log_file_name>
         <rotation_size>50</rotation_size>
     </logger>
+    <logger name="config_logger">
+        <level>trace</level>
+        <console_enabled>true</console_enabled>
+        <channel_name>config</channel_name>
+        <log_file_name>config.log</log_file_name>
+        <rotation_size>50</rotation_size>
+    </logger>
 </loggers>

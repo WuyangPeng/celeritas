@@ -132,6 +132,23 @@ void celeritas::resource_loader::initialize_service_registry_resource(boost::asi
     }
 }
 
+void celeritas::resource_loader::modify_service_registry_resource(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback, int index)
+{
+    const auto service_registry = app_config_->get_service_registry_config();
+
+    if (!service_registry.empty())
+    {
+        const auto random_index = random_helper::get_random_int(service_registry.size());
+
+        auto iter = service_registry.begin();
+        std::advance(iter, random_index);
+
+        const auto client = service_registry_loader::loader_service_registry(io_context, iter->second, network_message_callback, game_server_id_, service_registry_type.data());
+
+        tcp_clients_.at(index) = client;
+    }
+}
+
 void celeritas::resource_loader::start_check_tcp_clients_timer(boost::asio::io_context& io_context)
 {
     timer_interval_ = std::make_unique<steady_timer_type>(io_context);
@@ -183,16 +200,14 @@ void celeritas::resource_loader::process_check_tcp_clients(boost::asio::io_conte
 
 void celeritas::resource_loader::process_check_tcp_clients_by_duration(boost::asio::io_context& io_context)
 {
-    for (auto iter = tcp_clients_.begin(); iter != tcp_clients_.end();)
+    for (auto index = 0; index < tcp_clients_.size(); ++index)
     {
-        auto& tcp_client = *iter;
+        auto& tcp_client = tcp_clients_[index];
         if (!tcp_client->is_open())
         {
             if (!is_service_registry_ && tcp_client->get_server_type() == service_registry_type)
             {
-                iter = tcp_clients_.erase(iter);
-
-                initialize_service_registry_resource(io_context, tcp_client->get_network_message_callback());
+                modify_service_registry_resource(io_context, tcp_client->get_network_message_callback(), index);
             }
             else
             {
@@ -201,13 +216,7 @@ void celeritas::resource_loader::process_check_tcp_clients_by_duration(boost::as
                     tcp_client->connect(),
                     boost::asio::detached
                     );
-
-                ++iter;
             }
-        }
-        else
-        {
-            ++iter;
         }
     }
 }

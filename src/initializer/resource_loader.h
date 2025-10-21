@@ -54,6 +54,8 @@ namespace celeritas
 
         void initialize_service_registry_resource(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback);
 
+        void modify_service_registry_resource(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback, int index);
+
         virtual void service_initialize_resource() = 0;
 
         void start_check_tcp_clients_timer(boost::asio::io_context& io_context);
