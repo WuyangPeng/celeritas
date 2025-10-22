@@ -285,7 +285,6 @@ install(TARGETS
         chat_server
         DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
 
-
 set(APP_RUNTIME_RPATH "$ORIGIN/lib")
 
 set_target_properties(
