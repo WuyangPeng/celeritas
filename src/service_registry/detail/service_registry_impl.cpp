@@ -103,6 +103,27 @@ void celeritas::service_registry_impl::cleanup_services_by_duration()
     }
 }
 
+bool celeritas::service_registry_impl::cleanup_service_entry(const registry_type_iterator& iter, const time_point_type& now)
+{
+    const auto last_heartbeat = iter->second.get_last_heartbeat();
+    if (const auto duration = std::chrono::duration_cast<seconds_type>(now - last_heartbeat).count();
+        duration > services_heartbeat_remove_time)
+    {
+        log_server_unresponsive(iter, duration, boost::log::trivial::error, "removed after ");
+        return true;
+    }
+    else if (duration > services_heartbeat_error_time)
+    {
+        log_server_unresponsive(iter, duration, boost::log::trivial::error, "unresponsive for ");
+    }
+    else if (duration > services_heartbeat_warning_time)
+    {
+        log_server_unresponsive(iter, duration, boost::log::trivial::warning, "unresponsive for ");
+    }
+
+    return false;
+}
+
 void celeritas::service_registry_impl::log_server_unresponsive(const registry_type_iterator& iter, const int64_t duration, const severity_level_type level, const std::string& description)
 {
     if (level == severity_level_type::warning)
@@ -129,25 +150,4 @@ void celeritas::service_registry_impl::log_server_unresponsive(const registry_ty
                << iter->second.get_instance_id()
                << ")";
     }
-}
-
-bool celeritas::service_registry_impl::cleanup_service_entry(const registry_type_iterator& iter, const time_point_type& now)
-{
-    const auto last_heartbeat = iter->second.get_last_heartbeat();
-    if (const auto duration = std::chrono::duration_cast<seconds_type>(now - last_heartbeat).count();
-        duration > services_heartbeat_remove_time)
-    {
-        log_server_unresponsive(iter, duration, boost::log::trivial::error, "removed after ");
-        return true;
-    }
-    else if (duration > services_heartbeat_error_time)
-    {
-        log_server_unresponsive(iter, duration, boost::log::trivial::error, "unresponsive for ");
-    }
-    else if (duration > services_heartbeat_warning_time)
-    {
-        log_server_unresponsive(iter, duration, boost::log::trivial::warning, "unresponsive for ");
-    }
-
-    return false;
 }

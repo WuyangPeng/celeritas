@@ -9,7 +9,7 @@ namespace celeritas
 {
     namespace beast_websocket = boost::beast::websocket;
 
-    class websocket_session_run : public session_run
+    class websocket_session_run final : public session_run
     {
     public:
         using class_type = websocket_session_run;

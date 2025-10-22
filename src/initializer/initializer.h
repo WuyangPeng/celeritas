@@ -6,9 +6,9 @@
 #include "network/message_header.h"
 #include "network/network_message_callback.h"
 
+#include <boost/filesystem.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/signal_set.hpp>
-#include <boost/filesystem.hpp>
 #include <memory>
 #include <string>
 
@@ -40,8 +40,6 @@ namespace celeritas
         void run();
 
         void call_back(const message_header& message_header, buffer_guard buffer_guard, const session_shared_ptr& session) override;
-
-        static void crash_handler(int signal_number);
 
     private:
         using configuration_loader_unique_ptr = initializer_factory::configuration_loader_unique_ptr;

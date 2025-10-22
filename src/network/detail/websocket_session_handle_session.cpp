@@ -1,11 +1,8 @@
 ﻿#include "websocket_session_handle_one_message.h"
 #include "websocket_session_handle_session.h"
-
-#include <utility>
 #include "common/logger.h"
-#include "common/common_fwd.h"
 
-celeritas::websocket_session_handle_session::websocket_session_handle_session(web_socket_stream_type& web_socket, int64_t session_id, network_message_callback_weak_ptr callback, session_weak_ptr session)
+celeritas::websocket_session_handle_session::websocket_session_handle_session(web_socket_stream_type& web_socket, const int64_t session_id, network_message_callback_weak_ptr callback, session_weak_ptr session)
     : web_socket_{ web_socket }, session_id_{ session_id }, callback_{ std::move(callback) }, session_{ std::move(session) }
 {
 }

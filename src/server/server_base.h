@@ -23,10 +23,10 @@ namespace celeritas
 
         server_base& operator=(server_base&& rhs) noexcept = default;
 
-        void run(int argc, char** argv);
+        void run(int argc, char** argv) const;
 
     private:
-        void create_initializer(const command_line_config& command_line_config);
+        void create_initializer(const command_line_config& command_line_config) const;
 
         std::string server_type_;
     };

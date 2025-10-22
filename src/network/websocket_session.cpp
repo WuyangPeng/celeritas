@@ -14,6 +14,16 @@ celeritas::websocket_session::websocket_session(socket_type socket,
     set_option(game_server_id);
 }
 
+void celeritas::websocket_session::start()
+{
+    websocket_run_->start(shared_from_this());
+}
+
+bool celeritas::websocket_session::is_open() const
+{
+    return websocket_.is_open();
+}
+
 void celeritas::websocket_session::set_option(const std::string& game_server_id)
 {
     // 配置 WebSocket 选项
@@ -24,17 +34,7 @@ void celeritas::websocket_session::set_option(const std::string& game_server_id)
         }));
 }
 
-void celeritas::websocket_session::start()
-{
-    websocket_run_->start(shared_from_this());
-}
-
 void celeritas::websocket_session::do_write(buffer_guard data)
 {
     websocket_write_->write(std::move(data));
-}
-
-bool celeritas::websocket_session::is_open() const
-{
-    return websocket_.is_open();
 }

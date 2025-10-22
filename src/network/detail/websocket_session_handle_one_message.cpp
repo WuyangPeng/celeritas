@@ -1,7 +1,6 @@
 ﻿#include "websocket_session_handle_one_message.h"
 #include "common/buffer_pool.h"
 #include "common/logger.h"
-#include "common/common_fwd.h"
 #include "network/message_header.h"
 
 celeritas::websocket_session_handle_one_message::websocket_session_handle_one_message(web_socket_stream_type& web_socket, int64_t session_id, network_message_callback_weak_ptr callback, session_weak_ptr session)

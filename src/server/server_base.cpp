@@ -7,7 +7,7 @@ celeritas::server_base::server_base(const std::string_view& server_type)
 {
 }
 
-void celeritas::server_base::run(int argc, char** argv)
+void celeritas::server_base::run(const int argc, char** argv) const
 {
     if (const command_line_config command_line_config{ argc, argv, server_type_ };
         !command_line_config.is_exit_requested())
@@ -16,7 +16,7 @@ void celeritas::server_base::run(int argc, char** argv)
     }
 }
 
-void celeritas::server_base::create_initializer(const command_line_config& command_line_config)
+void celeritas::server_base::create_initializer(const command_line_config& command_line_config) const
 {
     const auto server_context = initializer::create(server_type_, command_line_config.get<std::string>(config_file_path_command_line.data()));
 

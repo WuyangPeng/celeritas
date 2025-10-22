@@ -33,7 +33,7 @@ namespace celeritas
 
         void set_effective_size(size_t size);
 
-        [[nodiscard]] char* get(int offset);
+        [[nodiscard]] char* get(size_t offset);
 
     private:
         buffer_pool_data buffer_data_;

@@ -8,7 +8,7 @@
 namespace celeritas
 {
     template <typename SocketType>
-    class tcp_session_run : public session_run
+    class tcp_session_run final : public session_run
     {
     public:
         using class_type = tcp_session_run;

@@ -9,15 +9,6 @@ celeritas::worker_pool::worker_pool(const int num_threads)
     }
 }
 
-void celeritas::worker_pool::add_work()
-{
-    workers_.emplace_back([this] {
-        while (execute_task())
-        {
-        }
-    });
-}
-
 celeritas::worker_pool::~worker_pool() noexcept
 {
     queue_.stop();
@@ -26,6 +17,15 @@ celeritas::worker_pool::~worker_pool() noexcept
 void celeritas::worker_pool::submit(task_type task)
 {
     queue_.push(std::move(task));
+}
+
+void celeritas::worker_pool::add_work()
+{
+    workers_.emplace_back([this] {
+        while (execute_task())
+        {
+        }
+    });
 }
 
 bool celeritas::worker_pool::execute_task()

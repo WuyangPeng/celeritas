@@ -12,7 +12,9 @@ namespace celeritas
         using base_type = concrete_message_handler;
 
     protected:
-        [[nodiscard]] bool handle_concrete(const handle_parameter& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry) override;
+        [[nodiscard]] bool handle_concrete(const handle_parameter& handle_parameter,
+                                           const message_type& current_message,
+                                           const message_registry_weak_ptr& message_registry) override;
     };
 }
 

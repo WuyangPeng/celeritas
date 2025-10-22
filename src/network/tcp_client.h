@@ -19,6 +19,7 @@ namespace celeritas
         using session_type = session_base<socket_type>;
         using session_type_shared_type = std::shared_ptr<session_type>;
         using session_waitable_type = boost::asio::awaitable<session_type_shared_type>;
+        using void_waitable_type = boost::asio::awaitable<void>;
 
         tcp_client(io_context_type& io_context,
                    network_message_callback_weak_ptr callback,
@@ -43,6 +44,8 @@ namespace celeritas
         void write(const header& header, const google::protobuf::Message& request);
 
     private:
+        [[nodiscard]] void_waitable_type do_connect();
+
         io_context_type& io_context_;
         network_message_callback_weak_ptr network_message_callback_;
         std::string game_server_id_;

@@ -2,7 +2,6 @@
 #include "common/buffer_guard.h"
 #include "common/buffer_pool.h"
 #include "common/logger.h"
-#include "common/common_fwd.h"
 #include "network/message_header.h"
 #include "network/network_message_callback.h"
 
@@ -112,7 +111,7 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_
     buffer_guard.set_effective_size(total_size);
     std::memcpy(buffer_guard.get(), payload_data, total_size);
 
-    auto session = get_session();
+    const auto session = get_session();
     if (const auto callback = session_callback_.get_network_message_callback_shared_ptr();
         callback != nullptr && session != nullptr)
     {

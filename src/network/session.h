@@ -3,8 +3,6 @@
 #include "session_callback.h"
 #include "common/buffer_guard.h"
 #include "message/header.h"
-#include "proto/response.pb.h"
-#include "proto/request.pb.h"
 
 #include <boost/asio/awaitable.hpp>
 #include <memory>

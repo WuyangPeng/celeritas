@@ -8,7 +8,7 @@
 namespace celeritas
 {
     template <typename SocketType>
-    class tcp_session_write : public session_write
+    class tcp_session_write final : public session_write
     {
     public:
         using class_type = tcp_session_write;

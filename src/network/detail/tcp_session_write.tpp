@@ -70,7 +70,7 @@ celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<Socke
 }
 
 template <typename SocketType>
-typename celeritas::tcp_session_write<SocketType>::buffer_guard_optional_type celeritas::tcp_session_write<SocketType>::get_next_write_buffer()
+celeritas::tcp_session_write<SocketType>::buffer_guard_optional_type celeritas::tcp_session_write<SocketType>::get_next_write_buffer()
 {
     std::lock_guard lock{ write_mutex_ };
     if (write_queue_.empty())

@@ -13,13 +13,6 @@ celeritas::websocket_listener::websocket_listener(io_context_type& io_context,
     set_option(port);
 }
 
-void celeritas::websocket_listener::set_option(const int port)
-{
-    acceptor_.set_option(boost::asio::socket_base::reuse_address(true));
-
-    LOG_CHANNEL(network_channel, info) << "web socket listening on port " << port << "...";
-}
-
 void celeritas::websocket_listener::stop()
 {
     listener_accept_->stop();
@@ -28,4 +21,11 @@ void celeritas::websocket_listener::stop()
 celeritas::websocket_listener::void_awaitable_type celeritas::websocket_listener::accept_connections()
 {
     co_return co_await listener_accept_->accept_connections();
+}
+
+void celeritas::websocket_listener::set_option(const int port)
+{
+    acceptor_.set_option(boost::asio::socket_base::reuse_address(true));
+
+    LOG_CHANNEL(network_channel, info) << "web socket listening on port " << port << "...";
 }

@@ -13,9 +13,9 @@ int main(const int argc, char** argv)
 {
     try
     {
-        celeritas::payment_server payment_server{};
+        const celeritas::payment_server server{};
 
-        payment_server.run(argc, argv);
+        server.run(argc, argv);
     }
     catch (const std::exception& error)
     {

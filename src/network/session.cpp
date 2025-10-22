@@ -24,14 +24,14 @@ void celeritas::session::write(const header& header, const google::protobuf::Mes
 
     std::memcpy(buffer_guard.get(), &message_header, header_size);
 
-    if (!header_request->SerializeToArray(buffer_guard.get(header_size), header_request->ByteSizeLong()))
+    if (!header_request->SerializeToArray(buffer_guard.get(header_size), boost::numeric_cast<int>(header_request->ByteSizeLong())))
     {
         LOG_CHANNEL(network_channel, error) << "序列化失败！";
         return;
     }
 
     if (const auto offset = header_size + header_request->ByteSizeLong();
-        !response.SerializeToArray(buffer_guard.get(offset), response.ByteSizeLong()))
+        !response.SerializeToArray(buffer_guard.get(offset), boost::numeric_cast<int>(response.ByteSizeLong())))
     {
         LOG_CHANNEL(network_channel, error) << "序列化失败！";
         return;

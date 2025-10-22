@@ -101,15 +101,15 @@ celeritas::session_run::void_awaitable_type celeritas::tcp_session_run<SocketTyp
 
     // 现在，通知外部处理者一个完整的消息已经接收到
     // 我们将消息头和消息体数据传递给回调函数
-    const auto callback = session_callback_.get_network_message_callback_shared_ptr();
-    if (callback != nullptr && session != nullptr)
+    if (const auto callback = session_callback_.get_network_message_callback_shared_ptr();
+        callback != nullptr && session != nullptr)
     {
         callback->call_back(header, std::move(buffer_guard), session);
     }
 }
 
 template <typename SocketType>
-typename celeritas::tcp_session_run<SocketType>::read_awaitable_type celeritas::tcp_session_run<SocketType>::read_data_with_timeout(boost::asio::mutable_buffer buffer)
+celeritas::tcp_session_run<SocketType>::read_awaitable_type celeritas::tcp_session_run<SocketType>::read_data_with_timeout(boost::asio::mutable_buffer buffer)
 {
     boost::asio::steady_timer timer{ socket_.get_executor(), std::chrono::steady_clock::now() + timeout_seconds };
     boost::asio::cancellation_signal cancel_signal{};
