@@ -6,6 +6,7 @@
 #include "proto/common/common.pb.h"
 
 #include <boost/stacktrace.hpp>
+#include <csignal>
 
 using namespace std::literals;
 
@@ -23,8 +24,7 @@ celeritas::initializer::initializer(const std::string_view& server_type, std::st
       io_context_{},
       work_guard_{ boost::asio::make_work_guard(io_context_) },
       daemon_{ std::make_unique<daemon>(server_type) },
-      signals_{ io_context_, SIGINT, SIGTERM },
-      crash_{ io_context_, SIGSEGV,SIGABRT,SIGFPE }
+      signals_{ io_context_, SIGINT, SIGTERM }
 {
     setup_signal_handler();
 }
@@ -86,25 +86,31 @@ void celeritas::initializer::setup_signal_handler()
         [this](const boost::system::error_code& error, const int signal_number) {
             if (!error)
             {
-                stop(error, signal_number);
+                LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop! signal_number = " << signal_number << ",error = " << error.message();
+
+                stop();
             }
         });
 
-    crash_.async_wait(
-        [this](const boost::system::error_code& error, const int signal_number) {
-            if (!error)
-            {
-                LOG_CHANNEL(initializer_channel, fatal) << "stack trace:\n" << boost::stacktrace::stacktrace();
+    #ifdef  WIN32
 
-                stop(error, signal_number);
-            }
-        });
+    #else // !WIN32
+
+    struct std::sigaction sa;
+    std::memset(&sa, 0, sizeof(sa));
+    sa.sa_handler = crash_handler;
+    sigemptyset(&sa.sa_mask);
+
+    // 注册 SIGSEGV, SIGABRT, SIGFPE
+    sigaction(SIGSEGV, &sa, NULL);
+    sigaction(SIGABRT, &sa, NULL);
+    sigaction(SIGFPE, &sa, NULL);
+
+    #endif // WIN32
 }
 
-void celeritas::initializer::stop(const boost::system::error_code& error, const int signal_number)
+void celeritas::initializer::stop()
 {
-    LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop! signal_number = " << signal_number << ",error = " << error.message();
-
     daemon_.reset();
     io_context_.stop();
     database_pool_manager::get_instance().release_pool();
@@ -112,6 +118,13 @@ void celeritas::initializer::stop(const boost::system::error_code& error, const 
     application_loader_->stop();
 
     LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop finish!";
+}
+
+void celeritas::initializer::crash_handler(int signal_number)
+{
+    LOG_CHANNEL(initializer_channel, fatal) << "stack trace:\n" << boost::stacktrace::stacktrace();
+
+    stop();
 }
 
 celeritas::header celeritas::initializer::get_header(const message_header& message_header, const buffer_guard& buffer_guard) const
