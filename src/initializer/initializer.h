@@ -69,7 +69,7 @@ namespace celeritas
 
         void stop();
 
-       static void crash_handler(int signal_number);
+        static void crash_handler(int signal_number);
 
         std::string server_type_;
         path_type current_path_;

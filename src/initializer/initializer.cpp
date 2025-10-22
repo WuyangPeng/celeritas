@@ -96,7 +96,7 @@ void celeritas::initializer::setup_signal_handler()
 
     #else // !WIN32
 
-    struct std::sigaction sa;
+    struct sigaction sa;
     std::memset(&sa, 0, sizeof(sa));
     sa.sa_handler = crash_handler;
     sigemptyset(&sa.sa_mask);
