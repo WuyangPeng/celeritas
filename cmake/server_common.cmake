@@ -22,9 +22,7 @@ else ()
 
     endif ()
 
-    set_target_properties(${SERVER_NAME}_server PROPERTIES
-            LINK_FLAGS "-rdynamic"
-    )
+    set_target_properties(${SERVER_NAME}_server PROPERTIES LINK_FLAGS "-rdynamic")
 
 endif ()
 
