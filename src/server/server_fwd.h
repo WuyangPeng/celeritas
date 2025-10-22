@@ -4,6 +4,8 @@
 
 namespace celeritas
 {
+    class server_base;
+
     constexpr std::string_view service_registry_type = "service_registry";
     constexpr std::string_view auth_type = "auth";
     constexpr std::string_view gateway_type = "gateway";

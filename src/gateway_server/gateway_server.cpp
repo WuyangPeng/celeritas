@@ -1,33 +1,21 @@
 ﻿#include "gateway_server.h"
-#include "common/command_line_config.tpp"
 #include "common/logger.h"
-#include "initializer/initializer.h"
 #include "server/server_fwd.h"
 
 #include <exception>
 
-void celeritas::gateway_server::run(const int argc, char** argv)
+celeritas::gateway_server::gateway_server()
+    : base_type{ gateway_type }
 {
-    if (const command_line_config command_line_config{ argc, argv, gateway_type };
-        !command_line_config.is_exit_requested())
-    {
-        create_initializer(command_line_config);
-    }
-}
-
-void celeritas::gateway_server::create_initializer(const command_line_config& command_line_config)
-{
-    const auto server_context = initializer::create(gateway_type, command_line_config.get<std::string>(config_file_path_command_line.data()));
-
-    server_context->initialize();
-    server_context->run();
 }
 
 int main(const int argc, char** argv)
 {
     try
     {
-        celeritas::gateway_server::run(argc, argv);
+        celeritas::gateway_server gateway_server{};
+
+        gateway_server.run(argc, argv);
     }
     catch (const std::exception& error)
     {

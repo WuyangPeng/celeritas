@@ -238,10 +238,12 @@ add_subdirectory(cmake/service_registry)
 add_subdirectory(cmake/initializer)
 add_subdirectory(cmake/config)
 add_subdirectory(cmake/message)
+add_subdirectory(cmake/server)
 
 add_library(celeritas_lib INTERFACE)
 
 target_link_libraries(celeritas_lib INTERFACE
+        server
         initializer
         service_registry
         config
@@ -270,18 +272,40 @@ add_subdirectory(cmake/cross_server)
 add_subdirectory(cmake/chat_server)
 
 # 安装规则
-install(TARGETS
-        service_registry_server
-        auth_server
-        gateway_server
-        player_server
-        logic_server
-        game_server
-        payment_server
-        admin_server
-        cross_server
-        chat_server
-        DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+    install(TARGETS
+            service_registry_server
+            auth_server
+            gateway_server
+            player_server
+            logic_server
+            game_server
+            payment_server
+            admin_server
+            cross_server
+            chat_server
+            DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
+
+else ()
+
+    install(TARGETS
+            service_registry_server
+            auth_server
+            gateway_server
+            player_server
+            logic_server
+            game_server
+            payment_server
+            admin_server
+            cross_server
+            chat_server
+            RUNTIME DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}"
+            STRIP
+            DEBUG_DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}/debug_symbols")
+
+endif ()
 
 set(APP_RUNTIME_RPATH "$ORIGIN/lib")
 

@@ -5,6 +5,8 @@
 #include "proto/request.pb.h"
 #include "proto/common/common.pb.h"
 
+#include <boost/stacktrace.hpp>
+
 using namespace std::literals;
 
 celeritas::initializer::initializer_shared_ptr celeritas::initializer::create(const std::string_view& server_type, std::string config_file_path)
@@ -21,7 +23,8 @@ celeritas::initializer::initializer(const std::string_view& server_type, std::st
       io_context_{},
       work_guard_{ boost::asio::make_work_guard(io_context_) },
       daemon_{ std::make_unique<daemon>(server_type) },
-      signals_{ io_context_, SIGINT, SIGTERM }
+      signals_{ io_context_, SIGINT, SIGTERM },
+      crash_{ io_context_, SIGSEGV,SIGABRT,SIGFPE }
 {
     setup_signal_handler();
 }
@@ -83,17 +86,32 @@ void celeritas::initializer::setup_signal_handler()
         [this](const boost::system::error_code& error, const int signal_number) {
             if (!error)
             {
-                LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop! signal_number = " << signal_number << ",error = " << error.message();
-
-                daemon_.reset();
-                io_context_.stop();
-                database_pool_manager::get_instance().release_pool();
-                resource_loader_->release_resource();
-                application_loader_->stop();
-
-                LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop finish!";
+                stop(error, signal_number);
             }
         });
+
+    crash_.async_wait(
+        [this](const boost::system::error_code& error, const int signal_number) {
+            if (!error)
+            {
+                LOG_CHANNEL(initializer_channel, fatal) << "stack trace:\n" << boost::stacktrace::stacktrace();
+
+                stop(error, signal_number);
+            }
+        });
+}
+
+void celeritas::initializer::stop(const boost::system::error_code& error, const int signal_number)
+{
+    LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop! signal_number = " << signal_number << ",error = " << error.message();
+
+    daemon_.reset();
+    io_context_.stop();
+    database_pool_manager::get_instance().release_pool();
+    resource_loader_->release_resource();
+    application_loader_->stop();
+
+    LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop finish!";
 }
 
 celeritas::header celeritas::initializer::get_header(const message_header& message_header, const buffer_guard& buffer_guard) const

@@ -67,6 +67,8 @@ namespace celeritas
         // 设置信号处理
         void setup_signal_handler();
 
+        void stop(const boost::system::error_code& error, int signal_number);
+
         std::string server_type_;
         path_type current_path_;
         configuration_loader_unique_ptr configuration_loader_;
@@ -78,5 +80,6 @@ namespace celeritas
 
         // 新增一个信号集成员变量
         signal_set_type signals_;
+        signal_set_type crash_;
     };
 }

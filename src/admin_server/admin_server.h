@@ -1,17 +1,19 @@
 ﻿#pragma once
 
-#include "common/common_fwd.h"
+#include "server/server_base.h"
 
 namespace celeritas
 {
-    class admin_server
+    class admin_server final : public server_base
     {
     public:
         using class_type = admin_server;
+        using base_type = server_base;
 
-        static void run(int argc, char** argv);
-
-    private:
-        static void create_initializer(const command_line_config& command_line_config);
+        admin_server();
     };
 }
+
+
+
+
