@@ -14,9 +14,9 @@ else ()
 
     target_link_libraries(${SERVER_NAME}_server PRIVATE celeritas_lib dl)
 
-    set_target_properties(${SERVER_NAME}_server PROPERTIES POSITION_INDEPENDENT_CODE ON)
+    #set_target_properties(${SERVER_NAME}_server PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-    #set_target_properties(${SERVER_NAME}_server PROPERTIES LINK_FLAGS "-rdynamic")
+    set_target_properties(${SERVER_NAME}_server PROPERTIES LINK_FLAGS "-rdynamic")
 
 endif ()
 
