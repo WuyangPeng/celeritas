@@ -27,9 +27,6 @@ celeritas::initializer::initializer(const std::string_view& server_type, std::st
       signals_{ io_context_, SIGINT, SIGTERM }
 {
     setup_signal_handler();
-
-    std::vector<int> a{};
-    std::cout << a[1];
 }
 
 void celeritas::initializer::initialize()
@@ -95,9 +92,7 @@ void celeritas::initializer::setup_signal_handler()
             }
         });
 
-    #ifdef  WIN32
-
-    #else // !WIN32
+    #ifndef WIN32
 
     struct sigaction sa{};
     sa.sa_handler = crash_handler;
@@ -109,7 +104,7 @@ void celeritas::initializer::setup_signal_handler()
     sigaction(SIGABRT, &sa, NULL);
     sigaction(SIGFPE, &sa, NULL);
 
-    #endif // WIN32
+    #endif // !WIN32
 }
 
 void celeritas::initializer::stop()
@@ -125,7 +120,7 @@ void celeritas::initializer::stop()
 
 void celeritas::initializer::crash_handler(const int signal_number)
 {
-    LOG_CHANNEL(initializer_channel, fatal) << "signal_number = " << signal_number << "stack trace:\n" << boost::stacktrace::stacktrace();
+    LOG_CHANNEL(initializer_channel, fatal) << "signal_number = " << signal_number << ".stack trace:\n" << boost::stacktrace::stacktrace();
 
     _exit(signal_number);
 }
