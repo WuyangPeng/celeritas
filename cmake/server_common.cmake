@@ -6,7 +6,23 @@ file(GLOB_RECURSE SRC_DIR_LIST "${CMAKE_CURRENT_SOURCE_DIR}/../../src/${SERVER_N
 
 add_executable(${SERVER_NAME}_server ${SRC_DIR_LIST})
 
-target_link_libraries(${SERVER_NAME}_server PRIVATE celeritas_lib)
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+    target_link_libraries(${SERVER_NAME}_server PRIVATE celeritas_lib)
+
+else ()
+
+    target_link_libraries(${SERVER_NAME}_server PRIVATE celeritas_lib dl)
+
+    set_target_properties(${SERVER_NAME}_server PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+    if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+
+        target_compile_options(${SERVER_NAME}_server PRIVATE "-g")
+
+    endif ()
+
+endif ()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
