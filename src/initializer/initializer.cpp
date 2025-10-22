@@ -120,11 +120,9 @@ void celeritas::initializer::stop()
     LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop finish!";
 }
 
-void celeritas::initializer::crash_handler(int signal_number)
+void celeritas::initializer::crash_handler(const int signal_number)
 {
     LOG_CHANNEL(initializer_channel, fatal) << "signal_number = " << signal_number << "stack trace:\n" << boost::stacktrace::stacktrace();
-
-    stop();
 }
 
 celeritas::header celeritas::initializer::get_header(const message_header& message_header, const buffer_guard& buffer_guard) const
