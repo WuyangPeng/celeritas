@@ -16,8 +16,6 @@ else ()
 
     set_target_properties(${SERVER_NAME}_server PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-    #target_compile_definitions(${SERVER_NAME}_server PRIVATE BOOST_STACKTRACE_LINK)
-
     set_target_properties(${SERVER_NAME}_server PROPERTIES LINK_FLAGS "-rdynamic")
 
 endif ()
