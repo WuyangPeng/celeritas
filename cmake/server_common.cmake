@@ -22,6 +22,10 @@ else ()
 
     endif ()
 
+    set_target_properties(${SERVER_NAME}_server PROPERTIES
+            LINK_FLAGS "-rdynamic"
+    )
+
 endif ()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
