@@ -8,13 +8,15 @@ add_executable(${SERVER_NAME}_server ${SRC_DIR_LIST})
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-    target_link_libraries(${SERVER_NAME}_server PRIVATE celeritas_lib)
+    target_link_libraries(${SERVER_NAME}_server PRIVATE celeritas_lib bfd iberty)
+
+    set_target_properties(${SERVER_NAME}_server PROPERTIES
+            LINK_FLAGS "-Wl,--export-all-symbols"
+    )
 
 else ()
 
     target_link_libraries(${SERVER_NAME}_server PRIVATE celeritas_lib dl)
-
-    #set_target_properties(${SERVER_NAME}_server PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
     set_target_properties(${SERVER_NAME}_server PROPERTIES LINK_FLAGS "-rdynamic")
 
