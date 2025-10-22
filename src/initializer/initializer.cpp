@@ -138,10 +138,13 @@ void celeritas::initializer::setup_signal_handler()
 
     #ifdef WIN32
 
-    SetUnhandledExceptionFilter(win32_crash_handler);
+    if (!IsDebuggerPresent())
+    {
+        SetUnhandledExceptionFilter(win32_crash_handler);
 
-    signal(SIGABRT, crash_handler);
-    signal(SIGFPE, crash_handler);
+        signal(SIGABRT, crash_handler);
+        signal(SIGFPE, crash_handler);
+    }
 
     #else
 
