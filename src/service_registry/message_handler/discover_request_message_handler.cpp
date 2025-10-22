@@ -14,7 +14,7 @@ bool celeritas::discover_request_message_handler::handle_concrete(const handle_p
     {
         auto* end_point = discover_response->add_endpoints();
         end_point->set_host(service.get_host());
-        end_point->set_port(service.get_port());
+        end_point->set_port(service.get_tcp_port());
     }
 
     handle_parameter.write(response);

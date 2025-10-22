@@ -68,12 +68,21 @@ namespace celeritas
 
         void process_check_tcp_clients_by_duration(boost::asio::io_context& io_context);
 
+        void start_service_registry_timer(boost::asio::io_context& io_context);
+
+        void start_service_registry_timer(boost::asio::io_context& io_context, const self_shared_ptr& self);
+
+        void service_registry(boost::asio::io_context& io_context, const error_code_type& error_code);
+
+        void process_service_registry();
+
+        void process_service_registry_by_duration();
+
         app_config_shared_ptr app_config_;
         listener_container_type listener_;
         tcp_client_container_type tcp_clients_;
         bool is_service_registry_;
-        std::string game_server_id_;
-        std::string instance_id_;
-        steady_timer_unique_ptr timer_interval_;
+        steady_timer_unique_ptr check_tcp_clients_timer_interval_;
+        steady_timer_unique_ptr service_registry_timer_interval_;
     };
 }

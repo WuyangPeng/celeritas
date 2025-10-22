@@ -37,13 +37,18 @@ inline constexpr register_request::Impl_::Impl_(
         instance_id_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        host_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
         game_server_id_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        port_{0} {}
+        host_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        tcp_port_{0},
+        http_port_{0},
+        websock_port_{0},
+        tcp_ssl_port_{0},
+        https_port_{0},
+        websocket_secure_port_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR register_request::register_request(::_pbi::ConstantInitialized)
@@ -208,17 +213,27 @@ const ::uint32_t
         protodesc_cold) = {
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_._has_bits_),
-        8, // hasbit index offset
+        13, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.service_name_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.instance_id_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.host_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.port_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.game_server_id_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.host_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.tcp_port_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.http_port_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.websock_port_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.tcp_ssl_port_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.https_port_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.websocket_secure_port_),
         0,
         1,
         2,
-        4,
         3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::discover_request, _impl_._has_bits_),
         4, // hasbit index offset
@@ -247,11 +262,11 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::celeritas::proto::service::register_request)},
-        {13, sizeof(::celeritas::proto::service::discover_request)},
-        {18, sizeof(::celeritas::proto::service::end_point)},
-        {25, sizeof(::celeritas::proto::service::discover_response)},
-        {27, sizeof(::celeritas::proto::service::service_registry_request)},
-        {32, sizeof(::celeritas::proto::service::service_registry_response)},
+        {23, sizeof(::celeritas::proto::service::discover_request)},
+        {28, sizeof(::celeritas::proto::service::end_point)},
+        {35, sizeof(::celeritas::proto::service::discover_response)},
+        {37, sizeof(::celeritas::proto::service::service_registry_request)},
+        {42, sizeof(::celeritas::proto::service::service_registry_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::service::_register_request_default_instance_._instance,
@@ -264,27 +279,30 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_proto_2fservice_2fregistry_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\034proto/service/registry.proto\022\027celerita"
-    "s.proto.service\"q\n\020register_request\022\024\n\014s"
-    "ervice_name\030\001 \001(\t\022\023\n\013instance_id\030\002 \001(\t\022\014"
-    "\n\004host\030\003 \001(\t\022\014\n\004port\030\004 \001(\005\022\026\n\016game_serve"
-    "r_id\030\005 \001(\t\"(\n\020discover_request\022\024\n\014servic"
-    "e_name\030\001 \001(\t\"\'\n\tend_point\022\014\n\004host\030\001 \001(\t\022"
-    "\014\n\004port\030\002 \001(\005\"J\n\021discover_response\0225\n\ten"
-    "dpoints\030\001 \003(\0132\".celeritas.proto.service."
-    "end_point\"\261\001\n\030service_registry_request\022D"
-    "\n\017server_register\030\001 \001(\0132).celeritas.prot"
-    "o.service.register_requestH\000\022D\n\017server_d"
-    "iscover\030\002 \001(\0132).celeritas.proto.service."
-    "discover_requestH\000B\t\n\007payload\"f\n\031service"
-    "_registry_response\022>\n\010discover\030\002 \001(\0132*.c"
-    "eleritas.proto.service.discover_response"
-    "H\000B\t\n\007payloadb\006proto3"
+    "s.proto.service\"\347\001\n\020register_request\022\024\n\014"
+    "service_name\030\001 \001(\t\022\023\n\013instance_id\030\002 \001(\t\022"
+    "\026\n\016game_server_id\030\003 \001(\t\022\014\n\004host\030\004 \001(\t\022\020\n"
+    "\010tcp_port\030\005 \001(\005\022\021\n\thttp_port\030\006 \001(\005\022\024\n\014we"
+    "bsock_port\030\007 \001(\005\022\024\n\014tcp_ssl_port\030\010 \001(\005\022\022"
+    "\n\nhttps_port\030\t \001(\005\022\035\n\025webSocket_secure_p"
+    "ort\030\n \001(\005\"(\n\020discover_request\022\024\n\014service"
+    "_name\030\001 \001(\t\"\'\n\tend_point\022\014\n\004host\030\001 \001(\t\022\014"
+    "\n\004port\030\002 \001(\005\"J\n\021discover_response\0225\n\tend"
+    "points\030\001 \003(\0132\".celeritas.proto.service.e"
+    "nd_point\"\261\001\n\030service_registry_request\022D\n"
+    "\017server_register\030\001 \001(\0132).celeritas.proto"
+    ".service.register_requestH\000\022D\n\017server_di"
+    "scover\030\002 \001(\0132).celeritas.proto.service.d"
+    "iscover_requestH\000B\t\n\007payload\"f\n\031service_"
+    "registry_response\022>\n\010discover\030\002 \001(\0132*.ce"
+    "leritas.proto.service.discover_responseH"
+    "\000B\t\n\007payloadb\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fservice_2fregistry_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fregistry_2eproto = {
     false,
     false,
-    621,
+    740,
     descriptor_table_protodef_proto_2fservice_2fregistry_2eproto,
     "proto/service/registry.proto",
     &descriptor_table_proto_2fservice_2fregistry_2eproto_once,
@@ -327,8 +345,8 @@ PROTOBUF_NDEBUG_INLINE register_request::Impl_::Impl_(
         _cached_size_{0},
         service_name_(arena, from.service_name_),
         instance_id_(arena, from.instance_id_),
-        host_(arena, from.host_),
-        game_server_id_(arena, from.game_server_id_) {}
+        game_server_id_(arena, from.game_server_id_),
+        host_(arena, from.host_) {}
 
 register_request::register_request(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
@@ -343,7 +361,13 @@ register_request::register_request(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  _impl_.port_ = from._impl_.port_;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, tcp_port_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, tcp_port_),
+           offsetof(Impl_, websocket_secure_port_) -
+               offsetof(Impl_, tcp_port_) +
+               sizeof(Impl_::websocket_secure_port_));
 
   // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.register_request)
 }
@@ -353,12 +377,17 @@ PROTOBUF_NDEBUG_INLINE register_request::Impl_::Impl_(
       : _cached_size_{0},
         service_name_(arena),
         instance_id_(arena),
-        host_(arena),
-        game_server_id_(arena) {}
+        game_server_id_(arena),
+        host_(arena) {}
 
 inline void register_request::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.port_ = {};
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, tcp_port_),
+           0,
+           offsetof(Impl_, websocket_secure_port_) -
+               offsetof(Impl_, tcp_port_) +
+               sizeof(Impl_::websocket_secure_port_));
 }
 register_request::~register_request() {
   // @@protoc_insertion_point(destructor:celeritas.proto.service.register_request)
@@ -373,8 +402,8 @@ inline void register_request::SharedDtor(MessageLite& self) {
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.service_name_.Destroy();
   this_._impl_.instance_id_.Destroy();
-  this_._impl_.host_.Destroy();
   this_._impl_.game_server_id_.Destroy();
+  this_._impl_.host_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -421,16 +450,16 @@ register_request::GetClassData() const {
   return register_request_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 90, 2>
+const ::_pbi::TcParseTable<4, 10, 0, 98, 2>
 register_request::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(register_request, _impl_._has_bits_),
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    10, 120,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294966272,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
+    10,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     register_request_class_data_.base(),
@@ -447,15 +476,33 @@ register_request::_table_ = {
     // string instance_id = 2;
     {::_pbi::TcParser::FastUS1,
      {18, 1, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.instance_id_)}},
-    // string host = 3;
+    // string game_server_id = 3;
     {::_pbi::TcParser::FastUS1,
-     {26, 2, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.host_)}},
-    // int32 port = 4;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(register_request, _impl_.port_), 4>(),
-     {32, 4, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.port_)}},
-    // string game_server_id = 5;
+     {26, 2, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.game_server_id_)}},
+    // string host = 4;
     {::_pbi::TcParser::FastUS1,
-     {42, 3, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.game_server_id_)}},
+     {34, 3, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.host_)}},
+    // int32 tcp_port = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(register_request, _impl_.tcp_port_), 4>(),
+     {40, 4, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.tcp_port_)}},
+    // int32 http_port = 6;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(register_request, _impl_.http_port_), 5>(),
+     {48, 5, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.http_port_)}},
+    // int32 websock_port = 7;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(register_request, _impl_.websock_port_), 6>(),
+     {56, 6, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.websock_port_)}},
+    // int32 tcp_ssl_port = 8;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(register_request, _impl_.tcp_ssl_port_), 7>(),
+     {64, 7, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.tcp_ssl_port_)}},
+    // int32 https_port = 9;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(register_request, _impl_.https_port_), 8>(),
+     {72, 8, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.https_port_)}},
+    // int32 webSocket_secure_port = 10;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(register_request, _impl_.websocket_secure_port_), 9>(),
+     {80, 9, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.websocket_secure_port_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
@@ -465,21 +512,31 @@ register_request::_table_ = {
     {PROTOBUF_FIELD_OFFSET(register_request, _impl_.service_name_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // string instance_id = 2;
     {PROTOBUF_FIELD_OFFSET(register_request, _impl_.instance_id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string host = 3;
-    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.host_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // int32 port = 4;
-    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.port_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // string game_server_id = 5;
-    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.game_server_id_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string game_server_id = 3;
+    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.game_server_id_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string host = 4;
+    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.host_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 tcp_port = 5;
+    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.tcp_port_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 http_port = 6;
+    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.http_port_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 websock_port = 7;
+    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.websock_port_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 tcp_ssl_port = 8;
+    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.tcp_ssl_port_), _Internal::kHasBitsOffset + 7, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 https_port = 9;
+    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.https_port_), _Internal::kHasBitsOffset + 8, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 webSocket_secure_port = 10;
+    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.websocket_secure_port_), _Internal::kHasBitsOffset + 9, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
-    "\50\14\13\4\0\16\0\0"
+    "\50\14\13\16\4\0\0\0\0\0\0\0\0\0\0\0"
     "celeritas.proto.service.register_request"
     "service_name"
     "instance_id"
-    "host"
     "game_server_id"
+    "host"
   }},
 };
 PROTOBUF_NOINLINE void register_request::Clear() {
@@ -498,13 +555,22 @@ PROTOBUF_NOINLINE void register_request::Clear() {
       _impl_.instance_id_.ClearNonDefaultToEmpty();
     }
     if ((cached_has_bits & 0x00000004U) != 0) {
-      _impl_.host_.ClearNonDefaultToEmpty();
-    }
-    if ((cached_has_bits & 0x00000008U) != 0) {
       _impl_.game_server_id_.ClearNonDefaultToEmpty();
     }
+    if ((cached_has_bits & 0x00000008U) != 0) {
+      _impl_.host_.ClearNonDefaultToEmpty();
+    }
   }
-  _impl_.port_ = 0;
+  if ((cached_has_bits & 0x000000f0U) != 0) {
+    ::memset(&_impl_.tcp_port_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.tcp_ssl_port_) -
+        reinterpret_cast<char*>(&_impl_.tcp_port_)) + sizeof(_impl_.tcp_ssl_port_));
+  }
+  if ((cached_has_bits & 0x00000300U) != 0) {
+    ::memset(&_impl_.https_port_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.websocket_secure_port_) -
+        reinterpret_cast<char*>(&_impl_.https_port_)) + sizeof(_impl_.websocket_secure_port_));
+  }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -547,32 +613,77 @@ PROTOBUF_NOINLINE void register_request::Clear() {
     }
   }
 
-  // string host = 3;
+  // string game_server_id = 3;
   if ((this_._impl_._has_bits_[0] & 0x00000004U) != 0) {
-    if (!this_._internal_host().empty()) {
-      const ::std::string& _s = this_._internal_host();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.service.register_request.host");
-      target = stream->WriteStringMaybeAliased(3, _s, target);
-    }
-  }
-
-  // int32 port = 4;
-  if ((this_._impl_._has_bits_[0] & 0x00000010U) != 0) {
-    if (this_._internal_port() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<4>(
-              stream, this_._internal_port(), target);
-    }
-  }
-
-  // string game_server_id = 5;
-  if ((this_._impl_._has_bits_[0] & 0x00000008U) != 0) {
     if (!this_._internal_game_server_id().empty()) {
       const ::std::string& _s = this_._internal_game_server_id();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.service.register_request.game_server_id");
-      target = stream->WriteStringMaybeAliased(5, _s, target);
+      target = stream->WriteStringMaybeAliased(3, _s, target);
+    }
+  }
+
+  // string host = 4;
+  if ((this_._impl_._has_bits_[0] & 0x00000008U) != 0) {
+    if (!this_._internal_host().empty()) {
+      const ::std::string& _s = this_._internal_host();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.service.register_request.host");
+      target = stream->WriteStringMaybeAliased(4, _s, target);
+    }
+  }
+
+  // int32 tcp_port = 5;
+  if ((this_._impl_._has_bits_[0] & 0x00000010U) != 0) {
+    if (this_._internal_tcp_port() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<5>(
+              stream, this_._internal_tcp_port(), target);
+    }
+  }
+
+  // int32 http_port = 6;
+  if ((this_._impl_._has_bits_[0] & 0x00000020U) != 0) {
+    if (this_._internal_http_port() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<6>(
+              stream, this_._internal_http_port(), target);
+    }
+  }
+
+  // int32 websock_port = 7;
+  if ((this_._impl_._has_bits_[0] & 0x00000040U) != 0) {
+    if (this_._internal_websock_port() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<7>(
+              stream, this_._internal_websock_port(), target);
+    }
+  }
+
+  // int32 tcp_ssl_port = 8;
+  if ((this_._impl_._has_bits_[0] & 0x00000080U) != 0) {
+    if (this_._internal_tcp_ssl_port() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<8>(
+              stream, this_._internal_tcp_ssl_port(), target);
+    }
+  }
+
+  // int32 https_port = 9;
+  if ((this_._impl_._has_bits_[0] & 0x00000100U) != 0) {
+    if (this_._internal_https_port() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<9>(
+              stream, this_._internal_https_port(), target);
+    }
+  }
+
+  // int32 webSocket_secure_port = 10;
+  if ((this_._impl_._has_bits_[0] & 0x00000200U) != 0) {
+    if (this_._internal_websocket_secure_port() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<10>(
+              stream, this_._internal_websocket_secure_port(), target);
     }
   }
 
@@ -601,7 +712,7 @@ PROTOBUF_NOINLINE void register_request::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x0000001fU) != 0) {
+  if ((cached_has_bits & 0x000000ffU) != 0) {
     // string service_name = 1;
     if ((cached_has_bits & 0x00000001U) != 0) {
       if (!this_._internal_service_name().empty()) {
@@ -616,25 +727,62 @@ PROTOBUF_NOINLINE void register_request::Clear() {
                                         this_._internal_instance_id());
       }
     }
-    // string host = 3;
+    // string game_server_id = 3;
     if ((cached_has_bits & 0x00000004U) != 0) {
-      if (!this_._internal_host().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_host());
-      }
-    }
-    // string game_server_id = 5;
-    if ((cached_has_bits & 0x00000008U) != 0) {
       if (!this_._internal_game_server_id().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_game_server_id());
       }
     }
-    // int32 port = 4;
+    // string host = 4;
+    if ((cached_has_bits & 0x00000008U) != 0) {
+      if (!this_._internal_host().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_host());
+      }
+    }
+    // int32 tcp_port = 5;
     if ((cached_has_bits & 0x00000010U) != 0) {
-      if (this_._internal_port() != 0) {
+      if (this_._internal_tcp_port() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_port());
+            this_._internal_tcp_port());
+      }
+    }
+    // int32 http_port = 6;
+    if ((cached_has_bits & 0x00000020U) != 0) {
+      if (this_._internal_http_port() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_http_port());
+      }
+    }
+    // int32 websock_port = 7;
+    if ((cached_has_bits & 0x00000040U) != 0) {
+      if (this_._internal_websock_port() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_websock_port());
+      }
+    }
+    // int32 tcp_ssl_port = 8;
+    if ((cached_has_bits & 0x00000080U) != 0) {
+      if (this_._internal_tcp_ssl_port() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_tcp_ssl_port());
+      }
+    }
+  }
+  if ((cached_has_bits & 0x00000300U) != 0) {
+    // int32 https_port = 9;
+    if ((cached_has_bits & 0x00000100U) != 0) {
+      if (this_._internal_https_port() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_https_port());
+      }
+    }
+    // int32 webSocket_secure_port = 10;
+    if ((cached_has_bits & 0x00000200U) != 0) {
+      if (this_._internal_websocket_secure_port() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_websocket_secure_port());
       }
     }
   }
@@ -654,7 +802,7 @@ void register_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
   (void) cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x0000001fU) != 0) {
+  if ((cached_has_bits & 0x000000ffU) != 0) {
     if ((cached_has_bits & 0x00000001U) != 0) {
       if (!from._internal_service_name().empty()) {
         _this->_internal_set_service_name(from._internal_service_name());
@@ -674,15 +822,6 @@ void register_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
       }
     }
     if ((cached_has_bits & 0x00000004U) != 0) {
-      if (!from._internal_host().empty()) {
-        _this->_internal_set_host(from._internal_host());
-      } else {
-        if (_this->_impl_.host_.IsDefault()) {
-          _this->_internal_set_host("");
-        }
-      }
-    }
-    if ((cached_has_bits & 0x00000008U) != 0) {
       if (!from._internal_game_server_id().empty()) {
         _this->_internal_set_game_server_id(from._internal_game_server_id());
       } else {
@@ -691,9 +830,45 @@ void register_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
         }
       }
     }
+    if ((cached_has_bits & 0x00000008U) != 0) {
+      if (!from._internal_host().empty()) {
+        _this->_internal_set_host(from._internal_host());
+      } else {
+        if (_this->_impl_.host_.IsDefault()) {
+          _this->_internal_set_host("");
+        }
+      }
+    }
     if ((cached_has_bits & 0x00000010U) != 0) {
-      if (from._internal_port() != 0) {
-        _this->_impl_.port_ = from._impl_.port_;
+      if (from._internal_tcp_port() != 0) {
+        _this->_impl_.tcp_port_ = from._impl_.tcp_port_;
+      }
+    }
+    if ((cached_has_bits & 0x00000020U) != 0) {
+      if (from._internal_http_port() != 0) {
+        _this->_impl_.http_port_ = from._impl_.http_port_;
+      }
+    }
+    if ((cached_has_bits & 0x00000040U) != 0) {
+      if (from._internal_websock_port() != 0) {
+        _this->_impl_.websock_port_ = from._impl_.websock_port_;
+      }
+    }
+    if ((cached_has_bits & 0x00000080U) != 0) {
+      if (from._internal_tcp_ssl_port() != 0) {
+        _this->_impl_.tcp_ssl_port_ = from._impl_.tcp_ssl_port_;
+      }
+    }
+  }
+  if ((cached_has_bits & 0x00000300U) != 0) {
+    if ((cached_has_bits & 0x00000100U) != 0) {
+      if (from._internal_https_port() != 0) {
+        _this->_impl_.https_port_ = from._impl_.https_port_;
+      }
+    }
+    if ((cached_has_bits & 0x00000200U) != 0) {
+      if (from._internal_websocket_secure_port() != 0) {
+        _this->_impl_.websocket_secure_port_ = from._impl_.websocket_secure_port_;
       }
     }
   }
@@ -717,9 +892,14 @@ void register_request::InternalSwap(register_request* PROTOBUF_RESTRICT PROTOBUF
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.service_name_, &other->_impl_.service_name_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.instance_id_, &other->_impl_.instance_id_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.host_, &other->_impl_.host_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.game_server_id_, &other->_impl_.game_server_id_, arena);
-  swap(_impl_.port_, other->_impl_.port_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.host_, &other->_impl_.host_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(register_request, _impl_.websocket_secure_port_)
+      + sizeof(register_request::_impl_.websocket_secure_port_)
+      - PROTOBUF_FIELD_OFFSET(register_request, _impl_.tcp_port_)>(
+          reinterpret_cast<char*>(&_impl_.tcp_port_),
+          reinterpret_cast<char*>(&other->_impl_.tcp_port_));
 }
 
 ::google::protobuf::Metadata register_request::GetMetadata() const {

@@ -9,7 +9,10 @@ celeritas::server_network_type celeritas::get_server_network_type(const std::str
 
     static server_network_container_type server_network{ { "tcp", server_network_type::tcp },
                                                          { "http", server_network_type::http },
-                                                         { "websocket", server_network_type::websocket }, };
+                                                         { "websocket", server_network_type::websocket },
+                                                         { "tcp_ssl", server_network_type::tcp_ssl },
+                                                         { "https", server_network_type::https },
+                                                         { "websocket_secure", server_network_type::websocket_secure } };
 
     if (const auto iter = server_network.find(server_network_name);
         iter != server_network.end())

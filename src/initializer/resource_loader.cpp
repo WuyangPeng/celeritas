@@ -14,7 +14,7 @@
 #include <utility>
 
 celeritas::resource_loader::resource_loader(app_config_shared_ptr app_config)
-    : app_config_{ std::move(app_config) }, listener_{}, tcp_clients_{}, is_service_registry_{ false }, instance_id_{}, game_server_id_{}, timer_interval_{}
+    : app_config_{ std::move(app_config) }, listener_{}, tcp_clients_{}, is_service_registry_{ false }, check_tcp_clients_timer_interval_{}, service_registry_timer_interval_{}
 {
 }
 
@@ -26,6 +26,7 @@ void celeritas::resource_loader::initialize(boost::asio::io_context& io_context,
     initialize_health_check_url_resource();
     initialize_service_registry_resource(io_context, network_message_callback);
     start_check_tcp_clients_timer(io_context);
+    start_service_registry_timer(io_context);
     service_initialize_resource();
 }
 
@@ -84,9 +85,6 @@ void celeritas::resource_loader::initialize_server_resource(boost::asio::io_cont
         is_service_registry_ = true;
     }
 
-    game_server_id_ = server.get_game_server_id();
-    instance_id_ = server.get_instance_id();
-
     for (const auto& element : server)
     {
         const auto listener = server_resource_loader::loader_server(io_context, server, element, network_message_callback);
@@ -103,6 +101,7 @@ void celeritas::resource_loader::initialize_health_check_url_resource()
 void celeritas::resource_loader::initialize_service_registry_resource(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback)
 {
     const auto service_registry = app_config_->get_service_registry_config();
+    const auto server = app_config_->get_server_config();
 
     if (!is_service_registry_)
     {
@@ -113,18 +112,21 @@ void celeritas::resource_loader::initialize_service_registry_resource(boost::asi
             auto iter = service_registry.begin();
             std::advance(iter, random_index);
 
-            const auto client = service_registry_loader::loader_service_registry(io_context, iter->second, network_message_callback, game_server_id_, service_registry_type.data());
+            const auto client = service_registry_loader::loader_service_registry(io_context, iter->second, network_message_callback, server.get_game_server_id(), service_registry_type.data());
 
             tcp_clients_.emplace_back(client);
         }
     }
     else
     {
+        const auto instance_id = server.get_instance_id();
+        const auto game_server_id = server.get_game_server_id();
+
         for (const auto& element : service_registry | std::views::values)
         {
-            if (element.get_name() != instance_id_)
+            if (element.get_name() != instance_id)
             {
-                const auto client = service_registry_loader::loader_service_registry(io_context, element, network_message_callback, game_server_id_, service_registry_type.data());
+                const auto client = service_registry_loader::loader_service_registry(io_context, element, network_message_callback, game_server_id, service_registry_type.data());
 
                 tcp_clients_.emplace_back(client);
             }
@@ -143,7 +145,8 @@ void celeritas::resource_loader::modify_service_registry_resource(boost::asio::i
         auto iter = service_registry.begin();
         std::advance(iter, random_index);
 
-        const auto client = service_registry_loader::loader_service_registry(io_context, iter->second, network_message_callback, game_server_id_, service_registry_type.data());
+        const auto server = app_config_->get_server_config();
+        const auto client = service_registry_loader::loader_service_registry(io_context, iter->second, network_message_callback, server.get_game_server_id(), service_registry_type.data());
 
         tcp_clients_.at(index) = client;
     }
@@ -151,15 +154,15 @@ void celeritas::resource_loader::modify_service_registry_resource(boost::asio::i
 
 void celeritas::resource_loader::start_check_tcp_clients_timer(boost::asio::io_context& io_context)
 {
-    timer_interval_ = std::make_unique<steady_timer_type>(io_context);
+    check_tcp_clients_timer_interval_ = std::make_unique<steady_timer_type>(io_context);
 
     start_check_tcp_clients_timer(io_context, shared_from_this());
 }
 
 void celeritas::resource_loader::start_check_tcp_clients_timer(boost::asio::io_context& io_context, const self_shared_ptr& self)
 {
-    timer_interval_->expires_at(std::chrono::steady_clock::now() + check_tcp_clients_timer);
-    timer_interval_->async_wait(
+    check_tcp_clients_timer_interval_->expires_at(std::chrono::steady_clock::now() + check_tcp_clients_timer);
+    check_tcp_clients_timer_interval_->async_wait(
         [self,&io_context](const error_code_type& error_code) {
             if (!error_code)
             {
@@ -219,4 +222,110 @@ void celeritas::resource_loader::process_check_tcp_clients_by_duration(boost::as
             }
         }
     }
+}
+
+void celeritas::resource_loader::start_service_registry_timer(boost::asio::io_context& io_context)
+{
+    service_registry_timer_interval_ = std::make_unique<steady_timer_type>(io_context);
+
+    start_service_registry_timer(io_context, shared_from_this());
+}
+
+void celeritas::resource_loader::start_service_registry_timer(boost::asio::io_context& io_context, const self_shared_ptr& self)
+{
+    service_registry_timer_interval_->expires_at(std::chrono::steady_clock::now() + service_registry_timer);
+    service_registry_timer_interval_->async_wait(
+        [self,&io_context](const error_code_type& error_code) {
+            if (!error_code)
+            {
+                self->service_registry(io_context, error_code);
+            }
+        });
+}
+
+void celeritas::resource_loader::service_registry(boost::asio::io_context& io_context, const error_code_type& error_code)
+{
+    if (error_code == boost::asio::error::operation_aborted)
+    {
+        return;
+    }
+
+    const auto self{ shared_from_this() };
+
+    process_service_registry();
+
+    start_service_registry_timer(io_context, self);
+}
+
+void celeritas::resource_loader::process_service_registry()
+{
+    try
+    {
+        process_service_registry_by_duration();
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(initializer_channel, error) << "service registry error: " << error.what();
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(initializer_channel, fatal) << "service registry error: an unknown exception";
+    }
+}
+
+void celeritas::resource_loader::process_service_registry_by_duration()
+{
+    proto::request request{};
+    auto* server_register = request.mutable_service()->mutable_registry()->mutable_server_register();
+    const auto server = app_config_->get_server_config();
+
+    server_register->set_service_name(server.get_service_name());
+    server_register->set_instance_id(server.get_instance_id());
+    server_register->set_game_server_id(server.get_game_server_id());
+    server_register->set_host(server.get_host());
+    for (const auto& element : server)
+    {
+        switch (element.get_server_network_type())
+        {
+            case server_network_type::tcp:
+            {
+                server_register->set_tcp_port(element.get_port());
+                break;
+            }
+
+            case server_network_type::http:
+            {
+                server_register->set_http_port(element.get_port());
+                break;
+            }
+            case server_network_type::websocket:
+            {
+                server_register->set_websock_port(element.get_port());
+                break;
+            }
+            case server_network_type::tcp_ssl:
+            {
+                server_register->set_tcp_ssl_port(element.get_port());
+                break;
+            }
+            case server_network_type::https:
+            {
+                server_register->set_https_port(element.get_port());
+                break;
+            }
+            case server_network_type::websocket_secure:
+            {
+                server_register->set_websocket_secure_port(element.get_port());
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }
+
+    write(service_registry_type.data(), header{ proto::common::empty_message_header{} }, request);
+
+    LOG_CHANNEL(initializer_channel, trace) << "service registry registry: " << server.get_instance_id();
 }

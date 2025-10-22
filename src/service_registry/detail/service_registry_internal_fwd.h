@@ -10,6 +10,7 @@ namespace celeritas
 
     constexpr auto cleanup_timer = std::chrono::seconds(5);
     constexpr auto check_tcp_clients_timer = std::chrono::seconds(10);
+    constexpr auto service_registry_timer = std::chrono::seconds(5);
 
     class service_registry_impl;
 }

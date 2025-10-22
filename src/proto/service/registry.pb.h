@@ -241,9 +241,14 @@ class register_request final : public ::google::protobuf::Message
   enum : int {
     kServiceNameFieldNumber = 1,
     kInstanceIdFieldNumber = 2,
-    kHostFieldNumber = 3,
-    kGameServerIdFieldNumber = 5,
-    kPortFieldNumber = 4,
+    kGameServerIdFieldNumber = 3,
+    kHostFieldNumber = 4,
+    kTcpPortFieldNumber = 5,
+    kHttpPortFieldNumber = 6,
+    kWebsockPortFieldNumber = 7,
+    kTcpSslPortFieldNumber = 8,
+    kHttpsPortFieldNumber = 9,
+    kWebSocketSecurePortFieldNumber = 10,
   };
   // string service_name = 1;
   void clear_service_name() ;
@@ -275,22 +280,7 @@ class register_request final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_instance_id();
 
   public:
-  // string host = 3;
-  void clear_host() ;
-  const ::std::string& host() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_host(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_host();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_host();
-  void set_allocated_host(::std::string* PROTOBUF_NULLABLE value);
-
-  private:
-  const ::std::string& _internal_host() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_host(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_host();
-
-  public:
-  // string game_server_id = 5;
+  // string game_server_id = 3;
   void clear_game_server_id() ;
   const ::std::string& game_server_id() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -305,22 +295,87 @@ class register_request final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_game_server_id();
 
   public:
-  // int32 port = 4;
-  void clear_port() ;
-  ::int32_t port() const;
-  void set_port(::int32_t value);
+  // string host = 4;
+  void clear_host() ;
+  const ::std::string& host() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_host(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_host();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_host();
+  void set_allocated_host(::std::string* PROTOBUF_NULLABLE value);
 
   private:
-  ::int32_t _internal_port() const;
-  void _internal_set_port(::int32_t value);
+  const ::std::string& _internal_host() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_host(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_host();
+
+  public:
+  // int32 tcp_port = 5;
+  void clear_tcp_port() ;
+  ::int32_t tcp_port() const;
+  void set_tcp_port(::int32_t value);
+
+  private:
+  ::int32_t _internal_tcp_port() const;
+  void _internal_set_tcp_port(::int32_t value);
+
+  public:
+  // int32 http_port = 6;
+  void clear_http_port() ;
+  ::int32_t http_port() const;
+  void set_http_port(::int32_t value);
+
+  private:
+  ::int32_t _internal_http_port() const;
+  void _internal_set_http_port(::int32_t value);
+
+  public:
+  // int32 websock_port = 7;
+  void clear_websock_port() ;
+  ::int32_t websock_port() const;
+  void set_websock_port(::int32_t value);
+
+  private:
+  ::int32_t _internal_websock_port() const;
+  void _internal_set_websock_port(::int32_t value);
+
+  public:
+  // int32 tcp_ssl_port = 8;
+  void clear_tcp_ssl_port() ;
+  ::int32_t tcp_ssl_port() const;
+  void set_tcp_ssl_port(::int32_t value);
+
+  private:
+  ::int32_t _internal_tcp_ssl_port() const;
+  void _internal_set_tcp_ssl_port(::int32_t value);
+
+  public:
+  // int32 https_port = 9;
+  void clear_https_port() ;
+  ::int32_t https_port() const;
+  void set_https_port(::int32_t value);
+
+  private:
+  ::int32_t _internal_https_port() const;
+  void _internal_set_https_port(::int32_t value);
+
+  public:
+  // int32 webSocket_secure_port = 10;
+  void clear_websocket_secure_port() ;
+  ::int32_t websocket_secure_port() const;
+  void set_websocket_secure_port(::int32_t value);
+
+  private:
+  ::int32_t _internal_websocket_secure_port() const;
+  void _internal_set_websocket_secure_port(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:celeritas.proto.service.register_request)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 5,
-                                   0, 90,
+  static const ::google::protobuf::internal::TcParseTable<4, 10,
+                                   0, 98,
                                    2>
       _table_;
 
@@ -343,9 +398,14 @@ class register_request final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr service_name_;
     ::google::protobuf::internal::ArenaStringPtr instance_id_;
-    ::google::protobuf::internal::ArenaStringPtr host_;
     ::google::protobuf::internal::ArenaStringPtr game_server_id_;
-    ::int32_t port_;
+    ::google::protobuf::internal::ArenaStringPtr host_;
+    ::int32_t tcp_port_;
+    ::int32_t http_port_;
+    ::int32_t websock_port_;
+    ::int32_t tcp_ssl_port_;
+    ::int32_t https_port_;
+    ::int32_t websocket_secure_port_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -1550,100 +1610,11 @@ inline void register_request::set_allocated_instance_id(::std::string* PROTOBUF_
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.register_request.instance_id)
 }
 
-// string host = 3;
-inline void register_request::clear_host() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.host_.ClearToEmpty();
-  _impl_._has_bits_[0] &= ~0x00000004U;
-}
-inline const ::std::string& register_request::host() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.register_request.host)
-  return _internal_host();
-}
-template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void register_request::set_host(Arg_&& arg, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000004U;
-  _impl_.host_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:celeritas.proto.service.register_request.host)
-}
-inline ::std::string* PROTOBUF_NONNULL register_request::mutable_host()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::std::string* _s = _internal_mutable_host();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.register_request.host)
-  return _s;
-}
-inline const ::std::string& register_request::_internal_host() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.host_.Get();
-}
-inline void register_request::_internal_set_host(const ::std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000004U;
-  _impl_.host_.Set(value, GetArena());
-}
-inline ::std::string* PROTOBUF_NONNULL register_request::_internal_mutable_host() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000004U;
-  return _impl_.host_.Mutable( GetArena());
-}
-inline ::std::string* PROTOBUF_NULLABLE register_request::release_host() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.register_request.host)
-  if ((_impl_._has_bits_[0] & 0x00000004U) == 0) {
-    return nullptr;
-  }
-  _impl_._has_bits_[0] &= ~0x00000004U;
-  auto* released = _impl_.host_.Release();
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.host_.Set("", GetArena());
-  }
-  return released;
-}
-inline void register_request::set_allocated_host(::std::string* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000004U;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000004U;
-  }
-  _impl_.host_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.host_.IsDefault()) {
-    _impl_.host_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.register_request.host)
-}
-
-// int32 port = 4;
-inline void register_request::clear_port() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.port_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000010U;
-}
-inline ::int32_t register_request::port() const {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.register_request.port)
-  return _internal_port();
-}
-inline void register_request::set_port(::int32_t value) {
-  _internal_set_port(value);
-  _impl_._has_bits_[0] |= 0x00000010U;
-  // @@protoc_insertion_point(field_set:celeritas.proto.service.register_request.port)
-}
-inline ::int32_t register_request::_internal_port() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.port_;
-}
-inline void register_request::_internal_set_port(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.port_ = value;
-}
-
-// string game_server_id = 5;
+// string game_server_id = 3;
 inline void register_request::clear_game_server_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.game_server_id_.ClearToEmpty();
-  _impl_._has_bits_[0] &= ~0x00000008U;
+  _impl_._has_bits_[0] &= ~0x00000004U;
 }
 inline const ::std::string& register_request::game_server_id() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -1653,7 +1624,7 @@ inline const ::std::string& register_request::game_server_id() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void register_request::set_game_server_id(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000008U;
+  _impl_._has_bits_[0] |= 0x00000004U;
   _impl_.game_server_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:celeritas.proto.service.register_request.game_server_id)
 }
@@ -1669,21 +1640,21 @@ inline const ::std::string& register_request::_internal_game_server_id() const {
 }
 inline void register_request::_internal_set_game_server_id(const ::std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000008U;
+  _impl_._has_bits_[0] |= 0x00000004U;
   _impl_.game_server_id_.Set(value, GetArena());
 }
 inline ::std::string* PROTOBUF_NONNULL register_request::_internal_mutable_game_server_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000008U;
+  _impl_._has_bits_[0] |= 0x00000004U;
   return _impl_.game_server_id_.Mutable( GetArena());
 }
 inline ::std::string* PROTOBUF_NULLABLE register_request::release_game_server_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:celeritas.proto.service.register_request.game_server_id)
-  if ((_impl_._has_bits_[0] & 0x00000008U) == 0) {
+  if ((_impl_._has_bits_[0] & 0x00000004U) == 0) {
     return nullptr;
   }
-  _impl_._has_bits_[0] &= ~0x00000008U;
+  _impl_._has_bits_[0] &= ~0x00000004U;
   auto* released = _impl_.game_server_id_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.game_server_id_.Set("", GetArena());
@@ -1693,15 +1664,224 @@ inline ::std::string* PROTOBUF_NULLABLE register_request::release_game_server_id
 inline void register_request::set_allocated_game_server_id(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000008U;
+    _impl_._has_bits_[0] |= 0x00000004U;
   } else {
-    _impl_._has_bits_[0] &= ~0x00000008U;
+    _impl_._has_bits_[0] &= ~0x00000004U;
   }
   _impl_.game_server_id_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.game_server_id_.IsDefault()) {
     _impl_.game_server_id_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.register_request.game_server_id)
+}
+
+// string host = 4;
+inline void register_request::clear_host() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.host_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000008U;
+}
+inline const ::std::string& register_request::host() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.register_request.host)
+  return _internal_host();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void register_request::set_host(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000008U;
+  _impl_.host_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.register_request.host)
+}
+inline ::std::string* PROTOBUF_NONNULL register_request::mutable_host()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_host();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.register_request.host)
+  return _s;
+}
+inline const ::std::string& register_request::_internal_host() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.host_.Get();
+}
+inline void register_request::_internal_set_host(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000008U;
+  _impl_.host_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL register_request::_internal_mutable_host() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000008U;
+  return _impl_.host_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE register_request::release_host() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.register_request.host)
+  if ((_impl_._has_bits_[0] & 0x00000008U) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000008U;
+  auto* released = _impl_.host_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.host_.Set("", GetArena());
+  }
+  return released;
+}
+inline void register_request::set_allocated_host(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000008U;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000008U;
+  }
+  _impl_.host_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.host_.IsDefault()) {
+    _impl_.host_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.register_request.host)
+}
+
+// int32 tcp_port = 5;
+inline void register_request::clear_tcp_port() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.tcp_port_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000010U;
+}
+inline ::int32_t register_request::tcp_port() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.register_request.tcp_port)
+  return _internal_tcp_port();
+}
+inline void register_request::set_tcp_port(::int32_t value) {
+  _internal_set_tcp_port(value);
+  _impl_._has_bits_[0] |= 0x00000010U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.register_request.tcp_port)
+}
+inline ::int32_t register_request::_internal_tcp_port() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.tcp_port_;
+}
+inline void register_request::_internal_set_tcp_port(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.tcp_port_ = value;
+}
+
+// int32 http_port = 6;
+inline void register_request::clear_http_port() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.http_port_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000020U;
+}
+inline ::int32_t register_request::http_port() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.register_request.http_port)
+  return _internal_http_port();
+}
+inline void register_request::set_http_port(::int32_t value) {
+  _internal_set_http_port(value);
+  _impl_._has_bits_[0] |= 0x00000020U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.register_request.http_port)
+}
+inline ::int32_t register_request::_internal_http_port() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.http_port_;
+}
+inline void register_request::_internal_set_http_port(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.http_port_ = value;
+}
+
+// int32 websock_port = 7;
+inline void register_request::clear_websock_port() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.websock_port_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000040U;
+}
+inline ::int32_t register_request::websock_port() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.register_request.websock_port)
+  return _internal_websock_port();
+}
+inline void register_request::set_websock_port(::int32_t value) {
+  _internal_set_websock_port(value);
+  _impl_._has_bits_[0] |= 0x00000040U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.register_request.websock_port)
+}
+inline ::int32_t register_request::_internal_websock_port() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.websock_port_;
+}
+inline void register_request::_internal_set_websock_port(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.websock_port_ = value;
+}
+
+// int32 tcp_ssl_port = 8;
+inline void register_request::clear_tcp_ssl_port() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.tcp_ssl_port_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000080U;
+}
+inline ::int32_t register_request::tcp_ssl_port() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.register_request.tcp_ssl_port)
+  return _internal_tcp_ssl_port();
+}
+inline void register_request::set_tcp_ssl_port(::int32_t value) {
+  _internal_set_tcp_ssl_port(value);
+  _impl_._has_bits_[0] |= 0x00000080U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.register_request.tcp_ssl_port)
+}
+inline ::int32_t register_request::_internal_tcp_ssl_port() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.tcp_ssl_port_;
+}
+inline void register_request::_internal_set_tcp_ssl_port(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.tcp_ssl_port_ = value;
+}
+
+// int32 https_port = 9;
+inline void register_request::clear_https_port() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.https_port_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000100U;
+}
+inline ::int32_t register_request::https_port() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.register_request.https_port)
+  return _internal_https_port();
+}
+inline void register_request::set_https_port(::int32_t value) {
+  _internal_set_https_port(value);
+  _impl_._has_bits_[0] |= 0x00000100U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.register_request.https_port)
+}
+inline ::int32_t register_request::_internal_https_port() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.https_port_;
+}
+inline void register_request::_internal_set_https_port(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.https_port_ = value;
+}
+
+// int32 webSocket_secure_port = 10;
+inline void register_request::clear_websocket_secure_port() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.websocket_secure_port_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000200U;
+}
+inline ::int32_t register_request::websocket_secure_port() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.register_request.webSocket_secure_port)
+  return _internal_websocket_secure_port();
+}
+inline void register_request::set_websocket_secure_port(::int32_t value) {
+  _internal_set_websocket_secure_port(value);
+  _impl_._has_bits_[0] |= 0x00000200U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.register_request.webSocket_secure_port)
+}
+inline ::int32_t register_request::_internal_websocket_secure_port() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.websocket_secure_port_;
+}
+inline void register_request::_internal_set_websocket_secure_port(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.websocket_secure_port_ = value;
 }
 
 // -------------------------------------------------------------------

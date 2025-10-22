@@ -26,11 +26,13 @@ namespace celeritas
 
         [[nodiscard]] std::string get_game_server_id() const noexcept;
 
-        [[nodiscard]] std::string service_name() const noexcept;
+        [[nodiscard]] std::string get_service_name() const noexcept;
 
         [[nodiscard]] bool is_service_registry_server() const;
 
         [[nodiscard]] int get_worker_pool_size() const noexcept;
+
+        [[nodiscard]] std::string get_host() const;
 
     private:
         std::string instance_id_;

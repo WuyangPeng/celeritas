@@ -25,7 +25,7 @@ std::string celeritas::server_config::get_game_server_id() const noexcept
     return game_server_id_;
 }
 
-std::string celeritas::server_config::service_name() const noexcept
+std::string celeritas::server_config::get_service_name() const noexcept
 {
     return service_name_;
 }
@@ -38,4 +38,9 @@ bool celeritas::server_config::is_service_registry_server() const
 int celeritas::server_config::get_worker_pool_size() const noexcept
 {
     return worker_pool_size_;
+}
+
+std::string celeritas::server_config::get_host() const
+{
+    return host_;
 }
