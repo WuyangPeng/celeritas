@@ -103,9 +103,9 @@ void celeritas::initializer::setup_signal_handler()
     sigemptyset(&sa.sa_mask);
 
     // 注册 SIGSEGV, SIGABRT, SIGFPE
-    sigaction(SIGSEGV, &sa, NULL);
-    sigaction(SIGABRT, &sa, NULL);
-    sigaction(SIGFPE, &sa, NULL);
+    sigaction(SIGSEGV, &sa, nullptr);
+    sigaction(SIGABRT, &sa, nullptr);
+    sigaction(SIGFPE, &sa, nullptr);
 
     #endif // !WIN32
 }
@@ -123,7 +123,7 @@ void celeritas::initializer::stop()
 
 void celeritas::initializer::crash_handler(const int signal_number)
 {
-    LOG_CHANNEL(initializer_channel, fatal) << "signal_number = " << signal_number << ".stack trace:\n" << boost::stacktrace::stacktrace();
+    LOG_CHANNEL(initializer_channel, fatal) << "signal_number = " << signal_number << ".\nstack trace:\n" << boost::stacktrace::stacktrace();
 
     _exit(signal_number);
 }

@@ -16,6 +16,8 @@ else ()
 
     set_target_properties(${SERVER_NAME}_server PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
+    target_compile_definitions(${SERVER_NAME}_server PRIVATE BOOST_STACKTRACE_LINK)
+
     if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
 
         target_compile_options(${SERVER_NAME}_server PRIVATE "-g")
