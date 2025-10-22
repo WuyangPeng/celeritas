@@ -41,6 +41,8 @@ namespace celeritas
 
         void call_back(const message_header& message_header, buffer_guard buffer_guard, const session_shared_ptr& session) override;
 
+        static void crash_handler(int signal_number);
+
     private:
         using configuration_loader_unique_ptr = initializer_factory::configuration_loader_unique_ptr;
         using resource_loader_shared_ptr = initializer_factory::resource_loader_shared_ptr;
@@ -68,8 +70,6 @@ namespace celeritas
         void setup_signal_handler();
 
         void stop();
-
-        static void crash_handler(int signal_number);
 
         std::string server_type_;
         path_type current_path_;

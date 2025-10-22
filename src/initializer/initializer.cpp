@@ -82,6 +82,47 @@ void celeritas::initializer::initialize_application()
     application_loader_->initialize();
 }
 
+#ifdef WIN32
+
+#include <windows.h>
+
+namespace
+{
+    LONG WINAPI win32_crash_handler(EXCEPTION_POINTERS* ExceptionInfo)
+    {
+        const auto exception_code = ExceptionInfo->ExceptionRecord->ExceptionCode;
+        auto signal_number = 0;
+
+        switch (exception_code)
+        {
+            case EXCEPTION_ACCESS_VIOLATION: // 相当于 SIGSEGV (段错误)
+            case EXCEPTION_IN_PAGE_ERROR:
+            case EXCEPTION_STACK_OVERFLOW:
+                signal_number = SIGSEGV;
+                break;
+            case EXCEPTION_ILLEGAL_INSTRUCTION: // 相当于 SIGILL (非法指令)
+                signal_number = SIGILL;
+                break;
+            case EXCEPTION_FLT_DIVIDE_BY_ZERO: // 相当于 SIGFPE (浮点异常)
+            case EXCEPTION_INT_DIVIDE_BY_ZERO:
+                signal_number = SIGFPE;
+                break;
+            case EXCEPTION_BREAKPOINT:
+            case EXCEPTION_SINGLE_STEP:
+                return EXCEPTION_CONTINUE_SEARCH;
+            default:
+                signal_number = static_cast<int>(exception_code);
+                break;
+        }
+
+        celeritas::initializer::crash_handler(signal_number);
+
+        return EXCEPTION_EXECUTE_HANDLER;
+    }
+}
+
+#endif // WIN32
+
 void celeritas::initializer::setup_signal_handler()
 {
     // 异步等待信号
@@ -95,7 +136,14 @@ void celeritas::initializer::setup_signal_handler()
             }
         });
 
-    #ifndef WIN32
+    #ifdef WIN32
+
+    SetUnhandledExceptionFilter(win32_crash_handler);
+
+    signal(SIGABRT, crash_handler);
+    signal(SIGFPE, crash_handler);
+
+    #else
 
     struct sigaction sa{};
     sa.sa_handler = crash_handler;
@@ -107,7 +155,7 @@ void celeritas::initializer::setup_signal_handler()
     sigaction(SIGABRT, &sa, nullptr);
     sigaction(SIGFPE, &sa, nullptr);
 
-    #endif // !WIN32
+    #endif // WIN32
 }
 
 void celeritas::initializer::stop()
