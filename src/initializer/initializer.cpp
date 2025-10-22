@@ -122,7 +122,7 @@ void celeritas::initializer::stop()
 
 void celeritas::initializer::crash_handler(int signal_number)
 {
-    LOG_CHANNEL(initializer_channel, fatal) << "stack trace:\n" << boost::stacktrace::stacktrace();
+    LOG_CHANNEL(initializer_channel, fatal) << "signal_number = " << signal_number << "stack trace:\n" << boost::stacktrace::stacktrace();
 
     stop();
 }
