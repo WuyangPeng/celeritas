@@ -27,9 +27,6 @@ celeritas::initializer::initializer(const std::string_view& server_type, std::st
       signals_{ io_context_, SIGINT, SIGTERM }
 {
     setup_signal_handler();
-
-    std::vector<int> a;
-    std::cout << a[1] << std::endl;
 }
 
 void celeritas::initializer::initialize()
