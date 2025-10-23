@@ -30,7 +30,6 @@ void celeritas::tcp_session_write<SocketType>::write(buffer_guard data)
 template <typename SocketType>
 celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<SocketType>::do_write()
 {
-    LOG_CHANNEL(network_channel, error) << "22222";
     while (socket_.is_open())
     {
         try
@@ -69,7 +68,7 @@ celeritas::tcp_session_write<SocketType>::bool_awaitable_type celeritas::tcp_ses
         co_return false; // 队列为空，退出协程
     }
     auto buffer_guard = std::move(*optional_buffer_guard);
-
+    LOG_CHANNEL(network_channel, debug) << "1Successfully wrote " << buffer_guard.get_effective_size() << " bytes to client.";
     co_await boost::asio::async_write(socket_, boost::asio::buffer(buffer_guard.get(), buffer_guard.get_effective_size()), boost::asio::use_awaitable);
     LOG_CHANNEL(network_channel, debug) << "Successfully wrote " << buffer_guard.get_effective_size() << " bytes to client.";
 
