@@ -1,14 +1,17 @@
-﻿#include "common/celeritas_error.h"
-#include "logger_impl.h"
+﻿#include "logger_impl.h"
 #include "common/common_fwd.h"
+#include "config/config_fwd.h"
 
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/filesystem/operations.hpp>
 #include <boost/log/expressions.hpp>
 #include <boost/log/expressions/formatters/date_time.hpp>
 #include <boost/log/support/date_time.hpp>
 #include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/log/utility/setup/console.hpp>
 #include <boost/log/utility/setup/file.hpp>
+
+using namespace std::literals;
 
 auto get_formatter(bool is_console)
 {
@@ -67,15 +70,33 @@ void celeritas::logger_impl::init_file(const std::string_view& channel_name, con
 
     register_logger(channel_name);
 
+    const auto current_path = boost::filesystem::current_path();
+
+    const auto target_path = current_path / logger_path;
+
+    if (!boost::filesystem::exists(target_path))
+    {
+        boost::filesystem::create_directories(target_path);
+    }
+
+    const auto file_pattern_part = log_file_name.data() + "_%Y%m%d_%N"s + logger_extension.data();
+
+    const auto full_path_pattern = target_path / file_pattern_part;
+
+    // 每天 00:00:00 轮换
+    auto daily_rotation = boost::log::sinks::file::rotation_at_time_point(0, 0, 0);
+
     // 添加文件日志输出
-    boost::log::add_file_log(
-            boost::log::keywords::file_name = log_file_name,
-            boost::log::keywords::auto_flush = true,
-            boost::log::keywords::rotation_size = rotation_size,
-            boost::log::keywords::filter = boost::log::expressions::has_attr(channel.data()) &&
-                                           boost::log::expressions::attr<std::string>(channel.data()) == channel_name &&
-                                           boost::log::trivial::severity >= file_level)
-        ->set_formatter(get_formatter(false));
+    const auto file_sink = boost::log::add_file_log(
+        boost::log::keywords::file_name = full_path_pattern.string(),
+        boost::log::keywords::auto_flush = true,
+        boost::log::keywords::rotation_size = rotation_size * 1024 * 1024,
+        boost::log::keywords::time_based_rotation = daily_rotation,
+        boost::log::keywords::filter = boost::log::expressions::has_attr(channel.data()) &&
+                                       boost::log::expressions::attr<std::string>(channel.data()) == std::string{ channel_name } &&
+                                       boost::log::trivial::severity >= file_level);
+
+    file_sink->set_formatter(get_formatter(false));
 
     if (also_to_console)
     {
@@ -128,7 +149,7 @@ void celeritas::logger_impl::register_logger(const std::string_view& channel_nam
         iter == loggers_.end())
     {
         loggers_.emplace(key, severity_logger_type{});
-        loggers_.at(key).add_attribute(channel.data(), boost::log::attributes::constant(channel_name));
+        loggers_.at(key).add_attribute(channel.data(), boost::log::attributes::constant(std::string{channel_name}));
     }
 }
 

@@ -54,9 +54,8 @@ void celeritas::initializer::initialize_default_logger()
     logger::init_global(logger::severity_level_type::trace);
     logger::init_console(logger::severity_level_type::trace);
 
-    const auto filename = current_path_ / logger_path / (std::string{ initializer_channel } + logger_extension.data());
     logger::init_file(initializer_channel,
-                      filename.string(),
+                      initializer_channel,
                       logger::severity_level_type::trace,
                       default_logger_rotation_size,
                       true);
