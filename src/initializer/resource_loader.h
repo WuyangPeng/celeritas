@@ -32,7 +32,7 @@ namespace celeritas
 
         void release_resource();
 
-        void write(const std::string& server_type, const header& header, const google::protobuf::Message& request) const;
+        [[nodiscard]] bool write(const std::string& server_type, const header& header, const google::protobuf::Message& request) const;
 
     private:
         using listener_shared_ptr = std::shared_ptr<listener>;

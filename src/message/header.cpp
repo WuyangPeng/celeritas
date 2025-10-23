@@ -29,42 +29,50 @@ celeritas::header::message_shared_ptr celeritas::header::get_message() const
 {
     if (code > 0)
     {
-        auto to_gateway_message_header = std::make_shared<proto::common::to_gateway_message_header>();
+        auto header = std::make_shared<proto::common::header>();
+        auto to_gateway_message_header = header->mutable_to_gateway();
 
         to_gateway_message_header->set_user_id(user_id);
         to_gateway_message_header->set_rpc(rpc);
         to_gateway_message_header->set_code(code);
 
-        return to_gateway_message_header;
+        return header;
     }
 
     if (user_id > 0 && rpc > 0)
     {
-        auto gateway_message_header = std::make_shared<proto::common::gateway_message_header>();
+        auto header = std::make_shared<proto::common::header>();
+        auto gateway_message_header = header->mutable_gateway();
 
         gateway_message_header->set_user_id(user_id);
         gateway_message_header->set_rpc(rpc);
 
-        return gateway_message_header;
+        return header;
     }
 
     if (user_id > 0)
     {
-        auto server_message_header = std::make_shared<proto::common::server_message_header>();
+        auto header = std::make_shared<proto::common::header>();
+        auto server_message_header = header->mutable_server();
 
         server_message_header->set_user_id(user_id);
 
-        return server_message_header;
+        return header;
     }
 
     if (rpc > 0)
     {
-        auto client_message_header = std::make_shared<proto::common::client_message_header>();
+        auto header = std::make_shared<proto::common::header>();
+        auto client_message_header = header->mutable_client();
 
         client_message_header->set_rpc(rpc);
 
-        return client_message_header;
+        return header;
     }
 
-    return std::make_shared<proto::common::empty_message_header>();
+    auto header = std::make_shared<proto::common::header>();
+
+    header->mutable_empty();
+
+    return header;
 }

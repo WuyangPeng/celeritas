@@ -40,15 +40,20 @@ void celeritas::resource_loader::release_resource()
     listener_.clear();
 }
 
-void celeritas::resource_loader::write(const std::string& server_type, const header& header, const google::protobuf::Message& request) const
+bool celeritas::resource_loader::write(const std::string& server_type, const header& header, const google::protobuf::Message& request) const
 {
+    auto to_write = false;
+
     for (const auto& element : tcp_clients_)
     {
         if (element->get_server_type() == server_type)
         {
             element->write(header, request);
+            to_write = true;
         }
     }
+
+    return to_write;
 }
 
 void celeritas::resource_loader::initialize_logger_resource()
@@ -327,7 +332,8 @@ void celeritas::resource_loader::process_service_registry_by_duration()
         }
     }
 
-    write(service_registry_type.data(), header{ proto::common::empty_message_header{} }, request);
-
-    LOG_CHANNEL(initializer_channel, trace) << "service registry registry: " << server.get_instance_id();
+    if (write(service_registry_type.data(), header{ proto::common::empty_message_header{} }, request))
+    {
+        LOG_CHANNEL(initializer_channel, trace) << "service registry registry: " << server.get_instance_id();
+    }
 }

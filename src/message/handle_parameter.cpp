@@ -1,4 +1,5 @@
 ﻿#include "handle_parameter.h"
+#include "common/logger.h"
 #include "initializer/resource_loader.h"
 #include "network/session.h"
 
@@ -21,7 +22,10 @@ void celeritas::handle_parameter::write(const std::string& server_type, const go
     if (const auto resource_loader_shared_ptr = resource_loader_.lock();
         resource_loader_shared_ptr != nullptr)
     {
-        resource_loader_shared_ptr->write(server_type, header_, request);
+        if (resource_loader_shared_ptr->write(server_type, header_, request))
+        {
+            LOG_CHANNEL(initializer_channel, trace) << "write message to server_type: " << server_type;
+        }
     }
 }
 
