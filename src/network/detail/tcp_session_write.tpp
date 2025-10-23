@@ -61,6 +61,7 @@ celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<Socke
 template <typename SocketType>
 celeritas::tcp_session_write<SocketType>::bool_awaitable_type celeritas::tcp_session_write<SocketType>::do_one_write()
 {
+    LOG_CHANNEL(network_channel, debug) << "1Successfully wrote ";
     // 调用新函数来获取数据，该函数内部处理了加锁和解锁
     auto optional_buffer_guard = get_next_write_buffer();
     if (!optional_buffer_guard)
@@ -68,7 +69,7 @@ celeritas::tcp_session_write<SocketType>::bool_awaitable_type celeritas::tcp_ses
         co_return false; // 队列为空，退出协程
     }
     auto buffer_guard = std::move(*optional_buffer_guard);
-    LOG_CHANNEL(network_channel, debug) << "1Successfully wrote " << buffer_guard.get_effective_size() << " bytes to client.";
+
     co_await boost::asio::async_write(socket_, boost::asio::buffer(buffer_guard.get(), buffer_guard.get_effective_size()), boost::asio::use_awaitable);
     LOG_CHANNEL(network_channel, debug) << "Successfully wrote " << buffer_guard.get_effective_size() << " bytes to client.";
 
