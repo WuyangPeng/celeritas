@@ -34,9 +34,10 @@ namespace celeritas
 
     private:
         using buffer_guard_optional_type = std::optional<buffer_guard>;
+        using bool_awaitable_type = boost::asio::awaitable<bool>;
 
         // 协程：处理单个写入操作
-        [[nodiscard]] void_awaitable_type do_one_write();
+        [[nodiscard]] bool_awaitable_type do_one_write();
 
         // 从发送队列中获取下一个缓冲区，并在加锁后立即释放锁
         [[nodiscard]] buffer_guard_optional_type get_next_write_buffer();

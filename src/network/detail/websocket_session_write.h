@@ -28,8 +28,9 @@ namespace celeritas
     private:
         using buffer_guard_container_type = std::deque<buffer_guard>;
         using buffer_guard_optional_type = std::optional<buffer_guard>;
+        using bool_awaitable_type = boost::asio::awaitable<bool>;
 
-        [[nodiscard]] void_awaitable_type do_one_write();
+        [[nodiscard]] bool_awaitable_type do_one_write();
 
         [[nodiscard]] buffer_guard_optional_type get_next_write_buffer();
 

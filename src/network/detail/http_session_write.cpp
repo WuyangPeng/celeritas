@@ -29,7 +29,11 @@ celeritas::session_write::void_awaitable_type celeritas::http_session_write::do_
     {
         try
         {
-            co_await do_one_write();
+            if (const auto result = co_await do_one_write();
+                !result)
+            {
+                co_return;
+            }
         }
         catch (const boost::system::system_error& error)
         {
@@ -49,13 +53,13 @@ celeritas::session_write::void_awaitable_type celeritas::http_session_write::do_
     }
 }
 
-celeritas::session_write::void_awaitable_type celeritas::http_session_write::do_one_write()
+celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write::do_one_write()
 {
     // 调用新函数来获取数据，该函数内部处理了加锁和解锁
     auto optional_buffer_guard = get_next_write_buffer();
     if (!optional_buffer_guard)
     {
-        co_return; // 队列为空，退出协程
+        co_return false; // 队列为空，退出协程
     }
     auto buffer_guard = std::move(*optional_buffer_guard);
     const auto body_size = buffer_guard.get_effective_size();
@@ -74,6 +78,8 @@ celeritas::session_write::void_awaitable_type celeritas::http_session_write::do_
     co_await boost::asio::async_write(socket_, buffers, boost::asio::use_awaitable);
 
     LOG_CHANNEL(network_channel, debug) << "Successfully wrote " << buffer_guard.get_effective_size() << " bytes to client.";
+
+    co_return true;
 }
 
 celeritas::http_session_write::buffer_guard_optional_type celeritas::http_session_write::get_next_write_buffer()

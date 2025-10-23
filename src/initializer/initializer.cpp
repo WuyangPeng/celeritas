@@ -39,22 +39,9 @@ void celeritas::initializer::run()
 {
     LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is start";
 
-    for (;;)
-    {
-        try
-        {
-            io_context_.run();
-            break;
-        }
-        catch (const std::exception& error)
-        {
-            LOG_CHANNEL(initializer_channel, error) << "io context error: " << error.what();
-        }
-        catch (...)
-        {
-            LOG_CHANNEL(initializer_channel, fatal) << "io context error: an unknown exception";
-        }
-    }
+    io_context_.run();
+
+    LOG_CHANNEL(initializer_channel, info) << get_server_type() << " io context is stop";
 }
 
 std::string celeritas::initializer::get_server_type() const
