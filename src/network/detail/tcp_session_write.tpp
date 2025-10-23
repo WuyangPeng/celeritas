@@ -26,11 +26,13 @@ void celeritas::tcp_session_write<SocketType>::write(buffer_guard data)
                  },
                  boost::asio::detached);
     }
+    LOG_CHANNEL(network_channel, warning) << "333";
 }
 
 template <typename SocketType>
 celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<SocketType>::do_write()
 {
+    LOG_CHANNEL(network_channel, warning) << "222";
     while (socket_.is_open())
     {
         try
