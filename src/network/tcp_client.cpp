@@ -60,7 +60,10 @@ celeritas::listener_sessions::network_message_callback_weak_ptr celeritas::tcp_c
 
 void celeritas::tcp_client::write(const header& header, const google::protobuf::Message& request)
 {
-    session_->write(header, request);
+    if (is_open())
+    {
+        session_->write(header, request);
+    }
 }
 
 celeritas::tcp_client::void_waitable_type celeritas::tcp_client::do_connect()
