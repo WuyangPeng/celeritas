@@ -10,12 +10,13 @@ celeritas::websocket_session_write::websocket_session_write(web_socket_stream_ty
 
 void celeritas::websocket_session_write::write(buffer_guard data)
 {
-    std::lock_guard lock{ write_mutex_ };
+    std::unique_lock lock{ write_mutex_ };
     write_queue_.emplace_back(std::move(data));
 
     // 如果发送协程没有在运行，就启动它
     if (write_queue_.size() == 1)
     {
+        lock.unlock();
         co_spawn(web_socket_.get_executor(), [self = this->shared_from_this()] {
                      return self->do_write();
                  },
@@ -72,7 +73,7 @@ celeritas::websocket_session_write::bool_awaitable_type celeritas::websocket_ses
 
 celeritas::websocket_session_write::buffer_guard_optional_type celeritas::websocket_session_write::get_next_write_buffer()
 {
-    std::lock_guard lock{ write_mutex_ };
+    std::unique_lock lock{ write_mutex_ };
 
     if (write_queue_.empty())
     {
