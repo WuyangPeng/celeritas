@@ -36,7 +36,7 @@ void celeritas::session::write(const header& header, const google::protobuf::Mes
         LOG_CHANNEL(network_channel, error) << "序列化失败！";
         return;
     }
-
+    LOG_CHANNEL(network_channel, error) << "1111111";
     do_write(std::move(buffer_guard));
 }
 
