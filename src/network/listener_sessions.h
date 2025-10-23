@@ -43,7 +43,7 @@ namespace celeritas
     private:
         using session_type_container_type = std::map<int64_t, session_shared_ptr>;
 
-        std::atomic<bool> is_running_;
+        std::atomic<bool> is_running_ = true;
         session_type_container_type sessions_;
         int64_t session_id_ = 0;
     };

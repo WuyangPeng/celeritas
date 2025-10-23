@@ -89,6 +89,8 @@ void celeritas::resource_loader::initialize_server_resource(boost::asio::io_cont
     {
         const auto listener = server_resource_loader::loader_server(io_context, server, element, network_message_callback);
 
+        listener->start();
+
         listener_.emplace_back(listener);
     }
 }

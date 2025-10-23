@@ -91,6 +91,7 @@ void celeritas::logger_impl::init_file(const std::string& channel_name, const st
         boost::log::keywords::rotation_size = rotation_size * 1024 * 1024,
         boost::log::keywords::time_based_rotation = daily_rotation,
         boost::log::keywords::open_mode = std::ios::app,
+        boost::log::keywords::scan_method = boost::log::sinks::file::scan_method::scan_matching,
         boost::log::keywords::filter = boost::log::expressions::has_attr(channel.data()) &&
                                        boost::log::expressions::attr<std::string>(channel.data()) == channel_name &&
                                        boost::log::trivial::severity >= file_level);
