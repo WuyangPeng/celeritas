@@ -14,6 +14,7 @@ celeritas::tcp_session_write<SocketType>::tcp_session_write(socket_type& socket)
 template <typename SocketType>
 void celeritas::tcp_session_write<SocketType>::write(buffer_guard data)
 {
+    LOG_CHANNEL(network_channel, warning) << "1111";
     std::lock_guard lock{ write_mutex_ };
     write_queue_.emplace_back(std::move(data));
 
