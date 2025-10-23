@@ -30,10 +30,12 @@ void celeritas::tcp_session_write<SocketType>::write(buffer_guard data)
 template <typename SocketType>
 celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<SocketType>::do_write()
 {
+    LOG_CHANNEL(network_channel, debug) << "1";
     while (socket_.is_open())
     {
         try
         {
+            LOG_CHANNEL(network_channel, debug) << "2";
             if (const auto result = co_await do_one_write();
                 !result)
             {
@@ -61,7 +63,6 @@ celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<Socke
 template <typename SocketType>
 celeritas::tcp_session_write<SocketType>::bool_awaitable_type celeritas::tcp_session_write<SocketType>::do_one_write()
 {
-    LOG_CHANNEL(network_channel, debug) << "1Successfully wrote ";
     // 调用新函数来获取数据，该函数内部处理了加锁和解锁
     auto optional_buffer_guard = get_next_write_buffer();
     if (!optional_buffer_guard)
