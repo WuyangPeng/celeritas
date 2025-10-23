@@ -15,12 +15,13 @@ template <typename SocketType>
 void celeritas::tcp_session_write<SocketType>::write(buffer_guard data)
 {
     LOG_CHANNEL(network_channel, warning) << "1111";
-    std::lock_guard lock{ write_mutex_ };
+    std::unique_lock lock{ write_mutex_ };
     write_queue_.emplace_back(std::move(data));
 
     // 如果发送协程没有在运行，就启动它
     if (write_queue_.size() == 1)
     {
+        lock.unlock();
         co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
                      return self->do_write();
                  },
@@ -64,7 +65,8 @@ celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<Socke
 
 template <typename SocketType>
 celeritas::tcp_session_write<SocketType>::bool_awaitable_type celeritas::tcp_session_write<SocketType>::do_one_write()
-{LOG_CHANNEL(network_channel, warning) << "555";
+{
+    LOG_CHANNEL(network_channel, warning) << "555";
     // 调用新函数来获取数据，该函数内部处理了加锁和解锁
     auto optional_buffer_guard = get_next_write_buffer();
     if (!optional_buffer_guard)
@@ -82,7 +84,7 @@ celeritas::tcp_session_write<SocketType>::bool_awaitable_type celeritas::tcp_ses
 template <typename SocketType>
 celeritas::tcp_session_write<SocketType>::buffer_guard_optional_type celeritas::tcp_session_write<SocketType>::get_next_write_buffer()
 {
-    std::lock_guard lock{ write_mutex_ };
+    std::unique_lock lock{ write_mutex_ };
     if (write_queue_.empty())
     {
         return std::nullopt; // 队列为空，返回一个空对象
