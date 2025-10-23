@@ -30,12 +30,10 @@ void celeritas::tcp_session_write<SocketType>::write(buffer_guard data)
 template <typename SocketType>
 celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<SocketType>::do_write()
 {
-    LOG_CHANNEL(network_channel, debug) << "1";
     while (socket_.is_open())
     {
         try
         {
-            LOG_CHANNEL(network_channel, debug) << "2";
             if (const auto result = co_await do_one_write();
                 !result)
             {
