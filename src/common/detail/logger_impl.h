@@ -34,8 +34,8 @@ namespace celeritas
 
         void init_console(severity_level_type console_level);
 
-        void init_file(const std::string_view& channel_name,
-                       const std::string_view& log_file_name,
+        void init_file(const std::string& channel_name,
+                       const std::string& log_file_name,
                        severity_level_type file_level,
                        int rotation_size,
                        bool also_to_console);
@@ -49,7 +49,7 @@ namespace celeritas
         using console_channels_type = std::unordered_set<std::string>;
         using console_sink_type_shared_ptr = boost::shared_ptr<console_sink_type>;
 
-        void register_logger(const std::string_view& channel_name);
+        void register_logger(const std::string& channel_name);
 
         void update_console_filter();
 

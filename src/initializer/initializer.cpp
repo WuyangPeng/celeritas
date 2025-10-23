@@ -54,8 +54,8 @@ void celeritas::initializer::initialize_default_logger()
     logger::init_global(logger::severity_level_type::trace);
     logger::init_console(logger::severity_level_type::trace);
 
-    logger::init_file(initializer_channel,
-                      initializer_channel,
+    logger::init_file(initializer_channel.data(),
+                      initializer_channel.data(),
                       logger::severity_level_type::trace,
                       default_logger_rotation_size,
                       true);

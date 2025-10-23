@@ -11,9 +11,7 @@
 #include <boost/log/utility/setup/console.hpp>
 #include <boost/log/utility/setup/file.hpp>
 
-using namespace std::literals;
-
-auto get_formatter(bool is_console)
+auto get_formatter()
 {
     // 设置日志格式
     return boost::log::expressions::stream
@@ -33,8 +31,8 @@ auto get_formatter(bool is_console)
 
 celeritas::logger_impl::logger_impl()
 {
-    default_logger_.add_attribute(channel.data(), boost::log::attributes::constant(default_channel));
-    unregistered_logger_.add_attribute(channel.data(), boost::log::attributes::constant(unregistered_channel));
+    default_logger_.add_attribute(channel.data(), boost::log::attributes::constant(std::string{ default_channel }));
+    unregistered_logger_.add_attribute(channel.data(), boost::log::attributes::constant(std::string{ unregistered_channel }));
 }
 
 void celeritas::logger_impl::init_global(severity_level_type level)
@@ -56,7 +54,7 @@ void celeritas::logger_impl::init_console(const severity_level_type console_leve
     if (console_sink_ == nullptr)
     {
         console_sink_ = boost::log::add_console_log(std::clog);
-        console_sink_->set_formatter(get_formatter(true));
+        console_sink_->set_formatter(get_formatter());
     }
 
     console_level_ = console_level;
@@ -64,7 +62,7 @@ void celeritas::logger_impl::init_console(const severity_level_type console_leve
     update_console_filter();
 }
 
-void celeritas::logger_impl::init_file(const std::string_view& channel_name, const std::string_view& log_file_name, severity_level_type file_level, int rotation_size, const bool also_to_console)
+void celeritas::logger_impl::init_file(const std::string& channel_name, const std::string& log_file_name, severity_level_type file_level, int rotation_size, const bool also_to_console)
 {
     std::lock_guard lock{ mutex_ };
 
@@ -79,7 +77,7 @@ void celeritas::logger_impl::init_file(const std::string_view& channel_name, con
         boost::filesystem::create_directories(target_path);
     }
 
-    const auto file_pattern_part = log_file_name.data() + "_%Y%m%d_%N"s + logger_extension.data();
+    const auto file_pattern_part = log_file_name + "_%Y%m%d_%N" + logger_extension.data();
 
     const auto full_path_pattern = target_path / file_pattern_part;
 
@@ -93,21 +91,21 @@ void celeritas::logger_impl::init_file(const std::string_view& channel_name, con
         boost::log::keywords::rotation_size = rotation_size * 1024 * 1024,
         boost::log::keywords::time_based_rotation = daily_rotation,
         boost::log::keywords::filter = boost::log::expressions::has_attr(channel.data()) &&
-                                       boost::log::expressions::attr<std::string>(channel.data()) == std::string{ channel_name } &&
+                                       boost::log::expressions::attr<std::string>(channel.data()) == channel_name &&
                                        boost::log::trivial::severity >= file_level);
 
-    file_sink->set_formatter(get_formatter(false));
+    file_sink->set_formatter(get_formatter());
 
     if (also_to_console)
     {
-        if (console_channels_.insert(channel_name.data()).second)
+        if (console_channels_.insert(channel_name).second)
         {
             update_console_filter();
         }
     }
     else
     {
-        if (0 < console_channels_.erase(channel_name.data()))
+        if (0 < console_channels_.erase(channel_name))
         {
             update_console_filter();
         }
@@ -142,14 +140,13 @@ celeritas::logger_impl::severity_logger_type& celeritas::logger_impl::get_defaul
     return default_logger_;
 }
 
-void celeritas::logger_impl::register_logger(const std::string_view& channel_name)
+void celeritas::logger_impl::register_logger(const std::string& channel_name)
 {
-    const auto key = std::string{ channel_name };
-    if (const auto iter = loggers_.find(key);
+    if (const auto iter = loggers_.find(channel_name);
         iter == loggers_.end())
     {
-        loggers_.emplace(key, severity_logger_type{});
-        loggers_.at(key).add_attribute(channel.data(), boost::log::attributes::constant(std::string{channel_name}));
+        loggers_.emplace(channel_name, severity_logger_type{});
+        loggers_.at(channel_name).add_attribute(channel.data(), boost::log::attributes::constant(channel_name));
     }
 }
 
