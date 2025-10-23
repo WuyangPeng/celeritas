@@ -35,6 +35,7 @@ celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<Socke
     LOG_CHANNEL(network_channel, warning) << "222";
     while (socket_.is_open())
     {
+        LOG_CHANNEL(network_channel, warning) << "444";
         try
         {
             if (const auto result = co_await do_one_write();
@@ -63,7 +64,7 @@ celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<Socke
 
 template <typename SocketType>
 celeritas::tcp_session_write<SocketType>::bool_awaitable_type celeritas::tcp_session_write<SocketType>::do_one_write()
-{
+{LOG_CHANNEL(network_channel, warning) << "555";
     // 调用新函数来获取数据，该函数内部处理了加锁和解锁
     auto optional_buffer_guard = get_next_write_buffer();
     if (!optional_buffer_guard)
