@@ -34,7 +34,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     foreach (service_config_file IN LISTS SERVER_CONFIG_FILES)
         add_custom_command(TARGET ${SERVER_NAME}_server POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E echo "--- Copying config file: ${service_config_file} to $<TARGET_FILE_DIR:${SERVER_NAME}_server>/config/"
+                COMMAND ${CMAKE_COMMAND} -E echo "--- Copying config file: ${service_config_file} to $<TARGET_FILE_DIR:${SERVER_NAME}_server>/"
                 COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${SERVER_NAME}_server>/config/${SERVER_NAME}/"
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different "${service_config_file}" "$<TARGET_FILE_DIR:${SERVER_NAME}_server>/config/${SERVER_NAME}/"
                 COMMENT "Copying config files for ${service_config_file}")
@@ -44,7 +44,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     foreach (protobuf_dll_file IN LISTS PROTOBUF_DLL_FILES)
         add_custom_command(TARGET ${SERVER_NAME}_server POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E echo "--- Copying config file: ${protobuf_dll_file} to $<TARGET_FILE_DIR:${SERVER_NAME}_server>/config/"
+                COMMAND ${CMAKE_COMMAND} -E echo "--- Copying config file: ${protobuf_dll_file} to $<TARGET_FILE_DIR:${SERVER_NAME}_server>/"
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different "${protobuf_dll_file}" "$<TARGET_FILE_DIR:${SERVER_NAME}_server>/"
                 COMMENT "Copying dll files for ${protobuf_dll_file}")
     endforeach ()
@@ -53,7 +53,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     foreach (openssl_dll_file IN LISTS OPENSSL_DLL_FILES)
         add_custom_command(TARGET ${SERVER_NAME}_server POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E echo "--- Copying config file: ${openssl_dll_file} to $<TARGET_FILE_DIR:${SERVER_NAME}_server>/config/"
+                COMMAND ${CMAKE_COMMAND} -E echo "--- Copying config file: ${openssl_dll_file} to $<TARGET_FILE_DIR:${SERVER_NAME}_server>/"
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different "${openssl_dll_file}" "$<TARGET_FILE_DIR:${SERVER_NAME}_server>/"
                 COMMENT "Copying dll files for ${openssl_dll_file}")
     endforeach ()
@@ -62,7 +62,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     foreach (mongo_dll_file IN LISTS MONGO_DLL_FILES)
         add_custom_command(TARGET ${SERVER_NAME}_server POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E echo "--- Copying config file: ${mongo_dll_file} to $<TARGET_FILE_DIR:${SERVER_NAME}_server>/config/"
+                COMMAND ${CMAKE_COMMAND} -E echo "--- Copying config file: ${mongo_dll_file} to $<TARGET_FILE_DIR:${SERVER_NAME}_server>/"
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different "${mongo_dll_file}" "$<TARGET_FILE_DIR:${SERVER_NAME}_server>/"
                 COMMENT "Copying dll files for ${mongo_dll_file}")
     endforeach ()
@@ -71,7 +71,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     foreach (hiredis_dll_file IN LISTS HIREDIS_DLL_FILES)
         add_custom_command(TARGET ${SERVER_NAME}_server POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E echo "--- Copying config file: ${hiredis_dll_file} to $<TARGET_FILE_DIR:${SERVER_NAME}_server>/config/"
+                COMMAND ${CMAKE_COMMAND} -E echo "--- Copying config file: ${hiredis_dll_file} to $<TARGET_FILE_DIR:${SERVER_NAME}_server>/"
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different "${hiredis_dll_file}" "$<TARGET_FILE_DIR:${SERVER_NAME}_server>/"
                 COMMENT "Copying dll files for ${hiredis_dll_file}")
     endforeach ()
