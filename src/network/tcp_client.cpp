@@ -89,5 +89,9 @@ celeritas::tcp_client::void_waitable_type celeritas::tcp_client::do_connect()
                                               ++session_id_,
                                               game_server_id_,
                                               session_callback{ shared_from_this(), network_message_callback_ });
+
+    session_->start();
 }
+
+
 
