@@ -236,7 +236,7 @@ void celeritas::resource_loader::start_service_registry_timer(boost::asio::io_co
 {
     service_registry_timer_interval_ = std::make_unique<steady_timer_type>(io_context);
 
-    start_service_registry_timer(io_context, shared_from_this());
+    service_registry(io_context, boost::system::error_code{});
 }
 
 void celeritas::resource_loader::start_service_registry_timer(boost::asio::io_context& io_context, const self_shared_ptr& self)
