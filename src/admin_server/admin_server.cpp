@@ -13,9 +13,9 @@ int main(const int argc, char** argv)
 {
     try
     {
-        celeritas::admin_server admin_server{};
+        const celeritas::admin_server server{};
 
-        admin_server.run(argc, argv);
+        server.run(argc, argv);
     }
     catch (const std::exception& error)
     {
