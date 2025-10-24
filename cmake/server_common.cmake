@@ -40,7 +40,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
                 COMMENT "Copying config files for ${service_config_file}")
     endforeach ()
 
-    file(GLOB PROTOBUF_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/protobuf/bin64/*.dll")
+    file(GLOB PROTOBUF_DLL_FILES "${PROTOBUF_DIR}/${BIN_DIRECTORY}/*.dll")
 
     foreach (protobuf_dll_file IN LISTS PROTOBUF_DLL_FILES)
         add_custom_command(TARGET ${SERVER_NAME}_server POST_BUILD
@@ -49,7 +49,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
                 COMMENT "Copying dll files for ${protobuf_dll_file}")
     endforeach ()
 
-    file(GLOB OPENSSL_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/openssl/bin64/*.dll")
+    file(GLOB OPENSSL_DLL_FILES "${OPENSSL_DIR}/${BIN_DIRECTORY}/*.dll")
 
     foreach (openssl_dll_file IN LISTS OPENSSL_DLL_FILES)
         add_custom_command(TARGET ${SERVER_NAME}_server POST_BUILD
@@ -58,7 +58,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
                 COMMENT "Copying dll files for ${openssl_dll_file}")
     endforeach ()
 
-    file(GLOB MONGO_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/mongo/bin/*.dll")
+    file(GLOB MONGO_DLL_FILES "${MONGO_DIR}/${BIN_DIRECTORY}/*.dll")
 
     foreach (mongo_dll_file IN LISTS MONGO_DLL_FILES)
         add_custom_command(TARGET ${SERVER_NAME}_server POST_BUILD
@@ -67,7 +67,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
                 COMMENT "Copying dll files for ${mongo_dll_file}")
     endforeach ()
 
-    file(GLOB HIREDIS_DLL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../deps/hiredis/build/${BUILD_TYPE_DIRECTORY}/*.dll")
+    file(GLOB HIREDIS_DLL_FILES "${HIREDIS_DIR}/build/${BUILD_TYPE_DIRECTORY}/*.dll")
 
     foreach (hiredis_dll_file IN LISTS HIREDIS_DLL_FILES)
         add_custom_command(TARGET ${SERVER_NAME}_server POST_BUILD

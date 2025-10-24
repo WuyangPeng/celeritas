@@ -114,7 +114,7 @@ else ()
 endif ()
 
 # 包含protobuf库
-set(PROTOBUF_BIN_DIR "${PROTOBUF_DIR}/bin64/")
+set(PROTOBUF_BIN_DIR "${PROTOBUF_DIR}/${BIN_DIRECTORY}/")
 
 link_directories(${PROTOBUF_BIN_DIR})
 
@@ -122,7 +122,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     set(CMAKE_PREFIX_PATH "${PROTOBUF_BIN_DIR}")
     set(Protobuf_INCLUDE_DIR "${PROTOBUF_DIR}/include")
-    set(Protobuf_LIBRARIES "${PROTOBUF_DIR}/lib64")
+    set(Protobuf_LIBRARIES "${PROTOBUF_DIR}/${LIB_DIRECTORY}")
 
     # 查找和添加依赖项
     find_package(Protobuf REQUIRED)
@@ -167,7 +167,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
 else ()
 
-    # 其他平台下的操作
     file(GLOB_RECURSE PROTO_SRCS_GENERATED "src/proto/*.cc")
 
     link_directories(${PROTOBUF_DIR}/lib64)
@@ -199,15 +198,7 @@ endif ()
 # 包含mongo库
 add_library(mongo INTERFACE)
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-
-    link_directories(${MONGO_DIR}/lib)
-
-else ()
-
-    link_directories(${MONGO_DIR}/lib64)
-
-endif ()
+link_directories(${MONGO_DIR}/${LIB_DIRECTORY})
 
 target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
 
@@ -319,7 +310,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             DESTINATION ${APP_LIB_INSTALL_DIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
-    file(GLOB MONGO_LIBS "${MONGO_DIR}/bin/*.dll*")
+    file(GLOB MONGO_LIBS "${MONGO_DIR}/${BIN_DIRECTORY}/*.dll*")
     install(FILES ${MONGO_LIBS}
             DESTINATION ${APP_LIB_INSTALL_DIR}
             PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
