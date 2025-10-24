@@ -54,7 +54,7 @@ double celeritas::random_helper::get_random_normal(const double mean, const doub
 
 std::mt19937& celeritas::random_helper::get_engine()
 {
-    static std::mt19937 engine{ std::random_device{}() };
+    thread_local std::mt19937 engine{ std::random_device{}() };
 
     return engine;
 }
