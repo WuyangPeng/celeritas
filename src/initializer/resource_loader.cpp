@@ -7,6 +7,7 @@
 #include "detail/server_resource_loader.h"
 #include "detail/service_registry_loader.h"
 #include "network/tcp_client.h"
+#include "proto/celeritas.pb.h"
 #include "server/server_fwd.h"
 #include "service_registry/detail/service_registry_internal_fwd.h"
 
@@ -282,8 +283,8 @@ void celeritas::resource_loader::process_service_registry()
 
 void celeritas::resource_loader::process_service_registry_by_duration()
 {
-    proto::request request{};
-    auto* server_register = request.mutable_service()->mutable_registry()->mutable_server_register();
+    proto::celeritas request{};
+    auto* server_register = request.mutable_celeritas_request()->mutable_service()->mutable_registry()->mutable_server_register();
     const auto server = app_config_->get_server_config();
 
     server_register->set_service_name(server.get_service_name());

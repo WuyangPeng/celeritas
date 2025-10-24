@@ -3,12 +3,12 @@
 #include "initializer/resource_loader.h"
 #include "network/session.h"
 
-celeritas::handle_parameter::handle_parameter(const header& header, protobuf_message_shared_ptr request_message, session_shared_ptr session, resource_loader_shared_ptr resource_loader)
-    : header_{ header }, request_message_{ std::move(request_message) }, session_{ std::move(session) }, resource_loader_{ resource_loader }
+celeritas::handle_parameter::handle_parameter(const header& header, protobuf_message_shared_ptr request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
+    : header_{ header }, request_message_{ std::move(request_message) }, session_{ session }, resource_loader_{ resource_loader }
 {
 }
 
-void celeritas::handle_parameter::write(const proto::response& response) const
+void celeritas::handle_parameter::write(const google::protobuf::Message& response) const
 {
     if (const auto session_shared_ptr = session_.lock();
         session_shared_ptr != nullptr)

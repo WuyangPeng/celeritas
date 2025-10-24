@@ -3,7 +3,7 @@
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "database/database_pool_manager.h"
-#include "proto/request.pb.h"
+#include "proto/celeritas.pb.h"
 #include "proto/common/common.pb.h"
 
 using namespace std::literals;
@@ -158,7 +158,7 @@ void celeritas::initializer::call_back(const message_header& message_header, buf
 {
     const auto header = get_header(message_header, buffer_guard);
 
-    const auto request = std::make_shared<proto::request>();
+    const auto request = std::make_shared<proto::celeritas>();
 
     if (!request->ParseFromArray(buffer_guard.get() + message_header.get_header_size(), message_header.get_body_size()))
     {
@@ -168,17 +168,27 @@ void celeritas::initializer::call_back(const message_header& message_header, buf
 
     switch (request->payload_case())
     {
-        case proto::request::PayloadCase::kService:
+        case proto::celeritas::PayloadCase::kCeleritasRequest:
         {
-            if (const auto& service = request->service();
-                !application_loader_->dispatch(header, service, request, session, resource_loader_))
+            if (const auto& celeritas_request = request->celeritas_request();
+                !application_loader_->dispatch(header, celeritas_request, request, session, resource_loader_))
             {
-                LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch service request.";
+                LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch celeritas request.";
             }
             break;
         }
 
-        case proto::request::PayloadCase::PAYLOAD_NOT_SET:
+        case proto::celeritas::PayloadCase::kCeleritasResponse:
+        {
+            if (const auto& celeritas_response = request->celeritas_response();
+                !application_loader_->dispatch(header, celeritas_response, request, session, resource_loader_))
+            {
+                LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch celeritas response.";
+            }
+            break;
+        }
+
+        case proto::celeritas::PayloadCase::PAYLOAD_NOT_SET:
         {
             LOG_CHANNEL(initializer_channel, error) << "消息体为空.";
             break;

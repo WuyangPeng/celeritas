@@ -1,14 +1,14 @@
 ﻿#include "discover_request_message_handler.h"
 #include "message/concrete_message_handler.tpp"
+#include "proto/celeritas.pb.h"
 #include "service_registry/service_registry.h"
-#include "proto/response.pb.h"
 
 bool celeritas::discover_request_message_handler::handle_concrete(const handle_parameter& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
 {
     const auto services = service_registry::get_services(current_message.service_name());
 
-    proto::response response{};
-    auto* discover_response = response.mutable_service()->mutable_registry()->mutable_discover();
+    proto::celeritas response{};
+    auto* discover_response = response.mutable_celeritas_response()->mutable_service()->mutable_registry()->mutable_discover();
 
     for (const auto& service : services)
     {

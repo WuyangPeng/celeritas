@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+
+import "proto/request.proto";
+import "proto/response.proto";
+
+package celeritas.proto;
+
+message celeritas {
+  oneof payload {
+    request celeritas_request = 1;
+    response celeritas_response = 2;
+  }
+}
