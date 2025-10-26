@@ -4,12 +4,32 @@
 celeritas::command_line_config::command_line_config(const int argc, char** argv, const std::string_view& server_type)
     : options_desc_{ "Allowed options" }, variables_{}, exit_requested_{ false }
 {
+    init(argc, argv, server_type);
+}
+
+bool celeritas::command_line_config::is_exit_requested() const
+{
+    return exit_requested_;
+}
+
+void celeritas::command_line_config::init(int argc, char** argv, const std::string_view& server_type)
+{
+    add_options(server_type);
+    add_program_options(argc, argv);
+    print_help();
+}
+
+void celeritas::command_line_config::add_options(const std::string_view& server_type)
+{
     options_desc_.add_options()
         ("help,h", "produce help message")
         ("config_file_path",
          boost::program_options::value<std::string>()->default_value(server_type.data()),
          "The configuration file path for the server.");
+}
 
+void celeritas::command_line_config::add_program_options(const int argc, char** argv)
+{
     try
     {
         boost::program_options::store(boost::program_options::parse_command_line(argc, argv, options_desc_), variables_);
@@ -19,17 +39,14 @@ celeritas::command_line_config::command_line_config(const int argc, char** argv,
     {
         LOG(error) << "Command line parsing error: " << error.what();
         exit_requested_ = true;
-        return;
     }
+}
 
+void celeritas::command_line_config::print_help()
+{
     if (variables_.contains("help"))
     {
         LOG(info) << options_desc_;
         exit_requested_ = true;
     }
-}
-
-bool celeritas::command_line_config::is_exit_requested() const
-{
-    return exit_requested_;
 }

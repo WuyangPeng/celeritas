@@ -17,6 +17,14 @@ namespace celeritas
         [[nodiscard]] bool is_exit_requested() const;
 
     private:
+        void init(int argc, char** argv, const std::string_view& server_type);
+
+        void add_options(const std::string_view& server_type);
+
+        void add_program_options(int argc, char** argv);
+
+        void print_help();
+
         boost::program_options::options_description options_desc_;
         boost::program_options::variables_map variables_;
         bool exit_requested_;

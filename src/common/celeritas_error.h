@@ -4,7 +4,7 @@
 
 namespace celeritas
 {
-    class celeritas_error final : public std::runtime_error
+    class celeritas_error : public std::runtime_error
     {
     public:
         using class_type = celeritas_error;
