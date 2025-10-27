@@ -1,4 +1,5 @@
 ﻿#include "discover_request_message_handler.h"
+#include "config/server_network_type.h"
 #include "message/concrete_message_handler.tpp"
 #include "proto/celeritas.pb.h"
 #include "service_registry/service_registry.h"
@@ -14,7 +15,7 @@ bool celeritas::discover_request_message_handler::handle_concrete(const handle_p
     {
         auto* end_point = discover_response->add_endpoints();
         end_point->set_host(service.get_host());
-        end_point->set_port(service.get_tcp_port());
+        end_point->set_port(service.get_port(server_network_type::tcp));
     }
 
     handle_parameter.write(response);

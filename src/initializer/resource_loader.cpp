@@ -100,44 +100,9 @@ void celeritas::resource_loader::process_service_registry_by_duration()
     server_register->set_host(server.get_host());
     for (const auto& element : server)
     {
-        switch (element.get_server_network_type())
-        {
-            case server_network_type::tcp:
-            {
-                server_register->set_tcp_port(element.get_port());
-                break;
-            }
-
-            case server_network_type::http:
-            {
-                server_register->set_http_port(element.get_port());
-                break;
-            }
-            case server_network_type::websocket:
-            {
-                server_register->set_websock_port(element.get_port());
-                break;
-            }
-            case server_network_type::tcp_ssl:
-            {
-                server_register->set_tcp_ssl_port(element.get_port());
-                break;
-            }
-            case server_network_type::https:
-            {
-                server_register->set_https_port(element.get_port());
-                break;
-            }
-            case server_network_type::websocket_secure:
-            {
-                server_register->set_websocket_secure_port(element.get_port());
-                break;
-            }
-            default:
-            {
-                break;
-            }
-        }
+        auto* port = server_register->add_port();
+        port->set_protocol(static_cast<int>(element.get_server_network_type()));
+        port->set_port(element.get_port());
     }
 
     if (write(service_registry_type.data(), header{ proto::common::empty_message_header{} }, request))

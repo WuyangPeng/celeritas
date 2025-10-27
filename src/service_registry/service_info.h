@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "protocol_port.h"
+
 #include <chrono>
 #include <string>
 
@@ -10,6 +12,7 @@ namespace celeritas
     public:
         using class_type = service_info;
         using time_point_type = std::chrono::steady_clock::time_point;
+        using protocol_port_container = std::vector<protocol_port>;
 
         service_info() noexcept = default;
 
@@ -17,12 +20,7 @@ namespace celeritas
                      std::string service_name,
                      std::string host,
                      std::string game_server_id,
-                     int tcp_port,
-                     int http_port,
-                     int websocket_port,
-                     int tcp_ssl_port,
-                     int https_port,
-                     int websocket_secure_port);
+                     protocol_port_container protocol_port);
 
         [[nodiscard]] std::string get_instance_id() const;
 
@@ -36,17 +34,7 @@ namespace celeritas
 
         void set_last_heartbeat();
 
-        [[nodiscard]] int get_tcp_port() const;
-
-        [[nodiscard]] int get_tcp_ssl_port() const;
-
-        [[nodiscard]] int get_http_port() const;
-
-        [[nodiscard]] int get_https_port() const;
-
-        [[nodiscard]] int get_websocket_port() const;
-
-        [[nodiscard]] int get_websocket_secure_port() const;
+        [[nodiscard]] int get_port(server_network_type server_network_type) const;
 
     private:
         std::string instance_id_;
@@ -54,11 +42,6 @@ namespace celeritas
         std::string host_;
         std::string game_server_id_;
         time_point_type last_heartbeat_;
-        int tcp_port_ = 0;
-        int http_port_ = 0;
-        int websocket_port_ = 0;
-        int tcp_ssl_port_ = 0;
-        int https_port_ = 0;
-        int websocket_secure_port_ = 0;
+        protocol_port_container protocol_port_;
     };
 }

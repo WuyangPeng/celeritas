@@ -28,47 +28,31 @@ namespace celeritas {
 namespace proto {
 namespace service {
 
-inline constexpr register_request::Impl_::Impl_(
+inline constexpr protocol_port::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
-        service_name_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        instance_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        game_server_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        host_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        tcp_port_{0},
-        http_port_{0},
-        websock_port_{0},
-        tcp_ssl_port_{0},
-        https_port_{0},
-        websocket_secure_port_{0} {}
+        protocol_{0},
+        port_{0} {}
 
 template <typename>
-PROTOBUF_CONSTEXPR register_request::register_request(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR protocol_port::protocol_port(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(register_request_class_data_.base()),
+    : ::google::protobuf::Message(protocol_port_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(),
 #endif  // PROTOBUF_CUSTOM_VTABLE
       _impl_(::_pbi::ConstantInitialized()) {
 }
-struct register_requestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR register_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~register_requestDefaultTypeInternal() {}
+struct protocol_portDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR protocol_portDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~protocol_portDefaultTypeInternal() {}
   union {
-    register_request _instance;
+    protocol_port _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 register_requestDefaultTypeInternal _register_request_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 protocol_portDefaultTypeInternal _protocol_port_default_instance_;
 
 inline constexpr end_point::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -125,31 +109,42 @@ struct discover_requestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 discover_requestDefaultTypeInternal _discover_request_default_instance_;
 
-inline constexpr service_registry_request::Impl_::Impl_(
+inline constexpr register_request::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : payload_{},
-        _cached_size_{0},
-        _oneof_case_{} {}
+      : _cached_size_{0},
+        port_{},
+        service_name_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        instance_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        game_server_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        host_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()) {}
 
 template <typename>
-PROTOBUF_CONSTEXPR service_registry_request::service_registry_request(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR register_request::register_request(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(service_registry_request_class_data_.base()),
+    : ::google::protobuf::Message(register_request_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(),
 #endif  // PROTOBUF_CUSTOM_VTABLE
       _impl_(::_pbi::ConstantInitialized()) {
 }
-struct service_registry_requestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR service_registry_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~service_registry_requestDefaultTypeInternal() {}
+struct register_requestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR register_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~register_requestDefaultTypeInternal() {}
   union {
-    service_registry_request _instance;
+    register_request _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 service_registry_requestDefaultTypeInternal _service_registry_request_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 register_requestDefaultTypeInternal _register_request_default_instance_;
 
 inline constexpr discover_response::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -201,6 +196,32 @@ struct service_registry_responseDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 service_registry_responseDefaultTypeInternal _service_registry_response_default_instance_;
+
+inline constexpr service_registry_request::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : payload_{},
+        _cached_size_{0},
+        _oneof_case_{} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR service_registry_request::service_registry_request(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(service_registry_request_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct service_registry_requestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR service_registry_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~service_registry_requestDefaultTypeInternal() {}
+  union {
+    service_registry_request _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 service_registry_requestDefaultTypeInternal _service_registry_request_default_instance_;
 }  // namespace service
 }  // namespace proto
 }  // namespace celeritas
@@ -212,28 +233,25 @@ const ::uint32_t
     TableStruct_proto_2fservice_2fregistry_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
         0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::protocol_port, _impl_._has_bits_),
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::protocol_port, _impl_.protocol_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::protocol_port, _impl_.port_),
+        0,
+        1,
+        0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_._has_bits_),
-        13, // hasbit index offset
+        8, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.service_name_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.instance_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.game_server_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.host_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.tcp_port_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.http_port_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.websock_port_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.tcp_ssl_port_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.https_port_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.websocket_secure_port_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::register_request, _impl_.port_),
         0,
         1,
         2,
         3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
+        ~0u,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::discover_request, _impl_._has_bits_),
         4, // hasbit index offset
@@ -261,14 +279,16 @@ const ::uint32_t
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, sizeof(::celeritas::proto::service::register_request)},
-        {23, sizeof(::celeritas::proto::service::discover_request)},
-        {28, sizeof(::celeritas::proto::service::end_point)},
-        {35, sizeof(::celeritas::proto::service::discover_response)},
-        {37, sizeof(::celeritas::proto::service::service_registry_request)},
-        {42, sizeof(::celeritas::proto::service::service_registry_response)},
+        {0, sizeof(::celeritas::proto::service::protocol_port)},
+        {7, sizeof(::celeritas::proto::service::register_request)},
+        {20, sizeof(::celeritas::proto::service::discover_request)},
+        {25, sizeof(::celeritas::proto::service::end_point)},
+        {32, sizeof(::celeritas::proto::service::discover_response)},
+        {34, sizeof(::celeritas::proto::service::service_registry_request)},
+        {39, sizeof(::celeritas::proto::service::service_registry_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
+    &::celeritas::proto::service::_protocol_port_default_instance_._instance,
     &::celeritas::proto::service::_register_request_default_instance_._instance,
     &::celeritas::proto::service::_discover_request_default_instance_._instance,
     &::celeritas::proto::service::_end_point_default_instance_._instance,
@@ -279,36 +299,35 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_proto_2fservice_2fregistry_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\034proto/service/registry.proto\022\027celerita"
-    "s.proto.service\"\347\001\n\020register_request\022\024\n\014"
-    "service_name\030\001 \001(\t\022\023\n\013instance_id\030\002 \001(\t\022"
-    "\026\n\016game_server_id\030\003 \001(\t\022\014\n\004host\030\004 \001(\t\022\020\n"
-    "\010tcp_port\030\005 \001(\005\022\021\n\thttp_port\030\006 \001(\005\022\024\n\014we"
-    "bsock_port\030\007 \001(\005\022\024\n\014tcp_ssl_port\030\010 \001(\005\022\022"
-    "\n\nhttps_port\030\t \001(\005\022\035\n\025webSocket_secure_p"
-    "ort\030\n \001(\005\"(\n\020discover_request\022\024\n\014service"
-    "_name\030\001 \001(\t\"\'\n\tend_point\022\014\n\004host\030\001 \001(\t\022\014"
-    "\n\004port\030\002 \001(\005\"J\n\021discover_response\0225\n\tend"
-    "points\030\001 \003(\0132\".celeritas.proto.service.e"
-    "nd_point\"\261\001\n\030service_registry_request\022D\n"
-    "\017server_register\030\001 \001(\0132).celeritas.proto"
-    ".service.register_requestH\000\022D\n\017server_di"
-    "scover\030\002 \001(\0132).celeritas.proto.service.d"
-    "iscover_requestH\000B\t\n\007payload\"f\n\031service_"
-    "registry_response\022>\n\010discover\030\002 \001(\0132*.ce"
-    "leritas.proto.service.discover_responseH"
-    "\000B\t\n\007payloadb\006proto3"
+    "s.proto.service\"/\n\rprotocol_port\022\020\n\010prot"
+    "ocol\030\001 \001(\005\022\014\n\004port\030\002 \001(\005\"\231\001\n\020register_re"
+    "quest\022\024\n\014service_name\030\001 \001(\t\022\023\n\013instance_"
+    "id\030\002 \001(\t\022\026\n\016game_server_id\030\003 \001(\t\022\014\n\004host"
+    "\030\004 \001(\t\0224\n\004port\030\005 \003(\0132&.celeritas.proto.s"
+    "ervice.protocol_port\"(\n\020discover_request"
+    "\022\024\n\014service_name\030\001 \001(\t\"\'\n\tend_point\022\014\n\004h"
+    "ost\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\"J\n\021discover_resp"
+    "onse\0225\n\tendpoints\030\001 \003(\0132\".celeritas.prot"
+    "o.service.end_point\"\261\001\n\030service_registry"
+    "_request\022D\n\017server_register\030\001 \001(\0132).cele"
+    "ritas.proto.service.register_requestH\000\022D"
+    "\n\017server_discover\030\002 \001(\0132).celeritas.prot"
+    "o.service.discover_requestH\000B\t\n\007payload\""
+    "f\n\031service_registry_response\022>\n\010discover"
+    "\030\002 \001(\0132*.celeritas.proto.service.discove"
+    "r_responseH\000B\t\n\007payloadb\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fservice_2fregistry_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fregistry_2eproto = {
     false,
     false,
-    740,
+    711,
     descriptor_table_protodef_proto_2fservice_2fregistry_2eproto,
     "proto/service/registry.proto",
     &descriptor_table_proto_2fservice_2fregistry_2eproto_once,
     nullptr,
     0,
-    6,
+    7,
     schemas,
     file_default_instances,
     TableStruct_proto_2fservice_2fregistry_2eproto::offsets,
@@ -318,6 +337,293 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservic
 namespace celeritas {
 namespace proto {
 namespace service {
+// ===================================================================
+
+class protocol_port::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<protocol_port>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(protocol_port, _impl_._has_bits_);
+};
+
+protocol_port::protocol_port(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, protocol_port_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.protocol_port)
+}
+protocol_port::protocol_port(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const protocol_port& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, protocol_port_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+PROTOBUF_NDEBUG_INLINE protocol_port::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void protocol_port::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, protocol_),
+           0,
+           offsetof(Impl_, port_) -
+               offsetof(Impl_, protocol_) +
+               sizeof(Impl_::port_));
+}
+protocol_port::~protocol_port() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.service.protocol_port)
+  SharedDtor(*this);
+}
+inline void protocol_port::SharedDtor(MessageLite& self) {
+  protocol_port& this_ = static_cast<protocol_port&>(self);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL protocol_port::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) protocol_port(arena);
+}
+constexpr auto protocol_port::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(protocol_port),
+                                            alignof(protocol_port));
+}
+constexpr auto protocol_port::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_protocol_port_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &protocol_port::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<protocol_port>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &protocol_port::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<protocol_port>(), &protocol_port::ByteSizeLong,
+              &protocol_port::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(protocol_port, _impl_._cached_size_),
+          false,
+      },
+      &protocol_port::kDescriptorMethods,
+      &descriptor_table_proto_2fservice_2fregistry_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull protocol_port_class_data_ =
+        protocol_port::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+protocol_port::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&protocol_port_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(protocol_port_class_data_.tc_table);
+  return protocol_port_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2>
+protocol_port::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(protocol_port, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    protocol_port_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::service::protocol_port>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int32 port = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(protocol_port, _impl_.port_), 1>(),
+     {16, 1, 0, PROTOBUF_FIELD_OFFSET(protocol_port, _impl_.port_)}},
+    // int32 protocol = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(protocol_port, _impl_.protocol_), 0>(),
+     {8, 0, 0, PROTOBUF_FIELD_OFFSET(protocol_port, _impl_.protocol_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 protocol = 1;
+    {PROTOBUF_FIELD_OFFSET(protocol_port, _impl_.protocol_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 port = 2;
+    {PROTOBUF_FIELD_OFFSET(protocol_port, _impl_.port_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void protocol_port::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.service.protocol_port)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003U) != 0) {
+    ::memset(&_impl_.protocol_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.port_) -
+        reinterpret_cast<char*>(&_impl_.protocol_)) + sizeof(_impl_.port_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL protocol_port::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const protocol_port& this_ = static_cast<const protocol_port&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL protocol_port::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const protocol_port& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.service.protocol_port)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // int32 protocol = 1;
+  if ((this_._impl_._has_bits_[0] & 0x00000001U) != 0) {
+    if (this_._internal_protocol() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<1>(
+              stream, this_._internal_protocol(), target);
+    }
+  }
+
+  // int32 port = 2;
+  if ((this_._impl_._has_bits_[0] & 0x00000002U) != 0) {
+    if (this_._internal_port() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
+              stream, this_._internal_port(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.service.protocol_port)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t protocol_port::ByteSizeLong(const MessageLite& base) {
+  const protocol_port& this_ = static_cast<const protocol_port&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t protocol_port::ByteSizeLong() const {
+  const protocol_port& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.service.protocol_port)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003U) != 0) {
+    // int32 protocol = 1;
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      if (this_._internal_protocol() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_protocol());
+      }
+    }
+    // int32 port = 2;
+    if ((cached_has_bits & 0x00000002U) != 0) {
+      if (this_._internal_port() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_port());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void protocol_port::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<protocol_port*>(&to_msg);
+  auto& from = static_cast<const protocol_port&>(from_msg);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    from.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.service.protocol_port)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003U) != 0) {
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      if (from._internal_protocol() != 0) {
+        _this->_impl_.protocol_ = from._impl_.protocol_;
+      }
+    }
+    if ((cached_has_bits & 0x00000002U) != 0) {
+      if (from._internal_port() != 0) {
+        _this->_impl_.port_ = from._impl_.port_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void protocol_port::CopyFrom(const protocol_port& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.service.protocol_port)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void protocol_port::InternalSwap(protocol_port* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(protocol_port, _impl_.port_)
+      + sizeof(protocol_port::_impl_.port_)
+      - PROTOBUF_FIELD_OFFSET(protocol_port, _impl_.protocol_)>(
+          reinterpret_cast<char*>(&_impl_.protocol_),
+          reinterpret_cast<char*>(&other->_impl_.protocol_));
+}
+
+::google::protobuf::Metadata protocol_port::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
 // ===================================================================
 
 class register_request::_Internal {
@@ -343,6 +649,7 @@ PROTOBUF_NDEBUG_INLINE register_request::Impl_::Impl_(
     [[maybe_unused]] const ::celeritas::proto::service::register_request& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
+        port_{visibility, arena, from.port_},
         service_name_(arena, from.service_name_),
         instance_id_(arena, from.instance_id_),
         game_server_id_(arena, from.game_server_id_),
@@ -361,13 +668,6 @@ register_request::register_request(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  ::memcpy(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, tcp_port_),
-           reinterpret_cast<const char *>(&from._impl_) +
-               offsetof(Impl_, tcp_port_),
-           offsetof(Impl_, websocket_secure_port_) -
-               offsetof(Impl_, tcp_port_) +
-               sizeof(Impl_::websocket_secure_port_));
 
   // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.register_request)
 }
@@ -375,6 +675,7 @@ PROTOBUF_NDEBUG_INLINE register_request::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : _cached_size_{0},
+        port_{visibility, arena},
         service_name_(arena),
         instance_id_(arena),
         game_server_id_(arena),
@@ -382,12 +683,6 @@ PROTOBUF_NDEBUG_INLINE register_request::Impl_::Impl_(
 
 inline void register_request::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, tcp_port_),
-           0,
-           offsetof(Impl_, websocket_secure_port_) -
-               offsetof(Impl_, tcp_port_) +
-               sizeof(Impl_::websocket_secure_port_));
 }
 register_request::~register_request() {
   // @@protoc_insertion_point(destructor:celeritas.proto.service.register_request)
@@ -413,8 +708,20 @@ inline void* PROTOBUF_NONNULL register_request::PlacementNew_(
   return ::new (mem) register_request(arena);
 }
 constexpr auto register_request::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(register_request),
-                                            alignof(register_request));
+  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(register_request, _impl_.port_) +
+          decltype(register_request::_impl_.port_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+  });
+  if (arena_bits.has_value()) {
+    return ::google::protobuf::internal::MessageCreator::CopyInit(
+        sizeof(register_request), alignof(register_request), *arena_bits);
+  } else {
+    return ::google::protobuf::internal::MessageCreator(&register_request::PlacementNew_,
+                                 sizeof(register_request),
+                                 alignof(register_request));
+  }
 }
 constexpr auto register_request::InternalGenerateClassData_() {
   return ::google::protobuf::internal::ClassDataFull{
@@ -450,18 +757,18 @@ register_request::GetClassData() const {
   return register_request_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<4, 10, 0, 98, 2>
+const ::_pbi::TcParseTable<3, 5, 1, 90, 2>
 register_request::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(register_request, _impl_._has_bits_),
     0, // no _extensions_
-    10, 120,  // max_field_number, fast_idx_mask
+    5, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294966272,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    10,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    5,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     register_request_class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
@@ -482,27 +789,9 @@ register_request::_table_ = {
     // string host = 4;
     {::_pbi::TcParser::FastUS1,
      {34, 3, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.host_)}},
-    // int32 tcp_port = 5;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(register_request, _impl_.tcp_port_), 4>(),
-     {40, 4, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.tcp_port_)}},
-    // int32 http_port = 6;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(register_request, _impl_.http_port_), 5>(),
-     {48, 5, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.http_port_)}},
-    // int32 websock_port = 7;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(register_request, _impl_.websock_port_), 6>(),
-     {56, 6, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.websock_port_)}},
-    // int32 tcp_ssl_port = 8;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(register_request, _impl_.tcp_ssl_port_), 7>(),
-     {64, 7, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.tcp_ssl_port_)}},
-    // int32 https_port = 9;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(register_request, _impl_.https_port_), 8>(),
-     {72, 8, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.https_port_)}},
-    // int32 webSocket_secure_port = 10;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(register_request, _impl_.websocket_secure_port_), 9>(),
-     {80, 9, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.websocket_secure_port_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
+    // repeated .celeritas.proto.service.protocol_port port = 5;
+    {::_pbi::TcParser::FastMtR1,
+     {42, 63, 0, PROTOBUF_FIELD_OFFSET(register_request, _impl_.port_)}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
@@ -516,22 +805,14 @@ register_request::_table_ = {
     {PROTOBUF_FIELD_OFFSET(register_request, _impl_.game_server_id_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // string host = 4;
     {PROTOBUF_FIELD_OFFSET(register_request, _impl_.host_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // int32 tcp_port = 5;
-    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.tcp_port_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int32 http_port = 6;
-    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.http_port_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int32 websock_port = 7;
-    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.websock_port_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int32 tcp_ssl_port = 8;
-    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.tcp_ssl_port_), _Internal::kHasBitsOffset + 7, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int32 https_port = 9;
-    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.https_port_), _Internal::kHasBitsOffset + 8, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int32 webSocket_secure_port = 10;
-    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.websocket_secure_port_), _Internal::kHasBitsOffset + 9, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // repeated .celeritas.proto.service.protocol_port port = 5;
+    {PROTOBUF_FIELD_OFFSET(register_request, _impl_.port_), -1, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
-  // no aux_entries
   {{
-    "\50\14\13\16\4\0\0\0\0\0\0\0\0\0\0\0"
+      {::_pbi::TcParser::GetTable<::celeritas::proto::service::protocol_port>()},
+  }},
+  {{
+    "\50\14\13\16\4\0\0\0"
     "celeritas.proto.service.register_request"
     "service_name"
     "instance_id"
@@ -546,6 +827,7 @@ PROTOBUF_NOINLINE void register_request::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  _impl_.port_.Clear();
   cached_has_bits = _impl_._has_bits_[0];
   if ((cached_has_bits & 0x0000000fU) != 0) {
     if ((cached_has_bits & 0x00000001U) != 0) {
@@ -560,16 +842,6 @@ PROTOBUF_NOINLINE void register_request::Clear() {
     if ((cached_has_bits & 0x00000008U) != 0) {
       _impl_.host_.ClearNonDefaultToEmpty();
     }
-  }
-  if ((cached_has_bits & 0x000000f0U) != 0) {
-    ::memset(&_impl_.tcp_port_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.tcp_ssl_port_) -
-        reinterpret_cast<char*>(&_impl_.tcp_port_)) + sizeof(_impl_.tcp_ssl_port_));
-  }
-  if ((cached_has_bits & 0x00000300U) != 0) {
-    ::memset(&_impl_.https_port_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.websocket_secure_port_) -
-        reinterpret_cast<char*>(&_impl_.https_port_)) + sizeof(_impl_.websocket_secure_port_));
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -633,58 +905,15 @@ PROTOBUF_NOINLINE void register_request::Clear() {
     }
   }
 
-  // int32 tcp_port = 5;
-  if ((this_._impl_._has_bits_[0] & 0x00000010U) != 0) {
-    if (this_._internal_tcp_port() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<5>(
-              stream, this_._internal_tcp_port(), target);
-    }
-  }
-
-  // int32 http_port = 6;
-  if ((this_._impl_._has_bits_[0] & 0x00000020U) != 0) {
-    if (this_._internal_http_port() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<6>(
-              stream, this_._internal_http_port(), target);
-    }
-  }
-
-  // int32 websock_port = 7;
-  if ((this_._impl_._has_bits_[0] & 0x00000040U) != 0) {
-    if (this_._internal_websock_port() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<7>(
-              stream, this_._internal_websock_port(), target);
-    }
-  }
-
-  // int32 tcp_ssl_port = 8;
-  if ((this_._impl_._has_bits_[0] & 0x00000080U) != 0) {
-    if (this_._internal_tcp_ssl_port() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<8>(
-              stream, this_._internal_tcp_ssl_port(), target);
-    }
-  }
-
-  // int32 https_port = 9;
-  if ((this_._impl_._has_bits_[0] & 0x00000100U) != 0) {
-    if (this_._internal_https_port() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<9>(
-              stream, this_._internal_https_port(), target);
-    }
-  }
-
-  // int32 webSocket_secure_port = 10;
-  if ((this_._impl_._has_bits_[0] & 0x00000200U) != 0) {
-    if (this_._internal_websocket_secure_port() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<10>(
-              stream, this_._internal_websocket_secure_port(), target);
-    }
+  // repeated .celeritas.proto.service.protocol_port port = 5;
+  for (unsigned i = 0, n = static_cast<unsigned>(
+                           this_._internal_port_size());
+       i < n; i++) {
+    const auto& repfield = this_._internal_port().Get(i);
+    target =
+        ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+            5, repfield, repfield.GetCachedSize(),
+            target, stream);
   }
 
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -711,8 +940,17 @@ PROTOBUF_NOINLINE void register_request::Clear() {
   (void)cached_has_bits;
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+   {
+    // repeated .celeritas.proto.service.protocol_port port = 5;
+    {
+      total_size += 1UL * this_._internal_port_size();
+      for (const auto& msg : this_._internal_port()) {
+        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
+  }
   cached_has_bits = this_._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x000000ffU) != 0) {
+  if ((cached_has_bits & 0x0000000fU) != 0) {
     // string service_name = 1;
     if ((cached_has_bits & 0x00000001U) != 0) {
       if (!this_._internal_service_name().empty()) {
@@ -741,50 +979,6 @@ PROTOBUF_NOINLINE void register_request::Clear() {
                                         this_._internal_host());
       }
     }
-    // int32 tcp_port = 5;
-    if ((cached_has_bits & 0x00000010U) != 0) {
-      if (this_._internal_tcp_port() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_tcp_port());
-      }
-    }
-    // int32 http_port = 6;
-    if ((cached_has_bits & 0x00000020U) != 0) {
-      if (this_._internal_http_port() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_http_port());
-      }
-    }
-    // int32 websock_port = 7;
-    if ((cached_has_bits & 0x00000040U) != 0) {
-      if (this_._internal_websock_port() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_websock_port());
-      }
-    }
-    // int32 tcp_ssl_port = 8;
-    if ((cached_has_bits & 0x00000080U) != 0) {
-      if (this_._internal_tcp_ssl_port() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_tcp_ssl_port());
-      }
-    }
-  }
-  if ((cached_has_bits & 0x00000300U) != 0) {
-    // int32 https_port = 9;
-    if ((cached_has_bits & 0x00000100U) != 0) {
-      if (this_._internal_https_port() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_https_port());
-      }
-    }
-    // int32 webSocket_secure_port = 10;
-    if ((cached_has_bits & 0x00000200U) != 0) {
-      if (this_._internal_websocket_secure_port() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-            this_._internal_websocket_secure_port());
-      }
-    }
   }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
                                              &this_._impl_._cached_size_);
@@ -801,8 +995,10 @@ void register_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  _this->_internal_mutable_port()->MergeFrom(
+      from._internal_port());
   cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x000000ffU) != 0) {
+  if ((cached_has_bits & 0x0000000fU) != 0) {
     if ((cached_has_bits & 0x00000001U) != 0) {
       if (!from._internal_service_name().empty()) {
         _this->_internal_set_service_name(from._internal_service_name());
@@ -839,38 +1035,6 @@ void register_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
         }
       }
     }
-    if ((cached_has_bits & 0x00000010U) != 0) {
-      if (from._internal_tcp_port() != 0) {
-        _this->_impl_.tcp_port_ = from._impl_.tcp_port_;
-      }
-    }
-    if ((cached_has_bits & 0x00000020U) != 0) {
-      if (from._internal_http_port() != 0) {
-        _this->_impl_.http_port_ = from._impl_.http_port_;
-      }
-    }
-    if ((cached_has_bits & 0x00000040U) != 0) {
-      if (from._internal_websock_port() != 0) {
-        _this->_impl_.websock_port_ = from._impl_.websock_port_;
-      }
-    }
-    if ((cached_has_bits & 0x00000080U) != 0) {
-      if (from._internal_tcp_ssl_port() != 0) {
-        _this->_impl_.tcp_ssl_port_ = from._impl_.tcp_ssl_port_;
-      }
-    }
-  }
-  if ((cached_has_bits & 0x00000300U) != 0) {
-    if ((cached_has_bits & 0x00000100U) != 0) {
-      if (from._internal_https_port() != 0) {
-        _this->_impl_.https_port_ = from._impl_.https_port_;
-      }
-    }
-    if ((cached_has_bits & 0x00000200U) != 0) {
-      if (from._internal_websocket_secure_port() != 0) {
-        _this->_impl_.websocket_secure_port_ = from._impl_.websocket_secure_port_;
-      }
-    }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
@@ -890,16 +1054,11 @@ void register_request::InternalSwap(register_request* PROTOBUF_RESTRICT PROTOBUF
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  _impl_.port_.InternalSwap(&other->_impl_.port_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.service_name_, &other->_impl_.service_name_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.instance_id_, &other->_impl_.instance_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.game_server_id_, &other->_impl_.game_server_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.host_, &other->_impl_.host_, arena);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(register_request, _impl_.websocket_secure_port_)
-      + sizeof(register_request::_impl_.websocket_secure_port_)
-      - PROTOBUF_FIELD_OFFSET(register_request, _impl_.tcp_port_)>(
-          reinterpret_cast<char*>(&_impl_.tcp_port_),
-          reinterpret_cast<char*>(&other->_impl_.tcp_port_));
 }
 
 ::google::protobuf::Metadata register_request::GetMetadata() const {
