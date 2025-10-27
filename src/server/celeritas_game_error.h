@@ -5,7 +5,7 @@
 
 namespace celeritas
 {
-    class celeritas_game_error : public celeritas_error
+    class celeritas_game_error final : public celeritas_error
     {
     public:
         using class_type = celeritas_game_error;

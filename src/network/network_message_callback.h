@@ -3,6 +3,8 @@
 #include "common/buffer_guard.h"
 #include "network/network_fwd.h"
 
+#include <memory>
+
 namespace celeritas
 {
     class network_message_callback : public std::enable_shared_from_this<network_message_callback>

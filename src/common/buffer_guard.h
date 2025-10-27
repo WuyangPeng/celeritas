@@ -37,6 +37,6 @@ namespace celeritas
 
     private:
         buffer_pool_data buffer_data_;
-        size_t effective_size_;
+        size_t effective_size_ = 0;
     };
 }

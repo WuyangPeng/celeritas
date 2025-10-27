@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include <memory>
+#include <vector>
 
 namespace celeritas
 {
@@ -9,25 +9,14 @@ namespace celeritas
     {
     public:
         using class_type = buffer_pool_data;
-        using data_unique_ptr = std::unique_ptr<char[]>;
 
         buffer_pool_data() noexcept = default;
 
-        buffer_pool_data(data_unique_ptr data, size_t size);
+        explicit buffer_pool_data(size_t size);
 
-        ~buffer_pool_data() noexcept = default;
+        [[nodiscard]] char* data();
 
-        buffer_pool_data(const buffer_pool_data& rhs) = delete;
-
-        buffer_pool_data& operator=(const buffer_pool_data& rhs) = delete;
-
-        buffer_pool_data(buffer_pool_data&& rhs) noexcept;
-
-        buffer_pool_data& operator=(buffer_pool_data&& rhs) noexcept;
-
-        [[nodiscard]] char* data() noexcept;
-
-        [[nodiscard]] const char* data() const noexcept;
+        [[nodiscard]] const char* data() const;
 
         [[nodiscard]] size_t size() const noexcept;
 
@@ -36,7 +25,8 @@ namespace celeritas
         [[nodiscard]] char* get(size_t offset);
 
     private:
-        data_unique_ptr data_;
-        size_t size_{};
+        using data_container = std::vector<char>;
+
+        data_container data_;
     };
 }

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "buffer_pool_data.h"
-#include "detail/buffer_pool_impl.h"
+#include "common/detail/common_internal_fwd.h"
 
 namespace celeritas
 {

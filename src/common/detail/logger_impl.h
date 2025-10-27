@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "boost/filesystem/path.hpp"
+
 #include <boost/log/sinks/sync_frontend.hpp>
 #include <boost/log/sinks/text_ostream_backend.hpp>
 #include <boost/log/sources/severity_logger.hpp>
@@ -48,10 +50,15 @@ namespace celeritas
         using loggers_type = std::unordered_map<std::string, severity_logger_type>;
         using console_channels_type = std::unordered_set<std::string>;
         using console_sink_type_shared_ptr = boost::shared_ptr<console_sink_type>;
+        using filesystem_path_type = boost::filesystem::path;
 
         void register_logger(const std::string& channel_name);
 
         void update_console_filter();
+
+        void update_console_filter(const std::string& channel_name, bool also_to_console);
+
+        [[nodiscard]] static filesystem_path_type get_full_path_pattern(const std::string& log_file_name);
 
         loggers_type loggers_;
         console_channels_type console_channels_;

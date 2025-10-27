@@ -25,7 +25,7 @@ namespace celeritas
 
         void print_help();
 
-        boost::program_options::options_description options_desc_;
+        boost::program_options::options_description options_description_;
         boost::program_options::variables_map variables_;
         bool exit_requested_;
     };

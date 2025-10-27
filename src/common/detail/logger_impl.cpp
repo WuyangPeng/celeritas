@@ -62,56 +62,31 @@ void celeritas::logger_impl::init_console(const severity_level_type console_leve
     update_console_filter();
 }
 
-void celeritas::logger_impl::init_file(const std::string& channel_name, const std::string& log_file_name, severity_level_type file_level, int rotation_size, const bool also_to_console)
+void celeritas::logger_impl::init_file(const std::string& channel_name, const std::string& log_file_name, severity_level_type file_level, const int rotation_size, const bool also_to_console)
 {
-    std::lock_guard lock{ mutex_ };
-
-    register_logger(channel_name);
-
-    const auto current_path = boost::filesystem::current_path();
-
-    const auto target_path = current_path / logger_path;
-
-    if (!boost::filesystem::exists(target_path))
-    {
-        boost::filesystem::create_directories(target_path);
-    }
-
-    const auto file_pattern_part = log_file_name + "_%Y%m%d_%N" + logger_extension.data();
-
-    const auto full_path_pattern = target_path / file_pattern_part;
+    const auto full_path_pattern = get_full_path_pattern(log_file_name);
 
     // 每天 00:00:00 轮换
     auto daily_rotation = boost::log::sinks::file::rotation_at_time_point(0, 0, 0);
 
+    std::lock_guard lock{ mutex_ };
+
+    register_logger(channel_name);
+
     // 添加文件日志输出
-    const auto file_sink = boost::log::add_file_log(
-        boost::log::keywords::file_name = full_path_pattern.string(),
-        boost::log::keywords::auto_flush = true,
-        boost::log::keywords::rotation_size = rotation_size * 1024 * 1024,
-        boost::log::keywords::time_based_rotation = daily_rotation,
-        boost::log::keywords::open_mode = std::ios::app,
-        boost::log::keywords::scan_method = boost::log::sinks::file::scan_method::scan_matching,
-        boost::log::keywords::filter = boost::log::expressions::has_attr(channel.data()) &&
-                                       boost::log::expressions::attr<std::string>(channel.data()) == channel_name &&
-                                       boost::log::trivial::severity >= file_level);
+    boost::log::add_file_log(
+            boost::log::keywords::file_name = full_path_pattern.string(),
+            boost::log::keywords::auto_flush = true,
+            boost::log::keywords::rotation_size = rotation_size * 1024 * 1024,
+            boost::log::keywords::time_based_rotation = daily_rotation,
+            boost::log::keywords::open_mode = std::ios::app,
+            boost::log::keywords::scan_method = boost::log::sinks::file::scan_method::scan_matching,
+            boost::log::keywords::filter = boost::log::expressions::has_attr(channel.data()) &&
+                                           boost::log::expressions::attr<std::string>(channel.data()) == channel_name &&
+                                           boost::log::trivial::severity >= file_level)
+        ->set_formatter(get_formatter());
 
-    file_sink->set_formatter(get_formatter());
-
-    if (also_to_console)
-    {
-        if (console_channels_.insert(channel_name).second)
-        {
-            update_console_filter();
-        }
-    }
-    else
-    {
-        if (0 < console_channels_.erase(channel_name))
-        {
-            update_console_filter();
-        }
-    }
+    update_console_filter(channel_name, also_to_console);
 }
 
 celeritas::logger_impl::severity_logger_type& celeritas::logger_impl::get(const std::string_view& channel_name)
@@ -126,7 +101,7 @@ celeritas::logger_impl::severity_logger_type& celeritas::logger_impl::get(const 
         return unregistered_logger_;
     }
 
-    std::shared_lock lock{ mutex_ };
+    std::lock_guard lock{ mutex_ };
 
     const auto iter = loggers_.find(channel_name.data());
     if (iter == loggers_.end())
@@ -172,4 +147,38 @@ void celeritas::logger_impl::update_console_filter()
     console_filter = console_filter && (channel_filter || !boost::log::expressions::has_attr(channel.data()));
 
     console_sink_->set_filter(console_filter);
+}
+
+void celeritas::logger_impl::update_console_filter(const std::string& channel_name, const bool also_to_console)
+{
+    if (also_to_console)
+    {
+        if (console_channels_.insert(channel_name).second)
+        {
+            update_console_filter();
+        }
+    }
+    else
+    {
+        if (0 < console_channels_.erase(channel_name))
+        {
+            update_console_filter();
+        }
+    }
+}
+
+celeritas::logger_impl::filesystem_path_type celeritas::logger_impl::get_full_path_pattern(const std::string& log_file_name)
+{
+    const auto current_path = boost::filesystem::current_path();
+
+    const auto target_path = current_path / logger_path;
+
+    if (!boost::filesystem::exists(target_path))
+    {
+        boost::filesystem::create_directories(target_path);
+    }
+
+    const auto file_pattern_part = log_file_name + "_%Y%m%d_%N" + logger_extension.data();
+
+    return target_path / file_pattern_part;
 }

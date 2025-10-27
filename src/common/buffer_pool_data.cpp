@@ -1,40 +1,26 @@
 ﻿#include "buffer_pool_data.h"
+#include "celeritas_error.h"
 
-#include <utility>
-
-celeritas::buffer_pool_data::buffer_pool_data(data_unique_ptr data, size_t size)
-    : data_{ std::move(data) }, size_{ size }
+celeritas::buffer_pool_data::buffer_pool_data(size_t size)
+    : data_(size)
 {
 }
 
-celeritas::buffer_pool_data::buffer_pool_data(buffer_pool_data&& rhs) noexcept
-    : data_{ std::move(rhs.data_) }, size_{ rhs.size_ }
-{
-}
-
-celeritas::buffer_pool_data& celeritas::buffer_pool_data::operator=(buffer_pool_data&& rhs) noexcept
-{
-    data_ = std::move(rhs.data_);
-    size_ = rhs.size_;
-
-    return *this;
-}
-
-char* celeritas::buffer_pool_data::data() noexcept
+char* celeritas::buffer_pool_data::data()
 {
     if (is_effective())
     {
-        return data_.get();
+        return data_.data();
     }
 
-    return nullptr;
+    throw celeritas_error("unsupported buffer pool data size");
 }
 
-const char* celeritas::buffer_pool_data::data() const noexcept
+const char* celeritas::buffer_pool_data::data() const
 {
     if (is_effective())
     {
-        return data_.get();
+        return data_.data();
     }
 
     return nullptr;
@@ -42,20 +28,20 @@ const char* celeritas::buffer_pool_data::data() const noexcept
 
 size_t celeritas::buffer_pool_data::size() const noexcept
 {
-    return size_;
+    return data_.size();
 }
 
 bool celeritas::buffer_pool_data::is_effective() const noexcept
 {
-    return data_ != nullptr;
+    return !data_.empty();
 }
 
-char* celeritas::buffer_pool_data::get(size_t offset)
+char* celeritas::buffer_pool_data::get(const size_t offset)
 {
-    if (is_effective())
+    if (is_effective() && offset < data_.size())
     {
-        return data_.get() + offset;
+        return &data_.at(offset);
     }
 
-    return nullptr;
+    throw celeritas_error("unsupported buffer pool data offset");
 }

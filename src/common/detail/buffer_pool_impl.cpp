@@ -1,7 +1,7 @@
 ﻿#include "buffer_pool_impl.h"
 #include "common_internal_fwd.h"
 
-celeritas::buffer_pool_data celeritas::buffer_pool_impl::acquire(size_t required_size)
+celeritas::buffer_pool_data celeritas::buffer_pool_impl::acquire(const size_t required_size)
 {
     // 尝试从池中获取（加锁）
     if (auto buffer = try_acquire_from_pool(required_size);
@@ -11,7 +11,7 @@ celeritas::buffer_pool_data celeritas::buffer_pool_impl::acquire(size_t required
     }
 
     // 如果池中没有合适的，则创建新的
-    return buffer_pool_data{ std::make_unique<char[]>(required_size), required_size };
+    return buffer_pool_data{ required_size };
 }
 
 void celeritas::buffer_pool_impl::release(buffer_pool_data buffer)
