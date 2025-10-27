@@ -22,7 +22,7 @@ namespace celeritas
                                         int port,
                                         const std::string_view& user,
                                         const std::string_view& password,
-                                        const std::string_view& url,
+                                        const std::string_view& uri,
                                         const std::string_view& db_name,
                                         io_context_type& io_context);
 

@@ -104,7 +104,7 @@ celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database
 
 celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_database_session::async_query(const std::string_view& sql)
 {
-    std::optional<boost::system::error_code> retry_error;
+    std::optional<boost::system::error_code> retry_error{};
 
     try
     {

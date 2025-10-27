@@ -30,6 +30,8 @@ namespace celeritas
 
         void start_cleanup_timer(io_context_type& io_context);
 
+        void stop_cleanup_timer();
+
         virtual void cleanup_database_by_duration() = 0;
 
     private:

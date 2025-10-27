@@ -73,6 +73,11 @@ void celeritas::database_pool_manager::release_pool()
 {
     std::lock_guard lock{ mutex_ };
 
+    for (const auto& pool : pools_ | std::views::values)
+    {
+        pool->stop_cleanup_timer();
+    }
+
     pools_.clear();
 }
 
@@ -86,9 +91,9 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
                                                                                                                const int min_connections,
                                                                                                                const int max_connections)
 {
-    std::lock_guard lock{ mutex_ };
-
     auto pool = std::make_shared<connection_pool_base<mysql_database_session> >(io_context, host, port, user, password, db_name, min_connections, max_connections);
+
+    std::lock_guard lock{ mutex_ };
 
     pools_.insert({ name, pool });
 
@@ -105,16 +110,13 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
                                                                                                                const int min_connections,
                                                                                                                const int max_connections)
 {
-    if (!mongo_instance_)
-    {
-        mongo_instance_ = std::make_unique<mongocxx::instance>();
-    }
+    static auto mongo_instance = std::make_unique<mongocxx::instance>();
 
     const auto url = "mongodb://" + user + ":" + password + "@" + host + ":" + std::to_string(port) + "/" + db_name;
 
-    std::lock_guard lock{ mutex_ };
-
     auto pool = std::make_shared<connection_pool_base<mongo_database_session> >(io_context, url, db_name, min_connections, max_connections);
+
+    std::lock_guard lock{ mutex_ };
 
     pools_.insert({ name, pool });
 
@@ -131,9 +133,9 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
                                                                                                                const int min_connections,
                                                                                                                const int max_connections)
 {
-    std::lock_guard lock{ mutex_ };
-
     auto pool = std::make_shared<connection_pool_base<redis_database_session> >(io_context, host, port, user, password, min_connections, max_connections);
+
+    std::lock_guard lock{ mutex_ };
 
     pools_.insert({ name, pool });
 

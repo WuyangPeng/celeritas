@@ -17,7 +17,7 @@ namespace celeritas
 
         timer_base(io_context_type& io_context, duration_type interval);
 
-        virtual ~timer_base() noexcept = default;
+        virtual ~timer_base() noexcept;
 
         timer_base(const timer_base& rhs) = delete;
 

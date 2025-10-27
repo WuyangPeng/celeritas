@@ -6,6 +6,11 @@ celeritas::timer_base::timer_base(io_context_type& io_context, const duration_ty
 {
 }
 
+celeritas::timer_base::~timer_base() noexcept
+{
+    stop();
+}
+
 void celeritas::timer_base::on_timer_elapsed()
 {
     try
