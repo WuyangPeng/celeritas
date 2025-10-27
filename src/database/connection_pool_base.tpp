@@ -198,11 +198,11 @@ celeritas::connection_pool_base<SessionType>::session_awaitable_type celeritas::
             std::lock_guard lock{ mutex_ };
 
             waiters_.emplace_back(
-                [handler = std::move(handler)](session_shared_ptr session) mutable {
+                [handler = std::move(handler)](session_shared_ptr session) {
                     // 当会话被释放时，使用 dispatch 确保 handler 在其原始的执行器上运行，
                     // 这对于协程的正确恢复至关重要。
                     boost::asio::dispatch(handler.get_executor(),
-                                          [handler = std::move(handler), session = std::move(session)]() mutable {
+                                          [handler = std::move(handler), session = std::move(session)]() {
                                               handler(session);
                                           });
                 });
