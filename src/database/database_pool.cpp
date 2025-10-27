@@ -2,7 +2,7 @@
 
 void celeritas::database_pool::start_cleanup_timer(io_context_type& io_context)
 {
-    cleanup_database_session_timer_ = std::make_unique<cleanup_database_session_timer>(io_context, cleanup_database_timer, shared_from_this());
+    cleanup_database_session_timer_ = std::make_shared<cleanup_database_session_timer>(io_context, cleanup_database_timer, shared_from_this());
 
     cleanup_database_session_timer_->start();
 }

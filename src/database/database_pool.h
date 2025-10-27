@@ -35,8 +35,8 @@ namespace celeritas
         virtual void cleanup_database_by_duration() = 0;
 
     private:
-        using cleanup_database_session_timer_unique_ptr = std::unique_ptr<cleanup_database_session_timer>;
+        using cleanup_database_session_timer_shared_ptr = std::shared_ptr<cleanup_database_session_timer>;
 
-        cleanup_database_session_timer_unique_ptr cleanup_database_session_timer_;
+        cleanup_database_session_timer_shared_ptr cleanup_database_session_timer_;
     };
 }
