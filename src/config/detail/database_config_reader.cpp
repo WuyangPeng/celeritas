@@ -23,7 +23,7 @@ celeritas::database_config_reader::database_config_container celeritas::database
     return container;
 }
 
-celeritas::database_config celeritas::database_config_reader::get_database_node(const boost::property_tree::basic_ptree<std::string, std::string>& node)
+celeritas::database_config celeritas::database_config_reader::get_database_node(const node_type& node)
 {
     // 必需配置项
     const auto name = node.get<std::string>("<xmlattr>.name");
@@ -32,6 +32,7 @@ celeritas::database_config celeritas::database_config_reader::get_database_node(
     const auto host = node.get<std::string>("host");
     const auto port = node.get<int>("port");
 
+    // 可选配置项
     const auto user = node.get<std::string>("user", "");
     const auto password = node.get<std::string>("password", "");
     const auto db_name = node.get<std::string>("db_name", "");
@@ -39,7 +40,5 @@ celeritas::database_config celeritas::database_config_reader::get_database_node(
     const auto max_connections = node.get<int>("max_connections", default_database_max_connections);
     const auto timeout_seconds = node.get<int>("timeout_seconds", default_database_timeout_seconds);
 
-    database_config database{ name, database_type, host, port, user, password, db_name, min_connections, max_connections, timeout_seconds };
-
-    return database;
+    return database_config{ name, database_type, host, port, user, password, db_name, min_connections, max_connections, timeout_seconds };
 }

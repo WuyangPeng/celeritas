@@ -51,7 +51,7 @@ void celeritas::logger_config_reader::load_config()
     }
 }
 
-void celeritas::logger_config_reader::load_node(const boost::property_tree::basic_ptree<std::string, std::string>& node)
+void celeritas::logger_config_reader::load_node(const node_type& node)
 {
     // 必需配置项
     const auto name = node.get<std::string>("<xmlattr>.name");
@@ -60,6 +60,7 @@ void celeritas::logger_config_reader::load_node(const boost::property_tree::basi
     const auto channel_name = node.get<std::string>("channel_name");
     const auto log_file_name = node.get<std::string>("log_file_name");
 
+    // 可选配置项
     const auto console_enabled = node.get<bool>("console_enabled", true);
     const auto rotation_size = node.get<int>("rotation_size", default_logger_rotation_size);
 

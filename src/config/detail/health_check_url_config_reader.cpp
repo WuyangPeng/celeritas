@@ -15,10 +15,9 @@ celeritas::health_check_url_config celeritas::health_check_url_config_reader::lo
     // 必需配置项
     const auto url = node.get<std::string>("url");
 
+    // 可选配置项
     const auto interval = node.get<int>("interval", default_health_check_interval);
     const auto timeout = node.get<int>("timeout", default_health_check_timeout);
 
-    health_check_url_config health_check_url_config{ url, interval, timeout };
-
-    return health_check_url_config;
+    return health_check_url_config{ url, interval, timeout };
 }

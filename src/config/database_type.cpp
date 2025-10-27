@@ -11,8 +11,8 @@ celeritas::database_type celeritas::get_database_type(const std::string& databas
                                              { "mongo", database_type::mongo },
                                              { "redis", database_type::redis }, };
 
-    const auto iter = database.find(database_name);
-    if (iter != database.end())
+    if (const auto iter = database.find(database_name);
+        iter != database.end())
     {
         return iter->second;
     }

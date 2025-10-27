@@ -1,6 +1,6 @@
 ﻿#include "service_registry_config.h"
 
-celeritas::service_registry_config::service_registry_config(std::string name, std::string host, int port) noexcept
+celeritas::service_registry_config::service_registry_config(std::string name, std::string host, const int port) noexcept
     : name_{ std::move(name) }, host_{ std::move(host) }, port_{ port }
 {
 }

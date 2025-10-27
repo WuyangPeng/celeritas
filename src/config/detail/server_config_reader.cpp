@@ -15,11 +15,10 @@ celeritas::server_config celeritas::server_config_reader::load_config(const std:
     // 必需配置项
     const auto instance_id = node.get<std::string>("instance_id");
     const auto service_name = node.get<std::string>("service_name");
-
-    const auto game_server_id = node.get<std::string>("game_server_id", "");
-
     const auto host = node.get<std::string>("host");
 
+    // 可选配置项
+    const auto game_server_id = node.get<std::string>("game_server_id", "");
     const auto worker_pool = node.get<int>("worker_pool", default_worker_pool_size);
 
     server_config::server_network_config_container_type container{};
@@ -32,12 +31,10 @@ celeritas::server_config celeritas::server_config_reader::load_config(const std:
         }
     }
 
-    server_config server_config{ instance_id, service_name, container, game_server_id, host, worker_pool };
-
-    return server_config;
+    return server_config{ instance_id, service_name, container, game_server_id, host, worker_pool };
 }
 
-celeritas::server_network_config celeritas::server_config_reader::get_server_network_config(const boost::property_tree::basic_ptree<std::string, std::string>& node)
+celeritas::server_network_config celeritas::server_config_reader::get_server_network_config(const node_type& node)
 {
     const auto network_node = node.get<std::string>("network_type");
     const auto network_type = get_server_network_type(network_node);

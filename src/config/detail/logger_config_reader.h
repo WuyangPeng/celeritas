@@ -21,11 +21,12 @@ namespace celeritas
         [[nodiscard]] logger_config_container get_logger_config_container() const;
 
     private:
+        using node_type = boost::property_tree::basic_ptree<std::string, std::string>;
+
         void load_config();
 
-        void load_node(const boost::property_tree::basic_ptree<std::string, std::string>& node);
+        void load_node(const node_type& node);
 
-    private:
         std::string filename_;
         logger_config_container logger_;
         logger_level_config logger_level_;

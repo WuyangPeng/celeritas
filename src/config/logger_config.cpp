@@ -3,7 +3,7 @@
 
 #include <map>
 
-celeritas::logger_config::logger_config(std::string name, severity_level_type severity_level, bool console_enabled, std::string channel_name, std::string log_file_name, int rotation_size)
+celeritas::logger_config::logger_config(std::string name, const severity_level_type severity_level, const bool console_enabled, std::string channel_name, std::string log_file_name, const int rotation_size)
     : name_{ std::move(name) }, level_{ severity_level }, console_enabled_{ console_enabled }, channel_name_{ std::move(channel_name) }, log_file_name_{ std::move(log_file_name) }, rotation_size_{ rotation_size }
 {
 }

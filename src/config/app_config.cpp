@@ -58,15 +58,6 @@ void celeritas::app_config::load_databases_config(const std::string& filename)
     }
 }
 
-void celeritas::app_config::do_load_databases_config(const std::string& filename)
-{
-    for (const auto& result = database_config_reader::load_config(filename);
-         const auto& element : result)
-    {
-        database_[element.get_name()] = element;
-    }
-}
-
 void celeritas::app_config::load_loggers_config(const std::string& filename)
 {
     try
@@ -77,6 +68,45 @@ void celeritas::app_config::load_loggers_config(const std::string& filename)
     {
         LOG_CHANNEL(config_channel, error) << "load databases config error:" << error.what();
         throw;
+    }
+}
+
+celeritas::logger_level_config celeritas::app_config::get_logger_level_config() const
+{
+    return logger_level_config_;
+}
+
+celeritas::app_config::logger_config_container celeritas::app_config::get_logger_config() const
+{
+    return logger_;
+}
+
+celeritas::app_config::database_config_container celeritas::app_config::get_database_config() const
+{
+    return database_;
+}
+
+celeritas::server_config celeritas::app_config::get_server_config() const
+{
+    return server_;
+}
+
+celeritas::health_check_url_config celeritas::app_config::get_health_check_url_config() const
+{
+    return health_check_url_;
+}
+
+celeritas::app_config::service_registry_config_container celeritas::app_config::get_service_registry_config() const
+{
+    return service_registry_;
+}
+
+void celeritas::app_config::do_load_databases_config(const std::string& filename)
+{
+    for (const auto& result = database_config_reader::load_config(filename);
+         const auto& element : result)
+    {
+        database_[element.get_name()] = element;
     }
 }
 
@@ -110,34 +140,4 @@ void celeritas::app_config::do_load_service_registry_config(const std::string& f
     {
         service_registry_[element.get_name()] = element;
     }
-}
-
-celeritas::logger_level_config celeritas::app_config::get_logger_level_config() const
-{
-    return logger_level_config_;
-}
-
-celeritas::app_config::logger_config_container celeritas::app_config::get_logger_config() const
-{
-    return logger_;
-}
-
-celeritas::app_config::database_config_container celeritas::app_config::get_database_config() const
-{
-    return database_;
-}
-
-celeritas::server_config celeritas::app_config::get_server_config() const
-{
-    return server_;
-}
-
-celeritas::health_check_url_config celeritas::app_config::get_health_check_url_config() const
-{
-    return health_check_url_;
-}
-
-celeritas::app_config::service_registry_config_container celeritas::app_config::get_service_registry_config() const
-{
-    return service_registry_;
 }

@@ -2,8 +2,6 @@
 
 #include "server_network_type.h"
 
-#include <string>
-
 namespace celeritas
 {
     class server_network_config

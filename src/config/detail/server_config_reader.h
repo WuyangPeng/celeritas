@@ -14,6 +14,8 @@ namespace celeritas
         static server_config load_config(const std::string& filename);
 
     private:
-        [[nodiscard]] static server_network_config get_server_network_config(const boost::property_tree::basic_ptree<std::string, std::string>& node);
+        using node_type = boost::property_tree::basic_ptree<std::string, std::string>;
+
+        [[nodiscard]] static server_network_config get_server_network_config(const node_type& node);
     };
 }
