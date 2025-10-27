@@ -1,7 +1,6 @@
 ﻿#pragma once
 
-#include "hiredis.h"
-
+#include <hiredis.h>
 #include <string>
 
 namespace celeritas

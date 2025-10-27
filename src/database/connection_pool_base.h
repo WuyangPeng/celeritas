@@ -39,7 +39,7 @@ namespace celeritas
                              int max_connections);
 
         connection_pool_base(io_context_type& io_context,
-                             std::string url,
+                             std::string uri,
                              std::string db_name,
                              int min_connections,
                              int max_connections);
@@ -78,7 +78,7 @@ namespace celeritas
 
         void cleanup_database_by_duration();
 
-        boost::asio::io_context& io_context_;
+        io_context_type& io_context_;
         std::string host_;
         int port_;
         std::string user_;
@@ -89,7 +89,7 @@ namespace celeritas
         session_container_type sessions_;
         std::mutex mutex_;
         std::deque<waiter_type> waiters_;
-        int connections_;
+        std::atomic_int connections_;
         int min_connections_;
         int max_connections_;
 
