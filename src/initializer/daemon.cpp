@@ -5,7 +5,7 @@
 #include <filesystem>
 #include <fstream>
 
-celeritas::daemon::daemon(const std::string_view& server_type)
+celeritas::daemon::daemon(const std::string_view server_type)
     : server_type_{ server_type }, pid_file_name_{ (boost::filesystem::current_path() / (server_type_ + ".pid")).string() }
 {
     const auto pid = getpid();
@@ -14,7 +14,7 @@ celeritas::daemon::daemon(const std::string_view& server_type)
     process_id << pid << std::endl;
 }
 
-celeritas::daemon::~daemon()
+celeritas::daemon::~daemon() noexcept
 {
     std::filesystem::remove(pid_file_name_);
 }

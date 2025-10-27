@@ -7,9 +7,9 @@ namespace celeritas
     class daemon
     {
     public:
-        daemon(const std::string_view& server_type);
+        explicit daemon(std::string_view server_type);
 
-        ~daemon();
+        ~daemon() noexcept;
 
         daemon(const daemon& rhs) = delete;
 

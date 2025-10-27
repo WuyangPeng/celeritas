@@ -3,6 +3,7 @@
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "database/database_pool_manager.h"
+#include "network/message_header.h"
 #include "proto/celeritas.pb.h"
 #include "proto/common/common.pb.h"
 
@@ -44,12 +45,102 @@ void celeritas::initializer::run()
     LOG_CHANNEL(initializer_channel, info) << get_server_type() << " io context is stop";
 }
 
+void celeritas::initializer::call_back(const message_header& message_header, buffer_guard buffer_guard, const session_shared_ptr& session)
+{
+    const auto header = get_header(message_header, buffer_guard);
+
+    const auto request = std::make_shared<proto::celeritas>();
+
+    if (!request->ParseFromArray(buffer_guard.get() + message_header.get_header_size(), message_header.get_body_size()))
+    {
+        LOG_CHANNEL(initializer_channel, error) << "Failed to parse request from binary data.";
+        return;
+    }
+
+    switch (request->payload_case())
+    {
+        case proto::celeritas::PayloadCase::kCeleritasRequest:
+        {
+            if (const auto& celeritas_request = request->celeritas_request();
+                !application_loader_->dispatch(header, celeritas_request, request, session, resource_loader_))
+            {
+                LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch celeritas request.";
+            }
+            break;
+        }
+
+        case proto::celeritas::PayloadCase::kCeleritasResponse:
+        {
+            if (const auto& celeritas_response = request->celeritas_response();
+                !application_loader_->dispatch(header, celeritas_response, request, session, resource_loader_))
+            {
+                LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch celeritas response.";
+            }
+            break;
+        }
+
+        case proto::celeritas::PayloadCase::PAYLOAD_NOT_SET:
+        {
+            LOG_CHANNEL(initializer_channel, error) << "消息体为空.";
+            break;
+        }
+    }
+}
+
 std::string celeritas::initializer::get_server_type() const
 {
     auto server_type = server_type_;
     std::ranges::replace(server_type, '_', ' ');
 
     return server_type;
+}
+
+celeritas::header celeritas::initializer::get_header(const message_header& message_header, const buffer_guard& buffer_guard) const
+{
+    proto::common::header header_request{};
+
+    if (!header_request.ParseFromArray(buffer_guard.get(), message_header.get_header_size()))
+    {
+        throw celeritas_error("Failed to parse header_request from binary data.");
+    }
+
+    switch (header_request.payload_case())
+    {
+        case proto::common::header::PayloadCase::kEmpty:
+        {
+            const auto& empty_header = header_request.empty();
+            return header(empty_header);
+        }
+
+        case proto::common::header::PayloadCase::kClient:
+        {
+            const auto& client_header = header_request.client();
+            return header(client_header);
+        }
+
+        case proto::common::header::PayloadCase::kServer:
+        {
+            const auto& server_header = header_request.server();
+            return header(server_header);
+        }
+
+        case proto::common::header::PayloadCase::kGateway:
+        {
+            const auto& gateway_header = header_request.gateway();
+            return header(gateway_header);
+        }
+
+        case proto::common::header::PayloadCase::kToGateway:
+        {
+            const auto& to_gateway_header = header_request.to_gateway();
+            return header(to_gateway_header);
+        }
+
+        default:
+        {
+            throw celeritas_error("消息头为空.");
+        }
+    }
 }
 
 void celeritas::initializer::initialize_default_logger()
@@ -104,94 +195,4 @@ void celeritas::initializer::stop()
     application_loader_->stop();
 
     LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop finish!";
-}
-
-celeritas::header celeritas::initializer::get_header(const message_header& message_header, const buffer_guard& buffer_guard) const
-{
-    proto::common::header header_request{};
-
-    if (!header_request.ParseFromArray(buffer_guard.get(), message_header.get_header_size()))
-    {
-        throw celeritas_error("Failed to parse header_request from binary data.");
-    }
-
-    switch (header_request.payload_case())
-    {
-        case proto::common::header::PayloadCase::kEmpty:
-        {
-            const auto& empty_header = header_request.empty();
-            return header(empty_header);
-        }
-
-        case proto::common::header::PayloadCase::kClient:
-        {
-            const auto& client_header = header_request.client();
-            return header(client_header);
-        }
-
-        case proto::common::header::PayloadCase::kServer:
-        {
-            const auto& server_header = header_request.server();
-            return header(server_header);
-        }
-
-        case proto::common::header::PayloadCase::kGateway:
-        {
-            const auto& gateway_header = header_request.gateway();
-            return header(gateway_header);
-        }
-
-        case proto::common::header::PayloadCase::kToGateway:
-        {
-            const auto& to_gateway_header = header_request.to_gateway();
-            return header(to_gateway_header);
-        }
-
-        default:
-        {
-            throw celeritas_error("消息头为空.");
-        }
-    }
-}
-
-void celeritas::initializer::call_back(const message_header& message_header, buffer_guard buffer_guard, const session_shared_ptr& session)
-{
-    const auto header = get_header(message_header, buffer_guard);
-
-    const auto request = std::make_shared<proto::celeritas>();
-
-    if (!request->ParseFromArray(buffer_guard.get() + message_header.get_header_size(), message_header.get_body_size()))
-    {
-        LOG_CHANNEL(initializer_channel, error) << "Failed to parse request from binary data.";
-        return;
-    }
-
-    switch (request->payload_case())
-    {
-        case proto::celeritas::PayloadCase::kCeleritasRequest:
-        {
-            if (const auto& celeritas_request = request->celeritas_request();
-                !application_loader_->dispatch(header, celeritas_request, request, session, resource_loader_))
-            {
-                LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch celeritas request.";
-            }
-            break;
-        }
-
-        case proto::celeritas::PayloadCase::kCeleritasResponse:
-        {
-            if (const auto& celeritas_response = request->celeritas_response();
-                !application_loader_->dispatch(header, celeritas_response, request, session, resource_loader_))
-            {
-                LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch celeritas response.";
-            }
-            break;
-        }
-
-        case proto::celeritas::PayloadCase::PAYLOAD_NOT_SET:
-        {
-            LOG_CHANNEL(initializer_channel, error) << "消息体为空.";
-            break;
-        }
-    }
 }

@@ -4,8 +4,7 @@
 #include "message/header.h"
 #include "network/listener.h"
 #include "network/network_message_callback.h"
-#include "proto/response.pb.h"
-#include "proto/request.pb.h"
+#include "proto/celeritas.pb.h"
 
 namespace celeritas
 {
@@ -15,6 +14,8 @@ namespace celeritas
         using class_type = resource_loader;
         using app_config_shared_ptr = std::shared_ptr<app_config>;
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
+        using io_context_type = boost::asio::io_context;
+        using protobuf_message = google::protobuf::Message;
 
         explicit resource_loader(app_config_shared_ptr app_config);
 
@@ -28,11 +29,11 @@ namespace celeritas
 
         resource_loader& operator=(resource_loader&& rhs) noexcept = delete;
 
-        void initialize(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback);
+        void initialize(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
 
         void release_resource();
 
-        [[nodiscard]] bool write(const std::string& server_type, const header& header, const google::protobuf::Message& request) const;
+        [[nodiscard]] bool write(const std::string& server_type, const header& header, const protobuf_message& request) const;
 
     private:
         using listener_shared_ptr = std::shared_ptr<listener>;
@@ -46,33 +47,33 @@ namespace celeritas
 
         void initialize_logger_resource();
 
-        void initialize_database_resource(boost::asio::io_context& io_context);
+        void initialize_database_resource(io_context_type& io_context);
 
-        void initialize_server_resource(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback);
+        void initialize_server_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
 
         void initialize_health_check_url_resource();
 
-        void initialize_service_registry_resource(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback);
+        void initialize_service_registry_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
 
-        void modify_service_registry_resource(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback, int index);
+        void modify_service_registry_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback, int index);
 
         virtual void service_initialize_resource() = 0;
 
-        void start_check_tcp_clients_timer(boost::asio::io_context& io_context);
+        void start_check_tcp_clients_timer(io_context_type& io_context);
 
-        void start_check_tcp_clients_timer(boost::asio::io_context& io_context, const self_shared_ptr& self);
+        void start_check_tcp_clients_timer(io_context_type& io_context, const self_shared_ptr& self);
 
-        void check_tcp_clients(boost::asio::io_context& io_context, const error_code_type& error_code);
+        void check_tcp_clients(io_context_type& io_context, const error_code_type& error_code);
 
-        void process_check_tcp_clients(boost::asio::io_context& io_context);
+        void process_check_tcp_clients(io_context_type& io_context);
 
-        void process_check_tcp_clients_by_duration(boost::asio::io_context& io_context);
+        void process_check_tcp_clients_by_duration(io_context_type& io_context);
 
-        void start_service_registry_timer(boost::asio::io_context& io_context);
+        void start_service_registry_timer(io_context_type& io_context);
 
-        void start_service_registry_timer(boost::asio::io_context& io_context, const self_shared_ptr& self);
+        void start_service_registry_timer(io_context_type& io_context, const self_shared_ptr& self);
 
-        void service_registry(boost::asio::io_context& io_context, const error_code_type& error_code);
+        void service_registry(io_context_type& io_context, const error_code_type& error_code);
 
         void process_service_registry();
 

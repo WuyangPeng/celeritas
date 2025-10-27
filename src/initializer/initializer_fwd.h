@@ -8,6 +8,7 @@ namespace celeritas
     class application_loader;
     class resource_loader;
     class daemon;
+    class crash;
 
     class service_registry_resource_loader;
     class service_registry_configuration_loader;

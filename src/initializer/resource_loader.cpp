@@ -19,7 +19,7 @@ celeritas::resource_loader::resource_loader(app_config_shared_ptr app_config)
 {
 }
 
-void celeritas::resource_loader::initialize(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback)
+void celeritas::resource_loader::initialize(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
 {
     initialize_logger_resource();
     initialize_server_resource(io_context, network_message_callback);
@@ -41,7 +41,7 @@ void celeritas::resource_loader::release_resource()
     listener_.clear();
 }
 
-bool celeritas::resource_loader::write(const std::string& server_type, const header& header, const google::protobuf::Message& request) const
+bool celeritas::resource_loader::write(const std::string& server_type, const header& header, const protobuf_message& request) const
 {
     auto to_write = false;
 
@@ -68,7 +68,7 @@ void celeritas::resource_loader::initialize_logger_resource()
     }
 }
 
-void celeritas::resource_loader::initialize_database_resource(boost::asio::io_context& io_context)
+void celeritas::resource_loader::initialize_database_resource(io_context_type& io_context)
 {
     const auto database = app_config_->get_database_config();
     for (const auto& element : database | std::views::values)
@@ -82,7 +82,7 @@ void celeritas::resource_loader::initialize_database_resource(boost::asio::io_co
     }
 }
 
-void celeritas::resource_loader::initialize_server_resource(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback)
+void celeritas::resource_loader::initialize_server_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
 {
     const auto server = app_config_->get_server_config();
 
@@ -106,7 +106,7 @@ void celeritas::resource_loader::initialize_health_check_url_resource()
     const auto health_check_url = app_config_->get_health_check_url_config();
 }
 
-void celeritas::resource_loader::initialize_service_registry_resource(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback)
+void celeritas::resource_loader::initialize_service_registry_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
 {
     const auto service_registry = app_config_->get_service_registry_config();
     const auto server = app_config_->get_server_config();
@@ -142,7 +142,7 @@ void celeritas::resource_loader::initialize_service_registry_resource(boost::asi
     }
 }
 
-void celeritas::resource_loader::modify_service_registry_resource(boost::asio::io_context& io_context, const network_message_callback_weak_ptr& network_message_callback, int index)
+void celeritas::resource_loader::modify_service_registry_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback, int index)
 {
     const auto service_registry = app_config_->get_service_registry_config();
 
@@ -160,14 +160,14 @@ void celeritas::resource_loader::modify_service_registry_resource(boost::asio::i
     }
 }
 
-void celeritas::resource_loader::start_check_tcp_clients_timer(boost::asio::io_context& io_context)
+void celeritas::resource_loader::start_check_tcp_clients_timer(io_context_type& io_context)
 {
     check_tcp_clients_timer_interval_ = std::make_unique<steady_timer_type>(io_context);
 
     start_check_tcp_clients_timer(io_context, shared_from_this());
 }
 
-void celeritas::resource_loader::start_check_tcp_clients_timer(boost::asio::io_context& io_context, const self_shared_ptr& self)
+void celeritas::resource_loader::start_check_tcp_clients_timer(io_context_type& io_context, const self_shared_ptr& self)
 {
     check_tcp_clients_timer_interval_->expires_at(std::chrono::steady_clock::now() + check_tcp_clients_timer);
     check_tcp_clients_timer_interval_->async_wait(
@@ -179,7 +179,7 @@ void celeritas::resource_loader::start_check_tcp_clients_timer(boost::asio::io_c
         });
 }
 
-void celeritas::resource_loader::check_tcp_clients(boost::asio::io_context& io_context, const error_code_type& error_code)
+void celeritas::resource_loader::check_tcp_clients(io_context_type& io_context, const error_code_type& error_code)
 {
     if (error_code == boost::asio::error::operation_aborted)
     {
@@ -193,7 +193,7 @@ void celeritas::resource_loader::check_tcp_clients(boost::asio::io_context& io_c
     start_check_tcp_clients_timer(io_context, self);
 }
 
-void celeritas::resource_loader::process_check_tcp_clients(boost::asio::io_context& io_context)
+void celeritas::resource_loader::process_check_tcp_clients(io_context_type& io_context)
 {
     try
     {
@@ -209,7 +209,7 @@ void celeritas::resource_loader::process_check_tcp_clients(boost::asio::io_conte
     }
 }
 
-void celeritas::resource_loader::process_check_tcp_clients_by_duration(boost::asio::io_context& io_context)
+void celeritas::resource_loader::process_check_tcp_clients_by_duration(io_context_type& io_context)
 {
     for (auto index = 0; index < tcp_clients_.size(); ++index)
     {
@@ -232,14 +232,14 @@ void celeritas::resource_loader::process_check_tcp_clients_by_duration(boost::as
     }
 }
 
-void celeritas::resource_loader::start_service_registry_timer(boost::asio::io_context& io_context)
+void celeritas::resource_loader::start_service_registry_timer(io_context_type& io_context)
 {
     service_registry_timer_interval_ = std::make_unique<steady_timer_type>(io_context);
 
     service_registry(io_context, boost::system::error_code{});
 }
 
-void celeritas::resource_loader::start_service_registry_timer(boost::asio::io_context& io_context, const self_shared_ptr& self)
+void celeritas::resource_loader::start_service_registry_timer(io_context_type& io_context, const self_shared_ptr& self)
 {
     service_registry_timer_interval_->expires_at(std::chrono::steady_clock::now() + service_registry_timer);
     service_registry_timer_interval_->async_wait(
@@ -251,7 +251,7 @@ void celeritas::resource_loader::start_service_registry_timer(boost::asio::io_co
         });
 }
 
-void celeritas::resource_loader::service_registry(boost::asio::io_context& io_context, const error_code_type& error_code)
+void celeritas::resource_loader::service_registry(io_context_type& io_context, const error_code_type& error_code)
 {
     if (error_code == boost::asio::error::operation_aborted)
     {

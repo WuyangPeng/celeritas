@@ -3,7 +3,6 @@
 #include "daemon.h"
 #include "initializer_factory.h"
 #include "common/buffer_guard.h"
-#include "network/message_header.h"
 #include "network/network_message_callback.h"
 
 #include <boost/filesystem.hpp>
@@ -78,7 +77,7 @@ namespace celeritas
         executor_work_guard_type work_guard_;
         daemon_unique_ptr daemon_;
 
-        // 新增一个信号集成员变量
+        // 信号集成员变量
         signal_set_type signals_;
     };
 }

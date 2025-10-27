@@ -26,7 +26,7 @@ void celeritas::application_loader::register_handler(const base_message_handler_
     message_registry_->registerHandler(handler);
 }
 
-bool celeritas::application_loader::dispatch(const header& header, const google::protobuf::Message& current_message, const protobuf_message_shared_ptr& request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
+bool celeritas::application_loader::dispatch(const header& header, const protobuf_message& current_message, const protobuf_message_shared_ptr& request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
 {
     return message_registry_->dispatch(handle_parameter{ header, request_message, session, resource_loader }, current_message);
 }
@@ -38,9 +38,7 @@ celeritas::application_loader::message_registry_weak_ptr celeritas::application_
 
 void celeritas::application_loader::initialize_worker_pool()
 {
-    auto work_pool_size = app_config_->get_server_config().get_worker_pool_size();
-
-    work_pool_size = std::max(min_worker_pool_size, work_pool_size);
+    const auto work_pool_size = std::max(min_worker_pool_size, app_config_->get_server_config().get_worker_pool_size());
 
     worker_pool_ = std::make_unique<worker_pool>(work_pool_size);
 }

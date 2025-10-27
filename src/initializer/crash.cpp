@@ -45,13 +45,6 @@ namespace
 
 #endif // WIN32
 
-void celeritas::crash::crash_handler(const int signal_number)
-{
-    LOG_CHANNEL(initializer_channel, fatal) << "signal_number = " << signal_number << ".\nstack trace:\n" << boost::stacktrace::stacktrace();
-
-    _exit(signal_number);
-}
-
 void celeritas::crash::set_signal()
 {
     #ifdef WIN32
@@ -77,4 +70,11 @@ void celeritas::crash::set_signal()
     sigaction(SIGFPE, &sa, nullptr);
 
     #endif // WIN32
+}
+
+void celeritas::crash::crash_handler(const int signal_number)
+{
+    LOG_CHANNEL(initializer_channel, fatal) << "signal_number = " << signal_number << ".\nstack trace:\n" << boost::stacktrace::stacktrace();
+
+    _exit(signal_number);
 }
