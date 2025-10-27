@@ -6,6 +6,7 @@
 #include "network/network_message_callback.h"
 
 #include <boost/beast.hpp>
+#include <boost/url.hpp>
 
 celeritas::http_session_run::http_session_run(socket_type& socket, const int64_t session_id, session_callback session_callback)
     : base_type{}, socket_{ socket }, session_id_{ session_id }, session_callback_{ std::move(session_callback) }
@@ -84,38 +85,28 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_
 
     co_await boost::beast::http::async_read(socket_, buffer, parser, boost::asio::use_awaitable);
 
-    const auto payload_size = buffer.size();
-    auto* payload_data = static_cast<const uint8_t*>(buffer.data().data());
+    const auto request = parser.release();
 
-    message_header base{};
-    if (payload_size < sizeof(base))
-    {
-        LOG_CHANNEL(network_channel, error) << "http buffer too small for header";
-        buffer.consume(payload_size);
-        co_return;
-    }
+    const auto target = request.target();
 
-    std::memcpy(&base, payload_data, sizeof(base));
-    base.network_to_host();
+    LOG_CHANNEL(network_channel, trace) << "target:  " << target << std::endl;
 
-    const auto total_size = base.get_total_size();
+    const auto url_view = boost::urls::parse_relative_ref(target).value();
 
-    if (payload_size < total_size - sizeof(base))
-    {
-        LOG_CHANNEL(network_channel, error) << "http buffer incomplete";
-        buffer.consume(payload_size);
-        co_return;
-    }
+    const auto path = url_view.path();
 
-    buffer_guard buffer_guard{ buffer_pool::acquire(total_size) };
-    buffer_guard.set_effective_size(total_size);
-    std::memcpy(buffer_guard.get(), payload_data, total_size);
+    LOG_CHANNEL(network_channel, trace) << "path:  " << path << std::endl;
 
-    const auto session = get_session();
+    const auto params = url_view.params();
+
+    LOG_CHANNEL(network_channel, trace) << "params:  " << params << std::endl;
+
+    auto session = get_session();
+
     if (const auto callback = session_callback_.get_network_message_callback_shared_ptr();
         callback != nullptr && session != nullptr)
     {
-        callback->call_back(base, std::move(buffer_guard), session);
+        callback->call_back(path, params, session);
     }
 
     buffer.consume(buffer.size());

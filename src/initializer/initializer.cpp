@@ -87,6 +87,10 @@ void celeritas::initializer::call_back(const message_header& message_header, buf
     }
 }
 
+void celeritas::initializer::call_back(const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session)
+{
+}
+
 std::string celeritas::initializer::get_server_type() const
 {
     auto server_type = server_type_;

@@ -98,7 +98,8 @@ else ()
             regex
             log_setup
             log
-            program_options)
+            program_options
+            url)
 
     target_link_libraries(boost INTERFACE
             Boost::filesystem
@@ -109,7 +110,8 @@ else ()
             Boost::regex
             Boost::log_setup
             Boost::log
-            Boost::program_options)
+            Boost::program_options
+            Boost::url)
 
 endif ()
 
