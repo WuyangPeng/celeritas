@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-#include <boost/asio/steady_timer.hpp>
+#include "detail/cleanup_database_session_timer.h"
+
 #include <boost/asio/awaitable.hpp>
 
 namespace celeritas
@@ -17,18 +18,23 @@ namespace celeritas
 
         virtual ~database_pool() noexcept = default;
 
-        database_pool(const database_pool& rhs) noexcept = default;
+        database_pool(const database_pool& rhs) noexcept = delete;
 
-        database_pool& operator=(const database_pool& rhs) noexcept = default;
+        database_pool& operator=(const database_pool& rhs) noexcept = delete;
 
-        database_pool(database_pool&& rhs) noexcept = default;
+        database_pool(database_pool&& rhs) noexcept = delete;
 
-        database_pool& operator=(database_pool&& rhs) noexcept = default;
+        database_pool& operator=(database_pool&& rhs) noexcept = delete;
 
         [[nodiscard]] virtual void_awaitable_type async_initialize() = 0;
 
-        virtual void start_cleanup_timer(io_context_type& io_context) = 0;
+        void start_cleanup_timer(io_context_type& io_context);
 
-        virtual void cleanup_expired_database(const error_code_type& error_code) = 0;
+        virtual void cleanup_database_by_duration() = 0;
+
+    private:
+        using cleanup_database_session_timer_unique_ptr = std::unique_ptr<cleanup_database_session_timer>;
+
+        cleanup_database_session_timer_unique_ptr cleanup_database_session_timer_;
     };
 }

@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "connection_pool_base.h"
-#include "database_fwd.h"
 #include "common/logger.h"
 
 template <typename SessionType>
@@ -118,26 +117,27 @@ void celeritas::connection_pool_base<SessionType>::release_session(const session
 }
 
 template <typename SessionType>
-void celeritas::connection_pool_base<SessionType>::start_cleanup_timer(io_context_type& io_context)
+void celeritas::connection_pool_base<SessionType>::cleanup_database_by_duration()
 {
-    cleanup_timer_interval_ = std::make_unique<steady_timer_type>(io_context);
+    std::lock_guard lock{ mutex_ };
 
-    start_cleanup_timer(shared_from_this());
-}
-
-template <typename SessionType>
-void celeritas::connection_pool_base<SessionType>::cleanup_expired_database(const error_code_type& error_code)
-{
-    if (error_code == boost::asio::error::operation_aborted)
+    for (auto iter = sessions_.begin(); iter != sessions_.end();)
     {
-        return;
+        if (connections_ <= min_connections_)
+        {
+            return;
+        }
+
+        if ((*iter)->is_expired())
+        {
+            iter = sessions_.erase(iter);
+            --connections_;
+        }
+        else
+        {
+            ++iter;
+        }
     }
-
-    const auto self{ shared_from_this() };
-
-    process_cleanup_logic();
-
-    start_cleanup_timer(self);
 }
 
 template <typename SessionType>
@@ -202,63 +202,10 @@ celeritas::connection_pool_base<SessionType>::session_awaitable_type celeritas::
                     // 当会话被释放时，使用 dispatch 确保 handler 在其原始的执行器上运行，
                     // 这对于协程的正确恢复至关重要。
                     boost::asio::dispatch(handler.get_executor(),
-                                          [handler = std::move(handler), session = std::move(session)]() {
+                                          [handler = std::move(handler), session = std::move(session)] {
                                               handler(session);
                                           });
                 });
         },
         boost::asio::use_awaitable);
-}
-
-template <typename SessionType>
-void celeritas::connection_pool_base<SessionType>::process_cleanup_logic()
-{
-    try
-    {
-        cleanup_database_by_duration();
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(database_channel, error) << "Cleanup error: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(database_channel, fatal) << "Cleanup error: an unknown exception";
-    }
-}
-
-template <typename SessionType>
-void celeritas::connection_pool_base<SessionType>::start_cleanup_timer(const self_shared_ptr& self) const
-{
-    cleanup_timer_interval_->expires_at(std::chrono::steady_clock::now() + cleanup_database_timer);
-    cleanup_timer_interval_->async_wait(
-        [self](const boost::system::error_code& error_code) {
-            if (!error_code)
-            {
-                self->cleanup_expired_database(error_code);
-            }
-        });
-}
-
-template <typename SessionType>
-void celeritas::connection_pool_base<SessionType>::cleanup_database_by_duration()
-{
-    std::lock_guard lock{ mutex_ };
-
-    for (auto iter = sessions_.begin(); iter != sessions_.end();)
-    {
-        if (sessions_.size() <= min_connections_)
-        {
-            return;
-        }
-
-        if ((*iter)->is_expired())
-        {
-            iter = sessions_.erase(iter);
-        }
-        else
-        {
-            ++iter;
-        }
-    }
 }

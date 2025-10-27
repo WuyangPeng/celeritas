@@ -11,6 +11,7 @@ namespace celeritas
     class buffer_guard;
     class command_line_config;
     class random_helper;
+    class timer_base;
 
     constexpr std::string_view channel{ "channel" };
     constexpr std::string_view default_channel{ "default" };

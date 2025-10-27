@@ -4,13 +4,12 @@
 
 #include <boost/asio.hpp>
 #include <boost/asio/awaitable.hpp>
-#include <boost/asio/steady_timer.hpp>
 #include <deque>
 
 namespace celeritas
 {
     template <typename SessionType>
-    class connection_pool_base : public database_pool
+    class connection_pool_base final : public database_pool
     {
     public:
         using class_type = connection_pool_base;
@@ -53,15 +52,11 @@ namespace celeritas
         // 释放一个数据库会话
         void release_session(const session_shared_ptr& session);
 
-        void start_cleanup_timer(io_context_type& io_context) override;
-
-        void cleanup_expired_database(const error_code_type& error_code) override;
+        void cleanup_database_by_duration() override;
 
     private:
         using session_container_type = std::deque<session_shared_ptr>;
         using waiter_type = boost::asio::any_completion_handler<void(session_shared_ptr)>;
-        using steady_timer_type = boost::asio::steady_timer;
-        using steady_timer_unique_ptr = std::unique_ptr<steady_timer_type>;
         using self_shared_ptr = std::shared_ptr<base_type>;
 
         [[nodiscard]] void_awaitable_type async_one_initialize();
@@ -71,12 +66,6 @@ namespace celeritas
         [[nodiscard]] session_shared_ptr try_get_existing_session();
 
         [[nodiscard]] session_awaitable_type async_initiate_session();
-
-        void process_cleanup_logic();
-
-        void start_cleanup_timer(const self_shared_ptr& self) const;
-
-        void cleanup_database_by_duration();
 
         io_context_type& io_context_;
         std::string host_;
@@ -92,7 +81,5 @@ namespace celeritas
         std::atomic_int connections_;
         int min_connections_;
         int max_connections_;
-
-        steady_timer_unique_ptr cleanup_timer_interval_;
     };
 }
