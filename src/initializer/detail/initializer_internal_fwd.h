@@ -6,4 +6,6 @@ namespace celeritas
     class database_resource_loader;
     class server_resource_loader;
     class service_resource_loader;
+    class check_tcp_clients_timer;
+    class service_registry_timer;
 }

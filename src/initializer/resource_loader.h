@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "config/app_config.h"
+#include "detail/initializer_internal_fwd.h"
 #include "message/header.h"
 #include "network/listener.h"
 #include "network/network_message_callback.h"
@@ -35,6 +36,10 @@ namespace celeritas
 
         [[nodiscard]] bool write(const std::string& server_type, const header& header, const protobuf_message& request) const;
 
+        void process_check_tcp_clients_by_duration(io_context_type& io_context);
+
+        void process_service_registry_by_duration();
+
     private:
         using listener_shared_ptr = std::shared_ptr<listener>;
         using listener_container_type = std::vector<listener_shared_ptr>;
@@ -44,14 +49,14 @@ namespace celeritas
         using steady_timer_unique_ptr = std::unique_ptr<steady_timer_type>;
         using self_shared_ptr = std::shared_ptr<resource_loader>;
         using error_code_type = boost::system::error_code;
+        using check_tcp_clients_timer_shared_ptr = std::shared_ptr<check_tcp_clients_timer>;
+        using service_registry_timer_shared_ptr = std::shared_ptr<service_registry_timer>;
 
         void initialize_logger_resource();
 
         void initialize_database_resource(io_context_type& io_context);
 
         void initialize_server_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
-
-        void initialize_health_check_url_resource();
 
         void initialize_service_registry_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
 
@@ -61,29 +66,13 @@ namespace celeritas
 
         void start_check_tcp_clients_timer(io_context_type& io_context);
 
-        void start_check_tcp_clients_timer(io_context_type& io_context, const self_shared_ptr& self);
-
-        void check_tcp_clients(io_context_type& io_context, const error_code_type& error_code);
-
-        void process_check_tcp_clients(io_context_type& io_context);
-
-        void process_check_tcp_clients_by_duration(io_context_type& io_context);
-
         void start_service_registry_timer(io_context_type& io_context);
-
-        void start_service_registry_timer(io_context_type& io_context, const self_shared_ptr& self);
-
-        void service_registry(io_context_type& io_context, const error_code_type& error_code);
-
-        void process_service_registry();
-
-        void process_service_registry_by_duration();
 
         app_config_shared_ptr app_config_;
         listener_container_type listener_;
         tcp_client_container_type tcp_clients_;
         bool is_service_registry_;
-        steady_timer_unique_ptr check_tcp_clients_timer_interval_;
-        steady_timer_unique_ptr service_registry_timer_interval_;
+        check_tcp_clients_timer_shared_ptr check_tcp_clients_timer_;
+        service_registry_timer_shared_ptr service_registry_timer_;
     };
 }
