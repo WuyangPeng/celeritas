@@ -4,7 +4,7 @@
 
 namespace celeritas
 {
-    class logic_application_loader : public application_loader
+    class logic_application_loader final : public application_loader
     {
     public:
         using class_type = logic_application_loader;

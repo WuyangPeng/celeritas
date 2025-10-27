@@ -1,5 +1,4 @@
-﻿
-#include "service_registry_loader.h"
+﻿#include "service_registry_loader.h"
 #include "network/tcp_client.h"
 
 celeritas::service_registry_loader::tcp_client_shared_ptr celeritas::service_registry_loader::loader_service_registry(io_context_type& io_context,
@@ -10,11 +9,9 @@ celeritas::service_registry_loader::tcp_client_shared_ptr celeritas::service_reg
 {
     const auto client = std::make_shared<tcp_client>(io_context, network_message_callback, game_server_id, service_registry_config.get_host(), service_registry_config.get_port(), server_type);
 
-    boost::asio::co_spawn(
-        io_context,
-        client->connect(),
-        boost::asio::detached
-        );
+    boost::asio::co_spawn(io_context,
+                          client->connect(),
+                          boost::asio::detached);
 
     return client;
 }

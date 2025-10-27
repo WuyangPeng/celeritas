@@ -4,7 +4,7 @@
 
 namespace celeritas
 {
-    class player_application_loader : public application_loader
+    class player_application_loader final : public application_loader
     {
     public:
         using class_type = player_application_loader;

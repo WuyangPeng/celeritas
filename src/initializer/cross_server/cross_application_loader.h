@@ -4,7 +4,7 @@
 
 namespace celeritas
 {
-    class cross_application_loader : public application_loader
+    class cross_application_loader final : public application_loader
     {
     public:
         using class_type = cross_application_loader;

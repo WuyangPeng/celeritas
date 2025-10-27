@@ -4,7 +4,7 @@
 
 namespace celeritas
 {
-    class gateway_application_loader : public application_loader
+    class gateway_application_loader final : public application_loader
     {
     public:
         using class_type = gateway_application_loader;

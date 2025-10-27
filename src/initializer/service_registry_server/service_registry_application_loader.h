@@ -4,7 +4,7 @@
 
 namespace celeritas
 {
-    class service_registry_application_loader : public application_loader
+    class service_registry_application_loader final : public application_loader
     {
     public:
         using class_type = service_registry_application_loader;

@@ -17,9 +17,7 @@ void celeritas::database_resource_loader::loader_database(boost::asio::io_contex
                                                                   database_config.get_min_connections(),
                                                                   database_config.get_max_connections());
 
-    boost::asio::co_spawn(
-        io_context,
-        pool->async_initialize(),
-        boost::asio::detached
-        );
+    boost::asio::co_spawn(io_context,
+                          pool->async_initialize(),
+                          boost::asio::detached);
 }
