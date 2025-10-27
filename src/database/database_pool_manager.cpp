@@ -22,8 +22,8 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
                                                                                                          const std::string& user,
                                                                                                          const std::string& password,
                                                                                                          const std::string& db_name,
-                                                                                                         int min_connections,
-                                                                                                         int max_connections)
+                                                                                                         const int min_connections,
+                                                                                                         const int max_connections)
 {
     switch (database_type)
     {
@@ -48,7 +48,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
 
 celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::get_pool(const std::string& name)
 {
-    std::unique_lock lock{ mutex_ };
+    std::lock_guard lock{ mutex_ };
 
     if (const auto pool = pools_.find(name);
         pool != pools_.cend())
@@ -59,57 +59,9 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
     throw celeritas_error("get pool ,name = " + name + " is  not exist.");
 }
 
-celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mysql_pool(const std::string& name,
-                                                                                                               io_context_type& io_context,
-                                                                                                               const std::string& host,
-                                                                                                               int port,
-                                                                                                               const std::string& user,
-                                                                                                               const std::string& password,
-                                                                                                               const std::string& db_name,
-                                                                                                               int min_connections,
-                                                                                                               int max_connections)
-{
-    std::unique_lock lock{ mutex_ };
-
-    auto pool = std::make_shared<connection_pool_base<mysql_database_session> >(io_context, host, port, user, password, db_name, min_connections, max_connections);
-
-    pools_.insert({ name, pool });
-
-    return pool;
-}
-
-celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mongo_pool(const std::string& name, io_context_type& io_context, const std::string& host, int port, const std::string& user, const std::string& password, const std::string& db_name, int min_connections, int max_connections)
-{
-    if (!mongo_instance_)
-    {
-        mongo_instance_ = std::make_unique<mongocxx::instance>();
-    }
-
-    const auto url = "mongodb://" + user + ":" + password + "@" + host + ":" + std::to_string(port) + "/" + db_name;
-
-    std::unique_lock lock{ mutex_ };
-
-    auto pool = std::make_shared<connection_pool_base<mongo_database_session> >(io_context, url, db_name, min_connections, max_connections);
-
-    pools_.insert({ name, pool });
-
-    return pool;
-}
-
-celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_redis_pool(const std::string& name, io_context_type& io_context, const std::string& host, int port, const std::string& user, const std::string& password, const std::string& db_name, int min_connections, int max_connections)
-{
-    std::unique_lock lock{ mutex_ };
-
-    auto pool = std::make_shared<connection_pool_base<redis_database_session> >(io_context, host, port, user, password, min_connections, max_connections);
-
-    pools_.insert({ name, pool });
-
-    return pool;
-}
-
 void celeritas::database_pool_manager::start_cleanup_timer(io_context_type& io_context)
 {
-    std::unique_lock lock{ mutex_ };
+    std::lock_guard lock{ mutex_ };
 
     for (const auto& pool : pools_ | std::views::values)
     {
@@ -119,7 +71,71 @@ void celeritas::database_pool_manager::start_cleanup_timer(io_context_type& io_c
 
 void celeritas::database_pool_manager::release_pool()
 {
-    std::unique_lock lock{ mutex_ };
+    std::lock_guard lock{ mutex_ };
 
     pools_.clear();
+}
+
+celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mysql_pool(const std::string& name,
+                                                                                                               io_context_type& io_context,
+                                                                                                               const std::string& host,
+                                                                                                               const int port,
+                                                                                                               const std::string& user,
+                                                                                                               const std::string& password,
+                                                                                                               const std::string& db_name,
+                                                                                                               const int min_connections,
+                                                                                                               const int max_connections)
+{
+    std::lock_guard lock{ mutex_ };
+
+    auto pool = std::make_shared<connection_pool_base<mysql_database_session> >(io_context, host, port, user, password, db_name, min_connections, max_connections);
+
+    pools_.insert({ name, pool });
+
+    return pool;
+}
+
+celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mongo_pool(const std::string& name,
+                                                                                                               io_context_type& io_context,
+                                                                                                               const std::string& host,
+                                                                                                               const int port,
+                                                                                                               const std::string& user,
+                                                                                                               const std::string& password,
+                                                                                                               const std::string& db_name,
+                                                                                                               const int min_connections,
+                                                                                                               const int max_connections)
+{
+    if (!mongo_instance_)
+    {
+        mongo_instance_ = std::make_unique<mongocxx::instance>();
+    }
+
+    const auto url = "mongodb://" + user + ":" + password + "@" + host + ":" + std::to_string(port) + "/" + db_name;
+
+    std::lock_guard lock{ mutex_ };
+
+    auto pool = std::make_shared<connection_pool_base<mongo_database_session> >(io_context, url, db_name, min_connections, max_connections);
+
+    pools_.insert({ name, pool });
+
+    return pool;
+}
+
+celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_redis_pool(const std::string& name,
+                                                                                                               io_context_type& io_context,
+                                                                                                               const std::string& host,
+                                                                                                               const int port,
+                                                                                                               const std::string& user,
+                                                                                                               const std::string& password,
+                                                                                                               const std::string& db_name,
+                                                                                                               const int min_connections,
+                                                                                                               const int max_connections)
+{
+    std::lock_guard lock{ mutex_ };
+
+    auto pool = std::make_shared<connection_pool_base<redis_database_session> >(io_context, host, port, user, password, min_connections, max_connections);
+
+    pools_.insert({ name, pool });
+
+    return pool;
 }

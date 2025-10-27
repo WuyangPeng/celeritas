@@ -35,7 +35,7 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
 
 celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_find(const std::string_view& collection_name, const document_view_type& filter)
 {
-    bool is_error = false;
+    auto is_error = false;
 
     try
     {

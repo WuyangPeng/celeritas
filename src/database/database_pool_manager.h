@@ -36,7 +36,7 @@ namespace celeritas
 
     private:
         using database_pool_container = std::map<std::string, database_pool_shared_ptr>;
-        using mongocxx_instance_unique_ptr = std::unique_ptr<mongocxx::instance>;
+        using mongo_instance_unique_ptr = std::unique_ptr<mongocxx::instance>;
 
         database_pool_manager() noexcept = default;
 
@@ -71,7 +71,7 @@ namespace celeritas
                                                                  int max_connections);
 
         database_pool_container pools_;
-        mongocxx_instance_unique_ptr mongo_instance_;
+        mongo_instance_unique_ptr mongo_instance_;
         std::mutex mutex_;
     };
 }

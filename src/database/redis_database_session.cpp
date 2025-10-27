@@ -4,8 +4,6 @@
 #include "common/logger.h"
 #include "detail/redis_reply.h"
 
-using namespace std::literals;
-
 celeritas::redis_database_session::redis_database_session(const std::string_view& host,
                                                           int port,
                                                           const std::string_view& user,
