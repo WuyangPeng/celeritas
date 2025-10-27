@@ -8,7 +8,7 @@ celeritas::handle_parameter::handle_parameter(const header& header, protobuf_mes
 {
 }
 
-void celeritas::handle_parameter::write(const google::protobuf::Message& response) const
+void celeritas::handle_parameter::write(const protobuf_message& response) const
 {
     if (const auto session_shared_ptr = session_.lock();
         session_shared_ptr != nullptr)
@@ -17,7 +17,7 @@ void celeritas::handle_parameter::write(const google::protobuf::Message& respons
     }
 }
 
-void celeritas::handle_parameter::write(const std::string& server_type, const google::protobuf::Message& request) const
+void celeritas::handle_parameter::write(const std::string& server_type, const protobuf_message& request) const
 {
     if (const auto resource_loader_shared_ptr = resource_loader_.lock();
         resource_loader_shared_ptr != nullptr)

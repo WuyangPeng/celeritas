@@ -9,16 +9,21 @@ namespace celeritas
     public:
         using class_type = header;
         using message_shared_ptr = std::shared_ptr<google::protobuf::Message>;
+        using empty_message_header_type = proto::common::empty_message_header;
+        using server_message_header_type = proto::common::server_message_header;
+        using client_message_header_type = proto::common::client_message_header;
+        using gateway_message_header_type = proto::common::gateway_message_header;
+        using to_gateway_message_header_type = proto::common::to_gateway_message_header;
 
-        explicit header(const proto::common::empty_message_header& empty_message_header);
+        explicit header(const empty_message_header_type& empty_message_header);
 
-        explicit header(const proto::common::server_message_header& server_message_header);
+        explicit header(const server_message_header_type& server_message_header);
 
-        explicit header(const proto::common::client_message_header& client_message_header);
+        explicit header(const client_message_header_type& client_message_header);
 
-        explicit header(const proto::common::gateway_message_header& gateway_message_header);
+        explicit header(const gateway_message_header_type& gateway_message_header);
 
-        explicit header(const proto::common::to_gateway_message_header& to_gateway_message_header);
+        explicit header(const to_gateway_message_header_type& to_gateway_message_header);
 
         [[nodiscard]] message_shared_ptr get_message() const;
 

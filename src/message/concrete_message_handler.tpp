@@ -13,7 +13,7 @@ std::string celeritas::concrete_message_handler<Message>::get_supported_type_nam
 }
 
 template <typename Message>
-bool celeritas::concrete_message_handler<Message>::handle(const handle_parameter& handle_parameter, const google::protobuf::Message& current_message, const message_registry_weak_ptr& message_registry)
+bool celeritas::concrete_message_handler<Message>::handle(const handle_parameter& handle_parameter, const protobuf_message& current_message, const message_registry_weak_ptr& message_registry)
 {
     const auto& concrete_message = boost::polymorphic_downcast<const Message&>(current_message);
 
@@ -62,6 +62,7 @@ bool celeritas::concrete_message_handler<Message>::handle_dispatch(const handle_
         LOG_CHANNEL(message_channel, error) << "Failed to dispatch request.";
         return false;
     }
+
     return true;
 }
 

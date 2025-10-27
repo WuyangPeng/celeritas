@@ -13,7 +13,7 @@ namespace celeritas
 
         [[nodiscard]] std::string get_supported_type_name() const override;
 
-        [[nodiscard]] bool handle(const handle_parameter& handle_parameter, const google::protobuf::Message& current_message, const message_registry_weak_ptr& message_registry) override;
+        [[nodiscard]] bool handle(const handle_parameter& handle_parameter, const protobuf_message& current_message, const message_registry_weak_ptr& message_registry) override;
 
     protected:
         using message_type = Message;

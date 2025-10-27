@@ -158,24 +158,19 @@ void celeritas::resource_loader::initialize_server_resource(io_context_type& io_
 void celeritas::resource_loader::initialize_service_registry_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
 {
     const auto service_registry = app_config_->get_service_registry_config();
-    const auto server = app_config_->get_server_config();
 
     if (!is_service_registry_)
     {
         if (!service_registry.empty())
         {
-            const auto random_index = random_helper::get_random_int(service_registry.size());
-
-            auto iter = service_registry.begin();
-            std::advance(iter, random_index);
-
-            const auto client = service_registry_loader::loader_service_registry(io_context, iter->second, network_message_callback, server.get_game_server_id(), service_registry_type.data());
+            const auto client = get_random_client(io_context, network_message_callback, service_registry);
 
             tcp_clients_.emplace_back(client);
         }
     }
     else
     {
+        const auto server = app_config_->get_server_config();
         const auto instance_id = server.get_instance_id();
         const auto game_server_id = server.get_game_server_id();
 
@@ -196,15 +191,7 @@ void celeritas::resource_loader::modify_service_registry_resource(io_context_typ
     if (const auto service_registry = app_config_->get_service_registry_config();
         !service_registry.empty())
     {
-        const auto random_index = random_helper::get_random_int(service_registry.size());
-
-        auto iter = service_registry.begin();
-        std::advance(iter, random_index);
-
-        const auto server = app_config_->get_server_config();
-        const auto client = service_registry_loader::loader_service_registry(io_context, iter->second, network_message_callback, server.get_game_server_id(), service_registry_type.data());
-
-        tcp_clients_.at(index) = client;
+        tcp_clients_.at(index) = get_random_client(io_context, network_message_callback, service_registry);
     }
 }
 
@@ -220,4 +207,15 @@ void celeritas::resource_loader::start_service_registry_timer(io_context_type& i
     service_registry_timer_ = std::make_unique<service_registry_timer>(io_context, service_registry_seconds, shared_from_this());
 
     service_registry_timer_->start(true);
+}
+
+celeritas::resource_loader::tcp_client_shared_ptr celeritas::resource_loader::get_random_client(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback, const service_registry_config_container& service_registry) const
+{
+    const auto random_index = random_helper::get_random_int(service_registry.size());
+
+    auto iter = service_registry.begin();
+    std::advance(iter, random_index);
+
+    const auto server = app_config_->get_server_config();
+    return service_registry_loader::loader_service_registry(io_context, iter->second, network_message_callback, server.get_game_server_id(), service_registry_type.data());
 }

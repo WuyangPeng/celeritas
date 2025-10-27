@@ -3,18 +3,18 @@
 
 void celeritas::message_registry::registerHandler(const base_message_handler_shared_ptr& handler)
 {
-    std::unique_lock lock{ mutex_ };
-
     const auto typeName = handler->get_supported_type_name();
+
+    std::lock_guard lock{ mutex_ };
 
     registry_[typeName] = handler;
 }
 
-bool celeritas::message_registry::dispatch(const handle_parameter& handle_parameter, const google::protobuf::Message& current_message)
+bool celeritas::message_registry::dispatch(const handle_parameter& handle_parameter, const protobuf_message& current_message)
 {
-    std::unique_lock lock{ mutex_ };
-
     const auto typeName = current_message.GetTypeName();
+
+    std::unique_lock lock{ mutex_ };
 
     if (const auto iter = registry_.find(typeName.data());
         iter != registry_.end())
