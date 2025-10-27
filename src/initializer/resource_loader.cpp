@@ -12,7 +12,6 @@
 #include "service_registry/detail/service_registry_internal_fwd.h"
 
 #include <ranges>
-#include <utility>
 
 celeritas::resource_loader::resource_loader(app_config_shared_ptr app_config)
     : app_config_{ std::move(app_config) }, listener_{}, tcp_clients_{}, is_service_registry_{ false }, check_tcp_clients_timer_interval_{}, service_registry_timer_interval_{}
