@@ -39,6 +39,16 @@ void celeritas::resource_loader::release_resource()
     }
 
     listener_.clear();
+
+    if (check_tcp_clients_timer_ != nullptr)
+    {
+        check_tcp_clients_timer_->stop();
+    }
+
+    if (service_registry_timer_ != nullptr)
+    {
+        service_registry_timer_->stop();
+    }
 }
 
 bool celeritas::resource_loader::write(const std::string& server_type, const header& header, const protobuf_message& request) const
