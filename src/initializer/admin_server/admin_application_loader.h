@@ -4,7 +4,7 @@
 
 namespace celeritas
 {
-    class admin_application_loader : public application_loader
+    class admin_application_loader final : public application_loader
     {
     public:
         using class_type = admin_application_loader;

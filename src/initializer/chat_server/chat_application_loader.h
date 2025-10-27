@@ -4,7 +4,7 @@
 
 namespace celeritas
 {
-    class chat_application_loader : public application_loader
+    class chat_application_loader final : public application_loader
     {
     public:
         using class_type = chat_application_loader;

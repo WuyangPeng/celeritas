@@ -3,8 +3,9 @@
 #include "database_pool.h"
 #include "config/database_type.h"
 
-#include <map>
 #include <mongocxx/instance.hpp>
+
+#include <map>
 
 namespace celeritas
 {

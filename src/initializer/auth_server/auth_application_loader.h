@@ -4,7 +4,7 @@
 
 namespace celeritas
 {
-    class auth_application_loader : public application_loader
+    class auth_application_loader final : public application_loader
     {
     public:
         using class_type = auth_application_loader;
