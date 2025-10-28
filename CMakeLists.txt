@@ -48,8 +48,19 @@ else ()
 endif ()
 
 set(BOOST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost")
-set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf")
-set(MONGO_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo")
+
+if (MSVC)
+
+    set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf")
+    set(MONGO_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/msvc_mongo")
+
+else ()
+
+    set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf")
+    set(MONGO_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo")
+
+endif ()
+
 set(HIREDIS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis")
 set(OPENSSL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl")
 
@@ -206,7 +217,15 @@ add_library(mongo INTERFACE)
 
 link_directories(${MONGO_DIR}/${LIB_DIRECTORY})
 
-target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
+if (MSVC)
+
+    target_link_libraries(mongo INTERFACE bsoncxx-v_noabi-rhi-md mongocxx-v_noabi-rhi-md)
+
+else ()
+
+    target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
+
+endif ()
 
 # 包含hiredis库
 add_library(redis INTERFACE)
