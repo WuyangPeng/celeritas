@@ -101,7 +101,7 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_
 
     LOG_CHANNEL(network_channel, trace) << "params:  " << params << std::endl;
 
-    auto session = get_session();
+    const auto session = get_session();
 
     if (const auto callback = session_callback_.get_network_message_callback_shared_ptr();
         callback != nullptr && session != nullptr)

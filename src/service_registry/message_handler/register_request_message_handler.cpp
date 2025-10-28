@@ -8,7 +8,7 @@ bool celeritas::register_request_message_handler::handle_concrete(const handle_p
     service_info::protocol_port_container protocol_port_container{};
     for (const auto& element : current_message.port())
     {
-        protocol_port_container.emplace_back(protocol_port{ static_cast<server_network_type>(element.protocol()), element.port() });
+        protocol_port_container.emplace_back(static_cast<server_network_type>(element.protocol()), element.port());
     }
 
     const service_info service_info{ current_message.instance_id(),

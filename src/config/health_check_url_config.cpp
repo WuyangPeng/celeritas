@@ -4,3 +4,8 @@ celeritas::health_check_url_config::health_check_url_config(std::string url, con
     : url_{ std::move(url) }, interval_{ interval }, timeout_{ timeout }
 {
 }
+
+std::string celeritas::health_check_url_config::get_url() const
+{
+    return url_;
+}

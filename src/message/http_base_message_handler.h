@@ -1,0 +1,33 @@
+﻿#pragma once
+
+#include "http_handle_parameter.h"
+#include "http_message_registry.h"
+
+#include <string>
+
+namespace celeritas
+{
+    class http_base_message_handler
+    {
+    public:
+        using class_type = http_base_message_handler;
+        using http_message_registry_weak_ptr = std::weak_ptr<http_message_registry>;
+        using session_shared_ptr = std::shared_ptr<session>;
+
+        http_base_message_handler() noexcept = default;
+
+        virtual ~http_base_message_handler() noexcept = default;
+
+        http_base_message_handler(const http_base_message_handler& rhs) = default;
+
+        http_base_message_handler& operator=(const http_base_message_handler& rhs) = default;
+
+        http_base_message_handler(http_base_message_handler&& rhs) noexcept = default;
+
+        http_base_message_handler& operator=(http_base_message_handler&& rhs) noexcept = default;
+
+        [[nodiscard]] virtual std::string get_supported_type_name() const = 0;
+
+        [[nodiscard]] virtual bool handle(const http_handle_parameter& handle_parameter, const http_message_registry_weak_ptr& message_registry) = 0;
+    };
+}

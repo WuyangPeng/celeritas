@@ -6,6 +6,8 @@
 #include "network/network_fwd.h"
 #include "initializer/initializer_fwd.h"
 
+#include <boost/url.hpp>
+
 namespace celeritas
 {
     class application_loader
@@ -19,6 +21,7 @@ namespace celeritas
         using session_shared_ptr = std::shared_ptr<session>;
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader>;
         using protobuf_message = google::protobuf::Message;
+        using urls_params_view_type = boost::urls::params_view;
 
         explicit application_loader(app_config_shared_ptr app_config);
 
@@ -40,20 +43,26 @@ namespace celeritas
 
         [[nodiscard]] bool dispatch(const header& header, const protobuf_message& current_message, const protobuf_message_shared_ptr& request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 
+        [[nodiscard]] bool dispatch(const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
+
         [[nodiscard]] message_registry_weak_ptr get_message_registry();
 
     private:
         using worker_pool_unique_ptr = std::unique_ptr<worker_pool>;
         using message_registry_shared_ptr = std::shared_ptr<message_registry>;
+        using http_message_registry_shared_ptr = std::shared_ptr<http_message_registry>;
 
         void initialize_worker_pool();
 
         void initialize_message_registry();
+
+        void initialize_health_check();
 
         virtual void service_initialize_application() = 0;
 
         app_config_shared_ptr app_config_;
         worker_pool_unique_ptr worker_pool_;
         message_registry_shared_ptr message_registry_;
+        http_message_registry_shared_ptr http_message_registry_;
     };
 }

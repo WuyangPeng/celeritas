@@ -13,6 +13,8 @@ namespace celeritas
 
         health_check_url_config(std::string url, int interval, int timeout);
 
+        [[nodiscard]] std::string get_url() const;
+
     private:
         std::string url_;
         int interval_ = 0;
