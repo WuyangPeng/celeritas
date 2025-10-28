@@ -20,6 +20,8 @@ namespace celeritas
 
         [[nodiscard]] std::string get_path() const;
 
+        void write(const std::string& response) const;
+
     private:
         using session_weak_ptr = std::weak_ptr<session>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader>;

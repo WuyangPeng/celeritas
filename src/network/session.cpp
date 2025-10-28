@@ -40,6 +40,17 @@ void celeritas::session::write(const header& header, const google::protobuf::Mes
     do_write(std::move(buffer_guard));
 }
 
+void celeritas::session::write(const std::string& response)
+{
+    const auto total_size = response.size();
+    buffer_guard buffer_guard{ buffer_pool::acquire(total_size) };
+    buffer_guard.set_effective_size(total_size);
+
+    std::memcpy(buffer_guard.get(), response.c_str(), total_size);
+
+    do_write(std::move(buffer_guard));
+}
+
 int64_t celeritas::session::get_session_id() const noexcept
 {
     return session_id_;
