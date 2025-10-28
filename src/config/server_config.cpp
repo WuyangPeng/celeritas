@@ -15,17 +15,17 @@ celeritas::server_config::server_network_config_const_iterator celeritas::server
     return server_network_config_.end();
 }
 
-std::string celeritas::server_config::get_instance_id() const noexcept
+std::string celeritas::server_config::get_instance_id() const
 {
     return instance_id_;
 }
 
-std::string celeritas::server_config::get_game_server_id() const noexcept
+std::string celeritas::server_config::get_game_server_id() const
 {
     return game_server_id_;
 }
 
-std::string celeritas::server_config::get_service_name() const noexcept
+std::string celeritas::server_config::get_service_name() const
 {
     return service_name_;
 }

@@ -22,11 +22,11 @@ namespace celeritas
 
         [[nodiscard]] server_network_config_const_iterator end() const noexcept;
 
-        [[nodiscard]] std::string get_instance_id() const noexcept;
+        [[nodiscard]] std::string get_instance_id() const;
 
-        [[nodiscard]] std::string get_game_server_id() const noexcept;
+        [[nodiscard]] std::string get_game_server_id() const;
 
-        [[nodiscard]] std::string get_service_name() const noexcept;
+        [[nodiscard]] std::string get_service_name() const;
 
         [[nodiscard]] bool is_service_registry_server() const;
 
