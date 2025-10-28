@@ -69,7 +69,7 @@ celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write
     auto header =
         "HTTP/1.1 200 OK\r\n"
         "Content-Length: " + std::to_string(body_size) + "\r\n"
-        "Content-Type: application/octet-stream\r\n"
+        "Content-Type: text/html; charset=utf-8\r\n"
         "Connection: keep-alive\r\n"
         "\r\n";
 
