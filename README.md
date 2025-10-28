@@ -21,6 +21,18 @@
 - mongo v4.1
 - hiredis v1.3.0
 
+## lib（静态库）:
+
+- server 服务器
+- initializer 初始化
+- service_registry 服务注册
+- network 网络
+- database 数据库
+- message 消息
+- worker_pool 工作池
+- config 配置
+- common 通用
+
 ## Server（服务器）:
 
 - service registry 服务注册中心

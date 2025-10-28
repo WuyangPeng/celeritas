@@ -239,11 +239,11 @@ target_link_libraries(celeritas_lib INTERFACE
         server
         initializer
         service_registry
-        config
-        database
-        worker_pool
-        message
         network
+        database
+        message
+        worker_pool
+        config
         common
         boost
         openssl
