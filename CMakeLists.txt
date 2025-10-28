@@ -15,6 +15,10 @@ if (!MSVC)
     # 共享库不允许未定义符号
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,defs")
 
+else ()
+
+    add_compile_definitions(_WIN32_WINNT=0x0A00)
+
 endif ()
 
 if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
