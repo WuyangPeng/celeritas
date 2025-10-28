@@ -51,7 +51,7 @@ set(BOOST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost")
 
 if (MSVC)
 
-    set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf")
+    set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/msvc_protobuf")
     set(MONGO_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/msvc_mongo")
 
 else ()
@@ -195,12 +195,16 @@ add_library(proto_generated ${PROTO_SRCS_GENERATED})
 add_library(proto INTERFACE)
 
 if (MSVC)
+    
+    add_compile_definitions(PROTOBUF_USE_DLLS)
+    add_compile_definitions(ABSL_CONSUME_DLL)
 
     link_directories(${PROTOBUF_DIR}/${LIB_DIRECTORY})
 
     target_link_libraries(proto INTERFACE
             libprotobuf
-            abseil_dll)
+            abseil_dll
+    )
 
 else ()
 
