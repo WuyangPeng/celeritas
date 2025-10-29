@@ -33,11 +33,13 @@ if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
 
     set(BUILD_TYPE_DIRECTORY debug)
     set(BUILD_LIB_SUFFIX d)
+    set(BUILD_LIB_TYPE d)
 
 else ()
 
     set(BUILD_TYPE_DIRECTORY release)
     set(BUILD_LIB_SUFFIX)
+    set(BUILD_LIB_TYPE r)
 
 endif ()
 
@@ -217,11 +219,15 @@ link_directories(${MONGO_DIR}/${LIB_DIRECTORY})
 
 if (MSVC)
 
-    target_link_libraries(mongo INTERFACE bsoncxx-v_noabi-rhi-md mongocxx-v_noabi-rhi-md)
+    target_link_libraries(mongo INTERFACE
+            bsoncxx-v_noabi-${BUILD_LIB_TYPE}hi-md${BUILD_LIB_SUFFIX}
+            mongocxx-v_noabi-${BUILD_LIB_TYPE}hi-md${BUILD_LIB_SUFFIX})
 
 else ()
 
-    target_link_libraries(mongo INTERFACE bsoncxx mongocxx)
+    target_link_libraries(mongo INTERFACE
+            bsoncxx
+            mongocxx)
 
 endif ()
 
