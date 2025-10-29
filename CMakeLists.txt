@@ -353,8 +353,8 @@ else ()
 
     file(GLOB _dlls
             "${BOOST_DIR}/stage/lib/*.so*"
-            "${PROTOBUF_DIR}/lib64/*.so*"
-            "${MONGO_DIR}/lib64/*.so*"
+            "${PROTOBUF_DIR}/${LIB_DIRECTORY}/*.so*"
+            "${MONGO_DIR}/${LIB_DIRECTORY}/*.so*"
             "${HIREDIS_DIR}/build/${BUILD_TYPE_DIRECTORY}/libhiredis${BUILD_LIB_SUFFIX}.so*")
 endif ()
 
