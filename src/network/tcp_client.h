@@ -48,6 +48,11 @@ namespace celeritas
         void remove_session(int64_t session_id) override;
 
     private:
+        using basic_resolver_results_type = boost::asio::ip::basic_resolver_results<boost::asio::ip::tcp>;
+        using basic_resolver_results_waitable_type = boost::asio::awaitable<basic_resolver_results_type>;
+
+        [[nodiscard]] basic_resolver_results_waitable_type get_end_points() const;
+
         [[nodiscard]] void_waitable_type do_connect();
 
         io_context_type& io_context_;
