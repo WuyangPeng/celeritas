@@ -3,6 +3,7 @@
 #include "buffer_pool_data.h"
 
 #include <string>
+#include <span>
 
 namespace celeritas
 {
@@ -10,6 +11,7 @@ namespace celeritas
     {
     public:
         using class_type = buffer_guard;
+        using source_type = std::span<const char>;
 
         buffer_guard() noexcept = default;
 
@@ -40,6 +42,8 @@ namespace celeritas
         [[nodiscard]] char* get(size_t offset);
 
         void set(const std::string& response);
+
+        void set(const source_type& source);
 
     private:
         buffer_pool_data buffer_data_;

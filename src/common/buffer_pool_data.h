@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <span>
 #include <string>
 #include <vector>
 
@@ -10,6 +11,7 @@ namespace celeritas
     {
     public:
         using class_type = buffer_pool_data;
+        using source_type = std::span<const char>;
 
         buffer_pool_data() noexcept = default;
 
@@ -26,6 +28,8 @@ namespace celeritas
         [[nodiscard]] char* get(size_t offset);
 
         void set(const std::string& response);
+
+        void set(const source_type& source);
 
     private:
         using data_container = std::vector<char>;

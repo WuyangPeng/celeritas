@@ -69,3 +69,8 @@ void celeritas::buffer_guard::set(const std::string& response)
 {
     buffer_data_.set(response);
 }
+
+void celeritas::buffer_guard::set(const source_type& source)
+{
+    buffer_data_.set(source);
+}

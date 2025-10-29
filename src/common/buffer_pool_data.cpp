@@ -58,3 +58,13 @@ void celeritas::buffer_pool_data::set(const std::string& response)
 
     throw celeritas_error("response size is larger than the buffer size.");
 }
+
+void celeritas::buffer_pool_data::set(const source_type& source)
+{
+    if (is_effective() && source.size() <= data_.size())
+    {
+        std::ranges::copy(source, data_.begin());
+    }
+
+    throw celeritas_error("source size is larger than the buffer size.");
+}
