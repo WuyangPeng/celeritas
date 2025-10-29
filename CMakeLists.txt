@@ -17,7 +17,7 @@ if (!MSVC)
 
 else ()
 
-    add_compile_definitions(_WIN32_WINNT=0x0A00)
+    #add_compile_definitions(_WIN32_WINNT=0x0A00)
 
 endif ()
 
@@ -51,7 +51,16 @@ set(BOOST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost")
 
 if (MSVC)
 
-    set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/msvc_protobuf")
+    if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
+
+        set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/msvc_protobuf_debug")
+
+    else ()
+
+        set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/msvc_protobuf")
+
+    endif ()
+
     set(MONGO_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/msvc_mongo")
 
 else ()
@@ -195,7 +204,7 @@ add_library(proto_generated ${PROTO_SRCS_GENERATED})
 add_library(proto INTERFACE)
 
 if (MSVC)
-    
+
     add_compile_definitions(PROTOBUF_USE_DLLS)
     add_compile_definitions(ABSL_CONSUME_DLL)
 
