@@ -10,7 +10,7 @@ bool celeritas::discover_request_message_handler::handle_concrete(const handle_p
     const auto services = service_registry::get_services(current_message.service_name());
 
     proto::celeritas response{};
-    auto* discover_response = response.mutable_celeritas_response()->mutable_service()->mutable_registry()->mutable_discover();
+    auto* discover_response = response.mutable_celeritas_response()->mutable_service()->mutable_registry()->mutable_server_discover();
 
     for (const auto& service : services)
     {

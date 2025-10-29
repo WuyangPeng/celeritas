@@ -16,6 +16,9 @@ message register_request {
   repeated protocol_port port = 5;
 }
 
+message register_response {
+}
+
 // 定义服务发现消息
 message discover_request {
   string service_name = 1;
@@ -39,6 +42,7 @@ message service_registry_request {
 
 message service_registry_response {
   oneof payload {
-    discover_response discover = 2;
+    register_response server_register = 1;
+    discover_response server_discover = 2;
   }
 }
