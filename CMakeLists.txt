@@ -192,8 +192,7 @@ if (MSVC)
 
     target_link_libraries(proto INTERFACE
             libprotobuf${BUILD_LIB_SUFFIX}
-            abseil_dll
-    )
+            abseil_dll)
 
 else ()
 

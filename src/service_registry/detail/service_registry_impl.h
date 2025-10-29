@@ -1,8 +1,8 @@
 ﻿#pragma once
 
+#include "common/common_fwd.h"
 #include "service_registry/service_info.h"
 
-#include <boost/asio/steady_timer.hpp>
 #include <boost/log/trivial.hpp>
 #include <shared_mutex>
 #include <unordered_map>
@@ -34,24 +34,15 @@ namespace celeritas
 
         void start_cleanup_timer(io_context_type& io_context);
 
+        void cleanup_services_by_duration();
+
     private:
         using registry_type = std::unordered_map<std::string, service_info>;
-        using self_shared_ptr = std::shared_ptr<service_registry_impl>;
-        using steady_timer_type = boost::asio::steady_timer;
-        using steady_timer_unique_ptr = std::unique_ptr<steady_timer_type>;
         using registry_type_iterator = registry_type::iterator;
-        using error_code_type = boost::system::error_code;
+        using cleanup_timer_shared_ptr = std::shared_ptr<timer_base>;
         using seconds_type = std::chrono::seconds;
         using time_point_type = service_info::time_point_type;
         using severity_level_type = boost::log::trivial::severity_level;
-
-        void start_cleanup_timer(const self_shared_ptr& self) const;
-
-        void cleanup_expired_services(const error_code_type& error_code);
-
-        void process_cleanup_logic();
-
-        void cleanup_services_by_duration();
 
         [[nodiscard]] static bool cleanup_service_entry(const registry_type_iterator& iter, const time_point_type& now);
 
@@ -59,6 +50,7 @@ namespace celeritas
 
         registry_type registry_;
         std::shared_mutex mutex_;
-        steady_timer_unique_ptr cleanup_timer_interval_;
+        std::shared_mutex cleanup_timer_mutex_;
+        cleanup_timer_shared_ptr cleanup_timer_;
     };
 }

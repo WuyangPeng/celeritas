@@ -46,11 +46,11 @@ void celeritas::service_info::set_last_heartbeat()
 
 int celeritas::service_info::get_port(const server_network_type server_network_type) const
 {
-    for (const auto& element : protocol_port_)
+    for (const auto& protocol_port : protocol_port_)
     {
-        if (element.get_server_network_type() == server_network_type)
+        if (protocol_port.get_server_network_type() == server_network_type)
         {
-            return element.get_port();
+            return protocol_port.get_port();
         }
     }
 

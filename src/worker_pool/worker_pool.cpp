@@ -1,5 +1,6 @@
 ﻿#include "worker_pool.h"
 #include "common/logger.h"
+#include "common/noexcept_safe_call_and_log.h"
 
 celeritas::worker_pool::worker_pool(const int num_threads)
 {
@@ -11,7 +12,11 @@ celeritas::worker_pool::worker_pool(const int num_threads)
 
 celeritas::worker_pool::~worker_pool() noexcept
 {
-    queue_.stop();
+    noexcept_safe_call_and_log([this] {
+                                   this->queue_.stop();
+                               },
+                               worker_pool_channel,
+                               "Error while stopping thread_safe_queue: ");
 }
 
 void celeritas::worker_pool::submit(task_type task)
