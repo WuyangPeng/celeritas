@@ -14,6 +14,7 @@ namespace celeritas
     public:
         using class_type = session;
         using void_awaitable_type = boost::asio::awaitable<void>;
+        using protobuf_message_type = google::protobuf::Message;
 
         session(int64_t session_id, session_callback session_callback);
 
@@ -32,7 +33,7 @@ namespace celeritas
 
         virtual void stop() = 0;
 
-        void write(const header& header, const google::protobuf::Message& response);
+        void write(const header& header, const protobuf_message_type& response);
 
         void write(const std::string& response);
 

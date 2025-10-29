@@ -6,6 +6,11 @@ celeritas::buffer_guard::buffer_guard(buffer_pool_data buffer_data)
 {
 }
 
+celeritas::buffer_guard::buffer_guard(buffer_pool_data buffer_data, size_t effective_size)
+    : buffer_data_{ std::move(buffer_data) }, effective_size_{ effective_size }
+{
+}
+
 celeritas::buffer_guard::~buffer_guard() noexcept
 {
     if (buffer_data_.is_effective())

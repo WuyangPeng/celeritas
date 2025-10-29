@@ -13,6 +13,8 @@ namespace celeritas
 
         explicit buffer_guard(buffer_pool_data buffer_data);
 
+        buffer_guard(buffer_pool_data buffer_data, size_t effective_size);
+
         ~buffer_guard() noexcept;
 
         buffer_guard(const buffer_guard& rhs) = delete;

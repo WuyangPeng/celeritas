@@ -32,9 +32,9 @@ namespace celeritas
         // 启动会话处理协程
         void start() override;
 
-        [[nodiscard]] bool is_open() const override;
-
         void stop() override;
+
+        [[nodiscard]] bool is_open() const override;
 
     private:
         using session_write_shared_ptr = std::shared_ptr<session_write>;

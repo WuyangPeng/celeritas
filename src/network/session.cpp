@@ -8,7 +8,7 @@ celeritas::session::session(const int64_t session_id, session_callback session_c
 {
 }
 
-void celeritas::session::write(const header& header, const google::protobuf::Message& response)
+void celeritas::session::write(const header& header, const protobuf_message_type& response)
 {
     const auto header_request = header.get_message();
 
@@ -17,8 +17,7 @@ void celeritas::session::write(const header& header, const google::protobuf::Mes
     const auto header_size = message_header::get_self_size();
 
     const auto total_size = message_header.get_total_size() + header_size;
-    buffer_guard buffer_guard{ buffer_pool::acquire(total_size) };
-    buffer_guard.set_effective_size(total_size);
+    buffer_guard buffer_guard{ buffer_pool::acquire(total_size), total_size };
 
     message_header.host_to_network();
 
@@ -43,8 +42,8 @@ void celeritas::session::write(const header& header, const google::protobuf::Mes
 void celeritas::session::write(const std::string& response)
 {
     const auto total_size = response.size();
-    buffer_guard buffer_guard{ buffer_pool::acquire(total_size) };
-    buffer_guard.set_effective_size(total_size);
+
+    buffer_guard buffer_guard{ buffer_pool::acquire(total_size), total_size };
 
     std::memcpy(buffer_guard.get(), response.c_str(), total_size);
 
