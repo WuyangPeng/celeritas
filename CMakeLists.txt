@@ -6,7 +6,11 @@ project(celeritas)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if (!MSVC)
+if (MSVC)
+
+    add_compile_definitions(_WIN32_WINNT=0x0A00)
+
+else ()
 
     # 编译选项和符号可见性
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -fvisibility=hidden")
@@ -14,10 +18,6 @@ if (!MSVC)
 
     # 共享库不允许未定义符号
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,defs")
-
-else ()
-
-    #add_compile_definitions(_WIN32_WINNT=0x0A00)
 
 endif ()
 
@@ -211,7 +211,7 @@ if (MSVC)
     link_directories(${PROTOBUF_DIR}/${LIB_DIRECTORY})
 
     target_link_libraries(proto INTERFACE
-            libprotobuf
+            libprotobuf${BUILD_LIB_SUFFIX}
             abseil_dll
     )
 
