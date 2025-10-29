@@ -21,8 +21,7 @@ void celeritas::session::write(const header& header, const protobuf_message_type
 
     message_header.host_to_network();
 
-    const auto source = std::span{ reinterpret_cast<const char*>(&message_header), 1 };
-    buffer_guard.set(source);
+    buffer_guard.set(message_header.get_span());
 
     if (!header_request->SerializeToArray(buffer_guard.get(header_size), boost::numeric_cast<int>(header_request->ByteSizeLong())))
     {

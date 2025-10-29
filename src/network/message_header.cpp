@@ -49,3 +49,8 @@ void celeritas::message_header::host_to_network()
     header_size = htons(header_size);
     body_size = htonl(body_size);
 }
+
+celeritas::message_header::source_type celeritas::message_header::get_span() const
+{
+    return std::span{ reinterpret_cast<const char*>(this), get_self_size() };
+}

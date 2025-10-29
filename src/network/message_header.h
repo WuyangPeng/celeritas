@@ -9,6 +9,7 @@ namespace celeritas
     {
     public:
         using class_type = message_header;
+        using source_type = std::span<const char>;
 
         message_header() noexcept = default;
 
@@ -29,6 +30,8 @@ namespace celeritas
         void network_to_host();
 
         void host_to_network();
+
+        [[nodiscard]] source_type get_span() const;
 
     private:
         uint16_t header_type = 0;
