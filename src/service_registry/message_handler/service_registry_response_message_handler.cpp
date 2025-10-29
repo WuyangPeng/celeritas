@@ -1,4 +1,5 @@
 ﻿#include "service_registry_response_message_handler.h"
+#include "message/concrete_message_handler.tpp"
 
 celeritas::service_registry_response_message_handler::service_registry_response_message_handler()
 {
