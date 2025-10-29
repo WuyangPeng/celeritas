@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "listener_sessions_base.h"
 #include "network/network_fwd.h"
 
 #include <boost/asio/awaitable.hpp>
@@ -8,7 +9,7 @@
 
 namespace celeritas
 {
-    class listener_sessions : public std::enable_shared_from_this<listener_sessions>
+    class listener_sessions : public listener_sessions_base
     {
     public:
         using class_type = listener_sessions;
@@ -39,6 +40,8 @@ namespace celeritas
         [[nodiscard]] int64_t get_next_session_id() noexcept;
 
         void add_session(const session_shared_ptr& session);
+
+        [[nodiscard]] session_shared_ptr get_session(int64_t id);
 
     private:
         using session_type_container_type = std::map<int64_t, session_shared_ptr>;

@@ -2,16 +2,20 @@
 #include "tcp_client.h"
 #include "common/logger.h"
 
-celeritas::tcp_client::tcp_client(io_context_type& io_context, network_message_callback_weak_ptr callback, std::string game_server_id, std::string host, int port, std::string server_type)
+celeritas::tcp_client::tcp_client(io_context_type& io_context,
+                                  network_message_callback_weak_ptr callback,
+                                  std::string game_server_id,
+                                  std::string host,
+                                  const int port,
+                                  std::string server_type)
     : base_type{},
       io_context_{ io_context },
       network_message_callback_{ std::move(callback) },
       game_server_id_{ std::move(game_server_id) },
-      session_id_{ 0 },
-      session_{},
       host_{ std::move(host) },
       port_{ port },
-      server_type_{ std::move(server_type) }
+      server_type_{ std::move(server_type) },
+      session_{}
 {
 }
 
@@ -31,11 +35,6 @@ celeritas::tcp_client::session_waitable_type celeritas::tcp_client::connect()
     }
 
     co_return session_;
-}
-
-bool celeritas::tcp_client::is_open() const
-{
-    return session_ != nullptr && session_->is_open();
 }
 
 std::string celeritas::tcp_client::get_host() const
@@ -58,11 +57,24 @@ celeritas::listener_sessions::network_message_callback_weak_ptr celeritas::tcp_c
     return network_message_callback_;
 }
 
-void celeritas::tcp_client::write(const header& header, const google::protobuf::Message& request)
+void celeritas::tcp_client::write(const header& header, const protobuf_message& request)
 {
     if (is_open())
     {
         session_->write(header, request);
+    }
+}
+
+bool celeritas::tcp_client::is_open() const
+{
+    return session_ != nullptr && session_->is_open();
+}
+
+void celeritas::tcp_client::remove_session(const int64_t session_id)
+{
+    if (session_id == session_id_)
+    {
+        session_.reset();
     }
 }
 
@@ -86,7 +98,7 @@ celeritas::tcp_client::void_waitable_type celeritas::tcp_client::do_connect()
 
     // 创建一个新的会话并返回
     session_ = std::make_shared<session_type>(std::move(socket),
-                                              ++session_id_,
+                                              session_id_,
                                               game_server_id_,
                                               session_callback{ shared_from_this(), network_message_callback_ });
 

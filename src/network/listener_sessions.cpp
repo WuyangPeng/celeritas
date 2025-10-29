@@ -1,5 +1,6 @@
 ﻿#include "listener_sessions.h"
 #include "session.h"
+#include "common/celeritas_error.h"
 
 void celeritas::listener_sessions::remove_session(const int64_t session_id)
 {
@@ -24,4 +25,15 @@ int64_t celeritas::listener_sessions::get_next_session_id() noexcept
 void celeritas::listener_sessions::add_session(const session_shared_ptr& session)
 {
     sessions_[session->get_session_id()] = session;
+}
+
+celeritas::listener_sessions::session_shared_ptr celeritas::listener_sessions::get_session(const int64_t id)
+{
+    const auto iter = sessions_.find(id);
+    if (iter == sessions_.cend())
+    {
+        throw celeritas_error("no session found for id " + std::to_string(id));
+    }
+
+    return iter->second;
 }

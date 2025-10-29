@@ -15,7 +15,6 @@ namespace celeritas
     public:
         using class_type = websocket_session;
         using base_type = session;
-
         using socket_type = boost::asio::ip::tcp::socket;
 
         websocket_session(socket_type socket,
