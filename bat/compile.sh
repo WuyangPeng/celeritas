@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e  # 任何命令失败就退出脚本
+
 cd ..
 
 mkdir -p build-debug build-release
