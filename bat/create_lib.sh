@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 获取脚本的绝对路径
 script_path="$(readlink -f "$0")"
 
