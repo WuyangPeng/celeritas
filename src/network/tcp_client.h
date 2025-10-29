@@ -41,7 +41,7 @@ namespace celeritas
 
         [[nodiscard]] network_message_callback_weak_ptr get_network_message_callback();
 
-        void write(const header& header, const protobuf_message& request);
+        void write(const header& header, const protobuf_message& request) const;
 
         [[nodiscard]] bool is_open() const;
 

@@ -1,4 +1,6 @@
 ﻿#include "websocket_session.h"
+#include "common/logger.h"
+#include "common/noexcept_safe_call_and_log.h"
 #include "detail/websocket_session_run.h"
 #include "detail/websocket_session_write.h"
 
@@ -14,9 +16,37 @@ celeritas::websocket_session::websocket_session(socket_type socket,
     set_option(game_server_id);
 }
 
+celeritas::websocket_session::~websocket_session() noexcept
+{
+    noexcept_safe_call_and_log([this] {
+                                   this->stop();
+                               },
+                               network_channel,
+                               "closed websocket session error: ");
+}
+
 void celeritas::websocket_session::start()
 {
     websocket_run_->start(shared_from_this());
+}
+
+void celeritas::websocket_session::stop()
+{
+    if (is_open())
+    {
+        // WebSocket 正常或异常关闭后，执行 TCP 层的关闭
+        boost::system::error_code error_code{};
+        websocket_.close(beast_websocket::close_code::normal, error_code);
+
+        if (error_code)
+        {
+            LOG_CHANNEL(network_channel, info) << "web socket session [" << get_session_id() << "] terminated error, code = " << error_code.message();
+        }
+        else
+        {
+            LOG_CHANNEL(network_channel, info) << "web socket session [" << get_session_id() << "] terminated.";
+        }
+    }
 }
 
 bool celeritas::websocket_session::is_open() const

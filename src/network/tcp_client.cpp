@@ -57,7 +57,7 @@ celeritas::listener_sessions::network_message_callback_weak_ptr celeritas::tcp_c
     return network_message_callback_;
 }
 
-void celeritas::tcp_client::write(const header& header, const protobuf_message& request)
+void celeritas::tcp_client::write(const header& header, const protobuf_message& request) const
 {
     if (is_open())
     {
@@ -74,6 +74,7 @@ void celeritas::tcp_client::remove_session(const int64_t session_id)
 {
     if (session_id == session_id_)
     {
+        session_->stop();
         session_.reset();
     }
 }

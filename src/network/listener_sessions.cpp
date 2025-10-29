@@ -4,7 +4,12 @@
 
 void celeritas::listener_sessions::remove_session(const int64_t session_id)
 {
-    sessions_.erase(session_id);
+    if (const auto iter = sessions_.find(session_id);
+        iter != sessions_.cend())
+    {
+        iter->second->stop();
+        sessions_.erase(iter);
+    }
 }
 
 void celeritas::listener_sessions::set_stop()

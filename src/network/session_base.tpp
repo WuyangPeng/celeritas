@@ -3,6 +3,7 @@
 #include "session_base.h"
 #include "detail/tcp_session_run.tpp"
 #include "detail/tcp_session_write.tpp"
+#include "common/noexcept_safe_call_and_log.h"
 
 template <typename SocketType>
 celeritas::session_base<SocketType>::session_base(socket_type socket,
@@ -18,6 +19,16 @@ celeritas::session_base<SocketType>::session_base(socket_type socket,
 }
 
 template <typename SocketType>
+celeritas::session_base<SocketType>::~session_base() noexcept
+{
+    noexcept_safe_call_and_log([this] {
+                                   this->stop();
+                               },
+                               network_channel,
+                               "closed tcp session error: ");
+}
+
+template <typename SocketType>
 void celeritas::session_base<SocketType>::start()
 {
     session_run_->start(shared_from_this());
@@ -27,6 +38,15 @@ template <typename SocketType>
 bool celeritas::session_base<SocketType>::is_open() const
 {
     return socket_.is_open();
+}
+
+template <typename SocketType>
+void celeritas::session_base<SocketType>::stop()
+{
+    if (is_open())
+    {
+        socket_.close();
+    }
 }
 
 template <typename SocketType>

@@ -22,8 +22,20 @@ namespace celeritas
                           const std::string& game_server_id,
                           session_callback session_callback);
 
+        ~websocket_session() noexcept override;
+
+        websocket_session(const websocket_session& rhs) = delete;
+
+        websocket_session& operator=(const websocket_session& rhs) = delete;
+
+        websocket_session(websocket_session&& rhs) noexcept = delete;
+
+        websocket_session& operator=(websocket_session&& rhs) noexcept = delete;
+
         // 启动会话处理协程
         void start() override;
+
+        void stop() override;
 
         [[nodiscard]] bool is_open() const override;
 

@@ -21,10 +21,22 @@ namespace celeritas
                      std::string game_server_id,
                      session_callback session_callback);
 
+        ~http_session() noexcept override;
+
+        http_session(const websocket_session& rhs) = delete;
+
+        http_session& operator=(const http_session& rhs) = delete;
+
+        http_session(http_session&& rhs) noexcept = delete;
+
+        http_session& operator=(http_session&& rhs) noexcept = delete;
+
         // 启动会话处理协程
         void start() override;
 
         [[nodiscard]] bool is_open() const override;
+
+        void stop() override;
 
     private:
         using session_run_shared_ptr = std::shared_ptr<session_run>;

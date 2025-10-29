@@ -30,6 +30,8 @@ namespace celeritas
         // 启动会话处理协程
         virtual void start() = 0;
 
+        virtual void stop() = 0;
+
         void write(const header& header, const google::protobuf::Message& response);
 
         void write(const std::string& response);
