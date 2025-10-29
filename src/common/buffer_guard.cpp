@@ -64,3 +64,8 @@ char* celeritas::buffer_guard::get(const size_t offset)
 {
     return buffer_data_.get(offset);
 }
+
+void celeritas::buffer_guard::set(const std::string& response)
+{
+    buffer_data_.set(response);
+}

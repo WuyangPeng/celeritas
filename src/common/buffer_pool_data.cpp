@@ -1,6 +1,9 @@
 ﻿#include "buffer_pool_data.h"
 #include "celeritas_error.h"
 
+#include <algorithm>
+#include <ranges>
+
 celeritas::buffer_pool_data::buffer_pool_data(size_t size)
     : data_(size)
 {
@@ -44,4 +47,14 @@ char* celeritas::buffer_pool_data::get(const size_t offset)
     }
 
     throw celeritas_error("unsupported buffer pool data offset");
+}
+
+void celeritas::buffer_pool_data::set(const std::string& response)
+{
+    if (is_effective() && response.size() <= data_.size())
+    {
+        std::ranges::copy(std::views::all(response), data_.begin());
+    }
+
+    throw celeritas_error("response size is larger than the buffer size.");
 }

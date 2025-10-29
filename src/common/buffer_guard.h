@@ -2,6 +2,8 @@
 
 #include "buffer_pool_data.h"
 
+#include <string>
+
 namespace celeritas
 {
     class buffer_guard
@@ -36,6 +38,8 @@ namespace celeritas
         void set_effective_size(size_t size);
 
         [[nodiscard]] char* get(size_t offset);
+
+        void set(const std::string& response);
 
     private:
         buffer_pool_data buffer_data_;

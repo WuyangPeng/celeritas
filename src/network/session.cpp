@@ -45,7 +45,7 @@ void celeritas::session::write(const std::string& response)
 
     buffer_guard buffer_guard{ buffer_pool::acquire(total_size), total_size };
 
-    std::memcpy(buffer_guard.get(), response.c_str(), total_size);
+    buffer_guard.set(response);
 
     do_write(std::move(buffer_guard));
 }

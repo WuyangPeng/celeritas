@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <string>
 #include <vector>
 
 namespace celeritas
@@ -23,6 +24,8 @@ namespace celeritas
         [[nodiscard]] bool is_effective() const noexcept;
 
         [[nodiscard]] char* get(size_t offset);
+
+        void set(const std::string& response);
 
     private:
         using data_container = std::vector<char>;
