@@ -6,29 +6,6 @@ project(celeritas)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if (MSVC)
-
-    add_compile_definitions(_WIN32_WINNT=0x0A00)
-
-    set(LIB_DIRECTORY lib)
-    set(BIN_DIRECTORY bin)
-    set(LIB_PREFIX lib)
-
-else ()
-
-    # 编译选项和符号可见性
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -fvisibility=hidden")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -fvisibility=hidden")
-
-    # 共享库不允许未定义符号
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,defs")
-
-    set(LIB_DIRECTORY lib64)
-    set(BIN_DIRECTORY bin64)
-    set(LIB_PREFIX)
-
-endif ()
-
 if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
 
     set(BUILD_TYPE_DIRECTORY debug)
@@ -43,20 +20,36 @@ else ()
 
 endif ()
 
-set(BOOST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost")
-
 if (MSVC)
 
-    set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/msvc_protobuf_${BUILD_TYPE_DIRECTORY}")
-    set(MONGO_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/msvc_mongo_${BUILD_TYPE_DIRECTORY}")
+    add_compile_definitions(_WIN32_WINNT=0x0A00)
+
+    set(LIB_DIRECTORY lib)
+    set(BIN_DIRECTORY bin)
+    set(LIB_PREFIX lib)
+    set(MSVC_PREFIX msvc_)
+    set(MSVC_SUFFIX _${BUILD_TYPE_DIRECTORY})
 
 else ()
 
-    set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/protobuf")
-    set(MONGO_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/mongo")
+    # 编译选项和符号可见性
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -fvisibility=hidden")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -fvisibility=hidden")
+
+    # 共享库不允许未定义符号
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,defs")
+
+    set(LIB_DIRECTORY lib64)
+    set(BIN_DIRECTORY bin64)
+    set(LIB_PREFIX)
+    set(MSVC_PREFIX)
+    set(MSVC_SUFFIX)
 
 endif ()
 
+set(BOOST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost")
+set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/${MSVC_PREFIX}protobuf${MSVC_SUFFIX}")
+set(MONGO_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/${MSVC_PREFIX}mongo${MSVC_SUFFIX}")
 set(HIREDIS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis")
 set(OPENSSL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl")
 
