@@ -10,6 +10,10 @@ if (MSVC)
 
     add_compile_definitions(_WIN32_WINNT=0x0A00)
 
+    set(LIB_DIRECTORY lib)
+    set(BIN_DIRECTORY bin)
+    set(LIB_PREFIX lib)
+
 else ()
 
     # 编译选项和符号可见性
@@ -18,6 +22,10 @@ else ()
 
     # 共享库不允许未定义符号
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,defs")
+
+    set(LIB_DIRECTORY lib64)
+    set(BIN_DIRECTORY bin64)
+    set(LIB_PREFIX)
 
 endif ()
 
@@ -30,20 +38,6 @@ else ()
 
     set(BUILD_TYPE_DIRECTORY release)
     set(BUILD_LIB_SUFFIX)
-
-endif ()
-
-if (MSVC)
-
-    set(LIB_DIRECTORY lib)
-    set(BIN_DIRECTORY bin)
-    set(LIB_PREFIX lib)
-
-else ()
-
-    set(LIB_DIRECTORY lib64)
-    set(BIN_DIRECTORY bin64)
-    set(LIB_PREFIX)
 
 endif ()
 
@@ -260,13 +254,13 @@ target_link_libraries(openssl INTERFACE ${LIB_PREFIX}ssl ${LIB_PREFIX}crypto)
 
 # 静态库
 add_subdirectory(cmake/common)
-add_subdirectory(cmake/network)
+add_subdirectory(cmake/config)
 add_subdirectory(cmake/worker_pool)
+add_subdirectory(cmake/message)
 add_subdirectory(cmake/database)
+add_subdirectory(cmake/network)
 add_subdirectory(cmake/service_registry)
 add_subdirectory(cmake/initializer)
-add_subdirectory(cmake/config)
-add_subdirectory(cmake/message)
 add_subdirectory(cmake/server)
 
 add_library(celeritas_lib INTERFACE)
