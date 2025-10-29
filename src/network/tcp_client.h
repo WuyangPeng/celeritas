@@ -15,7 +15,8 @@ namespace celeritas
         using base_type = listener_sessions_base;
 
         using io_context_type = boost::asio::io_context;
-        using socket_type = boost::asio::ip::tcp::socket;
+        using tcp_type = boost::asio::ip::tcp;
+        using socket_type = tcp_type::socket;
         using session_type = session_base<socket_type>;
         using session_type_shared_type = std::shared_ptr<session_type>;
         using session_waitable_type = boost::asio::awaitable<session_type_shared_type>;
@@ -48,7 +49,7 @@ namespace celeritas
         void remove_session(int64_t session_id) override;
 
     private:
-        using basic_resolver_results_type = boost::asio::ip::basic_resolver_results<boost::asio::ip::tcp>;
+        using basic_resolver_results_type = boost::asio::ip::basic_resolver_results<tcp_type>;
         using basic_resolver_results_waitable_type = boost::asio::awaitable<basic_resolver_results_type>;
 
         [[nodiscard]] basic_resolver_results_waitable_type get_end_points() const;
