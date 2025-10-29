@@ -28,18 +28,5 @@ celeritas::session_run::void_awaitable_type celeritas::websocket_session_run::ru
 
 void celeritas::websocket_session_run::close_web_socket()
 {
-    // WebSocket 正常或异常关闭后，执行 TCP 层的关闭
-    boost::system::error_code error_code{};
-    web_socket_.close(beast_websocket::close_code::normal, error_code);
-
-    if (error_code)
-    {
-        LOG_CHANNEL(network_channel, info) << "web socket session [" << session_id_ << "] terminated error, code = " << error_code.message();
-    }
-    else
-    {
-        LOG_CHANNEL(network_channel, info) << "web socket session [" << session_id_ << "] terminated.";
-    }
-
     session_callback_.remove_session(session_id_);
 }

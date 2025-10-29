@@ -62,18 +62,6 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::run()
 
 void celeritas::http_session_run::close_socket()
 {
-    boost::system::error_code error_code{};
-    socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_send, error_code);
-
-    if (error_code)
-    {
-        LOG_CHANNEL(network_channel, info) << "http socket session [" << session_id_ << "] terminated error, code = " << error_code.message();
-    }
-    else
-    {
-        LOG_CHANNEL(network_channel, info) << "http socket session [" << session_id_ << "] terminated.";
-    }
-
     session_callback_.remove_session(session_id_);
 }
 
