@@ -16,7 +16,8 @@ void celeritas::session::write(const header& header, const protobuf_message_type
 
     const auto header_size = message_header::get_self_size();
     const auto total_size = message_header.get_total_size() + header_size;
-     buffer_guard buffer_guard{ buffer_pool::acquire(total_size), total_size };
+
+    buffer_guard buffer_guard{ buffer_pool::acquire(total_size), total_size };
     message_header.host_to_network();
     buffer_guard.set(message_header.get_span());
 

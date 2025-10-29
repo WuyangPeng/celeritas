@@ -59,7 +59,7 @@ bool celeritas::concrete_message_handler<Message>::handle_dispatch(const handle_
     if (const auto& result = (current_message.*get_function)();
         !message_registry->dispatch(handle_parameter, result))
     {
-        LOG_CHANNEL(message_channel, error) << "Failed to dispatch request.";
+        LOG_CHANNEL(message_channel, error) << "Failed to dispatch message.";
         return false;
     }
 
