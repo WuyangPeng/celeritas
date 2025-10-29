@@ -45,17 +45,8 @@ set(BOOST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/boost")
 
 if (MSVC)
 
-    if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
-
-        set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/msvc_protobuf_debug")
-
-    else ()
-
-        set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/msvc_protobuf")
-
-    endif ()
-
-    set(MONGO_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/msvc_mongo")
+    set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/msvc_protobuf_${BUILD_TYPE_DIRECTORY}")
+    set(MONGO_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/msvc_mongo_${BUILD_TYPE_DIRECTORY}")
 
 else ()
 
