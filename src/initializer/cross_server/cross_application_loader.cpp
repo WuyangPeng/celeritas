@@ -2,6 +2,7 @@
 #include "service_registry/message_handler/discover_response_message_handler.h"
 #include "service_registry/message_handler/register_response_message_handler.h"
 #include "service_registry/message_handler/service_registry_response_message_handler.h"
+#include "message/concrete_message_handler.tpp"
 
 celeritas::cross_application_loader::cross_application_loader(app_config_shared_ptr app_config)
     : base_type{ std::move(app_config) }

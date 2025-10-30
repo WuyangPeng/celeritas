@@ -1,4 +1,5 @@
 ﻿#include "admin_application_loader.h"
+#include "message/concrete_message_handler.tpp"
 #include "service_registry/message_handler/discover_response_message_handler.h"
 #include "service_registry/message_handler/register_response_message_handler.h"
 #include "service_registry/message_handler/service_registry_response_message_handler.h"
