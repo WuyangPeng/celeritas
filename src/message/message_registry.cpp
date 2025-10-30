@@ -1,7 +1,7 @@
 ﻿#include "base_message_handler.h"
 #include "message_registry.h"
 
-#include <memory>
+#include <mutex>
 
 void celeritas::message_registry::registerHandler(const base_message_handler_shared_ptr& handler)
 {
