@@ -23,24 +23,29 @@ celeritas::listener_sessions::void_awaitable_type celeritas::websocket_listener_
 {
     while (is_running())
     {
-        try
-        {
-            co_await handle_connection();
-        }
-        catch (const boost::system::system_error& error)
-        {
-            if (error.code() != boost::asio::error::operation_aborted)
-            {
-                LOG_CHANNEL(network_channel, warning) << "web socket listener error: " << error.what();
-            }
-        }
-        catch (...)
-        {
-            LOG_CHANNEL(network_channel, error) << "web socket listener unknown error.";
-        }
+        co_await do_accept_connections();
     }
 
     LOG_CHANNEL(network_channel, info) << "web socket listener stopped.";
+}
+
+celeritas::listener_sessions::void_awaitable_type celeritas::websocket_listener_accept::do_accept_connections()
+{
+    try
+    {
+        co_await handle_connection();
+    }
+    catch (const boost::system::system_error& error)
+    {
+        if (error.code() != boost::asio::error::operation_aborted)
+        {
+            LOG_CHANNEL(network_channel, warning) << "web socket listener error: " << error.what();
+        }
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(network_channel, error) << "web socket listener unknown error.";
+    }
 }
 
 celeritas::listener_sessions::void_awaitable_type celeritas::websocket_listener_accept::handle_connection()

@@ -25,6 +25,8 @@ namespace celeritas
     private:
         using socket_type = websocket_session::socket_type;
 
+        [[nodiscard]] void_awaitable_type do_accept_connections();
+
         // 协程：处理单个连接
         [[nodiscard]] void_awaitable_type handle_connection();
 
