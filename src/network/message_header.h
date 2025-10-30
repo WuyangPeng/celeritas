@@ -5,6 +5,8 @@
 
 namespace celeritas
 {
+    #pragma pack(push, 1)
+
     // 一个消息头来指示消息大小和类型
     class message_header
     {
@@ -39,4 +41,8 @@ namespace celeritas
         uint16_t header_size = 0;
         uint32_t body_size = 0;
     };
+
+    #pragma pack(pop)
+
+    static_assert(sizeof(message_header) == 8, "message_header must be 8 bytes");
 }
