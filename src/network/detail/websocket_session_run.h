@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "network/session_run.h"
 #include "network/session_callback.h"
+#include "network/session_run.h"
 
 #include <boost/beast.hpp>
 

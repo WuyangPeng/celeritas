@@ -13,9 +13,9 @@ void celeritas::session::write(const header& header, const protobuf_message_type
     const write_protobuf_message write_protobuf_message{ shared_from_this(), header, response };
 
     if (auto buffer_guard = write_protobuf_message.get_buffer_guard();
-        buffer_guard.is_effective())
+        buffer_guard)
     {
-        do_write(std::move(buffer_guard));
+        do_write(std::move(*buffer_guard));
     }
 }
 

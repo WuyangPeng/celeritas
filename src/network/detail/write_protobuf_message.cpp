@@ -10,7 +10,7 @@ celeritas::write_protobuf_message::write_protobuf_message(const session_shared_p
 {
 }
 
-celeritas::buffer_guard celeritas::write_protobuf_message::get_buffer_guard() const
+celeritas::write_protobuf_message::buffer_guard_optional_type celeritas::write_protobuf_message::get_buffer_guard() const
 {
     const auto header_request = header_.get_message();
 
@@ -25,7 +25,7 @@ celeritas::buffer_guard celeritas::write_protobuf_message::get_buffer_guard() co
 
     if (!write(header_request, header_size, buffer_guard))
     {
-        return celeritas::buffer_guard{};
+        return std::nullopt;
     }
 
     return buffer_guard;

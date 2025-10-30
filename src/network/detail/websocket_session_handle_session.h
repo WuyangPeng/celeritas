@@ -16,7 +16,10 @@ namespace celeritas
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
         using session_weak_ptr = std::weak_ptr<session>;
 
-        websocket_session_handle_session(web_socket_stream_type& web_socket, int64_t session_id, network_message_callback_weak_ptr callback, session_weak_ptr session);
+        websocket_session_handle_session(web_socket_stream_type& web_socket,
+                                         int64_t session_id,
+                                         network_message_callback_weak_ptr callback,
+                                         session_weak_ptr session);
 
         // 协程：处理会话的读写循环
         [[nodiscard]] void_awaitable_type run();
