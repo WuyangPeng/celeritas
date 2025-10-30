@@ -1,6 +1,8 @@
 ﻿#include "base_message_handler.h"
 #include "message_registry.h"
 
+#include <memory>
+
 void celeritas::message_registry::registerHandler(const base_message_handler_shared_ptr& handler)
 {
     const auto typeName = handler->get_supported_type_name();
