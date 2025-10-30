@@ -14,17 +14,9 @@ celeritas::tcp_session_write<SocketType>::tcp_session_write(socket_type& socket)
 template <typename SocketType>
 void celeritas::tcp_session_write<SocketType>::write(buffer_guard data)
 {
-    std::unique_lock lock{ write_mutex_ };
-    write_queue_.emplace_back(std::move(data));
-
-    // 如果发送协程没有在运行，就启动它
-    if (write_queue_.size() == 1)
+    if (write_buffer_guard(std::move(data)))
     {
-        lock.unlock();
-        co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
-                     return self->do_write();
-                 },
-                 boost::asio::detached);
+        co_spawn_write();
     }
 }
 
@@ -79,7 +71,7 @@ celeritas::tcp_session_write<SocketType>::bool_awaitable_type celeritas::tcp_ses
 template <typename SocketType>
 celeritas::tcp_session_write<SocketType>::buffer_guard_optional_type celeritas::tcp_session_write<SocketType>::get_next_write_buffer()
 {
-    std::unique_lock lock{ write_mutex_ };
+    std::lock_guard lock{ write_mutex_ };
     if (write_queue_.empty())
     {
         return std::nullopt; // 队列为空，返回一个空对象
@@ -88,4 +80,28 @@ celeritas::tcp_session_write<SocketType>::buffer_guard_optional_type celeritas::
     write_queue_.pop_front();
 
     return buffer;
+}
+
+template <typename SocketType>
+bool celeritas::tcp_session_write<SocketType>::write_buffer_guard(buffer_guard data)
+{
+    std::lock_guard lock{ write_mutex_ };
+
+    write_queue_.emplace_back(std::move(data));
+
+    if (write_queue_.size() == 1)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+template <typename SocketType>
+void celeritas::tcp_session_write<SocketType>::co_spawn_write()
+{
+    co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
+                 return self->do_write();
+             },
+             boost::asio::detached);
 }

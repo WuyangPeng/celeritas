@@ -49,7 +49,7 @@ celeritas::websocket_session_handle_session::void_awaitable_type celeritas::webs
 
     LOG_CHANNEL(network_channel, info) << "socket session [" << session_id_ << "] upgraded to websocket.";
 
-    websocket_session_handle_one_message handler{ web_socket_, session_id_, callback_, session_ };
+    const websocket_session_handle_one_message handler{ web_socket_, session_id_, callback_, session_ };
     co_await handler.run();
 }
 

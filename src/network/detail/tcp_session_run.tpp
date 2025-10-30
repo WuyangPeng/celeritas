@@ -12,8 +12,8 @@
 #include <boost/asio.hpp>
 
 template <typename SocketType>
-celeritas::tcp_session_run<SocketType>::tcp_session_run(socket_type& socket, session_callback session_callback)
-    : socket_{ socket }, session_callback_{ std::move(session_callback) }
+celeritas::tcp_session_run<SocketType>::tcp_session_run(socket_type& socket, const int64_t session_id, session_callback session_callback)
+    : socket_{ socket }, session_id_{ session_id }, session_callback_{ std::move(session_callback) }
 {
 }
 
@@ -46,22 +46,21 @@ celeritas::session_run::void_awaitable_type celeritas::tcp_session_run<SocketTyp
             {
                 LOG_CHANNEL(network_channel, warning) << "Session error: " << error.what();
             }
-            socket_.close();
             break;
         }
         catch (const std::exception& error)
         {
             LOG_CHANNEL(network_channel, error) << "An unexpected error occurred: " << error.what();
-            socket_.close();
             break;
         }
         catch (...)
         {
             LOG_CHANNEL(network_channel, fatal) << "Listener unknown error.";
-            socket_.close();
             break;
         }
     }
+
+    session_callback_.remove_session(session_id_);
 }
 
 template <typename SocketType>
@@ -85,11 +84,10 @@ celeritas::session_run::void_awaitable_type celeritas::tcp_session_run<SocketTyp
         throw boost::system::system_error(boost::asio::error::message_size);
     }
 
-    buffer_guard buffer_guard{ buffer_pool::acquire(total_size) };
-    buffer_guard.set_effective_size(total_size);
+    buffer_guard buffer_guard{ buffer_pool::acquire(total_size), total_size };
+
     co_await read_data_with_timeout(boost::asio::buffer(buffer_guard.get(), total_size));
 
-    // 日志
     LOG_CHANNEL(network_channel, debug) << "Received message of type: "
                                         << header.get_header_type()
                                         << ",header size:"
@@ -97,15 +95,7 @@ celeritas::session_run::void_awaitable_type celeritas::tcp_session_run<SocketTyp
                                         << ",body size:"
                                         << header.get_body_size();
 
-    auto session = get_session();
-
-    // 现在，通知外部处理者一个完整的消息已经接收到
-    // 我们将消息头和消息体数据传递给回调函数
-    if (const auto callback = session_callback_.get_network_message_callback_shared_ptr();
-        callback != nullptr && session != nullptr)
-    {
-        callback->call_back(header, std::move(buffer_guard), session);
-    }
+    call_back(header, std::move(buffer_guard));
 }
 
 template <typename SocketType>
@@ -141,4 +131,16 @@ celeritas::tcp_session_run<SocketType>::read_awaitable_type celeritas::tcp_sessi
     }
 
     co_return bytes_read;
+}
+
+template <typename SocketType>
+void celeritas::tcp_session_run<SocketType>::call_back(const message_header& message_header, buffer_guard buffer_guard)
+{
+    const auto session = get_session();
+
+    if (const auto callback = session_callback_.get_network_message_callback_shared_ptr();
+        callback != nullptr && session != nullptr)
+    {
+        callback->call_back(message_header, std::move(buffer_guard), session);
+    }
 }

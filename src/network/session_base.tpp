@@ -13,7 +13,7 @@ celeritas::session_base<SocketType>::session_base(socket_type socket,
     : base_type{ session_id, std::move(session_callback) },
       socket_{ std::move(socket) },
       session_write_{ std::make_shared<tcp_session_write<socket_type> >(socket_) },
-      session_run_{ std::make_shared<tcp_session_run<socket_type> >(socket_, get_session_callback()) },
+      session_run_{ std::make_shared<tcp_session_run<socket_type> >(socket_, session_id, get_session_callback()) },
       game_server_id_{ std::move(game_server_id) }
 {
 }

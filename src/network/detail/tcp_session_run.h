@@ -15,7 +15,7 @@ namespace celeritas
         using base_type = session_run;
         using socket_type = SocketType;
 
-        tcp_session_run(socket_type& socket, session_callback session_callback);
+        tcp_session_run(socket_type& socket, int64_t session_id, session_callback session_callback);
 
         void do_start() override;
 
@@ -29,7 +29,10 @@ namespace celeritas
         // 协程：处理带超时的异步读取操作
         [[nodiscard]] read_awaitable_type read_data_with_timeout(boost::asio::mutable_buffer buffer);
 
+        void call_back(const message_header& message_header, buffer_guard buffer_guard);
+
         socket_type& socket_;
+        int64_t session_id_;
         session_callback session_callback_;
     };
 }

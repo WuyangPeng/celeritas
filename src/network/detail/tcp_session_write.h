@@ -42,6 +42,10 @@ namespace celeritas
         // 从发送队列中获取下一个缓冲区，并在加锁后立即释放锁
         [[nodiscard]] buffer_guard_optional_type get_next_write_buffer();
 
+        [[nodiscard]] bool write_buffer_guard(buffer_guard data);
+
+        void co_spawn_write();
+
         socket_type& socket_;
         std::deque<buffer_guard> write_queue_;
         std::mutex write_mutex_;
