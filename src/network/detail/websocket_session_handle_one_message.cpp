@@ -60,11 +60,11 @@ celeritas::websocket_session_handle_one_message::void_awaitable_type celeritas::
     const auto payload_data = std::span{ reinterpret_cast<const char*>(buffer.data().data()), payload_size };
 
     const auto header_view = payload_data.subspan(0, self_size);
-    message_header base{};
-    base.set_span(header_view);
-    base.network_to_host();
+    message_header message_header{};
+    message_header.set_span(header_view);
+    message_header.network_to_host();
 
-    const auto total_size = base.get_total_size();
+    const auto total_size = message_header.get_total_size();
 
     if (payload_size < total_size + self_size)
     {
@@ -77,7 +77,7 @@ celeritas::websocket_session_handle_one_message::void_awaitable_type celeritas::
     const auto body_view = payload_data.subspan(self_size, total_size);
     buffer_guard.set(body_view);
 
-    call_back(base, std::move(buffer_guard));
+    call_back(message_header, std::move(buffer_guard));
 
     co_return;
 }
