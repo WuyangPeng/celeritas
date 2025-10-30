@@ -18,14 +18,16 @@ namespace celeritas
 
         websocket_session_handle_one_message(web_socket_stream_type& web_socket, int64_t session_id, network_message_callback_weak_ptr callback, session_weak_ptr session);
 
-        [[nodiscard]] void_awaitable_type run();
+        [[nodiscard]] void_awaitable_type run() const;
 
     private:
         using flat_buffer_type = boost::beast::flat_buffer;
 
-        [[nodiscard]] void_awaitable_type do_run(flat_buffer_type& buffer);
+        [[nodiscard]] void_awaitable_type run(flat_buffer_type& buffer) const;
 
-        void call_back(const message_header& message_header, buffer_guard buffer_guard);
+        [[nodiscard]] void_awaitable_type do_run(flat_buffer_type& buffer) const;
+
+        void call_back(const message_header& message_header, buffer_guard buffer_guard) const;
 
         web_socket_stream_type& web_socket_;
         int64_t session_id_;
