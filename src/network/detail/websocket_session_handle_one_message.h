@@ -21,6 +21,12 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type run();
 
     private:
+        using flat_buffer_type = boost::beast::flat_buffer;
+
+        [[nodiscard]] void_awaitable_type do_run(flat_buffer_type& buffer);
+
+        void call_back(const message_header& message_header, buffer_guard buffer_guard);
+
         web_socket_stream_type& web_socket_;
         int64_t session_id_;
         network_message_callback_weak_ptr callback_;

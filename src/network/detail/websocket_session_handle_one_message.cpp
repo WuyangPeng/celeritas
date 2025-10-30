@@ -1,4 +1,5 @@
-﻿#include "websocket_session_handle_one_message.h"
+﻿#include "buffer_consumer.h"
+#include "websocket_session_handle_one_message.h"
 #include "common/buffer_pool.h"
 #include "common/logger.h"
 #include "network/message_header.h"
@@ -10,47 +11,73 @@ celeritas::websocket_session_handle_one_message::websocket_session_handle_one_me
 
 celeritas::websocket_session_handle_one_message::void_awaitable_type celeritas::websocket_session_handle_one_message::run()
 {
-    boost::beast::flat_buffer buffer{};
+    flat_buffer_type buffer{};
     while (web_socket_.is_open())
     {
-        // 异步读取数据帧
-        co_await web_socket_.async_read(buffer, boost::asio::use_awaitable);
-
-        const auto payload_size = buffer.size();
-        auto* payload_data = static_cast<const uint8_t*>(buffer.data().data());
-
-        message_header base{};
-        if (payload_size < sizeof(base))
+        try
         {
-            LOG_CHANNEL(network_channel, error) << "websocket frame too small for header";
-            buffer.consume(payload_size);
-            continue;
+            co_await do_run(buffer);
         }
-
-        std::memcpy(&base, payload_data, sizeof(base));
-        base.network_to_host();
-
-        const auto total_size = base.get_total_size();
-
-        if (payload_size < total_size - sizeof(base))
+        catch (const std::exception& error)
         {
-            LOG_CHANNEL(network_channel, error) << "websocket frame incomplete";
-            buffer.consume(payload_size);
-            continue;
+            LOG_CHANNEL(network_channel, error) << "websocket session [" << session_id_ << "] run error: " << error.what();
         }
-
-        buffer_guard buffer_guard{ buffer_pool::acquire(total_size) };
-        buffer_guard.set_effective_size(total_size);
-        std::memcpy(buffer_guard.get(), payload_data, total_size);
-
-        auto session = session_.lock();
-
-        if (const auto callback = callback_.lock();
-            callback != nullptr && session != nullptr)
+        catch (...)
         {
-            callback->call_back(base, std::move(buffer_guard), session);
+            LOG_CHANNEL(network_channel, fatal) << "websocket session [" << session_id_ << "] run unknown error.";
+            break;
         }
-
-        buffer.consume(buffer.size());
     }
+}
+
+void celeritas::websocket_session_handle_one_message::call_back(const message_header& message_header, buffer_guard buffer_guard)
+{
+    const auto session = session_.lock();
+
+    if (const auto callback = callback_.lock();
+        callback != nullptr && session != nullptr)
+    {
+        callback->call_back(message_header, std::move(buffer_guard), session);
+    }
+}
+
+celeritas::websocket_session_handle_one_message::void_awaitable_type celeritas::websocket_session_handle_one_message::do_run(flat_buffer_type& buffer)
+{
+    // 异步读取数据帧
+    co_await web_socket_.async_read(buffer, boost::asio::use_awaitable);
+
+    buffer_consumer consume_guard{ buffer };
+
+    const auto payload_size = buffer.size();
+    const auto self_size = message_header::get_self_size();
+
+    if (payload_size < self_size)
+    {
+        LOG_CHANNEL(network_channel, error) << "websocket frame too small for header";
+        co_return;
+    }
+
+    const auto payload_data = std::span{ reinterpret_cast<const char*>(buffer.data().data()), payload_size };
+
+    const auto header_view = payload_data.subspan(0, self_size);
+    message_header base{};
+    base.set_span(header_view);
+    base.network_to_host();
+
+    const auto total_size = base.get_total_size();
+
+    if (payload_size < total_size + self_size)
+    {
+        LOG_CHANNEL(network_channel, error) << "websocket frame incomplete";
+        co_return;
+    }
+
+    buffer_guard buffer_guard{ buffer_pool::acquire(total_size), total_size };
+
+    const auto body_view = payload_data.subspan(self_size, total_size);
+    buffer_guard.set(body_view);
+
+    call_back(base, std::move(buffer_guard));
+
+    co_return;
 }

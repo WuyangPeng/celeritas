@@ -1,4 +1,5 @@
 ﻿#include "message_header.h"
+#include "common/celeritas_error.h"
 #include "detail/network_internal_fwd.h"
 
 #include <boost/asio/ip/tcp.hpp>
@@ -56,4 +57,14 @@ void celeritas::message_header::host_to_network()
 celeritas::message_header::source_type celeritas::message_header::get_span() const
 {
     return std::span{ reinterpret_cast<const char*>(this), get_self_size() };
+}
+
+void celeritas::message_header::set_span(const source_type& span)
+{
+    if (span.size() < get_self_size())
+    {
+        throw celeritas_error("Insufficient span size");
+    }
+
+    std::ranges::copy(span, reinterpret_cast<char*>(this));
 }

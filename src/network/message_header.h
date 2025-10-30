@@ -36,6 +36,8 @@ namespace celeritas
 
         [[nodiscard]] source_type get_span() const;
 
+        void set_span(const source_type& span);
+
     private:
         uint16_t header_type = 0;
         uint16_t header_size = 0;
