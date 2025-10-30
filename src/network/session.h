@@ -43,6 +43,7 @@ namespace celeritas
 
     protected:
         using network_message_callback_weak_ptr = session_callback::network_message_callback_weak_ptr;
+        using message_shared_ptr = header::message_shared_ptr;
 
         void remove_session();
 

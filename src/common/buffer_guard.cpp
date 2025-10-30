@@ -74,3 +74,8 @@ void celeritas::buffer_guard::set(const source_type& source)
 {
     buffer_data_.set(source);
 }
+
+bool celeritas::buffer_guard::is_effective() const noexcept
+{
+    return buffer_data_.is_effective();
+}

@@ -1,7 +1,7 @@
 ﻿#include "message_header.h"
 #include "session.h"
 #include "common/buffer_pool.h"
-#include "common/logger.h"
+#include "detail/write_protobuf_message.h"
 
 celeritas::session::session(const int64_t session_id, session_callback session_callback)
     : session_id_{ session_id }, session_callback_{ std::move(session_callback) }
@@ -10,31 +10,13 @@ celeritas::session::session(const int64_t session_id, session_callback session_c
 
 void celeritas::session::write(const header& header, const protobuf_message_type& response)
 {
-    const auto header_request = header.get_message();
+    const write_protobuf_message write_protobuf_message{ shared_from_this(), header, response };
 
-    message_header message_header{ header_request->ByteSizeLong(), response.ByteSizeLong() };
-
-    const auto header_size = message_header::get_self_size();
-    const auto total_size = message_header.get_total_size() + header_size;
-
-    buffer_guard buffer_guard{ buffer_pool::acquire(total_size), total_size };
-    message_header.host_to_network();
-    buffer_guard.set(message_header.get_span());
-
-    if (!header_request->SerializeToArray(buffer_guard.get(header_size), boost::numeric_cast<int>(header_request->ByteSizeLong())))
+    if (auto buffer_guard = write_protobuf_message.get_buffer_guard();
+        buffer_guard.is_effective())
     {
-        LOG_CHANNEL(network_channel, error) << "序列化失败！";
-        return;
+        do_write(std::move(buffer_guard));
     }
-
-    if (const auto offset = header_size + header_request->ByteSizeLong();
-        !response.SerializeToArray(buffer_guard.get(offset), boost::numeric_cast<int>(response.ByteSizeLong())))
-    {
-        LOG_CHANNEL(network_channel, error) << "序列化失败！";
-        return;
-    }
-
-    do_write(std::move(buffer_guard));
 }
 
 void celeritas::session::write(const std::string& response)

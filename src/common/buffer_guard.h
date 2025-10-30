@@ -45,6 +45,8 @@ namespace celeritas
 
         void set(const source_type& source);
 
+        [[nodiscard]] bool is_effective() const noexcept;
+
     private:
         buffer_pool_data buffer_data_;
         size_t effective_size_ = 0;
