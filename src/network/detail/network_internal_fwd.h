@@ -17,6 +17,7 @@ namespace celeritas
     class http_session_write;
     class http_session_run;
     class http_listener_accept;
+    class write_protobuf_message;
 
     template <typename SocketType>
     class tcp_session_write;

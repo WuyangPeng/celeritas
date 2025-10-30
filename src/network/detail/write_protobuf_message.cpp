@@ -3,6 +3,8 @@
 #include "common/logger.h"
 #include "network/message_header.h"
 
+#include  <boost/numeric/conversion/cast.hpp>
+
 celeritas::write_protobuf_message::write_protobuf_message(const session_shared_ptr& session, const header& header, const protobuf_message_type& response)
     : session_{ session }, header_{ header }, response_{ response }
 {

@@ -1,6 +1,9 @@
 ﻿#include "message_header.h"
 #include "detail/network_internal_fwd.h"
 
+#include <boost/asio/ip/tcp.hpp>
+#include <boost/numeric/conversion/cast.hpp>
+
 celeritas::message_header::message_header(const size_t header_size, const size_t body_size)
     : header_size{ boost::numeric_cast<uint16_t>(header_size) }, body_size{ boost::numeric_cast<uint32_t>(body_size) }
 {

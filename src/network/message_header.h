@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-#include <boost/asio/ip/tcp.hpp>
+#include <cstdint>
+#include <span>
 
 namespace celeritas
 {
