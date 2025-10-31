@@ -57,11 +57,11 @@ celeritas::listener_sessions::network_message_callback_weak_ptr celeritas::http_
     return network_message_callback_;
 }
 
-void celeritas::http_client::write(const header& header, const protobuf_message& request) const
+void celeritas::http_client::write(const std::string& response) const
 {
     if (is_open())
     {
-        session_->write(header, request);
+        session_->write(response);
     }
 }
 
