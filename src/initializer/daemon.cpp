@@ -1,4 +1,6 @@
 ﻿#include "daemon.h"
+#include "common/logger.h"
+#include "common/noexcept_safe_call_and_log.h"
 
 #include <boost/filesystem/operations.hpp>
 
@@ -28,5 +30,24 @@ celeritas::daemon::daemon(const std::string_view server_type)
 
 celeritas::daemon::~daemon() noexcept
 {
-    std::filesystem::remove(pid_file_name_);
+    noexcept_safe_call_and_log([this] {
+                                   this->stop();
+                               },
+                               initializer_channel,
+                               "daemon stop error: ");
+}
+
+void celeritas::daemon::stop()
+{
+    std::error_code errorCode{};
+    std::filesystem::remove(pid_file_name_, errorCode);
+
+    if (errorCode)
+    {
+        LOG_CHANNEL(initializer_channel, warning)
+        << "⚠️ 警告：无法删除 PID 文件 \"" << pid_file_name_ << "\". "
+        << "错误信息: " << errorCode.message()
+        << " (代码: " << errorCode.value()
+        << ", 类别: " << errorCode.category().name() << ")";
+    }
 }

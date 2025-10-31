@@ -20,6 +20,8 @@ namespace celeritas
         daemon& operator=(daemon&& rhs) = delete;
 
     private:
+        void stop();
+
         std::string server_type_;
         std::string pid_file_name_;
     };

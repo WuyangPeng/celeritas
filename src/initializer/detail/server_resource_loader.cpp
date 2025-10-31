@@ -23,6 +23,7 @@ celeritas::server_resource_loader::listener_shared_ptr celeritas::server_resourc
         {
             return std::make_shared<websocket_listener>(io_context, network_message_callback, server_config.get_game_server_id(), server_network_config.get_port());
         }
+
         default:
         {
             throw celeritas_error("create server ,type = " + std::to_string(static_cast<int>(server_network_config.get_server_network_type())) + " is  not exist.");

@@ -1,10 +1,10 @@
 ﻿#pragma once
 
 #include "config/app_config.h"
-#include "message/message_registry.h"
-#include "worker_pool/worker_pool.h"
-#include "network/network_fwd.h"
 #include "initializer/initializer_fwd.h"
+#include "message/message_registry.h"
+#include "network/network_fwd.h"
+#include "worker_pool/worker_pool.h"
 
 #include <boost/url.hpp>
 

@@ -6,16 +6,16 @@
 
 void celeritas::database_resource_loader::loader_database(boost::asio::io_context& io_context, const database_config& database_config)
 {
-    auto pool = database_pool_manager::get_instance().create_pool(database_config.get_name(),
-                                                                  database_config.get_database_type(),
-                                                                  io_context,
-                                                                  database_config.get_host(),
-                                                                  database_config.get_port(),
-                                                                  database_config.get_user(),
-                                                                  database_config.get_password(),
-                                                                  database_config.get_db_name(),
-                                                                  database_config.get_min_connections(),
-                                                                  database_config.get_max_connections());
+    const auto pool = database_pool_manager::get_instance().create_pool(database_config.get_name(),
+                                                                        database_config.get_database_type(),
+                                                                        io_context,
+                                                                        database_config.get_host(),
+                                                                        database_config.get_port(),
+                                                                        database_config.get_user(),
+                                                                        database_config.get_password(),
+                                                                        database_config.get_db_name(),
+                                                                        database_config.get_min_connections(),
+                                                                        database_config.get_max_connections());
 
     boost::asio::co_spawn(io_context,
                           pool->async_initialize(),
