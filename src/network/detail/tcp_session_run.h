@@ -27,8 +27,9 @@ namespace celeritas
         using buffer_guard_optional_type = std::optional<buffer_guard>;
         using steady_timer_type = boost::asio::steady_timer;
         using mutable_buffer_type = boost::asio::mutable_buffer;
+        using cancellation_signal_type = boost::asio::cancellation_signal;
 
-        [[nodiscard]] auto setup_timeout_cancellation_slot(steady_timer_type& steady_timer);
+        [[nodiscard]] auto setup_timeout_cancellation_slot(steady_timer_type& steady_timer, cancellation_signal_type& cancel_signal);
 
         [[nodiscard]] void_awaitable_type handle_one_message();
 

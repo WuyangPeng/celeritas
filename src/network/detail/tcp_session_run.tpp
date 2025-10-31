@@ -62,10 +62,8 @@ celeritas::session_run::void_awaitable_type celeritas::tcp_session_run<SocketTyp
 }
 
 template <typename SocketType>
-auto celeritas::tcp_session_run<SocketType>::setup_timeout_cancellation_slot(steady_timer_type& steady_timer)
+auto celeritas::tcp_session_run<SocketType>::setup_timeout_cancellation_slot(steady_timer_type& steady_timer, cancellation_signal_type& cancel_signal)
 {
-    boost::asio::cancellation_signal cancel_signal{};
-
     co_spawn(socket_.get_executor(), [&]() -> boost::asio::awaitable<void> {
                  auto await_token = boost::asio::as_tuple(boost::asio::use_awaitable);
                  if (auto [error_code] = co_await steady_timer.async_wait(await_token);
@@ -107,8 +105,9 @@ template <typename SocketType>
 celeritas::tcp_session_run<SocketType>::read_awaitable_type celeritas::tcp_session_run<SocketType>::read_data_with_timeout(mutable_buffer_type buffer)
 {
     steady_timer_type timer{ socket_.get_executor(), std::chrono::steady_clock::now() + timeout_seconds };
+    boost::asio::cancellation_signal cancel_signal{};
 
-    auto await_token = setup_timeout_cancellation_slot(timer);
+    auto await_token = setup_timeout_cancellation_slot(timer, cancel_signal);
 
     auto [read_error_code, bytes_read] = co_await boost::asio::async_read(socket_, buffer, await_token);
 
