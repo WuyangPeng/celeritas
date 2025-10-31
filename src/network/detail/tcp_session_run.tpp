@@ -105,7 +105,7 @@ template <typename SocketType>
 celeritas::tcp_session_run<SocketType>::read_awaitable_type celeritas::tcp_session_run<SocketType>::read_data_with_timeout(mutable_buffer_type buffer)
 {
     steady_timer_type timer{ socket_.get_executor(), std::chrono::steady_clock::now() + timeout_seconds };
-    boost::asio::cancellation_signal cancel_signal{};
+    cancellation_signal_type cancel_signal{};
 
     auto await_token = setup_timeout_cancellation_slot(timer, cancel_signal);
 
