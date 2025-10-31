@@ -11,11 +11,12 @@ celeritas::http_session::http_session(socket_type socket,
                                       std::string game_server_id,
                                       session_callback session_callback,
                                       const bool is_server,
-                                      std::string host)
+                                      std::string host,
+                                      std::string path)
     : base_type{ session_id, std::move(session_callback) },
       socket_{ std::move(socket) },
       http_run_{ std::make_shared<http_session_run>(socket_, session_id, get_session_callback()) },
-      http_write_{ get_session_write(socket_, is_server, std::move(host)) },
+      http_write_{ get_session_write(socket_, is_server, std::move(host), std::move(path)) },
       game_server_id_{ std::move(game_server_id) }
 {
 }
@@ -62,11 +63,11 @@ void celeritas::http_session::do_write(buffer_guard data)
     http_write_->write(std::move(data));
 }
 
-celeritas::http_session::session_write_shared_ptr celeritas::http_session::get_session_write(socket_type& socket, const bool is_server, std::string host)
+celeritas::http_session::session_write_shared_ptr celeritas::http_session::get_session_write(socket_type& socket, const bool is_server, std::string host, std::string path)
 {
     if (is_server)
         return std::make_shared<http_response_session_write>(socket);
     else
-        return std::make_shared<http_request_session_write>(socket, std::move(host));
+        return std::make_shared<http_request_session_write>(socket, std::move(host), std::move(path));
 }
 

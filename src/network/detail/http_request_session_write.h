@@ -10,9 +10,11 @@ namespace celeritas
         using class_type = http_request_session_write;
         using base_type = http_session_write;
 
-        explicit http_request_session_write(socket_type& socket, std::string host);
+        explicit http_request_session_write(socket_type& socket, std::string host, std::string path);
 
     private:
         [[nodiscard]] bool_awaitable_type do_one_write() override;
+
+        std::string path_;
     };
 }

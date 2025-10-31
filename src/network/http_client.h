@@ -29,7 +29,8 @@ namespace celeritas
                     std::string game_server_id,
                     std::string host,
                     int port,
-                    std::string server_type);
+                    std::string server_type,
+                    std::string path);
 
         // 异步连接到指定的远程地址和端口
         [[nodiscard]] session_waitable_type connect();
@@ -42,7 +43,7 @@ namespace celeritas
 
         [[nodiscard]] network_message_callback_weak_ptr get_network_message_callback();
 
-        void write(const std::string& path, const std::string& response) const;
+        void write(const std::string& response) const;
 
         [[nodiscard]] bool is_open() const;
 
@@ -65,6 +66,7 @@ namespace celeritas
         int port_;
         std::string server_type_;
         session_type_shared_type session_;
+        std::string path_;
 
         static constexpr auto session_id_ = 1;
     };

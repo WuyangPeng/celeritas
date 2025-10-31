@@ -11,10 +11,13 @@ celeritas::service_registry_resource_loader::service_registry_resource_loader(ap
 
 void celeritas::service_registry_resource_loader::send_health_check(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
 {
+    const auto app_config = get_app_config();
+    const auto health_check_url_config = app_config->get_health_check_url_config();
+
     for (const auto tcp_client_container = get_tcp_client_container();
          const auto& element : tcp_client_container)
     {
-        const auto client = std::make_shared<http_client>(io_context, network_message_callback, "", element->get_host(), element->get_port(), element->get_server_type());
+        const auto client = std::make_shared<http_client>(io_context, network_message_callback, "", element->get_host(), element->get_port(), element->get_server_type(), health_check_url_config.get_url());
 
         boost::asio::co_spawn(io_context,
                               send_health_check(client),
@@ -44,7 +47,7 @@ celeritas::service_registry_resource_loader::void_waitable_type celeritas::servi
     const auto app_config = get_app_config();
     const auto health_check_url_config = app_config->get_health_check_url_config();
 
-    http_client->write(health_check_url_config.get_url(), "");
+    http_client->write("");
 
     co_return;
 }

@@ -26,7 +26,7 @@ namespace celeritas
 
         [[nodiscard]] bool_awaitable_type do_one_write_response();
 
-        [[nodiscard]] bool_awaitable_type do_one_write_request();
+        [[nodiscard]] bool_awaitable_type do_one_write_request(const std::string& path);
 
     private:
         using buffer_guard_container_type = std::deque<buffer_guard>;

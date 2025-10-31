@@ -80,7 +80,7 @@ celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write
     co_return true;
 }
 
-celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write::do_one_write_request()
+celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write::do_one_write_request(const std::string& path)
 {
     // 调用新函数来获取数据，该函数内部处理了加锁和解锁
     auto optional_buffer_guard = get_next_write_buffer();
@@ -93,7 +93,7 @@ celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write
     const auto body_size = buffer_guard.get_effective_size();
 
     // 构建 HTTP GET 请求
-    boost::beast::http::request<boost::beast::http::buffer_body> request{ boost::beast::http::verb::get, "/api/data", 11 }; // HTTP/1.1
+    boost::beast::http::request<boost::beast::http::buffer_body> request{ boost::beast::http::verb::get, path, 11 }; // HTTP/1.1
     request.set(boost::beast::http::field::host, host_);
     request.set(boost::beast::http::field::user_agent, BOOST_BEAST_VERSION_STRING);
     request.set(boost::beast::http::field::content_type, "application/octet-stream");
