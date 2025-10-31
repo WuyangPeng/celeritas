@@ -20,7 +20,8 @@ namespace celeritas
                      std::string service_name,
                      std::string host,
                      std::string game_server_id,
-                     protocol_port_container protocol_port);
+                     protocol_port_container protocol_port,
+                     int64_t start_server_time);
 
         [[nodiscard]] std::string get_instance_id() const;
 
@@ -32,13 +33,15 @@ namespace celeritas
 
         [[nodiscard]] time_point_type get_last_heartbeat() const;
 
-        void set_last_heartbeat();
+        void set_last_heartbeat(int64_t start_server_time);
 
         [[nodiscard]] int get_port(server_network_type server_network_type) const;
 
         [[nodiscard]] bool is_heartbeat() const noexcept;
 
         void set_heartbeat(bool is_heartbeat);
+
+        [[nodiscard]] int64_t get_start_server_time() const;
 
     private:
         std::string instance_id_;
@@ -48,5 +51,6 @@ namespace celeritas
         time_point_type last_heartbeat_;
         protocol_port_container protocol_port_;
         bool is_heartbeat_ = true;
+        int64_t start_server_time_ = 0;
     };
 }

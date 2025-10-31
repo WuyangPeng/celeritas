@@ -12,7 +12,7 @@ void celeritas::service_registry_impl::register_service(const service_info& info
     if (const auto iter = registry_.find(info.get_instance_id());
         iter != registry_.end())
     {
-        iter->second.set_last_heartbeat();
+        iter->second.set_last_heartbeat(info.get_start_server_time());
     }
     else
     {
@@ -61,6 +61,13 @@ void celeritas::service_registry_impl::cleanup_services_by_duration()
             ++iter;
         }
     }
+}
+
+void celeritas::service_registry_impl::remove_instance(const std::string& instance_id)
+{
+    std::lock_guard lock{ mutex_ };
+
+    registry_.erase(instance_id);
 }
 
 bool celeritas::service_registry_impl::cleanup_service_entry(const registry_type_iterator& iter, const time_point_type& now)

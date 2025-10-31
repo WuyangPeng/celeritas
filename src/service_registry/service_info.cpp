@@ -4,14 +4,16 @@ celeritas::service_info::service_info(std::string instance_id,
                                       std::string service_name,
                                       std::string host,
                                       std::string game_server_id,
-                                      protocol_port_container protocol_port)
+                                      protocol_port_container protocol_port,
+                                      int64_t start_server_time)
     : instance_id_{ std::move(instance_id) },
       service_name_{ std::move(service_name) },
       host_{ std::move(host) },
       game_server_id_{ std::move(game_server_id) },
       last_heartbeat_{ std::chrono::steady_clock::now() },
       protocol_port_{ std::move(protocol_port) },
-      is_heartbeat_{ true }
+      is_heartbeat_{ true },
+      start_server_time_{ start_server_time }
 {
 }
 
@@ -40,9 +42,15 @@ celeritas::service_info::time_point_type celeritas::service_info::get_last_heart
     return last_heartbeat_;
 }
 
-void celeritas::service_info::set_last_heartbeat()
+void celeritas::service_info::set_last_heartbeat(const int64_t start_server_time)
 {
     last_heartbeat_ = std::chrono::steady_clock::now();
+
+    if (start_server_time != start_server_time_)
+    {
+        start_server_time_ = start_server_time;
+        is_heartbeat_ = true;
+    }
 }
 
 int celeritas::service_info::get_port(const server_network_type server_network_type) const
@@ -66,4 +74,9 @@ bool celeritas::service_info::is_heartbeat() const noexcept
 void celeritas::service_info::set_heartbeat(bool is_heartbeat)
 {
     is_heartbeat_ = is_heartbeat;
+}
+
+int64_t celeritas::service_info::get_start_server_time() const
+{
+    return start_server_time_;
 }

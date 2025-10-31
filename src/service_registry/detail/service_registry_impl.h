@@ -36,6 +36,8 @@ namespace celeritas
 
         void cleanup_services_by_duration();
 
+        void remove_instance(const std::string& instance_id);
+
     private:
         using registry_type = std::unordered_map<std::string, service_info>;
         using registry_type_iterator = registry_type::iterator;

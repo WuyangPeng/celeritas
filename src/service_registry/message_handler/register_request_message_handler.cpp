@@ -16,7 +16,8 @@ bool celeritas::register_request_message_handler::handle_concrete(const handle_p
                                      current_message.service_name(),
                                      current_message.host(),
                                      current_message.game_server_id(),
-                                     protocol_port_container };
+                                     protocol_port_container,
+                                     current_message.start_server_time() };
 
     service_registry::register_service(service_info);
 

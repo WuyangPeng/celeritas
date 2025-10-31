@@ -12,11 +12,18 @@
 #include "proto/celeritas.pb.h"
 #include "server/server_fwd.h"
 #include "service_registry/detail/service_registry_internal_fwd.h"
+#include "service_registry_server/service_registry_server.h"
 
 #include <ranges>
 
 celeritas::resource_loader::resource_loader(app_config_shared_ptr app_config)
-    : app_config_{ std::move(app_config) }, listener_{}, tcp_clients_{}, is_service_registry_{ false }, check_tcp_clients_timer_{}, service_registry_timer_{}
+    : app_config_{ std::move(app_config) },
+      listener_{},
+      tcp_clients_{},
+      is_service_registry_{ false },
+      check_tcp_clients_timer_{},
+      service_registry_timer_{},
+      start_server_time_{ std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count() }
 {
 }
 
@@ -33,6 +40,16 @@ void celeritas::resource_loader::initialize(io_context_type& io_context, const n
 
 void celeritas::resource_loader::release_resource()
 {
+    for (const auto& element : tcp_clients_)
+    {
+        if (element->get_server_type() == service_registry_type)
+        {
+            proto::celeritas request{};
+            request.mutable_celeritas_request()->mutable_service()->mutable_registry()->mutable_server_close();
+            element->write(header{ proto::common::empty_message_header{} }, request);
+        }
+    }
+
     for (const auto& element : listener_)
     {
         element->stop();
@@ -98,6 +115,8 @@ void celeritas::resource_loader::process_service_registry_by_duration()
     server_register->set_instance_id(server.get_instance_id());
     server_register->set_game_server_id(server.get_game_server_id());
     server_register->set_host(server.get_host());
+    server_register->set_start_server_time(start_server_time_);
+
     for (const auto& element : server)
     {
         auto* port = server_register->add_port();

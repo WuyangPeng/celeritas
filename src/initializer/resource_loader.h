@@ -80,5 +80,6 @@ namespace celeritas
         bool is_service_registry_;
         check_tcp_clients_timer_shared_ptr check_tcp_clients_timer_;
         service_registry_timer_shared_ptr service_registry_timer_;
+        int64_t start_server_time_;
     };
 }

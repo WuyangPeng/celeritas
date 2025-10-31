@@ -21,6 +21,8 @@ namespace celeritas
 
         static void start_cleanup_timer(io_context_type& io_context);
 
+        static void remove_instance(const std::string& instance_id);
+
     private:
         static service_registry_impl& get_service_registry_impl();
     };
