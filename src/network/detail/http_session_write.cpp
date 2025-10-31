@@ -71,6 +71,7 @@ celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write
     // 这一步设置了响应体的内容和大小
     response.body().data = buffer_guard.get();
     response.body().size = body_size;
+    response.body().more = false;
 
     co_await boost::beast::http::async_write(socket_, response, boost::asio::use_awaitable);
 
@@ -100,6 +101,7 @@ celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write
 
     request.body().data = buffer_guard.get();
     request.body().size = body_size;
+    request.body().more = false;
 
     co_await boost::beast::http::async_write(socket_, request, boost::asio::use_awaitable);
 

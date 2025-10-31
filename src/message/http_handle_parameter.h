@@ -16,7 +16,7 @@ namespace celeritas
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader>;
         using urls_params_view_type = boost::urls::params_view;
 
-        http_handle_parameter(const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
+        http_handle_parameter(std::string path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 
         [[nodiscard]] std::string get_path() const;
 

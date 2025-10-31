@@ -1,8 +1,10 @@
 ﻿#include "http_handle_parameter.h"
+
+#include <utility>
 #include "network/session.h"
 
-celeritas::http_handle_parameter::http_handle_parameter(const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
-    : path_{ path }, params_{ params }, session_{ session }, resource_loader_{ resource_loader }
+celeritas::http_handle_parameter::http_handle_parameter(std::string path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
+    : path_{ std::move(path) }, params_{ params }, session_{ session }, resource_loader_{ resource_loader }
 {
 }
 

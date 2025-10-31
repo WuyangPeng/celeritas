@@ -22,11 +22,13 @@ void celeritas::http_session_run::do_start()
 
 celeritas::session_run::void_awaitable_type celeritas::http_session_run::run()
 {
-    while (socket_.is_open())
+    if (socket_.is_open())
     {
         try
         {
             co_await handle_one_message();
+
+            co_return;
         }
         catch (const boost::system::system_error& error)
         {
@@ -39,18 +41,14 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::run()
             {
                 LOG_CHANNEL(network_channel, warning) << "Session error: " << error.what();
             }
-
-            break;
         }
         catch (const std::exception& error)
         {
             LOG_CHANNEL(network_channel, error) << "An unexpected error occurred: " << error.what();
-            break;
         }
         catch (...)
         {
             LOG_CHANNEL(network_channel, fatal) << "Listener unknown error.";
-            break;
         }
     }
 

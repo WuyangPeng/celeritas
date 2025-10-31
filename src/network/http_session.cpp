@@ -52,7 +52,7 @@ void celeritas::http_session::stop()
         }
         else
         {
-            LOG_CHANNEL(network_channel, info) << "http socket session [" << get_session_id() << "] terminated.";
+            LOG_CHANNEL(network_channel, info) << "http socket session [" << get_session_id() << "] terminated success.";
         }
     }
 }
