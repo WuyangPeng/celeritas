@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "../concrete_message_handler.h"
+#include "message/concrete_message_handler.h"
 #include "proto/request.pb.h"
 
 namespace celeritas

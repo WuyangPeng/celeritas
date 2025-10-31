@@ -26,6 +26,9 @@ namespace celeritas
 
     private:
         using registry_type = std::unordered_map<std::string, base_message_handler_shared_ptr>;
+        using base_message_handler_optional_type = std::optional<base_message_handler_shared_ptr>;
+
+        [[nodiscard]] base_message_handler_optional_type get_base_message_handler(const protobuf_message& current_message);
 
         registry_type registry_;
         std::shared_mutex mutex_;

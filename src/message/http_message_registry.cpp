@@ -12,17 +12,25 @@ void celeritas::http_message_registry::registerHandler(const http_base_message_h
 
 bool celeritas::http_message_registry::dispatch(const http_handle_parameter& handle_parameter)
 {
+    if (const auto http_base_message_handler = get_http_base_message_handler(handle_parameter))
+    {
+        return http_base_message_handler->get()->handle(handle_parameter, shared_from_this());
+    }
+
+    return false;
+}
+
+celeritas::http_message_registry::http_base_message_handler_optional_type celeritas::http_message_registry::get_http_base_message_handler(const http_handle_parameter& handle_parameter)
+{
     const auto typeName = handle_parameter.get_path();
 
-    std::unique_lock lock{ mutex_ };
+    std::lock_guard lock{ mutex_ };
 
     if (const auto iter = registry_.find(typeName.data());
         iter != registry_.end())
     {
-        lock.unlock();
-
-        return iter->second->handle(handle_parameter, shared_from_this());
+        return iter->second;
     }
 
-    return false;
+    return std::nullopt;
 }

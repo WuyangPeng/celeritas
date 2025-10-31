@@ -1,5 +1,5 @@
 ﻿#include "service_request_message_handler.h"
-#include "../concrete_message_handler.tpp"
+#include "message/concrete_message_handler.tpp"
 
 celeritas::service_request_message_handler::service_request_message_handler()
 {

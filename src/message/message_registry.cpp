@@ -14,17 +14,25 @@ void celeritas::message_registry::registerHandler(const base_message_handler_sha
 
 bool celeritas::message_registry::dispatch(const handle_parameter& handle_parameter, const protobuf_message& current_message)
 {
+    if (const auto base_message_handler = get_base_message_handler(current_message))
+    {
+        return base_message_handler->get()->handle(handle_parameter, current_message, shared_from_this());
+    }
+
+    return false;
+}
+
+celeritas::message_registry::base_message_handler_optional_type celeritas::message_registry::get_base_message_handler(const protobuf_message& current_message)
+{
     const auto typeName = current_message.GetTypeName();
 
-    std::unique_lock lock{ mutex_ };
+    std::lock_guard lock{ mutex_ };
 
     if (const auto iter = registry_.find(typeName.data());
         iter != registry_.end())
     {
-        lock.unlock();
-
-        return iter->second->handle(handle_parameter, current_message, shared_from_this());
+        return iter->second;
     }
 
-    return false;
+    return std::nullopt;
 }

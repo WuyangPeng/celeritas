@@ -1,5 +1,5 @@
 ﻿#include "response_message_handler.h"
-#include "../concrete_message_handler.tpp"
+#include "message/concrete_message_handler.tpp"
 
 celeritas::response_message_handler::response_message_handler()
 {
