@@ -72,6 +72,11 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_
 
     const auto target = request.target();
 
+    if (target == "/favicon.ico")
+    {
+        co_return;
+    }
+
     LOG_CHANNEL(network_channel, trace) << "target:  " << target << std::endl;
 
     const auto url_view = boost::urls::parse_relative_ref(target).value();
