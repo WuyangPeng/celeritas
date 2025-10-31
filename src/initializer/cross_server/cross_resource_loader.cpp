@@ -5,6 +5,6 @@ celeritas::cross_resource_loader::cross_resource_loader(app_config_shared_ptr ap
 {
 }
 
-void celeritas::cross_resource_loader::service_initialize_resource()
+void celeritas::cross_resource_loader::service_initialize_resource(io_context_type& io_context)
 {
 }

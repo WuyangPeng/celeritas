@@ -36,6 +36,10 @@ namespace celeritas
 
         [[nodiscard]] int get_port(server_network_type server_network_type) const;
 
+        [[nodiscard]] bool is_heartbeat() const noexcept;
+
+        void set_heartbeat(bool is_heartbeat);
+
     private:
         std::string instance_id_;
         std::string service_name_;
@@ -43,5 +47,6 @@ namespace celeritas
         std::string game_server_id_;
         time_point_type last_heartbeat_;
         protocol_port_container protocol_port_;
+        bool is_heartbeat_ = true;
     };
 }

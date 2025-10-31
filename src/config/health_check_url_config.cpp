@@ -9,3 +9,8 @@ std::string celeritas::health_check_url_config::get_url() const
 {
     return url_;
 }
+
+int celeritas::health_check_url_config::get_interval() const
+{
+    return interval_;
+}

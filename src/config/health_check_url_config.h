@@ -15,6 +15,8 @@ namespace celeritas
 
         [[nodiscard]] std::string get_url() const;
 
+        [[nodiscard]] int get_interval() const;
+
     private:
         std::string url_;
         int interval_ = 0;

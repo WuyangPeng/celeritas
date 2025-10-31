@@ -5,6 +5,6 @@ celeritas::game_resource_loader::game_resource_loader(app_config_shared_ptr app_
 {
 }
 
-void celeritas::game_resource_loader::service_initialize_resource()
+void celeritas::game_resource_loader::service_initialize_resource(io_context_type& io_context)
 {
 }

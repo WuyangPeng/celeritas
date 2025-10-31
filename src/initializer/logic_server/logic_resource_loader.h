@@ -13,6 +13,6 @@ namespace celeritas
         explicit logic_resource_loader(app_config_shared_ptr app_config);
 
     private:
-        void service_initialize_resource() override;
+        void service_initialize_resource(io_context_type& io_context) override;
     };
 }

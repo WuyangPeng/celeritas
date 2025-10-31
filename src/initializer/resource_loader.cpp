@@ -28,7 +28,7 @@ void celeritas::resource_loader::initialize(io_context_type& io_context, const n
     initialize_service_registry_resource(io_context, network_message_callback);
     start_check_tcp_clients_timer(io_context);
     start_service_registry_timer(io_context);
-    service_initialize_resource();
+    service_initialize_resource(io_context);
 }
 
 void celeritas::resource_loader::release_resource()
@@ -109,6 +109,11 @@ void celeritas::resource_loader::process_service_registry_by_duration()
     {
         LOG_CHANNEL(initializer_channel, trace) << "service registry registry: " << server.get_instance_id();
     }
+}
+
+celeritas::resource_loader::app_config_shared_ptr celeritas::resource_loader::get_app_config() const
+{
+    return app_config_;
 }
 
 void celeritas::resource_loader::initialize_logger_resource()

@@ -10,7 +10,8 @@ celeritas::service_info::service_info(std::string instance_id,
       host_{ std::move(host) },
       game_server_id_{ std::move(game_server_id) },
       last_heartbeat_{ std::chrono::steady_clock::now() },
-      protocol_port_{ std::move(protocol_port) }
+      protocol_port_{ std::move(protocol_port) },
+      is_heartbeat_{ true }
 {
 }
 
@@ -55,4 +56,14 @@ int celeritas::service_info::get_port(const server_network_type server_network_t
     }
 
     return 0;
+}
+
+bool celeritas::service_info::is_heartbeat() const noexcept
+{
+    return is_heartbeat_;
+}
+
+void celeritas::service_info::set_heartbeat(bool is_heartbeat)
+{
+    is_heartbeat_ = is_heartbeat;
 }

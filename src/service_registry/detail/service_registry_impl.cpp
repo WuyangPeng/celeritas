@@ -27,7 +27,7 @@ celeritas::service_registry_impl::service_info_container_type celeritas::service
     service_info_container_type services{};
     for (const auto& element : registry_ | std::views::values)
     {
-        if (element.get_service_name() == service_name)
+        if (element.get_service_name() == service_name && element.is_heartbeat())
         {
             services.emplace_back(element);
         }
