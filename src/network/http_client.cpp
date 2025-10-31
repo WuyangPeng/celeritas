@@ -57,7 +57,7 @@ celeritas::listener_sessions::network_message_callback_weak_ptr celeritas::http_
     return network_message_callback_;
 }
 
-void celeritas::http_client::write(const std::string& response) const
+void celeritas::http_client::write(const std::string& path, const std::string& response) const
 {
     if (is_open())
     {

@@ -5,6 +5,6 @@ celeritas::gateway_resource_loader::gateway_resource_loader(app_config_shared_pt
 {
 }
 
-void celeritas::gateway_resource_loader::service_initialize_resource(io_context_type& io_context)
+void celeritas::gateway_resource_loader::service_initialize_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
 {
 }

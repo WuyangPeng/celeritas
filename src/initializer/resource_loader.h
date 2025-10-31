@@ -41,13 +41,17 @@ namespace celeritas
         void process_service_registry_by_duration();
 
     protected:
+        using tcp_client_shared_ptr = std::shared_ptr<tcp_client>;
+        using tcp_client_container_type = std::vector<tcp_client_shared_ptr>;
+
         [[nodiscard]] app_config_shared_ptr get_app_config() const;
+
+        [[nodiscard]] tcp_client_container_type get_tcp_client_container() const;
 
     private:
         using listener_shared_ptr = std::shared_ptr<listener>;
         using listener_container_type = std::vector<listener_shared_ptr>;
-        using tcp_client_shared_ptr = std::shared_ptr<tcp_client>;
-        using tcp_client_container_type = std::vector<tcp_client_shared_ptr>;
+
         using steady_timer_type = boost::asio::steady_timer;
         using steady_timer_unique_ptr = std::unique_ptr<steady_timer_type>;
         using self_shared_ptr = std::shared_ptr<resource_loader>;
@@ -66,7 +70,7 @@ namespace celeritas
 
         void modify_service_registry_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback, int index);
 
-        virtual void service_initialize_resource(io_context_type& io_context) = 0;
+        virtual void service_initialize_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback) = 0;
 
         void start_check_tcp_clients_timer(io_context_type& io_context);
 
