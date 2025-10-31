@@ -3,8 +3,8 @@
 
 #include <boost/asio.hpp>
 
-celeritas::http_session_write::http_session_write(socket_type& socket)
-    : base_type{}, socket_{ socket }, write_queue_{}, write_mutex_{}
+celeritas::http_session_write::http_session_write(socket_type& socket, std::string host)
+    : base_type{}, socket_{ socket }, write_queue_{}, write_mutex_{}, host_{ std::move(host) }
 {
 }
 
@@ -46,7 +46,7 @@ celeritas::session_write::void_awaitable_type celeritas::http_session_write::do_
     }
 }
 
-celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write::do_one_write()
+celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write::do_one_write_response()
 {
     // 调用新函数来获取数据，该函数内部处理了加锁和解锁
     auto optional_buffer_guard = get_next_write_buffer();
@@ -57,19 +57,51 @@ celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write
 
     auto buffer_guard = std::move(*optional_buffer_guard);
     const auto body_size = buffer_guard.get_effective_size();
-    const auto body_ptr = buffer_guard.get();
 
-    auto header =
-        "HTTP/1.1 200 OK\r\n"
-        "Content-Length: " + std::to_string(body_size) + "\r\n"
-        "Content-Type: text/html; charset=utf-8\r\n"
-        "Connection: keep-alive\r\n"
-        "\r\n";
+    boost::beast::http::response<boost::beast::http::buffer_body> response{ boost::beast::http::status::ok, 11, boost::beast::http::buffer_body::value_type{} };
 
-    // 2. 分散写：header + body（零拷贝 body）
-    const std::vector<boost::asio::const_buffer> buffers{ boost::asio::buffer(header), boost::asio::const_buffer(body_ptr, body_size) };
+    // 设置 HTTP 头部字段
+    response.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
+    response.set(boost::beast::http::field::content_type, "text/html; charset=utf-8");
+    response.set(boost::beast::http::field::connection, "keep-alive");
 
-    co_await boost::asio::async_write(socket_, buffers, boost::asio::use_awaitable);
+    // 设置 Content-Length (必须设置)
+    response.content_length(body_size);
+
+    // 这一步设置了响应体的内容和大小
+    response.body().data = buffer_guard.get();
+    response.body().size = body_size;
+
+    co_await boost::beast::http::async_write(socket_, response, boost::asio::use_awaitable);
+
+    LOG_CHANNEL(network_channel, debug) << "Successfully wrote " << buffer_guard.get_effective_size() << " bytes to client.";
+
+    co_return true;
+}
+
+celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write::do_one_write_request()
+{
+    // 调用新函数来获取数据，该函数内部处理了加锁和解锁
+    auto optional_buffer_guard = get_next_write_buffer();
+    if (!optional_buffer_guard)
+    {
+        co_return false; // 队列为空，退出协程
+    }
+
+    auto buffer_guard = std::move(*optional_buffer_guard);
+    const auto body_size = buffer_guard.get_effective_size();
+
+    // 构建 HTTP GET 请求
+    boost::beast::http::request<boost::beast::http::buffer_body> request{ boost::beast::http::verb::get, "/api/data", 11 }; // HTTP/1.1
+    request.set(boost::beast::http::field::host, host_);
+    request.set(boost::beast::http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+    request.set(boost::beast::http::field::content_type, "application/octet-stream");
+    request.content_length(body_size); // 必须设置 Content-Length
+
+    request.body().data = buffer_guard.get();
+    request.body().size = body_size;
+
+    co_await boost::beast::http::async_write(socket_, request, boost::asio::use_awaitable);
 
     LOG_CHANNEL(network_channel, debug) << "Successfully wrote " << buffer_guard.get_effective_size() << " bytes to client.";
 
