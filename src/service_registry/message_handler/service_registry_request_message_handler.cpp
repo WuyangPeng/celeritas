@@ -16,6 +16,13 @@ celeritas::service_registry_request_message_handler::service_registry_request_me
                             const message_registry_shared_ptr& message_registry) -> bool {
                              return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::server_discover);
                          });
+
+    add_handler_function(proto::service::service_registry_request::PayloadCase::kServerClose,
+                         [](const handle_parameter& handle_parameter,
+                            const message_type& current_message,
+                            const message_registry_shared_ptr& message_registry) -> bool {
+                             return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::server_close);
+                         });
 }
 
 bool celeritas::service_registry_request_message_handler::handle_concrete(const handle_parameter& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)

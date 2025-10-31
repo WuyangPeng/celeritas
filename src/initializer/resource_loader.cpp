@@ -48,7 +48,11 @@ void celeritas::resource_loader::release_resource()
             request.mutable_celeritas_request()->mutable_service()->mutable_registry()->mutable_server_close();
             element->write(header{ proto::common::empty_message_header{} }, request);
         }
+
+        element->stop();
     }
+
+    tcp_clients_.clear();
 
     for (const auto& element : listener_)
     {

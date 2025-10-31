@@ -197,10 +197,10 @@ void celeritas::initializer::setup_signal_handler()
 void celeritas::initializer::stop()
 {
     daemon_.reset();
-    io_context_.stop();
     database_pool_manager::get_instance().release_pool();
     resource_loader_->release_resource();
     application_loader_->stop();
+    io_context_.stop();
 
     LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop finish!";
 }
