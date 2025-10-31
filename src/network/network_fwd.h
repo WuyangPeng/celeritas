@@ -21,4 +21,5 @@ namespace celeritas
     class message_header;
     class listener_sessions;
     class listener_sessions_base;
+    class http_client;
 }
