@@ -1,8 +1,7 @@
-﻿#include "http_session_run.h"
+﻿#include "buffer_consumer.h"
+#include "http_session_run.h"
 #include "common/buffer_guard.h"
-#include "common/buffer_pool.h"
 #include "common/logger.h"
-#include "network/message_header.h"
 #include "network/network_message_callback.h"
 
 #include <boost/beast.hpp>
@@ -40,19 +39,17 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::run()
             {
                 LOG_CHANNEL(network_channel, warning) << "Session error: " << error.what();
             }
-            socket_.close();
+
             break;
         }
         catch (const std::exception& error)
         {
             LOG_CHANNEL(network_channel, error) << "An unexpected error occurred: " << error.what();
-            socket_.close();
             break;
         }
         catch (...)
         {
             LOG_CHANNEL(network_channel, fatal) << "Listener unknown error.";
-            socket_.close();
             break;
         }
     }
@@ -73,6 +70,8 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_
 
     co_await boost::beast::http::async_read(socket_, buffer, parser, boost::asio::use_awaitable);
 
+    buffer_consumer consume_guard{ buffer };
+
     const auto request = parser.release();
 
     const auto target = request.target();
@@ -89,6 +88,11 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_
 
     LOG_CHANNEL(network_channel, trace) << "params:  " << params << std::endl;
 
+    call_back(path, params);
+}
+
+void celeritas::http_session_run::call_back(const std::string& path, const urls_params_view_type& params)
+{
     const auto session = get_session();
 
     if (const auto callback = session_callback_.get_network_message_callback_shared_ptr();
@@ -96,6 +100,4 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_
     {
         callback->call_back(path, params, session);
     }
-
-    buffer.consume(buffer.size());
 }

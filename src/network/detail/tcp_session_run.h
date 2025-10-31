@@ -3,6 +3,7 @@
 #include "network/session_callback.h"
 #include "network/session_run.h"
 
+#include <boost/asio.hpp>
 #include <boost/asio/buffer.hpp>
 
 namespace celeritas
@@ -23,13 +24,20 @@ namespace celeritas
 
     private:
         using read_awaitable_type = boost::asio::awaitable<size_t>;
+        using buffer_guard_optional_type = std::optional<buffer_guard>;
+        using steady_timer_type = boost::asio::steady_timer;
+        using mutable_buffer_type = boost::asio::mutable_buffer;
+
+        [[nodiscard]] auto setup_timeout_cancellation_slot(steady_timer_type& steady_timer);
 
         [[nodiscard]] void_awaitable_type handle_one_message();
 
         // 协程：处理带超时的异步读取操作
-        [[nodiscard]] read_awaitable_type read_data_with_timeout(boost::asio::mutable_buffer buffer);
+        [[nodiscard]] read_awaitable_type read_data_with_timeout(mutable_buffer_type buffer);
 
         void call_back(const message_header& message_header, buffer_guard buffer_guard);
+
+        [[nodiscard]] buffer_guard_optional_type get_buffer_guard(message_header& message_header);
 
         socket_type& socket_;
         int64_t session_id_;

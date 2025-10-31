@@ -33,19 +33,14 @@ celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<Socke
                 co_return;
             }
         }
-        catch (const boost::system::system_error& error)
-        {
-            LOG_CHANNEL(network_channel, warning) << "Write error: " << error.what();
-            break;
-        }
         catch (const std::exception& error)
         {
-            LOG_CHANNEL(network_channel, error) << "Write unknown error: " << error.what();
+            LOG_CHANNEL(network_channel, error) << "Write error: " << error.what();
             break;
         }
         catch (...)
         {
-            LOG_CHANNEL(network_channel, fatal) << "Listener unknown error.";
+            LOG_CHANNEL(network_channel, fatal) << "Write unknown error.";
             break;
         }
     }

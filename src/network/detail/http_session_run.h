@@ -4,6 +4,7 @@
 #include "network/session_run.h"
 
 #include <boost/asio.hpp>
+#include <boost/url.hpp>
 
 namespace celeritas
 {
@@ -21,9 +22,13 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type run() override;
 
     private:
+        using urls_params_view_type = boost::urls::params_view;
+
         void close_socket();
 
         [[nodiscard]] void_awaitable_type handle_one_message();
+
+        void call_back(const std::string& path, const urls_params_view_type& params);
 
         socket_type& socket_;
         int64_t session_id_;

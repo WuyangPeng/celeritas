@@ -52,7 +52,7 @@ celeritas::listener_sessions::void_awaitable_type celeritas::http_listener_accep
     // 等待新连接
     auto result = co_await acceptor_.async_accept(boost::asio::as_tuple(boost::asio::use_awaitable));
 
-    if (auto error = std::get<0>(result))
+    if (const auto error = std::get<0>(result))
     {
         // 忽略操作被取消的错误
         if (error != boost::asio::error::operation_aborted)

@@ -6,7 +6,7 @@
 
 namespace celeritas
 {
-    class http_listener_accept : public listener_accept
+    class http_listener_accept final : public listener_accept
     {
     public:
         using class_type = http_listener_accept;

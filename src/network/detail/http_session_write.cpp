@@ -10,17 +10,9 @@ celeritas::http_session_write::http_session_write(socket_type& socket)
 
 void celeritas::http_session_write::write(buffer_guard data)
 {
-    std::unique_lock lock{ write_mutex_ };
-    write_queue_.emplace_back(std::move(data));
-
-    // 如果发送协程没有在运行，就启动它
-    if (write_queue_.size() == 1)
+    if (write_buffer_guard(std::move(data)))
     {
-        lock.unlock();
-        co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
-                     return self->do_write();
-                 },
-                 boost::asio::detached);
+        co_spawn_write();
     }
 }
 
@@ -62,6 +54,7 @@ celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write
     {
         co_return false; // 队列为空，退出协程
     }
+
     auto buffer_guard = std::move(*optional_buffer_guard);
     const auto body_size = buffer_guard.get_effective_size();
     const auto body_ptr = buffer_guard.get();
@@ -85,7 +78,7 @@ celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write
 
 celeritas::http_session_write::buffer_guard_optional_type celeritas::http_session_write::get_next_write_buffer()
 {
-    std::unique_lock lock{ write_mutex_ };
+    std::lock_guard lock{ write_mutex_ };
 
     if (write_queue_.empty())
     {
@@ -96,4 +89,25 @@ celeritas::http_session_write::buffer_guard_optional_type celeritas::http_sessio
     write_queue_.pop_front();
 
     return buffer;
+}
+
+void celeritas::http_session_write::co_spawn_write()
+{
+    co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
+                 return self->do_write();
+             },
+             boost::asio::detached);
+}
+
+bool celeritas::http_session_write::write_buffer_guard(buffer_guard data)
+{
+    std::lock_guard lock{ write_mutex_ };
+    write_queue_.emplace_back(std::move(data));
+
+    if (write_queue_.size() == 1)
+    {
+        return true;
+    }
+
+    return false;
 }

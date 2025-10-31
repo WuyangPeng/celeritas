@@ -30,6 +30,10 @@ namespace celeritas
 
         [[nodiscard]] buffer_guard_optional_type get_next_write_buffer();
 
+        void co_spawn_write();
+
+        [[nodiscard]] bool write_buffer_guard(buffer_guard data);
+
         socket_type& socket_;
         buffer_guard_container_type write_queue_;
         std::mutex write_mutex_;

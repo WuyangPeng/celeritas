@@ -10,7 +10,7 @@ namespace celeritas
         using class_type = buffer_consumer;
         using flat_buffer_type = boost::beast::flat_buffer;
 
-        explicit buffer_consumer(flat_buffer_type& buf) noexcept;
+        explicit buffer_consumer(flat_buffer_type& buffer) noexcept;
 
         ~buffer_consumer() noexcept;
 
@@ -23,6 +23,6 @@ namespace celeritas
         buffer_consumer& operator=(buffer_consumer&& rhs) noexcept = delete;
 
     private:
-        flat_buffer_type& buf_;
+        flat_buffer_type& buffer_;
     };
 }
