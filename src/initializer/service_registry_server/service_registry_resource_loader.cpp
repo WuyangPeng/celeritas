@@ -18,7 +18,7 @@ void celeritas::service_registry_resource_loader::send_health_check(io_context_t
 
     for (const auto& [instance_id, service_info] : service_registry::get_services())
     {
-        const auto client = std::make_shared<http_client>(io_context, network_message_callback, "", service_info.get_host(), service_info.get_port(server_network_type::tcp), service_info.get_service_name(), health_check_url_config.get_url());
+        const auto client = std::make_shared<http_client>(io_context, network_message_callback, "", service_info.get_host(), service_info.get_port(server_network_type::http), service_info.get_service_name(), health_check_url_config.get_url());
 
         boost::asio::co_spawn(io_context,
                               send_health_check(client),
