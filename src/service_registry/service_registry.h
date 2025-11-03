@@ -14,6 +14,7 @@ namespace celeritas
         using class_type = service_registry;
         using io_context_type = boost::asio::io_context;
         using service_info_container_type = std::vector<service_info>;
+        using registry_type = std::unordered_map<std::string, service_info>;
 
         static void register_service(const service_info& info);
 
@@ -22,6 +23,8 @@ namespace celeritas
         static void start_cleanup_timer(io_context_type& io_context);
 
         static void remove_instance(const std::string& instance_id);
+
+        [[nodiscard]] static registry_type get_services();
 
     private:
         static service_registry_impl& get_service_registry_impl();

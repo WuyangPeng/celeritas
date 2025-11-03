@@ -15,6 +15,7 @@ namespace celeritas
         using class_type = service_registry_impl;
         using io_context_type = boost::asio::io_context;
         using service_info_container_type = std::vector<service_info>;
+        using registry_type = std::unordered_map<std::string, service_info>;
 
         service_registry_impl() noexcept = default;
 
@@ -38,8 +39,9 @@ namespace celeritas
 
         void remove_instance(const std::string& instance_id);
 
+        [[nodiscard]] registry_type get_services();
+
     private:
-        using registry_type = std::unordered_map<std::string, service_info>;
         using registry_type_iterator = registry_type::iterator;
         using cleanup_timer_shared_ptr = std::shared_ptr<timer_base>;
         using seconds_type = std::chrono::seconds;

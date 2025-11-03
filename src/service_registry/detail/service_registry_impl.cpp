@@ -70,6 +70,13 @@ void celeritas::service_registry_impl::remove_instance(const std::string& instan
     registry_.erase(instance_id);
 }
 
+celeritas::service_registry_impl::registry_type celeritas::service_registry_impl::get_services()
+{
+    std::lock_guard lock{ mutex_ };
+
+    return registry_;
+}
+
 bool celeritas::service_registry_impl::cleanup_service_entry(const registry_type_iterator& iter, const time_point_type& now)
 {
     const auto last_heartbeat = iter->second.get_last_heartbeat();

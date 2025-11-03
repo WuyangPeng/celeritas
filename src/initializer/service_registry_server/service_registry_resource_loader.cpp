@@ -1,6 +1,8 @@
 ﻿#include "service_registry_resource_loader.h"
 #include "network/http_client.h"
 #include "network/tcp_client.h"
+#include "service_registry/service_info.h"
+#include "service_registry/service_registry.h"
 
 #include <boost/polymorphic_pointer_cast.hpp>
 
@@ -14,10 +16,9 @@ void celeritas::service_registry_resource_loader::send_health_check(io_context_t
     const auto app_config = get_app_config();
     const auto health_check_url_config = app_config->get_health_check_url_config();
 
-    for (const auto tcp_client_container = get_tcp_client_container();
-         const auto& element : tcp_client_container)
+    for (const auto& [instance_id, service_info] : service_registry::get_services())
     {
-        const auto client = std::make_shared<http_client>(io_context, network_message_callback, "", element->get_host(), element->get_port(), element->get_server_type(), health_check_url_config.get_url());
+        const auto client = std::make_shared<http_client>(io_context, network_message_callback, "", service_info.get_host(), service_info.get_port(server_network_type::tcp), service_info.get_service_name(), health_check_url_config.get_url());
 
         boost::asio::co_spawn(io_context,
                               send_health_check(client),
