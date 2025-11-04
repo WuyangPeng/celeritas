@@ -1,7 +1,8 @@
 ﻿#include "application_loader.h"
-#include "message/message_handler/health_check_http_message_handler.h"
+#include "message/message_handler/health_check_request_http_message_handler.h"
 #include "message/http_handle_parameter.h"
 #include "message/http_message_registry.h"
+#include "message/message_handler/health_check_response_http_message_handler.h"
 #include "message/message_handler/request_message_handler.h"
 #include "message/message_handler/response_message_handler.h"
 #include "message/message_handler/service_request_message_handler.h"
@@ -72,5 +73,6 @@ void celeritas::application_loader::initialize_health_check()
 
     const auto url = health_check_url_config.get_url();
 
-    http_message_registry_->registerHandler(std::make_shared<health_check_http_message_handler>(url));
+    http_message_registry_->registerHandler(std::make_shared<health_check_request_http_message_handler>(url));
+    http_message_registry_->registerHandler(std::make_shared<health_check_response_http_message_handler>(url));
 }

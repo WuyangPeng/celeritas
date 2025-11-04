@@ -4,13 +4,13 @@
 
 namespace celeritas
 {
-    class health_check_http_message_handler final : public http_base_message_handler
+    class health_check_request_http_message_handler final : public http_base_message_handler
     {
     public:
-        using class_type = health_check_http_message_handler;
+        using class_type = health_check_request_http_message_handler;
         using base_type = http_base_message_handler;
 
-        explicit health_check_http_message_handler(std::string path);
+        explicit health_check_request_http_message_handler(std::string path);
 
         [[nodiscard]] std::string get_supported_type_name() const override;
 

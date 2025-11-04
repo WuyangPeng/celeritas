@@ -1,4 +1,6 @@
 ﻿#include "http_handle_parameter.h"
+#include "common/celeritas_error.h"
+#include "initializer/resource_loader.h"
 
 #include <utility>
 #include "network/session.h"
@@ -25,4 +27,15 @@ void celeritas::http_handle_parameter::write(const std::string& response) const
     {
         session_shared_ptr->write(response);
     }
+}
+
+celeritas::http_handle_parameter::app_config_shared_ptr celeritas::http_handle_parameter::get_app_config() const
+{
+    if (const auto resource_loader_shared_ptr = resource_loader_.lock();
+        resource_loader_shared_ptr != nullptr)
+    {
+        return resource_loader_shared_ptr->get_app_config();
+    }
+
+    throw celeritas_error("resource_loader is null.");
 }

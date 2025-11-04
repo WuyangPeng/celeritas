@@ -1,5 +1,6 @@
 ﻿#include "buffer_consumer.h"
 #include "http_session_run.h"
+#include "network_internal_fwd.h"
 #include "common/buffer_guard.h"
 #include "common/logger.h"
 #include "network/network_message_callback.h"
@@ -123,7 +124,7 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_
 
     LOG_CHANNEL(network_channel, trace) << "Response Body:" << body_content;
 
-    call_back(path + "_response", body_content);
+    call_back(path + response_suffix.data(), body_content);
 }
 
 void celeritas::http_session_run::call_back(const std::string& path, const urls_params_view_type& params)

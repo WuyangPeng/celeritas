@@ -13,7 +13,8 @@ namespace celeritas
     class http_base_message_handler;
     class http_message_registry;
 
-    class health_check_http_message_handler;
+    class health_check_request_http_message_handler;
+    class health_check_response_http_message_handler;
     class request_message_handler;
     class response_message_handler;
     class service_request_message_handler;

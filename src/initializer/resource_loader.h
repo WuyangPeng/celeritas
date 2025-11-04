@@ -40,11 +40,11 @@ namespace celeritas
 
         void process_service_registry_by_duration();
 
+        [[nodiscard]] app_config_shared_ptr get_app_config() const;
+
     protected:
         using tcp_client_shared_ptr = std::shared_ptr<tcp_client>;
         using tcp_client_container_type = std::vector<tcp_client_shared_ptr>;
-
-        [[nodiscard]] app_config_shared_ptr get_app_config() const;
 
         [[nodiscard]] tcp_client_container_type get_tcp_client_container() const;
 
