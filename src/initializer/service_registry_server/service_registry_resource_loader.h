@@ -24,7 +24,7 @@ namespace celeritas
 
         void start_health_check_timer(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
 
-        [[nodiscard]] void_waitable_type send_health_check(const http_client_shared_ptr& http_client);
+        [[nodiscard]] void_waitable_type send_health_check(http_client_shared_ptr http_client);
 
         health_check_timer_shared_ptr health_check_timer_;
     };

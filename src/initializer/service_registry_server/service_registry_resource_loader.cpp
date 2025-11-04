@@ -21,7 +21,7 @@ void celeritas::service_registry_resource_loader::send_health_check(io_context_t
         const auto client = std::make_shared<http_client>(io_context, network_message_callback, "", service_info.get_host(), service_info.get_port(server_network_type::http), service_info.get_service_name(), health_check_url_config.get_url());
 
         boost::asio::co_spawn(io_context,
-                              send_health_check(client),
+                              send_health_check(std::move(client)),
                               boost::asio::detached);
     }
 }
@@ -41,7 +41,7 @@ void celeritas::service_registry_resource_loader::start_health_check_timer(io_co
     health_check_timer_->start();
 }
 
-celeritas::service_registry_resource_loader::void_waitable_type celeritas::service_registry_resource_loader::send_health_check(const http_client_shared_ptr& http_client)
+celeritas::service_registry_resource_loader::void_waitable_type celeritas::service_registry_resource_loader::send_health_check(http_client_shared_ptr http_client)
 {
     co_await http_client->connect();
 
