@@ -42,6 +42,8 @@ namespace celeritas
 
         void call_back(const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session) override;
 
+        void call_back(const std::string& path, const std::string& params, const session_shared_ptr& session) override;
+
     private:
         using configuration_loader_unique_ptr = initializer_factory::configuration_loader_unique_ptr;
         using resource_loader_shared_ptr = initializer_factory::resource_loader_shared_ptr;

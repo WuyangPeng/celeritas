@@ -41,6 +41,11 @@ bool celeritas::application_loader::dispatch(const std::string& path, const urls
     return http_message_registry_->dispatch(http_handle_parameter{ path, params, session, resource_loader });
 }
 
+bool celeritas::application_loader::dispatch(const std::string& path, const std::string& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
+{
+    return http_message_registry_->dispatch(http_handle_parameter{ path, params, session, resource_loader });
+}
+
 celeritas::application_loader::message_registry_weak_ptr celeritas::application_loader::get_message_registry()
 {
     return message_registry_;

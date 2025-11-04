@@ -45,6 +45,8 @@ namespace celeritas
 
         [[nodiscard]] bool dispatch(const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 
+        [[nodiscard]] bool dispatch(const std::string& path, const std::string& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
+
         [[nodiscard]] message_registry_weak_ptr get_message_registry();
 
     private:

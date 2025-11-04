@@ -18,6 +18,8 @@ namespace celeritas
 
         http_handle_parameter(std::string path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 
+        http_handle_parameter(std::string path, const std::string& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
+
         [[nodiscard]] std::string get_path() const;
 
         void write(const std::string& response) const;
@@ -28,6 +30,7 @@ namespace celeritas
 
         std::string path_;
         urls_params_view_type params_;
+        std::string response_;
         session_weak_ptr session_;
         resource_loader_weak_ptr resource_loader_;
     };

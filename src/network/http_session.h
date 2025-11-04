@@ -21,7 +21,7 @@ namespace celeritas
                      session_callback session_callback,
                      bool is_server,
                      std::string host,
-                     std::string path);
+                     const std::string& path);
 
         ~http_session() noexcept override;
 
@@ -48,7 +48,9 @@ namespace celeritas
 
         void do_write(buffer_guard data) override;
 
-        [[nodiscard]] static session_write_shared_ptr get_session_write(socket_type& socket, bool is_server, std::string host, std::string path);
+        [[nodiscard]] static session_write_shared_ptr get_session_write(socket_type& socket, bool is_server, std::string host, const std::string& path);
+
+        [[nodiscard]] static session_run_shared_ptr get_session_run(socket_type& socket, bool is_server, int64_t session_id, const session_callback& session_callback, const std::string& path);
 
         [[nodiscard]] void_awaitable_type do_write_immediately(buffer_guard data) override;
 

@@ -21,6 +21,8 @@ namespace celeritas
     class buffer_consumer;
     class read_buffer_guard;
     class http_response_session_write;
+    class http_request_session_run;
+    class http_response_session_run;
 
     template <typename SocketType>
     class tcp_session_write;

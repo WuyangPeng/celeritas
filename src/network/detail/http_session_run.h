@@ -8,7 +8,7 @@
 
 namespace celeritas
 {
-    class http_session_run final : public session_run
+    class http_session_run : public session_run
     {
     public:
         using class_type = http_session_run;
@@ -21,14 +21,21 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type run() override;
 
+    protected:
+        [[nodiscard]] void_awaitable_type handle_one_request_message();
+
+        [[nodiscard]] void_awaitable_type handle_one_response_message(const std::string& path);
+
     private:
         using urls_params_view_type = boost::urls::params_view;
 
         void close_socket();
 
-        [[nodiscard]] void_awaitable_type handle_one_message();
+        [[nodiscard]] virtual void_awaitable_type handle_one_message() = 0;
 
         void call_back(const std::string& path, const urls_params_view_type& params);
+
+        void call_back(const std::string& path, const std::string& params);
 
         socket_type& socket_;
         int64_t session_id_;
