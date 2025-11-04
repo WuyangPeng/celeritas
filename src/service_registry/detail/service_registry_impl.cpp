@@ -77,6 +77,17 @@ celeritas::service_registry_impl::registry_type celeritas::service_registry_impl
     return registry_;
 }
 
+void celeritas::service_registry_impl::set_service_health(const std::string& instance_id, const bool is_health)
+{
+    std::lock_guard lock{ mutex_ };
+
+    if (const auto iter = registry_.find(instance_id);
+        iter != registry_.end())
+    {
+        iter->second.set_heartbeat(is_health);
+    }
+}
+
 bool celeritas::service_registry_impl::cleanup_service_entry(const registry_type_iterator& iter, const time_point_type& now)
 {
     const auto last_heartbeat = iter->second.get_last_heartbeat();

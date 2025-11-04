@@ -41,6 +41,8 @@ namespace celeritas
 
         [[nodiscard]] registry_type get_services();
 
+        void set_service_health(const std::string& instance_id, bool is_health);
+
     private:
         using registry_type_iterator = registry_type::iterator;
         using cleanup_timer_shared_ptr = std::shared_ptr<timer_base>;

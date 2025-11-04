@@ -20,6 +20,11 @@ std::string celeritas::http_handle_parameter::get_path() const
     return path_;
 }
 
+std::string celeritas::http_handle_parameter::get_response() const
+{
+    return response_;
+}
+
 void celeritas::http_handle_parameter::write(const std::string& response) const
 {
     if (const auto session_shared_ptr = session_.lock();

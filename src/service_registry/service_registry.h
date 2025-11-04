@@ -24,6 +24,8 @@ namespace celeritas
 
         static void remove_instance(const std::string& instance_id);
 
+        static void set_service_health(const std::string& instance_id, bool is_health);
+
         [[nodiscard]] static registry_type get_services();
 
     private:

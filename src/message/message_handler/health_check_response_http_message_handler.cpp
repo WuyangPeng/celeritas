@@ -1,5 +1,7 @@
-﻿#include "health_check_response_http_message_handler.h"
+﻿#include "health_check.h"
+#include "health_check_response_http_message_handler.h"
 #include "network/detail/network_internal_fwd.h"
+#include "service_registry/service_registry.h"
 
 celeritas::health_check_response_http_message_handler::health_check_response_http_message_handler(std::string path)
     : path_{ std::move(path) }
@@ -14,5 +16,9 @@ std::string celeritas::health_check_response_http_message_handler::get_supported
 bool celeritas::health_check_response_http_message_handler::handle(const http_handle_parameter& handle_parameter,
                                                                    const http_message_registry_weak_ptr& message_registry)
 {
+    const auto health_check = health_check::from_json_string(handle_parameter.get_response());
+
+    service_registry::set_service_health(health_check.get_instance_id(), health_check.is_healthy());
+
     return true;
 }

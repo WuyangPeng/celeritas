@@ -21,6 +21,11 @@ void celeritas::service_registry::remove_instance(const std::string& instance_id
     return get_service_registry_impl().remove_instance(instance_id);
 }
 
+void celeritas::service_registry::set_service_health(const std::string& instance_id, bool is_health)
+{
+    return get_service_registry_impl().set_service_health(instance_id, is_health);
+}
+
 celeritas::service_registry::registry_type celeritas::service_registry::get_services()
 {
     return get_service_registry_impl().get_services();

@@ -24,6 +24,8 @@ namespace celeritas
 
         [[nodiscard]] std::string get_path() const;
 
+        [[nodiscard]] std::string get_response() const;
+
         void write(const std::string& response) const;
 
         [[nodiscard]] app_config_shared_ptr get_app_config() const;
