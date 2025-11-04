@@ -84,6 +84,11 @@ void celeritas::tcp_client::stop()
     remove_session(session_id_);
 }
 
+bool celeritas::tcp_client::is_full() const
+{
+    return session_ == nullptr || session_->is_full();
+}
+
 celeritas::tcp_client::basic_resolver_results_waitable_type celeritas::tcp_client::get_end_points() const
 {
     boost::asio::ip::tcp::resolver resolver{ io_context_ };

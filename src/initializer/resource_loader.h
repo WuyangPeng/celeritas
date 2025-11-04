@@ -3,6 +3,7 @@
 #include "config/app_config.h"
 #include "detail/initializer_internal_fwd.h"
 #include "message/header.h"
+#include "message/message_fwd.h"
 #include "network/listener.h"
 #include "network/network_message_callback.h"
 #include "proto/celeritas.pb.h"
@@ -42,11 +43,11 @@ namespace celeritas
 
         [[nodiscard]] app_config_shared_ptr get_app_config() const;
 
+        [[nodiscard]] health_check_level_type get_health_check_level() const;
+
     protected:
         using tcp_client_shared_ptr = std::shared_ptr<tcp_client>;
         using tcp_client_container_type = std::vector<tcp_client_shared_ptr>;
-
-        [[nodiscard]] tcp_client_container_type get_tcp_client_container() const;
 
     private:
         using listener_shared_ptr = std::shared_ptr<listener>;

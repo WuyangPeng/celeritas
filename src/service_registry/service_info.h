@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "protocol_port.h"
+#include "message/message_handler/health_check_level_type.h"
 
 #include <chrono>
 #include <string>
@@ -37,9 +38,9 @@ namespace celeritas
 
         [[nodiscard]] int get_port(server_network_type server_network_type) const;
 
-        [[nodiscard]] bool is_heartbeat() const noexcept;
+        [[nodiscard]] health_check_level_type get_health_check_level_type() const noexcept;
 
-        void set_heartbeat(bool is_heartbeat);
+        void set_health_check_level_type(health_check_level_type health_check_level);
 
         [[nodiscard]] int64_t get_start_server_time() const;
 
@@ -50,7 +51,7 @@ namespace celeritas
         std::string game_server_id_;
         time_point_type last_heartbeat_;
         protocol_port_container protocol_port_;
-        bool is_heartbeat_ = true;
+        health_check_level_type health_check_level_ = health_check_level_type::health;
         int64_t start_server_time_ = 0;
     };
 }

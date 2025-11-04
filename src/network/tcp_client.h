@@ -50,6 +50,8 @@ namespace celeritas
 
         void stop();
 
+        [[nodiscard]] bool is_full() const;
+
     private:
         using basic_resolver_results_type = boost::asio::ip::basic_resolver_results<tcp_type>;
         using basic_resolver_results_waitable_type = boost::asio::awaitable<basic_resolver_results_type>;

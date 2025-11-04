@@ -47,6 +47,12 @@ bool celeritas::session_base<SocketType>::is_open() const
 }
 
 template <typename SocketType>
+bool celeritas::session_base<SocketType>::is_full() const
+{
+    return session_write_->is_full();
+}
+
+template <typename SocketType>
 void celeritas::session_base<SocketType>::stop()
 {
     if (is_open())

@@ -35,6 +35,8 @@ namespace celeritas
 
         void release_pool();
 
+        [[nodiscard]] bool is_health();
+
     private:
         using database_pool_container = std::map<std::string, database_pool_shared_ptr>;
 

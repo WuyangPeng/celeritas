@@ -28,6 +28,7 @@ message discover_request {
 message end_point {
     string host = 1;
     int32 port = 2;
+    bool is_health = 3;
 }
 
 message discover_response {

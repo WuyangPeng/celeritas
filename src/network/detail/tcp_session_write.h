@@ -34,6 +34,8 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type write_immediately(buffer_guard data) override;
 
+        [[nodiscard]] bool is_full() override;
+
     private:
         using buffer_guard_optional_type = std::optional<buffer_guard>;
         using bool_awaitable_type = boost::asio::awaitable<bool>;

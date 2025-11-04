@@ -27,7 +27,7 @@ celeritas::service_registry_impl::service_info_container_type celeritas::service
     service_info_container_type services{};
     for (const auto& element : registry_ | std::views::values)
     {
-        if (element.get_service_name() == service_name && element.is_heartbeat())
+        if (element.get_service_name() == service_name && element.get_health_check_level_type() != health_check_level_type::crash)
         {
             services.emplace_back(element);
         }
@@ -77,14 +77,14 @@ celeritas::service_registry_impl::registry_type celeritas::service_registry_impl
     return registry_;
 }
 
-void celeritas::service_registry_impl::set_service_health(const std::string& instance_id, const bool is_health)
+void celeritas::service_registry_impl::set_service_health(const std::string& instance_id, health_check_level_type health_check_level)
 {
     std::lock_guard lock{ mutex_ };
 
     if (const auto iter = registry_.find(instance_id);
         iter != registry_.end())
     {
-        iter->second.set_heartbeat(is_health);
+        iter->second.set_health_check_level_type(health_check_level);
     }
 }
 

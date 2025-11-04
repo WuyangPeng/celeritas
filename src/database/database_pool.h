@@ -34,6 +34,8 @@ namespace celeritas
 
         virtual void cleanup_database_by_duration() = 0;
 
+        [[nodiscard]] virtual bool is_health() = 0;
+
     private:
         using cleanup_database_session_timer_shared_ptr = std::shared_ptr<cleanup_database_session_timer>;
 

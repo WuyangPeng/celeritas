@@ -31,5 +31,7 @@ namespace celeritas
 
         // 协程：处理发送队列
         [[nodiscard]] virtual void_awaitable_type do_write() = 0;
+
+        [[nodiscard]] virtual bool is_full() = 0;
     };
 }

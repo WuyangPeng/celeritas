@@ -65,6 +65,11 @@ void celeritas::http_session::stop()
     }
 }
 
+bool celeritas::http_session::is_full() const
+{
+    return http_write_->is_full();
+}
+
 void celeritas::http_session::do_write(buffer_guard data)
 {
     http_write_->write(std::move(data));

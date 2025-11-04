@@ -141,6 +141,14 @@ void celeritas::connection_pool_base<SessionType>::cleanup_database_by_duration(
 }
 
 template <typename SessionType>
+bool celeritas::connection_pool_base<SessionType>::is_health()
+{
+    std::lock_guard lock{ mutex_ };
+
+    return true;
+}
+
+template <typename SessionType>
 celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::connection_pool_base<SessionType>::async_one_initialize()
 {
     try

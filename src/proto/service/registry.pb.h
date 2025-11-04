@@ -592,6 +592,7 @@ class end_point final : public ::google::protobuf::Message
   enum : int {
     kHostFieldNumber = 1,
     kPortFieldNumber = 2,
+    kIsHealthFieldNumber = 3,
   };
   // string host = 1;
   void clear_host() ;
@@ -618,11 +619,21 @@ class end_point final : public ::google::protobuf::Message
   void _internal_set_port(::int32_t value);
 
   public:
+  // bool is_health = 3;
+  void clear_is_health() ;
+  bool is_health() const;
+  void set_is_health(bool value);
+
+  private:
+  bool _internal_is_health() const;
+  void _internal_set_is_health(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:celeritas.proto.service.end_point)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
                                    0, 46,
                                    2>
       _table_;
@@ -646,6 +657,7 @@ class end_point final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr host_;
     ::int32_t port_;
+    bool is_health_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2582,6 +2594,30 @@ inline ::int32_t end_point::_internal_port() const {
 inline void end_point::_internal_set_port(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.port_ = value;
+}
+
+// bool is_health = 3;
+inline void end_point::clear_is_health() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_health_ = false;
+  _impl_._has_bits_[0] &= ~0x00000004U;
+}
+inline bool end_point::is_health() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.end_point.is_health)
+  return _internal_is_health();
+}
+inline void end_point::set_is_health(bool value) {
+  _internal_set_is_health(value);
+  _impl_._has_bits_[0] |= 0x00000004U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.end_point.is_health)
+}
+inline bool end_point::_internal_is_health() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.is_health_;
+}
+inline void end_point::_internal_set_is_health(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_health_ = value;
 }
 
 // -------------------------------------------------------------------

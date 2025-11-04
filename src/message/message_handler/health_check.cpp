@@ -4,8 +4,8 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
-celeritas::health_check::health_check(std::string instance_id, const bool is_healthy)
-    : instance_id_{ std::move(instance_id) }, is_healthy_{ is_healthy }
+celeritas::health_check::health_check(std::string instance_id, const health_check_level_type health_check_level)
+    : instance_id_{ std::move(instance_id) }, health_check_level_{ health_check_level }
 {
 }
 
@@ -14,16 +14,16 @@ std::string celeritas::health_check::get_instance_id() const
     return instance_id_;
 }
 
-bool celeritas::health_check::is_healthy() const
+celeritas::health_check_level_type celeritas::health_check::get_health_check_level() const
 {
-    return is_healthy_;
+    return health_check_level_;
 }
 
 std::string celeritas::health_check::to_json_string() const
 {
     boost::property_tree::ptree tree{};
     tree.put("instance_id", instance_id_);
-    tree.put("is_healthy", is_healthy_);
+    tree.put("health_check_level", static_cast<int>(health_check_level_));
 
     try
     {
@@ -53,10 +53,10 @@ celeritas::health_check celeritas::health_check::from_json_string(const std::str
 
     try
     {
-        const auto instance_id = tree.get<std::string>("instance_id");
-        const auto healthy = tree.get<bool>("is_healthy");
+        auto instance_id = tree.get<std::string>("instance_id");
+        const auto health_check_level = tree.get<int>("health_check_level");
 
-        return health_check(std::move(instance_id), healthy);
+        return health_check{ std::move(instance_id), static_cast<health_check_level_type>(health_check_level) };
     }
     catch (const boost::property_tree::ptree_error& e)
     {

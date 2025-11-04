@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "common/common_fwd.h"
+#include "message/message_fwd.h"
 #include "service_registry/service_info.h"
 
 #include <boost/log/trivial.hpp>
@@ -41,7 +42,7 @@ namespace celeritas
 
         [[nodiscard]] registry_type get_services();
 
-        void set_service_health(const std::string& instance_id, bool is_health);
+        void set_service_health(const std::string& instance_id, health_check_level_type health_check_level);
 
     private:
         using registry_type_iterator = registry_type::iterator;

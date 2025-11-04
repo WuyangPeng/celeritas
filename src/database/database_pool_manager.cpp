@@ -81,6 +81,21 @@ void celeritas::database_pool_manager::release_pool()
     pools_.clear();
 }
 
+bool celeritas::database_pool_manager::is_health()
+{
+    std::lock_guard lock{ mutex_ };
+
+    for (const auto& pool : pools_ | std::views::values)
+    {
+        if (!pool->is_health())
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mysql_pool(const std::string& name,
                                                                                                                io_context_type& io_context,
                                                                                                                const std::string& host,

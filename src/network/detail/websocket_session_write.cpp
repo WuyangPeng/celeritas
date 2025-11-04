@@ -1,4 +1,5 @@
-﻿#include "websocket_session_write.h"
+﻿#include "network_internal_fwd.h"
+#include "websocket_session_write.h"
 #include "common/logger.h"
 
 #include <boost/asio.hpp>
@@ -51,6 +52,18 @@ celeritas::session_write::void_awaitable_type celeritas::websocket_session_write
     write_buffer_guard(std::move(data));
 
     co_await do_write();
+}
+
+bool celeritas::websocket_session_write::is_full()
+{
+    std::lock_guard lock{ write_mutex_ };
+
+    if (write_queue_.size() > max_queue_size)
+    {
+        return true;
+    }
+
+    return false;
 }
 
 celeritas::websocket_session_write::bool_awaitable_type celeritas::websocket_session_write::do_one_write()

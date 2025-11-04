@@ -18,7 +18,7 @@ bool celeritas::health_check_response_http_message_handler::handle(const http_ha
 {
     const auto health_check = health_check::from_json_string(handle_parameter.get_response());
 
-    service_registry::set_service_health(health_check.get_instance_id(), health_check.is_healthy());
+    service_registry::set_service_health(health_check.get_instance_id(), health_check.get_health_check_level());
 
     return true;
 }

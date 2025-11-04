@@ -1,4 +1,5 @@
 ﻿#include "resource_loader.h"
+#include "boost/beast/http/message_fwd.hpp"
 #include "common/logger.h"
 #include "common/random_helper.h"
 #include "database/database_pool_manager.h"
@@ -8,6 +9,7 @@
 #include "detail/server_resource_loader.h"
 #include "detail/service_registry_loader.h"
 #include "detail/service_registry_timer.h"
+#include "message/message_handler/health_check_level_type.h"
 #include "network/tcp_client.h"
 #include "proto/celeritas.pb.h"
 #include "server/server_fwd.h"
@@ -139,9 +141,22 @@ celeritas::resource_loader::app_config_shared_ptr celeritas::resource_loader::ge
     return app_config_;
 }
 
-celeritas::resource_loader::tcp_client_container_type celeritas::resource_loader::get_tcp_client_container() const
+celeritas::health_check_level_type celeritas::resource_loader::get_health_check_level() const
 {
-    return tcp_clients_;
+    if (!database_pool_manager::get_instance().is_health())
+    {
+        return health_check_level_type::crash;
+    }
+
+    for (const auto& element : tcp_clients_)
+    {
+        if (element->is_full())
+        {
+            return health_check_level_type::unhealthy;
+        }
+    }
+
+    return health_check_level_type::health;
 }
 
 void celeritas::resource_loader::initialize_logger_resource()

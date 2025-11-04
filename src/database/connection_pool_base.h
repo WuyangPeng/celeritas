@@ -54,6 +54,8 @@ namespace celeritas
 
         void cleanup_database_by_duration() override;
 
+        [[nodiscard]] bool is_health() override;
+
     private:
         using session_container_type = std::deque<session_shared_ptr>;
         using waiter_type = boost::asio::any_completion_handler<void(session_shared_ptr)>;

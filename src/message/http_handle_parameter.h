@@ -3,6 +3,7 @@
 #include "header.h"
 #include "config/app_config.h"
 #include "initializer/initializer_fwd.h"
+#include "message/message_fwd.h"
 #include "network/network_fwd.h"
 
 #include <boost/url.hpp>
@@ -29,6 +30,8 @@ namespace celeritas
         void write(const std::string& response) const;
 
         [[nodiscard]] app_config_shared_ptr get_app_config() const;
+
+        [[nodiscard]] health_check_level_type get_health_check_level() const;
 
     private:
         using session_weak_ptr = std::weak_ptr<session>;

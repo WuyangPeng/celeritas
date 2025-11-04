@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "health_check_level_type.h"
+
 #include <string>
 
 namespace celeritas
@@ -9,11 +11,11 @@ namespace celeritas
     public:
         using class_type = health_check;
 
-        health_check(std::string instance_id, bool is_healthy);
+        health_check(std::string instance_id, health_check_level_type health_check_level);
 
         [[nodiscard]] std::string get_instance_id() const;
 
-        [[nodiscard]] bool is_healthy() const;
+        [[nodiscard]] health_check_level_type get_health_check_level() const;
 
         [[nodiscard]] std::string to_json_string() const;
 
@@ -21,6 +23,6 @@ namespace celeritas
 
     private:
         std::string instance_id_;
-        bool is_healthy_ = false;
+        health_check_level_type health_check_level_;
     };
 }

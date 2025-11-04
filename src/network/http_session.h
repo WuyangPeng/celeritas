@@ -42,6 +42,8 @@ namespace celeritas
 
         void stop() override;
 
+        [[nodiscard]] bool is_full() const override;
+
     private:
         using session_run_shared_ptr = std::shared_ptr<session_run>;
         using session_write_shared_ptr = std::shared_ptr<session_write>;

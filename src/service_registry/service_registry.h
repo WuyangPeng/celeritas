@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "detail/service_registry_internal_fwd.h"
+#include "message/message_fwd.h"
 #include "service_registry/service_registry_fwd.h"
 
 #include <boost/asio/io_context.hpp>
@@ -24,7 +25,7 @@ namespace celeritas
 
         static void remove_instance(const std::string& instance_id);
 
-        static void set_service_health(const std::string& instance_id, bool is_health);
+        static void set_service_health(const std::string& instance_id, health_check_level_type health_check_level);
 
         [[nodiscard]] static registry_type get_services();
 

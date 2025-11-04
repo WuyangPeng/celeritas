@@ -44,3 +44,14 @@ celeritas::http_handle_parameter::app_config_shared_ptr celeritas::http_handle_p
 
     throw celeritas_error("resource_loader is null.");
 }
+
+celeritas::health_check_level_type celeritas::http_handle_parameter::get_health_check_level() const
+{
+    if (const auto resource_loader_shared_ptr = resource_loader_.lock();
+        resource_loader_shared_ptr != nullptr)
+    {
+        return resource_loader_shared_ptr->get_health_check_level();
+    }
+
+    throw celeritas_error("resource_loader is null.");
+}

@@ -41,6 +41,8 @@ namespace celeritas
 
         [[nodiscard]] bool is_open() const override;
 
+        [[nodiscard]] bool is_full() const override;
+
     private:
         // WebSocket 流的类型
         using tcp_stream_type = boost::beast::tcp_stream;

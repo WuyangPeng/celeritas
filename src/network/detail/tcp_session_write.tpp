@@ -55,6 +55,19 @@ celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<Socke
 }
 
 template <typename SocketType>
+bool celeritas::tcp_session_write<SocketType>::is_full()
+{
+    std::lock_guard lock{ write_mutex_ };
+
+    if (write_queue_.size() > max_queue_size)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+template <typename SocketType>
 celeritas::tcp_session_write<SocketType>::bool_awaitable_type celeritas::tcp_session_write<SocketType>::do_one_write()
 {
     // 调用新函数来获取数据，该函数内部处理了加锁和解锁

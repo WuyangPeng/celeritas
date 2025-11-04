@@ -12,7 +12,7 @@ celeritas::service_info::service_info(std::string instance_id,
       game_server_id_{ std::move(game_server_id) },
       last_heartbeat_{ std::chrono::steady_clock::now() },
       protocol_port_{ std::move(protocol_port) },
-      is_heartbeat_{ true },
+      health_check_level_{ health_check_level_type::health },
       start_server_time_{ start_server_time }
 {
 }
@@ -49,7 +49,7 @@ void celeritas::service_info::set_last_heartbeat(const int64_t start_server_time
     if (start_server_time != start_server_time_)
     {
         start_server_time_ = start_server_time;
-        is_heartbeat_ = true;
+        health_check_level_ = health_check_level_type::health;
     }
 }
 
@@ -66,14 +66,14 @@ int celeritas::service_info::get_port(const server_network_type server_network_t
     return 0;
 }
 
-bool celeritas::service_info::is_heartbeat() const noexcept
+celeritas::health_check_level_type celeritas::service_info::get_health_check_level_type() const noexcept
 {
-    return is_heartbeat_;
+    return health_check_level_;
 }
 
-void celeritas::service_info::set_heartbeat(bool is_heartbeat)
+void celeritas::service_info::set_health_check_level_type(health_check_level_type health_check_level)
 {
-    is_heartbeat_ = is_heartbeat;
+    health_check_level_ = health_check_level;
 }
 
 int64_t celeritas::service_info::get_start_server_time() const
