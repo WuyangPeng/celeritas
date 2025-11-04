@@ -43,7 +43,7 @@ namespace celeritas
 
         [[nodiscard]] network_message_callback_weak_ptr get_network_message_callback();
 
-        void write(const std::string& response) const;
+        [[nodiscard]] void_waitable_type write_immediately(const std::string& response) const;
 
         [[nodiscard]] bool is_open() const;
 

@@ -31,11 +31,15 @@ namespace celeritas
         // 启动会话处理协程
         virtual void start() = 0;
 
+        [[nodiscard]] virtual void_awaitable_type start_awaitable() = 0;
+
         virtual void stop() = 0;
 
         void write(const header& header, const protobuf_message_type& response);
 
         void write(const std::string& response);
+
+        [[nodiscard]] void_awaitable_type write_immediately(const std::string& response);
 
         [[nodiscard]] int64_t get_session_id() const noexcept;
 
@@ -53,6 +57,8 @@ namespace celeritas
 
     private:
         virtual void do_write(buffer_guard data) = 0;
+
+        virtual void_awaitable_type do_write_immediately(buffer_guard data) = 0;
 
         int64_t session_id_;
         session_callback session_callback_;

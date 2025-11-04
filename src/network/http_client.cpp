@@ -59,11 +59,13 @@ celeritas::listener_sessions::network_message_callback_weak_ptr celeritas::http_
     return network_message_callback_;
 }
 
-void celeritas::http_client::write(const std::string& response) const
+celeritas::http_client::void_waitable_type celeritas::http_client::write_immediately(const std::string& response) const
 {
     if (is_open())
     {
-        session_->write(response);
+        co_await session_->write_immediately(response);
+
+        co_await session_->start_awaitable();
     }
 }
 
@@ -119,8 +121,6 @@ celeritas::http_client::void_waitable_type celeritas::http_client::do_connect()
                                               false,
                                               host_,
                                               path_);
-
-    session_->start();
 }
 
 

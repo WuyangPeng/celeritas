@@ -25,6 +25,8 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type do_write() override;
 
+        [[nodiscard]] void_awaitable_type write_immediately(buffer_guard data) override;
+
     private:
         using buffer_guard_container_type = std::deque<buffer_guard>;
         using buffer_guard_optional_type = std::optional<buffer_guard>;
@@ -36,7 +38,7 @@ namespace celeritas
 
         void co_spawn_write();
 
-        [[nodiscard]] bool write_buffer_guard(buffer_guard data);
+        bool write_buffer_guard(buffer_guard data);
 
         web_socket_stream_type& web_socket_;
         buffer_guard_container_type write_queue_;

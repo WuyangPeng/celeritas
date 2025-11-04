@@ -46,6 +46,13 @@ celeritas::session_write::void_awaitable_type celeritas::websocket_session_write
     }
 }
 
+celeritas::session_write::void_awaitable_type celeritas::websocket_session_write::write_immediately(buffer_guard data)
+{
+    write_buffer_guard(std::move(data));
+
+    co_await do_write();
+}
+
 celeritas::websocket_session_write::bool_awaitable_type celeritas::websocket_session_write::do_one_write()
 {
     auto optional_buffer_guard = get_next_write_buffer();

@@ -30,6 +30,17 @@ void celeritas::session::write(const std::string& response)
     do_write(std::move(buffer_guard));
 }
 
+celeritas::session::void_awaitable_type celeritas::session::write_immediately(const std::string& response)
+{
+    const auto total_size = response.size();
+
+    buffer_guard buffer_guard{ buffer_pool::acquire(total_size), total_size };
+
+    buffer_guard.set(response);
+
+    co_await do_write_immediately(std::move(buffer_guard));
+}
+
 int64_t celeritas::session::get_session_id() const noexcept
 {
     return session_id_;

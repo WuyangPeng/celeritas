@@ -47,6 +47,14 @@ celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<Socke
 }
 
 template <typename SocketType>
+celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<SocketType>::write_immediately(buffer_guard data)
+{
+    write_buffer_guard(std::move(data));
+
+    co_await do_write();
+}
+
+template <typename SocketType>
 celeritas::tcp_session_write<SocketType>::bool_awaitable_type celeritas::tcp_session_write<SocketType>::do_one_write()
 {
     // 调用新函数来获取数据，该函数内部处理了加锁和解锁

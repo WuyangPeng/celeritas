@@ -32,6 +32,8 @@ namespace celeritas
         // 协程：处理发送队列
         [[nodiscard]] void_awaitable_type do_write() override;
 
+        [[nodiscard]] void_awaitable_type write_immediately(buffer_guard data) override;
+
     private:
         using buffer_guard_optional_type = std::optional<buffer_guard>;
         using bool_awaitable_type = boost::asio::awaitable<bool>;
@@ -42,7 +44,7 @@ namespace celeritas
         // 从发送队列中获取下一个缓冲区，并在加锁后立即释放锁
         [[nodiscard]] buffer_guard_optional_type get_next_write_buffer();
 
-        [[nodiscard]] bool write_buffer_guard(buffer_guard data);
+        bool write_buffer_guard(buffer_guard data);
 
         void co_spawn_write();
 

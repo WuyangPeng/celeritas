@@ -30,6 +30,8 @@ namespace celeritas
 
         [[nodiscard]] virtual void_awaitable_type run() = 0;
 
+        [[nodiscard]] void_awaitable_type start_awaitable(const session_weak_ptr& session);
+
     protected:
         using session_shared_ptr = std::shared_ptr<session>;
 

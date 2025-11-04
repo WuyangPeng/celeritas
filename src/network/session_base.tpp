@@ -35,6 +35,12 @@ void celeritas::session_base<SocketType>::start()
 }
 
 template <typename SocketType>
+celeritas::session::void_awaitable_type celeritas::session_base<SocketType>::start_awaitable()
+{
+    co_await session_run_->start_awaitable(shared_from_this());
+}
+
+template <typename SocketType>
 bool celeritas::session_base<SocketType>::is_open() const
 {
     return socket_.is_open();
@@ -53,4 +59,10 @@ template <typename SocketType>
 void celeritas::session_base<SocketType>::do_write(buffer_guard data)
 {
     session_write_->write(std::move(data));
+}
+
+template <typename SocketType>
+celeritas::session::void_awaitable_type celeritas::session_base<SocketType>::do_write_immediately(buffer_guard data)
+{
+    co_await session_write_->write_immediately(std::move(data));
 }

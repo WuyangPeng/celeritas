@@ -46,6 +46,13 @@ celeritas::session_write::void_awaitable_type celeritas::http_session_write::do_
     }
 }
 
+celeritas::session_write::void_awaitable_type celeritas::http_session_write::write_immediately(buffer_guard data)
+{
+    write_buffer_guard(std::move(data));
+
+    co_await do_write();
+}
+
 celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write::do_one_write_response()
 {
     // 调用新函数来获取数据，该函数内部处理了加锁和解锁

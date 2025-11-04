@@ -36,6 +36,8 @@ namespace celeritas
         // 启动会话处理协程
         void start() override;
 
+        [[nodiscard]] void_awaitable_type start_awaitable() override;
+
         [[nodiscard]] bool is_open() const override;
 
         void stop() override;
@@ -47,6 +49,8 @@ namespace celeritas
         void do_write(buffer_guard data) override;
 
         [[nodiscard]] static session_write_shared_ptr get_session_write(socket_type& socket, bool is_server, std::string host, std::string path);
+
+        [[nodiscard]] void_awaitable_type do_write_immediately(buffer_guard data) override;
 
         socket_type socket_;
         session_run_shared_ptr http_run_;

@@ -27,6 +27,8 @@ namespace celeritas
         // 向客户端发送消息
         virtual void write(buffer_guard data) = 0;
 
+        [[nodiscard]] virtual void_awaitable_type write_immediately(buffer_guard data) = 0;
+
         // 协程：处理发送队列
         [[nodiscard]] virtual void_awaitable_type do_write() = 0;
     };

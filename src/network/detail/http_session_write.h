@@ -21,6 +21,8 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type do_write() override;
 
+        [[nodiscard]] void_awaitable_type write_immediately(buffer_guard data) override;
+
     protected:
         using bool_awaitable_type = boost::asio::awaitable<bool>;
 
@@ -38,7 +40,7 @@ namespace celeritas
 
         void co_spawn_write();
 
-        [[nodiscard]] bool write_buffer_guard(buffer_guard data);
+        bool write_buffer_guard(buffer_guard data);
 
         socket_type& socket_;
         buffer_guard_container_type write_queue_;

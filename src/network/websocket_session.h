@@ -35,6 +35,8 @@ namespace celeritas
         // 启动会话处理协程
         void start() override;
 
+        [[nodiscard]] void_awaitable_type start_awaitable() override;
+
         void stop() override;
 
         [[nodiscard]] bool is_open() const override;
@@ -50,6 +52,8 @@ namespace celeritas
         void set_option(const std::string& game_server_id);
 
         void do_write(buffer_guard data) override;
+
+        [[nodiscard]] void_awaitable_type do_write_immediately(buffer_guard data) override;
 
     private:
         web_socket_stream_type websocket_;
