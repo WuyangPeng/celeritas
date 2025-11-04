@@ -5,13 +5,13 @@
 #include <utility>
 #include "network/session.h"
 
-celeritas::http_handle_parameter::http_handle_parameter(std::string path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
-    : path_{ std::move(path) }, params_{ params }, response_{}, session_{ session }, resource_loader_{ resource_loader }
+celeritas::http_handle_parameter::http_handle_parameter(io_context_type& io_context, std::string path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
+    : io_context_{ io_context }, path_{ std::move(path) }, params_{ params }, response_{}, session_{ session }, resource_loader_{ resource_loader }
 {
 }
 
-celeritas::http_handle_parameter::http_handle_parameter(std::string path, const std::string& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
-    : path_{ std::move(path) }, params_{}, response_{ params }, session_{ session }, resource_loader_{ resource_loader }
+celeritas::http_handle_parameter::http_handle_parameter(io_context_type& io_context, std::string path, const std::string& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
+    : io_context_{ io_context }, path_{ std::move(path) }, params_{}, response_{ params }, session_{ session }, resource_loader_{ resource_loader }
 {
 }
 
@@ -45,13 +45,18 @@ celeritas::http_handle_parameter::app_config_shared_ptr celeritas::http_handle_p
     throw celeritas_error("resource_loader is null.");
 }
 
-celeritas::health_check_level_type celeritas::http_handle_parameter::get_health_check_level() const
+celeritas::http_handle_parameter::health_check_level_awaitable_type celeritas::http_handle_parameter::get_health_check_level() const
 {
     if (const auto resource_loader_shared_ptr = resource_loader_.lock();
         resource_loader_shared_ptr != nullptr)
     {
-        return resource_loader_shared_ptr->get_health_check_level();
+        co_return co_await resource_loader_shared_ptr->get_health_check_level();
     }
 
     throw celeritas_error("resource_loader is null.");
+}
+
+celeritas::http_handle_parameter::io_context_type& celeritas::http_handle_parameter::get_io_context() const
+{
+    return io_context_;
 }

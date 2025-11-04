@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "boost/asio/io_context.hpp"
 #include "config/app_config.h"
 #include "initializer/initializer_fwd.h"
 #include "message/message_registry.h"
@@ -22,6 +23,7 @@ namespace celeritas
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader>;
         using protobuf_message = google::protobuf::Message;
         using urls_params_view_type = boost::urls::params_view;
+        using io_context_type = boost::asio::io_context;
 
         explicit application_loader(app_config_shared_ptr app_config);
 
@@ -43,9 +45,9 @@ namespace celeritas
 
         [[nodiscard]] bool dispatch(const header& header, const protobuf_message& current_message, const protobuf_message_shared_ptr& request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 
-        [[nodiscard]] bool dispatch(const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
+        [[nodiscard]] bool dispatch(io_context_type& io_context, const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 
-        [[nodiscard]] bool dispatch(const std::string& path, const std::string& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
+        [[nodiscard]] bool dispatch(io_context_type& io_context, const std::string& path, const std::string& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 
         [[nodiscard]] message_registry_weak_ptr get_message_registry();
 

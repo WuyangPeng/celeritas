@@ -15,6 +15,7 @@ namespace celeritas
         using class_type = database_pool_manager;
         using io_context_type = boost::asio::io_context;
         using database_pool_shared_ptr = std::shared_ptr<database_pool>;
+        using bool_awaitable_type = boost::asio::awaitable<bool>;
 
         [[nodiscard]] static database_pool_manager& get_instance();
 
@@ -35,7 +36,7 @@ namespace celeritas
 
         void release_pool();
 
-        [[nodiscard]] bool is_health();
+        [[nodiscard]] bool_awaitable_type is_health();
 
     private:
         using database_pool_container = std::map<std::string, database_pool_shared_ptr>;

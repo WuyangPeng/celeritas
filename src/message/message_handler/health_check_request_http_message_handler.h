@@ -17,6 +17,12 @@ namespace celeritas
         [[nodiscard]] bool handle(const http_handle_parameter& handle_parameter, const http_message_registry_weak_ptr& message_registry) override;
 
     private:
+        using void_awaitable_type = boost::asio::awaitable<void>;
+
+        [[nodiscard]] void_awaitable_type health_check_result(const http_handle_parameter& handle_parameter);
+
+        [[nodiscard]] void_awaitable_type do_health_check_result(const http_handle_parameter& handle_parameter);
+
         std::string path_;
     };
 }

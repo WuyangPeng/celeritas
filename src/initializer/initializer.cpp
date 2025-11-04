@@ -89,7 +89,7 @@ void celeritas::initializer::call_back(const message_header& message_header, buf
 
 void celeritas::initializer::call_back(const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session)
 {
-    if (!application_loader_->dispatch(path, params, session, resource_loader_))
+    if (!application_loader_->dispatch(io_context_, path, params, session, resource_loader_))
     {
         LOG_CHANNEL(initializer_channel, warning) << "Failed to dispatch http message.";
     }
@@ -97,7 +97,7 @@ void celeritas::initializer::call_back(const std::string& path, const urls_param
 
 void celeritas::initializer::call_back(const std::string& path, const std::string& params, const session_shared_ptr& session)
 {
-    if (!application_loader_->dispatch(path, params, session, resource_loader_))
+    if (!application_loader_->dispatch(io_context_, path, params, session, resource_loader_))
     {
         LOG_CHANNEL(initializer_channel, warning) << "Failed to dispatch http message.";
     }

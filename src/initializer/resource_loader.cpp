@@ -141,22 +141,23 @@ celeritas::resource_loader::app_config_shared_ptr celeritas::resource_loader::ge
     return app_config_;
 }
 
-celeritas::health_check_level_type celeritas::resource_loader::get_health_check_level() const
+celeritas::resource_loader::health_check_level_awaitable_type celeritas::resource_loader::get_health_check_level() const
 {
-    if (!database_pool_manager::get_instance().is_health())
+    if (const auto is_health = co_await database_pool_manager::get_instance().is_health();
+        !is_health)
     {
-        return health_check_level_type::crash;
+        co_return health_check_level_type::crash;
     }
 
     for (const auto& element : tcp_clients_)
     {
         if (element->is_full())
         {
-            return health_check_level_type::unhealthy;
+            co_return health_check_level_type::unhealthy;
         }
     }
 
-    return health_check_level_type::health;
+    co_return health_check_level_type::health;
 }
 
 void celeritas::resource_loader::initialize_logger_resource()

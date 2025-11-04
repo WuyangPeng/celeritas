@@ -141,11 +141,13 @@ void celeritas::connection_pool_base<SessionType>::cleanup_database_by_duration(
 }
 
 template <typename SessionType>
-bool celeritas::connection_pool_base<SessionType>::is_health()
+celeritas::connection_pool_base<SessionType>::bool_awaitable_type celeritas::connection_pool_base<SessionType>::is_health()
 {
     std::lock_guard lock{ mutex_ };
 
-    return true;
+    auto session = co_await async_get_session();
+
+    co_return co_await session->is_health();
 }
 
 template <typename SessionType>
@@ -201,17 +203,17 @@ celeritas::connection_pool_base<SessionType>::session_awaitable_type celeritas::
 {
     // 如果没有可用会话，将当前协程挂起并加入等待队列。
     // 使用 async_initiate 创建一个自定义的异步操作。
-    co_return boost::asio::async_initiate<decltype(boost::asio::use_awaitable), void(session_shared_ptr)>(
+    co_return co_await boost::asio::async_initiate<decltype(boost::asio::use_awaitable), void(session_shared_ptr)>(
         [&](auto handler) {
             std::lock_guard lock{ mutex_ };
 
             waiters_.emplace_back(
-                [handler = std::move(handler)](session_shared_ptr session) {
+                [handler = std::move(handler)](session_shared_ptr session) mutable {
                     // 当会话被释放时，使用 dispatch 确保 handler 在其原始的执行器上运行，
                     // 这对于协程的正确恢复至关重要。
                     boost::asio::dispatch(handler.get_executor(),
-                                          [handler = std::move(handler), session = std::move(session)] {
-                                              handler(session);
+                                          [handler = std::move(handler), session = std::move(session)]() mutable {
+                                              handler(std::move(session));
                                           });
                 });
         },

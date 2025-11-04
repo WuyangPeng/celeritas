@@ -18,6 +18,7 @@ namespace celeritas
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
         using io_context_type = boost::asio::io_context;
         using protobuf_message = google::protobuf::Message;
+        using health_check_level_awaitable_type = boost::asio::awaitable<health_check_level_type>;
 
         explicit resource_loader(app_config_shared_ptr app_config);
 
@@ -43,7 +44,7 @@ namespace celeritas
 
         [[nodiscard]] app_config_shared_ptr get_app_config() const;
 
-        [[nodiscard]] health_check_level_type get_health_check_level() const;
+        [[nodiscard]] health_check_level_awaitable_type get_health_check_level() const;
 
     protected:
         using tcp_client_shared_ptr = std::shared_ptr<tcp_client>;

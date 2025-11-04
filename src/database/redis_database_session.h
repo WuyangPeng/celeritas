@@ -34,10 +34,12 @@ namespace celeritas
 
         redis_database_session(redis_database_session&& rhs) noexcept = delete;
 
-        redis_database_session operator=(redis_database_session&& rhs) noexcept = delete;
+        redis_database_session& operator=(redis_database_session&& rhs) noexcept = delete;
 
         // 异步连接到Redis
         [[nodiscard]] void_awaitable_type async_connect();
+
+        [[nodiscard]] bool_awaitable_type is_health() override;
 
     private:
         using redis_context_unique_ptr = std::unique_ptr<redis_context>;

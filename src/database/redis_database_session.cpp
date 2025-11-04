@@ -28,3 +28,35 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
     LOG_CHANNEL(database_channel, info) << "Authentication successful (AUTH: OK).";
 }
 
+celeritas::database_session::bool_awaitable_type celeritas::redis_database_session::is_health()
+{
+    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
+
+    if (!redis_context_)
+    {
+        co_return false;
+    }
+
+    try
+    {
+        redis_reply redis_reply{ *redis_context_.get(), "PING" };
+
+        co_return true;
+    }
+    catch (const celeritas_error& error)
+    {
+        LOG_CHANNEL(database_channel, warning) << "Redis health check failed with celeritas error: " << error.what();
+        co_return false;
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(database_channel, error) << "Redis health check failed with unexpected exception: " << error.what();
+        co_return false;
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(database_channel, fatal) << "Redis health check failed with unknown exception";
+        co_return false;
+    }
+}
+

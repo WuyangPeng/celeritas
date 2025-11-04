@@ -37,14 +37,14 @@ bool celeritas::application_loader::dispatch(const header& header, const protobu
     return message_registry_->dispatch(handle_parameter{ header, request_message, session, resource_loader }, current_message);
 }
 
-bool celeritas::application_loader::dispatch(const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
+bool celeritas::application_loader::dispatch(io_context_type& io_context, const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
 {
-    return http_message_registry_->dispatch(http_handle_parameter{ path, params, session, resource_loader });
+    return http_message_registry_->dispatch(http_handle_parameter{ io_context, path, params, session, resource_loader });
 }
 
-bool celeritas::application_loader::dispatch(const std::string& path, const std::string& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
+bool celeritas::application_loader::dispatch(io_context_type& io_context, const std::string& path, const std::string& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
 {
-    return http_message_registry_->dispatch(http_handle_parameter{ path, params, session, resource_loader });
+    return http_message_registry_->dispatch(http_handle_parameter{ io_context, path, params, session, resource_loader });
 }
 
 celeritas::application_loader::message_registry_weak_ptr celeritas::application_loader::get_message_registry()

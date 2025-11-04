@@ -13,6 +13,7 @@ namespace celeritas
         using io_context_type = boost::asio::io_context;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using error_code_type = boost::system::error_code;
+        using bool_awaitable_type = boost::asio::awaitable<bool>;
 
         database_pool() noexcept = default;
 
@@ -34,7 +35,7 @@ namespace celeritas
 
         virtual void cleanup_database_by_duration() = 0;
 
-        [[nodiscard]] virtual bool is_health() = 0;
+        [[nodiscard]] virtual bool_awaitable_type is_health() = 0;
 
     private:
         using cleanup_database_session_timer_shared_ptr = std::shared_ptr<cleanup_database_session_timer>;

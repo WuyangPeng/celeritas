@@ -44,6 +44,8 @@ namespace celeritas
         // 异步执行查询，返回结果集
         [[nodiscard]] results_awaitable_type async_query(const std::string_view& sql);
 
+        [[nodiscard]] bool_awaitable_type is_health() override;
+
     private:
         using connection_type = boost::mysql::any_connection;
         using error_code_type = boost::mysql::error_code;

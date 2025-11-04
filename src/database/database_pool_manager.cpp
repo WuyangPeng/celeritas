@@ -81,19 +81,20 @@ void celeritas::database_pool_manager::release_pool()
     pools_.clear();
 }
 
-bool celeritas::database_pool_manager::is_health()
+celeritas::database_pool_manager::bool_awaitable_type celeritas::database_pool_manager::is_health()
 {
     std::lock_guard lock{ mutex_ };
 
     for (const auto& pool : pools_ | std::views::values)
     {
-        if (!pool->is_health())
+        if (const auto result = co_await pool->is_health();
+            !result)
         {
-            return false;
+            co_return false;
         }
     }
 
-    return true;
+    co_return true;
 }
 
 celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mysql_pool(const std::string& name,

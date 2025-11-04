@@ -42,6 +42,8 @@ namespace celeritas
 
         [[nodiscard]] cursor_awaitable_type async_find(const std::string_view& collection_name, const document_view_type& filter);
 
+        [[nodiscard]] bool_awaitable_type is_health() override;
+
     private:
         using mongo_client_unique_ptr = std::unique_ptr<mongocxx::client>;
         using mongo_database_unique_ptr = std::unique_ptr<mongocxx::database>;

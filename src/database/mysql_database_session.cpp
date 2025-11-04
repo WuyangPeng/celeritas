@@ -77,6 +77,31 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
     }
 }
 
+celeritas::database_session::bool_awaitable_type celeritas::mysql_database_session::is_health()
+{
+    try
+    {
+        co_await connection_.async_ping(boost::asio::use_awaitable);
+
+        co_return true;
+    }
+    catch (const boost::system::system_error& error)
+    {
+        LOG_CHANNEL(database_channel, warning) << "MySQL health check failed with error: " << error.what();
+        co_return false;
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(database_channel, error) << "MySQL health check failed with unexpected exception: " << error.what();
+        co_return false;
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(database_channel, fatal) << "MySQL health check failed with unknown exception";
+        co_return false;
+    }
+}
+
 celeritas::mysql_database_session::connection_type celeritas::mysql_database_session::get_any_connection(io_context_type& io_context, ssl_io_context_type* ssl_context)
 {
     if (ssl_context == nullptr)

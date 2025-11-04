@@ -7,6 +7,7 @@
 #include "network/network_fwd.h"
 
 #include <boost/url.hpp>
+#include <boost/asio.hpp>
 
 namespace celeritas
 {
@@ -18,10 +19,12 @@ namespace celeritas
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader>;
         using urls_params_view_type = boost::urls::params_view;
         using app_config_shared_ptr = std::shared_ptr<const app_config>;
+        using io_context_type = boost::asio::io_context;
+        using health_check_level_awaitable_type = boost::asio::awaitable<health_check_level_type>;
 
-        http_handle_parameter(std::string path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
+        http_handle_parameter(io_context_type& io_context, std::string path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 
-        http_handle_parameter(std::string path, const std::string& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
+        http_handle_parameter(io_context_type& io_context, std::string path, const std::string& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 
         [[nodiscard]] std::string get_path() const;
 
@@ -31,12 +34,15 @@ namespace celeritas
 
         [[nodiscard]] app_config_shared_ptr get_app_config() const;
 
-        [[nodiscard]] health_check_level_type get_health_check_level() const;
+        [[nodiscard]] health_check_level_awaitable_type get_health_check_level() const;
+
+        [[nodiscard]] io_context_type& get_io_context() const;
 
     private:
         using session_weak_ptr = std::weak_ptr<session>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader>;
 
+        io_context_type& io_context_;
         std::string path_;
         urls_params_view_type params_;
         std::string response_;

@@ -65,6 +65,41 @@ celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_databa
     }
 }
 
+celeritas::database_session::bool_awaitable_type celeritas::mongo_database_session::is_health()
+{
+    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
+
+    if (!database_)
+    {
+        co_return false;
+    }
+
+    try
+    {
+        bsoncxx::builder::basic::document ping_cmd{};
+        ping_cmd.append(bsoncxx::builder::basic::kvp("ping", 1));
+
+        database_->run_command(ping_cmd.view());
+
+        co_return true;
+    }
+    catch (const mongocxx::exception& error)
+    {
+        LOG_CHANNEL(database_channel, warning) << "MongoDB health check failed: " << error.what();
+        co_return false;
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(database_channel, error) << "MongoDB health check failed: " << error.what();
+        co_return false;
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(database_channel, fatal) << "MongoDB health check unknown exception";
+        co_return false;
+    }
+}
+
 celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_execute_query(const std::string_view& collection_name, const document_view_type& filter)
 {
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
