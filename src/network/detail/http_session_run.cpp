@@ -27,7 +27,7 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::run()
     {
         try
         {
-            co_await handle_one_message();
+            co_return co_await handle_one_message();
         }
         catch (const boost::system::system_error& error)
         {

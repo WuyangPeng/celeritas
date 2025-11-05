@@ -32,7 +32,7 @@ namespace celeritas
         // 协程：处理发送队列
         [[nodiscard]] void_awaitable_type do_write() override;
 
-        [[nodiscard]] void_awaitable_type write_immediately(buffer_guard data) override;
+        [[nodiscard]] void_awaitable_type write_immediately(buffer_guard data, const session_weak_ptr& session) override;
 
         [[nodiscard]] bool is_full() override;
 

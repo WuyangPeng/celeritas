@@ -1,11 +1,12 @@
 ﻿#include "http_session_write.h"
 #include "network_internal_fwd.h"
 #include "common/logger.h"
+#include "network/session.h"
 
 #include <boost/asio.hpp>
 
 celeritas::http_session_write::http_session_write(socket_type& socket, std::string host)
-    : base_type{}, socket_{ socket }, write_queue_{}, write_mutex_{}, host_{ std::move(host) }
+    : base_type{}, socket_{ socket }, write_queue_{}, write_mutex_{}, host_{ std::move(host) }, session_{}
 {
 }
 
@@ -26,6 +27,11 @@ celeritas::session_write::void_awaitable_type celeritas::http_session_write::do_
             if (const auto result = co_await do_one_write();
                 !result)
             {
+                if (const auto session_shared_ptr = session_.lock();
+                    session_shared_ptr != nullptr)
+                {
+                    session_shared_ptr->stop();
+                }
                 co_return;
             }
         }
@@ -47,8 +53,10 @@ celeritas::session_write::void_awaitable_type celeritas::http_session_write::do_
     }
 }
 
-celeritas::session_write::void_awaitable_type celeritas::http_session_write::write_immediately(buffer_guard data)
+celeritas::session_write::void_awaitable_type celeritas::http_session_write::write_immediately(buffer_guard data, const session_weak_ptr& session)
 {
+    session_ = session;
+
     write_buffer_guard(std::move(data));
 
     co_await do_write();

@@ -70,5 +70,5 @@ void celeritas::session_base<SocketType>::do_write(buffer_guard data)
 template <typename SocketType>
 celeritas::session::void_awaitable_type celeritas::session_base<SocketType>::do_write_immediately(buffer_guard data)
 {
-    co_await session_write_->write_immediately(std::move(data));
+    co_await session_write_->write_immediately(std::move(data), shared_from_this());
 }

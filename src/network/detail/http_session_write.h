@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "network/network_fwd.h"
 #include "network/session_write.h"
 
 #include <boost/beast.hpp>
@@ -21,7 +22,7 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type do_write() override;
 
-        [[nodiscard]] void_awaitable_type write_immediately(buffer_guard data) override;
+        [[nodiscard]] void_awaitable_type write_immediately(buffer_guard data, const session_weak_ptr& session) override;
 
         [[nodiscard]] bool is_full() override;
 
@@ -35,6 +36,7 @@ namespace celeritas
     private:
         using buffer_guard_container_type = std::deque<buffer_guard>;
         using buffer_guard_optional_type = std::optional<buffer_guard>;
+        using session_weak_ptr = std::weak_ptr<session>;
 
         [[nodiscard]] virtual bool_awaitable_type do_one_write() = 0;
 
@@ -48,5 +50,6 @@ namespace celeritas
         buffer_guard_container_type write_queue_;
         std::mutex write_mutex_;
         std::string host_;
+        session_weak_ptr session_;
     };
 }

@@ -93,6 +93,6 @@ celeritas::http_session::session_run_shared_ptr celeritas::http_session::get_ses
 
 celeritas::session::void_awaitable_type celeritas::http_session::do_write_immediately(buffer_guard data)
 {
-    co_await http_write_->write_immediately(std::move(data));
+    co_await http_write_->write_immediately(std::move(data), shared_from_this());
 }
 

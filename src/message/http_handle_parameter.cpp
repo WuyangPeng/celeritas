@@ -15,6 +15,16 @@ celeritas::http_handle_parameter::http_handle_parameter(io_context_type& io_cont
 {
 }
 
+celeritas::http_handle_parameter::http_handle_parameter(const http_handle_parameter& rhs)
+    : io_context_{ rhs.io_context_ }, path_{ rhs.path_ }, params_{ rhs.params_ }, response_{ rhs.response_ }, session_{ rhs.session_ }, resource_loader_{ rhs.resource_loader_ }
+{
+}
+
+celeritas::http_handle_parameter::http_handle_parameter(http_handle_parameter&& rhs) noexcept
+    : io_context_{ rhs.io_context_ }, path_{ std::move(rhs.path_) }, params_{ std::move(rhs.params_) }, response_{ std::move(rhs.response_) }, session_{ std::move(rhs.session_) }, resource_loader_{ std::move(rhs.resource_loader_) }
+{
+}
+
 std::string celeritas::http_handle_parameter::get_path() const
 {
     return path_;

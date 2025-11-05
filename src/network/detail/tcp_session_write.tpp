@@ -47,7 +47,7 @@ celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<Socke
 }
 
 template <typename SocketType>
-celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<SocketType>::write_immediately(buffer_guard data)
+celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<SocketType>::write_immediately(buffer_guard data, const session_weak_ptr& session)
 {
     write_buffer_guard(std::move(data));
 

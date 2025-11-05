@@ -22,11 +22,11 @@ bool celeritas::health_check_request_http_message_handler::handle(const http_han
     return true;
 }
 
-celeritas::health_check_request_http_message_handler::void_awaitable_type celeritas::health_check_request_http_message_handler::health_check_result(const http_handle_parameter& handle_parameter)
+celeritas::health_check_request_http_message_handler::void_awaitable_type celeritas::health_check_request_http_message_handler::health_check_result(http_handle_parameter handle_parameter)
 {
     try
     {
-        co_await do_health_check_result(handle_parameter);
+        co_await do_health_check_result(std::move(handle_parameter));
     }
     catch (const std::exception& error)
     {
@@ -38,7 +38,7 @@ celeritas::health_check_request_http_message_handler::void_awaitable_type celeri
     }
 }
 
-celeritas::health_check_request_http_message_handler::void_awaitable_type celeritas::health_check_request_http_message_handler::do_health_check_result(const http_handle_parameter& handle_parameter)
+celeritas::health_check_request_http_message_handler::void_awaitable_type celeritas::health_check_request_http_message_handler::do_health_check_result(http_handle_parameter handle_parameter)
 {
     const auto app_config = handle_parameter.get_app_config();
     const auto instance_id = app_config->get_server_config().get_instance_id();
