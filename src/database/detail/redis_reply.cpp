@@ -11,12 +11,16 @@ celeritas::redis_reply::redis_reply(redis_context& redis_context, const std::str
         throw celeritas_error("command failed (NULL reply):  "s + redis_context.get_redis_context()->errstr);
     }
 
-    if (redis_reply_->type == REDIS_REPLY_STATUS && redis_reply_->str == "OK"s)
+    if (redis_reply_->type == REDIS_REPLY_ERROR)
     {
-        return;
+        throw celeritas_error("command failed (Redis ERROR reply):  "s + redis_reply_->str);
     }
 
-    throw celeritas_error("command failed (NULL reply):  "s + redis_reply_->str);
+    // 特殊处理 AUTH 命令，确保它是 OK (如果需要严格检查)
+    if (command.find("AUTH") == 0 && redis_reply_->type == REDIS_REPLY_STATUS && redis_reply_->str != "OK"s)
+    {
+        throw celeritas_error("command failed (AUTH NOT OK):  "s + redis_reply_->str);
+    }
 }
 
 celeritas::redis_reply::~redis_reply() noexcept
