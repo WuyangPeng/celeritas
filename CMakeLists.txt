@@ -245,6 +245,7 @@ target_link_libraries(openssl INTERFACE ${LIB_PREFIX}ssl ${LIB_PREFIX}crypto)
 add_subdirectory(cmake/common)
 add_subdirectory(cmake/config)
 add_subdirectory(cmake/worker_pool)
+add_subdirectory(cmake/path_search)
 add_subdirectory(cmake/message)
 add_subdirectory(cmake/database)
 add_subdirectory(cmake/network)
@@ -261,6 +262,7 @@ target_link_libraries(celeritas_lib INTERFACE
         network
         database
         message
+        path_search
         worker_pool
         config
         common
