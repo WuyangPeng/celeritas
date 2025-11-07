@@ -1,4 +1,5 @@
 ﻿#include "logger.h"
+#include "noexcept_safe_call_and_log.h"
 #include "timer_base.h"
 
 celeritas::timer_base::timer_base(io_context_type& io_context, const duration_type interval)
@@ -8,7 +9,11 @@ celeritas::timer_base::timer_base(io_context_type& io_context, const duration_ty
 
 celeritas::timer_base::~timer_base() noexcept
 {
-    stop();
+    noexcept_safe_call_and_log([this] {
+                                   this->stop();
+                               },
+                               common_channel,
+                               "timer stop error: ");
 }
 
 void celeritas::timer_base::on_timer_elapsed()

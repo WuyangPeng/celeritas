@@ -43,7 +43,7 @@ char* celeritas::buffer_pool_data::get(const size_t offset)
 {
     if (is_effective() && offset < data_.size())
     {
-        return &data_.at(offset);
+        return &data_[offset];
     }
 
     throw celeritas_error("unsupported buffer pool data offset");

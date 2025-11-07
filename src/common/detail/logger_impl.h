@@ -1,7 +1,6 @@
 ﻿#pragma once
 
-#include "boost/filesystem/path.hpp"
-
+#include <boost/filesystem/path.hpp>
 #include <boost/log/sinks/sync_frontend.hpp>
 #include <boost/log/sinks/text_ostream_backend.hpp>
 #include <boost/log/sources/severity_logger.hpp>
@@ -18,7 +17,6 @@ namespace celeritas
         using class_type = logger_impl;
         using severity_level_type = boost::log::trivial::severity_level;
         using severity_logger_type = boost::log::sources::severity_logger<severity_level_type>;
-        using console_sink_type = boost::log::sinks::synchronous_sink<boost::log::sinks::text_ostream_backend>;
 
         logger_impl();
 
@@ -42,13 +40,14 @@ namespace celeritas
                        int rotation_size,
                        bool also_to_console);
 
-        [[nodiscard]] severity_logger_type& get(const std::string_view& channel_name);
+        [[nodiscard]] severity_logger_type& get(std::string_view channel_name);
 
         [[nodiscard]] severity_logger_type& get_default() noexcept;
 
     private:
         using loggers_type = std::unordered_map<std::string, severity_logger_type>;
         using console_channels_type = std::unordered_set<std::string>;
+        using console_sink_type = boost::log::sinks::synchronous_sink<boost::log::sinks::text_ostream_backend>;
         using console_sink_type_shared_ptr = boost::shared_ptr<console_sink_type>;
         using filesystem_path_type = boost::filesystem::path;
 

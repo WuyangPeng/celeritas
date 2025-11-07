@@ -10,10 +10,9 @@ namespace celeritas
     {
     public:
         using class_type = timer_base;
+
         using io_context_type = boost::asio::io_context;
-        using timer_type = boost::asio::steady_timer;
         using duration_type = std::chrono::milliseconds;
-        using error_code_type = boost::system::error_code;
 
         timer_base(io_context_type& io_context, duration_type interval);
 
@@ -32,6 +31,9 @@ namespace celeritas
         void stop();
 
     private:
+        using timer_type = boost::asio::steady_timer;
+        using error_code_type = boost::system::error_code;
+
         void on_timer_elapsed();
 
         void wait_for_next_tick();

@@ -5,9 +5,9 @@ celeritas::buffer_pool_data celeritas::buffer_pool_impl::acquire(const size_t re
 {
     // 尝试从池中获取（加锁）
     if (auto buffer = try_acquire_from_pool(required_size);
-        buffer.is_effective())
+        buffer)
     {
-        return buffer;
+        return *buffer;
     }
 
     // 如果池中没有合适的，则创建新的
@@ -36,7 +36,7 @@ void celeritas::buffer_pool_impl::reclaim(const std::size_t idle_seconds)
     });
 }
 
-celeritas::buffer_pool_data celeritas::buffer_pool_impl::try_acquire_from_pool(const size_t required_size)
+celeritas::buffer_pool_impl::buffer_pool_data_optional_type celeritas::buffer_pool_impl::try_acquire_from_pool(const size_t required_size)
 {
     std::lock_guard lock{ mutex_ };
 
@@ -53,5 +53,5 @@ celeritas::buffer_pool_data celeritas::buffer_pool_impl::try_acquire_from_pool(c
         return buffer;
     }
 
-    return buffer_pool_data{};
+    return std::nullopt;
 }

@@ -13,8 +13,6 @@ namespace celeritas
         using class_type = buffer_pool_data;
         using source_type = std::span<const char>;
 
-        buffer_pool_data() noexcept = default;
-
         explicit buffer_pool_data(size_t size);
 
         [[nodiscard]] char* data();

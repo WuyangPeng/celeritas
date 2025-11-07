@@ -1,22 +1,24 @@
 ﻿#include "buffer_guard.h"
 #include "buffer_pool.h"
+#include "noexcept_safe_call_and_log.h"
 
 celeritas::buffer_guard::buffer_guard(buffer_pool_data buffer_data)
     : buffer_data_{ std::move(buffer_data) }, effective_size_{ 0 }
 {
 }
 
-celeritas::buffer_guard::buffer_guard(buffer_pool_data buffer_data, size_t effective_size)
+celeritas::buffer_guard::buffer_guard(buffer_pool_data buffer_data, const size_t effective_size)
     : buffer_data_{ std::move(buffer_data) }, effective_size_{ effective_size }
 {
 }
 
 celeritas::buffer_guard::~buffer_guard() noexcept
 {
-    if (buffer_data_.is_effective())
-    {
-        buffer_pool::release(std::move(buffer_data_));
-    }
+    noexcept_safe_call_and_log([this] {
+                                   this->release();
+                               },
+                               common_channel,
+                               "buffer guard release error: ");
 }
 
 celeritas::buffer_guard::buffer_guard(buffer_guard&& rhs) noexcept
@@ -78,4 +80,12 @@ void celeritas::buffer_guard::set(const source_type& source)
 bool celeritas::buffer_guard::is_effective() const noexcept
 {
     return buffer_data_.is_effective();
+}
+
+void celeritas::buffer_guard::release()
+{
+    if (buffer_data_.is_effective())
+    {
+        buffer_pool::release(std::move(buffer_data_));
+    }
 }

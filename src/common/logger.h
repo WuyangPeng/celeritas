@@ -40,13 +40,15 @@ namespace celeritas
 
 // 全局日志对象
 // 在你的代码中，使用 LOG(severity_level) << "你的日志信息" 来记录
-#define LOG(level) BOOST_LOG_STREAM_SEV(celeritas::logger::get(), boost::log::trivial::severity_level::level) \
+#define LOG(level) \
+    BOOST_LOG_STREAM_SEV(celeritas::logger::get(), boost::log::trivial::severity_level::level) \
     << boost::log::add_value(celeritas::log_function.data(), std::source_location::current().function_name()) \
     << boost::log::add_value(celeritas::log_file.data(), std::source_location::current().file_name()) \
     << boost::log::add_value(celeritas::log_line.data(), std::source_location::current().line())
 
 // 在你的代码中，使用 LOG(channel,severity_level) << "你的日志信息" 来记录
-#define LOG_CHANNEL(channel, level) BOOST_LOG_STREAM_SEV(celeritas::logger::get(channel), boost::log::trivial::severity_level::level) \
+#define LOG_CHANNEL(channel, level) \
+    BOOST_LOG_STREAM_SEV(celeritas::logger::get(channel), boost::log::trivial::severity_level::level) \
     << boost::log::add_value(celeritas::log_function.data(), std::source_location::current().function_name()) \
     << boost::log::add_value(celeritas::log_file.data(), std::source_location::current().file_name()) \
     << boost::log::add_value(celeritas::log_line.data(), std::source_location::current().line())

@@ -35,8 +35,9 @@ namespace celeritas
 
     private:
         using pool_type = std::map<size_t, buffer_pool_bucket>;
+        using buffer_pool_data_optional_type = std::optional<buffer_pool_data>;
 
-        [[nodiscard]] buffer_pool_data try_acquire_from_pool(size_t required_size);
+        [[nodiscard]] buffer_pool_data_optional_type try_acquire_from_pool(size_t required_size);
 
         pool_type pool_;
         std::mutex mutex_;
