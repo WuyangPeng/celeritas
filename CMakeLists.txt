@@ -261,7 +261,7 @@ target_link_libraries(celeritas_lib INTERFACE
         network
         database
         message
-        path_search
+        worker_pool
         config
         common
         boost
