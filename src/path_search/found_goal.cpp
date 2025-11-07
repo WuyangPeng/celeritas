@@ -1,1 +1,0 @@
-﻿#include "found_goal.h"

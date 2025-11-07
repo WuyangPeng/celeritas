@@ -29,7 +29,6 @@
 - network 网络
 - database 数据库
 - message 消息
-- path_search 路径搜索
 - worker_pool 工作池
 - config 配置
 - common 通用
