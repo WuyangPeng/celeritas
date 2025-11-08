@@ -42,7 +42,7 @@ namespace celeritas
 }
 
 #define GET_SOURCE_LOCATION_INFO \
-    if (constexpr auto location = std::source_location::current(); false) ; else
+    if (constexpr auto location = std::source_location::current(); false) static_cast<void>(0); else
 
 // 全局日志对象
 // 在你的代码中，使用 LOG(severity_level) << "你的日志信息" 来记录
