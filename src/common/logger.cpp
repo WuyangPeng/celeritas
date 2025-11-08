@@ -20,7 +20,7 @@ void celeritas::logger::init_file(const std::string& channel_name,
     get_logger_impl().init_file(channel_name, log_file_name, file_level, rotation_size, also_to_console);
 }
 
-celeritas::logger::severity_logger_type& celeritas::logger::get(const std::string_view& channel_name)
+celeritas::logger::severity_logger_type& celeritas::logger::get(const std::string_view channel_name)
 {
     return get_logger_impl().get(channel_name);
 }

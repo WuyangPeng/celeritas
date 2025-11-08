@@ -11,12 +11,19 @@
 
 namespace celeritas
 {
+    namespace log_sinks = boost::log::sinks;
+    namespace log_sources = boost::log::sources;
+    namespace log_trivial = boost::log::trivial;
+    namespace log_keywords = boost::log::keywords;
+    namespace log_attributes = boost::log::attributes;
+    namespace log_expressions = boost::log::expressions;
+
     class logger_impl
     {
     public:
         using class_type = logger_impl;
-        using severity_level_type = boost::log::trivial::severity_level;
-        using severity_logger_type = boost::log::sources::severity_logger<severity_level_type>;
+        using severity_level_type = log_trivial::severity_level;
+        using severity_logger_type = log_sources::severity_logger<severity_level_type>;
 
         logger_impl();
 
@@ -47,7 +54,7 @@ namespace celeritas
     private:
         using loggers_type = std::unordered_map<std::string, severity_logger_type>;
         using console_channels_type = std::unordered_set<std::string>;
-        using console_sink_type = boost::log::sinks::synchronous_sink<boost::log::sinks::text_ostream_backend>;
+        using console_sink_type = log_sinks::synchronous_sink<log_sinks::text_ostream_backend>;
         using console_sink_type_shared_ptr = boost::shared_ptr<console_sink_type>;
         using filesystem_path_type = boost::filesystem::path;
 
