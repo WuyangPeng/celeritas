@@ -2,9 +2,8 @@
 
 #include "common/common_fwd.h"
 #include "detail/common_internal_fwd.h"
+#include "detail/logger_namespace.h"
 
-#include <boost/log/trivial.hpp>
-#include <boost/log/sources/record_ostream.hpp>
 #include <boost/log/sources/severity_logger.hpp>
 #include <boost/log/utility/manipulators/add_value.hpp>
 
@@ -12,14 +11,10 @@
 
 namespace celeritas
 {
-    namespace log_sources = boost::log::sources;
-    namespace log_trivial = boost::log::trivial;
-
     class logger
     {
     public:
         using class_type = logger;
-        using severity_level_type = log_trivial::severity_level;
         using severity_logger_type = log_sources::severity_logger<severity_level_type>;
         using severity_logger_reference_type = std::reference_wrapper<severity_logger_type>;
         using severity_logger_optional_type = std::optional<severity_logger_reference_type>;
