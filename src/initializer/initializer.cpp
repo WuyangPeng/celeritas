@@ -161,12 +161,12 @@ celeritas::header celeritas::initializer::get_header(const message_header& messa
 
 void celeritas::initializer::initialize_default_logger()
 {
-    logger::init_global(logger::severity_level_type::trace);
-    logger::init_console(logger::severity_level_type::trace);
+    logger::init_global(severity_level_type::trace);
+    logger::init_console(severity_level_type::trace);
 
     logger::init_file(initializer_channel.data(),
                       initializer_channel.data(),
-                      logger::severity_level_type::trace,
+                      severity_level_type::trace,
                       default_logger_rotation_size,
                       true);
 }
