@@ -6,6 +6,7 @@
 #include <boost/log/sources/severity_logger.hpp>
 #include <boost/log/trivial.hpp>
 
+#include <optional>
 #include <shared_mutex>
 #include <unordered_set>
 
@@ -24,6 +25,8 @@ namespace celeritas
         using class_type = logger_impl;
         using severity_level_type = log_trivial::severity_level;
         using severity_logger_type = log_sources::severity_logger<severity_level_type>;
+        using severity_logger_reference_type = std::reference_wrapper<severity_logger_type>;
+        using severity_logger_optional_type = std::optional<severity_logger_reference_type>;
 
         logger_impl();
 
@@ -47,9 +50,9 @@ namespace celeritas
                        int rotation_size,
                        bool also_to_console);
 
-        [[nodiscard]] severity_logger_type& get(std::string_view channel_name);
+        [[nodiscard]] severity_logger_optional_type get(std::string_view channel_name, severity_level_type level);
 
-        [[nodiscard]] severity_logger_type& get_default() noexcept;
+        [[nodiscard]] severity_logger_optional_type get_default(severity_level_type level);
 
     private:
         using loggers_type = std::unordered_map<std::string, severity_logger_type>;
@@ -57,6 +60,7 @@ namespace celeritas
         using console_sink_type = log_sinks::synchronous_sink<log_sinks::text_ostream_backend>;
         using console_sink_type_shared_ptr = boost::shared_ptr<console_sink_type>;
         using filesystem_path_type = boost::filesystem::path;
+        using channel_levels_type = std::unordered_map<std::string, severity_level_type>;
 
         void register_logger(const std::string& channel_name);
 
@@ -69,9 +73,11 @@ namespace celeritas
         loggers_type loggers_;
         console_channels_type console_channels_;
         console_sink_type_shared_ptr console_sink_;
+        severity_level_type global_level_{};
         severity_level_type console_level_{};
         severity_logger_type default_logger_;
         severity_logger_type unregistered_logger_;
+        channel_levels_type channel_levels_;
         std::shared_mutex mutex_;
     };
 }

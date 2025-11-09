@@ -8,6 +8,8 @@
 #include <boost/log/sources/severity_logger.hpp>
 #include <boost/log/utility/manipulators/add_value.hpp>
 
+#include <optional>
+
 namespace celeritas
 {
     namespace log_sources = boost::log::sources;
@@ -19,6 +21,8 @@ namespace celeritas
         using class_type = logger;
         using severity_level_type = log_trivial::severity_level;
         using severity_logger_type = log_sources::severity_logger<severity_level_type>;
+        using severity_logger_reference_type = std::reference_wrapper<severity_logger_type>;
+        using severity_logger_optional_type = std::optional<severity_logger_reference_type>;
 
         // 初始化日志系统
         static void init_global(severity_level_type level);
@@ -32,31 +36,31 @@ namespace celeritas
                               bool also_to_console);
 
         // 获取日志实例
-        [[nodiscard]] static severity_logger_type& get(std::string_view channel_name);
+        [[nodiscard]] static severity_logger_optional_type get(std::string_view channel_name, severity_level_type level);
 
-        [[nodiscard]] static severity_logger_type& get();
+        [[nodiscard]] static severity_logger_optional_type get_default(severity_level_type level);
 
     private:
         static logger_impl& get_logger_impl();
     };
 }
 
-#define GET_SOURCE_LOCATION_INFO \
-    if (constexpr auto location = std::source_location::current(); false) static_cast<void>(0); else
+#define LOG_INTERNAL(logger_handle, level) \
+    if (auto logger = logger_handle; !logger) \
+        static_cast<void>(0); /* 短路: 日志关闭 */ \
+    else if (constexpr auto location = std::source_location::current(); false) \
+        static_cast<void>(0); /* 永远不会执行，仅用于声明 location */ \
+    else \
+        BOOST_LOG_STREAM_SEV(logger->get(), boost::log::trivial::severity_level::level) \
+        << boost::log::add_value(celeritas::log_function.data(), location.function_name()) \
+        << boost::log::add_value(celeritas::log_file.data(), location.file_name()) \
+        << boost::log::add_value(celeritas::log_line.data(), location.line())
 
 // 全局日志对象
 // 在你的代码中，使用 LOG(severity_level) << "你的日志信息" 来记录
 #define LOG(level) \
-    GET_SOURCE_LOCATION_INFO \
-    BOOST_LOG_STREAM_SEV(celeritas::logger::get(), boost::log::trivial::severity_level::level) \
-    << boost::log::add_value(celeritas::log_function.data(), location.function_name()) \
-    << boost::log::add_value(celeritas::log_file.data(), location.file_name()) \
-    << boost::log::add_value(celeritas::log_line.data(), location.line())
+    LOG_INTERNAL(celeritas::logger::get_default(boost::log::trivial::severity_level::level), level)
 
 // 在你的代码中，使用 LOG(channel,severity_level) << "你的日志信息" 来记录
 #define LOG_CHANNEL(channel, level) \
-    GET_SOURCE_LOCATION_INFO \
-    BOOST_LOG_STREAM_SEV(celeritas::logger::get(channel), boost::log::trivial::severity_level::level) \
-    << boost::log::add_value(celeritas::log_function.data(), location.function_name()) \
-    << boost::log::add_value(celeritas::log_file.data(), location.file_name()) \
-    << boost::log::add_value(celeritas::log_line.data(), location.line())
+    LOG_INTERNAL(celeritas::logger::get(channel,boost::log::trivial::severity_level::level), level)
