@@ -83,15 +83,15 @@
 * **📜 日志系统（logger）**
     - **作用**：基于**boost::log**实现的统一日志记录接口。
     - **功能**：
-        - 支持全局日志级别初始化**init_global**。
-        - 支持控制台输出初始化**init_console**。
-        - 支持文件输出和日志滚动**init_file**，可指定不同的日志通道**channel_name**。
-        - 通过**get()** 或**get(channel_name)** 获取指定通道的日志实例。
+        - 支持全局日志级别初始化的**init_global**。
+        - 支持控制台输出初始化的**init_console**。
+        - 支持文件输出的**init_file**，可指定不同的日志通道**channel_name**。
+        - 通过**get_default(level)** 或**get(channel_name,level)** 获取指定通道的日志实例。
     - **宏定义**:
         - **LOG(level)**：记录到默认日志通道。
         - **LOG_CHANNEL(channel, level)**:：记录到指定通道。
     - **日志信息增强**:
-        - 日志宏利用**C++20**的**std::source_location::current()**自动添加函数名**function_name()**、
+        - 日志宏利用**C++20**的**std::source_location::current()** 自动添加函数名**function_name()**、
           文件名**file_name()** 和行号 **line()** 到日志记录中，极大地增强了调试能力。
 
 

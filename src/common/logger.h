@@ -25,7 +25,7 @@ namespace celeritas
         using severity_logger_optional_type = std::optional<severity_logger_reference_type>;
 
         // 初始化日志系统
-        static void init_global(severity_level_type level);
+        static void init_global(severity_level_type global_level);
 
         static void init_console(severity_level_type console_level);
 

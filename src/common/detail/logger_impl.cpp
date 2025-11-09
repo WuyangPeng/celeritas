@@ -1,52 +1,19 @@
-﻿#include "logger_impl.h"
+﻿#include "logger_support.h"
+#include "logger_impl.h"
 #include "common/common_fwd.h"
 #include "config/config_fwd.h"
 
-#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/filesystem/operations.hpp>
-#include <boost/log/expressions.hpp>
-#include <boost/log/expressions/formatters/date_time.hpp>
-#include <boost/log/support/date_time.hpp>
-#include <boost/log/utility/setup/common_attributes.hpp>
-#include <boost/log/utility/setup/console.hpp>
 #include <boost/log/utility/setup/file.hpp>
-
-namespace celeritas
-{
-    auto get_formatter()
-    {
-        // 设置日志格式
-        return log_expressions::stream
-               << "["
-               << log_expressions::format_date_time<boost::posix_time::ptime>("TimeStamp", "%Y-%m-%d %H:%M:%S.%f")
-               << "]["
-               << log_trivial::severity
-               << "]["
-               << log_expressions::attr<log_attributes::current_thread_id::value_type>("ThreadID")
-               << "]["
-               << log_expressions::attr<std::string>(log_file.data())
-               << ":"
-               << log_expressions::attr<uint_least32_t>(log_line.data())
-               << "]"
-               << log_expressions::smessage;
-    }
-}
 
 celeritas::logger_impl::logger_impl()
     : loggers_{},
-      console_channels_{},
-      console_sink_{},
-      global_level_{},
-      console_level_{},
-      default_logger_{},
-      unregistered_logger_{},
-      channel_levels_{}
+      console_{},
+      level_{}
 {
-    default_logger_.add_attribute(channel.data(), log_attributes::constant(std::string{ default_channel }));
-    unregistered_logger_.add_attribute(channel.data(), log_attributes::constant(std::string{ unregistered_channel }));
 }
 
-void celeritas::logger_impl::init_global(severity_level_type level)
+void celeritas::logger_impl::init_global(severity_level_type global_level)
 {
     std::lock_guard lock{ mutex_ };
 
@@ -54,9 +21,9 @@ void celeritas::logger_impl::init_global(severity_level_type level)
     boost::log::add_common_attributes();
 
     // 设置全局日志级别
-    boost::log::core::get()->set_filter(log_trivial::severity >= level);
+    boost::log::core::get()->set_filter(log_trivial::severity >= global_level);
 
-    global_level_ = level;
+    level_.set_global_level(global_level);
 }
 
 void celeritas::logger_impl::init_console(const severity_level_type console_level)
@@ -64,15 +31,11 @@ void celeritas::logger_impl::init_console(const severity_level_type console_leve
     std::lock_guard lock{ mutex_ };
 
     // 添加控制台日志输出
-    if (console_sink_ == nullptr)
-    {
-        console_sink_ = boost::log::add_console_log(std::clog);
-        console_sink_->set_formatter(get_formatter());
-    }
+    console_.init_console();
 
-    console_level_ = console_level;
+    console_.update_console_filter(console_level);
 
-    update_console_filter();
+    level_.set_console_level(console_level);
 }
 
 void celeritas::logger_impl::init_file(const std::string& channel_name,
@@ -88,7 +51,7 @@ void celeritas::logger_impl::init_file(const std::string& channel_name,
 
     std::lock_guard lock{ mutex_ };
 
-    register_logger(channel_name);
+    loggers_.register_logger(channel_name);
 
     // 添加文件日志输出
     boost::log::add_file_log(
@@ -101,108 +64,28 @@ void celeritas::logger_impl::init_file(const std::string& channel_name,
             log_keywords::filter = log_expressions::has_attr(channel.data()) &&
                                    log_expressions::attr<std::string>(channel.data()) == channel_name &&
                                    log_trivial::severity >= file_level)
-        ->set_formatter(get_formatter());
+        ->set_formatter(logger_support::get_formatter());
 
-    update_console_filter(channel_name, also_to_console);
+    console_.update_console_filter(level_.get_console_level(), channel_name, also_to_console);
 
-    if (also_to_console)
-    {
-        channel_levels_[channel_name] = std::max(std::min(console_level_, file_level), global_level_);
-    }
-    else
-    {
-        channel_levels_[channel_name] = std::max(file_level, global_level_);
-    }
+    level_.set_channel_level(channel_name, file_level, also_to_console);
 }
 
 celeritas::logger_impl::severity_logger_optional_type celeritas::logger_impl::get(std::string_view channel_name, severity_level_type level)
 {
     std::shared_lock lock{ mutex_ };
 
-    if (const auto iter = channel_levels_.find(channel_name.data());
-        iter != channel_levels_.cend() && level < iter->second)
+    if (!level_.can_logger(channel_name.data(), level))
     {
         return std::nullopt;
     }
 
-    if (channel_name == default_channel)
-    {
-        return default_logger_;
-    }
-
-    if (channel_name == unregistered_channel)
-    {
-        return unregistered_logger_;
-    }
-
-    const auto iter = loggers_.find(channel_name.data());
-    if (iter == loggers_.end())
-    {
-        BOOST_LOG_SEV(unregistered_logger_, log_trivial::severity_level::warning) << "Logger channel not registered: " << channel_name;
-        return unregistered_logger_;
-    }
-
-    return iter->second;
+    return loggers_.get(channel_name.data());
 }
 
 celeritas::logger_impl::severity_logger_optional_type celeritas::logger_impl::get_default(severity_level_type level)
 {
     return get(default_channel, level);
-}
-
-void celeritas::logger_impl::register_logger(const std::string& channel_name)
-{
-    if (channel_name == default_channel || channel_name == unregistered_channel)
-    {
-        return;
-    }
-
-    if (const auto iter = loggers_.find(channel_name);
-        iter == loggers_.end())
-    {
-        loggers_.emplace(channel_name, severity_logger_type{});
-        loggers_.at(channel_name).add_attribute(channel.data(), log_attributes::constant(channel_name));
-    }
-}
-
-void celeritas::logger_impl::update_console_filter()
-{
-    if (!console_sink_)
-    {
-        return;
-    }
-
-    auto console_filter = log_trivial::severity >= console_level_;
-
-    auto channel_filter = log_expressions::has_attr(channel.data()) &&
-                          log_expressions::attr<std::string>(channel.data()) == "";
-    for (const auto& element : console_channels_)
-    {
-        channel_filter = channel_filter ||
-                         (log_expressions::has_attr(element.data()) &&
-                          log_expressions::attr<std::string>(element.data()) == element);
-    }
-    console_filter = console_filter && (channel_filter || !log_expressions::has_attr(channel.data()));
-
-    console_sink_->set_filter(console_filter);
-}
-
-void celeritas::logger_impl::update_console_filter(const std::string& channel_name, const bool also_to_console)
-{
-    if (also_to_console)
-    {
-        if (console_channels_.insert(channel_name).second)
-        {
-            update_console_filter();
-        }
-    }
-    else
-    {
-        if (0 < console_channels_.erase(channel_name))
-        {
-            update_console_filter();
-        }
-    }
 }
 
 celeritas::logger_impl::filesystem_path_type celeritas::logger_impl::get_full_path_pattern(const std::string& log_file_name)

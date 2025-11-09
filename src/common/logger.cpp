@@ -1,9 +1,9 @@
 ﻿#include "logger.h"
 #include "detail/logger_impl.h"
 
-void celeritas::logger::init_global(const severity_level_type level)
+void celeritas::logger::init_global(const severity_level_type global_level)
 {
-    get_logger_impl().init_global(level);
+    get_logger_impl().init_global(global_level);
 }
 
 void celeritas::logger::init_console(const severity_level_type console_level)
