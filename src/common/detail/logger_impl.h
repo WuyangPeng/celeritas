@@ -9,7 +9,6 @@
 
 #include <optional>
 #include <shared_mutex>
-#include <unordered_set>
 
 namespace celeritas
 {
