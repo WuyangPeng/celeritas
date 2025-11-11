@@ -12,7 +12,7 @@ namespace celeritas
     public:
         using class_type = http_base_message_handler;
         using http_message_registry_weak_ptr = std::weak_ptr<http_message_registry>;
-        using session_shared_ptr = std::shared_ptr<session>;
+        using session_shared_ptr = std::shared_ptr<session_base>;
 
         http_base_message_handler() noexcept = default;
 

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "message_header.h"
-#include "session_base.h"
+#include "generic_session.h"
 #include "proto/celeritas.pb.h"
 
 #include <boost/asio.hpp>

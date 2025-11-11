@@ -1,58 +1,68 @@
 ﻿#pragma once
 
-#include "session.h"
+#include "session_callback.h"
 #include "common/buffer_guard.h"
+#include "message/header.h"
+
+#include <boost/asio/awaitable.hpp>
+#include <memory>
 
 namespace celeritas
 {
-    template <typename SocketType>
-    class session_base final : public session
+    class session_base : public std::enable_shared_from_this<session_base>
     {
     public:
         using class_type = session_base;
-        using base_type = session;
-        using socket_type = SocketType;
+        using void_awaitable_type = boost::asio::awaitable<void>;
+        using protobuf_message_type = google::protobuf::Message;
 
-        // 接受一个已连接的 socket
-        session_base(socket_type socket,
-                     long session_id,
-                     std::string game_server_id,
-                     session_callback session_callback);
+        session_base(int64_t session_id, session_callback session_callback);
 
-        ~session_base() noexcept override;
+        virtual ~session_base() noexcept = default;
 
-        session_base(const session_base& rhs) = delete;
+        session_base(const session_base& rhs) = default;
 
-        session_base& operator=(const session_base& rhs) = delete;
+        session_base& operator=(const session_base& rhs) = default;
 
-        session_base(session_base&& rhs) noexcept = delete;
+        session_base(session_base&& rhs) noexcept = default;
 
-        session_base& operator=(session_base&& rhs) noexcept = delete;
+        session_base& operator=(session_base&& rhs) noexcept = default;
 
         // 启动会话处理协程
-        void start() override;
+        virtual void start() = 0;
 
-        [[nodiscard]] void_awaitable_type start_awaitable() override;
+        [[nodiscard]] virtual void_awaitable_type start_awaitable() = 0;
 
-        void stop() override;
+        virtual void stop() = 0;
 
-        [[nodiscard]] bool is_open() const override;
+        void write(const header& header, const protobuf_message_type& response);
 
-        [[nodiscard]] bool is_full() const override;
+        void write(const std::string& response);
+
+        [[nodiscard]] void_awaitable_type write_immediately(const std::string& response);
+
+        [[nodiscard]] int64_t get_session_id() const noexcept;
+
+        [[nodiscard]] virtual bool is_open() const = 0;
+
+        [[nodiscard]] virtual bool is_full() const = 0;
+
+    protected:
+        using network_message_callback_weak_ptr = session_callback::network_message_callback_weak_ptr;
+        using message_shared_ptr = header::message_shared_ptr;
+
+        void remove_session();
+
+        [[nodiscard]] network_message_callback_weak_ptr get_network_message_callback();
+
+        [[nodiscard]] session_callback get_session_callback() const;
 
     private:
-        using session_write_shared_ptr = std::shared_ptr<session_write>;
-        using session_run_shared_ptr = std::shared_ptr<session_run>;
+        virtual void do_write(buffer_guard data) = 0;
 
-        // 向客户端发送消息
-        void do_write(buffer_guard data) override;
+        virtual void_awaitable_type do_write_immediately(buffer_guard data) = 0;
 
-        [[nodiscard]] void_awaitable_type do_write_immediately(buffer_guard data) override;
-
-    private:
-        socket_type socket_;
-        session_write_shared_ptr session_write_;
-        session_run_shared_ptr session_run_;
-        std::string game_server_id_;
+        int64_t session_id_;
+        session_callback session_callback_;
     };
 }

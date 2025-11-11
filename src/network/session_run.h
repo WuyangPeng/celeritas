@@ -12,7 +12,7 @@ namespace celeritas
     public:
         using class_type = session_run;
         using void_awaitable_type = boost::asio::awaitable<void>;
-        using session_weak_ptr = std::weak_ptr<session>;
+        using session_weak_ptr = std::weak_ptr<session_base>;
 
         session_run() noexcept = default;
 
@@ -33,7 +33,7 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type start_awaitable(const session_weak_ptr& session);
 
     protected:
-        using session_shared_ptr = std::shared_ptr<session>;
+        using session_shared_ptr = std::shared_ptr<session_base>;
 
         [[nodiscard]] session_shared_ptr get_session();
 

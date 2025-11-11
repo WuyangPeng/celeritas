@@ -11,7 +11,7 @@ namespace celeritas
     public:
         using class_type = write_protobuf_message;
         using protobuf_message_type = google::protobuf::Message;
-        using session_shared_ptr = std::shared_ptr<session>;
+        using session_shared_ptr = std::shared_ptr<session_base>;
         using buffer_guard_optional_type = std::optional<buffer_guard>;
 
         write_protobuf_message(const session_shared_ptr& session, const header& header, const protobuf_message_type& response);

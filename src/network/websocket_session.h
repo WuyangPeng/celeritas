@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "network_fwd.h"
-#include "session.h"
+#include "session_base.h"
 
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
@@ -10,11 +10,11 @@ namespace celeritas
 {
     namespace beast_websocket = boost::beast::websocket;
 
-    class websocket_session final : public session
+    class websocket_session final : public session_base
     {
     public:
         using class_type = websocket_session;
-        using base_type = session;
+        using base_type = session_base;
         using socket_type = boost::asio::ip::tcp::socket;
 
         websocket_session(socket_type socket,

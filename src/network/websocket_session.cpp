@@ -30,7 +30,7 @@ void celeritas::websocket_session::start()
     websocket_run_->start(shared_from_this());
 }
 
-celeritas::session::void_awaitable_type celeritas::websocket_session::start_awaitable()
+celeritas::session_base::void_awaitable_type celeritas::websocket_session::start_awaitable()
 {
     co_await websocket_run_->start_awaitable(shared_from_this());
 }
@@ -79,7 +79,7 @@ void celeritas::websocket_session::do_write(buffer_guard data)
     websocket_write_->write(std::move(data));
 }
 
-celeritas::session::void_awaitable_type celeritas::websocket_session::do_write_immediately(buffer_guard data)
+celeritas::session_base::void_awaitable_type celeritas::websocket_session::do_write_immediately(buffer_guard data)
 {
     co_await websocket_write_->write_immediately(std::move(data), shared_from_this());
 }

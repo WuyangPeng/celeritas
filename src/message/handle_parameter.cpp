@@ -1,7 +1,7 @@
 ﻿#include "handle_parameter.h"
 #include "common/logger.h"
 #include "initializer/resource_loader.h"
-#include "network/session.h"
+#include "network/session_base.h"
 
 celeritas::handle_parameter::handle_parameter(const header& header, protobuf_message_shared_ptr request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
     : header_{ header }, request_message_{ std::move(request_message) }, session_{ session }, resource_loader_{ resource_loader }

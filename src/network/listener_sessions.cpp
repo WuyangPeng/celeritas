@@ -1,5 +1,5 @@
 ﻿#include "listener_sessions.h"
-#include "session.h"
+#include "session_base.h"
 #include "common/celeritas_error.h"
 
 void celeritas::listener_sessions::remove_session(const int64_t session_id)

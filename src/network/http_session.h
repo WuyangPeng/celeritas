@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "session.h"
+#include "session_base.h"
 
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
@@ -8,11 +8,11 @@
 
 namespace celeritas
 {
-    class http_session final : public session
+    class http_session final : public session_base
     {
     public:
         using class_type = http_session;
-        using base_type = session;
+        using base_type = session_base;
         using socket_type = boost::asio::ip::tcp::socket;
 
         http_session(socket_type socket,

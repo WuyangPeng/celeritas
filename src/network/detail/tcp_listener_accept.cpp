@@ -1,6 +1,6 @@
 ﻿#include "tcp_listener_accept.h"
 #include "common/logger.h"
-#include "network/session_base.tpp"
+#include "network/generic_session.tpp"
 #include "network/session_callback.h"
 
 #include <boost/asio/as_tuple.hpp>

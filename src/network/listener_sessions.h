@@ -31,7 +31,7 @@ namespace celeritas
         void remove_session(int64_t session_id) override;
 
     protected:
-        using session_shared_ptr = std::shared_ptr<session>;
+        using session_shared_ptr = std::shared_ptr<session_base>;
 
         void set_stop();
 

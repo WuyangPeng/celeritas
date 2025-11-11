@@ -37,7 +37,7 @@ void celeritas::http_session::start()
     http_run_->start(shared_from_this());
 }
 
-celeritas::session::void_awaitable_type celeritas::http_session::start_awaitable()
+celeritas::session_base::void_awaitable_type celeritas::http_session::start_awaitable()
 {
     co_await http_run_->start_awaitable(shared_from_this());
 }
@@ -91,7 +91,7 @@ celeritas::http_session::session_run_shared_ptr celeritas::http_session::get_ses
         return std::make_shared<http_response_session_run>(socket, session_id, session_callback, path);
 }
 
-celeritas::session::void_awaitable_type celeritas::http_session::do_write_immediately(buffer_guard data)
+celeritas::session_base::void_awaitable_type celeritas::http_session::do_write_immediately(buffer_guard data)
 {
     co_await http_write_->write_immediately(std::move(data), shared_from_this());
 }

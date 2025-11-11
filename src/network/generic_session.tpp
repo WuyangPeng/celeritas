@@ -1,15 +1,15 @@
 ﻿#pragma once
 
-#include "session_base.h"
+#include "generic_session.h"
 #include "detail/tcp_session_run.tpp"
 #include "detail/tcp_session_write.tpp"
 #include "common/noexcept_safe_call_and_log.h"
 
 template <typename SocketType>
-celeritas::session_base<SocketType>::session_base(socket_type socket,
-                                                  const long session_id,
-                                                  std::string game_server_id,
-                                                  session_callback session_callback)
+celeritas::generic_session<SocketType>::generic_session(socket_type socket,
+                                                        const long session_id,
+                                                        std::string game_server_id,
+                                                        session_callback session_callback)
     : base_type{ session_id, std::move(session_callback) },
       socket_{ std::move(socket) },
       session_write_{ std::make_shared<tcp_session_write<socket_type> >(socket_) },
@@ -19,7 +19,7 @@ celeritas::session_base<SocketType>::session_base(socket_type socket,
 }
 
 template <typename SocketType>
-celeritas::session_base<SocketType>::~session_base() noexcept
+celeritas::generic_session<SocketType>::~generic_session() noexcept
 {
     noexcept_safe_call_and_log([this] {
                                    this->stop();
@@ -29,31 +29,31 @@ celeritas::session_base<SocketType>::~session_base() noexcept
 }
 
 template <typename SocketType>
-void celeritas::session_base<SocketType>::start()
+void celeritas::generic_session<SocketType>::start()
 {
     session_run_->start(shared_from_this());
 }
 
 template <typename SocketType>
-celeritas::session::void_awaitable_type celeritas::session_base<SocketType>::start_awaitable()
+celeritas::session_base::void_awaitable_type celeritas::generic_session<SocketType>::start_awaitable()
 {
     co_await session_run_->start_awaitable(shared_from_this());
 }
 
 template <typename SocketType>
-bool celeritas::session_base<SocketType>::is_open() const
+bool celeritas::generic_session<SocketType>::is_open() const
 {
     return socket_.is_open();
 }
 
 template <typename SocketType>
-bool celeritas::session_base<SocketType>::is_full() const
+bool celeritas::generic_session<SocketType>::is_full() const
 {
     return session_write_->is_full();
 }
 
 template <typename SocketType>
-void celeritas::session_base<SocketType>::stop()
+void celeritas::generic_session<SocketType>::stop()
 {
     if (is_open())
     {
@@ -62,13 +62,13 @@ void celeritas::session_base<SocketType>::stop()
 }
 
 template <typename SocketType>
-void celeritas::session_base<SocketType>::do_write(buffer_guard data)
+void celeritas::generic_session<SocketType>::do_write(buffer_guard data)
 {
     session_write_->write(std::move(data));
 }
 
 template <typename SocketType>
-celeritas::session::void_awaitable_type celeritas::session_base<SocketType>::do_write_immediately(buffer_guard data)
+celeritas::session_base::void_awaitable_type celeritas::generic_session<SocketType>::do_write_immediately(buffer_guard data)
 {
     co_await session_write_->write_immediately(std::move(data), shared_from_this());
 }

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "message_header.h"
-#include "session_base.h"
+#include "generic_session.h"
 #include "proto/celeritas.pb.h"
 
 #include <boost/asio/awaitable.hpp>
@@ -17,7 +17,7 @@ namespace celeritas
         using io_context_type = boost::asio::io_context;
         using tcp_type = boost::asio::ip::tcp;
         using socket_type = tcp_type::socket;
-        using session_type = session_base<socket_type>;
+        using session_type = generic_session<socket_type>;
         using session_type_shared_type = std::shared_ptr<session_type>;
         using session_waitable_type = boost::asio::awaitable<session_type_shared_type>;
         using void_waitable_type = boost::asio::awaitable<void>;

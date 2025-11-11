@@ -12,7 +12,7 @@ namespace celeritas
     public:
         using class_type = session_write;
         using void_awaitable_type = boost::asio::awaitable<void>;
-        using session_weak_ptr = std::weak_ptr<session>;
+        using session_weak_ptr = std::weak_ptr<session_base>;
 
         session_write() noexcept = default;
 

@@ -1,4 +1,4 @@
-﻿#include "session_base.tpp"
+﻿#include "generic_session.tpp"
 #include "tcp_client.h"
 #include "common/logger.h"
 

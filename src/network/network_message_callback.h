@@ -12,7 +12,7 @@ namespace celeritas
     {
     public:
         using class_type = network_message_callback;
-        using session_shared_ptr = std::shared_ptr<session>;
+        using session_shared_ptr = std::shared_ptr<session_base>;
         using urls_params_view_type = boost::urls::params_view;
 
         network_message_callback() noexcept = default;

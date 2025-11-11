@@ -15,7 +15,7 @@ namespace celeritas
     {
     public:
         using class_type = http_handle_parameter;
-        using session_shared_ptr = std::shared_ptr<session>;
+        using session_shared_ptr = std::shared_ptr<session_base>;
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader>;
         using urls_params_view_type = boost::urls::params_view;
         using app_config_shared_ptr = std::shared_ptr<const app_config>;
@@ -49,7 +49,7 @@ namespace celeritas
         [[nodiscard]] io_context_type& get_io_context() const;
 
     private:
-        using session_weak_ptr = std::weak_ptr<session>;
+        using session_weak_ptr = std::weak_ptr<session_base>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader>;
 
         io_context_type& io_context_;

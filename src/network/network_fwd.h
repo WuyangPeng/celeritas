@@ -3,9 +3,9 @@
 namespace celeritas
 {
     template <typename SocketType>
-    class session_base;
+    class generic_session;
 
-    class session;
+    class session_base;
     class websocket_session;
     class http_session;
     class listener;
