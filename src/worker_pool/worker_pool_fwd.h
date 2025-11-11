@@ -2,6 +2,6 @@
 
 namespace celeritas
 {
-    class worker_pool;
     class thread_safe_queue;
+    class worker_pool;
 }
