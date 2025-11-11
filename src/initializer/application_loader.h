@@ -20,7 +20,7 @@ namespace celeritas
         using protobuf_message_shared_ptr = std::shared_ptr<google::protobuf::Message>;
         using message_registry_weak_ptr = std::weak_ptr<message_registry>;
         using session_shared_ptr = std::shared_ptr<session>;
-        using resource_loader_shared_ptr = std::shared_ptr<resource_loader>;
+        using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
         using protobuf_message = google::protobuf::Message;
         using urls_params_view_type = boost::urls::params_view;
         using io_context_type = boost::asio::io_context;

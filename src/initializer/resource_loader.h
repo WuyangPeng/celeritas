@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "common/resource_loader_base.h"
 #include "config/app_config.h"
 #include "detail/initializer_internal_fwd.h"
 #include "message/header.h"
@@ -10,19 +11,19 @@
 
 namespace celeritas
 {
-    class resource_loader : public std::enable_shared_from_this<resource_loader>
+    class resource_loader : public resource_loader_base
     {
     public:
         using class_type = resource_loader;
+        using base_type = resource_loader_base;
         using app_config_shared_ptr = std::shared_ptr<app_config>;
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
-        using io_context_type = boost::asio::io_context;
-        using protobuf_message = google::protobuf::Message;
+
         using health_check_level_awaitable_type = boost::asio::awaitable<health_check_level_type>;
 
         explicit resource_loader(app_config_shared_ptr app_config);
 
-        virtual ~resource_loader() noexcept = default;
+        ~resource_loader() noexcept override = default;
 
         resource_loader(const resource_loader& rhs) noexcept = delete;
 
@@ -36,15 +37,15 @@ namespace celeritas
 
         void release_resource();
 
-        [[nodiscard]] bool write(const std::string& server_type, const header& header, const protobuf_message& request) const;
+        [[nodiscard]] bool write(const std::string& server_type, const header& header, const protobuf_message& request) const override;
 
-        void process_check_tcp_clients_by_duration(io_context_type& io_context);
+        void process_check_tcp_clients_by_duration(io_context_type& io_context) override;
 
-        void process_service_registry_by_duration();
+        void process_service_registry_by_duration() override;
 
-        [[nodiscard]] app_config_shared_ptr get_app_config() const;
+        [[nodiscard]] app_config_shared_ptr get_app_config() const override;
 
-        [[nodiscard]] health_check_level_awaitable_type get_health_check_level() const;
+        [[nodiscard]] health_check_level_awaitable_type get_health_check_level() const override;
 
     protected:
         using tcp_client_shared_ptr = std::shared_ptr<tcp_client>;

@@ -17,7 +17,7 @@ namespace celeritas
         using protobuf_message = google::protobuf::Message;
         using protobuf_message_shared_ptr = std::shared_ptr<google::protobuf::Message>;
         using session_shared_ptr = std::shared_ptr<session>;
-        using resource_loader_shared_ptr = std::shared_ptr<resource_loader>;
+        using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
 
         handle_parameter(const header& header, protobuf_message_shared_ptr request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 
@@ -29,7 +29,7 @@ namespace celeritas
 
     private:
         using session_weak_ptr = std::weak_ptr<session>;
-        using resource_loader_weak_ptr = std::weak_ptr<resource_loader>;
+        using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
 
         header header_;
         protobuf_message_shared_ptr request_message_;

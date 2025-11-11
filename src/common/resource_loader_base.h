@@ -1,0 +1,44 @@
+﻿#pragma once
+
+#include "config/config_fwd.h"
+#include "message/message_fwd.h"
+
+#include <boost/asio.hpp>
+#include <google/protobuf/message.h>
+
+#include <memory>
+
+namespace celeritas
+{
+    class resource_loader_base : public std::enable_shared_from_this<resource_loader_base>
+    {
+    public:
+        using class_type = resource_loader_base;
+        using io_context_type = boost::asio::io_context;
+        using app_config_shared_ptr = std::shared_ptr<app_config>;
+        using health_check_level_awaitable_type = boost::asio::awaitable<health_check_level_type>;
+        using protobuf_message = google::protobuf::Message;
+
+        resource_loader_base() noexcept = default;
+
+        virtual ~resource_loader_base() noexcept = default;
+
+        resource_loader_base(const resource_loader_base& rhs) noexcept = default;
+
+        resource_loader_base& operator=(const resource_loader_base& rhs) noexcept = default;
+
+        resource_loader_base(resource_loader_base&& rhs) noexcept = default;
+
+        resource_loader_base& operator=(resource_loader_base&& rhs) noexcept = default;
+
+        virtual void process_check_tcp_clients_by_duration(io_context_type& io_context) = 0;
+
+        virtual void process_service_registry_by_duration() = 0;
+
+        [[nodiscard]] virtual app_config_shared_ptr get_app_config() const = 0;
+
+        [[nodiscard]] virtual health_check_level_awaitable_type get_health_check_level() const = 0;
+
+        [[nodiscard]] virtual bool write(const std::string& server_type, const header& header, const protobuf_message& request) const = 0;
+    };
+}

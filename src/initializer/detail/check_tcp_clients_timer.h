@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "common/resource_loader_base.h"
 #include "common/timer_base.h"
 #include "initializer/initializer_fwd.h"
 
@@ -10,7 +11,7 @@ namespace celeritas
     public:
         using class_type = check_tcp_clients_timer;
         using base_type = timer_base;
-        using resource_loader_weak_ptr = std::weak_ptr<resource_loader>;
+        using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
 
         explicit check_tcp_clients_timer(io_context_type& io_context, duration_type interval, resource_loader_weak_ptr resource_loader);
 

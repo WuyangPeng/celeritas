@@ -13,6 +13,7 @@ namespace celeritas
     class random_helper;
     class command_line_config;
     class session;
+    class resource_loader_base;
 
     constexpr std::string_view channel{ "channel" };
     constexpr std::string_view default_channel{ "default" };
