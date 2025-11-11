@@ -18,7 +18,7 @@ namespace celeritas
         [[nodiscard]] int get_port() const noexcept;
 
     private:
-        server_network_type server_network_type_;
+        server_network_type server_network_type_ = server_network_type::unknown;
         int port_ = 0;
     };
 }

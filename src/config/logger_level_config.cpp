@@ -10,12 +10,12 @@ bool celeritas::logger_level_config::is_set_console_level() const noexcept
     return is_set_console_level_;
 }
 
-celeritas::logger_level_config::severity_level_type celeritas::logger_level_config::get_default_level() const noexcept
+celeritas::severity_level_type celeritas::logger_level_config::get_default_level() const noexcept
 {
     return default_level_;
 }
 
-celeritas::logger_level_config::severity_level_type celeritas::logger_level_config::get_console_level() const noexcept
+celeritas::severity_level_type celeritas::logger_level_config::get_console_level() const noexcept
 {
     return console_level_;
 }

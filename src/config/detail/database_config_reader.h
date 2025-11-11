@@ -13,7 +13,7 @@ namespace celeritas
         using class_type = database_config_reader;
         using database_config_container = std::vector<database_config>;
 
-        static database_config_container load_config(const std::string& filename);
+        [[nodiscard]] static database_config_container load_config(const std::string& filename);
 
     private:
         using node_type = boost::property_tree::basic_ptree<std::string, std::string>;

@@ -1,7 +1,18 @@
 ﻿#include "server_config.h"
+#include "server/server_fwd.h"
 
-celeritas::server_config::server_config(std::string instance_id, std::string service_name, server_network_config_container_type server_network_config, std::string game_server_id, std::string host, const int worker_pool_size) noexcept
-    : instance_id_{ std::move(instance_id) }, service_name_{ std::move(service_name) }, server_network_config_{ std::move(server_network_config) }, game_server_id_{ std::move(game_server_id) }, host_{ std::move(host) }, worker_pool_size_{ worker_pool_size }
+celeritas::server_config::server_config(std::string instance_id,
+                                        std::string service_name,
+                                        server_network_config_container_type server_network_config,
+                                        std::string game_server_id,
+                                        std::string host,
+                                        const int worker_pool_size) noexcept
+    : instance_id_{ std::move(instance_id) },
+      service_name_{ std::move(service_name) },
+      server_network_config_{ std::move(server_network_config) },
+      game_server_id_{ std::move(game_server_id) },
+      host_{ std::move(host) },
+      worker_pool_size_{ worker_pool_size }
 {
 }
 
@@ -32,7 +43,7 @@ std::string celeritas::server_config::get_service_name() const
 
 bool celeritas::server_config::is_service_registry_server() const
 {
-    return service_name_.find("service_registry") != std::string::npos;
+    return service_name_.find(service_registry_type) != std::string::npos;
 }
 
 int celeritas::server_config::get_worker_pool_size() const noexcept

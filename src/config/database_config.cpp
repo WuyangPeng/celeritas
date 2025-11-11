@@ -1,7 +1,25 @@
 ﻿#include "database_config.h"
 
-celeritas::database_config::database_config(std::string name, const database_type database_type, std::string host, const int port, std::string user, std::string password, std::string db_name, const int min_connections, const int max_connections, const int timeout_seconds)
-    : name_{ std::move(name) }, database_type_{ database_type }, host_{ std::move(host) }, port_{ port }, user_{ std::move(user) }, password_{ std::move(password) }, db_name_{ std::move(db_name) }, min_connections_{ min_connections }, max_connections_{ max_connections }, timeout_seconds_{ timeout_seconds }
+celeritas::database_config::database_config(std::string name,
+                                            const database_type database_type,
+                                            std::string host,
+                                            const int port,
+                                            std::string user,
+                                            std::string password,
+                                            std::string db_name,
+                                            const int min_connections,
+                                            const int max_connections,
+                                            const int timeout_seconds)
+    : name_{ std::move(name) },
+      database_type_{ database_type },
+      host_{ std::move(host) },
+      port_{ port },
+      user_{ std::move(user) },
+      password_{ std::move(password) },
+      db_name_{ std::move(db_name) },
+      min_connections_{ min_connections },
+      max_connections_{ max_connections },
+      timeout_seconds_{ timeout_seconds }
 {
 }
 

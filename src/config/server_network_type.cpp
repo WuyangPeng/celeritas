@@ -15,7 +15,7 @@ celeritas::server_network_type celeritas::get_server_network_type(const std::str
                                                          { "websocket_secure", server_network_type::websocket_secure } };
 
     if (const auto iter = server_network.find(server_network_name);
-        iter != server_network.end())
+        iter != server_network.cend())
     {
         return iter->second;
     }

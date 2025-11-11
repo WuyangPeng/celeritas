@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "common/detail/logger_namespace.h"
+
 #include <boost/log/trivial.hpp>
 
 namespace celeritas
@@ -8,7 +10,6 @@ namespace celeritas
     {
     public:
         using class_type = logger_level_config;
-        using severity_level_type = boost::log::trivial::severity_level;
 
         [[nodiscard]] bool is_set_default_level() const noexcept;
 

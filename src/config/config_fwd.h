@@ -7,13 +7,13 @@ namespace celeritas
     enum class server_network_type;
     enum class database_type;
 
-    class service_registry_config;
-    class server_config;
     class server_network_config;
+    class logger_level_config;
+    class service_registry_config;
     class health_check_url_config;
     class database_config;
-    class logger_level_config;
     class logger_config;
+    class server_config;
     class app_config;
 
     constexpr std::string_view default_service_registry_host = "127.0.0.1";

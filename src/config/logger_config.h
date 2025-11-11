@@ -1,8 +1,9 @@
 ﻿#pragma once
 
-#include "boost/property_tree/ptree.hpp"
+#include "common/detail/logger_namespace.h"
 
 #include <boost/log/trivial.hpp>
+#include <boost/property_tree/ptree.hpp>
 
 namespace celeritas
 {
@@ -10,7 +11,6 @@ namespace celeritas
     {
     public:
         using class_type = logger_config;
-        using severity_level_type = boost::log::trivial::severity_level;
 
         logger_config() noexcept = default;
 

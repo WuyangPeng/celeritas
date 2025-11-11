@@ -1,6 +1,6 @@
 ﻿#include "server_network_config.h"
 
-celeritas::server_network_config::server_network_config(server_network_type server_network_type, const int port) noexcept
+celeritas::server_network_config::server_network_config(const server_network_type server_network_type, const int port) noexcept
     : server_network_type_{ server_network_type }, port_{ port }
 {
 }
