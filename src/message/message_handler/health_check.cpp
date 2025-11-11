@@ -1,8 +1,8 @@
 ﻿#include "health_check.h"
 #include "common/celeritas_error.h"
 
-#include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+#include <boost/property_tree/ptree.hpp>
 
 celeritas::health_check::health_check(std::string instance_id, const health_check_level_type health_check_level)
     : instance_id_{ std::move(instance_id) }, health_check_level_{ health_check_level }
