@@ -24,7 +24,7 @@ namespace celeritas
 
         http_handle_parameter(io_context_type& io_context, std::string path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 
-        http_handle_parameter(io_context_type& io_context, std::string path, const std::string& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
+        http_handle_parameter(io_context_type& io_context, std::string path, std::string params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 
         ~http_handle_parameter() noexcept = default;
 

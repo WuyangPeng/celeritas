@@ -1,4 +1,6 @@
 ﻿#include "http_handle_parameter.h"
+
+#include <utility>
 #include "common/celeritas_error.h"
 #include "initializer/resource_loader.h"
 #include "network/session.h"
@@ -8,8 +10,8 @@ celeritas::http_handle_parameter::http_handle_parameter(io_context_type& io_cont
 {
 }
 
-celeritas::http_handle_parameter::http_handle_parameter(io_context_type& io_context, std::string path, const std::string& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
-    : io_context_{ io_context }, path_{ std::move(path) }, params_{}, response_{ params }, session_{ session }, resource_loader_{ resource_loader }
+celeritas::http_handle_parameter::http_handle_parameter(io_context_type& io_context, std::string path, std::string params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
+    : io_context_{ io_context }, path_{ std::move(path) }, params_{}, response_{ std::move(params) }, session_{ session }, resource_loader_{ resource_loader }
 {
 }
 
@@ -19,7 +21,7 @@ celeritas::http_handle_parameter::http_handle_parameter(const http_handle_parame
 }
 
 celeritas::http_handle_parameter::http_handle_parameter(http_handle_parameter&& rhs) noexcept
-    : io_context_{ rhs.io_context_ }, path_{ std::move(rhs.path_) }, params_{ std::move(rhs.params_) }, response_{ std::move(rhs.response_) }, session_{ std::move(rhs.session_) }, resource_loader_{ std::move(rhs.resource_loader_) }
+    : io_context_{ rhs.io_context_ }, path_{ std::move(rhs.path_) }, params_{ rhs.params_ }, response_{ std::move(rhs.response_) }, session_{ std::move(rhs.session_) }, resource_loader_{ std::move(rhs.resource_loader_) }
 {
 }
 
