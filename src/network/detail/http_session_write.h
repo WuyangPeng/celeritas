@@ -36,7 +36,7 @@ namespace celeritas
     private:
         using buffer_guard_container_type = std::deque<buffer_guard>;
         using buffer_guard_optional_type = std::optional<buffer_guard>;
-        using session_weak_ptr = std::weak_ptr<session_base>;
+        using session_weak_ptr = std::weak_ptr<session>;
 
         [[nodiscard]] virtual bool_awaitable_type do_one_write() = 0;
 

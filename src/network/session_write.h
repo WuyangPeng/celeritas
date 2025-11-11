@@ -2,6 +2,7 @@
 
 #include "network_fwd.h"
 #include "common/buffer_guard.h"
+#include "common/common_fwd.h"
 
 #include <boost/asio/awaitable.hpp>
 
@@ -12,7 +13,7 @@ namespace celeritas
     public:
         using class_type = session_write;
         using void_awaitable_type = boost::asio::awaitable<void>;
-        using session_weak_ptr = std::weak_ptr<session_base>;
+        using session_weak_ptr = std::weak_ptr<session>;
 
         session_write() noexcept = default;
 

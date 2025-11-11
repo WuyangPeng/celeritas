@@ -4,6 +4,7 @@
 #include "initializer/initializer_fwd.h"
 #include "network/network_fwd.h"
 #include "proto/celeritas.pb.h"
+#include "common/common_fwd.h"
 
 #include <google/protobuf/message.h>
 
@@ -15,7 +16,7 @@ namespace celeritas
         using class_type = handle_parameter;
         using protobuf_message = google::protobuf::Message;
         using protobuf_message_shared_ptr = std::shared_ptr<google::protobuf::Message>;
-        using session_shared_ptr = std::shared_ptr<session_base>;
+        using session_shared_ptr = std::shared_ptr<session>;
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader>;
 
         handle_parameter(const header& header, protobuf_message_shared_ptr request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
@@ -27,7 +28,7 @@ namespace celeritas
         [[nodiscard]] protobuf_message_shared_ptr get_protobuf_message() const;
 
     private:
-        using session_weak_ptr = std::weak_ptr<session_base>;
+        using session_weak_ptr = std::weak_ptr<session>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader>;
 
         header header_;

@@ -12,6 +12,7 @@ namespace celeritas
     class timer_base;
     class random_helper;
     class command_line_config;
+    class session;
 
     constexpr std::string_view channel{ "channel" };
     constexpr std::string_view default_channel{ "default" };

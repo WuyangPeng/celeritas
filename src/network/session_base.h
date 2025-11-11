@@ -2,6 +2,7 @@
 
 #include "session_callback.h"
 #include "common/buffer_guard.h"
+#include "common/session.h"
 #include "message/header.h"
 
 #include <boost/asio/awaitable.hpp>
@@ -9,35 +10,23 @@
 
 namespace celeritas
 {
-    class session_base : public std::enable_shared_from_this<session_base>
+    class session_base : public session
     {
     public:
         using class_type = session_base;
+        using base_type = session;
         using void_awaitable_type = boost::asio::awaitable<void>;
-        using protobuf_message_type = google::protobuf::Message;
 
         session_base(int64_t session_id, session_callback session_callback);
-
-        virtual ~session_base() noexcept = default;
-
-        session_base(const session_base& rhs) = default;
-
-        session_base& operator=(const session_base& rhs) = default;
-
-        session_base(session_base&& rhs) noexcept = default;
-
-        session_base& operator=(session_base&& rhs) noexcept = default;
 
         // 启动会话处理协程
         virtual void start() = 0;
 
         [[nodiscard]] virtual void_awaitable_type start_awaitable() = 0;
 
-        virtual void stop() = 0;
+        void write(const header& header, const protobuf_message_type& response) override;
 
-        void write(const header& header, const protobuf_message_type& response);
-
-        void write(const std::string& response);
+        void write(const std::string& response) override;
 
         [[nodiscard]] void_awaitable_type write_immediately(const std::string& response);
 

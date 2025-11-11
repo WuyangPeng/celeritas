@@ -1,7 +1,7 @@
 ﻿#include "http_handle_parameter.h"
 #include "common/celeritas_error.h"
+#include "common/session.h"
 #include "initializer/resource_loader.h"
-#include "network/session_base.h"
 
 celeritas::http_handle_parameter::http_handle_parameter(io_context_type& io_context, std::string path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
     : io_context_{ io_context }, path_{ std::move(path) }, params_{ params }, response_{}, session_{ session }, resource_loader_{ resource_loader }
