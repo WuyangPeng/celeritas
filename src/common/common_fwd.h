@@ -9,9 +9,9 @@ namespace celeritas
     class buffer_pool_data;
     class buffer_pool;
     class buffer_guard;
-    class command_line_config;
-    class random_helper;
     class timer_base;
+    class random_helper;
+    class command_line_config;
 
     constexpr std::string_view channel{ "channel" };
     constexpr std::string_view default_channel{ "default" };

@@ -87,10 +87,10 @@
         - 支持控制台输出初始化的`init_console`。
         - 支持文件输出的`init_file`，可指定不同的日志通道`channel_name`。
         - 通过`get_default(level)` 或`get(channel_name,level)` 获取指定通道的日志实例。
-    - **宏定义**:
+    - **宏定义**：
         - `LOG(level)`：记录到默认日志通道。
         - `LOG_CHANNEL(channel, level)`:：记录到指定通道。
-    - **日志信息增强**:
+    - **日志信息增强**：
         - 日志宏利用`C++20`的`std::source_location::current()`自动添加函数名`function_name()`、
           文件名`file_name()`和行号`line()`到日志记录中，极大地增强了调试能力。
 
@@ -105,46 +105,46 @@
 
 
 * **💾 缓冲区数据结构（`buffer_pool_data`）**
-    - **作用**: 封装底层的 `std::vector<char>`，作为缓冲区池管理的基本数据单元。
-    - **特点**: 包含数据指针 `data()`和缓冲区大小`size()`，并提供有效性检查`is_effective()`。
-    - **功能**: 支持从`std::string`或`std::span<const char>`写入数据。
+    - **作用**：封装底层的 `std::vector<char>`，作为缓冲区池管理的基本数据单元。
+    - **特点**：包含数据指针 `data()`和缓冲区大小`size()`，并提供有效性检查`is_effective()`。
+    - **功能**：支持从`std::string`或`std::span<const char>`写入数据。
 
 
 * **💧 缓冲区池（`buffer_pool`）**
-    - **作用**: 集中管理和复用固定大小的内存缓冲区，以减少频繁的堆内存分配和释放，提升性能。
-    - **核心功能**: **获取** (`acquire`)、**归还** (`release`) 和定期**回收** (`reclaim`) 闲置缓冲区。
-    - **模式**: 采用静态实现，确保全局唯一和集中管理。
+    - **作用**：集中管理和复用固定大小的内存缓冲区，以减少频繁的堆内存分配和释放，提升性能。
+    - **核心功能**：**获取** (`acquire`)、**归还** (`release`) 和定期**回收** (`reclaim`) 闲置缓冲区。
+    - **模式**：采用静态实现，确保全局唯一和集中管理。
 
 
 * **🔒 缓冲区 RAII 守卫（`buffer_guard`）**
-    - **作用**: 遵循 RAII 原则，用于**安全管理**从`buffer_pool`中获取的缓冲区。
-    - **安全**: 在析构时**自动**将其归还 `release()`到 `buffer_pool`，其析构函数标记为`noexcept`，并依赖
+    - **作用**：遵循 RAII 原则，用于**安全管理**从`buffer_pool`中获取的缓冲区。
+    - **安全**：在析构时**自动**将其归还 `release()`到 `buffer_pool`，其析构函数标记为`noexcept`，并依赖
       `noexcept_safe_call_and_log`确保归还操作的安全性。
 
 
-* **⏰ `timer_base` (定时器基类)**
-    - **作用**: 基于 `boost::asio::steady_timer` 实现的**周期性**异步定时器基类。
-    - **特点**: 继承自 `std::enable_shared_from_this`，要求通过 `std::shared_ptr` 进行管理，确保在异步操作进行时对象不会被销毁。
-    - **使用**: 子类需要实现纯虚函数 execute_timer_task() 来定义定时器到期时执行的业务逻辑。
-    - **运行机制**: 使用 wait_for_next_tick() 在定时器到期后（在 next_tick 中）重新设置下一次等待，实现周期性执行。
-    - **安全**: 在析构函数中使用 noexcept_safe_call_and_log 确保安全调用 stop() 并取消定时器，防止异常逃逸。
-    - **错误处理**: on_timer_elapsed() 内部包含 try-catch 块，用于捕获和记录 execute_timer_task() 执行过程中抛出的所有异常
+* **⏰ 定时器基类（`timer_base`）**
+    - **作用**：基于`boost::asio::steady_timer`实现的**周期性**异步定时器基类。
+    - **特点**：继承自`std::enable_shared_from_this`，要求通过`std::shared_ptr`进行管理，确保在异步操作进行时对象不会被销毁。
+    - **使用**：子类需要实现纯虚函数`execute_timer_task()`来定义定时器到期时执行的业务逻辑。
+    - **运行机制**：使用`wait_for_next_tick()`在定时器到期后（在`next_tick`中）重新设置下一次等待，实现周期性执行。
+    - **安全**：在析构函数中使用`noexcept_safe_call_and_log`确保安全调用`stop()`并取消定时器，防止异常逃逸。
+    - **错误处理**：`on_timer_elapsed()`内部包含`try-catch`块，用于捕获和记录`execute_timer_task()`执行过程中抛出的所有异常。
 
 
-* **🎲 `random_helper` (随机数工具)**
-    - **作用**: 提供线程安全的随机数生成工具，封装了 C++ `<random>` 库。
-    - **线程安全**: 使用 `thread_local std::mt19937 engine` 确保每个线程拥有独立的随机数引擎。
-    - **功能**:
-        - **生成指定范围的整数（int）**:[0, end) 或 [begin, end)。
-        - **生成指定范围的浮点数（float, double）**: [0.0, 1.0) 或 [begin, end)。
-        - **生成布尔值（bool）**:可指定返回 true 的概率 p。
-        - **生成服从正态分布的 double 值**:（可指定均值和标准差）。
+* **🎲 随机数工具（`random_helper`）**
+    - **作用**：提供线程安全的随机数生成工具，封装了C++`<random>`库。
+    - **线程安全**：使用`thread_local std::mt19937 engine`确保每个线程拥有独立的随机数引擎。
+    - **功能**：
+        - **生成指定范围的整数（int）**：[0, end) 或 [begin, end)。
+        - **生成指定范围的浮点数（float, double）**：[0.0, 1.0) 或 [begin, end)。
+        - **生成布尔值（bool）**：可指定返回 true 的概率p。
+        - **生成服从正态分布的 double 值**：（可指定均值和标准差）。
 
 
 * **⚙️ `command_line_config` (命令行配置解析)**
-    - **作用**: 用于解析服务器启动时的命令行参数。
-    - **依赖**: 基于 `boost::program_options` 库实现。
-    - **功能**:
+    - **作用**：用于解析服务器启动时的命令行参数。
+    - **依赖**：基于`boost::program_options`库实现。
+    - **功能**：
         - 自动添加 `--help, -h` 选项，并处理退出请求。
         - 提供 `get<T>(key)` 模板方法获取配置，键不存在时抛出 `celeritas_error` 异常。
 

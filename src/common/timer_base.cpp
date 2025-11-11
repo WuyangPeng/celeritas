@@ -16,6 +16,21 @@ celeritas::timer_base::~timer_base() noexcept
                                "timer stop error: ");
 }
 
+void celeritas::timer_base::start(const bool execute)
+{
+    if (execute)
+    {
+        on_timer_elapsed();
+    }
+
+    wait_for_next_tick();
+}
+
+void celeritas::timer_base::stop()
+{
+    timer_.cancel();
+}
+
 void celeritas::timer_base::on_timer_elapsed()
 {
     try
@@ -30,21 +45,6 @@ void celeritas::timer_base::on_timer_elapsed()
     {
         LOG_CHANNEL(common_channel, fatal) << "timer elapsed error: an unknown exception";
     }
-}
-
-void celeritas::timer_base::start(const bool execute)
-{
-    if (execute)
-    {
-        on_timer_elapsed();
-    }
-
-    wait_for_next_tick();
-}
-
-void celeritas::timer_base::stop()
-{
-    timer_.cancel();
 }
 
 void celeritas::timer_base::wait_for_next_tick()
