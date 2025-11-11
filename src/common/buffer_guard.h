@@ -2,8 +2,8 @@
 
 #include "buffer_pool_data.h"
 
-#include <string>
 #include <span>
+#include <string>
 
 namespace celeritas
 {
@@ -12,8 +12,6 @@ namespace celeritas
     public:
         using class_type = buffer_guard;
         using source_type = std::span<const char>;
-
-        buffer_guard() noexcept = default;
 
         explicit buffer_guard(buffer_pool_data buffer_data);
 

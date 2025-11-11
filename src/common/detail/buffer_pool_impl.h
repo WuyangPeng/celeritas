@@ -31,7 +31,7 @@ namespace celeritas
         // 归还一个缓冲区到池中
         void release(buffer_pool_data buffer);
 
-        void reclaim(std::size_t idle_seconds);
+        void reclaim(size_t idle_seconds);
 
     private:
         using pool_type = std::map<size_t, buffer_pool_bucket>;

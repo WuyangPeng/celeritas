@@ -75,49 +75,52 @@
 
 通用模块包含了框架中常用的基础工具类和宏，以提供异常处理、日志、缓冲区管理、定时器、随机数生成等核心功能。
 
-* **❌ 框架基础异常（celeritas_error）**
+* **❌ 框架基础异常（`celeritas_error`）**
     - **作用**：框架自定义的基础异常类。
-    - **特点**：继承自**std::runtime_error**，用于包装和抛出框架运行时的错误信息，是大多数错误处理的基础。
+    - **特点**：继承自`std::runtime_error`，用于包装和抛出框架运行时的错误信息，是大多数错误处理的基础。
 
 
-* **📜 日志系统（logger）**
-    - **作用**：基于**boost::log**实现的统一日志记录接口。
+* **📜 日志系统（`logger`）**
+    - **作用**：基于`boost::log`实现的统一日志记录接口。
     - **功能**：
-        - 支持全局日志级别初始化的**init_global**。
-        - 支持控制台输出初始化的**init_console**。
-        - 支持文件输出的**init_file**，可指定不同的日志通道**channel_name**。
-        - 通过**get_default(level)** 或**get(channel_name,level)** 获取指定通道的日志实例。
+        - 支持全局日志级别初始化的`init_global`。
+        - 支持控制台输出初始化的`init_console`。
+        - 支持文件输出的`init_file`，可指定不同的日志通道`channel_name`。
+        - 通过`get_default(level)` 或`get(channel_name,level)` 获取指定通道的日志实例。
     - **宏定义**:
-        - **LOG(level)**：记录到默认日志通道。
-        - **LOG_CHANNEL(channel, level)**:：记录到指定通道。
+        - `LOG(level)`：记录到默认日志通道。
+        - `LOG_CHANNEL(channel, level)`:：记录到指定通道。
     - **日志信息增强**:
-        - 日志宏利用**C++20**的**std::source_location::current()** 自动添加函数名**function_name()**、
-          文件名**file_name()** 和行号 **line()** 到日志记录中，极大地增强了调试能力。
+        - 日志宏利用`C++20`的`std::source_location::current()`自动添加函数名`function_name()`、
+          文件名`file_name()`和行号`line()`到日志记录中，极大地增强了调试能力。
 
 
-* **🛡️ 无异常安全调用与日志记录（noexcept_safe_call_and_log）**
+* **🛡️ 无异常安全调用与日志记录（`noexcept_safe_call_and_log`）**
     - **作用**：作为一个通用的函数模板，用于安全地调用可能抛出异常的函数f，并确保在发生异常时能记录日志，同时防止异常逃逸出
-      **noexcept**函数（如析构函数）。
+      `noexcept`函数（如析构函数）。
     - **异常处理**：
-        - 捕获**std::exception**及其子类，记录日志，并输出**e.what()**。
+        - 捕获`std::exception`及其子类，记录日志，并输出`error.what()`。
         - 捕获所有其他未知异常(...)，并记录日志。
-        - 内部嵌套的**try-catch**用于忽略日志记录本身可能失败的情况。
+        - 内部嵌套的`try-catch`用于忽略日志记录本身可能失败的情况。
 
 
-* **💾 `buffer_pool_data` (缓冲区数据结构)**
+* **💾 缓冲区数据结构（`buffer_pool_data`）**
     - **作用**: 封装底层的 `std::vector<char>`，作为缓冲区池管理的基本数据单元。
-    - **特点**: 包含数据指针 (`data()`) 和缓冲区大小 (`size()`)，并提供有效性检查 (`is_effective()`)。
-    - **功能**: 支持从 `std::string` 或 `std::span<const char>` 写入数据 (`set`)。
+    - **特点**: 包含数据指针 `data()`和缓冲区大小`size()`，并提供有效性检查`is_effective()`。
+    - **功能**: 支持从`std::string`或`std::span<const char>`写入数据。
 
-* **💧 `buffer_pool` (缓冲区池)**
+
+* **💧 缓冲区池（`buffer_pool`）**
     - **作用**: 集中管理和复用固定大小的内存缓冲区，以减少频繁的堆内存分配和释放，提升性能。
     - **核心功能**: **获取** (`acquire`)、**归还** (`release`) 和定期**回收** (`reclaim`) 闲置缓冲区。
-    - **模式**: 采用单例模式或静态实现，确保全局唯一和集中管理。
+    - **模式**: 采用静态实现，确保全局唯一和集中管理。
 
-* **🔒 `buffer_guard` (缓冲区 RAII 守卫)**
-    - **作用**: 遵循 RAII 原则，用于**安全管理**从 `buffer_pool` 中获取的缓冲区。
-    - **安全**: 在析构时**自动**将其归还 (`release()`) 到 `buffer_pool`，其析构函数标记为 `noexcept`，并依赖
-      `noexcept_safe_call_and_log` 确保归还操作的安全性。
+
+* **🔒 缓冲区 RAII 守卫（`buffer_guard`）**
+    - **作用**: 遵循 RAII 原则，用于**安全管理**从`buffer_pool`中获取的缓冲区。
+    - **安全**: 在析构时**自动**将其归还 `release()`到 `buffer_pool`，其析构函数标记为`noexcept`，并依赖
+      `noexcept_safe_call_and_log`确保归还操作的安全性。
+
 
 * **⏰ `timer_base` (定时器基类)**
     - **作用**: 基于 `boost::asio::steady_timer` 实现的**周期性**异步定时器基类。

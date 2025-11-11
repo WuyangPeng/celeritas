@@ -60,6 +60,7 @@ namespace celeritas
         using error_code_type = boost::system::error_code;
         using check_tcp_clients_timer_shared_ptr = std::shared_ptr<check_tcp_clients_timer>;
         using service_registry_timer_shared_ptr = std::shared_ptr<service_registry_timer>;
+        using buffer_pool_timer_shared_ptr = std::shared_ptr<buffer_pool_timer>;
         using service_registry_config_container = std::map<std::string, service_registry_config>;
 
         void initialize_logger_resource();
@@ -78,6 +79,8 @@ namespace celeritas
 
         void start_service_registry_timer(io_context_type& io_context);
 
+        void start_buffer_pool_timer(io_context_type& io_context);
+
         [[nodiscard]] tcp_client_shared_ptr get_random_client(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback, const service_registry_config_container& service_registry) const;
 
         app_config_shared_ptr app_config_;
@@ -86,6 +89,7 @@ namespace celeritas
         bool is_service_registry_;
         check_tcp_clients_timer_shared_ptr check_tcp_clients_timer_;
         service_registry_timer_shared_ptr service_registry_timer_;
+        buffer_pool_timer_shared_ptr buffer_pool_timer_;
         int64_t start_server_time_;
     };
 }

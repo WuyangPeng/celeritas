@@ -3,6 +3,7 @@
 #include "common/logger.h"
 #include "common/random_helper.h"
 #include "database/database_pool_manager.h"
+#include "detail/buffer_pool_timer.h"
 #include "detail/check_tcp_clients_timer.h"
 #include "detail/database_resource_loader.h"
 #include "detail/logger_resource_loader.h"
@@ -25,6 +26,7 @@ celeritas::resource_loader::resource_loader(app_config_shared_ptr app_config)
       is_service_registry_{ false },
       check_tcp_clients_timer_{},
       service_registry_timer_{},
+      buffer_pool_timer_{},
       start_server_time_{ std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count() }
 {
 }
@@ -37,6 +39,7 @@ void celeritas::resource_loader::initialize(io_context_type& io_context, const n
     initialize_service_registry_resource(io_context, network_message_callback);
     start_check_tcp_clients_timer(io_context);
     start_service_registry_timer(io_context);
+    start_buffer_pool_timer(io_context);
     service_initialize_resource(io_context, network_message_callback);
 }
 
@@ -256,6 +259,13 @@ void celeritas::resource_loader::start_service_registry_timer(io_context_type& i
     service_registry_timer_ = std::make_unique<service_registry_timer>(io_context, service_registry_seconds, shared_from_this());
 
     service_registry_timer_->start(true);
+}
+
+void celeritas::resource_loader::start_buffer_pool_timer(io_context_type& io_context)
+{
+    buffer_pool_timer_ = std::make_unique<buffer_pool_timer>(io_context, buffer_pool_seconds);
+
+    buffer_pool_timer_->start();
 }
 
 celeritas::resource_loader::tcp_client_shared_ptr celeritas::resource_loader::get_random_client(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback, const service_registry_config_container& service_registry) const

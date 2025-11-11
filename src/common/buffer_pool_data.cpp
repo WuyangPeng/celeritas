@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <ranges>
 
-celeritas::buffer_pool_data::buffer_pool_data(size_t size)
+celeritas::buffer_pool_data::buffer_pool_data(const size_t size)
     : data_(size)
 {
 }
