@@ -130,6 +130,7 @@
     - **安全**: 在析构函数中使用 noexcept_safe_call_and_log 确保安全调用 stop() 并取消定时器，防止异常逃逸。
     - **错误处理**: on_timer_elapsed() 内部包含 try-catch 块，用于捕获和记录 execute_timer_task() 执行过程中抛出的所有异常
 
+
 * **🎲 `random_helper` (随机数工具)**
     - **作用**: 提供线程安全的随机数生成工具，封装了 C++ `<random>` 库。
     - **线程安全**: 使用 `thread_local std::mt19937 engine` 确保每个线程拥有独立的随机数引擎。
@@ -138,6 +139,7 @@
         - **生成指定范围的浮点数（float, double）**: [0.0, 1.0) 或 [begin, end)。
         - **生成布尔值（bool）**:可指定返回 true 的概率 p。
         - **生成服从正态分布的 double 值**:（可指定均值和标准差）。
+
 
 * **⚙️ `command_line_config` (命令行配置解析)**
     - **作用**: 用于解析服务器启动时的命令行参数。

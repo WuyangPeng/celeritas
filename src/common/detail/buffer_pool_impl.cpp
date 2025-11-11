@@ -25,9 +25,9 @@ void celeritas::buffer_pool_impl::release(buffer_pool_data buffer)
     }
 }
 
-void celeritas::buffer_pool_impl::reclaim(const std::size_t idle_seconds)
+void celeritas::buffer_pool_impl::reclaim(const duration_type idle_seconds)
 {
-    const auto deadline = std::chrono::steady_clock::now() - std::chrono::seconds(idle_seconds);
+    const auto deadline = std::chrono::steady_clock::now() - idle_seconds;
 
     std::lock_guard lock{ mutex_ };
 

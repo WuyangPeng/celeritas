@@ -12,6 +12,7 @@ namespace celeritas
     {
     public:
         using class_type = buffer_pool_impl;
+        using duration_type = std::chrono::milliseconds;
 
         buffer_pool_impl() noexcept = default;
 
@@ -31,7 +32,7 @@ namespace celeritas
         // 归还一个缓冲区到池中
         void release(buffer_pool_data buffer);
 
-        void reclaim(size_t idle_seconds);
+        void reclaim(duration_type idle_seconds);
 
     private:
         using pool_type = std::map<size_t, buffer_pool_bucket>;

@@ -11,7 +11,7 @@ void celeritas::buffer_pool::release(buffer_pool_data buffer)
     get_buffer_pool().release(std::move(buffer));
 }
 
-void celeritas::buffer_pool::reclaim(const std::size_t idle_seconds)
+void celeritas::buffer_pool::reclaim(const duration_type idle_seconds)
 {
     get_buffer_pool().reclaim(idle_seconds);
 }
