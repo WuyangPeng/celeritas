@@ -2,18 +2,18 @@
 
 本设计旨在为一款高性能游戏服务器提供一个基础框架。该框架将使用C++20标准和boost库，实现一个异步、多线程、高吞吐量的系统。
 
-## Supported Platforms（支持平台）：
+## supported Platforms（支持平台）：
 
 - windows
 - linux
 
-## Supported Compiler（支持编译器）：
+## supported Compiler（支持编译器）：
 
 - MinGW 15.2 (windows)
 - Visual Studio 2022  (windows)
 - gcc 14.2  (linux)
 
-## Dependency Library（依赖库）：
+## dependency Library（依赖库）：
 
 - boost 1.88.0
 - protobuf 32.1
@@ -170,7 +170,7 @@
 * **⚙️ 框架主入口基类（`celeritas_main`）**
     - **作用**：作为所有服务器类型（如`auth`,`game`, `gateway`等）的主入口点的抽象基类。它封装了服务器启动的通用流程。
     - **构造**：通过构造函数接收一个`server_type`，用于标识具体的服务器类型。
-    
+
 #### config（配置）
 
 配置模块定义了服务器启动所需的核心配置数据结构。
