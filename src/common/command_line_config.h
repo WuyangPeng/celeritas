@@ -11,6 +11,8 @@ namespace celeritas
 
         command_line_config(int argc, char** argv, std::string_view server_type);
 
+        command_line_config(int argc, char** argv, std::string_view server_type, std::string_view name, std::string_view description);
+
         template <typename T>
         [[nodiscard]] T get(const std::string& key) const;
 
@@ -22,7 +24,11 @@ namespace celeritas
 
         void init(int argc, char** argv, std::string_view server_type);
 
+        void init(int argc, char** argv, std::string_view server_type, std::string_view name, std::string_view description);
+
         void add_options(std::string_view server_type);
+
+        void add_options(std::string_view name, std::string_view description);
 
         void add_program_options(int argc, char** argv);
 

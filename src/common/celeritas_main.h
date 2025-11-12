@@ -23,7 +23,7 @@ namespace celeritas
 
         celeritas_main& operator=(celeritas_main&& rhs) noexcept = default;
 
-        void run(int argc, char** argv) const;
+        virtual void run(int argc, char** argv) const;
 
     protected:
         [[nodiscard]] std::string get_server_type() const;

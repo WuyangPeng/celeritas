@@ -12,7 +12,9 @@ namespace celeritas
 
         tools();
 
+        void run(int argc, char** argv) const override;
+
     private:
-        void create_initializer(const command_line_config& command_line_config) const override;
+        void create_initializer(const command_line_config& command_line_config) const;
     };
 }

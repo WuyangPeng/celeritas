@@ -7,6 +7,12 @@ celeritas::command_line_config::command_line_config(const int argc, char** argv,
     init(argc, argv, server_type);
 }
 
+celeritas::command_line_config::command_line_config(int argc, char** argv, std::string_view server_type, std::string_view name, std::string_view description)
+    : options_description_{ "Allowed options" }, variables_{}, exit_requested_{ false }
+{
+    init(argc, argv, server_type, name, description);
+}
+
 bool celeritas::command_line_config::is_exit_requested() const
 {
     return exit_requested_;
@@ -19,6 +25,14 @@ void celeritas::command_line_config::init(const int argc, char** argv, const std
     print_help();
 }
 
+void celeritas::command_line_config::init(const int argc, char** argv, std::string_view server_type, std::string_view name, std::string_view description)
+{
+    add_options(server_type);
+    add_options(name, description);
+    add_program_options(argc, argv);
+    print_help();
+}
+
 void celeritas::command_line_config::add_options(const std::string_view server_type)
 {
     options_description_.add_options()
@@ -26,6 +40,12 @@ void celeritas::command_line_config::add_options(const std::string_view server_t
         (config_file_path_command_line.data(),
          boost::program_options::value<std::string>()->default_value(server_type.data()),
          "The configuration file path for the server.");
+}
+
+void celeritas::command_line_config::add_options(const std::string_view name, const std::string_view description)
+{
+    options_description_.add_options()
+        (name.data(), description.data());
 }
 
 void celeritas::command_line_config::add_program_options(const int argc, char** argv)

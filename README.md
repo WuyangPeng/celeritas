@@ -34,7 +34,11 @@
 - initializer 初始化
 - server 服务器
 
-## Server（服务器）：
+## assist（辅助）：
+
+- tools 工具
+
+## server（服务器）：
 
 - service registry 服务注册中心
 - auth 认证
@@ -72,7 +76,9 @@
 
 ## Feature（实现功能）
 
-### common（通用）
+### lib（静态库）
+
+#### common（通用）
 
 通用模块包含了框架中常用的基础工具类和宏，以提供异常处理、日志、缓冲区管理、定时器、随机数生成等核心功能。
 
@@ -160,11 +166,16 @@
     - **作用**：定义了所有资源加载器的抽象基类。
     - **特点**：继承自`std::enable_shared_from_this`，要求通过`std::shared_ptr`进行管理，以支持在异步加载任务中的安全生命周期管理。
 
-### config（配置）
+
+* **⚙️ 框架主入口基类（`celeritas_main`）**
+    - **作用**：作为所有服务器类型（如`auth`,`game`, `gateway`等）的主入口点的抽象基类。它封装了服务器启动的通用流程。
+    - **构造**：通过构造函数接收一个`server_type`，用于标识具体的服务器类型。
+    
+#### config（配置）
 
 配置模块定义了服务器启动所需的核心配置数据结构。
 
-#### **基础配置类型（`Basic Config Types`）**
+##### **基础配置类型（`Basic Config Types`）**
 
 * **🌐 服务器网络类型（`server_network_type`）**
     - **作用**：一个枚举类型，用于明确表示服务器支持的网络通信协议。它是网络配置的基础。
@@ -177,7 +188,7 @@
     - **枚举值**：`unknown`、`mysql`、`mongodb`、`redis`。
     - **功能**：提供了全局函数`get_database_type(const std：：string&)`，用于将数据库类型名称字符串转换为对应的枚举值。
 
-#### 局部配置结构（`Local Configuration Structures`）
+##### 局部配置结构（`Local Configuration Structures`）
 
 * **🔌 服务器网络配置（`server_network_config`）**
     - **作用**：封装单个服务器实例的一个网络监听配置，即一个协议类型和对应的端口号。
@@ -219,7 +230,7 @@
     - **作用**：包含单个日志通道的配置信息，如文件输出、旋转大小和通道级别。
     - **成员**：包含日志通道名称、文件目录、文件名、日志级别和文件旋转大小等。
 
-#### 聚合配置结构与顶级配置（`Aggregate and Top-Level Configurations`）
+##### 聚合配置结构与顶级配置（`Aggregate and Top-Level Configurations`）
 
 * **⚙️ 服务器配置（`server_config`）**
     - **作用**：包含一个服务器实例的所有全局配置信息。
@@ -239,7 +250,7 @@
         - **配置加载**：提供一系列公共`load_xxx_config(const std::string& filename)`方法，负责从配置文件中解析并初始化所有子配置。
         - **配置访问**：提供公共`get_xxx_config()`方法，用于在程序运行时获取已加载的配置实例或配置容器。
 
-### worker_pool（工作池）
+#### worker_pool（工作池）
 
 工作池模块是框架中负责高性能并发执行的核心组件。它的设计目标是有效管理和复用一组工作线程，以异步方式处理提交的任务，从而最大限度地利用多核处理器资源，避免频繁创建和销毁线程带来的开销。
 
@@ -262,21 +273,25 @@
     - **异常处理**：工作线程内部捕获任务执行过程中抛出的`std::exception`或任何未知异常，防止异常逃逸出工作线程，并利用
       `LOG_CHANNEL`记录错误信息。
 
-### message（消息）
+#### message（消息）
 
-### database（数据库）
+#### database（数据库）
 
-### network（网络）
+#### network（网络）
 
-### service_registry（服务注册）
+#### service_registry（服务注册）
 
-### handler（处理器）
+#### handler（处理器）
 
-### initializer（初始化）
+#### initializer（初始化）
+
+### assist（辅助）
+
+#### tools（工具）
 
 ### server（服务器）
 
-### service registry（服务注册中心）
+#### service registry（服务注册中心）
 
 - 🚀 服务注册（Service Registration）
     - 提供者注册： 允许服务提供者在启动时向注册中心报告自己的网络地址（IP、端口）和元数据（服务名、版本等）。
@@ -297,20 +312,20 @@
     - 集群部署： 注册中心本身作为关键基础设施，必须支持集群部署，防止单点故障。
     - 数据同步： 集群中的注册中心节点之间需要保持注册信息的同步和一致性。
 
-### auth（认证服务器）
+#### auth（认证服务器）
 
-### payment（支付服务器）
+#### payment（支付服务器）
 
-### admin（后台服务器）
+#### admin（后台服务器）
 
-### chat（聊天服务器）
+#### chat（聊天服务器）
 
-### gateway（网关服务器）
+#### gateway（网关服务器）
 
-### player（玩家服务器）
+#### player（玩家服务器）
 
-### logic（逻辑服务器）
+#### logic（逻辑服务器）
 
-### game（游戏服务器）
+#### game（游戏服务器）
 
-### cross（跨服服务器）
+#### cross（跨服服务器）

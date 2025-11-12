@@ -1,4 +1,6 @@
 ﻿#include "tools.h"
+#include "tools_fwd.h"
+#include "common/command_line_config.h"
 #include "common/logger.h"
 #include "server/server_fwd.h"
 
@@ -7,6 +9,15 @@
 celeritas::tools::tools()
     : base_type{ tools_type }
 {
+}
+
+void celeritas::tools::run(const int argc, char** argv) const
+{
+    if (const command_line_config command_line_config{ argc, argv, tools_type, process_command_line, process_description };
+        !command_line_config.is_exit_requested())
+    {
+        create_initializer(command_line_config);
+    }
 }
 
 void celeritas::tools::create_initializer(const command_line_config& command_line_config) const
