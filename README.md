@@ -30,6 +30,7 @@
 - database 数据库
 - network 网络
 - service_registry 服务注册
+- handler 处理器
 - initializer 初始化
 - server 服务器
 
@@ -159,7 +160,6 @@
     - **作用**：定义了所有资源加载器的抽象基类。
     - **特点**：继承自`std::enable_shared_from_this`，要求通过`std::shared_ptr`进行管理，以支持在异步加载任务中的安全生命周期管理。
 
-
 ### config（配置）
 
 配置模块定义了服务器启动所需的核心配置数据结构。
@@ -269,6 +269,8 @@
 ### network（网络）
 
 ### service_registry（服务注册）
+
+### handler（处理器）
 
 ### initializer（初始化）
 

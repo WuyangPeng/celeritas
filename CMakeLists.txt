@@ -259,6 +259,7 @@ add_subdirectory(cmake/message)
 add_subdirectory(cmake/database)
 add_subdirectory(cmake/network)
 add_subdirectory(cmake/service_registry)
+add_subdirectory(cmake/handler)
 add_subdirectory(cmake/initializer)
 add_subdirectory(cmake/server)
 
@@ -267,6 +268,7 @@ add_library(celeritas_lib INTERFACE)
 target_link_libraries(celeritas_lib INTERFACE
         server
         initializer
+        handler
         service_registry
         network
         database

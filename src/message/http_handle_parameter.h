@@ -3,6 +3,7 @@
 #include "header.h"
 #include "common/common_fwd.h"
 #include "config/app_config.h"
+#include "handler/handler_fwd.h"
 #include "initializer/initializer_fwd.h"
 #include "message/message_fwd.h"
 #include "network/network_fwd.h"

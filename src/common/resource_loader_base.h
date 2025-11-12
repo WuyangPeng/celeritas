@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "config/config_fwd.h"
+#include "handler/handler_fwd.h"
 #include "message/message_fwd.h"
 
 #include <boost/asio.hpp>

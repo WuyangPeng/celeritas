@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "detail/service_registry_internal_fwd.h"
-#include "message/message_fwd.h"
+#include "handler/handler_fwd.h"
 #include "service_registry/service_registry_fwd.h"
 
 #include <boost/asio/io_context.hpp>
