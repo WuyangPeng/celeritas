@@ -2,4 +2,4 @@
 
 add_executable(tools ${SRC_DIR_LIST})
 
-target_link_libraries(tools PRIVATE common boost)
+target_link_libraries(tools PRIVATE common boost proto)

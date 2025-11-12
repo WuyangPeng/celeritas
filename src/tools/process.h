@@ -1,7 +1,8 @@
 ﻿#pragma once
 
+#include "common/command_line_config.h"
+
 #include <memory>
-#include <string_view>
 
 namespace celeritas
 {
@@ -11,20 +12,23 @@ namespace celeritas
         using class_type = process;
         using process_unique_ptr = std::unique_ptr<process>;
 
-        process() noexcept = default;
+        explicit process(command_line_config command_line_config);
 
         virtual ~process() noexcept = default;
 
         process(const process& rhs) noexcept = default;
 
-        process& operator=(const process& rhs) noexcept = default;
+        process& operator=(const process& rhs) noexcept = delete;
 
         process(process&& rhs) noexcept = default;
 
-        process& operator=(process&& rhs) noexcept = default;
+        process& operator=(process&& rhs) noexcept = delete;
 
-        [[nodiscard]] static process_unique_ptr create_process(std::string_view process_name, std::string_view directory);
+        [[nodiscard]] static process_unique_ptr create_process(const command_line_config& command_line_config);
 
         virtual void execute() = 0;
+
+    private:
+        command_line_config command_line_config_;
     };
 }

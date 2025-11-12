@@ -17,7 +17,9 @@ void celeritas::tools::run(const int argc, char** argv) const
     if (const command_line_config command_line_config{ argc,
                                                        argv,
                                                        get_server_type(),
-                                                       { { process_command_line.data(), process_description.data() }, { directory_command_line.data(), directory_description.data() } } };
+                                                       { { process_command_line.data(), process_description.data() },
+                                                         { proto_directory_command_line.data(), proto_directory_description.data() },
+                                                         { output_directory_command_line.data(), output_directory_description.data() } } };
         !command_line_config.is_exit_requested())
     {
         create_initializer(command_line_config);
@@ -26,10 +28,7 @@ void celeritas::tools::run(const int argc, char** argv) const
 
 void celeritas::tools::create_initializer(const command_line_config& command_line_config) const
 {
-    const auto process_command = command_line_config.get<std::string>(process_command_line.data());
-    const auto directory = command_line_config.get<std::string>(directory_command_line.data());
-
-    const auto process_unique_ptr = process::create_process(process_command, directory);
+    const auto process_unique_ptr = process::create_process(command_line_config);
     process_unique_ptr->execute();
 }
 
