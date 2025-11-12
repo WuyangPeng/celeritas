@@ -1,4 +1,5 @@
 ﻿#include "command_line_config.h"
+#include "boost/url/host_type.hpp"
 #include "common/logger.h"
 
 celeritas::command_line_config::command_line_config(const int argc, char** argv, const std::string_view server_type)
@@ -7,10 +8,10 @@ celeritas::command_line_config::command_line_config(const int argc, char** argv,
     init(argc, argv, server_type);
 }
 
-celeritas::command_line_config::command_line_config(int argc, char** argv, std::string_view server_type, std::string_view name, std::string_view description)
+celeritas::command_line_config::command_line_config(const int argc, char** argv, const std::string_view server_type, const options_type& options)
     : options_description_{ "Allowed options" }, variables_{}, exit_requested_{ false }
 {
-    init(argc, argv, server_type, name, description);
+    init(argc, argv, server_type, options);
 }
 
 bool celeritas::command_line_config::is_exit_requested() const
@@ -25,10 +26,10 @@ void celeritas::command_line_config::init(const int argc, char** argv, const std
     print_help();
 }
 
-void celeritas::command_line_config::init(const int argc, char** argv, std::string_view server_type, std::string_view name, std::string_view description)
+void celeritas::command_line_config::init(const int argc, char** argv, const std::string_view server_type, const options_type& options)
 {
     add_options(server_type);
-    add_options(name, description);
+    add_options(options);
     add_program_options(argc, argv);
     print_help();
 }
@@ -42,10 +43,13 @@ void celeritas::command_line_config::add_options(const std::string_view server_t
          "The configuration file path for the server.");
 }
 
-void celeritas::command_line_config::add_options(const std::string_view name, const std::string_view description)
+void celeritas::command_line_config::add_options(const options_type& options)
 {
-    options_description_.add_options()
-        (name.data(), description.data());
+    for (const auto& element : options)
+    {
+        options_description_.add_options()
+            (element.first.data(), element.second.data());
+    }
 }
 
 void celeritas::command_line_config::add_program_options(const int argc, char** argv)

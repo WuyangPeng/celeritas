@@ -1,6 +1,7 @@
-﻿#include "tools.h"
+﻿#include "process.h"
+#include "tools.h"
 #include "tools_fwd.h"
-#include "common/command_line_config.h"
+#include "common/command_line_config.tpp"
 #include "common/logger.h"
 #include "server/server_fwd.h"
 
@@ -13,7 +14,10 @@ celeritas::tools::tools()
 
 void celeritas::tools::run(const int argc, char** argv) const
 {
-    if (const command_line_config command_line_config{ argc, argv, tools_type, process_command_line, process_description };
+    if (const command_line_config command_line_config{ argc,
+                                                       argv,
+                                                       get_server_type(),
+                                                       { { process_command_line.data(), process_description.data() }, { directory_command_line.data(), directory_description.data() } } };
         !command_line_config.is_exit_requested())
     {
         create_initializer(command_line_config);
@@ -22,6 +26,11 @@ void celeritas::tools::run(const int argc, char** argv) const
 
 void celeritas::tools::create_initializer(const command_line_config& command_line_config) const
 {
+    const auto process_command = command_line_config.get<std::string>(process_command_line.data());
+    const auto directory = command_line_config.get<std::string>(directory_command_line.data());
+
+    const auto process_unique_ptr = process::create_process(process_command, directory);
+    process_unique_ptr->execute();
 }
 
 int main(const int argc, char** argv)

@@ -8,10 +8,11 @@ namespace celeritas
     {
     public:
         using class_type = command_line_config;
+        using options_type = std::map<std::string, std::string>;
 
         command_line_config(int argc, char** argv, std::string_view server_type);
 
-        command_line_config(int argc, char** argv, std::string_view server_type, std::string_view name, std::string_view description);
+        command_line_config(int argc, char** argv, std::string_view server_type, const options_type& options);
 
         template <typename T>
         [[nodiscard]] T get(const std::string& key) const;
@@ -24,11 +25,11 @@ namespace celeritas
 
         void init(int argc, char** argv, std::string_view server_type);
 
-        void init(int argc, char** argv, std::string_view server_type, std::string_view name, std::string_view description);
+        void init(int argc, char** argv, std::string_view server_type, const options_type& options);
 
         void add_options(std::string_view server_type);
 
-        void add_options(std::string_view name, std::string_view description);
+        void add_options(const options_type& options);
 
         void add_program_options(int argc, char** argv);
 
