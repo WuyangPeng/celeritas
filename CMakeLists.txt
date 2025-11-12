@@ -253,6 +253,11 @@ target_link_libraries(openssl INTERFACE ${LIB_PREFIX}ssl ${LIB_PREFIX}crypto)
 
 # 静态库
 add_subdirectory(cmake/common)
+
+# 工具
+add_subdirectory(cmake/tools)
+
+# 静态库
 add_subdirectory(cmake/config)
 add_subdirectory(cmake/worker_pool)
 add_subdirectory(cmake/message)

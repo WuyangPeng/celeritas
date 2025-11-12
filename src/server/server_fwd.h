@@ -8,6 +8,7 @@ namespace celeritas
     class celeritas_game_error;
     enum class game_error_type;
 
+    constexpr std::string_view tools_type = "tools";
     constexpr std::string_view service_registry_type = "service_registry";
     constexpr std::string_view auth_type = "auth";
     constexpr std::string_view gateway_type = "gateway";
