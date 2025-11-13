@@ -282,6 +282,26 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             COMMENT "Running tools to generate handler source code into: ${HANDLER_GENERATED_DIR}"
     )
 
+    add_custom_target(generate_handler_header_code
+
+            # 添加创建目录的命令
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${HANDLER_GENERATED_DIR}
+
+            # COMMAND $<TARGET_FILE:tools> 会获取编译好的 tools 可执行文件的路径
+            COMMAND $<TARGET_FILE:tools>
+
+            # 将生成目录作为参数传递给 tools
+            --process=generate_handler_header
+            --handler_directory=${CMAKE_CURRENT_SOURCE_DIR}/src/handler
+            --output_directory=${HANDLER_GENERATED_DIR}
+            --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template
+
+            # 依赖于 tools 目标本身，确保 tools 在执行前已编译完成
+            DEPENDS tools
+
+            COMMENT "Running tools to generate handler header code into: ${HANDLER_GENERATED_DIR}"
+    )
+
 endif ()
 
 # 静态库

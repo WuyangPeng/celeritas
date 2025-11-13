@@ -7,6 +7,7 @@ namespace celeritas
     class tools;
     class process;
     class generate_handler;
+    class generate_handler_header;
 
     constexpr std::string_view process_command_line{ "process" };
     constexpr std::string_view process_description{ "Handling procedure for tool usage." };
@@ -27,4 +28,5 @@ namespace celeritas
     constexpr std::string_view message_handler_h_template_name{ "message_handler_h.txt" };
     constexpr std::string_view message_handler_cpp_template_name{ "message_handler_cpp.txt" };
     constexpr std::string_view add_handler_function_template_name{ "add_handler_function.txt" };
+    constexpr std::string_view handler_generated_template_name{ "handler_generated.txt" };
 }

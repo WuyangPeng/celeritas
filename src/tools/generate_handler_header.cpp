@@ -6,7 +6,11 @@
 #include <filesystem>
 
 celeritas::generate_handler_header::generate_handler_header(const command_line_config& command_line_config)
-    : base_type{ command_line_config }, handler_directory_{}, output_directory_{}, template_directory_{}, handler_file_{}
+    : base_type{ command_line_config },
+      handler_directory_{ command_line_config.get<std::string>(handler_directory_command_line.data()) },
+      output_directory_{ command_line_config.get<std::string>(output_directory_command_line.data()) },
+      template_directory_{ command_line_config.get<std::string>(template_directory_command_line.data()) },
+      handler_file_{}
 {
     check_directory();
 }
@@ -52,6 +56,6 @@ void celeritas::generate_handler_header::set_handler_file(const std::string& dir
 
 void celeritas::generate_handler_header::generate()
 {
-    generate_handler_header_file generate_handler_header_file{};
+    generate_handler_header_file generate_handler_header_file{ handler_directory_, output_directory_, template_directory_, handler_file_ };
     generate_handler_header_file.execute();
 }

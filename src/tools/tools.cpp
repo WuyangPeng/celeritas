@@ -20,7 +20,8 @@ void celeritas::tools::run(const int argc, char** argv) const
                                                        { { process_command_line.data(), process_description.data() },
                                                          { proto_directory_command_line.data(), proto_directory_description.data() },
                                                          { output_directory_command_line.data(), output_directory_description.data() },
-                                                         { template_directory_command_line.data(), template_directory_description.data() } } };
+                                                         { template_directory_command_line.data(), template_directory_description.data() },
+                                                         { handler_directory_command_line.data(), handler_directory_description.data() } } };
         !command_line_config.is_exit_requested())
     {
         create_initializer(command_line_config);
