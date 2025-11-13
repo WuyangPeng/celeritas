@@ -2,7 +2,7 @@
 
 #include "handler_template_file.h"
 
-#include <map>
+#include <set>
 #include <string>
 
 namespace celeritas
@@ -21,13 +21,13 @@ namespace celeritas
         void generate_file();
 
     private:
-        using field_type = std::map<std::string, std::string>;
+        using field_type = std::set<std::string>;
 
         void generate_file(std::string_view file_name, std::string_view message_full_name, std::string_view message_name, std::string_view one_of_name, const field_type& field);
 
-        void generate_header_file(std::string_view file_name, std::string_view message_full_name, std::string_view message_name);
+        void generate_header_file(std::string_view file_name, std::string_view message_full_name, std::string_view message_name) const;
 
-        void generate_source_file(const std::string_view message_full_name, std::string_view message_name, std::string_view one_of_name, const field_type& field);
+        void generate_source_file(std::string_view message_full_name, std::string_view message_name, std::string_view one_of_name, const field_type& field) const;
 
         std::string proto_file_;
         std::string proto_directory_;

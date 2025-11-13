@@ -1,6 +1,6 @@
 ﻿#include "generate_handler_file.h"
-#include "common/logger.h"
 #include "importer_error_collector.h"
+#include "common/logger.h"
 #include "tools/tools_fwd.h"
 
 #include <boost/algorithm/string.hpp>
@@ -54,16 +54,16 @@ void celeritas::generate_handler_file::generate_file()
                 {
                     const auto* field_desc = one_of_desc->field(k);
 
-                    auto field_name = field_desc->name();
-                    auto field_type = field_desc->message_type()->name();
+                    const auto field_name = field_desc->name();
 
-                    if (field_type.find(request_suffix) == std::string::npos &&
+                    if (const auto field_type = field_desc->message_type()->name();
+                        field_type.find(request_suffix) == std::string::npos &&
                         field_type.find(response_suffix) == std::string::npos)
                     {
                         break;
                     }
 
-                    field.emplace(field_type, field_name);
+                    field.emplace(field_name);
                 }
                 if (!field.empty())
                 {
@@ -89,7 +89,7 @@ void celeritas::generate_handler_file::generate_file(std::string_view file_name,
     generate_source_file(message_full_name, message_name, one_of_name, field);
 }
 
-void celeritas::generate_handler_file::generate_header_file(std::string_view file_name, const std::string_view message_full_name, const std::string_view message_name)
+void celeritas::generate_handler_file::generate_header_file(std::string_view file_name, const std::string_view message_full_name, const std::string_view message_name) const
 {
     auto message_handler_h_content = handler_template_file_.get_message_handler_h_content();
 
@@ -125,13 +125,15 @@ void celeritas::generate_handler_file::generate_header_file(std::string_view fil
         LOG_CHANNEL(default_channel, debug) << "File " << path << " content unchanged, skipping write.";
         return;
     }
-
+    is.close();
     std::ofstream os(path.string(), std::ios::binary);
 
     os << message_handler_h_content;
+
+    LOG_CHANNEL(celeritas::default_channel, info) << "generate file : " << path;
 }
 
-void celeritas::generate_handler_file::generate_source_file(const std::string_view message_full_name, const std::string_view message_name, const std::string_view one_of_name, const field_type& field)
+void celeritas::generate_handler_file::generate_source_file(const std::string_view message_full_name, const std::string_view message_name, const std::string_view one_of_name, const field_type& field) const
 {
     auto message_handler_cpp_content = handler_template_file_.get_message_handler_cpp_content();
 
@@ -147,7 +149,7 @@ void celeritas::generate_handler_file::generate_source_file(const std::string_vi
 
     for (const auto& element : field)
     {
-        std::string entry_enum_name{ element.second };
+        std::string entry_enum_name{ element };
         std::vector<std::string> parts;
 
         // 1. 按下划线分割字符串
@@ -170,7 +172,7 @@ void celeritas::generate_handler_file::generate_source_file(const std::string_vi
         boost::replace_all(add_handler_function_content, "${proto_full_name}", proto_full_name);
         boost::replace_all(add_handler_function_content, "${payload_name}", payload_name);
         boost::replace_all(add_handler_function_content, "${entry_enum_name}", entry_enum_name);
-        boost::replace_all(add_handler_function_content, "${entry_name}", element.second);
+        boost::replace_all(add_handler_function_content, "${entry_name}", element);
 
         add_handler_function += add_handler_function_content;
     }
@@ -198,8 +200,10 @@ void celeritas::generate_handler_file::generate_source_file(const std::string_vi
         LOG_CHANNEL(default_channel, debug) << "File " << path << " content unchanged, skipping write.";
         return;
     }
-
+    is.close();
     std::ofstream os(path.string(), std::ios::binary);
 
     os << message_handler_cpp_content;
+
+    LOG_CHANNEL(celeritas::default_channel, info) << "generate file : " << path;
 }

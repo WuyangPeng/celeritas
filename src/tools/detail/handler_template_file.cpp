@@ -1,10 +1,12 @@
 ﻿#include "handler_template_file.h"
-#include "common/logger.h"
+#include "common/celeritas_error.h"
 #include "tools/tools_fwd.h"
 
 #include <boost/filesystem/path.hpp>
 
 #include <fstream>
+
+using namespace std::literals;
 
 celeritas::handler_template_file::handler_template_file(std::string template_directory)
     : template_directory_{ std::move(template_directory) }, message_handler_h_content_{}, message_handler_cpp_content_{}, add_handler_function_content_{}
@@ -36,13 +38,13 @@ void celeritas::handler_template_file::load_template()
 
 void celeritas::handler_template_file::load_template(const std::string_view template_name, std::string& content) const
 {
-    boost::filesystem::path path{ template_directory_ };
+    const boost::filesystem::path path{ template_directory_ };
     const auto file_name = path / template_name;
 
-    std::ifstream is(file_name, std::ios::binary);
+    std::ifstream is{ file_name, std::ios::binary };
     if (!is)
     {
-        LOG_CHANNEL(celeritas::default_channel, error) << "Failed to load" << template_name;
+        throw celeritas_error("failed to load"s + template_name.data());
     }
 
     content.assign((std::istreambuf_iterator{ is }), (std::istreambuf_iterator<char>()));

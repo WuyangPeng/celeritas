@@ -3,8 +3,6 @@
 #include "process.h"
 #include "detail/handler_template_file.h"
 
-#include <filesystem>
-
 namespace celeritas
 {
     class generate_handler final : public process

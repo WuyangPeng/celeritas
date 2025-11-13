@@ -5,26 +5,22 @@ using namespace std::literals;
 
 void celeritas::importer_error_collector::RecordError(const absl::string_view filename, const int line, const int column, const absl::string_view message)
 {
-    auto error_message =
-        "proto error in file: "s +
-        filename.data() +
-        " (line: " + std::to_string(line) +
-        ", column: " + std::to_string(column) +
-        "): " +
-        message.data();
-
-    LOG_CHANNEL(default_channel, error) << error_message;
+    LOG_CHANNEL(default_channel, warning) << get_message(filename, line, column, message, "error");
 }
 
 void celeritas::importer_error_collector::RecordWarning(const absl::string_view filename, const int line, const int column, const absl::string_view message)
 {
-    auto warning_message =
-        "proto warning in file: "s +
-        filename.data() +
-        " (line: " + std::to_string(line) +
-        ", column: " + std::to_string(column) +
-        "): " +
-        message.data();
+    LOG_CHANNEL(default_channel, warning) << get_message(filename, line, column, message, "warning");
+}
 
-    LOG_CHANNEL(default_channel, warning) << warning_message;
+std::string celeritas::importer_error_collector::get_message(const absl::string_view filename, const int line, const int column, const absl::string_view message, absl::string_view logger_level) const
+{
+    return "proto "s +
+           logger_level.data() +
+           " in file: "s +
+           filename.data() +
+           " (line: " + std::to_string(line) +
+           ", column: " + std::to_string(column) +
+           "): " +
+           message.data();
 }

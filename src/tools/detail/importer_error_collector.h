@@ -13,6 +13,9 @@ namespace celeritas
         void RecordError(absl::string_view filename, int line, int column, absl::string_view message) override;
 
         void RecordWarning(absl::string_view filename, int line, int column, absl::string_view message) override;
+
+    private:
+        [[nodiscard]] std::string get_message(absl::string_view filename, int line, int column, absl::string_view message, absl::string_view logger_level) const;
     };
 }
 
