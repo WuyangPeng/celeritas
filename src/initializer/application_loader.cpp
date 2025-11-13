@@ -7,6 +7,7 @@
 #include "handler/generated/response_message_handler.h"
 #include "handler/generated/service_request_message_handler.h"
 #include "handler/generated/service_response_message_handler.h"
+#include "register_handler_helper.h"
 #include "message/handle_parameter.h"
 
 celeritas::application_loader::application_loader(app_config_shared_ptr app_config)
@@ -62,10 +63,9 @@ void celeritas::application_loader::initialize_worker_pool()
 
 void celeritas::application_loader::initialize_message_registry()
 {
-    message_registry_->registerHandler(std::make_shared<request_message_handler>());
-    message_registry_->registerHandler(std::make_shared<response_message_handler>());
-    message_registry_->registerHandler(std::make_shared<service_request_message_handler>());
-    message_registry_->registerHandler(std::make_shared<service_response_message_handler>());
+    const register_handler_helper handler{ message_registry_, http_message_registry_ };
+
+    handler.register_handler();
 }
 
 void celeritas::application_loader::initialize_health_check()

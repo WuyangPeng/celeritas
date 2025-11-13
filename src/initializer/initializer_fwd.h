@@ -9,6 +9,7 @@ namespace celeritas
     class resource_loader;
     class daemon;
     class crash;
+    class register_handler_helper;
 
     class service_registry_resource_loader;
     class service_registry_configuration_loader;
