@@ -28,6 +28,9 @@ namespace celeritas
 
         virtual void execute() = 0;
 
+    protected:
+        static void check_directory_exists(const std::string& directory);
+
     private:
         command_line_config command_line_config_;
     };

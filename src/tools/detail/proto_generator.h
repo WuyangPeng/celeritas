@@ -1,32 +1,22 @@
 ﻿#pragma once
 
 #include "handler_template_file.h"
+#include "generator.h"
 
 #include <string>
 
 namespace celeritas
 {
-    class proto_generator
+    class proto_generator : public generator
     {
     public:
         using class_type = proto_generator;
+        using base_type = generator;
 
         proto_generator(std::string_view message_full_name,
                         std::string_view message_name,
                         std::string output_directory,
                         const handler_template_file& handler_template_file);
-
-        virtual ~proto_generator() noexcept = default;
-
-        proto_generator(const proto_generator& rhs) noexcept = default;
-
-        proto_generator& operator=(const proto_generator& rhs) noexcept = delete;
-
-        proto_generator(proto_generator&& rhs) noexcept = default;
-
-        proto_generator& operator=(proto_generator&& rhs) noexcept = delete;
-
-        virtual void execute() = 0;
 
     protected:
         [[nodiscard]] std::string get_message_name() const;
@@ -40,10 +30,6 @@ namespace celeritas
         [[nodiscard]] std::string get_message_handler_cpp_content() const;
 
         [[nodiscard]] std::string get_add_handler_function_content() const;
-
-        [[nodiscard]] static bool is_content_same(const std::string& file_name, const std::string& content);
-
-        static void save_handler(const std::string& file_name, const std::string& content);
 
         [[nodiscard]] std::string get_proto_full_name() const;
 

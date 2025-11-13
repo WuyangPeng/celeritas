@@ -4,8 +4,6 @@
 
 #include <boost/algorithm/string.hpp>
 
-#include <fstream>
-
 celeritas::proto_generator::proto_generator(const std::string_view message_full_name,
                                             const std::string_view message_name,
                                             std::string output_directory,
@@ -45,36 +43,6 @@ std::string celeritas::proto_generator::get_message_handler_cpp_content() const
 std::string celeritas::proto_generator::get_add_handler_function_content() const
 {
     return handler_template_file_.get_add_handler_function_content();
-}
-
-bool celeritas::proto_generator::is_content_same(const std::string& file_name, const std::string& content)
-{
-    if (std::ifstream stream{ file_name, std::ios::binary };
-        stream.good())
-    {
-        std::string existing_content{};
-        existing_content.assign(
-            (std::istreambuf_iterator{ stream }),
-            (std::istreambuf_iterator<char>())
-            );
-
-        if (existing_content == content)
-        {
-            LOG_CHANNEL(default_channel, debug) << "File " << file_name << " content unchanged, skipping write.";
-            return true;
-        }
-    }
-
-    return false;
-}
-
-void celeritas::proto_generator::save_handler(const std::string& file_name, const std::string& content)
-{
-    std::ofstream os{ file_name, std::ios::binary };
-
-    os << content;
-
-    LOG_CHANNEL(celeritas::default_channel, info) << "generate file : " << file_name;
 }
 
 std::string celeritas::proto_generator::get_proto_full_name() const

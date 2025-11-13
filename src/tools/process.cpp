@@ -1,7 +1,10 @@
 ﻿#include "generate_handler.h"
+#include "generate_handler_header.h"
 #include "process.h"
 #include "tools_fwd.h"
 #include "common/celeritas_error.h"
+
+#include <filesystem>
 
 celeritas::process::process(command_line_config command_line_config)
     : command_line_config_{ std::move(command_line_config) }
@@ -16,6 +19,18 @@ celeritas::process::process_unique_ptr celeritas::process::create_process(const 
         return std::make_unique<generate_handler>(command_line_config);
     }
 
+    if (process_name == process_generate_handler_header)
+    {
+        return std::make_unique<generate_handler_header>(command_line_config);
+    }
+
     throw celeritas_error("unable to create generate handler");
 }
 
+void celeritas::process::check_directory_exists(const std::string& directory)
+{
+    if (!std::filesystem::exists(directory) || !std::filesystem::is_directory(directory))
+    {
+        throw celeritas_error(directory + " is no directory found.");
+    }
+}

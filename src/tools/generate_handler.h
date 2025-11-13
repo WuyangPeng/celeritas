@@ -18,8 +18,6 @@ namespace celeritas
     private:
         void check_directory() const;
 
-        static void check_directory(const std::string& directory);
-
         void generate(const std::string& directory);
 
         void generate_file(const std::string& proto_file) const;

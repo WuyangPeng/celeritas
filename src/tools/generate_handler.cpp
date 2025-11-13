@@ -1,8 +1,8 @@
 ﻿#include "generate_handler.h"
 #include "tools_fwd.h"
 #include "common/celeritas_error.h"
-#include "common/logger.h"
 #include "common/command_line_config.tpp"
+#include "common/logger.h"
 #include "detail/generate_handler_file.h"
 
 #include <filesystem>
@@ -31,17 +31,9 @@ void celeritas::generate_handler::execute()
 
 void celeritas::generate_handler::check_directory() const
 {
-    check_directory(proto_directory_);
-    check_directory(output_directory_);
-    check_directory(template_directory_);
-}
-
-void celeritas::generate_handler::check_directory(const std::string& directory)
-{
-    if (!std::filesystem::exists(directory) || !std::filesystem::is_directory(directory))
-    {
-        throw celeritas_error(directory + " is no directory found.");
-    }
+    check_directory_exists(proto_directory_);
+    check_directory_exists(output_directory_);
+    check_directory_exists(template_directory_);
 }
 
 void celeritas::generate_handler::generate(const std::string& directory)
