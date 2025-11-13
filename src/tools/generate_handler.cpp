@@ -65,7 +65,7 @@ void celeritas::generate_handler::generate(const std::string& directory)
 
 void celeritas::generate_handler::generate_file(const std::string& proto_file) const
 {
-    generate_handler_file generate_handler_file{ proto_file, proto_directory_, output_directory_, template_directory_, handler_template_file_ };
+    generate_handler_file generate_handler_file{ proto_file, proto_directory_, output_directory_, handler_template_file_ };
 
     generate_handler_file.generate_file();
 }
