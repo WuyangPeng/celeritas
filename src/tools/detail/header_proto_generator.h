@@ -20,6 +20,10 @@ namespace celeritas
         void execute() override;
 
     private:
+        [[nodiscard]] static std::string get_proto_path(const std::string& file_name);
+
+    private:
         std::string file_name_;
+        std::string proto_path_;
     };
 }

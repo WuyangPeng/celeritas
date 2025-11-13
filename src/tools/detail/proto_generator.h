@@ -28,6 +28,7 @@ namespace celeritas
 
         virtual void execute() = 0;
 
+    protected:
         [[nodiscard]] std::string get_message_name() const;
 
         [[nodiscard]] std::string get_message_full_name() const;
@@ -39,6 +40,12 @@ namespace celeritas
         [[nodiscard]] std::string get_message_handler_cpp_content() const;
 
         [[nodiscard]] std::string get_add_handler_function_content() const;
+
+        [[nodiscard]] static bool is_content_same(const std::string& file_name, const std::string& content);
+
+        static void save_handler(const std::string& file_name, const std::string& content);
+
+        [[nodiscard]] std::string get_proto_full_name() const;
 
     private:
         std::string message_full_name_;

@@ -1,5 +1,5 @@
 ﻿#include "header_proto_generator.h"
-#include "common/logger.h"
+#include "tools/tools_fwd.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem/path.hpp>
@@ -11,7 +11,9 @@ celeritas::header_proto_generator::header_proto_generator(const std::string_view
                                                           const std::string_view message_name,
                                                           std::string output_directory,
                                                           const handler_template_file& handler_template_file)
-    : base_type{ message_full_name, message_name, std::move(output_directory), handler_template_file }, file_name_{ file_name }
+    : base_type{ message_full_name, message_name, std::move(output_directory), handler_template_file },
+      file_name_{ file_name },
+      proto_path_{ get_proto_path(file_name_) }
 {
 }
 
@@ -19,44 +21,29 @@ void celeritas::header_proto_generator::execute()
 {
     auto message_handler_h_content = get_message_handler_h_content();
 
-    std::string proto_path{ file_name_ };
-    boost::replace_all(proto_path, ".proto", "");
-    boost::replace_all(proto_path, ".", "/");
+    const auto proto_full_name = get_proto_full_name();
+    const auto message_name = get_message_name();
 
-    std::string proto_full_name{ get_message_full_name() };
-    boost::replace_all(proto_full_name, "celeritas.", "");
-    boost::replace_all(proto_full_name, ".", "::");
-
-    auto message_name = get_message_name();
-
-    boost::replace_all(message_handler_h_content, "${proto_path}", proto_path);
+    boost::replace_all(message_handler_h_content, "${proto_path}", proto_path_);
     boost::replace_all(message_handler_h_content, "${proto_name}", message_name);
     boost::replace_all(message_handler_h_content, "${proto_full_name}", proto_full_name);
 
     boost::filesystem::path path{ get_output_directory() };
     path = path / (message_name + "_message_handler.h");
 
-    std::ifstream is(path, std::ios::binary);
-    std::string existing_content;
-    if (is.good())
+    if (const auto file_name = path.string();
+        !is_content_same(file_name, message_handler_h_content))
     {
-        // 使用高效的迭代器方式读取整个文件内容
-        existing_content.assign(
-            (std::istreambuf_iterator<char>(is)),
-            (std::istreambuf_iterator<char>())
-            );
-        is.close();
+        save_handler(file_name, message_handler_h_content);
     }
-
-    if (existing_content == message_handler_h_content)
-    {
-        LOG_CHANNEL(default_channel, debug) << "File " << path << " content unchanged, skipping write.";
-        return;
-    }
-    is.close();
-    std::ofstream os(path.string(), std::ios::binary);
-
-    os << message_handler_h_content;
-
-    LOG_CHANNEL(celeritas::default_channel, info) << "generate file : " << path;
 }
+
+std::string celeritas::header_proto_generator::get_proto_path(const std::string& file_name)
+{
+    auto proto_path = file_name;
+    boost::replace_all(proto_path, proto_extension, "");
+    boost::replace_all(proto_path, ".", "/");
+
+    return proto_path;
+}
+

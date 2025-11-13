@@ -23,6 +23,12 @@ namespace celeritas
         void execute() override;
 
     private:
+        [[nodiscard]] std::string get_payload_name() const;
+
+        [[nodiscard]] std::string get_add_handler_function(const std::string& payload_name, const std::string& proto_full_name, const std::string& message_name) const;
+
+        [[nodiscard]] static std::string get_entry_enum_name(const std::string& field);
+
         std::string one_of_name_;
         field_type field_;
     };
