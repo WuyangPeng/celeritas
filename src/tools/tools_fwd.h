@@ -14,5 +14,7 @@ namespace celeritas
     constexpr std::string_view proto_directory_description{ "proto directory path for program execution." };
     constexpr std::string_view output_directory_command_line{ "output_directory" };
     constexpr std::string_view output_directory_description{ "output directory path for program execution." };
+    constexpr std::string_view template_directory_command_line{ "template_directory" };
+    constexpr std::string_view template_directory_description{ "template directory path for program execution." };
     constexpr std::string_view process_generate_handler{ "generate_handler" };
 }

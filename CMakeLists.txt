@@ -272,6 +272,7 @@ add_custom_target(generate_handler_code
         --process=generate_handler
         --proto_directory=${CMAKE_CURRENT_SOURCE_DIR}/proto
         --output_directory=${HANDLER_GENERATED_DIR}
+        --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template
 
         # 依赖于 tools 目标本身，确保 tools 在执行前已编译完成
         DEPENDS tools

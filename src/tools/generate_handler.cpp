@@ -1,4 +1,5 @@
 ﻿#include "generate_handler.h"
+#include "importer_error_collector.h"
 #include "tools_fwd.h"
 #include "boost/filesystem/path.hpp"
 #include "common/celeritas_error.h"
@@ -57,44 +58,10 @@ void celeritas::generate_handler::generate(const std::string& directory)
     }
 }
 
-namespace celeritas
-{
-    class ImporterErrorCollector : public google::protobuf::compiler::MultiFileErrorCollector
-    {
-    public:
-        // 用于存储捕获到的所有错误信息
-        std::vector<std::string> errors;
-
-        void RecordError(absl::string_view filename, int line, int column,
-                         absl::string_view message) override
-        {
-            // 将详细的错误信息记录到内部的 vector 中
-            std::string error_msg =
-                std::string{ "PROTO_ERROR in file: " } + filename.data() +
-                " (line: " + std::to_string(line) +
-                ", column: " + std::to_string(column) +
-                "): " + message.data();
-
-            errors.push_back(error_msg);
-            // 也可以同时使用您自己的 LOG 机制打印出来
-            LOG_CHANNEL(celeritas::default_channel, error) << error_msg;
-        }
-
-        // 清空错误列表，用于多次导入
-        void Clear()
-        {
-            errors.clear();
-        }
-
-        // 返回捕获到的错误数量
-        size_t GetErrorCount() const
-        {
-            return errors.size();
-        }
-    };
-} // namespace celeritas
 void celeritas::generate_handler::generate_file(const std::string& proto_file)
 {
+    LOG_CHANNEL(celeritas::default_channel, info) << "generate from file : " << proto_file;
+
     google::protobuf::compiler::DiskSourceTree source_tree;
 
     boost::filesystem::path path{ proto_directory_ };
@@ -103,7 +70,7 @@ void celeritas::generate_handler::generate_file(const std::string& proto_file)
 
     auto disk_path = proto_file.substr(parent_path.length() + 1, proto_file.length());
     // 1. 创建错误收集器实例
-    ImporterErrorCollector error_collector;
+    importer_error_collector error_collector;
     google::protobuf::compiler::Importer importer{ &source_tree, &error_collector };
     std::ranges::replace(disk_path, '\\', '/');
     if (const auto* file_desc = importer.Import(disk_path))
