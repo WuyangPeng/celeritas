@@ -79,7 +79,7 @@ void celeritas::generate_handler_file::generate_file()
     }
     else
     {
-        LOG_CHANNEL(celeritas::default_channel, error) << "Failed to import proto file. Check errors above.";
+        LOG_CHANNEL(default_channel, error) << "Failed to import proto file. Check errors above.";
     }
 }
 
@@ -107,6 +107,24 @@ void celeritas::generate_handler_file::generate_header_file(std::string_view fil
 
     boost::filesystem::path path{ output_directory_ };
     path = path / (message_name.data() + "_message_handler.h"s);
+
+    std::ifstream is(path, std::ios::binary);
+    std::string existing_content;
+    if (is.good())
+    {
+        // 使用高效的迭代器方式读取整个文件内容
+        existing_content.assign(
+            (std::istreambuf_iterator<char>(is)),
+            (std::istreambuf_iterator<char>())
+            );
+        is.close();
+    }
+
+    if (existing_content == message_handler_h_content)
+    {
+        LOG_CHANNEL(default_channel, debug) << "File " << path << " content unchanged, skipping write.";
+        return;
+    }
 
     std::ofstream os(path.string(), std::ios::binary);
 
@@ -162,6 +180,24 @@ void celeritas::generate_handler_file::generate_source_file(const std::string_vi
 
     boost::filesystem::path path{ output_directory_ };
     path = path / (message_name.data() + "_message_handler.cpp"s);
+
+    std::ifstream is(path, std::ios::binary);
+    std::string existing_content;
+    if (is.good())
+    {
+        // 使用高效的迭代器方式读取整个文件内容
+        existing_content.assign(
+            (std::istreambuf_iterator<char>(is)),
+            (std::istreambuf_iterator<char>())
+            );
+        is.close();
+    }
+
+    if (existing_content == message_handler_cpp_content)
+    {
+        LOG_CHANNEL(default_channel, debug) << "File " << path << " content unchanged, skipping write.";
+        return;
+    }
 
     std::ofstream os(path.string(), std::ios::binary);
 
