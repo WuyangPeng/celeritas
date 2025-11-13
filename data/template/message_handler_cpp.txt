@@ -1,4 +1,4 @@
-﻿#include "${proto_name}_message_handler.h"
+#include "${proto_name}_message_handler.h"
 #include "message/concrete_message_handler.tpp"
 
 celeritas::${proto_name}_message_handler::${proto_name}_message_handler()

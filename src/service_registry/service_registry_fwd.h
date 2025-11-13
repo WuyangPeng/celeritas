@@ -6,11 +6,9 @@ namespace celeritas
     class service_registry;
     class protocol_port;
 
-    class service_registry_request_message_handler;
     class register_request_message_handler;
     class discover_request_message_handler;
 
-    class service_registry_response_message_handler;
     class register_response_message_handler;
     class discover_response_message_handler;
 }

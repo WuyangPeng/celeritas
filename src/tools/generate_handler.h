@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "process.h"
+#include "detail/handler_template_file.h"
 
 #include <filesystem>
 
@@ -17,12 +18,17 @@ namespace celeritas
         void execute() override;
 
     private:
+        void check_directory() const;
+
+        static void check_directory(const std::string& directory);
+
         void generate(const std::string& directory);
 
-        void generate_file(const std::string& proto_file);
+        void generate_file(const std::string& proto_file) const;
 
-    private:
         std::string proto_directory_;
         std::string output_directory_;
+        std::string template_directory_;
+        handler_template_file handler_template_file_;
     };
 }

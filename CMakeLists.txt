@@ -257,28 +257,32 @@ add_subdirectory(cmake/common)
 # 辅助
 add_subdirectory(cmake/tools)
 
-# 定义代码生成的目录
-set(HANDLER_GENERATED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/handler/generated")
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-add_custom_target(generate_handler_code
+    # 定义代码生成的目录
+    set(HANDLER_GENERATED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/handler/generated")
 
-        # 添加创建目录的命令
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${HANDLER_GENERATED_DIR}
+    add_custom_target(generate_handler_code
 
-        # COMMAND $<TARGET_FILE:tools> 会获取编译好的 tools 可执行文件的路径
-        COMMAND $<TARGET_FILE:tools>
+            # 添加创建目录的命令
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${HANDLER_GENERATED_DIR}
 
-        # 将生成目录作为参数传递给 tools
-        --process=generate_handler
-        --proto_directory=${CMAKE_CURRENT_SOURCE_DIR}/proto
-        --output_directory=${HANDLER_GENERATED_DIR}
-        --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template
+            # COMMAND $<TARGET_FILE:tools> 会获取编译好的 tools 可执行文件的路径
+            COMMAND $<TARGET_FILE:tools>
 
-        # 依赖于 tools 目标本身，确保 tools 在执行前已编译完成
-        DEPENDS tools
+            # 将生成目录作为参数传递给 tools
+            --process=generate_handler
+            --proto_directory=${CMAKE_CURRENT_SOURCE_DIR}/proto
+            --output_directory=${HANDLER_GENERATED_DIR}
+            --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template
 
-        COMMENT "Running tools to generate handler source code into: ${HANDLER_GENERATED_DIR}"
-)
+            # 依赖于 tools 目标本身，确保 tools 在执行前已编译完成
+            DEPENDS tools
+
+            COMMENT "Running tools to generate handler source code into: ${HANDLER_GENERATED_DIR}"
+    )
+
+endif ()
 
 # 静态库
 add_subdirectory(cmake/config)

@@ -2,4 +2,8 @@
 
 add_library(handler ${SRC_DIR_LIST})
 
-add_dependencies(handler generate_handler_code)
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+    add_dependencies(handler generate_handler_code)
+
+endif ()

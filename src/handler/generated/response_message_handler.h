@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "message/concrete_message_handler.h"
 #include "proto/response.pb.h"
