@@ -45,10 +45,12 @@ void celeritas::command_line_config::add_options(const std::string_view server_t
 
 void celeritas::command_line_config::add_options(const options_type& options)
 {
-    for (const auto& element : options)
+    for (const auto& [name, description] : options)
     {
         options_description_.add_options()
-            (element.first.data(), element.second.data());
+            (name.data(),
+             boost::program_options::value<std::string>()->default_value(""),
+             description.data());
     }
 }
 

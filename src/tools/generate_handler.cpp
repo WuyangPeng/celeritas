@@ -1,5 +1,6 @@
 ﻿#include "generate_handler.h"
 #include "tools_fwd.h"
+#include "boost/filesystem/path.hpp"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "common/command_line_config.tpp"
@@ -51,30 +52,71 @@ void celeritas::generate_handler::generate(const std::string& directory)
         }
         else if (entry.is_directory())
         {
-            generate(directory);
+            generate(entry.path().string());
         }
     }
 }
 
+namespace celeritas
+{
+    class ImporterErrorCollector : public google::protobuf::compiler::MultiFileErrorCollector
+    {
+    public:
+        // 用于存储捕获到的所有错误信息
+        std::vector<std::string> errors;
+
+        void RecordError(absl::string_view filename, int line, int column,
+                         absl::string_view message) override
+        {
+            // 将详细的错误信息记录到内部的 vector 中
+            std::string error_msg =
+                std::string{ "PROTO_ERROR in file: " } + filename.data() +
+                " (line: " + std::to_string(line) +
+                ", column: " + std::to_string(column) +
+                "): " + message.data();
+
+            errors.push_back(error_msg);
+            // 也可以同时使用您自己的 LOG 机制打印出来
+            LOG_CHANNEL(celeritas::default_channel, error) << error_msg;
+        }
+
+        // 清空错误列表，用于多次导入
+        void Clear()
+        {
+            errors.clear();
+        }
+
+        // 返回捕获到的错误数量
+        size_t GetErrorCount() const
+        {
+            return errors.size();
+        }
+    };
+} // namespace celeritas
 void celeritas::generate_handler::generate_file(const std::string& proto_file)
 {
     google::protobuf::compiler::DiskSourceTree source_tree;
 
-    source_tree.MapPath("", proto_directory_);
+    boost::filesystem::path path{ proto_directory_ };
+    auto parent_path = path.parent_path().string();
+    source_tree.MapPath("", parent_path);
 
-    google::protobuf::compiler::Importer importer(&source_tree, nullptr);
-
-    if (const auto* file_desc = importer.Import(proto_file))
+    auto disk_path = proto_file.substr(parent_path.length() + 1, proto_file.length());
+    // 1. 创建错误收集器实例
+    ImporterErrorCollector error_collector;
+    google::protobuf::compiler::Importer importer{ &source_tree, &error_collector };
+    std::ranges::replace(disk_path, '\\', '/');
+    if (const auto* file_desc = importer.Import(disk_path))
     {
-        for (int i = 0; i < file_desc->message_type_count(); ++i)
+        for (auto i = 0; i < file_desc->message_type_count(); ++i)
         {
             const auto* message_desc = file_desc->message_type(i);
 
-            for (int j = 0; j < message_desc->oneof_decl_count(); ++j)
+            for (auto j = 0; j < message_desc->oneof_decl_count(); ++j)
             {
                 const auto* one_of_desc = message_desc->oneof_decl(j);
 
-                for (int k = 0; k < one_of_desc->field_count(); ++k)
+                for (auto k = 0; k < one_of_desc->field_count(); ++k)
                 {
                     const auto* field_desc = one_of_desc->field(k);
 
