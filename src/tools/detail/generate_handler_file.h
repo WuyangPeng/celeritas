@@ -33,7 +33,7 @@ namespace celeritas
 
         void generate_file(one_of_descriptor_type one_of_descriptor, file_descriptor_type file_descriptor, descriptor_type message_descriptor) const;
 
-        [[nodiscard]] field_type get_field(one_of_descriptor_type one_of_descriptor) const;
+        [[nodiscard]] static field_type get_field(one_of_descriptor_type one_of_descriptor);
 
         void generate_file(std::string_view file_name, std::string_view message_full_name, std::string_view message_name, std::string_view one_of_name, const field_type& field) const;
 

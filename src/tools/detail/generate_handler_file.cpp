@@ -85,17 +85,17 @@ void celeritas::generate_handler_file::generate_file(const one_of_descriptor_typ
     }
 }
 
-celeritas::generate_handler_file::field_type celeritas::generate_handler_file::get_field(const one_of_descriptor_type one_of_descriptor) const
+celeritas::generate_handler_file::field_type celeritas::generate_handler_file::get_field(const one_of_descriptor_type one_of_descriptor)
 {
     field_type field{};
     for (auto index = 0; index < one_of_descriptor->field_count(); ++index)
     {
-        if (const auto* field_desc = one_of_descriptor->field(index);
-            field_desc != nullptr)
+        if (const auto* field_descriptor = one_of_descriptor->field(index);
+            field_descriptor != nullptr)
         {
-            const auto field_name = field_desc->name();
+            const auto field_name = field_descriptor->name();
 
-            if (const auto message_type = field_desc->message_type();
+            if (const auto message_type = field_descriptor->message_type();
                 message_type != nullptr)
             {
                 if (const auto field_message_type = message_type->name();
