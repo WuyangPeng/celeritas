@@ -1,3 +1,5 @@
+// 此文件是自动生成，请勿手动修改。
+
 #pragma once
 
 #include "handler/generated/celeritas_message_handler.h"
