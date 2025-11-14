@@ -275,6 +275,64 @@
 
 #### message（消息）
 
+消息模块主要负责网络通信中消息的抽象、头部定义、传输所需参数的管理，以及消息处理器的抽象、具体实现和分发注册机制。
+
+##### 基础消息结构（Basic Message Structure）
+
+* **🏷️ 消息头部（`header`）**
+    - **作用**：封装了消息的头部信息，用于标识消息的路由和内容上下文。包含RPC标识(`rpc`)、用户ID(`user_id`)和错误码 (
+      `code`)。
+    - **特点**：支持多种`Protobuf`消息头部类型（如`server_message_header`、`client_message_header`等）的构造。
+    - **功能**：提供了`get_message()`方法，根据内部成员的值自动生成对应的`Protobuf`头部消息实例。
+
+##### 消息处理参数封装（Message Handle Parameters）
+
+* **📦 Protobuf消息处理参数（`protobuf_handle_parameter`）**
+    - **作用**：封装处理一个`Protobuf`消息请求所需的全部上下文信息。
+    - **成员**：包含消息头部(`header_`)、`Protobuf`请求消息(`request_message_`)、网络会话(`session_`)和资源加载器(
+      `resource_loader_`)。使用`std::weak_ptr`管理`session` 和 `resource_loader`，避免循环引用。
+    - **功能**：提供了向当前会话写回响应Protobuf消息(`write(response)`)和将请求转发给指定服务器类型(
+      `write(server_type, request)`)的方法。
+
+
+* **📦 HTTP消息处理参数（`http_handle_parameter`）**
+    - **作用**：封装处理`HTTP`请求所需的全部上下文信息，是`HTTP`消息处理的参数载体。
+    - **成员**：包含`io_context`、请求路径 (`path`)、参数(`params`)、会话(`session`) 和资源加载器(`resource_loader`)。
+    - **功能**：提供了向当前会话写回`HTTP`响应字符串(`write(response)`)、获取请求路径和获取应用配置等方法。
+
+##### 抽象处理器基类（Abstract Handler Base Classes）
+
+* **⚙️ Protobuf消息处理器基类（`protobuf_base_message_handler`）**
+    - **作用**：定义所有`Protobuf`消息处理器的抽象基类。
+    - **接口**：定义了处理器必须实现的纯虚函数：`get_supported_type_name()`（获取支持的消息类型名称）和`handle(...)`
+      （核心处理逻辑）。
+
+* **🎯 Protobuf消息处理器（`concrete_message_handler<Message>`）**
+    - **作用**：`Protobuf`消息处理器的模板实现基类，继承自 `protobuf_base_message_handler`。旨在简化具体业务处理器的实现。
+    - **功能**：
+        - 实现`handle()` 接口，将通用`protobuf_message` 安全地**向下转型**为具体的`Message` 类型，并调用子类实现的
+          `handle_concrete()`。
+        - 支持根据`Protobuf` `oneof` 字段的 `payload_case` 注册和查找具体的子处理函数。
+        - 提供消息转发 (`handle_forward`) 和嵌套消息分发 (`handle_dispatch`) 等高级处理逻辑。
+
+
+* **⚙️ HTTP消息处理器基类（`http_base_message_handler`）**
+    - **作用**：定义所有`HTTP`消息处理器的抽象基类。
+    - **接口**：定义了处理器必须实现的纯虚函数：`get_supported_type_name()`（获取支持的 URL 路径）和`handle(...)`（核心处理逻辑）。
+
+##### 消息分发注册机制（Message Dispatch and Registry）
+
+* **🔄 Protobuf消息注册与分发（`protobuf_message_registry`）**
+    - **作用**：负责集中注册和运行时查找`Protobuf`消息处理器，并将收到的消息分发给对应的处理器实例。
+    - **核心功能**：**注册 (`registerHandler`)** 和 **分发 (`dispatch`)**。
+    - **线程安全**：使用`std::shared_mutex`保护内部注册表，确保注册操作的线程安全。
+
+
+* **🔄 HTTP消息注册与分发（`http_message_registry`）**
+    - **作用**：负责集中注册和运行时查找`HTTP`消息处理器，并将收到的`HTTP`请求分发给对应的处理器实例。
+    - **核心功能**：**注册 (`registerHandler`)**（以 URL 路径/类型名为键）和 **分发 (`dispatch`)**。
+    - **线程安全**：使用`std::shared_mutex`保护内部注册表，确保注册操作的线程安全。
+
 #### database（数据库）
 
 #### network（网络）

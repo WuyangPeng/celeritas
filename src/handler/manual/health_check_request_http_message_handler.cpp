@@ -1,5 +1,6 @@
 ﻿#include "health_check_request_http_message_handler.h"
 #include "common/logger.h"
+#include "config/app_config.h"
 #include "handler/health_check.h"
 #include "message/http_handle_parameter.h"
 
