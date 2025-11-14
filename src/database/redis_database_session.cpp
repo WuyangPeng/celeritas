@@ -13,7 +13,15 @@ celeritas::redis_database_session::redis_database_session(const std::string_view
                                                           const std::string_view& db_name,
                                                           int expire_seconds,
                                                           io_context_type& io_context)
-    : redis_context_{}, io_context_{ io_context }, host_{ host }, port_{ port }, user_{ user }, password_{ password }, db_name_{ db_name }, expire_seconds_{ expire_seconds }
+    : redis_context_{},
+      io_context_{ io_context },
+      host_{ host },
+      port_{ port },
+      user_{ user },
+      password_{ password },
+      db_name_{ db_name },
+      expire_seconds_{ expire_seconds },
+      redis_key_commands_{ *this }
 {
 }
 
@@ -32,16 +40,11 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
 
 celeritas::database_session::bool_awaitable_type celeritas::redis_database_session::is_health()
 {
-    if (!redis_context_)
-    {
-        co_return false;
-    }
-
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
 
     try
     {
-        redis_reply redis_reply{ *redis_context_.get(), "PING" };
+        do_is_health();
 
         co_return true;
     }
@@ -61,6 +64,11 @@ celeritas::database_session::bool_awaitable_type celeritas::redis_database_sessi
     co_return false;
 }
 
+celeritas::redis_key_commands& celeritas::redis_database_session::get_redis_key_commands()
+{
+    return redis_key_commands_;
+}
+
 celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::async_set(const std::string& key, const std::string& value, const int expire_seconds)
 {
     const auto prefixed_key = get_prefixed_key(key);
@@ -70,97 +78,6 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
     co_await async_execute_command_return_int(set_command);
 
     co_return;
-}
-
-celeritas::redis_database_session::int_awaitable_type celeritas::redis_database_session::async_delete(const std::string& key)
-{
-    const auto prefixed_key = get_prefixed_key(key);
-
-    const auto del_command = std::string("DEL ") + prefixed_key;
-
-    co_return co_await async_execute_command_return_int(del_command);
-}
-
-celeritas::redis_database_session::int_awaitable_type celeritas::redis_database_session::async_delete_many(const container& keys)
-{
-    std::string command{};
-    for (const auto& key : keys)
-    {
-        command += " " + get_prefixed_key(key);
-    }
-
-    const auto del_command = std::string("DEL") + command;
-
-    co_return co_await async_execute_command_return_int(del_command);
-}
-
-celeritas::database_session::bool_awaitable_type celeritas::redis_database_session::set_expire_seconds(const std::string& key, const int expire_seconds)
-{
-    const auto prefixed_key = get_prefixed_key(key);
-
-    const auto expire_command = std::string("EXPIRE ") + prefixed_key + " " + std::to_string(expire_seconds);
-
-    const auto result = co_await async_execute_command_return_int(expire_command);
-
-    co_return result > 0;
-}
-
-celeritas::redis_database_session::int_awaitable_type celeritas::redis_database_session::get_expire_seconds(const std::string& key)
-{
-    const auto prefixed_key = get_prefixed_key(key);
-
-    const auto expire_command = std::string("TTL ") + prefixed_key;
-
-    co_return co_await async_execute_command_return_int(expire_command);
-}
-
-celeritas::database_session::bool_awaitable_type celeritas::redis_database_session::is_exists(const std::string& key)
-{
-    const auto prefixed_key = get_prefixed_key(key);
-
-    const auto exists_command = std::string("EXISTS ") + prefixed_key;
-
-    const auto result = co_await async_execute_command_return_int(exists_command);
-
-    co_return result > 0;
-}
-
-celeritas::redis_database_session::int_awaitable_type celeritas::redis_database_session::is_exists_many(const container& keys)
-{
-    std::string command{};
-    for (const auto& key : keys)
-    {
-        command += " " + get_prefixed_key(key);
-    }
-
-    const auto exists_command = std::string("EXISTS") + command;
-
-    co_return co_await async_execute_command_return_int(exists_command);
-}
-
-celeritas::redis_database_session::bool_awaitable_type celeritas::redis_database_session::rename(const std::string& old_key, const std::string& new_key)
-{
-    const auto old_prefixed_key = get_prefixed_key(old_key);
-    const auto new_prefixed_key = get_prefixed_key(new_key);
-
-    const auto rename_command = std::string("RENAME ") + old_prefixed_key + " " + new_prefixed_key;
-
-    if (const auto result = co_await async_execute_command_return_string(rename_command);
-        result == "OK")
-    {
-        co_return true;
-    }
-
-    co_return false;
-}
-
-celeritas::redis_database_session::string_awaitable_type celeritas::redis_database_session::get_type(const std::string& key)
-{
-    const auto prefixed_key = get_prefixed_key(key);
-
-    const auto type_command = std::string("TYPE ") + prefixed_key;
-
-    co_return co_await async_execute_command_return_string(type_command);
 }
 
 std::string celeritas::redis_database_session::get_prefixed_key(const std::string& key) const
@@ -175,10 +92,7 @@ std::string celeritas::redis_database_session::get_prefixed_key(const std::strin
 
 celeritas::redis_database_session::int_awaitable_type celeritas::redis_database_session::async_execute_command_return_int(const std::string& command) const
 {
-    if (!redis_context_)
-    {
-        throw celeritas_error("redis context is not connected or initialized.");
-    }
+    check_initialized();
 
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
 
@@ -189,10 +103,7 @@ celeritas::redis_database_session::int_awaitable_type celeritas::redis_database_
 
 celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::async_execute_command_return_void(const std::string& command) const
 {
-    if (!redis_context_)
-    {
-        throw celeritas_error("redis context is not connected or initialized.");
-    }
+    check_initialized();
 
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
 
@@ -201,12 +112,24 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
     co_return;
 }
 
-celeritas::redis_database_session::string_awaitable_type celeritas::redis_database_session::async_execute_command_return_string(const std::string& command) const
+void celeritas::redis_database_session::check_initialized() const
 {
     if (!redis_context_)
     {
         throw celeritas_error("redis context is not connected or initialized.");
     }
+}
+
+void celeritas::redis_database_session::do_is_health()
+{
+    check_initialized();
+
+    redis_reply redis_reply{ *redis_context_.get(), "PING" };
+}
+
+celeritas::redis_database_session::string_awaitable_type celeritas::redis_database_session::async_execute_command_return_string(const std::string& command) const
+{
+    check_initialized();
 
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
 

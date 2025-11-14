@@ -77,33 +77,9 @@ celeritas::redis_reply::array_type celeritas::redis_reply::to_array() const
 
     for (auto i = 0; i < redis_reply_->elements; ++i)
     {
-        switch (const auto element = redis_reply_->element[i];
-            element->type)
-        {
-            case REDIS_REPLY_STRING:
-            {
-                result.emplace_back(element->str, element->len);
-                break;
-            }
-            case REDIS_REPLY_NIL:
-            {
-                result.emplace_back("");
-                break;
-            }
-            case REDIS_REPLY_INTEGER:
-            {
-                result.emplace_back(std::to_string(element->integer));
-                break;
-            }
-            case REDIS_REPLY_ERROR:
-            {
-                throw celeritas_error("Redis array element contained an ERROR: " + std::string{ element->str, element->len });
-            }
-            default:
-            {
-                throw celeritas_error("Redis array element contained an unsupported type: " + std::to_string(element->type));
-            }
-        }
+        const auto element = redis_reply_->element[i];
+
+        result.emplace_back(to_string_from_element(element));
     }
 
     return result;
@@ -141,26 +117,39 @@ celeritas::redis_reply::map_type celeritas::redis_reply::to_map() const
         }
         std::string key{ key_element->str, key_element->len };
 
-        std::string value{};
-        if (value_element->type == REDIS_REPLY_STRING)
-        {
-            value.assign(value_element->str, value_element->len);
-        }
-        else if (value_element->type == REDIS_REPLY_NIL)
-        {
-            value = "";
-        }
-        else if (value_element->type == REDIS_REPLY_INTEGER)
-        {
-            value = std::to_string(value_element->integer);
-        }
-        else
-        {
-            throw celeritas_error("Map Value element is of unsupported type.");
-        }
+        auto value = to_string_from_element(value_element);
 
         result.emplace(std::move(key), std::move(value));
     }
 
     return result;
+}
+
+std::string celeritas::redis_reply::to_string_from_element(const redisReply* element)
+{
+    switch (element->type)
+    {
+        case REDIS_REPLY_STRING:
+        {
+            return std::string{ element->str, element->len };
+        }
+        case REDIS_REPLY_NIL:
+        {
+            return ""; // 将 NIL 转换为 C++ 中的空字符串
+        }
+        case REDIS_REPLY_INTEGER:
+        {
+            return std::to_string(element->integer); // 将整数转换为字符串
+        }
+        case REDIS_REPLY_ERROR:
+        {
+            // 如果子元素是错误，直接抛出异常
+            throw celeritas_error("Redis array element contained an ERROR: " + std::string{ element->str, element->len });
+        }
+        default:
+        {
+            // 处理其他不支持的类型
+            throw celeritas_error("Redis array element contained an unsupported type: " + std::to_string(element->type));
+        }
+    }
 }

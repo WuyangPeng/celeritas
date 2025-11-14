@@ -40,6 +40,8 @@ namespace celeritas
         [[nodiscard]] map_type to_map() const;
 
     private:
+        [[nodiscard]] static std::string to_string_from_element(const ::redisReply* element);
+
         ::redisReply* redis_reply_;
     };
 }
