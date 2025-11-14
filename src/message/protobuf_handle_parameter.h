@@ -1,9 +1,6 @@
 ﻿#pragma once
 
 #include "header.h"
-#include "initializer/initializer_fwd.h"
-#include "network/network_fwd.h"
-#include "proto/celeritas.pb.h"
 #include "common/common_fwd.h"
 
 #include <google/protobuf/message.h>

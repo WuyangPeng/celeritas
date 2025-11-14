@@ -1,8 +1,9 @@
 ﻿#pragma once
 
-#include "http_handle_parameter.h"
-#include "http_message_registry.h"
+#include "common/common_fwd.h"
+#include "message/message_fwd.h"
 
+#include <memory>
 #include <string>
 
 namespace celeritas
@@ -12,7 +13,7 @@ namespace celeritas
     public:
         using class_type = http_base_message_handler;
         using http_message_registry_weak_ptr = std::weak_ptr<http_message_registry>;
-        using session_shared_ptr = std::shared_ptr<session_base>;
+        using session_shared_ptr = std::shared_ptr<session>;
 
         http_base_message_handler() noexcept = default;
 

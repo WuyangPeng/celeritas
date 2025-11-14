@@ -1,5 +1,7 @@
 ﻿#include "register_request_message_handler.h"
 #include "message/concrete_message_handler.tpp"
+#include "message/protobuf_handle_parameter.h"
+#include "proto/celeritas.pb.h"
 #include "server/server_fwd.h"
 #include "service_registry/service_info.h"
 #include "service_registry/service_registry.h"

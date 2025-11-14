@@ -1,4 +1,5 @@
 ﻿#include "http_base_message_handler.h"
+#include "http_handle_parameter.h"
 #include "http_message_registry.h"
 
 void celeritas::http_message_registry::registerHandler(const http_base_message_handler_shared_ptr& handler)

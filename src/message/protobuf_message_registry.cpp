@@ -29,7 +29,7 @@ celeritas::protobuf_message_registry::base_message_handler_optional_type celerit
     std::lock_guard lock{ mutex_ };
 
     if (const auto iter = registry_.find(typeName.data());
-        iter != registry_.end())
+        iter != registry_.cend())
     {
         return iter->second;
     }

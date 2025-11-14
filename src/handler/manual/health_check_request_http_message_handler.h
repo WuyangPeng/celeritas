@@ -2,6 +2,8 @@
 
 #include "message/http_base_message_handler.h"
 
+#include <boost/asio/awaitable.hpp>
+
 namespace celeritas
 {
     class health_check_request_http_message_handler final : public http_base_message_handler

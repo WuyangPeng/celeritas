@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "concrete_message_handler.h"
+#include "protobuf_message_registry.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 

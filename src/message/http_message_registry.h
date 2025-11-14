@@ -1,9 +1,9 @@
 ﻿#pragma once
 
-#include "header.h"
 #include "message_fwd.h"
 #include "network/network_fwd.h"
 
+#include <optional>
 #include <shared_mutex>
 #include <unordered_map>
 
