@@ -36,7 +36,7 @@ namespace celeritas
         // 返回存在的个数
         [[nodiscard]] int_awaitable_type is_exists_many(const container& keys) const;
 
-        // 重命名键。
+        // 重命名键
         [[nodiscard]] bool_awaitable_type rename(const std::string& old_key, const std::string& new_key) const;
 
         // 获取键存储的数据类型
