@@ -24,7 +24,7 @@ void celeritas::register_handler_template_file::load_template()
     const boost::filesystem::path path{ template_directory_ };
     const auto file_name = path / register_handler_helper_template_name;
 
-    std::ifstream is{ file_name, std::ios::binary };
+    std::ifstream is{ file_name.string(), std::ios::binary };
     if (!is)
     {
         throw celeritas_error("failed to load"s + register_handler_helper_template_name.data());
