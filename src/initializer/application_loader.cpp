@@ -1,13 +1,13 @@
 ﻿#include "application_loader.h"
-#include "handler/health_check_request_http_message_handler.h"
+#include "../handler/manual/health_check_request_http_message_handler.h"
 #include "message/http_handle_parameter.h"
 #include "message/http_message_registry.h"
-#include "handler/health_check_response_http_message_handler.h"
+#include "../handler/manual/health_check_response_http_message_handler.h"
 #include "handler/generated/request_message_handler.h"
 #include "handler/generated/response_message_handler.h"
 #include "handler/generated/service_request_message_handler.h"
 #include "handler/generated/service_response_message_handler.h"
-#include "register_handler_helper.h"
+#include "generated/register_handler_helper.h"
 #include "message/handle_parameter.h"
 
 celeritas::application_loader::application_loader(app_config_shared_ptr app_config)

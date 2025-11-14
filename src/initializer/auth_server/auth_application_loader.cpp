@@ -1,7 +1,7 @@
 ﻿#include "auth_application_loader.h"
 #include "handler/generated/service_registry_response_message_handler.h"
-#include "service_registry/message_handler/discover_response_message_handler.h"
-#include "service_registry/message_handler/register_response_message_handler.h"
+#include "../../handler/discover_response_message_handler.h"
+#include "../../handler/register_response_message_handler.h"
 #include "message/concrete_message_handler.tpp"
 
 celeritas::auth_application_loader::auth_application_loader(app_config_shared_ptr app_config)

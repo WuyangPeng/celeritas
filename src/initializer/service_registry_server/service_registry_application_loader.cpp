@@ -1,9 +1,9 @@
 ﻿#include "service_registry_application_loader.h"
 #include "handler/generated/service_registry_request_message_handler.h"
 #include "message/concrete_message_handler.tpp"
-#include "service_registry/message_handler/discover_request_message_handler.h"
-#include "service_registry/message_handler/register_request_message_handler.h"
-#include "service_registry/message_handler/close_request_message_handler.h"
+#include "../../handler/discover_request_message_handler.h"
+#include "../../handler/register_request_message_handler.h"
+#include "../../handler/close_request_message_handler.h"
 
 celeritas::service_registry_application_loader::service_registry_application_loader(app_config_shared_ptr app_config)
     : base_type{ std::move(app_config) }

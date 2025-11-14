@@ -1,6 +1,6 @@
 ﻿#include "gateway_application_loader.h"
-#include "service_registry/message_handler/discover_response_message_handler.h"
-#include "service_registry/message_handler/register_response_message_handler.h"
+#include "../../handler/discover_response_message_handler.h"
+#include "../../handler/register_response_message_handler.h"
 #include "handler/generated/service_registry_response_message_handler.h"
 #include "message/concrete_message_handler.tpp"
 

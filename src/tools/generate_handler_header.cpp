@@ -44,7 +44,10 @@ void celeritas::generate_handler_header::set_handler_file(const std::string& dir
             if (const auto& file_path = entry.path();
                 file_path.extension() == header_extension)
             {
-                handler_file_.emplace_back(file_path.string());
+                if (file_path.string().find("_handler") != std::string::npos)
+                {
+                    handler_file_.emplace_back(file_path.string());
+                }
             }
         }
         else if (entry.is_directory())

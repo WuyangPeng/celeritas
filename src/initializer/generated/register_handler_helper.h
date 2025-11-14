@@ -13,7 +13,7 @@ namespace celeritas
         using message_registry_shared_ptr = std::shared_ptr<message_registry>;
         using http_message_registry_shared_ptr = std::shared_ptr<http_message_registry>;
 
-        explicit register_handler_helper(const message_registry_shared_ptr& message_registry, const http_message_registry_shared_ptr& http_message_registry);
+        explicit register_handler_helper(message_registry_shared_ptr message_registry, http_message_registry_shared_ptr http_message_registry);
 
         void register_handler() const;
 

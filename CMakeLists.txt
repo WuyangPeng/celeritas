@@ -297,7 +297,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template
 
             # 依赖于 tools 目标本身，确保 tools 在执行前已编译完成
-            DEPENDS tools
+            DEPENDS tools generate_handler_code
 
             COMMENT "Running tools to generate handler header code into: ${HANDLER_GENERATED_DIR}"
     )
