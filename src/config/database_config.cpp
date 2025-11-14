@@ -9,7 +9,8 @@ celeritas::database_config::database_config(std::string name,
                                             std::string db_name,
                                             const int min_connections,
                                             const int max_connections,
-                                            const int timeout_seconds)
+                                            const int timeout_seconds,
+                                            const int expire_seconds)
     : name_{ std::move(name) },
       database_type_{ database_type },
       host_{ std::move(host) },
@@ -19,7 +20,8 @@ celeritas::database_config::database_config(std::string name,
       db_name_{ std::move(db_name) },
       min_connections_{ min_connections },
       max_connections_{ max_connections },
-      timeout_seconds_{ timeout_seconds }
+      timeout_seconds_{ timeout_seconds },
+      expire_seconds_{ expire_seconds }
 {
 }
 
@@ -71,4 +73,9 @@ int celeritas::database_config::get_max_connections() const
 int celeritas::database_config::get_timeout_seconds() const
 {
     return timeout_seconds_;
+}
+
+int celeritas::database_config::get_expire_seconds() const
+{
+    return expire_seconds_;
 }

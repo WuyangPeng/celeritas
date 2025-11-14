@@ -39,6 +39,7 @@ celeritas::database_config celeritas::database_config_reader::get_database_node(
     const auto min_connections = node.get<int>("min_connections", default_database_min_connections);
     const auto max_connections = node.get<int>("max_connections", default_database_max_connections);
     const auto timeout_seconds = node.get<int>("timeout_seconds", default_database_timeout_seconds);
+    const auto expire_seconds = node.get<int>("expire_seconds", 0);
 
-    return database_config{ name, database_type, host, port, user, password, db_name, min_connections, max_connections, timeout_seconds };
+    return database_config{ name, database_type, host, port, user, password, db_name, min_connections, max_connections, timeout_seconds, expire_seconds };
 }

@@ -11,7 +11,7 @@ celeritas::redis_context::redis_context(const std::string& host, int port)
         throw celeritas_error("failed to connect to redis server");
     }
 
-    if (redis_context_->err)
+    if (redis_context_->err != REDIS_OK)
     {
         throw celeritas_error("failed to connect to redis server: "s + redis_context_->errstr);
     }

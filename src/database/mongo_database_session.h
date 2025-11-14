@@ -26,6 +26,7 @@ namespace celeritas
                                         const std::string_view& password,
                                         const std::string_view& uri,
                                         const std::string_view& db_name,
+                                        int expire_seconds,
                                         io_context_type& io_context);
 
         ~mongo_database_session() noexcept override = default;

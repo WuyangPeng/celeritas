@@ -23,7 +23,8 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
                                                                                                          const std::string& password,
                                                                                                          const std::string& db_name,
                                                                                                          const int min_connections,
-                                                                                                         const int max_connections)
+                                                                                                         const int max_connections,
+                                                                                                         const int expire_seconds)
 {
     switch (database_type)
     {
@@ -37,7 +38,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
         }
         case database_type::redis:
         {
-            return create_redis_pool(name, io_context, host, port, user, password, db_name, min_connections, max_connections);
+            return create_redis_pool(name, io_context, host, port, user, password, db_name, min_connections, max_connections, expire_seconds);
         }
         default:
         {
@@ -147,9 +148,10 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
                                                                                                                const std::string& password,
                                                                                                                const std::string& db_name,
                                                                                                                const int min_connections,
-                                                                                                               const int max_connections)
+                                                                                                               const int max_connections,
+                                                                                                               const int expire_seconds)
 {
-    auto pool = std::make_shared<connection_pool_base<redis_database_session> >(io_context, host, port, user, password, min_connections, max_connections);
+    auto pool = std::make_shared<connection_pool_base<redis_database_session> >(io_context, host, port, user, password, db_name, min_connections, max_connections, expire_seconds);
 
     std::lock_guard lock{ mutex_ };
 

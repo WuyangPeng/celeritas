@@ -15,7 +15,8 @@ void celeritas::database_resource_loader::loader_database(boost::asio::io_contex
                                                                         database_config.get_password(),
                                                                         database_config.get_db_name(),
                                                                         database_config.get_min_connections(),
-                                                                        database_config.get_max_connections());
+                                                                        database_config.get_max_connections(),
+                                                                        database_config.get_expire_seconds());
 
     boost::asio::co_spawn(io_context,
                           pool->async_initialize(),

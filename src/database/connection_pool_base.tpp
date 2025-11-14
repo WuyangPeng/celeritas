@@ -19,6 +19,7 @@ celeritas::connection_pool_base<SessionType>::connection_pool_base(io_context_ty
       password_{ std::move(password) },
       uri_{},
       db_name_{ std::move(db_name) },
+      expire_seconds_{},
       connections_{ 0 },
       min_connections_{ min_connections },
       max_connections_{ max_connections }
@@ -31,15 +32,18 @@ celeritas::connection_pool_base<SessionType>::connection_pool_base(io_context_ty
                                                                    const int port,
                                                                    std::string user,
                                                                    std::string password,
+                                                                   std::string db_name,
                                                                    const int min_connections,
-                                                                   const int max_connections)
+                                                                   const int max_connections,
+                                                                   const int expire_seconds)
     : io_context_{ io_context },
       host_{ std::move(host) },
       port_{ port },
       user_{ std::move(user) },
       password_{ std::move(password) },
       uri_{},
-      db_name_{},
+      db_name_{ std::move(db_name) },
+      expire_seconds_{ expire_seconds },
       connections_{ 0 },
       min_connections_{ min_connections },
       max_connections_{ max_connections }
@@ -59,6 +63,7 @@ celeritas::connection_pool_base<SessionType>::connection_pool_base(io_context_ty
       password_{},
       uri_{ std::move(uri) },
       db_name_{ std::move(db_name) },
+      expire_seconds_{},
       connections_{ 0 },
       min_connections_{ min_connections },
       max_connections_{ max_connections }
@@ -171,7 +176,7 @@ celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::con
 template <typename SessionType>
 celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::connection_pool_base<SessionType>::do_async_one_initialize()
 {
-    auto session = std::make_shared<SessionType>(host_, port_, user_, password_, uri_, db_name_, io_context_);
+    auto session = std::make_shared<SessionType>(host_, port_, user_, password_, uri_, db_name_, expire_seconds_, io_context_);
     co_await session->async_connect();
 
     LOG_CHANNEL(database_channel, info) << "connect host:" << host_ << ",port:" << port_ << " success.";

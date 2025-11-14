@@ -25,6 +25,7 @@ namespace celeritas
                                const std::string_view& password,
                                const std::string_view& uri,
                                const std::string_view& db_name,
+                               int expire_seconds,
                                io_context_type& io_context,
                                ssl_io_context_type* ssl_context = nullptr);
 

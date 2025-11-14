@@ -28,7 +28,8 @@ namespace celeritas
                                                            const std::string& password,
                                                            const std::string& db_name,
                                                            int min_connections,
-                                                           int max_connections);
+                                                           int max_connections,
+                                                           int expire_seconds);
 
         [[nodiscard]] database_pool_shared_ptr get_pool(const std::string& name);
 
@@ -71,7 +72,8 @@ namespace celeritas
                                                                  const std::string& password,
                                                                  const std::string& db_name,
                                                                  int min_connections,
-                                                                 int max_connections);
+                                                                 int max_connections,
+                                                                 int expire_seconds);
 
         database_pool_container pools_;
         std::mutex mutex_;

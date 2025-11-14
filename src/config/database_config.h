@@ -22,7 +22,8 @@ namespace celeritas
                         std::string db_name,
                         int min_connections,
                         int max_connections,
-                        int timeout_seconds);
+                        int timeout_seconds,
+                        int expire_seconds);
 
         [[nodiscard]] std::string get_name() const;
 
@@ -44,6 +45,8 @@ namespace celeritas
 
         [[nodiscard]] int get_timeout_seconds() const;
 
+        [[nodiscard]] int get_expire_seconds() const;
+
     private:
         std::string name_;
         database_type database_type_ = database_type::unknown;
@@ -55,5 +58,6 @@ namespace celeritas
         int min_connections_ = 4;
         int max_connections_ = 10;
         int timeout_seconds_ = 5;
+        int expire_seconds_ = 0;
     };
 }

@@ -34,8 +34,10 @@ namespace celeritas
                              int port,
                              std::string user,
                              std::string password,
+                             std::string db_name,
                              int min_connections,
-                             int max_connections);
+                             int max_connections,
+                             int expire_seconds);
 
         connection_pool_base(io_context_type& io_context,
                              std::string uri,
@@ -76,6 +78,7 @@ namespace celeritas
         std::string password_;
         std::string uri_;
         std::string db_name_;
+        int expire_seconds_;
 
         session_container_type sessions_;
         std::mutex mutex_;

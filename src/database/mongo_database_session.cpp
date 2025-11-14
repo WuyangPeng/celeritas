@@ -11,6 +11,7 @@ celeritas::mongo_database_session::mongo_database_session(const std::string_view
                                                           const std::string_view& password,
                                                           const std::string_view& uri,
                                                           const std::string_view& db_name,
+                                                          int expire_seconds,
                                                           io_context_type& io_context)
     : client_{}, database_{}, io_context_{ io_context }, uri_{ uri }, db_name_{ db_name }
 {
