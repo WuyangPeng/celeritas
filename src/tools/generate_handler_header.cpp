@@ -50,10 +50,6 @@ void celeritas::generate_handler_header::set_handler_file(const std::string& dir
                 }
             }
         }
-        else if (entry.is_directory())
-        {
-            set_handler_file(entry.path().string());
-        }
     }
 }
 

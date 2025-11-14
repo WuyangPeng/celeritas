@@ -1,5 +1,6 @@
 ﻿#include "generate_handler.h"
 #include "generate_handler_header.h"
+#include "generate_register_handler_helper.h"
 #include "process.h"
 #include "tools_fwd.h"
 #include "common/celeritas_error.h"
@@ -22,6 +23,11 @@ celeritas::process::process_unique_ptr celeritas::process::create_process(const 
     if (process_name == process_generate_handler_header)
     {
         return std::make_unique<generate_handler_header>(command_line_config);
+    }
+
+    if (process_name == process_generate_register_handler_helper)
+    {
+        return std::make_unique<generate_register_handler_helper>(command_line_config);
     }
 
     throw celeritas_error("unable to create generate handler");

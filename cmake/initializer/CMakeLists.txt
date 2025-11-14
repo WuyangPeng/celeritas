@@ -4,6 +4,6 @@ add_library(initializer ${SRC_DIR_LIST})
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-    add_dependencies(initializer generate_handler_header_code)
+    add_dependencies(initializer generate_handler_header_code generate_register_handler_helper_code)
 
 endif ()

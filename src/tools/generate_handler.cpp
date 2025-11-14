@@ -48,10 +48,6 @@ void celeritas::generate_handler::generate(const std::string& directory)
                 generate_file(file_path.string());
             }
         }
-        else if (entry.is_directory())
-        {
-            generate(entry.path().string());
-        }
     }
 }
 
