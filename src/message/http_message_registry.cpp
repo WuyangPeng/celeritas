@@ -26,7 +26,7 @@ celeritas::http_message_registry::http_base_message_handler_optional_type celeri
 
     std::lock_guard lock{ mutex_ };
 
-    if (const auto iter = registry_.find(typeName.data());
+    if (const auto iter = registry_.find(typeName);
         iter != registry_.end())
     {
         return iter->second;

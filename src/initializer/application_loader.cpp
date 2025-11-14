@@ -8,7 +8,7 @@
 #include "handler/generated/service_request_message_handler.h"
 #include "handler/generated/service_response_message_handler.h"
 #include "generated/register_handler_helper.h"
-#include "message/handle_parameter.h"
+#include "message/protobuf_handle_parameter.h"
 
 celeritas::application_loader::application_loader(app_config_shared_ptr app_config)
     : app_config_{ std::move(app_config) }, worker_pool_{}, message_registry_{ std::make_shared<protobuf_message_registry>() }, http_message_registry_{ std::make_shared<http_message_registry>() }
@@ -36,7 +36,7 @@ void celeritas::application_loader::register_handler(const base_message_handler_
 
 bool celeritas::application_loader::dispatch(const header& header, const protobuf_message& current_message, const protobuf_message_shared_ptr& request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
 {
-    return message_registry_->dispatch(handle_parameter{ header, request_message, session, resource_loader }, current_message);
+    return message_registry_->dispatch(protobuf_handle_parameter{ header, request_message, session, resource_loader }, current_message);
 }
 
 bool celeritas::application_loader::dispatch(io_context_type& io_context, const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)

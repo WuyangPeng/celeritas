@@ -14,7 +14,6 @@ namespace celeritas
     public:
         using class_type = http_message_registry;
         using http_base_message_handler_shared_ptr = std::shared_ptr<http_base_message_handler>;
-        using http_message_registry_weak_ptr = std::weak_ptr<http_message_registry>;
         using session_shared_ptr = std::shared_ptr<session_base>;
 
         void registerHandler(const http_base_message_handler_shared_ptr& handler);

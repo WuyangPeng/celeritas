@@ -14,14 +14,14 @@ namespace celeritas
     {
     public:
         using class_type = protobuf_message_registry;
-        using base_message_handler_shared_ptr = std::shared_ptr<base_message_handler>;
+        using base_message_handler_shared_ptr = std::shared_ptr<protobuf_base_message_handler>;
         using protobuf_message = google::protobuf::Message;
-        using protobuf_message_shared_ptr = std::shared_ptr<google::protobuf::Message>;
+        using protobuf_message_shared_ptr = std::shared_ptr<protobuf_message>;
         using session_shared_ptr = std::shared_ptr<session_base>;
 
         void registerHandler(const base_message_handler_shared_ptr& handler);
 
-        [[nodiscard]] bool dispatch(const handle_parameter& handle_parameter, const protobuf_message& current_message);
+        [[nodiscard]] bool dispatch(const protobuf_handle_parameter& handle_parameter, const protobuf_message& current_message);
 
     private:
         using registry_type = std::unordered_map<std::string, base_message_handler_shared_ptr>;

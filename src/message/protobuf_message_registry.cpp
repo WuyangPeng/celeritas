@@ -1,4 +1,4 @@
-﻿#include "base_message_handler.h"
+﻿#include "protobuf_base_message_handler.h"
 #include "protobuf_message_registry.h"
 
 #include <mutex>
@@ -12,7 +12,7 @@ void celeritas::protobuf_message_registry::registerHandler(const base_message_ha
     registry_[typeName] = handler;
 }
 
-bool celeritas::protobuf_message_registry::dispatch(const handle_parameter& handle_parameter, const protobuf_message& current_message)
+bool celeritas::protobuf_message_registry::dispatch(const protobuf_handle_parameter& handle_parameter, const protobuf_message& current_message)
 {
     if (const auto base_message_handler = get_base_message_handler(current_message))
     {

@@ -16,7 +16,7 @@ namespace celeritas
     public:
         using class_type = application_loader;
         using app_config_shared_ptr = std::shared_ptr<app_config>;
-        using base_message_handler_shared_ptr = std::shared_ptr<base_message_handler>;
+        using base_message_handler_shared_ptr = std::shared_ptr<protobuf_base_message_handler>;
         using protobuf_message_shared_ptr = std::shared_ptr<google::protobuf::Message>;
         using message_registry_weak_ptr = std::weak_ptr<protobuf_message_registry>;
         using session_shared_ptr = std::shared_ptr<session>;
