@@ -1,9 +1,9 @@
 ﻿#include "base_message_handler.h"
-#include "message_registry.h"
+#include "protobuf_message_registry.h"
 
 #include <mutex>
 
-void celeritas::message_registry::registerHandler(const base_message_handler_shared_ptr& handler)
+void celeritas::protobuf_message_registry::registerHandler(const base_message_handler_shared_ptr& handler)
 {
     const auto typeName = handler->get_supported_type_name();
 
@@ -12,7 +12,7 @@ void celeritas::message_registry::registerHandler(const base_message_handler_sha
     registry_[typeName] = handler;
 }
 
-bool celeritas::message_registry::dispatch(const handle_parameter& handle_parameter, const protobuf_message& current_message)
+bool celeritas::protobuf_message_registry::dispatch(const handle_parameter& handle_parameter, const protobuf_message& current_message)
 {
     if (const auto base_message_handler = get_base_message_handler(current_message))
     {
@@ -22,7 +22,7 @@ bool celeritas::message_registry::dispatch(const handle_parameter& handle_parame
     return false;
 }
 
-celeritas::message_registry::base_message_handler_optional_type celeritas::message_registry::get_base_message_handler(const protobuf_message& current_message)
+celeritas::protobuf_message_registry::base_message_handler_optional_type celeritas::protobuf_message_registry::get_base_message_handler(const protobuf_message& current_message)
 {
     const auto typeName = current_message.GetTypeName();
 

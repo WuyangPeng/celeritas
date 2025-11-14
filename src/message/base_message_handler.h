@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "handle_parameter.h"
-#include "message_registry.h"
+#include "protobuf_message_registry.h"
 #include "network/message_header.h"
 
 #include <google/protobuf/message.h>
@@ -15,7 +15,7 @@ namespace celeritas
         using class_type = base_message_handler;
         using protobuf_message = google::protobuf::Message;
         using protobuf_message_shared_ptr = std::shared_ptr<protobuf_message>;
-        using message_registry_weak_ptr = std::weak_ptr<message_registry>;
+        using message_registry_weak_ptr = std::weak_ptr<protobuf_message_registry>;
         using session_shared_ptr = std::shared_ptr<session_base>;
 
         base_message_handler() noexcept = default;

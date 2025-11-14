@@ -8,7 +8,7 @@ namespace celeritas
     class base_message_handler;
     class header;
     class handle_parameter;
-    class message_registry;
+    class protobuf_message_registry;
     class http_handle_parameter;
     class http_base_message_handler;
     class http_message_registry;

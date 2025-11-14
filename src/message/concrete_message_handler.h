@@ -17,7 +17,7 @@ namespace celeritas
 
     protected:
         using message_type = Message;
-        using message_registry_shared_ptr = std::shared_ptr<message_registry>;
+        using message_registry_shared_ptr = std::shared_ptr<protobuf_message_registry>;
         using handler_function_type = bool (*)(const handle_parameter& handle_parameter, const message_type& current_message, const message_registry_shared_ptr& message_registry);
 
         [[nodiscard]] virtual bool handle_concrete(const handle_parameter& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry) = 0;

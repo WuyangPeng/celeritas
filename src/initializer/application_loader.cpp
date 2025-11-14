@@ -11,7 +11,7 @@
 #include "message/handle_parameter.h"
 
 celeritas::application_loader::application_loader(app_config_shared_ptr app_config)
-    : app_config_{ std::move(app_config) }, worker_pool_{}, message_registry_{ std::make_shared<message_registry>() }, http_message_registry_{ std::make_shared<http_message_registry>() }
+    : app_config_{ std::move(app_config) }, worker_pool_{}, message_registry_{ std::make_shared<protobuf_message_registry>() }, http_message_registry_{ std::make_shared<http_message_registry>() }
 {
 }
 
