@@ -15,10 +15,6 @@ namespace celeritas
 
         [[nodiscard]] double get_score() const;
 
-        void set_member(const std::string& member);
-
-        void set_score(double score);
-
     private:
         std::string member_;
         double score_ = 0.0;
