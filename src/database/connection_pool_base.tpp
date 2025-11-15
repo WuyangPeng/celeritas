@@ -193,9 +193,9 @@ celeritas::connection_pool_base<SessionType>::session_shared_ptr celeritas::conn
 
     if (!sessions_.empty())
     {
-        auto session = sessions_.front();
+        auto session = sessions_.back();
         session->set_last_heartbeat();
-        sessions_.pop_front();
+        sessions_.pop_back();
 
         return session;
     }

@@ -59,7 +59,7 @@ namespace celeritas
         [[nodiscard]] bool_awaitable_type is_health() override;
 
     private:
-        using session_container_type = std::deque<session_shared_ptr>;
+        using session_container_type = std::vector<session_shared_ptr>;
         using waiter_type = boost::asio::any_completion_handler<void(session_shared_ptr)>;
         using self_shared_ptr = std::shared_ptr<base_type>;
 
