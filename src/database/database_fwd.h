@@ -30,6 +30,6 @@ namespace celeritas
     template <database_data_type Type>
     struct database_data_Type_traits;
 
-    constexpr auto cleanup_database_timer = std::chrono::hours(1);
+    constexpr auto cleanup_database_timer = std::chrono::minutes(30);
     constexpr auto cleanup_database_expired_timer = std::chrono::hours(1);
 }
