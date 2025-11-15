@@ -52,6 +52,36 @@ int celeritas::redis_reply::to_integer() const
     throw celeritas_error("Redis reply type mismatch: expected INTEGER");
 }
 
+celeritas::redis_reply::optional_int celeritas::redis_reply::to_optional_int() const
+{
+    if (redis_reply_->type == REDIS_REPLY_NIL)
+    {
+        return std::nullopt;
+    }
+
+    if (redis_reply_->type == REDIS_REPLY_INTEGER)
+    {
+        return static_cast<int>(redis_reply_->integer);
+    }
+
+    throw celeritas_error("Redis reply type mismatch: expected INTEGER");
+}
+
+celeritas::redis_reply::optional_double celeritas::redis_reply::to_optional_double() const
+{
+    if (redis_reply_->type == REDIS_REPLY_NIL)
+    {
+        return std::nullopt;
+    }
+
+    if (redis_reply_->type == REDIS_REPLY_DOUBLE)
+    {
+        return static_cast<int>(redis_reply_->dval);
+    }
+
+    throw celeritas_error("Redis reply type mismatch: expected DOUBLE");
+}
+
 celeritas::redis_reply::optional_string celeritas::redis_reply::to_optional_string() const
 {
     if (redis_reply_->type == REDIS_REPLY_NIL)

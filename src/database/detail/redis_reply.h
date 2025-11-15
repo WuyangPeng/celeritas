@@ -16,6 +16,8 @@ namespace celeritas
         using optional_string = std::optional<std::string>;
         using array_type = std::vector<std::string>;
         using map_type = std::map<std::string, std::string>;
+        using optional_double = std::optional<double>;
+        using optional_int = std::optional<int>;
 
         explicit redis_reply(redis_context& redis_context, const std::string& command);
 
@@ -32,6 +34,10 @@ namespace celeritas
         [[nodiscard]] ::redisReply* GetRedisReply() noexcept;
 
         [[nodiscard]] int to_integer() const;
+
+        [[nodiscard]] optional_int to_optional_int() const;
+
+        [[nodiscard]] optional_double to_optional_double() const;
 
         [[nodiscard]] optional_string to_optional_string() const;
 

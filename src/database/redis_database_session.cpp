@@ -25,7 +25,8 @@ celeritas::redis_database_session::redis_database_session(const std::string_view
       redis_string_commands_{ *this },
       redis_hash_commands_{ *this },
       redis_list_commands_{ *this },
-      redis_set_commands_{ *this }
+      redis_set_commands_{ *this },
+      redis_sorted_set_commands_{ *this }
 {
 }
 
@@ -91,6 +92,11 @@ celeritas::redis_list_commands& celeritas::redis_database_session::get_redis_lis
 celeritas::redis_set_commands& celeritas::redis_database_session::get_redis_set_commands()
 {
     return redis_set_commands_;
+}
+
+celeritas::redis_sorted_set_commands& celeritas::redis_database_session::get_redis_sorted_set_commands()
+{
+    return redis_sorted_set_commands_;
 }
 
 std::string celeritas::redis_database_session::get_prefixed_key(const std::string& key) const
@@ -171,6 +177,28 @@ celeritas::redis_database_session::map_type_awaitable_type celeritas::redis_data
     const redis_reply redis_reply{ *redis_context_.get(), command };
 
     co_return redis_reply.to_map();
+}
+
+celeritas::redis_database_session::optional_double_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_double(const std::string& command) const
+{
+    check_initialized();
+
+    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
+
+    const redis_reply redis_reply{ *redis_context_.get(), command };
+
+    co_return redis_reply.to_optional_double();
+}
+
+celeritas::redis_database_session::int_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_int(const std::string& command) const
+{
+    check_initialized();
+
+    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
+
+    const redis_reply redis_reply{ *redis_context_.get(), command };
+
+    co_return redis_reply.to_optional_int();
 }
 
 std::string celeritas::redis_database_session::get_expire_seconds_command(int expire_seconds) const

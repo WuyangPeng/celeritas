@@ -1,0 +1,26 @@
+﻿#pragma once
+
+#include <string>
+
+namespace celeritas
+{
+    class sorted_set_member_score
+    {
+    public:
+        using class_type = sorted_set_member_score;
+
+        sorted_set_member_score(const std::string& member, double score);
+
+        [[nodiscard]] std::string get_member() const;
+
+        [[nodiscard]] double get_score() const;
+
+        void set_member(const std::string& member);
+
+        void set_score(double score);
+
+    private:
+        std::string member_;
+        double score_ = 0.0;
+    };
+}

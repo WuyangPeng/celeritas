@@ -5,6 +5,7 @@
 #include "redis_key_commands.h"
 #include "redis_list_commands.h"
 #include "redis_set_commands.h"
+#include "redis_sorted_set_commands.h"
 #include "redis_string_commands.h"
 #include "detail/redis_context.h"
 
@@ -22,6 +23,8 @@ namespace celeritas
         using base_type = database_session;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using int_awaitable_type = boost::asio::awaitable<int>;
+        using optional_double = std::optional<double>;
+        using optional_double_awaitable_type = boost::asio::awaitable<optional_double>;
         using optional_string = std::optional<std::string>;
         using optional_string_awaitable_type = boost::asio::awaitable<optional_string>;
         using io_context_type = boost::asio::io_context;
@@ -29,6 +32,8 @@ namespace celeritas
         using array_type_awaitable_type = boost::asio::awaitable<array_type>;
         using map_type = std::map<std::string, std::string>;
         using map_type_awaitable_type = boost::asio::awaitable<map_type>;
+        using optional_int = std::optional<int>;
+        using optional_int_awaitable_type = boost::asio::awaitable<optional_int>;
 
         redis_database_session(const std::string_view& host,
                                int port,
@@ -70,6 +75,9 @@ namespace celeritas
         // 集合操作
         [[nodiscard]] redis_set_commands& get_redis_set_commands();
 
+        // 有序集合操作
+        [[nodiscard]] redis_sorted_set_commands& get_redis_sorted_set_commands();
+
         [[nodiscard]] std::string get_prefixed_key(const std::string& key) const;
 
         [[nodiscard]] std::string get_expire_seconds_command(int expire_seconds) const;
@@ -83,6 +91,10 @@ namespace celeritas
         [[nodiscard]] array_type_awaitable_type async_execute_command_return_array_type(const std::string& command) const;
 
         [[nodiscard]] map_type_awaitable_type async_execute_command_return_map_type(const std::string& command) const;
+
+        [[nodiscard]] optional_double_awaitable_type async_execute_command_return_optional_double(const std::string& command) const;
+
+        [[nodiscard]] int_awaitable_type async_execute_command_return_optional_int(const std::string& command) const;
 
     private:
         using redis_context_unique_ptr = std::unique_ptr<redis_context>;
@@ -106,5 +118,6 @@ namespace celeritas
         redis_hash_commands redis_hash_commands_;
         redis_list_commands redis_list_commands_;
         redis_set_commands redis_set_commands_;
+        redis_sorted_set_commands redis_sorted_set_commands_;
     };
 }
