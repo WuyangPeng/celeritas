@@ -2,7 +2,7 @@
 
 add_executable(generate_database_tools ${SRC_DIR_LIST})
 
-target_link_libraries(generate_database_tools PRIVATE common database boost mongo redis)
+target_link_libraries(generate_database_tools PRIVATE common boost)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
