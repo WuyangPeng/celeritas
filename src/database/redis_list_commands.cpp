@@ -18,6 +18,11 @@ celeritas::redis_list_commands::int_awaitable_type celeritas::redis_list_command
 
 celeritas::redis_list_commands::int_awaitable_type celeritas::redis_list_commands::async_left_push_many(const std::string& key, const key_container& values) const
 {
+    if (values.empty())
+    {
+        co_return 0;
+    }
+
     const auto prefixed_key = get_prefixed_key(key);
 
     const auto command = "LPUSH " + prefixed_key + get_fields_command(values);
@@ -36,6 +41,11 @@ celeritas::redis_list_commands::int_awaitable_type celeritas::redis_list_command
 
 celeritas::redis_list_commands::int_awaitable_type celeritas::redis_list_commands::async_right_push_many(const std::string& key, const key_container& values) const
 {
+    if (values.empty())
+    {
+        co_return 0;
+    }
+
     const auto prefixed_key = get_prefixed_key(key);
 
     const auto command = "RPUSH " + prefixed_key + get_fields_command(values);
@@ -109,5 +119,5 @@ celeritas::redis_list_commands::blocking_left_pop_awaitable_type celeritas::redi
         throw celeritas_error("blocking left pop  returned an array with an unexpected number of elements.");
     }
 
-    co_return blocking_left_pop_result_type{ std::make_pair(std::move(array_result[0]), std::move(array_result[1])) };
+    co_return blocking_left_pop_result_type{ { array_result[0], array_result[1] } };
 }
