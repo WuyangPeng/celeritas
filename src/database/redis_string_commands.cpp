@@ -22,7 +22,7 @@ celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_co
     co_return false;
 }
 
-celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_commands::async_set_not_exists(const std::string& key, const std::string& value, int expire_seconds) const
+celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_commands::async_set_not_exists(const std::string& key, const std::string& value, const int expire_seconds) const
 {
     const auto prefixed_key = get_prefixed_key(key);
 
@@ -44,7 +44,7 @@ celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_co
     co_return false;
 }
 
-celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_commands::async_set_exists(const std::string& key, const std::string& value, int expire_seconds) const
+celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_commands::async_set_exists(const std::string& key, const std::string& value, const int expire_seconds) const
 {
     const auto prefixed_key = get_prefixed_key(key);
 
@@ -145,7 +145,7 @@ celeritas::redis_string_commands::array_awaitable_type celeritas::redis_string_c
 celeritas::redis_string_commands::optional_string_awaitable_type celeritas::redis_string_commands::async_get_set(const std::string& key, const std::string& value) const
 {
     const auto prefixed_key = get_prefixed_key(key);
-    const auto get_set_command = std::string("GETSET ") + prefixed_key;
+    const auto get_set_command = std::string("GETSET ") + prefixed_key + " \"" + value + "\"";
 
     co_return co_await async_execute_command_return_optional_string(get_set_command);
 }
