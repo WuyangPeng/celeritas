@@ -4,6 +4,7 @@
 
 #include <boost/asio/awaitable.hpp>
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -34,10 +35,16 @@ namespace celeritas
         using optional_string = std::optional<std::string>;
         using optional_string_awaitable_type = boost::asio::awaitable<optional_string>;
         using array_type_awaitable_type = boost::asio::awaitable<key_container>;
+        using map_type = std::map<std::string, std::string>;
+        using map_type_awaitable_type = boost::asio::awaitable<map_type>;
 
         [[nodiscard]] std::string get_keys_command(const key_container& keys) const;
 
+        [[nodiscard]] std::string get_fields_command(const key_container& fields) const;
+
         [[nodiscard]] std::string get_keys_value_command(const key_value_container& key_values) const;
+
+        [[nodiscard]] std::string get_fields_value_command(const key_value_container& field_values) const;
 
         [[nodiscard]] redis_database_session& get_redis_database_session();
 
@@ -52,6 +59,8 @@ namespace celeritas
         [[nodiscard]] optional_string_awaitable_type async_execute_command_return_optional_string(const std::string& command) const;
 
         [[nodiscard]] array_type_awaitable_type async_execute_command_return_array_type(const std::string& command) const;
+
+        [[nodiscard]] map_type_awaitable_type async_execute_command_return_map_type(const std::string& command) const;
 
     private:
         redis_database_session& session_;

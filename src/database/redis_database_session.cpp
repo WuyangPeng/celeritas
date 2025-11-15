@@ -22,7 +22,8 @@ celeritas::redis_database_session::redis_database_session(const std::string_view
       db_name_{ db_name },
       expire_seconds_{ expire_seconds },
       redis_key_commands_{ *this },
-      redis_string_commands_{ *this }
+      redis_string_commands_{ *this },
+      redis_hash_commands_{ *this }
 {
 }
 
@@ -73,6 +74,11 @@ celeritas::redis_key_commands& celeritas::redis_database_session::get_redis_key_
 celeritas::redis_string_commands& celeritas::redis_database_session::get_redis_string_commands()
 {
     return redis_string_commands_;
+}
+
+celeritas::redis_hash_commands& celeritas::redis_database_session::get_redis_hash_commands()
+{
+    return redis_hash_commands_;
 }
 
 std::string celeritas::redis_database_session::get_prefixed_key(const std::string& key) const
@@ -142,6 +148,17 @@ celeritas::redis_database_session::array_type_awaitable_type celeritas::redis_da
     const redis_reply redis_reply{ *redis_context_.get(), command };
 
     co_return redis_reply.to_array();
+}
+
+celeritas::redis_database_session::map_type_awaitable_type celeritas::redis_database_session::async_execute_command_return_map_type(const std::string& command) const
+{
+    check_initialized();
+
+    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
+
+    const redis_reply redis_reply{ *redis_context_.get(), command };
+
+    co_return redis_reply.to_map();
 }
 
 std::string celeritas::redis_database_session::get_expire_seconds_command(int expire_seconds) const

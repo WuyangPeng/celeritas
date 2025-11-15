@@ -17,6 +17,17 @@ std::string celeritas::redis_commands::get_keys_command(const key_container& key
     return command;
 }
 
+std::string celeritas::redis_commands::get_fields_command(const key_container& fields) const
+{
+    std::string command{};
+    for (const auto& field : fields)
+    {
+        command += " " + field;
+    }
+
+    return command;
+}
+
 std::string celeritas::redis_commands::get_keys_value_command(const key_value_container& key_values) const
 {
     std::string command{};
@@ -25,6 +36,17 @@ std::string celeritas::redis_commands::get_keys_value_command(const key_value_co
         const auto prefixed_key = session_.get_prefixed_key(key);
 
         command += " " + prefixed_key + " \"" + value + "\"";
+    }
+
+    return command;
+}
+
+std::string celeritas::redis_commands::get_fields_value_command(const key_value_container& field_values) const
+{
+    std::string command{};
+    for (const auto& [field, value] : field_values)
+    {
+        command += " " + field + " \"" + value + "\"";
     }
 
     return command;
@@ -63,4 +85,9 @@ celeritas::redis_commands::optional_string_awaitable_type celeritas::redis_comma
 celeritas::redis_commands::array_type_awaitable_type celeritas::redis_commands::async_execute_command_return_array_type(const std::string& command) const
 {
     co_return co_await session_.async_execute_command_return_array_type(command);
+}
+
+celeritas::redis_commands::map_type_awaitable_type celeritas::redis_commands::async_execute_command_return_map_type(const std::string& command) const
+{
+    co_return co_await session_.async_execute_command_return_map_type(command);
 }

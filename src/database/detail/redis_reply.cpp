@@ -1,11 +1,14 @@
 ﻿#include "redis_reply.h"
 #include "common/celeritas_error.h"
+#include "common/logger.h"
 
 using namespace std::literals;
 
 celeritas::redis_reply::redis_reply(redis_context& redis_context, const std::string& command)
     : redis_reply_{ static_cast<redisReply*>(::redisCommand(redis_context.get_redis_context(), command.c_str())) }
 {
+    LOG_CHANNEL(database_channel, debug) << "redis command: " << command;
+
     if (redis_reply_ == nullptr)
     {
         throw celeritas_error("command failed (NULL reply):  "s + redis_context.get_redis_context()->errstr);

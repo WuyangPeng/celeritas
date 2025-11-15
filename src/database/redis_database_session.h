@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "database_session.h"
+#include "redis_hash_commands.h"
 #include "redis_key_commands.h"
 #include "redis_string_commands.h"
 #include "detail/redis_context.h"
@@ -24,6 +25,8 @@ namespace celeritas
         using io_context_type = boost::asio::io_context;
         using array_type = std::vector<std::string>;
         using array_type_awaitable_type = boost::asio::awaitable<array_type>;
+        using map_type = std::map<std::string, std::string>;
+        using map_type_awaitable_type = boost::asio::awaitable<map_type>;
 
         redis_database_session(const std::string_view& host,
                                int port,
@@ -56,6 +59,9 @@ namespace celeritas
         // 字符串操作
         [[nodiscard]] redis_string_commands& get_redis_string_commands();
 
+        // 哈希操作
+        [[nodiscard]] redis_hash_commands& get_redis_hash_commands();
+
         [[nodiscard]] std::string get_prefixed_key(const std::string& key) const;
 
         [[nodiscard]] std::string get_expire_seconds_command(int expire_seconds) const;
@@ -67,6 +73,8 @@ namespace celeritas
         [[nodiscard]] optional_string_awaitable_type async_execute_command_return_optional_string(const std::string& command) const;
 
         [[nodiscard]] array_type_awaitable_type async_execute_command_return_array_type(const std::string& command) const;
+
+        [[nodiscard]] map_type_awaitable_type async_execute_command_return_map_type(const std::string& command) const;
 
     private:
         using redis_context_unique_ptr = std::unique_ptr<redis_context>;
@@ -87,5 +95,6 @@ namespace celeritas
 
         redis_key_commands redis_key_commands_;
         redis_string_commands redis_string_commands_;
+        redis_hash_commands redis_hash_commands_;
     };
 }
