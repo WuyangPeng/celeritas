@@ -74,7 +74,7 @@ namespace celeritas
         [[nodiscard]] std::string get_quotation_mark_string() const;
 
     private:
-        basis_database(std::string_view fieldName, database_data_type dataType, const std::any& value);
+        basis_database(std::string_view fieldName, database_data_type dataType, std::any value);
 
         std::string_view field_name_;
         database_data_type data_type_;

@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 namespace celeritas
 {
     enum class database_data_type

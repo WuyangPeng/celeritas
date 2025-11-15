@@ -8,6 +8,7 @@
 #include "google/protobuf/descriptor.pb.h"
 
 #include <boost/numeric/conversion/cast.hpp>
+#include <utility>
 
 celeritas::basis_database::basis_database(const std::string_view fieldName)
     : class_type{ fieldName, database_data_type::null_type, nullptr }
@@ -242,7 +243,7 @@ std::string celeritas::basis_database::get_quotation_mark_string() const
     }
 }
 
-celeritas::basis_database::basis_database(const std::string_view fieldName, const database_data_type dataType, const std::any& value)
-    : field_name_{ fieldName }, data_type_{ dataType }, value_{ value }
+celeritas::basis_database::basis_database(const std::string_view fieldName, const database_data_type dataType, std::any value)
+    : field_name_{ fieldName }, data_type_{ dataType }, value_{ std::move(value) }
 {
 }

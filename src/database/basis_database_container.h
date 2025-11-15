@@ -1,0 +1,42 @@
+﻿#pragma once
+
+#include "basis_database.h"
+
+#include <vector>
+
+namespace celeritas
+{
+    class basis_database_container
+    {
+    public:
+        using class_type = basis_database_container;
+
+        using object_container = std::vector<basis_database>;
+        using object_container_const_iter = object_container::const_iterator;
+
+        basis_database_container() noexcept = default;
+
+        explicit basis_database_container(const basis_database& basisDatabase);
+
+        explicit basis_database_container(object_container container);
+
+        [[nodiscard]] object_container get_container() const;
+
+        void modify(const basis_database& basis_database);
+
+        void set(const object_container& container);
+
+        void clear();
+
+        [[nodiscard]] std::any get_any_value(std::string_view field_name) const;
+
+        [[nodiscard]] object_container_const_iter begin() const noexcept;
+
+        [[nodiscard]] object_container_const_iter end() const noexcept;
+
+        [[nodiscard]] int get_size() const;
+
+    private:
+        object_container container_;
+    };
+}

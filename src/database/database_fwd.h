@@ -22,6 +22,9 @@ namespace celeritas
     class redis_sorted_set_commands;
     class sorted_set_member_score;
     class basis_database;
+    class basis_database_container;
+    class basis_database_manager;
+    class database_entity;
 
     enum class database_data_type;
     enum class database_index_type;
