@@ -3,7 +3,7 @@
 #include "protobuf_compiler_importer.h"
 #include "source_proto_generator.h"
 #include "common/logger.h"
-#include "tools/tools_fwd.h"
+#include "generate_handler_tools/tools_fwd.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem/operations.hpp>

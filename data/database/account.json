@@ -1,0 +1,29 @@
+﻿{
+  "test": {
+    "database_name": "test",
+    "entity": {
+      "user_id": {
+        "data_type": "int64",
+        "index_type": "key"
+      },
+      "chapter_id": {
+        "data_type": "int32"
+      },
+      "chapter_name": {
+        "data_type": "string"
+      },
+      "chance_winning": {
+        "data_type": "double"
+      },
+      "winning": {
+        "data_type": "bool"
+      },
+      "currency": {
+        "data_type": "int64_count"
+      },
+      "count": {
+        "data_type": "int32_count"
+      }
+    }
+  }
+}

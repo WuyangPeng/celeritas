@@ -1,5 +1,5 @@
 ﻿#include "header_proto_generator.h"
-#include "tools/tools_fwd.h"
+#include "generate_handler_tools/tools_fwd.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem/path.hpp>

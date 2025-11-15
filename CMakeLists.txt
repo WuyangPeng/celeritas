@@ -255,7 +255,7 @@ target_link_libraries(openssl INTERFACE ${LIB_PREFIX}ssl ${LIB_PREFIX}crypto)
 add_subdirectory(cmake/common)
 
 # 辅助
-add_subdirectory(cmake/tools)
+add_subdirectory(cmake/generate_handler_tools)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
@@ -268,17 +268,17 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             # 添加创建目录的命令
             COMMAND ${CMAKE_COMMAND} -E make_directory ${HANDLER_GENERATED_DIR}
 
-            # COMMAND $<TARGET_FILE:tools> 会获取编译好的 tools 可执行文件的路径
-            COMMAND $<TARGET_FILE:tools>
+            # COMMAND $<TARGET_FILE:generate_handler_tools> 会获取编译好的 generate_handler_tools 可执行文件的路径
+            COMMAND $<TARGET_FILE:generate_handler_tools>
 
-            # 将生成目录作为参数传递给 tools
+            # 将生成目录作为参数传递给 generate_handler_tools
             --process=generate_handler
             --proto_directory=${CMAKE_CURRENT_SOURCE_DIR}/proto
             --output_directory=${HANDLER_GENERATED_DIR}
             --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template
 
-            # 依赖于 tools 目标本身，确保 tools 在执行前已编译完成
-            DEPENDS tools
+            # 依赖于 generate_handler_tools 目标本身，确保 generate_handler_tools 在执行前已编译完成
+            DEPENDS generate_handler_tools
 
             COMMENT "Running tools to generate handler source code into: ${HANDLER_GENERATED_DIR}"
     )
@@ -288,17 +288,17 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             # 添加创建目录的命令
             COMMAND ${CMAKE_COMMAND} -E make_directory ${HANDLER_GENERATED_DIR}
 
-            # COMMAND $<TARGET_FILE:tools> 会获取编译好的 tools 可执行文件的路径
-            COMMAND $<TARGET_FILE:tools>
+            # COMMAND $<TARGET_FILE:generate_handler_tools> 会获取编译好的 generate_handler_tools 可执行文件的路径
+            COMMAND $<TARGET_FILE:generate_handler_tools>
 
-            # 将生成目录作为参数传递给 tools
+            # 将生成目录作为参数传递给 generate_handler_tools
             --process=generate_handler_header
             --handler_directory=${CMAKE_CURRENT_SOURCE_DIR}/src/handler
             --output_directory=${HANDLER_GENERATED_DIR}
             --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template
 
-            # 依赖于 tools 目标本身，确保 tools 在执行前已编译完成
-            DEPENDS tools generate_handler_code
+            # 依赖于 generate_handler_tools 目标本身，确保 generate_handler_tools 在执行前已编译完成
+            DEPENDS generate_handler_tools generate_handler_code
 
             COMMENT "Running tools to generate handler header code into: ${HANDLER_GENERATED_DIR}"
     )
@@ -308,17 +308,17 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             # 添加创建目录的命令
             COMMAND ${CMAKE_COMMAND} -E make_directory ${HANDLER_GENERATED_DIR}
 
-            # COMMAND $<TARGET_FILE:tools> 会获取编译好的 tools 可执行文件的路径
-            COMMAND $<TARGET_FILE:tools>
+            # COMMAND $<TARGET_FILE:generate_handler_tools> 会获取编译好的 generate_handler_tools 可执行文件的路径
+            COMMAND $<TARGET_FILE:generate_handler_tools>
 
-            # 将生成目录作为参数传递给 tools
+            # 将生成目录作为参数传递给 generate_handler_tools
             --process=generate_register_handler_helper
             --handler_directory=${CMAKE_CURRENT_SOURCE_DIR}/src/handler
             --output_directory=${INITIALIZER_GENERATED_DIR}
             --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template
 
-            # 依赖于 tools 目标本身，确保 tools 在执行前已编译完成
-            DEPENDS tools generate_handler_code generate_handler_header_code
+            # 依赖于 generate_handler_tools 目标本身，确保 generate_handler_tools 在执行前已编译完成
+            DEPENDS generate_handler_tools generate_handler_code generate_handler_header_code
 
             COMMENT "Running tools to generate register handler helper code into: ${INITIALIZER_GENERATED_DIR}"
     )
