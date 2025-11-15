@@ -3,6 +3,7 @@
 #include "database_session.h"
 #include "redis_hash_commands.h"
 #include "redis_key_commands.h"
+#include "redis_list_commands.h"
 #include "redis_string_commands.h"
 #include "detail/redis_context.h"
 
@@ -62,6 +63,9 @@ namespace celeritas
         // 哈希操作
         [[nodiscard]] redis_hash_commands& get_redis_hash_commands();
 
+        // 列表操作
+        [[nodiscard]] redis_list_commands& get_redis_list_commands();
+
         [[nodiscard]] std::string get_prefixed_key(const std::string& key) const;
 
         [[nodiscard]] std::string get_expire_seconds_command(int expire_seconds) const;
@@ -96,5 +100,6 @@ namespace celeritas
         redis_key_commands redis_key_commands_;
         redis_string_commands redis_string_commands_;
         redis_hash_commands redis_hash_commands_;
+        redis_list_commands redis_list_commands_;
     };
 }

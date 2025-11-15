@@ -23,7 +23,8 @@ celeritas::redis_database_session::redis_database_session(const std::string_view
       expire_seconds_{ expire_seconds },
       redis_key_commands_{ *this },
       redis_string_commands_{ *this },
-      redis_hash_commands_{ *this }
+      redis_hash_commands_{ *this },
+      redis_list_commands_{ *this }
 {
 }
 
@@ -79,6 +80,11 @@ celeritas::redis_string_commands& celeritas::redis_database_session::get_redis_s
 celeritas::redis_hash_commands& celeritas::redis_database_session::get_redis_hash_commands()
 {
     return redis_hash_commands_;
+}
+
+celeritas::redis_list_commands& celeritas::redis_database_session::get_redis_list_commands()
+{
+    return redis_list_commands_;
 }
 
 std::string celeritas::redis_database_session::get_prefixed_key(const std::string& key) const
