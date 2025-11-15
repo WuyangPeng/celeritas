@@ -1,19 +1,20 @@
 ﻿#pragma once
 
 #include "database_fwd.h"
+#include "redis_commands.h"
 
 #include <boost/asio/awaitable.hpp>
 
 namespace celeritas
 {
-    class redis_key_commands
+    class redis_key_commands final : public redis_commands
     {
     public:
         using class_tye = redis_key_commands;
+        using base_type = redis_commands;
         using int_awaitable_type = boost::asio::awaitable<int>;
         using string_awaitable_type = boost::asio::awaitable<std::string>;
         using bool_awaitable_type = boost::asio::awaitable<bool>;
-        using container = std::vector<std::string>;
 
         explicit redis_key_commands(redis_database_session& session) noexcept;
 
@@ -21,7 +22,7 @@ namespace celeritas
         [[nodiscard]] int_awaitable_type async_delete(const std::string& key) const;
 
         // 删除多个键是一个原子性操作，要么全部执行成功，要么全部不执行
-        [[nodiscard]] int_awaitable_type async_delete_many(const container& keys) const;
+        [[nodiscard]] int_awaitable_type async_delete_many(const key_container& keys) const;
 
         // 设置键的过期时间（秒）
         [[nodiscard]] bool_awaitable_type set_expire_seconds(const std::string& key, int expire_seconds) const;
@@ -34,18 +35,12 @@ namespace celeritas
         [[nodiscard]] bool_awaitable_type is_exists(const std::string& key) const;
 
         // 返回存在的个数
-        [[nodiscard]] int_awaitable_type is_exists_many(const container& keys) const;
+        [[nodiscard]] int_awaitable_type is_exists_many(const key_container& keys) const;
 
         // 重命名键
         [[nodiscard]] bool_awaitable_type rename(const std::string& old_key, const std::string& new_key) const;
 
         // 获取键存储的数据类型
         [[nodiscard]] string_awaitable_type get_type(const std::string& key) const;
-
-    private:
-        [[nodiscard]] std::string get_keys_command(const container& keys) const;
-
-    private:
-        redis_database_session& session_;
     };
 }

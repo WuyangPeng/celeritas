@@ -2,6 +2,7 @@
 
 #include "database_session.h"
 #include "redis_key_commands.h"
+#include "redis_string_commands.h"
 #include "detail/redis_context.h"
 
 #include <boost/asio.hpp>
@@ -18,9 +19,11 @@ namespace celeritas
         using base_type = database_session;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using int_awaitable_type = boost::asio::awaitable<int>;
-        using string_awaitable_type = boost::asio::awaitable<std::string>;
+        using optional_string = std::optional<std::string>;
+        using optional_string_awaitable_type = boost::asio::awaitable<optional_string>;
         using io_context_type = boost::asio::io_context;
-        using container = std::vector<std::string>;
+        using array_type = std::vector<std::string>;
+        using array_type_awaitable_type = boost::asio::awaitable<array_type>;
 
         redis_database_session(const std::string_view& host,
                                int port,
@@ -50,20 +53,23 @@ namespace celeritas
         // 键操作
         [[nodiscard]] redis_key_commands& get_redis_key_commands();
 
-        [[nodiscard]] void_awaitable_type async_set(const std::string& key, const std::string& value, int expire_seconds = 0);
+        // 字符串操作
+        [[nodiscard]] redis_string_commands& get_redis_string_commands();
 
         [[nodiscard]] std::string get_prefixed_key(const std::string& key) const;
+
+        [[nodiscard]] std::string get_expire_seconds_command(int expire_seconds) const;
 
         [[nodiscard]] int_awaitable_type async_execute_command_return_int(const std::string& command) const;
 
         [[nodiscard]] void_awaitable_type async_execute_command_return_void(const std::string& command) const;
 
-        [[nodiscard]] string_awaitable_type async_execute_command_return_string(const std::string& command) const;
+        [[nodiscard]] optional_string_awaitable_type async_execute_command_return_optional_string(const std::string& command) const;
+
+        [[nodiscard]] array_type_awaitable_type async_execute_command_return_array_type(const std::string& command) const;
 
     private:
         using redis_context_unique_ptr = std::unique_ptr<redis_context>;
-
-        [[nodiscard]] std::string get_expire_seconds_command(int expire_seconds) const;
 
         void check_initialized() const;
 
@@ -80,5 +86,6 @@ namespace celeritas
         int expire_seconds_ = 0;
 
         redis_key_commands redis_key_commands_;
+        redis_string_commands redis_string_commands_;
     };
 }

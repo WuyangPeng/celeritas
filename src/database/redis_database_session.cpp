@@ -21,7 +21,8 @@ celeritas::redis_database_session::redis_database_session(const std::string_view
       password_{ password },
       db_name_{ db_name },
       expire_seconds_{ expire_seconds },
-      redis_key_commands_{ *this }
+      redis_key_commands_{ *this },
+      redis_string_commands_{ *this }
 {
 }
 
@@ -69,15 +70,9 @@ celeritas::redis_key_commands& celeritas::redis_database_session::get_redis_key_
     return redis_key_commands_;
 }
 
-celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::async_set(const std::string& key, const std::string& value, const int expire_seconds)
+celeritas::redis_string_commands& celeritas::redis_database_session::get_redis_string_commands()
 {
-    const auto prefixed_key = get_prefixed_key(key);
-
-    const auto set_command = std::string("SET ") + prefixed_key + " \"" + value + "\"" + get_expire_seconds_command(expire_seconds);
-
-    co_await async_execute_command_return_int(set_command);
-
-    co_return;
+    return redis_string_commands_;
 }
 
 std::string celeritas::redis_database_session::get_prefixed_key(const std::string& key) const
@@ -127,7 +122,7 @@ void celeritas::redis_database_session::do_is_health()
     redis_reply redis_reply{ *redis_context_.get(), "PING" };
 }
 
-celeritas::redis_database_session::string_awaitable_type celeritas::redis_database_session::async_execute_command_return_string(const std::string& command) const
+celeritas::redis_database_session::optional_string_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_string(const std::string& command) const
 {
     check_initialized();
 
@@ -135,12 +130,18 @@ celeritas::redis_database_session::string_awaitable_type celeritas::redis_databa
 
     const redis_reply redis_reply{ *redis_context_.get(), command };
 
-    if (auto result = redis_reply.to_optional_string())
-    {
-        co_return *result;
-    }
+    co_return redis_reply.to_optional_string();
+}
 
-    co_return "";
+celeritas::redis_database_session::array_type_awaitable_type celeritas::redis_database_session::async_execute_command_return_array_type(const std::string& command) const
+{
+    check_initialized();
+
+    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
+
+    const redis_reply redis_reply{ *redis_context_.get(), command };
+
+    co_return redis_reply.to_array();
 }
 
 std::string celeritas::redis_database_session::get_expire_seconds_command(int expire_seconds) const
