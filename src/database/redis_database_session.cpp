@@ -190,7 +190,7 @@ celeritas::redis_database_session::optional_double_awaitable_type celeritas::red
     co_return redis_reply.to_optional_double();
 }
 
-celeritas::redis_database_session::int_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_int(const std::string& command) const
+celeritas::redis_database_session::optional_int_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_int(const std::string& command) const
 {
     check_initialized();
 

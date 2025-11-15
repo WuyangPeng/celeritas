@@ -94,7 +94,7 @@ namespace celeritas
 
         [[nodiscard]] optional_double_awaitable_type async_execute_command_return_optional_double(const std::string& command) const;
 
-        [[nodiscard]] int_awaitable_type async_execute_command_return_optional_int(const std::string& command) const;
+        [[nodiscard]] optional_int_awaitable_type async_execute_command_return_optional_int(const std::string& command) const;
 
     private:
         using redis_context_unique_ptr = std::unique_ptr<redis_context>;

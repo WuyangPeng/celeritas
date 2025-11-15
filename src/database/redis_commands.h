@@ -39,6 +39,8 @@ namespace celeritas
         using map_type_awaitable_type = boost::asio::awaitable<map_type>;
         using optional_double = std::optional<double>;
         using optional_double_awaitable_type = boost::asio::awaitable<optional_double>;
+        using optional_int = std::optional<int>;
+        using optional_int_awaitable_type = boost::asio::awaitable<optional_int>;
 
         [[nodiscard]] std::string get_keys_command(const key_container& keys) const;
 
@@ -66,7 +68,7 @@ namespace celeritas
 
         [[nodiscard]] optional_double_awaitable_type async_execute_command_return_optional_double(const std::string& command) const;
 
-        [[nodiscard]] int_awaitable_type async_execute_command_return_optional_int(const std::string& command) const;
+        [[nodiscard]] optional_int_awaitable_type async_execute_command_return_optional_int(const std::string& command) const;
 
     private:
         redis_database_session& session_;

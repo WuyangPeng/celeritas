@@ -97,7 +97,7 @@ celeritas::redis_commands::optional_double_awaitable_type celeritas::redis_comma
     co_return co_await session_.async_execute_command_return_optional_double(command);
 }
 
-celeritas::redis_commands::int_awaitable_type celeritas::redis_commands::async_execute_command_return_optional_int(const std::string& command) const
+celeritas::redis_commands::optional_int_awaitable_type celeritas::redis_commands::async_execute_command_return_optional_int(const std::string& command) const
 {
     co_return co_await session_.async_execute_command_return_optional_int(command);
 }
