@@ -1,18 +1,18 @@
 ﻿#include "process.h"
-#include "tools.h"
-#include "tools_fwd.h"
+#include "generate_handler_tools.h"
+#include "generate_handler_tools_fwd.h"
 #include "common/command_line_config.tpp"
 #include "common/logger.h"
 #include "server/server_fwd.h"
 
 #include <exception>
 
-celeritas::tools::tools()
-    : base_type{ tools_type }
+celeritas::generate_handler_tools::generate_handler_tools()
+    : base_type{ generate_handler_tools_type }
 {
 }
 
-void celeritas::tools::run(const int argc, char** argv) const
+void celeritas::generate_handler_tools::run(const int argc, char** argv) const
 {
     if (const command_line_config command_line_config{ argc,
                                                        argv,
@@ -28,7 +28,7 @@ void celeritas::tools::run(const int argc, char** argv) const
     }
 }
 
-void celeritas::tools::create_initializer(const command_line_config& command_line_config) const
+void celeritas::generate_handler_tools::create_initializer(const command_line_config& command_line_config) const
 {
     const auto process_unique_ptr = process::create_process(command_line_config);
     process_unique_ptr->execute();
@@ -38,7 +38,7 @@ int main(const int argc, char** argv)
 {
     try
     {
-        const celeritas::tools tools{};
+        const celeritas::generate_handler_tools tools{};
 
         tools.run(argc, argv);
     }

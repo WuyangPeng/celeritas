@@ -4,7 +4,7 @@
 
 namespace celeritas
 {
-    class tools;
+    class generate_handler_tools;
     class process;
     class generate_handler;
     class generate_handler_header;

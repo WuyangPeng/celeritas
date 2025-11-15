@@ -4,13 +4,13 @@
 
 namespace celeritas
 {
-    class tools final : public celeritas_main
+    class generate_database_tools final : public celeritas_main
     {
     public:
-        using class_type = tools;
+        using class_type = generate_database_tools;
         using base_type = celeritas_main;
 
-        tools();
+        generate_database_tools();
 
         void run(int argc, char** argv) const override;
 

@@ -330,6 +330,11 @@ add_subdirectory(cmake/config)
 add_subdirectory(cmake/worker_pool)
 add_subdirectory(cmake/message)
 add_subdirectory(cmake/database)
+
+# 辅助
+add_subdirectory(cmake/generate_database_tools)
+
+# 静态库
 add_subdirectory(cmake/network)
 add_subdirectory(cmake/service_registry)
 add_subdirectory(cmake/handler)

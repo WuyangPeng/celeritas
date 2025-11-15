@@ -1,6 +1,6 @@
 ﻿#include "header_template_file.h"
 #include "common/celeritas_error.h"
-#include "generate_handler_tools/tools_fwd.h"
+#include "generate_handler_tools/generate_handler_tools_fwd.h"
 
 #include <boost/filesystem/path.hpp>
 

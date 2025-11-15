@@ -1,5 +1,5 @@
 ﻿#include "generate_handler_header.h"
-#include "tools_fwd.h"
+#include "generate_handler_tools_fwd.h"
 #include "common/logger.h"
 #include "detail/generate_handler_header_file.h"
 

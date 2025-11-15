@@ -1,5 +1,5 @@
 ﻿#include "generate_handler.h"
-#include "tools_fwd.h"
+#include "generate_handler_tools_fwd.h"
 #include "common/celeritas_error.h"
 #include "common/command_line_config.tpp"
 #include "common/logger.h"
