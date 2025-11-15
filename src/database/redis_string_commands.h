@@ -14,7 +14,8 @@ namespace celeritas
         using base_type = redis_commands;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using string_awaitable_type = boost::asio::awaitable<std::string>;
-        using optional_string_awaitable_type = boost::asio::awaitable<std::optional<std::string> >;
+        using optional_string = std::optional<std::string>;
+        using optional_string_awaitable_type = boost::asio::awaitable<optional_string>;
         using int_awaitable_type = boost::asio::awaitable<int>;
         using bool_awaitable_type = boost::asio::awaitable<bool>;
         using array_type = std::vector<std::string>;

@@ -2,6 +2,7 @@
   <dictionary name="project">
     <words>
       <w>celeritas</w>
+      <w>nullopt</w>
     </words>
   </dictionary>
 </component>
