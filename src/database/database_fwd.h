@@ -21,6 +21,14 @@ namespace celeritas
     class redis_set_commands;
     class redis_sorted_set_commands;
     class sorted_set_member_score;
+    class basis_database;
+
+    enum class database_data_type;
+    enum class database_index_type;
+    enum class database_change_type;
+
+    template <database_data_type Type>
+    struct database_data_Type_traits;
 
     constexpr auto cleanup_database_timer = std::chrono::hours(1);
     constexpr auto cleanup_database_expired_timer = std::chrono::hours(1);
