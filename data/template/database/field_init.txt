@@ -1,0 +1,1 @@
+      ${entity}_{ traits::${entity_type}{} }${field_is_end}

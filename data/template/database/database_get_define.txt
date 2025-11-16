@@ -1,0 +1,4 @@
+celeritas::traits::${entity_type} celeritas::${class_name}::${is_bool}_${entity}() const ${entity_is_noexcept}
+{
+    return ${entity}_.get_value();
+}

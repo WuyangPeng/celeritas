@@ -1,0 +1,6 @@
+void celeritas::${class_name}::modify_${entity}(traits::param_type::${entity_type} ${entity})
+{
+    ${entity}_.modify_value(${entity});
+
+    add_modify(${entity}_describe, get_${entity}());
+}

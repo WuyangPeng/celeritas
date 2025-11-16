@@ -276,7 +276,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             --process=generate_handler
             --proto_directory=${CMAKE_CURRENT_SOURCE_DIR}/proto
             --output_directory=${HANDLER_GENERATED_DIR}
-            --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template
+            --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template/handler
 
             # 依赖于 generate_handler_tools 目标本身，确保 generate_handler_tools 在执行前已编译完成
             DEPENDS generate_handler_tools
@@ -296,7 +296,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             --process=generate_handler_header
             --handler_directory=${CMAKE_CURRENT_SOURCE_DIR}/src/handler
             --output_directory=${HANDLER_GENERATED_DIR}
-            --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template
+            --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template/handler
 
             # 依赖于 generate_handler_tools 目标本身，确保 generate_handler_tools 在执行前已编译完成
             DEPENDS generate_handler_tools generate_handler_code
@@ -316,7 +316,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             --process=generate_register_handler_helper
             --handler_directory=${CMAKE_CURRENT_SOURCE_DIR}/src/handler
             --output_directory=${INITIALIZER_GENERATED_DIR}
-            --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template
+            --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template/handler
 
             # 依赖于 generate_handler_tools 目标本身，确保 generate_handler_tools 在执行前已编译完成
             DEPENDS generate_handler_tools generate_handler_code generate_handler_header_code

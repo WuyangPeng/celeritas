@@ -1,0 +1,1 @@
+        [[nodiscard]] traits::${entity_type} ${is_bool}_${entity}() const${entity_is_noexcept};

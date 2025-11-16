@@ -83,5 +83,4 @@ namespace celeritas
         entity<currency_describe, database_data_type::int64_count_type> currency_;
         entity<count_describe, database_data_type::int32_count_type> count_;
     };
-    ;
 }
