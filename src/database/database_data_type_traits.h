@@ -100,7 +100,7 @@ namespace celeritas
         using Type = std::vector<std::shared_ptr<basis_database> >;
     };
 
-    namespace Traits
+    namespace traits
     {
         using string_type = database_data_Type_traits<database_data_type::string_type>::Type;
         using string_array_type = database_data_Type_traits<database_data_type::string_array_type>::Type;
@@ -114,7 +114,7 @@ namespace celeritas
         using double_array_type = database_data_Type_traits<database_data_type::double_array_type>::Type;
         using bool_type = database_data_Type_traits<database_data_type::bool_type>::Type;
 
-        namespace ParamType
+        namespace param_type
         {
             using string_type = boost::call_traits<string_type>::param_type;
             using string_array_type = boost::call_traits<string_array_type>::param_type;

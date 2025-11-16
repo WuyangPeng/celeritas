@@ -25,6 +25,7 @@ namespace celeritas
     class basis_database_container;
     class basis_database_manager;
     class database_entity;
+    class database_field;
 
     enum class database_data_type;
     enum class database_index_type;
@@ -32,6 +33,9 @@ namespace celeritas
 
     template <database_data_type Type>
     struct database_data_Type_traits;
+
+    template <const std::string_view& FieldName, database_data_type Type, database_index_type Index>
+    class entity;
 
     constexpr auto cleanup_database_timer = std::chrono::minutes(30);
     constexpr auto cleanup_database_expired_timer = std::chrono::hours(1);

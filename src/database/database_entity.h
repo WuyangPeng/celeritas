@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "basis_database_container.h"
+#include "basis_database_manager.h"
 #include "config/config_fwd.h"
 
 namespace celeritas
@@ -9,6 +10,7 @@ namespace celeritas
     {
     public:
         using class_type = database_entity;
+        using database_field_container = std::vector<database_field>;
 
         database_entity(database_type database_type, std::string_view database_name, const basis_database_container& key);
 
