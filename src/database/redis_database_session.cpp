@@ -355,7 +355,9 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
     {
         field_value.emplace_back(element.get_field_name(), element.get_string());
     }
-    co_await redis_hash_commands_.async_set_many(generate_key(database), field_value);
+    const auto key = generate_key(database);
+    co_await redis_hash_commands_.async_set_many(key, field_value);
+    co_await redis_key_commands_.set_expire_seconds(key, expire_seconds_);
     co_return;
 }
 

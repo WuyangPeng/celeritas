@@ -34,13 +34,16 @@ namespace celeritas
         using int_awaitable_type = boost::asio::awaitable<int>;
         using optional_string = std::optional<std::string>;
         using optional_string_awaitable_type = boost::asio::awaitable<optional_string>;
-        using array_type_awaitable_type = boost::asio::awaitable<key_container>;
+        using array_type = std::vector<std::string>;
+        using array_awaitable_type = boost::asio::awaitable<array_type>;
         using map_type = std::map<std::string, std::string>;
         using map_type_awaitable_type = boost::asio::awaitable<map_type>;
         using optional_double = std::optional<double>;
         using optional_double_awaitable_type = boost::asio::awaitable<optional_double>;
         using optional_int = std::optional<int>;
         using optional_int_awaitable_type = boost::asio::awaitable<optional_int>;
+        using string_awaitable_type = boost::asio::awaitable<std::string>;
+        using bool_awaitable_type = boost::asio::awaitable<bool>;
 
         [[nodiscard]] std::string get_keys_command(const key_container& keys) const;
 
@@ -62,13 +65,15 @@ namespace celeritas
 
         [[nodiscard]] optional_string_awaitable_type async_execute_command_return_optional_string(const std::string& command) const;
 
-        [[nodiscard]] array_type_awaitable_type async_execute_command_return_array_type(const std::string& command) const;
+        [[nodiscard]] array_awaitable_type async_execute_command_return_array_type(const std::string& command) const;
 
         [[nodiscard]] map_type_awaitable_type async_execute_command_return_map_type(const std::string& command) const;
 
         [[nodiscard]] optional_double_awaitable_type async_execute_command_return_optional_double(const std::string& command) const;
 
         [[nodiscard]] optional_int_awaitable_type async_execute_command_return_optional_int(const std::string& command) const;
+
+        [[nodiscard ]] bool_awaitable_type async_execute_command_is_ok(const std::string& command) const;
 
     private:
         redis_database_session& session_;

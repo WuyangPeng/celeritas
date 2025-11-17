@@ -82,7 +82,7 @@ celeritas::redis_commands::optional_string_awaitable_type celeritas::redis_comma
     co_return co_await session_.async_execute_command_return_optional_string(command);
 }
 
-celeritas::redis_commands::array_type_awaitable_type celeritas::redis_commands::async_execute_command_return_array_type(const std::string& command) const
+celeritas::redis_commands::array_awaitable_type celeritas::redis_commands::async_execute_command_return_array_type(const std::string& command) const
 {
     co_return co_await session_.async_execute_command_return_array_type(command);
 }
@@ -100,4 +100,15 @@ celeritas::redis_commands::optional_double_awaitable_type celeritas::redis_comma
 celeritas::redis_commands::optional_int_awaitable_type celeritas::redis_commands::async_execute_command_return_optional_int(const std::string& command) const
 {
     co_return co_await session_.async_execute_command_return_optional_int(command);
+}
+
+celeritas::redis_commands::bool_awaitable_type celeritas::redis_commands::async_execute_command_is_ok(const std::string& command) const
+{
+    if (const auto result = co_await async_execute_command_return_optional_string(command);
+        result && *result == "OK")
+    {
+        co_return true;
+    }
+
+    co_return false;
 }

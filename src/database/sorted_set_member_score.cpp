@@ -14,4 +14,3 @@ double celeritas::sorted_set_member_score::get_score() const
 {
     return score_;
 }
-
