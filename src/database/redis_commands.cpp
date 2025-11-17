@@ -112,3 +112,8 @@ celeritas::redis_commands::bool_awaitable_type celeritas::redis_commands::async_
 
     co_return false;
 }
+
+std::string celeritas::redis_commands::get_quoted_value_command(const std::string& value) const
+{
+    return "\"" + value + "\"";
+}

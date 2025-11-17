@@ -9,17 +9,13 @@ celeritas::redis_string_commands::redis_string_commands(redis_database_session& 
 
 celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_commands::async_set(const std::string& key, const std::string& value, const int expire_seconds) const
 {
-    const auto prefixed_key = get_prefixed_key(key);
-
-    const auto set_command = "SET " + prefixed_key + " \"" + value + "\"" + get_expire_seconds_command(expire_seconds);
+    const auto set_command = "SET " + get_prefixed_key(key) + " " + get_quoted_value_command(value) + get_expire_seconds_command(expire_seconds);
 
     co_return co_await async_execute_command_is_ok(set_command);
 }
 
 celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_commands::async_set_not_exists(const std::string& key, const std::string& value, const int expire_seconds) const
 {
-    const auto prefixed_key = get_prefixed_key(key);
-
     const auto expire_seconds_comma = get_expire_seconds_command(expire_seconds);
 
     if (expire_seconds_comma.empty())
@@ -27,16 +23,14 @@ celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_co
         throw celeritas_error("the expiration time is invalid.");
     }
 
-    const auto set_command = "SET " + prefixed_key + " \"" + value + "\"" + expire_seconds_comma + " NX";
+    const auto set_command = "SET " + get_prefixed_key(key) + " " + get_quoted_value_command(value) + expire_seconds_comma + " NX";
 
     co_return co_await async_execute_command_is_ok(set_command);
 }
 
 celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_commands::async_set_exists(const std::string& key, const std::string& value, const int expire_seconds) const
 {
-    const auto prefixed_key = get_prefixed_key(key);
-
-    const auto set_command = "SET " + prefixed_key + " \"" + value + "\"" + get_expire_seconds_command(expire_seconds) + " XX";
+    const auto set_command = "SET " + get_prefixed_key(key) + " " + get_quoted_value_command(value) + get_expire_seconds_command(expire_seconds) + " XX";
 
     co_return co_await async_execute_command_is_ok(set_command);
 }
@@ -55,53 +49,42 @@ celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_co
 
 celeritas::redis_string_commands::int_awaitable_type celeritas::redis_string_commands::async_append(const std::string& key, const std::string& value) const
 {
-    const auto prefixed_key = get_prefixed_key(key);
-
-    const auto append_command = "APPEND " + prefixed_key + " \"" + value + "\"";
+    const auto append_command = "APPEND " + get_prefixed_key(key) + " " + get_quoted_value_command(value);
 
     co_return co_await async_execute_command_return_int(append_command);
 }
 
 celeritas::redis_string_commands::int_awaitable_type celeritas::redis_string_commands::async_increment_by(const std::string& key, const int increment) const
 {
-    const auto prefixed_key = get_prefixed_key(key);
-
-    const auto increment_by_command = "INCRBY " + prefixed_key + " " + std::to_string(increment);
+    const auto increment_by_command = "INCRBY " + get_prefixed_key(key) + " " + std::to_string(increment);
 
     co_return co_await async_execute_command_return_int(increment_by_command);
 }
 
 celeritas::redis_string_commands::int_awaitable_type celeritas::redis_string_commands::async_increment(const std::string& key) const
 {
-    const auto prefixed_key = get_prefixed_key(key);
-
-    const auto increment_command = "INCR " + prefixed_key;
+    const auto increment_command = "INCR " + get_prefixed_key(key);
 
     co_return co_await async_execute_command_return_int(increment_command);
 }
 
 celeritas::redis_string_commands::int_awaitable_type celeritas::redis_string_commands::async_decrement_by(const std::string& key, const int decrement) const
 {
-    const auto prefixed_key = get_prefixed_key(key);
-
-    const auto decrement_by_command = std::string("DECRBY ") + prefixed_key + " " + std::to_string(decrement);
+    const auto decrement_by_command = std::string("DECRBY ") + get_prefixed_key(key) + " " + std::to_string(decrement);
 
     co_return co_await async_execute_command_return_int(decrement_by_command);
 }
 
 celeritas::redis_string_commands::int_awaitable_type celeritas::redis_string_commands::async_decrement(const std::string& key) const
 {
-    const auto prefixed_key = get_prefixed_key(key);
-
-    const auto decrement_command = "DECR " + prefixed_key;
+    const auto decrement_command = "DECR " + get_prefixed_key(key);
 
     co_return co_await async_execute_command_return_int(decrement_command);
 }
 
 celeritas::redis_string_commands::optional_string_awaitable_type celeritas::redis_string_commands::async_get(const std::string& key) const
 {
-    const auto prefixed_key = get_prefixed_key(key);
-    const auto get_command = std::string("GET ") + prefixed_key;
+    const auto get_command = std::string("GET ") + get_prefixed_key(key);
 
     co_return co_await async_execute_command_return_optional_string(get_command);
 }
@@ -120,8 +103,7 @@ celeritas::redis_string_commands::array_awaitable_type celeritas::redis_string_c
 
 celeritas::redis_string_commands::optional_string_awaitable_type celeritas::redis_string_commands::async_get_set(const std::string& key, const std::string& value) const
 {
-    const auto prefixed_key = get_prefixed_key(key);
-    const auto get_set_command = std::string("GETSET ") + prefixed_key + " \"" + value + "\"";
+    const auto get_set_command = std::string("GETSET ") + get_prefixed_key(key) + " " + get_quoted_value_command(value);
 
     co_return co_await async_execute_command_return_optional_string(get_set_command);
 }

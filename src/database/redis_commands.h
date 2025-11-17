@@ -75,6 +75,8 @@ namespace celeritas
 
         [[nodiscard ]] bool_awaitable_type async_execute_command_is_ok(const std::string& command) const;
 
+        [[nodiscard]] std::string get_quoted_value_command(const std::string& value) const;
+
     private:
         redis_database_session& session_;
     };
