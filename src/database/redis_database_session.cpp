@@ -8,6 +8,7 @@
 #include "common/logger.h"
 #include "config/database_type.h"
 #include "detail/redis_reply.h"
+#include "basis_database.tpp"
 
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>

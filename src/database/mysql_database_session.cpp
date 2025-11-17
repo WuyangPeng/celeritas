@@ -5,6 +5,7 @@
 #include "mysql_database_session.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
+#include "basis_database.tpp"
 
 #include <boost/asio/use_awaitable.hpp>
 #include <boost/algorithm/string/classification.hpp>
