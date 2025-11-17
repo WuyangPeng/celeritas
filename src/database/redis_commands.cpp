@@ -28,6 +28,17 @@ std::string celeritas::redis_commands::get_fields_command(const key_container& f
     return command;
 }
 
+std::string celeritas::redis_commands::get_values_command(const key_container& values) const
+{
+    std::string command{};
+    for (const auto& value : values)
+    {
+        command += " \"" + value + "\"";
+    }
+
+    return command;
+}
+
 std::string celeritas::redis_commands::get_keys_value_command(const key_value_container& key_values) const
 {
     std::string command{};

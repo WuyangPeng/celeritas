@@ -62,6 +62,12 @@ namespace celeritas
         [[nodiscard]] optional_int_awaitable_type async_reverse_rank(const std::string& key, const std::string& member) const;
 
     private:
-        [[nodiscard]] sorted_set_member_score_container convert_array_to_scores(const array_type& array_result, bool with_scores) const;
+        [[nodiscard]] static sorted_set_member_score_container convert_array_to_members(const array_type& array_result, bool with_scores);
+
+        [[nodiscard]] static sorted_set_member_score convert_array_to_members_with_scores(const array_type& array_result, int index);
+
+        [[nodiscard]] static sorted_set_member_score_container convert_array_to_members_with_scores(const array_type& array_result);
+
+        [[nodiscard]] static sorted_set_member_score_container convert_array_to_members_without_scores(const array_type& array_result);
     };
 }

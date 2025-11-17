@@ -50,6 +50,8 @@ namespace celeritas
 
         [[nodiscard]] std::string get_fields_command(const key_container& fields) const;
 
+        [[nodiscard]] std::string get_values_command(const key_container& values) const;
+
         [[nodiscard]] std::string get_keys_value_command(const key_value_container& key_values) const;
 
         [[nodiscard]] std::string get_fields_value_command(const key_value_container& field_values) const;
