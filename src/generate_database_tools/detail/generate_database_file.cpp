@@ -12,7 +12,7 @@ celeritas::generate_database_file::generate_database_file(std::string relative_p
 {
 }
 
-void celeritas::generate_database_file::generate_file()
+void celeritas::generate_database_file::execute()
 {
     std::ifstream file_stream{ database_file_ };
     if (!file_stream.is_open())
@@ -25,5 +25,23 @@ void celeritas::generate_database_file::generate_file()
     const auto json_content = ss.str();
     const auto json_value = boost::json::parse(json_content);
 
-    const auto container = boost::json::value_to<database_attribute_container>(json_value);
+    for (const auto container = boost::json::value_to<database_attribute_container>(json_value);
+         const auto& attribute : container)
+    {
+        generate_file(attribute);
+    }
+}
+
+void celeritas::generate_database_file::generate_file(const database_attribute& attribute)
+{
+    generate_entity_h_file(attribute);
+    generate_entity_cpp_file(attribute);
+}
+
+void celeritas::generate_database_file::generate_entity_h_file(const database_attribute& attribute)
+{
+}
+
+void celeritas::generate_database_file::generate_entity_cpp_file(const database_attribute& attribute)
+{
 }

@@ -57,3 +57,68 @@ void celeritas::database_template_file::load_template(std::string_view template_
 
     content.assign((std::istreambuf_iterator{ is }), (std::istreambuf_iterator<char>()));
 }
+
+std::string celeritas::database_template_file::get_entity_h_content() const
+{
+    return entity_h_content_;
+}
+
+std::string celeritas::database_template_file::get_entity_cpp_content() const
+{
+    return entity_cpp_content_;
+}
+
+std::string celeritas::database_template_file::get_database_describe_content() const
+{
+    return database_describe_content_;
+}
+
+std::string celeritas::database_template_file::get_database_get_declaration_content() const
+{
+    return database_get_declaration_content_;
+}
+
+std::string celeritas::database_template_file::get_database_set_declaration_content() const
+{
+    return database_set_declaration_content_;
+}
+
+std::string celeritas::database_template_file::get_database_modify_declaration_content() const
+{
+    return database_modify_declaration_content_;
+}
+
+std::string celeritas::database_template_file::get_database_get_define_content() const
+{
+    return database_get_define_content_;
+}
+
+std::string celeritas::database_template_file::get_database_set_define_content() const
+{
+    return database_set_define_content_;
+}
+
+std::string celeritas::database_template_file::get_database_modify_define_content() const
+{
+    return database_modify_define_content_;
+}
+
+std::string celeritas::database_template_file::get_field_content() const
+{
+    return field_content_;
+}
+
+std::string celeritas::database_template_file::get_field_assignment_content() const
+{
+    return field_assignment_content_;
+}
+
+std::string celeritas::database_template_file::get_field_init_content() const
+{
+    return field_init_content_;
+}
+
+std::string celeritas::database_template_file::get_database_field_content() const
+{
+    return database_field_content_;
+}

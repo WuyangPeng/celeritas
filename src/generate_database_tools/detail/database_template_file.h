@@ -11,6 +11,32 @@ namespace celeritas
 
         explicit database_template_file(std::string template_directory);
 
+        [[nodiscard]] std::string get_entity_h_content() const;
+
+        [[nodiscard]] std::string get_entity_cpp_content() const;
+
+        [[nodiscard]] std::string get_database_describe_content() const;
+
+        [[nodiscard]] std::string get_database_get_declaration_content() const;
+
+        [[nodiscard]] std::string get_database_set_declaration_content() const;
+
+        [[nodiscard]] std::string get_database_modify_declaration_content() const;
+
+        [[nodiscard]] std::string get_database_get_define_content() const;
+
+        [[nodiscard]] std::string get_database_set_define_content() const;
+
+        [[nodiscard]] std::string get_database_modify_define_content() const;
+
+        [[nodiscard]] std::string get_field_content() const;
+
+        [[nodiscard]] std::string get_field_assignment_content() const;
+
+        [[nodiscard]] std::string get_field_init_content() const;
+
+        [[nodiscard]] std::string get_database_field_content() const;
+
     private:
         void load_template();
 

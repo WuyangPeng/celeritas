@@ -11,8 +11,13 @@ namespace celeritas
     public:
         using class_type = database_attribute_container;
         using container = std::vector<database_attribute>;
+        using container_const_iterator = container::const_iterator;
 
         explicit database_attribute_container(container container);
+
+        [[nodiscard]] container_const_iterator begin() const;
+
+        [[nodiscard]] container_const_iterator end() const;
 
     private:
         container container_;

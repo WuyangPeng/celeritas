@@ -1,12 +1,14 @@
 ﻿#pragma once
 
 #include "database_template_file.h"
+#include "generator.h"
+#include "generate_database_tools_internal_fwd.h"
 
 #include <string>
 
 namespace celeritas
 {
-    class generate_database_file
+    class generate_database_file : public generator
     {
     public:
         using class_type = generate_database_file;
@@ -16,9 +18,15 @@ namespace celeritas
                                std::string output_directory,
                                const database_template_file& database_template_file);
 
-        void generate_file();
+        void execute() override;
 
     private:
+        void generate_file(const database_attribute& attribute);
+
+        void generate_entity_h_file(const database_attribute& attribute);
+
+        void generate_entity_cpp_file(const database_attribute& attribute);
+
         std::string relative_path_;
         std::string database_file_;
         std::string output_directory_;

@@ -6,6 +6,16 @@ celeritas::database_attribute_container::database_attribute_container(container 
 {
 }
 
+celeritas::database_attribute_container::container_const_iterator celeritas::database_attribute_container::begin() const
+{
+    return container_.cbegin();
+}
+
+celeritas::database_attribute_container::container_const_iterator celeritas::database_attribute_container::end() const
+{
+    return container_.cend();
+}
+
 celeritas::database_attribute_container celeritas::tag_invoke(boost::json::value_to_tag<database_attribute_container>, boost::json::value const& value)
 {
     if (!value.is_array())
