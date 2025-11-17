@@ -21,7 +21,7 @@ celeritas::test::test(const basis_database_manager& entity)
 {
 }
 
-celeritas::test::test(database_type database_type, traits::param_type::int64_type user_id)
+celeritas::test::test(const database_type database_type, traits::param_type::int64_type user_id)
     : base_type{ database_type, database_name.data(), get_key_basis_database_container(user_id) },
       user_id_{ user_id },
       chapter_id_{ traits::int32_type{} },
@@ -166,7 +166,7 @@ const celeritas::database_entity::database_field_container& celeritas::test::get
     return field_name_container;
 }
 
-celeritas::basis_database_manager celeritas::test::get_select(database_type database_type, traits::param_type::int64_type user_id)
+celeritas::basis_database_manager celeritas::test::get_select(const database_type database_type, traits::param_type::int64_type user_id)
 {
     return basis_database_manager{ database_type,
                                    database_name,
@@ -174,7 +174,7 @@ celeritas::basis_database_manager celeritas::test::get_select(database_type data
                                    get_key_basis_database_container(user_id) };
 }
 
-celeritas::basis_database_manager celeritas::test::get_select_all(database_type database_type)
+celeritas::basis_database_manager celeritas::test::get_select_all(const database_type database_type)
 {
     return basis_database_manager{ database_type,
                                    database_name,

@@ -44,7 +44,7 @@ void celeritas::handler_template_file::load_template(const std::string_view temp
     std::ifstream is{ file_name.string(), std::ios::binary };
     if (!is)
     {
-        throw celeritas_error("failed to load"s + template_name.data());
+        throw celeritas_error("failed to load "s + template_name.data());
     }
 
     content.assign((std::istreambuf_iterator{ is }), (std::istreambuf_iterator<char>()));

@@ -17,7 +17,7 @@ ${field_assignment}
 {
 }
 
-celeritas::${class_name}::${class_name}(database_type database_type, traits::param_type::${key_type} ${key_name})
+celeritas::${class_name}::${class_name}(const database_type database_type, traits::param_type::${key_type} ${key_name})
     : base_type{ database_type, database_name.data(), get_key_basis_database_container(${key_name}) },
       ${key_name}_{ ${key_name} },
 ${field_init}
@@ -36,7 +36,7 @@ const celeritas::database_entity::database_field_container& celeritas::${class_n
     return field_name_container;
 }
 
-celeritas::basis_database_manager celeritas::${class_name}::get_select(database_type database_type, traits::param_type::${key_type} ${key_name})
+celeritas::basis_database_manager celeritas::${class_name}::get_select(const database_type database_type, traits::param_type::${key_type} ${key_name})
 {
     return basis_database_manager{ database_type,
                                    database_name,
@@ -44,7 +44,7 @@ celeritas::basis_database_manager celeritas::${class_name}::get_select(database_
                                    get_key_basis_database_container(${key_name}) };
 }
 
-celeritas::basis_database_manager celeritas::${class_name}::get_select_all(database_type database_type)
+celeritas::basis_database_manager celeritas::${class_name}::get_select_all(const database_type database_type)
 {
     return basis_database_manager{ database_type,
                                    database_name,
