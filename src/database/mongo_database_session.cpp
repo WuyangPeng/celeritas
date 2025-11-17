@@ -125,14 +125,14 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
             auto keyDocument = get_document(database->get_key());
             auto updateDocument = get_document(database->get_database());
 
-            auto collection = (*database_)[database->get_database_name()];
+            auto collection = (*database_)[database->get_database_name().data()];
             collection.update_one(keyDocument.extract(), updateDocument.extract());
 
             co_return;
         }
         case database_change_type::insert_type:
         {
-            auto collection = (*database_)[database->get_database_name()];
+            auto collection = (*database_)[database->get_database_name().data()];
 
             auto document = get_document(database->get_database());
 
@@ -142,7 +142,7 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
         }
         case database_change_type::delete_type:
         {
-            auto collection = (*database_)[database->get_database_name()];
+            auto collection = (*database_)[database->get_database_name().data()];
 
             auto document = get_document(database->get_key());
 
