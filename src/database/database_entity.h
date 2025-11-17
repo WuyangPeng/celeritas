@@ -26,7 +26,7 @@ namespace celeritas
 
         database_entity& operator=(database_entity&& rhs) noexcept = default;
 
-        [[nodiscard]] basis_database_manager get_modify() const noexcept;
+        [[nodiscard]] basis_database_manager get_modify() const;
 
         [[nodiscard]] basis_database_manager get_delete() const;
 

@@ -2,7 +2,7 @@
 #include "database_change_type.h"
 #include "database_entity.h"
 
-celeritas::database_entity::database_entity(database_type database_type, std::string_view database_name, const basis_database_container& key)
+celeritas::database_entity::database_entity(const database_type database_type, const std::string_view database_name, const basis_database_container& key)
     : entity_{ key }, modify_{ database_type, database_name, database_change_type::insert_type, key }
 {
 }
@@ -12,7 +12,7 @@ celeritas::database_entity::database_entity(const basis_database_manager& entity
 {
 }
 
-celeritas::basis_database_manager celeritas::database_entity::get_modify() const noexcept
+celeritas::basis_database_manager celeritas::database_entity::get_modify() const
 {
     return modify_;
 }
