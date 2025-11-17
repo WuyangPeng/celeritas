@@ -2,7 +2,7 @@
 
 #include "basis_database.h"
 #include "database_data_type.h"
-#include "database_data_Type_traits.h"
+#include "database_data_type_traits.h"
 
 template <typename T> requires (std::is_integral_v<T>)
 celeritas::basis_database::basis_database(const std::string_view fieldName, T value)
