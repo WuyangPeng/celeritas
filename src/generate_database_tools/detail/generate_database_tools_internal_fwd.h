@@ -6,4 +6,5 @@ namespace celeritas
     class generate_database_file;
     class entity_attribute;
     class database_attribute;
+    class database_attribute_container;
 }

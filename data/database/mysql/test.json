@@ -1,29 +1,37 @@
-﻿{
-  "test": {
+﻿[
+  {
+    "class_name": "test",
     "database_name": "test",
-    "entity": {
-      "user_id": {
+    "entity": [
+      {
+        "entity_name": "user_id",
         "data_type": "int64",
         "index_type": "key"
       },
-      "chapter_id": {
+      {
+        "entity_name": "chapter_id",
         "data_type": "int32"
       },
-      "chapter_name": {
+      {
+        "entity_name": "chapter_name",
         "data_type": "string"
       },
-      "chance_winning": {
+      {
+        "entity_name": "chance_winning",
         "data_type": "double"
       },
-      "winning": {
+      {
+        "entity_name": "winning",
         "data_type": "bool"
       },
-      "currency": {
+      {
+        "entity_name": "currency",
         "data_type": "int64_count"
       },
-      "count": {
+      {
+        "entity_name": "count",
         "data_type": "int32_count"
       }
-    }
+    ]
   }
-}
+]

@@ -113,7 +113,8 @@ else ()
             log_setup
             log
             program_options
-            url)
+            url
+            json)
 
     target_link_libraries(boost INTERFACE
             Boost::filesystem
@@ -125,7 +126,8 @@ else ()
             Boost::log_setup
             Boost::log
             Boost::program_options
-            Boost::url)
+            Boost::url
+            Boost::json)
 
 endif ()
 

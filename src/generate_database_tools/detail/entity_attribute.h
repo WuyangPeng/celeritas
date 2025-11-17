@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <boost/json.hpp>
+
 #include <optional>
 #include <string>
 
@@ -11,7 +13,7 @@ namespace celeritas
         using class_type = entity_attribute;
         using optional_string = std::optional<std::string>;
 
-        entity_attribute(std::string entity_name, std::string data_type, optional_string index_type);
+        entity_attribute() noexcept = default;
 
         [[nodiscard]] std::string get_entity_name() const;
 
@@ -19,9 +21,17 @@ namespace celeritas
 
         [[nodiscard]] optional_string get_index_type() const;
 
+        void set_entity_name(const std::string& entityName);
+
+        void set_data_type(const std::string& dataType);
+
+        void set_index_type(const std::string& indexType);
+
     private:
         std::string entity_name_;
         std::string data_type_;
         optional_string index_type_;
     };
+
+    [[nodiscard]] entity_attribute tag_invoke(boost::json::value_to_tag<entity_attribute>, boost::json::value const& value);
 }
