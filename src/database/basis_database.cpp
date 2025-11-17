@@ -1,14 +1,8 @@
 ﻿#include "basis_database.h"
 #include "database_data_type.h"
-#include "database_data_Type_traits.h"
-#include "absl/strings/internal/str_format/constexpr_parser.h"
-#include "boost/program_options/value_semantic.hpp"
-#include "boost/proto/traits.hpp"
-#include "bsoncxx/types/bson_value/value.hpp"
-#include "google/protobuf/descriptor.pb.h"
+#include "database_data_type_traits.h"
 
 #include <boost/numeric/conversion/cast.hpp>
-#include <utility>
 
 celeritas::basis_database::basis_database(const std::string_view fieldName)
     : class_type{ fieldName, database_data_type::null_type, nullptr }
