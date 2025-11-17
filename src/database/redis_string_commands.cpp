@@ -125,4 +125,3 @@ celeritas::redis_string_commands::optional_string_awaitable_type celeritas::redi
 
     co_return co_await async_execute_command_return_optional_string(get_set_command);
 }
-
