@@ -1,11 +1,17 @@
 ﻿#include "basis_database_manager.h"
 #include "database_change_type.h"
+#include "database_data_type.h"
+#include "database_field.h"
 #include "redis_database_session.h"
 #include "common/celeritas_error.h"
 #include "common/common_fwd.h"
 #include "common/logger.h"
 #include "config/database_type.h"
 #include "detail/redis_reply.h"
+
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/split.hpp>
+#include <boost/lexical_cast.hpp>
 
 celeritas::redis_database_session::redis_database_session(const std::string_view& host,
                                                           const int port,
@@ -169,6 +175,110 @@ std::string celeritas::redis_database_session::generate_key(const basis_database
     }
 
     return result;
+}
+
+celeritas::basis_database celeritas::redis_database_session::get_basis_database(const database_field& field_name, const std::string& value)
+{
+    switch (field_name.get_data_type())
+    {
+        case database_data_type::string_type:
+            return basis_database{ field_name.get_field_name(), value };
+
+        case database_data_type::int32_type:
+        case database_data_type::int32_count_type:
+            return basis_database{ field_name.get_field_name(), boost::lexical_cast<int32_t>(value) };
+
+        case database_data_type::int64_type:
+        case database_data_type::int64_count_type:
+            return basis_database{ field_name.get_field_name(), boost::lexical_cast<int64_t>(value) };
+
+        case database_data_type::double_type:
+            return basis_database{ field_name.get_field_name(), boost::lexical_cast<double>(value) };
+
+        case database_data_type::bool_type:
+            return basis_database{ field_name.get_field_name(), value == "true" };
+
+        case database_data_type::string_array_type:
+        {
+            const std::string column{ value };
+            basis_database::string_array element{};
+            split(element, column, boost::is_any_of("|"), boost::token_compress_off);
+
+            return basis_database{ field_name.get_field_name(), element };
+        }
+
+        case database_data_type::int32_array_type:
+        {
+            const std::string column{ value };
+            basis_database::string_array element{};
+            split(element, column, boost::is_any_of("|"), boost::token_compress_off);
+
+            basis_database::int32_array result{};
+            for (const auto& value0 : element)
+            {
+                result.emplace_back(boost::lexical_cast<int32_t>(value0));
+            }
+            return basis_database{ field_name.get_field_name(), result };
+        }
+
+        case database_data_type::int64_array_type:
+        {
+            const std::string column{ value };
+            basis_database::string_array element{};
+            split(element, column, boost::is_any_of("|"), boost::token_compress_off);
+
+            basis_database::int64_array result{};
+            for (const auto& value0 : element)
+            {
+                result.emplace_back(boost::lexical_cast<int64_t>(value0));
+            }
+            return basis_database{ field_name.get_field_name(), result };
+        }
+
+        case database_data_type::double_array_type:
+        {
+            const std::string column{ value };
+            basis_database::string_array element{};
+            split(element, column, boost::is_any_of("|"), boost::token_compress_off);
+
+            basis_database::double_array result{};
+            for (const auto& value0 : element)
+            {
+                result.emplace_back(boost::lexical_cast<double>(value0));
+            }
+            return basis_database{ field_name.get_field_name(), element };
+        }
+
+        default:
+            return basis_database{ field_name.get_field_name(), std::string{} };
+    }
+}
+
+celeritas::database_session::basis_database_manager_awaitable_type celeritas::redis_database_session::select_one(const basis_database_manager& database, const database_field_container& field_name_container)
+{
+    redis_hash_commands::field_container field_container{};
+    for (const auto& element : field_name_container)
+    {
+        field_container.emplace_back(element.get_field_name());
+    }
+    auto result = co_await redis_hash_commands_.async_get_many(generate_key(std::make_shared<basis_database_manager>(database)), field_container);
+    basis_database_manager select{ database.get_database_type(), database.get_database_name(), database_change_type::select_type, database.get_key() };
+
+    auto index = 0;
+    for (const auto& element : result)
+    {
+        select.modify(get_basis_database(field_name_container.at(index), element));
+        ++index;
+    }
+
+    co_return select;
+}
+
+celeritas::database_session::result_container_awaitable_type celeritas::redis_database_session::select_all(const basis_database_manager& database, const database_field_container& field_name_container)
+{
+    const auto result = co_await select_one(database, field_name_container);
+
+    co_return result_container{ result };
 }
 
 celeritas::redis_database_session::optional_string_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_string(const std::string& command) const

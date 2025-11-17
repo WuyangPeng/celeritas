@@ -16,17 +16,17 @@ namespace celeritas
         {
         }
 
-        [[nodiscard]] constexpr std::string_view GetFieldName() const noexcept
+        [[nodiscard]] constexpr std::string_view get_field_name() const noexcept
         {
             return field_name_;
         }
 
-        [[nodiscard]] constexpr database_data_type GetDataType() const noexcept
+        [[nodiscard]] constexpr database_data_type get_data_type() const noexcept
         {
             return data_type_;
         }
 
-        [[nodiscard]] constexpr database_index_type GetIndexType() const noexcept
+        [[nodiscard]] constexpr database_index_type get_index_type() const noexcept
         {
             return index_type_;
         }

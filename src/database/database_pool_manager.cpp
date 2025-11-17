@@ -110,6 +110,20 @@ void celeritas::database_pool_manager::save(io_context_type& io_context, const s
                           }, boost::asio::detached);
 }
 
+celeritas::database_pool_manager::basis_database_manager_awaitable_type celeritas::database_pool_manager::select_one(const std::string& name, const basis_database_manager& database, const database_field_container& field_name_container)
+{
+    const auto pool = get_pool(name);
+
+    co_return co_await pool->select_one(database, field_name_container);
+}
+
+celeritas::database_pool_manager::result_container_awaitable_type celeritas::database_pool_manager::select_all(const std::string& name, const basis_database_manager& database, const database_field_container& field_name_container)
+{
+    const auto pool = get_pool(name);
+
+    co_return co_await pool->select_all(database, field_name_container);
+}
+
 celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mysql_pool(const std::string& name,
                                                                                                                io_context_type& io_context,
                                                                                                                const std::string& host,

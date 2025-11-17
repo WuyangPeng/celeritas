@@ -47,6 +47,10 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type save(const basis_database_manager_shared_ptr& database) override;
 
+        [[nodiscard]] basis_database_manager_awaitable_type select_one(const basis_database_manager& database, const database_field_container& field_name_container) override;
+
+        [[nodiscard]] result_container_awaitable_type select_all(const basis_database_manager& database, const database_field_container& field_name_container) override;
+
     private:
         using mongo_client_unique_ptr = std::unique_ptr<mongocxx::client>;
         using mongo_database_unique_ptr = std::unique_ptr<mongocxx::database>;
@@ -58,6 +62,8 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type do_async_connect();
 
         [[nodiscard]] bsoncxx::builder::basic::document get_document(const basis_database_container& container) const;
+
+        [[nodiscard]] static basis_database get_basis_database(const database_field_container& field_name_container, const bsoncxx::document::element& row_view);
 
         mongo_client_unique_ptr client_;
         mongo_database_unique_ptr database_;

@@ -162,6 +162,22 @@ celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::con
 }
 
 template <typename SessionType>
+celeritas::database_pool::basis_database_manager_awaitable_type celeritas::connection_pool_base<SessionType>::select_one(const basis_database_manager& database, const database_field_container& field_name_container)
+{
+    auto session = co_await async_get_session();
+
+    co_return co_await session->select_one(database, field_name_container);
+}
+
+template <typename SessionType>
+celeritas::database_pool::result_container_awaitable_type celeritas::connection_pool_base<SessionType>::select_all(const basis_database_manager& database, const database_field_container& field_name_container)
+{
+    auto session = co_await async_get_session();
+
+    co_return co_await session->select_all(database, field_name_container);
+}
+
+template <typename SessionType>
 celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::connection_pool_base<SessionType>::async_one_initialize()
 {
     try

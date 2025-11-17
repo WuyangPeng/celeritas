@@ -98,6 +98,10 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type save(const basis_database_manager_shared_ptr& database) override;
 
+        [[nodiscard]] basis_database_manager_awaitable_type select_one(const basis_database_manager& database, const database_field_container& field_name_container) override;
+
+        [[nodiscard]] result_container_awaitable_type select_all(const basis_database_manager& database, const database_field_container& field_name_container) override;
+
     private:
         using redis_context_unique_ptr = std::unique_ptr<redis_context>;
 
@@ -106,6 +110,8 @@ namespace celeritas
         void do_is_health();
 
         [[nodiscard]] static std::string generate_key(const basis_database_manager_shared_ptr& database);
+
+        [[nodiscard]] static basis_database get_basis_database(const database_field& field_name, const std::string& value);
 
         redis_context_unique_ptr redis_context_;
         io_context_type& io_context_;
