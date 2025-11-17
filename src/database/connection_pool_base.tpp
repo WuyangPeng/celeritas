@@ -148,11 +148,17 @@ void celeritas::connection_pool_base<SessionType>::cleanup_database_by_duration(
 template <typename SessionType>
 celeritas::connection_pool_base<SessionType>::bool_awaitable_type celeritas::connection_pool_base<SessionType>::is_health()
 {
-    std::lock_guard lock{ mutex_ };
-
     auto session = co_await async_get_session();
 
     co_return co_await session->is_health();
+}
+
+template <typename SessionType>
+celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::connection_pool_base<SessionType>::save(const basis_database_manager_shared_ptr& database)
+{
+    auto session = co_await async_get_session();
+
+    co_return co_await session->save(database);
 }
 
 template <typename SessionType>

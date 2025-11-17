@@ -45,6 +45,8 @@ namespace celeritas
 
         [[nodiscard]] bool_awaitable_type is_health() override;
 
+        [[nodiscard]] void_awaitable_type save(const basis_database_manager_shared_ptr& database) override;
+
     private:
         using mongo_client_unique_ptr = std::unique_ptr<mongocxx::client>;
         using mongo_database_unique_ptr = std::unique_ptr<mongocxx::database>;
@@ -54,6 +56,8 @@ namespace celeritas
         [[nodiscard]] cursor_awaitable_type async_handle_and_retry(const std::string_view& collection_name, const document_view_type& filter);
 
         [[nodiscard]] void_awaitable_type do_async_connect();
+
+        [[nodiscard]] bsoncxx::builder::basic::document get_document(const basis_database_container& container) const;
 
         mongo_client_unique_ptr client_;
         mongo_database_unique_ptr database_;

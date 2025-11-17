@@ -14,6 +14,7 @@ namespace celeritas
         using void_awaitable_type = boost::asio::awaitable<void>;
         using error_code_type = boost::system::error_code;
         using bool_awaitable_type = boost::asio::awaitable<bool>;
+        using basis_database_manager_shared_ptr = std::shared_ptr<basis_database_manager>;
 
         database_pool() noexcept = default;
 
@@ -36,6 +37,8 @@ namespace celeritas
         virtual void cleanup_database_by_duration() = 0;
 
         [[nodiscard]] virtual bool_awaitable_type is_health() = 0;
+
+        [[nodiscard]] virtual void_awaitable_type save(const basis_database_manager_shared_ptr& database) = 0;
 
     private:
         using cleanup_database_session_timer_shared_ptr = std::shared_ptr<cleanup_database_session_timer>;

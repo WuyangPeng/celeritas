@@ -1,7 +1,12 @@
-﻿#include "mysql_database_session.h"
+﻿#include "basis_database_manager.h"
+#include "database_change_type.h"
+#include "mysql_database_session.h"
+#include "common/celeritas_error.h"
 #include "common/logger.h"
 
 #include <boost/asio/use_awaitable.hpp>
+
+using namespace std::literals;
 
 celeritas::mysql_database_session::mysql_database_session(const std::string_view& host,
                                                           const int port,
@@ -103,6 +108,35 @@ celeritas::database_session::bool_awaitable_type celeritas::mysql_database_sessi
     }
 }
 
+celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::save(const basis_database_manager_shared_ptr& database)
+{
+    switch (database->get_change_type())
+    {
+        case database_change_type::select_type:
+        {
+            throw celeritas_error("change type is select.");
+        }
+
+        case database_change_type::update_type:
+        {
+            co_await async_query(generate_update_statement(database));
+            co_return;
+        }
+        case database_change_type::insert_type:
+        {
+            co_await async_query(generate_insert_statement(database));
+            co_return;
+        }
+        case database_change_type::delete_type:
+        {
+            co_await async_query(generate_delete_statement(database));
+            co_return;
+        }
+    }
+
+    co_return;
+}
+
 celeritas::mysql_database_session::connection_type celeritas::mysql_database_session::get_any_connection(io_context_type& io_context, ssl_io_context_type* ssl_context)
 {
     if (ssl_context == nullptr)
@@ -152,4 +186,122 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
     }
 
     throw;
+}
+
+std::string celeritas::mysql_database_session::generate_insert_statement(const basis_database_manager_shared_ptr& database)
+{
+    std::string result{};
+
+    result += "INSERT INTO `"s + database->get_database_name().data() + "`(";
+
+    const auto container = database->get_database();
+    auto index = 1;
+    for (const auto& value : container)
+    {
+        result += "`";
+        result += value.get_field_name();
+        result += "`";
+
+        if (index != container.get_size())
+        {
+            result += " , ";
+        }
+
+        ++index;
+    }
+
+    result += ") VALUES(";
+
+    index = 1;
+    for (const auto& value : container)
+    {
+        result += value.get_quotation_mark_string();
+
+        if (index != container.get_size())
+        {
+            result += " , ";
+        }
+
+        ++index;
+    }
+
+    result += ");";
+
+    return result;
+}
+
+std::string celeritas::mysql_database_session::generate_update_statement(const basis_database_manager_shared_ptr& database)
+{
+    std::string result{};
+
+    result += "UPDATE `"s + database->get_database_name().data() + "` SET ";
+
+    const auto container = database->get_database();
+    auto index = 1;
+    for (const auto& value : container)
+    {
+        result += "`";
+        result += value.get_field_name();
+        result += "` = ";
+        result += value.get_sql_field_string();
+
+        if (index != container.get_size())
+        {
+            result += " , ";
+        }
+
+        ++index;
+    }
+
+    result += "WHERE ";
+
+    const auto key = database->get_key();
+
+    index = 1;
+    for (const auto& value : key)
+    {
+        result += "`";
+        result += value.get_field_name();
+        result += "` = ";
+        result += value.get_sql_field_string();
+
+        if (index != key.get_size())
+        {
+            result += " AND ";
+        }
+
+        ++index;
+    }
+
+    result += " LIMIT 1;";
+
+    return result;
+}
+
+std::string celeritas::mysql_database_session::generate_delete_statement(const basis_database_manager_shared_ptr& database)
+{
+    std::string result{};
+
+    result += "DELETE FROM `"s + database->get_database_name().data() + "` WHERE ";
+
+    const auto key = database->get_key();
+    auto index = 1;
+    for (const auto& value : key)
+    {
+        result += "`";
+        result += value.get_field_name();
+        result += "` = ";
+        result += value.get_sql_field_string();
+
+        if (index != key.get_size())
+        {
+            result += " AND ";
+        }
+
+        ++index;
+    }
+
+    result += " LIMIT 1;";
+
+    return result;
 }

@@ -4,6 +4,7 @@
 #include "mysql_database_session.h"
 #include "redis_database_session.h"
 #include "common/celeritas_error.h"
+#include "basis_database_manager.h"
 
 #include <ranges>
 
@@ -96,6 +97,17 @@ celeritas::database_pool_manager::bool_awaitable_type celeritas::database_pool_m
     }
 
     co_return true;
+}
+
+void celeritas::database_pool_manager::save(io_context_type& io_context, const std::string& name, const basis_database_manager& database)
+{
+    const auto pool = get_pool(name);
+
+    boost::asio::co_spawn(io_context,
+                          [pool,database] {
+                              const auto database_shared_ptr = std::make_shared<basis_database_manager>(database);
+                              return pool->save(database_shared_ptr);
+                          }, boost::asio::detached);
 }
 
 celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mysql_pool(const std::string& name,

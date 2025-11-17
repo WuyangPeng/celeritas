@@ -1,6 +1,10 @@
-﻿#include "mongo_database_session.h"
+﻿#include "basis_database_manager.h"
+#include "database_change_type.h"
+#include "database_data_type.h"
+#include "mongo_database_session.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
+#include "basis_database.tpp"
 
 #include <boost/asio/use_awaitable.hpp>
 #include <mongocxx/exception/operation_exception.hpp>
@@ -101,6 +105,52 @@ celeritas::database_session::bool_awaitable_type celeritas::mongo_database_sessi
     }
 }
 
+celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database_session::save(const basis_database_manager_shared_ptr& database)
+{
+    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
+
+    switch (database->get_change_type())
+    {
+        case database_change_type::select_type:
+        {
+            throw celeritas_error("change type is select.");
+        }
+
+        case database_change_type::update_type:
+        {
+            auto keyDocument = get_document(database->get_key());
+            auto updateDocument = get_document(database->get_database());
+
+            auto collection = (*database_)[database->get_database_name()];
+            collection.update_one(keyDocument.extract(), updateDocument.extract());
+
+            co_return;
+        }
+        case database_change_type::insert_type:
+        {
+            auto collection = (*database_)[database->get_database_name()];
+
+            auto document = get_document(database->get_database());
+
+            collection.insert_one(document.extract());
+
+            co_return;
+        }
+        case database_change_type::delete_type:
+        {
+            auto collection = (*database_)[database->get_database_name()];
+
+            auto document = get_document(database->get_key());
+
+            collection.delete_one(document.extract());
+
+            co_return;
+        }
+    }
+
+    co_return;
+}
+
 celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_execute_query(const std::string_view& collection_name, const document_view_type& filter)
 {
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
@@ -145,4 +195,59 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
     LOG_CHANNEL(database_channel, info) << "MongoDB session connected to: " << uri_ << "/" << client_;
 
     co_return;
+}
+
+bsoncxx::builder::basic::document celeritas::mongo_database_session::get_document(const basis_database_container& container) const
+{
+    bsoncxx::builder::basic::document document{};
+
+    for (const auto& value : container)
+    {
+        std::string fieldName{ value.get_field_name() };
+        switch (value.get_data_type())
+        {
+            case database_data_type::string_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::string_type>()));
+                break;
+
+            case database_data_type::int32_type:
+            case database_data_type::int32_count_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::int32_type>()));
+                break;
+
+            case database_data_type::int64_type:
+            case database_data_type::int64_count_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::int64_type>()));
+                break;
+
+            case database_data_type::double_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::double_type>()));
+                break;
+
+            case database_data_type::bool_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::bool_type>()));
+                break;
+
+            case database_data_type::string_array_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::string_array_type>()));
+                break;
+
+            case database_data_type::int32_array_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::int32_array_type>()));
+                break;
+
+            case database_data_type::int64_array_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::int64_array_type>()));
+                break;
+
+            case database_data_type::double_array_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::double_array_type>()));
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    return document;
 }

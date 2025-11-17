@@ -96,12 +96,16 @@ namespace celeritas
 
         [[nodiscard]] optional_int_awaitable_type async_execute_command_return_optional_int(const std::string& command) const;
 
+        [[nodiscard]] void_awaitable_type save(const basis_database_manager_shared_ptr& database) override;
+
     private:
         using redis_context_unique_ptr = std::unique_ptr<redis_context>;
 
         void check_initialized() const;
 
         void do_is_health();
+
+        [[nodiscard]] static std::string generate_key(const basis_database_manager_shared_ptr& database);
 
         redis_context_unique_ptr redis_context_;
         io_context_type& io_context_;

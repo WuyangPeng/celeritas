@@ -1,4 +1,6 @@
-﻿#include "redis_database_session.h"
+﻿#include "basis_database_manager.h"
+#include "database_change_type.h"
+#include "redis_database_session.h"
 #include "common/celeritas_error.h"
 #include "common/common_fwd.h"
 #include "common/logger.h"
@@ -146,6 +148,29 @@ void celeritas::redis_database_session::do_is_health()
     redis_reply redis_reply{ *redis_context_.get(), "PING" };
 }
 
+std::string celeritas::redis_database_session::generate_key(const basis_database_manager_shared_ptr& database)
+{
+    std::string result{};
+    result += database->get_database_name();
+    result += ":";
+
+    auto index = 1;
+    for (const auto key = database->get_key();
+         const auto& value : key)
+    {
+        result += value.get_quotation_mark_string();
+
+        if (index != key.get_size())
+        {
+            result += "_";
+        }
+
+        ++index;
+    }
+
+    return result;
+}
+
 celeritas::redis_database_session::optional_string_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_string(const std::string& command) const
 {
     check_initialized();
@@ -199,6 +224,28 @@ celeritas::redis_database_session::optional_int_awaitable_type celeritas::redis_
     const redis_reply redis_reply{ *redis_context_.get(), command };
 
     co_return redis_reply.to_optional_int();
+}
+
+celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::save(const basis_database_manager_shared_ptr& database)
+{
+    if (database->get_change_type() == database_change_type::select_type)
+    {
+        throw celeritas_error("change type is select.");
+    }
+
+    if (database->get_change_type() == database_change_type::delete_type)
+    {
+        co_await redis_key_commands_.async_delete(generate_key(database));
+        co_return;
+    }
+
+    redis_commands::key_value_container field_value{};
+    for (const auto& element : database->get_database())
+    {
+        field_value.emplace_back(element.get_field_name(), element.get_string());
+    }
+    co_await redis_hash_commands_.async_set_many(generate_key(database), field_value);
+    co_return;
 }
 
 std::string celeritas::redis_database_session::get_expire_seconds_command(int expire_seconds) const

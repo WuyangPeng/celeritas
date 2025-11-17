@@ -58,6 +58,8 @@ namespace celeritas
 
         [[nodiscard]] bool_awaitable_type is_health() override;
 
+        [[nodiscard]] void_awaitable_type save(const basis_database_manager_shared_ptr& database) override;
+
     private:
         using session_container_type = std::vector<session_shared_ptr>;
         using waiter_type = boost::asio::any_completion_handler<void(session_shared_ptr)>;

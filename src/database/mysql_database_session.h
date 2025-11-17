@@ -47,6 +47,8 @@ namespace celeritas
 
         [[nodiscard]] bool_awaitable_type is_health() override;
 
+        [[nodiscard]] void_awaitable_type save(const basis_database_manager_shared_ptr& database) override;
+
     private:
         using connection_type = boost::mysql::any_connection;
         using error_code_type = boost::mysql::error_code;
@@ -56,6 +58,12 @@ namespace celeritas
         [[nodiscard]] results_awaitable_type async_execute_query(const std::string_view& sql);
 
         [[nodiscard]] results_awaitable_type async_handle_and_retry(const std::string_view& sql, const error_code_type& error_code);
+
+        [[nodiscard]] static std::string generate_insert_statement(const basis_database_manager_shared_ptr& database);
+
+        [[nodiscard]] static std::string generate_update_statement(const basis_database_manager_shared_ptr& database);
+
+        [[nodiscard]] static std::string generate_delete_statement(const basis_database_manager_shared_ptr& database);
 
         const std::string host_;
         int port_;

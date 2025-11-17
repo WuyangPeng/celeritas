@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "database_fwd.h"
+
 #include <boost/asio/awaitable.hpp>
 #include <chrono>
 
@@ -12,6 +14,8 @@ namespace celeritas
         using class_type = database_session;
         using time_point_type = std::chrono::steady_clock::time_point;
         using bool_awaitable_type = boost::asio::awaitable<bool>;
+        using void_awaitable_type = boost::asio::awaitable<void>;
+        using basis_database_manager_shared_ptr = std::shared_ptr<basis_database_manager>;
 
         database_session() noexcept = default;
 
@@ -30,6 +34,8 @@ namespace celeritas
         void set_last_heartbeat();
 
         [[nodiscard]] virtual bool_awaitable_type is_health() = 0;
+
+        [[nodiscard]] virtual void_awaitable_type save(const basis_database_manager_shared_ptr& database) = 0;
 
     private:
         time_point_type last_heartbeat;

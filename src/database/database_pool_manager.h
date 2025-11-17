@@ -39,6 +39,12 @@ namespace celeritas
 
         [[nodiscard]] bool_awaitable_type is_health();
 
+        void save(io_context_type& io_context, const std::string& name, const basis_database_manager& database);
+
+        //  [[nodiscard]] basis_database_manager SelectOne(const basis_database_manager& database, const FieldNameContainer& fieldNameContainer) const;
+
+        // [[nodiscard]] ResultContainer SelectAll(const basis_database_manager& database, const FieldNameContainer& fieldNameContainer) const;
+
     private:
         using database_pool_container = std::map<std::string, database_pool_shared_ptr>;
 
