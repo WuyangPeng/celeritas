@@ -12,9 +12,7 @@ celeritas::redis_sorted_set_commands::redis_sorted_set_commands(redis_database_s
 
 celeritas::redis_sorted_set_commands::int_awaitable_type celeritas::redis_sorted_set_commands::async_add(const std::string& key, const sorted_set_member_score& member) const
 {
-    const auto prefixed_key = get_prefixed_key(key);
-
-    const auto command = "ZADD " + prefixed_key + " " + std::to_string(member.get_score()) + " \"" + member.get_member() + "\"";
+    const auto command = "ZADD " + get_prefixed_key(key) + " " + std::to_string(member.get_score()) + " " + get_quoted_value_command(member.get_member());
 
     co_return co_await async_execute_command_return_int(command);
 }

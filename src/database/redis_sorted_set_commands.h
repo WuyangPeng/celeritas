@@ -1,12 +1,6 @@
 ﻿#pragma once
 
-#include "database_fwd.h"
 #include "redis_commands.h"
-
-#include <boost/asio/awaitable.hpp>
-#include <optional>
-#include <string>
-#include <vector>
 
 namespace celeritas
 {
@@ -17,13 +11,7 @@ namespace celeritas
         using base_type = redis_commands;
 
         using sorted_set_member_score_container = std::vector<sorted_set_member_score>;
-        using int_awaitable_type = boost::asio::awaitable<int>;
-        using optional_double = std::optional<double>;
-        using optional_double_awaitable_type = boost::asio::awaitable<optional_double>;
         using sorted_set_member_score_awaitable_type = boost::asio::awaitable<sorted_set_member_score_container>;
-        using optional_int = std::optional<int>;
-        using optional_int_awaitable_type = boost::asio::awaitable<optional_int>;
-        using array_type = std::vector<std::string>;
 
         explicit redis_sorted_set_commands(redis_database_session& session) noexcept;
 

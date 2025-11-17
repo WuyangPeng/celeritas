@@ -5,6 +5,7 @@
 #include <boost/asio/awaitable.hpp>
 
 #include <map>
+#include <optional>
 #include <string>
 #include <vector>
 
