@@ -2,6 +2,7 @@
 #include "generate_database_tools_fwd.h"
 #include "common/command_line_config.tpp"
 #include "common/logger.h"
+#include "detail/generate_database_file.h"
 
 #include <filesystem>
 
@@ -53,4 +54,6 @@ void celeritas::generate_database::generate(const std::string& directory)
 
 void celeritas::generate_database::generate_file(const std::string& relative_path, const std::string& database_file) const
 {
+    generate_database_file generate_database_file{ relative_path, database_file, output_directory_, database_template_file_ };
+    generate_database_file.generate_file();
 }
