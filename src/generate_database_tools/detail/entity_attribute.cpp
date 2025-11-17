@@ -8,7 +8,7 @@ std::string celeritas::entity_attribute::get_entity_name() const
 
 std::string celeritas::entity_attribute::get_data_type() const
 {
-    return data_type_;
+    return data_type_ + "_type";
 }
 
 celeritas::entity_attribute::optional_string celeritas::entity_attribute::get_index_type() const

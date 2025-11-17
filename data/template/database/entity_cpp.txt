@@ -13,23 +13,17 @@ celeritas::${class_name} celeritas::${class_name}::create(const basis_database_m
 
 celeritas::${class_name}::${class_name}(const basis_database_manager& entity)
     : base_type{ entity },
-${field_assignment}
-{
+${field_assignment}{
 }
 
 celeritas::${class_name}::${class_name}(const database_type database_type, traits::param_type::${key_type} ${key_name})
     : base_type{ database_type, database_name.data(), get_key_basis_database_container(${key_name}) },
       ${key_name}_{ ${key_name} },
-${field_init}
-{
+${field_init}{
     add_modify(${key_name}_describe, ${key_name});
 }
 
-${database_get_define}
-${database_set_define}
-${database_modify_define}
-
-const celeritas::database_entity::database_field_container& celeritas::${class_name}::get_database_field_container()
+${database_get_define}${database_set_define}${database_modify_define}const celeritas::database_entity::database_field_container& celeritas::${class_name}::get_database_field_container()
 {
     static const database_field_container field_name_container{ ${database_field} };
 

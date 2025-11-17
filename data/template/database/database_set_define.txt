@@ -7,3 +7,4 @@ void celeritas::${class_name}::set_${entity}(traits::param_type::${entity_type} 
         add_modify(${entity}_describe, get_${entity}());
     }
 }
+

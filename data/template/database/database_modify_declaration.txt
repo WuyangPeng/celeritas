@@ -1,1 +1,2 @@
-        void modify_${entity}(traits::param_type::${entity_type} {entity});
+        void modify_${entity}(traits::param_type::${entity_type} ${entity});
+

@@ -1,1 +1,2 @@
         void set_${entity}(traits::param_type::${entity_type} ${entity});
+

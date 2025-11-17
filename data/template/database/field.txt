@@ -1,1 +1,1 @@
-        entity<${entity}_describe, database_data_type::${entity_type}${entity_is_index}> ${entity};
+        entity<${entity}_describe, database_data_type::${entity_type}${entity_is_index}> ${entity}_;

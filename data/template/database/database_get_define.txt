@@ -2,3 +2,4 @@ celeritas::traits::${entity_type} celeritas::${class_name}::${is_bool}_${entity}
 {
     return ${entity}_.get_value();
 }
+
