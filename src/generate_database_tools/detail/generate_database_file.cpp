@@ -71,7 +71,7 @@ void celeritas::generate_database_file::generate_entity_h_file(const database_at
         boost::replace_all(database_get_declaration_content, "${entity_type}", element.get_data_type());
         boost::replace_all(database_get_declaration_content, "${entity}", element.get_entity_name());
 
-        if (element.get_data_type() == "bool")
+        if (element.get_data_type() == "bool_type")
         {
             boost::replace_all(database_get_declaration_content, "${is_bool}", "is");
         }
@@ -80,12 +80,12 @@ void celeritas::generate_database_file::generate_entity_h_file(const database_at
             boost::replace_all(database_get_declaration_content, "${is_bool}", "get");
         }
 
-        if (element.get_data_type() == "int32" ||
-            element.get_data_type() == "int32_count" ||
-            element.get_data_type() == "int64" ||
-            element.get_data_type() == "int64_count" ||
-            element.get_data_type() == "double" ||
-            element.get_data_type() == "bool")
+        if (element.get_data_type() == "int32_type" ||
+            element.get_data_type() == "int32_count_type" ||
+            element.get_data_type() == "int64_type" ||
+            element.get_data_type() == "int64_count_type" ||
+            element.get_data_type() == "double_type" ||
+            element.get_data_type() == "bool_type")
         {
             boost::replace_all(database_get_declaration_content, "${entity_is_noexcept}", " noexcept");
         }
@@ -182,7 +182,7 @@ void celeritas::generate_database_file::generate_entity_cpp_file(const database_
         boost::replace_all(database_get_define_content, "${entity_type}", element.get_data_type());
         boost::replace_all(database_get_define_content, "${entity}", element.get_entity_name());
 
-        if (element.get_data_type() == "bool")
+        if (element.get_data_type() == "bool_type")
         {
             boost::replace_all(database_get_define_content, "${is_bool}", "is");
         }
@@ -191,12 +191,12 @@ void celeritas::generate_database_file::generate_entity_cpp_file(const database_
             boost::replace_all(database_get_define_content, "${is_bool}", "get");
         }
 
-        if (element.get_data_type() == "int32" ||
-            element.get_data_type() == "int32_count" ||
-            element.get_data_type() == "int64" ||
-            element.get_data_type() == "int64_count" ||
-            element.get_data_type() == "double" ||
-            element.get_data_type() == "bool")
+        if (element.get_data_type() == "int32_type" ||
+            element.get_data_type() == "int32_count_type" ||
+            element.get_data_type() == "int64_type" ||
+            element.get_data_type() == "int64_count_type" ||
+            element.get_data_type() == "double_type" ||
+            element.get_data_type() == "bool_type")
         {
             boost::replace_all(database_get_define_content, "${entity_is_noexcept}", " noexcept");
         }
@@ -207,6 +207,15 @@ void celeritas::generate_database_file::generate_entity_cpp_file(const database_
 
         boost::replace_all(database_set_define_content, "${entity_type}", element.get_data_type());
         boost::replace_all(database_set_define_content, "${entity}", element.get_entity_name());
+
+        if (element.get_data_type() == "bool_type")
+        {
+            boost::replace_all(database_set_define_content, "${is_bool}", "is");
+        }
+        else
+        {
+            boost::replace_all(database_set_define_content, "${is_bool}", "get");
+        }
 
         if (element.get_data_type().find("_count") != std::string::npos)
         {

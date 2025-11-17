@@ -1,4 +1,6 @@
-﻿#pragma once
+// 此文件是自动生成，请勿手动修改。
+
+#pragma once
 
 #include "database/database_entity.h"
 #include "database/database_data_type_traits.h"

@@ -1,4 +1,6 @@
-﻿#include "test.h"
+// 此文件是自动生成，请勿手动修改。
+
+#include "test.h"
 #include "config/database_type.h"
 #include "database/basis_database_manager.h"
 #include "database/database_change_type.h"
@@ -157,7 +159,7 @@ const celeritas::database_entity::database_field_container& celeritas::test::get
 {
     static const database_field_container field_name_container{ decltype(user_id_)::get_database_field(),
                                                                 decltype(chapter_id_)::get_database_field(),
-                                                                decltype(chapter_name_ )::get_database_field(),
+                                                                decltype(chapter_name_)::get_database_field(),
                                                                 decltype(chance_winning_)::get_database_field(),
                                                                 decltype(winning_)::get_database_field(),
                                                                 decltype(currency_)::get_database_field(),
@@ -188,4 +190,3 @@ celeritas::basis_database_container celeritas::test::get_key_basis_database_cont
 
     return basis_database_container;
 }
-
