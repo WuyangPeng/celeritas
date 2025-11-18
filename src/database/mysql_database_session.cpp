@@ -1,25 +1,26 @@
-﻿#include "basis_database_manager.h"
+﻿#include "basis_database.tpp"
+#include "basis_database_manager.h"
 #include "database_change_type.h"
 #include "database_data_type.h"
 #include "database_field.h"
 #include "mysql_database_session.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
-#include "basis_database.tpp"
+#include "common/noexcept_safe_call_and_log.h"
 
-#include <boost/asio/use_awaitable.hpp>
+#include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
-#include <boost/lexical_cast.hpp>
+#include <boost/asio/use_awaitable.hpp>
 
 using namespace std::literals;
 
-celeritas::mysql_database_session::mysql_database_session(const std::string_view& host,
+celeritas::mysql_database_session::mysql_database_session(const std::string_view host,
                                                           const int port,
-                                                          const std::string_view& user,
-                                                          const std::string_view& password,
-                                                          const std::string_view& uri,
-                                                          const std::string_view& db_name,
+                                                          const std::string_view user,
+                                                          const std::string_view password,
+                                                          const std::string_view uri,
+                                                          const std::string_view db_name,
                                                           int expire_seconds,
                                                           io_context_type& io_context,
                                                           ssl_io_context_type* ssl_context)
@@ -34,22 +35,11 @@ celeritas::mysql_database_session::mysql_database_session(const std::string_view
 
 celeritas::mysql_database_session::~mysql_database_session() noexcept
 {
-    try
-    {
-        connection_.close();
-    }
-    catch (const boost::system::system_error& error)
-    {
-        LOG_CHANNEL(database_channel, warning) << "Error closing MySQL connection in destructor: " << error.what();
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(database_channel, error) << "Unexpected error during MySQL connection close: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(database_channel, fatal) << "Unexpected error during MySQL connection close unknown exception";
-    }
+    noexcept_safe_call_and_log([this] {
+                                   connection_.close();
+                               },
+                               common_channel,
+                               "Unexpected error during MySQL connection close: ");
 }
 
 celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::async_connect()
@@ -61,9 +51,11 @@ celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database
     connect_params.database = db_name_;
 
     co_await connection_.async_connect(connect_params, boost::asio::use_awaitable);
+
+    co_return;
 }
 
-celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_database_session::async_query(const std::string_view& sql)
+celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_database_session::async_query(const std::string& sql)
 {
     std::optional<boost::system::error_code> retry_error{};
 
@@ -202,7 +194,7 @@ celeritas::mysql_database_session::connection_type celeritas::mysql_database_ses
     }
 }
 
-celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_database_session::async_execute_query(const std::string_view& sql)
+celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_database_session::async_execute_query(const std::string& sql)
 {
     results_type results{};
 
@@ -211,7 +203,7 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
     co_return results;
 }
 
-celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_database_session::async_handle_and_retry(const std::string_view& sql, const error_code_type& error_code)
+celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_database_session::async_handle_and_retry(const std::string& sql, const error_code_type& error_code)
 {
     if (error_code == boost::asio::error::eof ||
         error_code == boost::asio::error::broken_pipe ||

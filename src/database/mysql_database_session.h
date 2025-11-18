@@ -15,16 +15,15 @@ namespace celeritas
         using base_type = database_session;
         using io_context_type = boost::asio::io_context;
         using ssl_io_context_type = boost::asio::ssl::context;
-        using void_awaitable_type = boost::asio::awaitable<void>;
         using results_type = boost::mysql::results;
         using results_awaitable_type = boost::asio::awaitable<results_type>;
 
-        mysql_database_session(const std::string_view& host,
+        mysql_database_session(std::string_view host,
                                int port,
-                               const std::string_view& user,
-                               const std::string_view& password,
-                               const std::string_view& uri,
-                               const std::string_view& db_name,
+                               std::string_view user,
+                               std::string_view password,
+                               std::string_view uri,
+                               std::string_view db_name,
                                int expire_seconds,
                                io_context_type& io_context,
                                ssl_io_context_type* ssl_context = nullptr);
@@ -43,7 +42,7 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type async_connect();
 
         // 异步执行查询，返回结果集
-        [[nodiscard]] results_awaitable_type async_query(const std::string_view& sql);
+        [[nodiscard]] results_awaitable_type async_query(const std::string& sql);
 
         [[nodiscard]] bool_awaitable_type is_health() override;
 
@@ -59,9 +58,9 @@ namespace celeritas
 
         [[nodiscard]] static connection_type get_any_connection(io_context_type& io_context, ssl_io_context_type* ssl_context);
 
-        [[nodiscard]] results_awaitable_type async_execute_query(const std::string_view& sql);
+        [[nodiscard]] results_awaitable_type async_execute_query(const std::string& sql);
 
-        [[nodiscard]] results_awaitable_type async_handle_and_retry(const std::string_view& sql, const error_code_type& error_code);
+        [[nodiscard]] results_awaitable_type async_handle_and_retry(const std::string& sql, const error_code_type& error_code);
 
         [[nodiscard]] static std::string generate_insert_statement(const basis_database_manager_const_shared_ptr& database);
 
