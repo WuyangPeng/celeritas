@@ -306,6 +306,12 @@ celeritas::mongo_database_session::document_type celeritas::mongo_database_sessi
             case database_data_type::double_array_type:
                 document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::double_array_type>()));
                 break;
+            case database_data_type::byte_array_type:
+            {
+                const auto& byteArray = value.get_value<database_data_type::byte_array_type>();
+                document.append(bsoncxx::builder::basic::kvp(fieldName, bsoncxx::types::b_binary{ bsoncxx::binary_sub_type::k_binary, static_cast<uint32_t>(byteArray.size()), byteArray.data() }));
+                break;
+            }
 
             default:
                 break;
@@ -423,6 +429,14 @@ celeritas::basis_database celeritas::mongo_database_session::get_basis_database(
             }
 
             return basis_database{ iter->get_field_name(), element };
+        }
+
+        case database_data_type::byte_array_type:
+        {
+            const auto binary = row_view.get_binary();
+            const basis_database::byte_array result{ binary.bytes, binary.bytes + binary.size };
+
+            return basis_database{ iter->get_field_name(), result };
         }
 
         default:
