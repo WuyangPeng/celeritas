@@ -1,5 +1,6 @@
 ﻿#include "redis_key_data_converter.h"
 #include "common/celeritas_error.h"
+#include "database/basis_database.tpp"
 #include "database/database_data_type.h"
 #include "database/database_field.h"
 
