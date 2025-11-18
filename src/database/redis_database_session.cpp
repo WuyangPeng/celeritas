@@ -9,8 +9,11 @@
 #include "common/logger.h"
 #include "detail/redis_reply.h"
 
+#include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
+
+#include <ranges>
 
 using namespace std::literals;
 
@@ -250,7 +253,7 @@ celeritas::redis_database_session::redis_reply_awaitable_type celeritas::redis_d
     co_return redis_reply{ *redis_context_.get(), command };
 }
 
-celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::save_database(const basis_database_manager_const_shared_ptr& database)
+celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::save_database(const basis_database_manager_const_shared_ptr& database) const
 {
     redis_commands::key_value_container field_value{};
     for (const auto& element : database->get_database())
@@ -265,10 +268,31 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
     co_return;
 }
 
-celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::delete_database(const basis_database_manager_const_shared_ptr& database)
+celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::delete_database(const basis_database_manager_const_shared_ptr& database) const
 {
     co_await redis_key_commands_.async_delete(generate_key(database));
     co_return;
+}
+
+celeritas::database_session::basis_database_manager_awaitable_type celeritas::redis_database_session::select_one(const std::string& key, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) const
+{
+    const auto result = co_await redis_hash_commands_.async_get_all(key);
+
+    basis_database_manager select{ database->get_database_type(),
+                                   database->get_database_name(),
+                                   database_change_type::select_type,
+                                   get_key(key, database) };
+
+    for (const auto& field : field_name_container)
+    {
+        if (const auto iter = result.find(field.get_field_name().data());
+            iter != result.cend())
+        {
+            select.modify(get_basis_database(field, iter->second));
+        }
+    }
+
+    co_return select;
 }
 
 celeritas::redis_database_session::array_type celeritas::redis_database_session::get_key_value(const std::string& key)
@@ -343,41 +367,41 @@ celeritas::basis_database celeritas::redis_database_session::get_basis_database(
 
         case database_data_type::int32_array_type:
         {
-            basis_database::string_array string_result{};
-            split(string_result, value, boost::is_any_of("|"), boost::token_compress_off);
+            auto split_view = value | std::views::split('|');
 
-            basis_database::int32_array int32_result{};
-            for (const auto& element : string_result)
-            {
-                int32_result.emplace_back(std::stoi(element));
-            }
-            return basis_database{ field_name.get_field_name(), int32_result };
+            auto int_view = split_view | std::views::transform([](const auto& subrange) {
+                const std::string result{ subrange.begin(), subrange.end() };
+                return boost::lexical_cast<int32_t>(result);
+            });
+            const basis_database::int32_array result{ int_view.begin(), int_view.end() };
+
+            return basis_database{ field_name.get_field_name(), result };
         }
 
         case database_data_type::int64_array_type:
         {
-            basis_database::string_array string_result{};
-            split(string_result, value, boost::is_any_of("|"), boost::token_compress_off);
+            auto split_view = value | std::views::split('|');
 
-            basis_database::int64_array int64_result{};
-            for (const auto& element : string_result)
-            {
-                int64_result.emplace_back(std::stoll(element));
-            }
-            return basis_database{ field_name.get_field_name(), int64_result };
+            auto int_view = split_view | std::views::transform([](const auto& subrange) {
+                const std::string result{ subrange.begin(), subrange.end() };
+                return boost::lexical_cast<int64_t>(result);
+            });
+            const basis_database::int64_array result{ int_view.begin(), int_view.end() };
+
+            return basis_database{ field_name.get_field_name(), result };
         }
 
         case database_data_type::double_array_type:
         {
-            basis_database::string_array string_result{};
-            split(string_result, value, boost::is_any_of("|"), boost::token_compress_off);
+            auto split_view = value | std::views::split('|');
 
-            basis_database::double_array double_result{};
-            for (const auto& element : string_result)
-            {
-                double_result.emplace_back(std::stod(element));
-            }
-            return basis_database{ field_name.get_field_name(), double_result };
+            auto int_view = split_view | std::views::transform([](const auto& subrange) {
+                const std::string result{ subrange.begin(), subrange.end() };
+                return boost::lexical_cast<double>(result);
+            });
+            const basis_database::double_array result{ int_view.begin(), int_view.end() };
+
+            return basis_database{ field_name.get_field_name(), result };
         }
 
         case database_data_type::byte_array_type:
@@ -392,7 +416,7 @@ celeritas::basis_database celeritas::redis_database_session::get_basis_database(
     }
 }
 
-celeritas::database_session::basis_database_manager_awaitable_type celeritas::redis_database_session::select_one(const std::string& key, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
+celeritas::basis_database_container celeritas::redis_database_session::get_key(const std::string& key, const basis_database_manager_const_shared_ptr& database)
 {
     const auto extracted_key_values = get_key_value(key);
 
@@ -402,8 +426,6 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::re
         throw celeritas_error("key size is error.");
     }
 
-    const auto result = co_await redis_hash_commands_.async_get_all(key);
-
     basis_database_container::object_container objects{};
     auto index = 0;
     for (const auto& value : key_type)
@@ -412,18 +434,7 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::re
         ++index;
     }
 
-    basis_database_manager select{ database->get_database_type(), database->get_database_name(), database_change_type::select_type, basis_database_container{ objects } };
-
-    for (const auto& field : field_name_container)
-    {
-        if (const auto iter = result.find(field.get_field_name().data());
-            iter != result.cend())
-        {
-            select.modify(get_basis_database(field, iter->second));
-        }
-    }
-
-    co_return select;
+    return basis_database_container{ objects };
 }
 
 

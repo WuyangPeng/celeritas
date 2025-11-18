@@ -109,9 +109,11 @@ namespace celeritas
 
         [[nodiscard]] redis_reply_awaitable_type async_execute_command_return_reply(const std::string& command) const;
 
-        [[nodiscard]] void_awaitable_type save_database(const basis_database_manager_const_shared_ptr& database);
+        [[nodiscard]] void_awaitable_type save_database(const basis_database_manager_const_shared_ptr& database) const;
 
-        [[nodiscard]] void_awaitable_type delete_database(const basis_database_manager_const_shared_ptr& database);
+        [[nodiscard]] void_awaitable_type delete_database(const basis_database_manager_const_shared_ptr& database) const;
+
+        [[nodiscard]] basis_database_manager_awaitable_type select_one(const std::string& key, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) const;
 
         [[nodiscard]] static array_type get_key_value(const std::string& key);
 
@@ -119,7 +121,7 @@ namespace celeritas
 
         [[nodiscard]] static basis_database get_basis_database(const database_field& field_name, const std::string& value);
 
-        [[nodiscard]] basis_database_manager_awaitable_type select_one(const std::string& key, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container);
+        [[nodiscard]] static basis_database_container get_key(const std::string& key, const basis_database_manager_const_shared_ptr& database);
 
         io_context_type& io_context_;
         redis_context_unique_ptr redis_context_;
