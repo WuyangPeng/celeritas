@@ -32,31 +32,33 @@ namespace celeritas
         redis_commands& operator=(redis_commands&& rhs) noexcept = delete;
 
     protected:
+        using bool_awaitable_type = boost::asio::awaitable<bool>;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using int_awaitable_type = boost::asio::awaitable<int>;
+        using string_awaitable_type = boost::asio::awaitable<std::string>;
+        using optional_int = std::optional<int>;
+        using optional_int_awaitable_type = boost::asio::awaitable<optional_int>;
+        using optional_double = std::optional<double>;
+        using optional_double_awaitable_type = boost::asio::awaitable<optional_double>;
         using optional_string = std::optional<std::string>;
         using optional_string_awaitable_type = boost::asio::awaitable<optional_string>;
         using array_type = std::vector<std::string>;
         using array_awaitable_type = boost::asio::awaitable<array_type>;
         using map_type = std::map<std::string, std::string>;
         using map_awaitable_type = boost::asio::awaitable<map_type>;
-        using optional_double = std::optional<double>;
-        using optional_double_awaitable_type = boost::asio::awaitable<optional_double>;
-        using optional_int = std::optional<int>;
-        using optional_int_awaitable_type = boost::asio::awaitable<optional_int>;
-        using string_awaitable_type = boost::asio::awaitable<std::string>;
-        using bool_awaitable_type = boost::asio::awaitable<bool>;
         using scan_result_awaitable_type = boost::asio::awaitable<scan_result>;
 
         [[nodiscard]] std::string get_keys_command(const key_container& keys) const;
 
-        [[nodiscard]] std::string get_fields_command(const key_container& fields) const;
+        [[nodiscard]] static std::string get_fields_command(const key_container& fields);
 
-        [[nodiscard]] std::string get_values_command(const key_container& values) const;
+        [[nodiscard]] static std::string get_values_command(const key_container& values);
 
         [[nodiscard]] std::string get_keys_value_command(const key_value_container& key_values) const;
 
-        [[nodiscard]] std::string get_fields_value_command(const key_value_container& field_values) const;
+        [[nodiscard]] static std::string get_fields_value_command(const key_value_container& field_values);
+
+        [[nodiscard]] static std::string get_quoted_value_command(const std::string& value);
 
         [[nodiscard]] redis_database_session& get_redis_database_session();
 
@@ -80,9 +82,7 @@ namespace celeritas
 
         [[nodiscard]] scan_result_awaitable_type async_execute_command_return_scan_result(const std::string& command) const;
 
-        [[nodiscard ]] bool_awaitable_type async_execute_command_is_ok(const std::string& command) const;
-
-        [[nodiscard]] std::string get_quoted_value_command(const std::string& value) const;
+        [[nodiscard]] bool_awaitable_type async_execute_command_is_ok(const std::string& command) const;
 
     private:
         redis_database_session& session_;

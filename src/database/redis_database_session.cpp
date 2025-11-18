@@ -1,19 +1,12 @@
 ﻿#include "basis_database.tpp"
 #include "basis_database_manager.h"
 #include "database_change_type.h"
-#include "database_data_type.h"
 #include "database_field.h"
 #include "redis_database_session.h"
 #include "common/celeritas_error.h"
 #include "common/common_fwd.h"
 #include "common/logger.h"
 #include "detail/redis_key_data_converter.h"
-
-#include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/split.hpp>
-
-#include <ranges>
 
 using namespace std::literals;
 
@@ -43,9 +36,7 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
 
     redis_context_ = std::make_unique<redis_context>(redis_parameter_.get_host(), redis_parameter_.get_port());
 
-    const auto command = redis_parameter_.get_auth_command();
-
-    redis_reply redis_reply{ *redis_context_.get(), command };
+    redis_reply redis_reply{ *redis_context_.get(), redis_parameter_.get_auth_command() };
 
     LOG_CHANNEL(database_channel, info) << "Authentication successful (AUTH: OK).";
 

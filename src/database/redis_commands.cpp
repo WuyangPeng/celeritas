@@ -11,29 +11,33 @@ std::string celeritas::redis_commands::get_keys_command(const key_container& key
     std::string command{};
     for (const auto& key : keys)
     {
-        command += " " + session_.get_prefixed_key(key);
+        command += " ";
+        command += session_.get_prefixed_key(key);
     }
 
     return command;
 }
 
-std::string celeritas::redis_commands::get_fields_command(const key_container& fields) const
+std::string celeritas::redis_commands::get_fields_command(const key_container& fields)
 {
     std::string command{};
     for (const auto& field : fields)
     {
-        command += " " + field;
+        command += " ";
+        command += field;
     }
 
     return command;
 }
 
-std::string celeritas::redis_commands::get_values_command(const key_container& values) const
+std::string celeritas::redis_commands::get_values_command(const key_container& values)
 {
     std::string command{};
     for (const auto& value : values)
     {
-        command += " \"" + value + "\"";
+        command += " \"";
+        command += value;
+        command += "\"";
     }
 
     return command;
@@ -46,21 +50,34 @@ std::string celeritas::redis_commands::get_keys_value_command(const key_value_co
     {
         const auto prefixed_key = session_.get_prefixed_key(key);
 
-        command += " " + prefixed_key + " \"" + value + "\"";
+        command += " ";
+        command += prefixed_key;
+        command += " \"";
+        command += value;
+        command += "\"";
     }
 
     return command;
 }
 
-std::string celeritas::redis_commands::get_fields_value_command(const key_value_container& field_values) const
+std::string celeritas::redis_commands::get_fields_value_command(const key_value_container& field_values)
 {
     std::string command{};
     for (const auto& [field, value] : field_values)
     {
-        command += " " + field + " \"" + value + "\"";
+        command += " ";
+        command += field;
+        command += " \"";
+        command += value;
+        command += "\"";
     }
 
     return command;
+}
+
+std::string celeritas::redis_commands::get_quoted_value_command(const std::string& value)
+{
+    return "\"" + value + "\"";
 }
 
 celeritas::redis_database_session& celeritas::redis_commands::get_redis_database_session()
@@ -127,9 +144,4 @@ celeritas::redis_commands::bool_awaitable_type celeritas::redis_commands::async_
     }
 
     co_return false;
-}
-
-std::string celeritas::redis_commands::get_quoted_value_command(const std::string& value) const
-{
-    return "\"" + value + "\"";
 }
