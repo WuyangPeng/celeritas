@@ -7,7 +7,6 @@
 #include "common/celeritas_error.h"
 #include "common/common_fwd.h"
 #include "common/logger.h"
-#include "detail/redis_reply.h"
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/classification.hpp>
