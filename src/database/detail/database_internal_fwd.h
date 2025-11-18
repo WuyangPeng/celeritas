@@ -8,4 +8,5 @@ namespace celeritas
     class redis_key_data_converter;
     class redis_parameter;
     class mysql_parameter;
+    class mysql_row_data_converter;
 }

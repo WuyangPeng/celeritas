@@ -64,8 +64,6 @@ namespace celeritas
 
         [[nodiscard]] results_awaitable_type async_handle_and_retry(const std::string& sql, const error_code_type& error_code);
 
-        [[nodiscard]] static basis_database get_basis_database(const database_field& field_name, const field_view_type& row_view);
-
         connection_type connection_;
         mysql_parameter mysql_parameter_;
     };
