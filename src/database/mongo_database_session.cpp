@@ -262,7 +262,7 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
 
 celeritas::mongo_database_session::document_type celeritas::mongo_database_session::get_document(const basis_database_container& container)
 {
-    bsoncxx::builder::basic::document document{};
+    document_type document{};
 
     for (const auto& value : container)
     {
