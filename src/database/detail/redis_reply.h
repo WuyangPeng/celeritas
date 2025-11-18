@@ -27,9 +27,9 @@ namespace celeritas
 
         redis_reply& operator=(const redis_reply& rhs) = delete;
 
-        redis_reply(redis_reply&& rhs) noexcept = delete;
+        redis_reply(redis_reply&& rhs) noexcept = default;
 
-        redis_reply& operator=(redis_reply&& rhs) noexcept = delete;
+        redis_reply& operator=(redis_reply&& rhs) noexcept = default;
 
         [[nodiscard]] ::redisReply* GetRedisReply() noexcept;
 

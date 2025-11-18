@@ -9,6 +9,7 @@
 #include "redis_string_commands.h"
 #include "detail/redis_context.h"
 #include "detail/redis_parameter.h"
+#include "detail/redis_reply.h"
 
 #include <boost/asio.hpp>
 #include <boost/asio/awaitable.hpp>
@@ -96,12 +97,15 @@ namespace celeritas
 
     private:
         using redis_context_unique_ptr = std::unique_ptr<redis_context>;
+        using redis_reply_awaitable_type = boost::asio::awaitable<redis_reply>;
 
         void check_initialized() const;
 
         void do_is_health() const;
 
         [[nodiscard]] static std::string generate_key(const basis_database_manager_shared_ptr& database);
+
+        [[nodiscard]] redis_reply_awaitable_type async_execute_command_return_reply(const std::string& command) const;
 
         [[nodiscard]] static basis_database get_basis_database(const database_field& field_name, const std::string& value);
 

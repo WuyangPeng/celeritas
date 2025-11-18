@@ -116,77 +116,49 @@ std::string celeritas::redis_database_session::get_expire_seconds_command(int ex
 
 celeritas::redis_database_session::int_awaitable_type celeritas::redis_database_session::async_execute_command_return_int(const std::string& command) const
 {
-    check_initialized();
-
-    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
-
-    const redis_reply redis_reply{ *redis_context_.get(), command };
+    const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return redis_reply.to_integer();
 }
 
 celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::async_execute_command_return_void(const std::string& command) const
 {
-    check_initialized();
-
-    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
-
-    const redis_reply redis_reply{ *redis_context_.get(), command };
+    const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return;
 }
 
 celeritas::redis_database_session::optional_string_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_string(const std::string& command) const
 {
-    check_initialized();
-
-    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
-
-    const redis_reply redis_reply{ *redis_context_.get(), command };
+    const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return redis_reply.to_optional_string();
 }
 
 celeritas::redis_database_session::array_awaitable_type celeritas::redis_database_session::async_execute_command_return_array_type(const std::string& command) const
 {
-    check_initialized();
-
-    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
-
-    const redis_reply redis_reply{ *redis_context_.get(), command };
+    const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return redis_reply.to_array();
 }
 
 celeritas::redis_database_session::map_awaitable_type celeritas::redis_database_session::async_execute_command_return_map_type(const std::string& command) const
 {
-    check_initialized();
-
-    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
-
-    const redis_reply redis_reply{ *redis_context_.get(), command };
+    const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return redis_reply.to_map();
 }
 
 celeritas::redis_database_session::optional_double_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_double(const std::string& command) const
 {
-    check_initialized();
-
-    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
-
-    const redis_reply redis_reply{ *redis_context_.get(), command };
+    const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return redis_reply.to_optional_double();
 }
 
 celeritas::redis_database_session::optional_int_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_int(const std::string& command) const
 {
-    check_initialized();
-
-    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
-
-    const redis_reply redis_reply{ *redis_context_.get(), command };
+    const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return redis_reply.to_optional_int();
 }
@@ -278,6 +250,15 @@ std::string celeritas::redis_database_session::generate_key(const basis_database
     }
 
     return result;
+}
+
+celeritas::redis_database_session::redis_reply_awaitable_type celeritas::redis_database_session::async_execute_command_return_reply(const std::string& command) const
+{
+    check_initialized();
+
+    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
+
+    co_return redis_reply{ *redis_context_.get(), command };
 }
 
 celeritas::basis_database celeritas::redis_database_session::get_basis_database(const database_field& field_name, const std::string& value)
