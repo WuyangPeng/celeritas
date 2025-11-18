@@ -1,15 +1,12 @@
-﻿#include "basis_database.tpp"
+#include "basis_database.tpp"
 #include "basis_database_manager.h"
 #include "database_change_type.h"
 #include "database_data_type.h"
-#include "database_field.h"
 #include "mongo_database_session.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
+#include "detail/mongo_row_data_converter.h"
 
-#include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/split.hpp>
 #include <boost/asio/use_awaitable.hpp>
 #include <mongocxx/exception/operation_exception.hpp>
 
@@ -80,19 +77,9 @@ celeritas::database_session::bool_awaitable_type celeritas::mongo_database_sessi
 {
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
 
-    if (!database_)
-    {
-        co_return false;
-    }
-
     try
     {
-        bsoncxx::builder::basic::document ping_cmd{};
-        ping_cmd.append(bsoncxx::builder::basic::kvp("ping", 1));
-
-        database_->run_command(ping_cmd.view());
-
-        co_return true;
+        co_return do_is_health();
     }
     catch (const mongocxx::exception& error)
     {
@@ -124,31 +111,19 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
 
         case database_change_type::update_type:
         {
-            auto keyDocument = get_document(database->get_key());
-            auto updateDocument = get_document(database->get_database());
-
-            auto collection = (*database_)[database->get_database_name().data()];
-            collection.update_one(keyDocument.extract(), updateDocument.extract());
+            update_document(database);
 
             co_return;
         }
         case database_change_type::insert_type:
         {
-            auto collection = (*database_)[database->get_database_name().data()];
-
-            auto document = get_document(database->get_database());
-
-            collection.insert_one(document.extract());
+            insert_document(database);
 
             co_return;
         }
         case database_change_type::delete_type:
         {
-            auto collection = (*database_)[database->get_database_name().data()];
-
-            auto document = get_document(database->get_key());
-
-            collection.delete_one(document.extract());
+            delete_document(database);
 
             co_return;
         }
@@ -161,7 +136,7 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::mo
 {
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
 
-    auto collection = (*database_)[database->get_database_name().data()];
+    auto collection = get_collection(database->get_database_name());
 
     auto key_document = get_document(database->get_key());
 
@@ -173,7 +148,7 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::mo
     {
         for (const auto& value : result.value())
         {
-            if (const auto basis_database = get_basis_database(field_name_container, value);
+            if (const auto basis_database = mongo_row_data_converter::get_basis_database(field_name_container, value);
                 basis_database.get_data_type() != database_data_type::null_type)
             {
                 select.modify(basis_database);
@@ -188,7 +163,7 @@ celeritas::database_session::result_container_awaitable_type celeritas::mongo_da
 {
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
 
-    auto collection = (*database_)[database->get_database_name().data()];
+    auto collection = get_collection(database->get_database_name());
 
     auto key_document = get_document(database->get_key());
 
@@ -201,7 +176,7 @@ celeritas::database_session::result_container_awaitable_type celeritas::mongo_da
 
         for (const auto& value : entity)
         {
-            if (const auto basis_database = get_basis_database(field_name_container, value);
+            if (const auto basis_database = mongo_row_data_converter::get_basis_database(field_name_container, value);
                 basis_database.get_data_type() != database_data_type::null_type)
             {
                 select.modify(basis_database);
@@ -214,11 +189,53 @@ celeritas::database_session::result_container_awaitable_type celeritas::mongo_da
     co_return result_container;
 }
 
+bool celeritas::mongo_database_session::do_is_health() const
+{
+    if (!database_)
+    {
+        return false;
+    }
+
+    bsoncxx::builder::basic::document ping_cmd{};
+    ping_cmd.append(bsoncxx::builder::basic::kvp("ping", 1));
+
+    database_->run_command(ping_cmd.view());
+
+    return true;
+}
+
+void celeritas::mongo_database_session::update_document(const basis_database_manager_const_shared_ptr& database)
+{
+    auto keyDocument = get_document(database->get_key());
+    auto updateDocument = get_document(database->get_database());
+
+    auto collection = get_collection(database->get_database_name());
+    collection.update_one(keyDocument.extract(), updateDocument.extract());
+}
+
+void celeritas::mongo_database_session::insert_document(const basis_database_manager_const_shared_ptr& database)
+{
+    auto collection = get_collection(database->get_database_name());
+
+    auto document = get_document(database->get_database());
+
+    collection.insert_one(document.extract());
+}
+
+void celeritas::mongo_database_session::delete_document(const basis_database_manager_const_shared_ptr& database)
+{
+    auto collection = get_collection(database->get_database_name());
+
+    auto document = get_document(database->get_key());
+
+    collection.delete_one(document.extract());
+}
+
 celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_execute_query(const std::string_view& collection_name, const document_view_type& filter) const
 {
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
 
-    auto collection = (*database_)[collection_name.data()];
+    auto collection = get_collection(collection_name);
 
     auto cursor = collection.find(filter);
 
@@ -321,125 +338,7 @@ celeritas::mongo_database_session::document_type celeritas::mongo_database_sessi
     return document;
 }
 
-celeritas::basis_database celeritas::mongo_database_session::get_basis_database(const database_field_container& field_name_container, const document_element_type& row_view)
+celeritas::mongo_database_session::collection_type celeritas::mongo_database_session::get_collection(const std::string_view& collection_name) const
 {
-    const std::string key{ row_view.key() };
-    const auto iter = std::ranges::find_if(field_name_container, [key](const auto& value) {
-        return key == value.get_field_name();
-    });
-
-    if (iter == field_name_container.cend())
-    {
-        return basis_database{ "nullptr" };
-    }
-
-    switch (iter->get_data_type())
-    {
-        case database_data_type::string_type:
-        {
-            const std::string result{ row_view.get_string().value };
-            return basis_database{ iter->get_field_name(), result };
-        }
-
-        case database_data_type::int32_type:
-        case database_data_type::int32_count_type:
-            return basis_database{ iter->get_field_name(), row_view.get_int32() };
-
-        case database_data_type::int64_type:
-        case database_data_type::int64_count_type:
-            return basis_database{ iter->get_field_name(), row_view.get_int64() };
-
-        case database_data_type::double_type:
-            return basis_database{ iter->get_field_name(), row_view.get_double().value };
-
-        case database_data_type::bool_type:
-            return basis_database{ iter->get_field_name(), row_view.get_bool() };
-
-        case database_data_type::string_array_type:
-        {
-            const std::string column{ row_view.get_string().value };
-
-            basis_database::string_array element{};
-            if (!column.empty())
-            {
-                split(element, column, boost::is_any_of("|"), boost::token_compress_off);
-            }
-
-            return basis_database{ iter->get_field_name(), element };
-        }
-
-        case database_data_type::int32_array_type:
-        {
-            const std::string column{ row_view.get_string().value };
-            basis_database::string_array element{};
-            if (!column.empty())
-            {
-                split(element, column, boost::is_any_of("|"), boost::token_compress_off);
-            }
-
-            basis_database::int32_array result{};
-            for (const auto& value : element)
-            {
-                if (!value.empty())
-                {
-                    result.emplace_back(boost::lexical_cast<int32_t>(value));
-                }
-            }
-
-            return basis_database{ iter->get_field_name(), result };
-        }
-
-        case database_data_type::int64_array_type:
-        {
-            const std::string column{ row_view.get_string().value };
-            basis_database::string_array element{};
-            if (!column.empty())
-            {
-                split(element, column, boost::is_any_of("|"), boost::token_compress_off);
-            }
-
-            basis_database::int64_array result{};
-            for (const auto& value : element)
-            {
-                if (!value.empty())
-                {
-                    result.emplace_back(boost::lexical_cast<int64_t>(value));
-                }
-            }
-
-            return basis_database{ iter->get_field_name(), result };
-        }
-
-        case database_data_type::double_array_type:
-        {
-            const std::string column{ row_view.get_string().value };
-            basis_database::string_array element{};
-            if (!column.empty())
-            {
-                split(element, column, boost::is_any_of("|"), boost::token_compress_off);
-            }
-
-            basis_database::double_array result{};
-            for (const auto& value : element)
-            {
-                if (!value.empty())
-                {
-                    result.emplace_back(boost::lexical_cast<double>(value));
-                }
-            }
-
-            return basis_database{ iter->get_field_name(), element };
-        }
-
-        case database_data_type::byte_array_type:
-        {
-            const auto binary = row_view.get_binary();
-            const basis_database::byte_array result{ binary.bytes, binary.bytes + binary.size };
-
-            return basis_database{ iter->get_field_name(), result };
-        }
-
-        default:
-            return basis_database{ iter->get_field_name(), std::string{} };
-    }
+    return (*database_)[collection_name];
 }

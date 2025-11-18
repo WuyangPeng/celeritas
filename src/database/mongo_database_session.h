@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "database_session.h"
 #include "detail/mongo_parameter.h"
@@ -47,6 +47,15 @@ namespace celeritas
         using mongo_database_unique_ptr = std::unique_ptr<mongocxx::database>;
         using document_type = bsoncxx::builder::basic::document;
         using document_element_type = bsoncxx::document::element;
+        using collection_type = mongocxx::collection;
+
+        [[nodiscard]] bool do_is_health() const;
+
+        void update_document(const basis_database_manager_const_shared_ptr& database);
+
+        void insert_document(const basis_database_manager_const_shared_ptr& database);
+
+        void delete_document(const basis_database_manager_const_shared_ptr& database);
 
         [[nodiscard]] cursor_awaitable_type async_execute_query(const std::string_view& collection_name, const document_view_type& filter) const;
 
@@ -56,7 +65,7 @@ namespace celeritas
 
         [[nodiscard]] static document_type get_document(const basis_database_container& container);
 
-        [[nodiscard]] static basis_database get_basis_database(const database_field_container& field_name_container, const document_element_type& row_view);
+        [[nodiscard]] collection_type get_collection(const std::string_view& collection_name) const;
 
         mongo_client_unique_ptr client_;
         mongo_database_unique_ptr database_;
