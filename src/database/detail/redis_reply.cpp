@@ -7,6 +7,11 @@ using namespace std::literals;
 celeritas::redis_reply::redis_reply(redis_context& redis_context, const std::string& command)
     : redis_reply_{ static_cast<redisReply*>(::redisCommand(redis_context.get_redis_context(), command.c_str())) }
 {
+    init(redis_context, command);
+}
+
+void celeritas::redis_reply::init(redis_context& redis_context, const std::string& command) const
+{
     LOG_CHANNEL(database_channel, debug) << "redis command: " << command;
 
     if (redis_reply_ == nullptr)
@@ -172,14 +177,14 @@ celeritas::scan_result celeritas::redis_reply::to_scan_result() const
         throw celeritas_error(" scan result num failed: got " + std::to_string(num_elements));
     }
 
-    const auto cursor__element = redis_reply_->element[0];
+    const auto cursor_element = redis_reply_->element[0];
     const auto keys_element = redis_reply_->element[1];
 
-    if (cursor__element->type != REDIS_REPLY_STRING)
+    if (cursor_element->type != REDIS_REPLY_STRING)
     {
         throw celeritas_error("cursor Key element is not a STRING.");
     }
-    std::string cursor{ cursor__element->str, cursor__element->len };
+    std::string cursor{ cursor_element->str, cursor_element->len };
 
     if (keys_element->type != REDIS_REPLY_ARRAY)
     {

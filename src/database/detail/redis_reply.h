@@ -49,6 +49,8 @@ namespace celeritas
         [[nodiscard]] scan_result to_scan_result() const;
 
     private:
+        void init(redis_context& redis_context, const std::string& command) const;
+
         [[nodiscard]] static std::string to_string_from_element(const ::redisReply* element);
 
         ::redisReply* redis_reply_;
