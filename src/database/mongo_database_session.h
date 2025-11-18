@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "database_session.h"
+#include "detail/mongo_parameter.h"
 
 #include <boost/asio/awaitable.hpp>
 #include <boost/asio/io_context.hpp>
@@ -61,7 +62,6 @@ namespace celeritas
         mongo_database_unique_ptr database_;
         io_context_type& io_context_;
 
-        std::string uri_;
-        std::string db_name_;
+        mongo_parameter mongo_parameter_;
     };
 }

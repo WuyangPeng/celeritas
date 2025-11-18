@@ -21,7 +21,7 @@ celeritas::mongo_database_session::mongo_database_session(const std::string_view
                                                           const std::string_view& db_name,
                                                           int expire_seconds,
                                                           io_context_type& io_context)
-    : client_{}, database_{}, io_context_{ io_context }, uri_{ uri }, db_name_{ db_name }
+    : client_{}, database_{}, io_context_{ io_context }, mongo_parameter_{ uri, db_name }
 {
 }
 
@@ -247,15 +247,15 @@ celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_databa
 
 celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database_session::do_async_connect()
 {
-    client_ = std::make_unique<mongocxx::client>(mongocxx::uri{ uri_ });
-    database_ = std::make_unique<mongocxx::database>((*client_)[db_name_]);
+    client_ = std::make_unique<mongocxx::client>(mongocxx::uri{ mongo_parameter_.get_uri() });
+    database_ = std::make_unique<mongocxx::database>((*client_)[mongo_parameter_.get_db_name()]);
 
     bsoncxx::builder::basic::document ping_cmd{};
     ping_cmd.append(bsoncxx::builder::basic::kvp("ping", 1));
 
     database_->run_command(ping_cmd.view());
 
-    LOG_CHANNEL(database_channel, info) << "MongoDB session connected to: " << uri_ << "/" << client_;
+    LOG_CHANNEL(database_channel, info) << "MongoDB session connected to: " << mongo_parameter_.get_uri() << "/" << client_;
 
     co_return;
 }
