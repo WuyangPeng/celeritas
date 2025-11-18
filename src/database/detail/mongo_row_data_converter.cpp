@@ -1,4 +1,6 @@
 ﻿#include "mongo_row_data_converter.h"
+#include "database/basis_database.tpp"
+#include "database/basis_database_container.h"
 #include "database/database_data_type.h"
 #include "database/database_field.h"
 
@@ -130,4 +132,65 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
         default:
             return basis_database{ iter->get_field_name(), std::string{} };
     }
+}
+
+celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_converter::get_document(const basis_database_container& container)
+{
+    document_type document{};
+
+    for (const auto& value : container)
+    {
+        std::string fieldName{ value.get_field_name() };
+        switch (value.get_data_type())
+        {
+            case database_data_type::string_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::string_type>()));
+                break;
+
+            case database_data_type::int32_type:
+            case database_data_type::int32_count_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::int32_type>()));
+                break;
+
+            case database_data_type::int64_type:
+            case database_data_type::int64_count_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::int64_type>()));
+                break;
+
+            case database_data_type::double_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::double_type>()));
+                break;
+
+            case database_data_type::bool_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::bool_type>()));
+                break;
+
+            case database_data_type::string_array_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::string_array_type>()));
+                break;
+
+            case database_data_type::int32_array_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::int32_array_type>()));
+                break;
+
+            case database_data_type::int64_array_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::int64_array_type>()));
+                break;
+
+            case database_data_type::double_array_type:
+                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::double_array_type>()));
+                break;
+            case database_data_type::byte_array_type:
+            {
+                const auto& byteArray = value.get_value<database_data_type::byte_array_type>();
+                document.append(bsoncxx::builder::basic::kvp(fieldName, bsoncxx::types::b_binary{ bsoncxx::binary_sub_type::k_binary, static_cast<uint32_t>(byteArray.size()), byteArray.data() }));
+                break;
+            }
+
+            default:
+                break;
+        }
+    }
+
+    return document;
 }

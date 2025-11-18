@@ -51,11 +51,11 @@ namespace celeritas
 
         [[nodiscard]] bool do_is_health() const;
 
-        void update_document(const basis_database_manager_const_shared_ptr& database);
+        void update_document(const basis_database_manager_const_shared_ptr& database) const;
 
-        void insert_document(const basis_database_manager_const_shared_ptr& database);
+        void insert_document(const basis_database_manager_const_shared_ptr& database) const;
 
-        void delete_document(const basis_database_manager_const_shared_ptr& database);
+        void delete_document(const basis_database_manager_const_shared_ptr& database) const;
 
         [[nodiscard]] cursor_awaitable_type async_execute_query(const std::string_view& collection_name, const document_view_type& filter) const;
 
@@ -63,7 +63,7 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type do_async_connect();
 
-        [[nodiscard]] static document_type get_document(const basis_database_container& container);
+        [[nodiscard]] static basis_database_manager to_basis_database_manager(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container, const document_view_type& view);
 
         [[nodiscard]] collection_type get_collection(const std::string_view& collection_name) const;
 

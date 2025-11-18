@@ -3,6 +3,7 @@
 #include "database/basis_database.h"
 #include "database/database_field.h"
 
+#include <bsoncxx/builder/basic/document.hpp>
 #include <bsoncxx/document/element.hpp>
 
 #include <vector>
@@ -15,7 +16,10 @@ namespace celeritas
         using class_type = mongo_row_data_converter;
         using document_element_type = bsoncxx::document::element;
         using database_field_container = std::vector<database_field>;
+        using document_type = bsoncxx::builder::basic::document;
 
         [[nodiscard]] static basis_database get_basis_database(const database_field_container& field_name_container, const document_element_type& row_view);
+
+        [[nodiscard]] static document_type get_document(const basis_database_container& container);
     };
 }

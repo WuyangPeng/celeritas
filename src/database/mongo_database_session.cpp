@@ -138,22 +138,11 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::mo
 
     auto collection = get_collection(database->get_database_name());
 
-    auto key_document = get_document(database->get_key());
+    auto key_document = mongo_row_data_converter::get_document(database->get_key());
 
-    const auto result = collection.find_one(key_document.extract());
-
-    if (result)
+    if (const auto result = collection.find_one(key_document.extract()))
     {
-        auto select = database->get_select();
-        for (const auto& value : result.value())
-        {
-            if (const auto basis_database = mongo_row_data_converter::get_basis_database(field_name_container, value);
-                basis_database.get_data_type() != database_data_type::null_type)
-            {
-                select.modify(basis_database);
-            }
-        }
-        co_return select;
+        co_return to_basis_database_manager(database, field_name_container, result.value());
     }
 
     co_return database->get_select();
@@ -165,24 +154,14 @@ celeritas::database_session::result_container_awaitable_type celeritas::mongo_da
 
     auto collection = get_collection(database->get_database_name());
 
-    auto key_document = get_document(database->get_key());
+    auto key_document = mongo_row_data_converter::get_document(database->get_key());
 
     auto result = collection.find(key_document.extract());
 
     result_container result_container{};
     for (const auto& entity : result)
     {
-        auto select = database->get_select();
-        for (const auto& value : entity)
-        {
-            if (const auto basis_database = mongo_row_data_converter::get_basis_database(field_name_container, value);
-                basis_database.get_data_type() != database_data_type::null_type)
-            {
-                select.modify(basis_database);
-            }
-        }
-
-        result_container.emplace_back(select);
+        result_container.emplace_back(to_basis_database_manager(database, field_name_container, entity));
     }
 
     co_return result_container;
@@ -203,29 +182,29 @@ bool celeritas::mongo_database_session::do_is_health() const
     return true;
 }
 
-void celeritas::mongo_database_session::update_document(const basis_database_manager_const_shared_ptr& database)
+void celeritas::mongo_database_session::update_document(const basis_database_manager_const_shared_ptr& database) const
 {
-    auto keyDocument = get_document(database->get_key());
-    auto updateDocument = get_document(database->get_database());
+    auto keyDocument = mongo_row_data_converter::get_document(database->get_key());
+    auto updateDocument = mongo_row_data_converter::get_document(database->get_database());
 
     auto collection = get_collection(database->get_database_name());
     collection.update_one(keyDocument.extract(), updateDocument.extract());
 }
 
-void celeritas::mongo_database_session::insert_document(const basis_database_manager_const_shared_ptr& database)
+void celeritas::mongo_database_session::insert_document(const basis_database_manager_const_shared_ptr& database) const
 {
     auto collection = get_collection(database->get_database_name());
 
-    auto document = get_document(database->get_database());
+    auto document = mongo_row_data_converter::get_document(database->get_database());
 
     collection.insert_one(document.extract());
 }
 
-void celeritas::mongo_database_session::delete_document(const basis_database_manager_const_shared_ptr& database)
+void celeritas::mongo_database_session::delete_document(const basis_database_manager_const_shared_ptr& database) const
 {
     auto collection = get_collection(database->get_database_name());
 
-    auto document = get_document(database->get_key());
+    auto document = mongo_row_data_converter::get_document(database->get_key());
 
     collection.delete_one(document.extract());
 }
@@ -236,9 +215,7 @@ celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_databa
 
     auto collection = get_collection(collection_name);
 
-    auto cursor = collection.find(filter);
-
-    co_return cursor;
+    co_return collection.find(filter);
 }
 
 celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_handle_and_retry(const std::string_view& collection_name, const document_view_type& filter)
@@ -266,7 +243,7 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
     client_ = std::make_unique<mongocxx::client>(mongocxx::uri{ mongo_parameter_.get_uri() });
     database_ = std::make_unique<mongocxx::database>((*client_)[mongo_parameter_.get_db_name()]);
 
-    bsoncxx::builder::basic::document ping_cmd{};
+    document_type ping_cmd{};
     ping_cmd.append(bsoncxx::builder::basic::kvp("ping", 1));
 
     database_->run_command(ping_cmd.view());
@@ -276,65 +253,18 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
     co_return;
 }
 
-celeritas::mongo_database_session::document_type celeritas::mongo_database_session::get_document(const basis_database_container& container)
+celeritas::basis_database_manager celeritas::mongo_database_session::to_basis_database_manager(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container, const document_view_type& view)
 {
-    document_type document{};
-
-    for (const auto& value : container)
+    auto select = database->get_select();
+    for (const auto& element : view)
     {
-        std::string fieldName{ value.get_field_name() };
-        switch (value.get_data_type())
+        if (const auto basis_database = mongo_row_data_converter::get_basis_database(field_name_container, element);
+            basis_database.get_data_type() != database_data_type::null_type)
         {
-            case database_data_type::string_type:
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::string_type>()));
-                break;
-
-            case database_data_type::int32_type:
-            case database_data_type::int32_count_type:
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::int32_type>()));
-                break;
-
-            case database_data_type::int64_type:
-            case database_data_type::int64_count_type:
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::int64_type>()));
-                break;
-
-            case database_data_type::double_type:
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::double_type>()));
-                break;
-
-            case database_data_type::bool_type:
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::bool_type>()));
-                break;
-
-            case database_data_type::string_array_type:
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::string_array_type>()));
-                break;
-
-            case database_data_type::int32_array_type:
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::int32_array_type>()));
-                break;
-
-            case database_data_type::int64_array_type:
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::int64_array_type>()));
-                break;
-
-            case database_data_type::double_array_type:
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::double_array_type>()));
-                break;
-            case database_data_type::byte_array_type:
-            {
-                const auto& byteArray = value.get_value<database_data_type::byte_array_type>();
-                document.append(bsoncxx::builder::basic::kvp(fieldName, bsoncxx::types::b_binary{ bsoncxx::binary_sub_type::k_binary, static_cast<uint32_t>(byteArray.size()), byteArray.data() }));
-                break;
-            }
-
-            default:
-                break;
+            select.modify(basis_database);
         }
     }
-
-    return document;
+    return select;
 }
 
 celeritas::mongo_database_session::collection_type celeritas::mongo_database_session::get_collection(const std::string_view& collection_name) const
