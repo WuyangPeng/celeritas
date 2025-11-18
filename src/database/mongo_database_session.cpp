@@ -142,10 +142,9 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::mo
 
     const auto result = collection.find_one(key_document.extract());
 
-    basis_database_manager select{ database->get_database_type(), database->get_database_name(), database_change_type::select_type, database->get_key() };
-
     if (result)
     {
+        auto select = database->get_select();
         for (const auto& value : result.value())
         {
             if (const auto basis_database = mongo_row_data_converter::get_basis_database(field_name_container, value);
@@ -154,9 +153,10 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::mo
                 select.modify(basis_database);
             }
         }
+        co_return select;
     }
 
-    co_return select;
+    co_return database->get_select();
 }
 
 celeritas::database_session::result_container_awaitable_type celeritas::mongo_database_session::select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
@@ -172,8 +172,7 @@ celeritas::database_session::result_container_awaitable_type celeritas::mongo_da
     result_container result_container{};
     for (const auto& entity : result)
     {
-        basis_database_manager select{ database->get_database_type(), database->get_database_name(), database_change_type::select_type, database->get_key() };
-
+        auto select = database->get_select();
         for (const auto& value : entity)
         {
             if (const auto basis_database = mongo_row_data_converter::get_basis_database(field_name_container, value);
