@@ -133,20 +133,13 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::my
 {
     const auto result = co_await async_query(mysql_statement_generator::generate_select_statement(field_name_container, *database) + " LIMIT 1;");
 
-    auto select = database->get_select();
     if (const auto& rows = result.rows();
         !rows.empty())
     {
-        auto index = 0;
-        for (const auto& element : rows.at(0))
-        {
-            select.modify(mysql_row_data_converter::get_basis_database(field_name_container.at(index), element));
-
-            ++index;
-        }
+        co_return populate_database_from_row(database, field_name_container, rows[0]);
     }
 
-    co_return select;
+    co_return database->get_select();
 }
 
 celeritas::database_session::result_container_awaitable_type celeritas::mysql_database_session::select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
@@ -157,15 +150,7 @@ celeritas::database_session::result_container_awaitable_type celeritas::mysql_da
 
     for (const auto& entity : result.rows())
     {
-        auto select = database->get_select();
-        auto index = 0;
-        for (const auto& value : entity)
-        {
-            select.modify(mysql_row_data_converter::get_basis_database(field_name_container.at(index), value));
-            ++index;
-        }
-
-        container.emplace_back(select);
+        container.emplace_back(populate_database_from_row(database, field_name_container, entity));
     }
 
     co_return container;
@@ -218,4 +203,16 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
     }
 
     throw;
+}
+
+celeritas::basis_database_manager celeritas::mysql_database_session::populate_database_from_row(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container, const row_view_type& row)
+{
+    auto select = database->get_select();
+    auto index = 0;
+    for (const auto& value : row)
+    {
+        select.modify(mysql_row_data_converter::get_basis_database(field_name_container.at(index), value));
+        ++index;
+    }
+    return select;
 }
