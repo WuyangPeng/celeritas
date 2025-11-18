@@ -8,6 +8,7 @@
 #include "redis_sorted_set_commands.h"
 #include "redis_string_commands.h"
 #include "detail/redis_context.h"
+#include "detail/redis_parameter.h"
 
 #include <boost/asio.hpp>
 #include <boost/asio/awaitable.hpp>
@@ -21,38 +22,28 @@ namespace celeritas
     public:
         using class_type = redis_database_session;
         using base_type = database_session;
+        using io_context_type = boost::asio::io_context;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using int_awaitable_type = boost::asio::awaitable<int>;
+        using optional_int = std::optional<int>;
+        using optional_int_awaitable_type = boost::asio::awaitable<optional_int>;
         using optional_double = std::optional<double>;
         using optional_double_awaitable_type = boost::asio::awaitable<optional_double>;
         using optional_string = std::optional<std::string>;
         using optional_string_awaitable_type = boost::asio::awaitable<optional_string>;
-        using io_context_type = boost::asio::io_context;
         using array_type = std::vector<std::string>;
-        using array_type_awaitable_type = boost::asio::awaitable<array_type>;
+        using array_awaitable_type = boost::asio::awaitable<array_type>;
         using map_type = std::map<std::string, std::string>;
-        using map_type_awaitable_type = boost::asio::awaitable<map_type>;
-        using optional_int = std::optional<int>;
-        using optional_int_awaitable_type = boost::asio::awaitable<optional_int>;
+        using map_awaitable_type = boost::asio::awaitable<map_type>;
 
-        redis_database_session(const std::string_view& host,
+        redis_database_session(std::string_view host,
                                int port,
-                               const std::string_view& user,
-                               const std::string_view& password,
-                               const std::string_view& uri,
-                               const std::string_view& db_name,
+                               std::string_view user,
+                               std::string_view password,
+                               std::string_view uri,
+                               std::string_view db_name,
                                int expire_seconds,
                                io_context_type& io_context);
-
-        ~redis_database_session() noexcept override = default;
-
-        redis_database_session(const redis_database_session& rhs) noexcept = delete;
-
-        redis_database_session& operator=(const redis_database_session& rhs) noexcept = delete;
-
-        redis_database_session(redis_database_session&& rhs) noexcept = delete;
-
-        redis_database_session& operator=(redis_database_session&& rhs) noexcept = delete;
 
         // 异步连接到Redis
         [[nodiscard]] void_awaitable_type async_connect();
@@ -78,6 +69,7 @@ namespace celeritas
         // 有序集合操作
         [[nodiscard]] redis_sorted_set_commands& get_redis_sorted_set_commands();
 
+        // 辅助函数
         [[nodiscard]] std::string get_prefixed_key(const std::string& key) const;
 
         [[nodiscard]] std::string get_expire_seconds_command(int expire_seconds) const;
@@ -88,9 +80,9 @@ namespace celeritas
 
         [[nodiscard]] optional_string_awaitable_type async_execute_command_return_optional_string(const std::string& command) const;
 
-        [[nodiscard]] array_type_awaitable_type async_execute_command_return_array_type(const std::string& command) const;
+        [[nodiscard]] array_awaitable_type async_execute_command_return_array_type(const std::string& command) const;
 
-        [[nodiscard]] map_type_awaitable_type async_execute_command_return_map_type(const std::string& command) const;
+        [[nodiscard]] map_awaitable_type async_execute_command_return_map_type(const std::string& command) const;
 
         [[nodiscard]] optional_double_awaitable_type async_execute_command_return_optional_double(const std::string& command) const;
 
@@ -107,22 +99,16 @@ namespace celeritas
 
         void check_initialized() const;
 
-        void do_is_health();
+        void do_is_health() const;
 
         [[nodiscard]] static std::string generate_key(const basis_database_manager_shared_ptr& database);
 
         [[nodiscard]] static basis_database get_basis_database(const database_field& field_name, const std::string& value);
 
-        redis_context_unique_ptr redis_context_;
         io_context_type& io_context_;
+        redis_context_unique_ptr redis_context_;
 
-        std::string host_;
-        int port_ = 0;
-        std::string user_;
-        std::string password_;
-        std::string db_name_;
-        int expire_seconds_ = 0;
-
+        redis_parameter redis_parameter_;
         redis_key_commands redis_key_commands_;
         redis_string_commands redis_string_commands_;
         redis_hash_commands redis_hash_commands_;
