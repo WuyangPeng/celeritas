@@ -1,8 +1,6 @@
 ﻿#include "basis_database_manager.h"
 #include "database_change_type.h"
 
-#include <utility>
-
 celeritas::basis_database_manager::basis_database_manager(const database_type database_type, const std::string_view database_name, const database_change_type change_type, basis_database_container key)
     : database_type_{ database_type }, database_name_{ database_name }, change_type_{ change_type }, key_{ std::move(key) }, database_{}
 {

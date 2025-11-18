@@ -1,10 +1,10 @@
-﻿#include "connection_pool_base.tpp"
+﻿#include "basis_database_manager.h"
+#include "connection_pool_base.tpp"
 #include "database_pool_manager.h"
 #include "mongo_database_session.h"
 #include "mysql_database_session.h"
 #include "redis_database_session.h"
 #include "common/celeritas_error.h"
-#include "basis_database_manager.h"
 
 #include <ranges>
 
@@ -137,7 +137,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
 
     std::lock_guard lock{ mutex_ };
 
-    pools_.insert({ name, pool });
+    pools_.emplace(name, pool);
 
     return pool;
 }
@@ -160,7 +160,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
 
     std::lock_guard lock{ mutex_ };
 
-    pools_.insert({ name, pool });
+    pools_.emplace(name, pool);
 
     return pool;
 }

@@ -10,7 +10,6 @@ namespace celeritas
     public:
         using class_type = database_field;
 
-    public:
         constexpr database_field(const std::string_view field_name, const database_data_type data_type, const database_index_type index_type = database_index_type::null)
             : field_name_{ field_name }, data_type_{ data_type }, index_type_{ index_type }
         {

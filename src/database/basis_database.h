@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "database_data_type.h"
 #include "database_fwd.h"
 
 #include <any>
@@ -37,10 +38,6 @@ namespace celeritas
 
         basis_database(std::string_view fieldName, bool value);
 
-        basis_database(std::string_view fieldName, const object_shared_ptr& value);
-
-        basis_database(std::string_view fieldName, const object_array& value);
-
         basis_database(std::string_view fieldName, const string_array& value);
 
         basis_database(std::string_view fieldName, const int32_array& value);
@@ -77,7 +74,7 @@ namespace celeritas
         basis_database(std::string_view fieldName, database_data_type dataType, std::any value);
 
         std::string_view field_name_;
-        database_data_type data_type_;
+        database_data_type data_type_ = database_data_type::null_type;
         std::any value_;
     };
 }

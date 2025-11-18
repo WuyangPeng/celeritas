@@ -17,7 +17,6 @@ namespace celeritas
 
         using entity_type = database_data_Type_traits<Type>::Type;
 
-    public:
         explicit entity(boost::call_traits<entity_type>::param_type entity) noexcept(std::is_arithmetic_v<entity_type>);
 
         [[nodiscard]] static constexpr std::string_view get_field_name() noexcept

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "entity.h"
 #include "database_field.h"
+#include "entity.h"
 
 template <const std::string_view& FieldName, celeritas::database_data_type Type, celeritas::database_index_type Index>
 celeritas::entity<FieldName, Type, Index>::entity(typename boost::call_traits<entity_type>::param_type entity) noexcept(std::is_arithmetic_v<entity_type>)
@@ -16,7 +16,7 @@ celeritas::database_field celeritas::entity<FieldName, Type, Index>::get_databas
 }
 
 template <const std::string_view&FieldName, celeritas::database_data_type Type, celeritas::database_index_type Index>
-typename celeritas::entity<FieldName, Type, Index>::entity_type celeritas::entity<FieldName, Type, Index>::get_value() const noexcept(std::is_arithmetic_v<entity_type>)
+celeritas::entity<FieldName, Type, Index>::entity_type celeritas::entity<FieldName, Type, Index>::get_value() const noexcept(std::is_arithmetic_v<entity_type>)
 {
     return entity_;
 }

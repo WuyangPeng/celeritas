@@ -80,10 +80,8 @@ std::string celeritas::basis_database::get_sql_field_string() const
     {
         return "`" + std::any_cast<database_data_Type_traits<database_data_type::string_type>::Type>(value_) + "`";
     }
-    else
-    {
-        return get_string();
-    }
+
+    return get_string();
 }
 
 std::string celeritas::basis_database::get_string() const
@@ -93,17 +91,35 @@ std::string celeritas::basis_database::get_string() const
         switch (data_type_)
         {
             case database_data_type::string_type:
+            {
                 return std::any_cast<database_data_Type_traits<database_data_type::string_type>::Type>(value_);
+            }
+
             case database_data_type::int32_type:
+            {
                 return std::to_string(std::any_cast<database_data_Type_traits<database_data_type::int32_type>::Type>(value_));
+            }
+
             case database_data_type::int32_count_type:
+            {
                 return std::to_string(std::any_cast<database_data_Type_traits<database_data_type::int32_count_type>::Type>(value_));
+            }
+
             case database_data_type::int64_type:
+            {
                 return std::to_string(std::any_cast<database_data_Type_traits<database_data_type::int64_type>::Type>(value_));
+            }
+
             case database_data_type::int64_count_type:
+            {
                 return std::to_string(std::any_cast<database_data_Type_traits<database_data_type::int64_count_type>::Type>(value_));
+            }
+
             case database_data_type::double_type:
+            {
                 return std::to_string(std::any_cast<database_data_Type_traits<database_data_type::double_type>::Type>(value_));
+            }
+
             case database_data_type::bool_type:
             {
                 if (const auto result = std::any_cast<database_data_Type_traits<database_data_type::bool_type>::Type>(value_);
@@ -111,10 +127,7 @@ std::string celeritas::basis_database::get_string() const
                 {
                     return "true";
                 }
-                else
-                {
-                    return "false";
-                }
+ return "false";
             }
 
             case database_data_type::string_array_type:
@@ -206,13 +219,13 @@ std::string celeritas::basis_database::get_string() const
             }
 
             default:
+            {
                 return "";
+            }
         }
     }
-    else
-    {
-        return "";
-    }
+
+    return "";
 }
 
 std::string celeritas::basis_database::get_quotation_mark_string() const
@@ -221,10 +234,8 @@ std::string celeritas::basis_database::get_quotation_mark_string() const
     {
         return "\"" + std::any_cast<database_data_Type_traits<database_data_type::string_type>::Type>(value_) + "\"";
     }
-    else
-    {
-        return get_string();
-    }
+
+    return get_string();
 }
 
 celeritas::basis_database::basis_database(const std::string_view fieldName, const database_data_type dataType, std::any value)

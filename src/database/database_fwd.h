@@ -26,6 +26,7 @@ namespace celeritas
     class basis_database_manager;
     class database_entity;
     class database_field;
+    class scan_result;
 
     enum class database_data_type;
     enum class database_index_type;

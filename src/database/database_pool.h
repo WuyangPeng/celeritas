@@ -12,8 +12,8 @@ namespace celeritas
         using class_type = database_pool;
         using io_context_type = boost::asio::io_context;
         using void_awaitable_type = boost::asio::awaitable<void>;
-        using error_code_type = boost::system::error_code;
         using bool_awaitable_type = boost::asio::awaitable<bool>;
+        using error_code_type = boost::system::error_code;
         using basis_database_manager_const_shared_ptr = std::shared_ptr<const basis_database_manager>;
         using result_container = std::vector<basis_database_manager>;
         using database_field_container = std::vector<database_field>;

@@ -14,7 +14,7 @@ namespace celeritas
     public:
         using class_type = basis_database_manager;
 
-        using ObjectContainer = std::vector<basis_database>;
+        using object_container = std::vector<basis_database>;
 
         basis_database_manager(database_type database_type,
                                std::string_view database_name,

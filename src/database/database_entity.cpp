@@ -1,7 +1,6 @@
 ﻿#include "basis_database_manager.h"
 #include "database_change_type.h"
 #include "database_entity.h"
-#include "boost/smart_ptr/make_shared_array.hpp"
 
 celeritas::database_entity::database_entity(const database_type database_type, const std::string_view database_name, const basis_database_container& key)
     : entity_{ key }, modify_{ std::make_shared<basis_database_manager>(database_type, database_name, database_change_type::insert_type, key) }
