@@ -127,7 +127,7 @@ std::string celeritas::basis_database::get_string() const
                 {
                     return "true";
                 }
- return "false";
+                return "false";
             }
 
             case database_data_type::string_array_type:
@@ -216,6 +216,12 @@ std::string celeritas::basis_database::get_string() const
                 }
 
                 return result;
+            }
+
+            case database_data_type::byte_array_type:
+            {
+                const auto byteArray = std::any_cast<database_data_Type_traits<database_data_type::byte_array_type>::Type>(value_);
+                return std::string{ byteArray.begin(), byteArray.end() };
             }
 
             default:
