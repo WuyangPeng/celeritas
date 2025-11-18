@@ -9,4 +9,7 @@ namespace celeritas
     class redis_parameter;
     class mysql_parameter;
     class mysql_row_data_converter;
+    class mongo_parameter;
+    class mongo_row_data_converter;
+    class mysql_statement_generator;
 }
