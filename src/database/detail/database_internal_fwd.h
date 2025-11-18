@@ -7,4 +7,5 @@ namespace celeritas
     class cleanup_database_session_timer;
     class redis_key_data_converter;
     class redis_parameter;
+    class mysql_parameter;
 }

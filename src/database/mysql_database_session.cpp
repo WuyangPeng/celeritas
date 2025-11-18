@@ -7,11 +7,14 @@
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "common/noexcept_safe_call_and_log.h"
+#include "detail/mysql_statement_generator.h"
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/asio/use_awaitable.hpp>
+
+#include <ranges>
 
 using namespace std::literals;
 
@@ -24,12 +27,8 @@ celeritas::mysql_database_session::mysql_database_session(const std::string_view
                                                           int expire_seconds,
                                                           io_context_type& io_context,
                                                           ssl_io_context_type* ssl_context)
-    : host_{ host },
-      port_{ port },
-      user_{ user },
-      password_{ password },
-      db_name_{ db_name },
-      connection_{ get_any_connection(io_context, ssl_context) }
+    : connection_{ get_any_connection(io_context, ssl_context) },
+      mysql_parameter_{ host, port, user, password, db_name }
 {
 }
 
@@ -44,13 +43,7 @@ celeritas::mysql_database_session::~mysql_database_session() noexcept
 
 celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::async_connect()
 {
-    boost::mysql::connect_params connect_params{};
-    connect_params.server_address.emplace_host_and_port(host_, port_);
-    connect_params.username = user_;
-    connect_params.password = password_;
-    connect_params.database = db_name_;
-
-    co_await connection_.async_connect(connect_params, boost::asio::use_awaitable);
+    co_await connection_.async_connect(mysql_parameter_.get_connect_params_type(), boost::asio::use_awaitable);
 
     co_return;
 }
@@ -79,6 +72,8 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
     {
         co_return co_await async_handle_and_retry(sql, retry_error.value());
     }
+
+    co_return results_type{};
 }
 
 celeritas::database_session::bool_awaitable_type celeritas::mysql_database_session::is_health()
@@ -117,17 +112,17 @@ celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database
 
         case database_change_type::update_type:
         {
-            co_await async_query(generate_update_statement(database));
+            co_await async_query(mysql_statement_generator::generate_update_statement(database));
             co_return;
         }
         case database_change_type::insert_type:
         {
-            co_await async_query(generate_insert_statement(database));
+            co_await async_query(mysql_statement_generator::generate_insert_statement(database));
             co_return;
         }
         case database_change_type::delete_type:
         {
-            co_await async_query(generate_delete_statement(database));
+            co_await async_query(mysql_statement_generator::generate_delete_statement(database));
             co_return;
         }
     }
@@ -137,17 +132,16 @@ celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database
 
 celeritas::database_session::basis_database_manager_awaitable_type celeritas::mysql_database_session::select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
 {
-    auto result = co_await async_query(generate_select_statement(field_name_container, *database) + " LIMIT 1;");
+    const auto result = co_await async_query(mysql_statement_generator::generate_select_statement(field_name_container, *database) + " LIMIT 1;");
 
-    basis_database_manager select{ database->get_database_type(), database->get_database_name(), database_change_type::select_type, database->get_key() };
-
+    auto select = database->get_select();
     if (const auto& rows = result.rows();
         !rows.empty())
     {
         auto index = 0;
-        for (const auto& value : rows.at(0))
+        for (const auto& element : rows.at(0))
         {
-            select.modify(get_basis_database(field_name_container.at(index), value));
+            select.modify(get_basis_database(field_name_container.at(index), element));
 
             ++index;
         }
@@ -158,14 +152,13 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::my
 
 celeritas::database_session::result_container_awaitable_type celeritas::mysql_database_session::select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
 {
-    auto result = co_await async_query(generate_select_statement(field_name_container, *database) + ";");
+    const auto result = co_await async_query(mysql_statement_generator::generate_select_statement(field_name_container, *database) + ";");
 
-    result_container result_container{};
+    result_container container{};
 
     for (const auto& entity : result.rows())
     {
-        basis_database_manager select{ database->get_database_type(), database->get_database_name(), database_change_type::select_type, database->get_key() };
-
+        auto select = database->get_select();
         auto index = 0;
         for (const auto& value : entity)
         {
@@ -173,10 +166,10 @@ celeritas::database_session::result_container_awaitable_type celeritas::mysql_da
             ++index;
         }
 
-        result_container.emplace_back(select);
+        container.emplace_back(select);
     }
 
-    co_return result_container;
+    co_return container;
 }
 
 celeritas::mysql_database_session::connection_type celeritas::mysql_database_session::get_any_connection(io_context_type& io_context, ssl_io_context_type* ssl_context)
@@ -185,13 +178,11 @@ celeritas::mysql_database_session::connection_type celeritas::mysql_database_ses
     {
         return { io_context };
     }
-    else
-    {
-        boost::mysql::any_connection_params any_connection_params{};
-        any_connection_params.ssl_context = ssl_context;
 
-        return { io_context, any_connection_params };
-    }
+    boost::mysql::any_connection_params any_connection_params{};
+    any_connection_params.ssl_context = ssl_context;
+
+    return { io_context, any_connection_params };
 }
 
 celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_database_session::async_execute_query(const std::string& sql)
@@ -230,241 +221,89 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
     throw;
 }
 
-std::string celeritas::mysql_database_session::generate_insert_statement(const basis_database_manager_const_shared_ptr& database)
-{
-    std::string result{};
-
-    result += "INSERT INTO `"s + database->get_database_name().data() + "`(";
-
-    const auto container = database->get_database();
-    auto index = 1;
-    for (const auto& value : container)
-    {
-        result += "`";
-        result += value.get_field_name();
-        result += "`";
-
-        if (index != container.get_size())
-        {
-            result += " , ";
-        }
-
-        ++index;
-    }
-
-    result += ") VALUES(";
-
-    index = 1;
-    for (const auto& value : container)
-    {
-        result += value.get_quotation_mark_string();
-
-        if (index != container.get_size())
-        {
-            result += " , ";
-        }
-
-        ++index;
-    }
-
-    result += ");";
-
-    return result;
-}
-
-std::string celeritas::mysql_database_session::generate_update_statement(const basis_database_manager_const_shared_ptr& database)
-{
-    std::string result{};
-
-    result += "UPDATE `"s + database->get_database_name().data() + "` SET ";
-
-    const auto container = database->get_database();
-    auto index = 1;
-    for (const auto& value : container)
-    {
-        result += "`";
-        result += value.get_field_name();
-        result += "` = ";
-        result += value.get_sql_field_string();
-
-        if (index != container.get_size())
-        {
-            result += " , ";
-        }
-
-        ++index;
-    }
-
-    result += "WHERE ";
-
-    const auto key = database->get_key();
-
-    index = 1;
-    for (const auto& value : key)
-    {
-        result += "`";
-        result += value.get_field_name();
-        result += "` = ";
-        result += value.get_sql_field_string();
-
-        if (index != key.get_size())
-        {
-            result += " AND ";
-        }
-
-        ++index;
-    }
-
-    result += " LIMIT 1;";
-
-    return result;
-}
-
-std::string celeritas::mysql_database_session::generate_delete_statement(const basis_database_manager_const_shared_ptr& database)
-{
-    std::string result{};
-
-    result += "DELETE FROM `"s + database->get_database_name().data() + "` WHERE ";
-
-    const auto key = database->get_key();
-    auto index = 1;
-    for (const auto& value : key)
-    {
-        result += "`";
-        result += value.get_field_name();
-        result += "` = ";
-        result += value.get_sql_field_string();
-
-        if (index != key.get_size())
-        {
-            result += " AND ";
-        }
-
-        ++index;
-    }
-
-    result += " LIMIT 1;";
-
-    return result;
-}
-
-std::string celeritas::mysql_database_session::generate_select_statement(const database_field_container& field_name_container, const basis_database_manager& database)
-{
-    std::string result{};
-
-    result += "SELECT ";
-
-    auto index = 1u;
-    for (const auto& value : field_name_container)
-    {
-        result += "`";
-        result += value.get_field_name();
-        result += "`";
-
-        if (index != field_name_container.size())
-        {
-            result += " , ";
-        }
-
-        ++index;
-    }
-
-    result += "FROM `"s + database.get_database_name().data() + "` WHERE ";
-
-    auto keyIndex = 1;
-    for (const auto key = database.get_key();
-         const auto& value : key)
-    {
-        result += "`";
-        result += value.get_field_name();
-        result += "` = ";
-
-        result += value.get_sql_field_string();
-
-        if (keyIndex != key.get_size())
-        {
-            result += " AND ";
-        }
-
-        ++keyIndex;
-    }
-
-    return result;
-}
-
-celeritas::basis_database celeritas::mysql_database_session::get_basis_database(const database_field& field_name, const boost::mysql::field_view& row_view)
+celeritas::basis_database celeritas::mysql_database_session::get_basis_database(const database_field& field_name, const field_view_type& row_view)
 {
     switch (field_name.get_data_type())
     {
         case database_data_type::string_type:
+        {
             return basis_database{ field_name.get_field_name(), row_view.as_string() };
+        }
 
         case database_data_type::int32_type:
         case database_data_type::int32_count_type:
+        {
             return basis_database{ field_name.get_field_name(), boost::numeric_cast<int32_t>(row_view.as_int64()) };
+        }
 
         case database_data_type::int64_type:
         case database_data_type::int64_count_type:
+        {
             return basis_database{ field_name.get_field_name(), row_view.as_int64() };
-
+        }
         case database_data_type::double_type:
+        {
             return basis_database{ field_name.get_field_name(), row_view.as_double() };
+        }
 
         case database_data_type::bool_type:
+        {
             return basis_database{ field_name.get_field_name(), row_view.as_int64() != 0 };
+        }
 
         case database_data_type::string_array_type:
         {
-            const std::string column{ row_view.as_string() };
-            basis_database::string_array element{};
-            split(element, column, boost::is_any_of("|"), boost::token_compress_off);
+            basis_database::string_array result{};
+            split(result, row_view.as_string(), boost::is_any_of("|"), boost::token_compress_off);
 
-            return basis_database{ field_name.get_field_name(), element };
+            return basis_database{ field_name.get_field_name(), result };
         }
 
         case database_data_type::int32_array_type:
         {
-            const std::string column{ row_view.as_string() };
-            basis_database::string_array element{};
-            split(element, column, boost::is_any_of("|"), boost::token_compress_off);
+            const std::string value{ row_view.as_string() };
+            auto split_view = value | std::views::split('|');
 
-            basis_database::int32_array result{};
-            for (const auto& value : element)
-            {
-                result.emplace_back(boost::lexical_cast<int32_t>(value));
-            }
+            auto int_view = split_view | std::views::transform([](const auto& subrange) {
+                const std::string result{ subrange.begin(), subrange.end() };
+                return boost::lexical_cast<int32_t>(result);
+            });
+            const basis_database::int32_array result{ int_view.begin(), int_view.end() };
+
             return basis_database{ field_name.get_field_name(), result };
         }
 
         case database_data_type::int64_array_type:
         {
-            const std::string column{ row_view.as_string() };
-            basis_database::string_array element{};
-            split(element, column, boost::is_any_of("|"), boost::token_compress_off);
+            const std::string value{ row_view.as_string() };
+            auto split_view = value | std::views::split('|');
 
-            basis_database::int64_array result{};
-            for (const auto& value : element)
-            {
-                result.emplace_back(boost::lexical_cast<int64_t>(value));
-            }
+            auto int_view = split_view | std::views::transform([](const auto& subrange) {
+                const std::string result{ subrange.begin(), subrange.end() };
+                return boost::lexical_cast<int64_t>(result);
+            });
+            const basis_database::int64_array result{ int_view.begin(), int_view.end() };
+
             return basis_database{ field_name.get_field_name(), result };
         }
 
         case database_data_type::double_array_type:
         {
-            const std::string column{ row_view.as_string() };
-            basis_database::string_array element{};
-            split(element, column, boost::is_any_of("|"), boost::token_compress_off);
+            const std::string value{ row_view.as_string() };
+            auto split_view = value | std::views::split('|');
 
-            basis_database::double_array result{};
-            for (const auto& value : element)
-            {
-                result.emplace_back(boost::lexical_cast<double>(value));
-            }
-            return basis_database{ field_name.get_field_name(), element };
+            auto int_view = split_view | std::views::transform([](const auto& subrange) {
+                const std::string result{ subrange.begin(), subrange.end() };
+                return boost::lexical_cast<double>(result);
+            });
+            const basis_database::double_array result{ int_view.begin(), int_view.end() };
+
+            return basis_database{ field_name.get_field_name(), result };
         }
 
         default:
+        {
             return basis_database{ field_name.get_field_name(), ""s };
+        }
     }
 }

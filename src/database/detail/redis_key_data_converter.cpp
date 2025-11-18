@@ -36,21 +36,31 @@ celeritas::basis_database celeritas::redis_key_data_converter::get_basis_databas
     switch (field_name.get_data_type())
     {
         case database_data_type::string_type:
+        {
             return basis_database{ field_name.get_field_name(), value };
+        }
 
         case database_data_type::int32_type:
         case database_data_type::int32_count_type:
+        {
             return basis_database{ field_name.get_field_name(), boost::lexical_cast<int32_t>(value) };
+        }
 
         case database_data_type::int64_type:
         case database_data_type::int64_count_type:
+        {
             return basis_database{ field_name.get_field_name(), boost::lexical_cast<int64_t>(value) };
+        }
 
         case database_data_type::double_type:
+        {
             return basis_database{ field_name.get_field_name(), boost::lexical_cast<double>(value) };
+        }
 
         case database_data_type::bool_type:
+        {
             return basis_database{ field_name.get_field_name(), value == "true" };
+        }
 
         case database_data_type::string_array_type:
         {
@@ -107,7 +117,9 @@ celeritas::basis_database celeritas::redis_key_data_converter::get_basis_databas
         }
 
         default:
+        {
             return basis_database{ field_name.get_field_name(), std::string{} };
+        }
     }
 }
 

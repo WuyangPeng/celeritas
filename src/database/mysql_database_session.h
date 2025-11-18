@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "database_session.h"
+#include "detail/mysql_parameter.h"
 
 #include <boost/mysql.hpp>
 #include <boost/asio/awaitable.hpp>
@@ -55,6 +56,7 @@ namespace celeritas
     private:
         using connection_type = boost::mysql::any_connection;
         using error_code_type = boost::mysql::error_code;
+        using field_view_type = boost::mysql::field_view;
 
         [[nodiscard]] static connection_type get_any_connection(io_context_type& io_context, ssl_io_context_type* ssl_context);
 
@@ -62,21 +64,9 @@ namespace celeritas
 
         [[nodiscard]] results_awaitable_type async_handle_and_retry(const std::string& sql, const error_code_type& error_code);
 
-        [[nodiscard]] static std::string generate_insert_statement(const basis_database_manager_const_shared_ptr& database);
+        [[nodiscard]] static basis_database get_basis_database(const database_field& field_name, const field_view_type& row_view);
 
-        [[nodiscard]] static std::string generate_update_statement(const basis_database_manager_const_shared_ptr& database);
-
-        [[nodiscard]] static std::string generate_delete_statement(const basis_database_manager_const_shared_ptr& database);
-
-        [[nodiscard]] static std::string generate_select_statement(const database_field_container& field_name_container, const basis_database_manager& database);
-
-        [[nodiscard]] static basis_database get_basis_database(const database_field& field_name, const boost::mysql::field_view& row_view);
-
-        const std::string host_;
-        int port_;
-        const std::string user_;
-        const std::string password_;
-        const std::string db_name_;
         connection_type connection_;
+        mysql_parameter mysql_parameter_;
     };
 }
