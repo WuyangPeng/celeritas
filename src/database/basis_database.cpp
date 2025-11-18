@@ -1,4 +1,4 @@
-﻿#include "basis_database.h"
+﻿#include "basis_database.tpp"
 #include "database_data_type.h"
 #include "database_data_type_traits.h"
 
@@ -132,95 +132,27 @@ std::string celeritas::basis_database::get_string() const
 
             case database_data_type::string_array_type:
             {
-                const auto anyValue = std::any_cast<database_data_Type_traits<database_data_type::string_array_type>::Type>(value_);
-
-                std::string result{};
-
-                auto index = 0u;
-                for (const auto& element : anyValue)
-                {
-                    result += element;
-
-                    ++index;
-
-                    if (index != anyValue.size())
-                    {
-                        result += "|";
-                    }
-                }
-
-                return result;
+                return get_array_string_value<database_data_type::string_array_type>();
             }
 
             case database_data_type::int32_array_type:
             {
-                const auto anyValue = std::any_cast<database_data_Type_traits<database_data_type::int32_array_type>::Type>(value_);
-
-                std::string result{};
-
-                auto index = 0u;
-                for (const auto& element : anyValue)
-                {
-                    result += std::to_string(element);
-
-                    ++index;
-
-                    if (index != anyValue.size())
-                    {
-                        result += "|";
-                    }
-                }
-
-                return result;
+                return get_array_string_value<database_data_type::int32_array_type>();
             }
 
             case database_data_type::int64_array_type:
             {
-                const auto anyValue = std::any_cast<database_data_Type_traits<database_data_type::int64_array_type>::Type>(value_);
-
-                std::string result{};
-
-                auto index = 0u;
-                for (const auto& element : anyValue)
-                {
-                    result += std::to_string(element);
-
-                    ++index;
-
-                    if (index != anyValue.size())
-                    {
-                        result += "|";
-                    }
-                }
-
-                return result;
+                return get_array_string_value<database_data_type::int64_array_type>();
             }
 
             case database_data_type::double_array_type:
             {
-                const auto anyValue = std::any_cast<database_data_Type_traits<database_data_type::double_array_type>::Type>(value_);
-
-                std::string result{};
-
-                auto index = 0u;
-                for (const auto& element : anyValue)
-                {
-                    result += std::to_string(element);
-
-                    ++index;
-
-                    if (index != anyValue.size())
-                    {
-                        result += "|";
-                    }
-                }
-
-                return result;
+                return get_array_string_value<database_data_type::double_array_type>();
             }
 
             case database_data_type::byte_array_type:
             {
-                const auto byteArray = std::any_cast<database_data_Type_traits<database_data_type::byte_array_type>::Type>(value_);
+                const auto& byteArray = std::any_cast<const byte_array&>(value_);
                 return std::string{ byteArray.begin(), byteArray.end() };
             }
 

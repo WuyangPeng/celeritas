@@ -4,6 +4,8 @@
 #include "database_data_type.h"
 #include "database_data_type_traits.h"
 
+#include <sstream>
+
 template <typename T> requires (std::is_integral_v<T>)
 celeritas::basis_database::basis_database(const std::string_view fieldName, T value)
     : class_type{ fieldName, database_data_type::int32_type, value }
@@ -11,7 +13,7 @@ celeritas::basis_database::basis_database(const std::string_view fieldName, T va
 }
 
 template <typename T> requires (std::is_floating_point_v<T>)
-celeritas::basis_database::basis_database(std::string_view fieldName, T value)
+celeritas::basis_database::basis_database(const std::string_view fieldName, T value)
     : class_type{ fieldName, database_data_type::double_type, value }
 {
 }
@@ -32,28 +34,14 @@ template <celeritas::database_data_type Type>
 std::string celeritas::basis_database::get_array_string_value() const
 {
     const auto value = get_value<Type>();
-
-    std::string result{};
-
-    auto index = 0u;
-    for (const auto& element : value)
+    std::ostringstream os;
+    for (auto iter = value.begin(); iter != value.end(); ++iter)
     {
-        if constexpr (std::is_same_v<typename database_data_Type_traits<Type>::Type, string_array>)
+        os << *iter;
+        if (std::next(iter) != value.end())
         {
-            result += element;
-        }
-        else
-        {
-            result += std::to_string(element);
-        }
-
-        ++index;
-
-        if (index != value.size())
-        {
-            result += "|";
+            os << "|";
         }
     }
-
-    return result;
+    return os.str();
 }
