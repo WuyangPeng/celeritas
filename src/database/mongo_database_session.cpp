@@ -1,17 +1,17 @@
-﻿#include "basis_database_manager.h"
+﻿#include "basis_database.tpp"
+#include "basis_database_manager.h"
 #include "database_change_type.h"
 #include "database_data_type.h"
+#include "database_field.h"
 #include "mongo_database_session.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
-#include "basis_database.tpp"
-#include "database_field.h"
 
-#include <boost/asio/use_awaitable.hpp>
-#include <mongocxx/exception/operation_exception.hpp>
+#include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
-#include <boost/lexical_cast.hpp>
+#include <boost/asio/use_awaitable.hpp>
+#include <mongocxx/exception/operation_exception.hpp>
 
 celeritas::mongo_database_session::mongo_database_session(const std::string_view& host,
                                                           int port,
@@ -72,6 +72,8 @@ celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_databa
     {
         co_return co_await async_handle_and_retry(collection_name, filter);
     }
+
+    throw;
 }
 
 celeritas::database_session::bool_awaitable_type celeritas::mongo_database_session::is_health()
@@ -212,7 +214,7 @@ celeritas::database_session::result_container_awaitable_type celeritas::mongo_da
     co_return result_container;
 }
 
-celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_execute_query(const std::string_view& collection_name, const document_view_type& filter)
+celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_execute_query(const std::string_view& collection_name, const document_view_type& filter) const
 {
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
 
@@ -258,7 +260,7 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
     co_return;
 }
 
-bsoncxx::builder::basic::document celeritas::mongo_database_session::get_document(const basis_database_container& container) const
+celeritas::mongo_database_session::document_type celeritas::mongo_database_session::get_document(const basis_database_container& container)
 {
     bsoncxx::builder::basic::document document{};
 
@@ -313,7 +315,7 @@ bsoncxx::builder::basic::document celeritas::mongo_database_session::get_documen
     return document;
 }
 
-celeritas::basis_database celeritas::mongo_database_session::get_basis_database(const database_field_container& field_name_container, const bsoncxx::document::element& row_view)
+celeritas::basis_database celeritas::mongo_database_session::get_basis_database(const database_field_container& field_name_container, const document_element_type& row_view)
 {
     const std::string key{ row_view.key() };
     const auto iter = std::ranges::find_if(field_name_container, [key](const auto& value) {

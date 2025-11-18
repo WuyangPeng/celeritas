@@ -88,6 +88,15 @@ celeritas::basis_database celeritas::mysql_row_data_converter::get_basis_databas
             return basis_database{ field_name.get_field_name(), result };
         }
 
+        case database_data_type::byte_array_type:
+        {
+            const std::string value{ row_view.as_string() };
+
+            const basis_database::byte_array result{ value.cbegin(), value.cend() };
+
+            return basis_database{ field_name.get_field_name(), result };
+        }
+
         default:
         {
             return basis_database{ field_name.get_field_name(), std::string{} };
