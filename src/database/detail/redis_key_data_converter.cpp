@@ -1,6 +1,7 @@
 ﻿#include "redis_key_data_converter.h"
 #include "common/celeritas_error.h"
 #include "database/database_data_type.h"
+#include "database/database_field.h"
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/classification.hpp>

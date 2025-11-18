@@ -6,7 +6,9 @@ std::string celeritas::mysql_statement_generator::generate_insert_statement(cons
 {
     std::string result{};
 
-    result += "INSERT INTO `"s + database->get_database_name().data() + "`(";
+    result += "INSERT INTO `";
+    result += database->get_database_name();
+    result += "`(";
 
     const auto container = database->get_database();
     auto index = 1;
@@ -48,7 +50,9 @@ std::string celeritas::mysql_statement_generator::generate_update_statement(cons
 {
     std::string result{};
 
-    result += "UPDATE `"s + database->get_database_name().data() + "` SET ";
+    result += "UPDATE `";
+    result += database->get_database_name();
+    result += "` SET ";
 
     const auto container = database->get_database();
     auto index = 1;
@@ -96,7 +100,9 @@ std::string celeritas::mysql_statement_generator::generate_delete_statement(cons
 {
     std::string result{};
 
-    result += "DELETE FROM `"s + database->get_database_name().data() + "` WHERE ";
+    result += "DELETE FROM `";
+    result += database->get_database_name();
+    result += "` WHERE ";
 
     const auto key = database->get_key();
     auto index = 1;
@@ -141,7 +147,9 @@ std::string celeritas::mysql_statement_generator::generate_select_statement(cons
         ++index;
     }
 
-    result += "FROM `"s + database.get_database_name().data() + "` WHERE ";
+    result += "FROM `";
+    result += database.get_database_name();
+    result += "` WHERE ";
 
     auto keyIndex = 1;
     for (const auto key = database.get_key();
