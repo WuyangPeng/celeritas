@@ -10,33 +10,6 @@ celeritas::redis_reply::redis_reply(redis_context& redis_context, const std::str
     init(redis_context, command);
 }
 
-void celeritas::redis_reply::init(redis_context& redis_context, const std::string& command) const
-{
-    LOG_CHANNEL(database_channel, debug) << "redis command: " << command;
-
-    if (redis_reply_ == nullptr)
-    {
-        throw celeritas_error("command failed (NULL reply):  "s + redis_context.get_redis_context()->errstr);
-    }
-
-    std::string result_message{};
-    if (redis_reply_->type == REDIS_REPLY_ERROR || redis_reply_->type == REDIS_REPLY_STATUS)
-    {
-        result_message = std::string{ redis_reply_->str, redis_reply_->len };
-    }
-
-    if (redis_reply_->type == REDIS_REPLY_ERROR)
-    {
-        throw celeritas_error("command failed (Redis ERROR reply):  " + result_message);
-    }
-
-    // 特殊处理 AUTH 命令，确保它是 OK (如果需要严格检查)
-    if (command.find("AUTH") == 0 && redis_reply_->type == REDIS_REPLY_STATUS && result_message != "OK")
-    {
-        throw celeritas_error("command failed (AUTH NOT OK):  " + result_message);
-    }
-}
-
 celeritas::redis_reply::~redis_reply() noexcept
 {
     ::freeReplyObject(redis_reply_);
@@ -170,34 +143,44 @@ celeritas::scan_result celeritas::redis_reply::to_scan_result() const
         throw celeritas_error("Reply type mismatch: Expected ARRAY for scan result conversion.");
     }
 
-    const auto num_elements = redis_reply_->elements;
-
-    if (num_elements != 2)
+    if (const auto num_elements = redis_reply_->elements;
+        num_elements != 2)
     {
         throw celeritas_error(" scan result num failed: got " + std::to_string(num_elements));
     }
 
-    const auto cursor_element = redis_reply_->element[0];
-    const auto keys_element = redis_reply_->element[1];
+    auto cursor = get_cursor();
 
-    if (cursor_element->type != REDIS_REPLY_STRING)
-    {
-        throw celeritas_error("cursor Key element is not a STRING.");
-    }
-    std::string cursor{ cursor_element->str, cursor_element->len };
-
-    if (keys_element->type != REDIS_REPLY_ARRAY)
-    {
-        throw celeritas_error("Keys element is not a STRING.");
-    }
-    scan_result::array_type keys{};
-    for (auto i = 0; i < keys_element->elements; ++i)
-    {
-        std::string key{ keys_element->element[i]->str, keys_element->element[i]->len };
-        keys.emplace_back(std::move(key));
-    }
+    auto keys = get_keys();
 
     return scan_result{ std::move(cursor), std::move(keys) };
+}
+
+void celeritas::redis_reply::init(redis_context& redis_context, const std::string& command) const
+{
+    LOG_CHANNEL(database_channel, debug) << "redis command: " << command;
+
+    if (redis_reply_ == nullptr)
+    {
+        throw celeritas_error("command failed (NULL reply):  "s + redis_context.get_redis_context()->errstr);
+    }
+
+    std::string result_message{};
+    if (redis_reply_->type == REDIS_REPLY_ERROR || redis_reply_->type == REDIS_REPLY_STATUS)
+    {
+        result_message = std::string{ redis_reply_->str, redis_reply_->len };
+    }
+
+    if (redis_reply_->type == REDIS_REPLY_ERROR)
+    {
+        throw celeritas_error("command failed (Redis ERROR reply):  " + result_message);
+    }
+
+    // 特殊处理 AUTH 命令，确保它是 OK (如果需要严格检查)
+    if (command.find("AUTH") == 0 && redis_reply_->type == REDIS_REPLY_STATUS && result_message != "OK")
+    {
+        throw celeritas_error("command failed (AUTH NOT OK):  " + result_message);
+    }
 }
 
 std::string celeritas::redis_reply::to_string_from_element(const redisReply* element)
@@ -214,7 +197,11 @@ std::string celeritas::redis_reply::to_string_from_element(const redisReply* ele
         }
         case REDIS_REPLY_INTEGER:
         {
-            return std::to_string(element->integer); // 将整数转换为字符串
+            return std::to_string(element->integer);
+        }
+        case REDIS_REPLY_DOUBLE:
+        {
+            return std::to_string(element->dval);
         }
         case REDIS_REPLY_ERROR:
         {
@@ -227,4 +214,31 @@ std::string celeritas::redis_reply::to_string_from_element(const redisReply* ele
             throw celeritas_error("Redis array element contained an unsupported type: " + std::to_string(element->type));
         }
     }
+}
+
+std::string celeritas::redis_reply::get_cursor() const
+{
+    const auto cursor_element = redis_reply_->element[0];
+    if (cursor_element->type != REDIS_REPLY_STRING)
+    {
+        throw celeritas_error("cursor Key element is not a STRING.");
+    }
+    return std::string{ cursor_element->str, cursor_element->len };
+}
+
+celeritas::redis_reply::array_type celeritas::redis_reply::get_keys() const
+{
+    const auto keys_element = redis_reply_->element[1];
+    if (keys_element->type != REDIS_REPLY_ARRAY)
+    {
+        throw celeritas_error("Keys element is not a STRING.");
+    }
+
+    array_type keys{};
+    for (auto i = 0; i < keys_element->elements; ++i)
+    {
+        std::string key{ keys_element->element[i]->str, keys_element->element[i]->len };
+        keys.emplace_back(std::move(key));
+    }
+    return keys;
 }

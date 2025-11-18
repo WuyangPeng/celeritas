@@ -53,6 +53,10 @@ namespace celeritas
 
         [[nodiscard]] static std::string to_string_from_element(const ::redisReply* element);
 
+        [[nodiscard]] std::string get_cursor() const;
+
+        [[nodiscard]] array_type get_keys() const;
+
         ::redisReply* redis_reply_;
     };
 }
