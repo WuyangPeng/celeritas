@@ -1,0 +1,30 @@
+﻿#pragma once
+
+#include "database/basis_database.h"
+#include "database/basis_database_manager.h"
+#include "database/database_field.h"
+
+#include <memory>
+#include <string>
+#include <vector>
+
+namespace celeritas
+{
+    class redis_key_data_converter
+    {
+    public:
+        using class_type = redis_key_data_converter;
+        using basis_database_manager_const_shared_ptr = std::shared_ptr<const basis_database_manager>;
+
+        [[nodiscard]] static std::string generate_key(const basis_database_manager_const_shared_ptr& database);
+
+        [[nodiscard]] static basis_database get_basis_database(const database_field& field_name, const std::string& value);
+
+        [[nodiscard]] static basis_database_container get_key(const std::string& key, const basis_database_manager_const_shared_ptr& database);
+
+    private:
+        using array_type = std::vector<std::string>;
+
+        [[nodiscard]] static array_type get_key_value(const std::string& key);
+    };
+}
