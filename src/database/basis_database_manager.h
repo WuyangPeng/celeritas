@@ -37,6 +37,8 @@ namespace celeritas
 
         [[nodiscard]] basis_database_container get_database() const noexcept;
 
+        [[nodiscard]] basis_database_manager get_select() const;
+
         void modify(const basis_database& basis_database);
 
         void set(const basis_database_container& database);

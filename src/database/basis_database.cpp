@@ -39,16 +39,6 @@ celeritas::basis_database::basis_database(const std::string_view fieldName, cons
 {
 }
 
-celeritas::basis_database::basis_database(const std::string_view fieldName, const object_shared_ptr& value)
-    : class_type{ fieldName, database_data_type::object_type, value }
-{
-}
-
-celeritas::basis_database::basis_database(const std::string_view fieldName, const object_array& value)
-    : class_type{ fieldName, database_data_type::object_array_type, value }
-{
-}
-
 celeritas::basis_database::basis_database(const std::string_view fieldName, const string_array& value)
     : class_type{ fieldName, database_data_type::string_array_type, value }
 {

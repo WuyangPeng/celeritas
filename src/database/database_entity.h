@@ -11,6 +11,7 @@ namespace celeritas
     public:
         using class_type = database_entity;
         using database_field_container = std::vector<database_field>;
+        using basis_database_manager_const_hared_ptr = std::shared_ptr<const basis_database_manager>;
 
         database_entity(database_type database_type, std::string_view database_name, const basis_database_container& key);
 
@@ -26,9 +27,9 @@ namespace celeritas
 
         database_entity& operator=(database_entity&& rhs) noexcept = default;
 
-        [[nodiscard]] basis_database_manager get_modify() const;
+        [[nodiscard]] basis_database_manager_const_hared_ptr get_modify() const;
 
-        [[nodiscard]] basis_database_manager get_delete() const;
+        [[nodiscard]] basis_database_manager_const_hared_ptr get_delete() const;
 
         void clear_modify();
 
@@ -41,7 +42,9 @@ namespace celeritas
         void add_modify(std::string_view field_name, T value);
 
     private:
+        using basis_database_manager_shared_ptr = std::shared_ptr<basis_database_manager>;
+
         basis_database_container entity_;
-        basis_database_manager modify_;
+        basis_database_manager_shared_ptr modify_;
     };
 }

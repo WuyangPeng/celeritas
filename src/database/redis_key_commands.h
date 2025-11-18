@@ -36,5 +36,13 @@ namespace celeritas
 
         // 获取键存储的数据类型
         [[nodiscard]] string_awaitable_type async_get_type(const std::string& key) const;
+
+        // 使用SCAN命令迭代键空间，查找与给定模式匹配的键。
+        // 此函数只执行一次 SCAN 命令。
+        // 返回：std::pair<cursor, keys>，其中 cursor 是下一次迭代的游标。
+        [[nodiscard]] scan_result_awaitable_type async_scan(const std::string& pattern, int cursor, int count) const;
+
+        // 迭代执行SCAN命令
+        [[nodiscard]] array_awaitable_type async_scan_all(const std::string& pattern) const;
     };
 }

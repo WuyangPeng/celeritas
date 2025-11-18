@@ -114,7 +114,7 @@ celeritas::database_session::bool_awaitable_type celeritas::mysql_database_sessi
     }
 }
 
-celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::save(const basis_database_manager_shared_ptr& database)
+celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::execute_changes(const basis_database_manager_const_shared_ptr& database)
 {
     switch (database->get_change_type())
     {
@@ -143,11 +143,11 @@ celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database
     co_return;
 }
 
-celeritas::database_session::basis_database_manager_awaitable_type celeritas::mysql_database_session::select_one(const basis_database_manager& database, const database_field_container& field_name_container)
+celeritas::database_session::basis_database_manager_awaitable_type celeritas::mysql_database_session::select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
 {
-    auto result = co_await async_query(generate_select_statement(field_name_container, database) + " LIMIT 1;");
+    auto result = co_await async_query(generate_select_statement(field_name_container, *database) + " LIMIT 1;");
 
-    basis_database_manager select{ database.get_database_type(), database.get_database_name(), database_change_type::select_type, database.get_key() };
+    basis_database_manager select{ database->get_database_type(), database->get_database_name(), database_change_type::select_type, database->get_key() };
 
     if (const auto& rows = result.rows();
         !rows.empty())
@@ -164,15 +164,15 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::my
     co_return select;
 }
 
-celeritas::database_session::result_container_awaitable_type celeritas::mysql_database_session::select_all(const basis_database_manager& database, const database_field_container& field_name_container)
+celeritas::database_session::result_container_awaitable_type celeritas::mysql_database_session::select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
 {
-    auto result = co_await async_query(generate_select_statement(field_name_container, database) + ";");
+    auto result = co_await async_query(generate_select_statement(field_name_container, *database) + ";");
 
     result_container result_container{};
 
     for (const auto& entity : result.rows())
     {
-        basis_database_manager select{ database.get_database_type(), database.get_database_name(), database_change_type::select_type, database.get_key() };
+        basis_database_manager select{ database->get_database_type(), database->get_database_name(), database_change_type::select_type, database->get_key() };
 
         auto index = 0;
         for (const auto& value : entity)
@@ -238,7 +238,7 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
     throw;
 }
 
-std::string celeritas::mysql_database_session::generate_insert_statement(const basis_database_manager_shared_ptr& database)
+std::string celeritas::mysql_database_session::generate_insert_statement(const basis_database_manager_const_shared_ptr& database)
 {
     std::string result{};
 
@@ -280,7 +280,7 @@ std::string celeritas::mysql_database_session::generate_insert_statement(const b
     return result;
 }
 
-std::string celeritas::mysql_database_session::generate_update_statement(const basis_database_manager_shared_ptr& database)
+std::string celeritas::mysql_database_session::generate_update_statement(const basis_database_manager_const_shared_ptr& database)
 {
     std::string result{};
 
@@ -328,7 +328,7 @@ std::string celeritas::mysql_database_session::generate_update_statement(const b
     return result;
 }
 
-std::string celeritas::mysql_database_session::generate_delete_statement(const basis_database_manager_shared_ptr& database)
+std::string celeritas::mysql_database_session::generate_delete_statement(const basis_database_manager_const_shared_ptr& database)
 {
     std::string result{};
 

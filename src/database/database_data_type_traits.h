@@ -88,18 +88,6 @@ namespace celeritas
         using Type = std::vector<uint8_t>;
     };
 
-    template <>
-    struct database_data_Type_traits<database_data_type::object_type>
-    {
-        using Type = std::shared_ptr<basis_database>;
-    };
-
-    template <>
-    struct database_data_Type_traits<database_data_type::object_array_type>
-    {
-        using Type = std::vector<std::shared_ptr<basis_database> >;
-    };
-
     namespace traits
     {
         using string_type = database_data_Type_traits<database_data_type::string_type>::Type;
@@ -113,6 +101,7 @@ namespace celeritas
         using double_type = database_data_Type_traits<database_data_type::double_type>::Type;
         using double_array_type = database_data_Type_traits<database_data_type::double_array_type>::Type;
         using bool_type = database_data_Type_traits<database_data_type::bool_type>::Type;
+        using byte_array_type = database_data_Type_traits<database_data_type::byte_array_type>::Type;
 
         namespace param_type
         {
@@ -127,6 +116,7 @@ namespace celeritas
             using double_type = boost::call_traits<double_type>::param_type;
             using double_array_type = boost::call_traits<double_array_type>::param_type;
             using bool_type = boost::call_traits<bool_type>::param_type;
+            using byte_array_type = boost::call_traits<byte_array_type>::param_type;
         }
     }
 }

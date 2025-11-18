@@ -20,6 +20,7 @@ namespace celeritas
         using database_field_container = std::vector<database_field>;
         using basis_database_manager_awaitable_type = boost::asio::awaitable<basis_database_manager>;
         using result_container_awaitable_type = boost::asio::awaitable<result_container>;
+        using basis_database_manager_const_shared_ptr = std::shared_ptr<const basis_database_manager>;
 
         [[nodiscard]] static database_pool_manager& get_instance();
 
@@ -43,11 +44,11 @@ namespace celeritas
 
         [[nodiscard]] bool_awaitable_type is_health();
 
-        void save(io_context_type& io_context, const std::string& name, const basis_database_manager& database);
+        void execute_changes(io_context_type& io_context, const std::string& name, const basis_database_manager_const_shared_ptr& database);
 
-        [[nodiscard]] basis_database_manager_awaitable_type select_one(const std::string& name, const basis_database_manager& database, const database_field_container& field_name_container);
+        [[nodiscard]] basis_database_manager_awaitable_type select_one(const std::string& name, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container);
 
-        [[nodiscard]] result_container_awaitable_type select_all(const std::string& name, const basis_database_manager& database, const database_field_container& field_name_container);
+        [[nodiscard]] result_container_awaitable_type select_all(const std::string& name, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container);
 
     private:
         using database_pool_container = std::map<std::string, database_pool_shared_ptr>;

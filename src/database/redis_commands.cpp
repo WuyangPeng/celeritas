@@ -113,6 +113,11 @@ celeritas::redis_commands::optional_int_awaitable_type celeritas::redis_commands
     co_return co_await session_.async_execute_command_return_optional_int(command);
 }
 
+celeritas::redis_commands::scan_result_awaitable_type celeritas::redis_commands::async_execute_command_return_scan_result(const std::string& command) const
+{
+    co_return co_await session_.async_execute_command_return_scan_result(command);
+}
+
 celeritas::redis_commands::bool_awaitable_type celeritas::redis_commands::async_execute_command_is_ok(const std::string& command) const
 {
     if (const auto result = co_await async_execute_command_return_optional_string(command);

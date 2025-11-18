@@ -71,9 +71,7 @@ celeritas::redis_key_commands::bool_awaitable_type celeritas::redis_key_commands
 
 celeritas::redis_key_commands::string_awaitable_type celeritas::redis_key_commands::async_get_type(const std::string& key) const
 {
-    const auto prefixed_key = get_prefixed_key(key);
-
-    const auto type_command = "TYPE " + prefixed_key;
+    const auto type_command = "TYPE " + get_prefixed_key(key);
 
     if (const auto result = co_await async_execute_command_return_optional_string(type_command);
         result)
@@ -82,6 +80,32 @@ celeritas::redis_key_commands::string_awaitable_type celeritas::redis_key_comman
     }
 
     throw celeritas_error("get type is error.");
+}
+
+celeritas::redis_commands::scan_result_awaitable_type celeritas::redis_key_commands::async_scan(const std::string& pattern, const int cursor, const int count) const
+{
+    const auto scan_command = "SCAN " +
+                              std::to_string(cursor) +
+                              " MATCH " +
+                              get_prefixed_key(pattern) +
+                              " COUNT " +
+                              std::to_string(count);
+
+    co_return co_await async_execute_command_return_scan_result(scan_command);
+}
+
+celeritas::redis_commands::array_awaitable_type celeritas::redis_key_commands::async_scan_all(const std::string& pattern) const
+{
+    auto scan = co_await async_scan(pattern, 0, redis_cursor_one_request_size);
+
+    array_type keys{};
+    while (scan.get_cursor() != "0")
+    {
+        scan = co_await async_scan(pattern, std::stoi(scan.get_cursor()), redis_cursor_one_request_size);
+        keys.insert(keys.cend(), scan.get_keys().cbegin(), scan.get_keys().cend());
+    }
+
+    co_return keys;
 }
 
 

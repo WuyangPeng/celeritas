@@ -7,6 +7,7 @@
 #include "redis_set_commands.h"
 #include "redis_sorted_set_commands.h"
 #include "redis_string_commands.h"
+#include "scan_result.h"
 #include "detail/redis_context.h"
 #include "detail/redis_parameter.h"
 #include "detail/redis_reply.h"
@@ -36,6 +37,7 @@ namespace celeritas
         using array_awaitable_type = boost::asio::awaitable<array_type>;
         using map_type = std::map<std::string, std::string>;
         using map_awaitable_type = boost::asio::awaitable<map_type>;
+        using scan_result_awaitable_type = boost::asio::awaitable<scan_result>;
 
         redis_database_session(std::string_view host,
                                int port,
@@ -89,11 +91,13 @@ namespace celeritas
 
         [[nodiscard]] optional_int_awaitable_type async_execute_command_return_optional_int(const std::string& command) const;
 
-        [[nodiscard]] void_awaitable_type save(const basis_database_manager_shared_ptr& database) override;
+        [[nodiscard]] scan_result_awaitable_type async_execute_command_return_scan_result(const std::string& command) const;
 
-        [[nodiscard]] basis_database_manager_awaitable_type select_one(const basis_database_manager& database, const database_field_container& field_name_container) override;
+        [[nodiscard]] void_awaitable_type execute_changes(const basis_database_manager_const_shared_ptr& database) override;
 
-        [[nodiscard]] result_container_awaitable_type select_all(const basis_database_manager& database, const database_field_container& field_name_container) override;
+        [[nodiscard]] basis_database_manager_awaitable_type select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) override;
+
+        [[nodiscard]] result_container_awaitable_type select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) override;
 
     private:
         using redis_context_unique_ptr = std::unique_ptr<redis_context>;
@@ -103,11 +107,19 @@ namespace celeritas
 
         void do_is_health() const;
 
-        [[nodiscard]] static std::string generate_key(const basis_database_manager_shared_ptr& database);
-
         [[nodiscard]] redis_reply_awaitable_type async_execute_command_return_reply(const std::string& command) const;
 
+        [[nodiscard]] void_awaitable_type save_database(const basis_database_manager_const_shared_ptr& database);
+
+        [[nodiscard]] void_awaitable_type delete_database(const basis_database_manager_const_shared_ptr& database);
+
+        [[nodiscard]] static array_type get_key_value(const std::string& key);
+
+        [[nodiscard]] static std::string generate_key(const basis_database_manager_const_shared_ptr& database);
+
         [[nodiscard]] static basis_database get_basis_database(const database_field& field_name, const std::string& value);
+
+        [[nodiscard]] basis_database_manager_awaitable_type select_one(const std::string& key, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container);
 
         io_context_type& io_context_;
         redis_context_unique_ptr redis_context_;

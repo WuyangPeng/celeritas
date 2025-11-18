@@ -99,25 +99,24 @@ celeritas::database_pool_manager::bool_awaitable_type celeritas::database_pool_m
     co_return true;
 }
 
-void celeritas::database_pool_manager::save(io_context_type& io_context, const std::string& name, const basis_database_manager& database)
+void celeritas::database_pool_manager::execute_changes(io_context_type& io_context, const std::string& name, const basis_database_manager_const_shared_ptr& database)
 {
     const auto pool = get_pool(name);
 
     boost::asio::co_spawn(io_context,
                           [pool,database] {
-                              const auto database_shared_ptr = std::make_shared<basis_database_manager>(database);
-                              return pool->save(database_shared_ptr);
+                              return pool->execute_changes(database);
                           }, boost::asio::detached);
 }
 
-celeritas::database_pool_manager::basis_database_manager_awaitable_type celeritas::database_pool_manager::select_one(const std::string& name, const basis_database_manager& database, const database_field_container& field_name_container)
+celeritas::database_pool_manager::basis_database_manager_awaitable_type celeritas::database_pool_manager::select_one(const std::string& name, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
 {
     const auto pool = get_pool(name);
 
     co_return co_await pool->select_one(database, field_name_container);
 }
 
-celeritas::database_pool_manager::result_container_awaitable_type celeritas::database_pool_manager::select_all(const std::string& name, const basis_database_manager& database, const database_field_container& field_name_container)
+celeritas::database_pool_manager::result_container_awaitable_type celeritas::database_pool_manager::select_all(const std::string& name, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
 {
     const auto pool = get_pool(name);
 

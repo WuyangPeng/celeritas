@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "database_fwd.h"
+#include "scan_result.h"
 
 #include <boost/asio/awaitable.hpp>
 
@@ -45,6 +46,7 @@ namespace celeritas
         using optional_int_awaitable_type = boost::asio::awaitable<optional_int>;
         using string_awaitable_type = boost::asio::awaitable<std::string>;
         using bool_awaitable_type = boost::asio::awaitable<bool>;
+        using scan_result_awaitable_type = boost::asio::awaitable<scan_result>;
 
         [[nodiscard]] std::string get_keys_command(const key_container& keys) const;
 
@@ -75,6 +77,8 @@ namespace celeritas
         [[nodiscard]] optional_double_awaitable_type async_execute_command_return_optional_double(const std::string& command) const;
 
         [[nodiscard]] optional_int_awaitable_type async_execute_command_return_optional_int(const std::string& command) const;
+
+        [[nodiscard]] scan_result_awaitable_type async_execute_command_return_scan_result(const std::string& command) const;
 
         [[nodiscard ]] bool_awaitable_type async_execute_command_is_ok(const std::string& command) const;
 

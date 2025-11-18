@@ -6,7 +6,7 @@
 #include "database/database_change_type.h"
 #include "database/entity.tpp"
 
-celeritas::test celeritas::test::create(const basis_database_manager& entity, database_type database_type, traits::param_type::int64_type user_id)
+celeritas::test celeritas::test::create(const basis_database_manager& entity, const database_type database_type, traits::param_type::int64_type user_id)
 {
     return entity.is_modify() ? test{ entity } : test{ database_type, user_id };
 }
@@ -168,20 +168,22 @@ const celeritas::database_entity::database_field_container& celeritas::test::get
     return field_name_container;
 }
 
-celeritas::basis_database_manager celeritas::test::get_select(const database_type database_type, traits::param_type::int64_type user_id)
+celeritas::test::basis_database_manager_const_hared_ptr celeritas::test::get_select(const database_type database_type, traits::param_type::int64_type user_id)
 {
-    return basis_database_manager{ database_type,
-                                   database_name,
-                                   database_change_type::select_type,
-                                   get_key_basis_database_container(user_id) };
+    return std::make_shared<basis_database_manager>(database_type,
+                                                    database_name,
+                                                    database_change_type::select_type,
+                                                    get_key_basis_database_container(user_id));
 }
 
-celeritas::basis_database_manager celeritas::test::get_select_all(const database_type database_type)
+celeritas::test::basis_database_manager_const_hared_ptr celeritas::test::get_select_all(const database_type database_type)
 {
-    return basis_database_manager{ database_type,
-                                   database_name,
-                                   database_change_type::select_type,
-                                   basis_database_container{} };
+    static const auto result = std::make_shared<basis_database_manager>(database_type,
+                                                                        database_name,
+                                                                        database_change_type::select_type,
+                                                                        basis_database_container{});
+
+    return result;
 }
 
 celeritas::basis_database_container celeritas::test::get_key_basis_database_container(traits::param_type::int64_type user_id)

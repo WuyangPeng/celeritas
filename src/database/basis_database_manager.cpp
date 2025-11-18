@@ -38,6 +38,11 @@ celeritas::basis_database_container celeritas::basis_database_manager::get_datab
     return database_;
 }
 
+celeritas::basis_database_manager celeritas::basis_database_manager::get_select() const
+{
+    return basis_database_manager{ database_type_, database_name_, database_change_type::select_type, key_ };
+}
+
 void celeritas::basis_database_manager::modify(const basis_database& basis_database)
 {
     database_.modify(basis_database);

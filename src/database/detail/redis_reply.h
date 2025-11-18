@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "redis_context.h"
+#include "database/scan_result.h"
 
 #include <map>
 #include <optional>
@@ -44,6 +45,8 @@ namespace celeritas
         [[nodiscard]] array_type to_array() const;
 
         [[nodiscard]] map_type to_map() const;
+
+        [[nodiscard]] scan_result to_scan_result() const;
 
     private:
         [[nodiscard]] static std::string to_string_from_element(const ::redisReply* element);

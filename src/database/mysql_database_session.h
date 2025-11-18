@@ -47,11 +47,11 @@ namespace celeritas
 
         [[nodiscard]] bool_awaitable_type is_health() override;
 
-        [[nodiscard]] void_awaitable_type save(const basis_database_manager_shared_ptr& database) override;
+        [[nodiscard]] void_awaitable_type execute_changes(const basis_database_manager_const_shared_ptr& database) override;
 
-        [[nodiscard]] basis_database_manager_awaitable_type select_one(const basis_database_manager& database, const database_field_container& field_name_container) override;
+        [[nodiscard]] basis_database_manager_awaitable_type select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) override;
 
-        [[nodiscard]] result_container_awaitable_type select_all(const basis_database_manager& database, const database_field_container& field_name_container) override;
+        [[nodiscard]] result_container_awaitable_type select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) override;
 
     private:
         using connection_type = boost::mysql::any_connection;
@@ -63,11 +63,11 @@ namespace celeritas
 
         [[nodiscard]] results_awaitable_type async_handle_and_retry(const std::string_view& sql, const error_code_type& error_code);
 
-        [[nodiscard]] static std::string generate_insert_statement(const basis_database_manager_shared_ptr& database);
+        [[nodiscard]] static std::string generate_insert_statement(const basis_database_manager_const_shared_ptr& database);
 
-        [[nodiscard]] static std::string generate_update_statement(const basis_database_manager_shared_ptr& database);
+        [[nodiscard]] static std::string generate_update_statement(const basis_database_manager_const_shared_ptr& database);
 
-        [[nodiscard]] static std::string generate_delete_statement(const basis_database_manager_shared_ptr& database);
+        [[nodiscard]] static std::string generate_delete_statement(const basis_database_manager_const_shared_ptr& database);
 
         [[nodiscard]] static std::string generate_select_statement(const database_field_container& field_name_container, const basis_database_manager& database);
 

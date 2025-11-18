@@ -55,9 +55,9 @@ namespace celeritas
 
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
-        [[nodiscard]] static basis_database_manager get_select(database_type database_type, traits::param_type::int64_type user_id);
+        [[nodiscard]] static basis_database_manager_const_hared_ptr get_select(database_type database_type, traits::param_type::int64_type user_id);
 
-        [[nodiscard]] static basis_database_manager get_select_all(database_type database_type);
+        [[nodiscard]] static basis_database_manager_const_hared_ptr get_select_all(database_type database_type);
 
         [[nodiscard]] static constexpr std::string_view get_database_name()
         {

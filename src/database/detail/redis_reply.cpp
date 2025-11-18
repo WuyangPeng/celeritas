@@ -158,6 +158,43 @@ celeritas::redis_reply::map_type celeritas::redis_reply::to_map() const
     return result;
 }
 
+celeritas::scan_result celeritas::redis_reply::to_scan_result() const
+{
+    if (redis_reply_->type != REDIS_REPLY_ARRAY)
+    {
+        throw celeritas_error("Reply type mismatch: Expected ARRAY for scan result conversion.");
+    }
+
+    const auto num_elements = redis_reply_->elements;
+
+    if (num_elements != 2)
+    {
+        throw celeritas_error(" scan result num failed: got " + std::to_string(num_elements));
+    }
+
+    const auto cursor__element = redis_reply_->element[0];
+    const auto keys_element = redis_reply_->element[1];
+
+    if (cursor__element->type != REDIS_REPLY_STRING)
+    {
+        throw celeritas_error("cursor Key element is not a STRING.");
+    }
+    std::string cursor{ cursor__element->str, cursor__element->len };
+
+    if (keys_element->type != REDIS_REPLY_ARRAY)
+    {
+        throw celeritas_error("Keys element is not a STRING.");
+    }
+    scan_result::array_type keys{};
+    for (auto i = 0; i < keys_element->elements; ++i)
+    {
+        std::string key{ keys_element->element[i]->str, keys_element->element[i]->len };
+        keys.emplace_back(std::move(key));
+    }
+
+    return scan_result{ std::move(cursor), std::move(keys) };
+}
+
 std::string celeritas::redis_reply::to_string_from_element(const redisReply* element)
 {
     switch (element->type)

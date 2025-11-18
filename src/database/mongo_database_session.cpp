@@ -109,7 +109,7 @@ celeritas::database_session::bool_awaitable_type celeritas::mongo_database_sessi
     }
 }
 
-celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database_session::save(const basis_database_manager_shared_ptr& database)
+celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database_session::execute_changes(const basis_database_manager_const_shared_ptr& database)
 {
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
 
@@ -155,17 +155,17 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
     co_return;
 }
 
-celeritas::database_session::basis_database_manager_awaitable_type celeritas::mongo_database_session::select_one(const basis_database_manager& database, const database_field_container& field_name_container)
+celeritas::database_session::basis_database_manager_awaitable_type celeritas::mongo_database_session::select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
 {
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
 
-    auto collection = (*database_)[database.get_database_name().data()];
+    auto collection = (*database_)[database->get_database_name().data()];
 
-    auto key_document = get_document(database.get_key());
+    auto key_document = get_document(database->get_key());
 
     const auto result = collection.find_one(key_document.extract());
 
-    basis_database_manager select{ database.get_database_type(), database.get_database_name(), database_change_type::select_type, database.get_key() };
+    basis_database_manager select{ database->get_database_type(), database->get_database_name(), database_change_type::select_type, database->get_key() };
 
     if (result)
     {
@@ -182,20 +182,20 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::mo
     co_return select;
 }
 
-celeritas::database_session::result_container_awaitable_type celeritas::mongo_database_session::select_all(const basis_database_manager& database, const database_field_container& field_name_container)
+celeritas::database_session::result_container_awaitable_type celeritas::mongo_database_session::select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
 {
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
 
-    auto collection = (*database_)[database.get_database_name().data()];
+    auto collection = (*database_)[database->get_database_name().data()];
 
-    auto key_document = get_document(database.get_key());
+    auto key_document = get_document(database->get_key());
 
     auto result = collection.find(key_document.extract());
 
     result_container result_container{};
     for (const auto& entity : result)
     {
-        basis_database_manager select{ database.get_database_type(), database.get_database_name(), database_change_type::select_type, database.get_key() };
+        basis_database_manager select{ database->get_database_type(), database->get_database_name(), database_change_type::select_type, database->get_key() };
 
         for (const auto& value : entity)
         {
