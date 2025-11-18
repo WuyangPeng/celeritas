@@ -1,5 +1,4 @@
-﻿#include "redis_database_session.h"
-#include "redis_sorted_set_commands.h"
+﻿#include "redis_sorted_set_commands.h"
 #include "sorted_set_member_score.h"
 #include "common/celeritas_error.h"
 
@@ -138,6 +137,7 @@ celeritas::redis_sorted_set_commands::sorted_set_member_score_container celerita
     {
         result.emplace_back(convert_array_to_members_with_scores(array_result, index));
     }
+
     return result;
 }
 

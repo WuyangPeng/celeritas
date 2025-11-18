@@ -9,7 +9,6 @@ namespace celeritas
     public:
         using class_type = redis_sorted_set_commands;
         using base_type = redis_commands;
-
         using sorted_set_member_score_container = std::vector<sorted_set_member_score>;
         using sorted_set_member_score_awaitable_type = boost::asio::awaitable<sorted_set_member_score_container>;
 
@@ -64,9 +63,9 @@ namespace celeritas
     private:
         [[nodiscard]] static sorted_set_member_score_container convert_array_to_members(const array_type& array_result, bool with_scores);
 
-        [[nodiscard]] static sorted_set_member_score convert_array_to_members_with_scores(const array_type& array_result, int index);
-
         [[nodiscard]] static sorted_set_member_score_container convert_array_to_members_with_scores(const array_type& array_result);
+
+        [[nodiscard]] static sorted_set_member_score convert_array_to_members_with_scores(const array_type& array_result, int index);
 
         [[nodiscard]] static sorted_set_member_score_container convert_array_to_members_without_scores(const array_type& array_result);
     };

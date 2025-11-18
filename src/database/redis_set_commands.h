@@ -1,12 +1,6 @@
 ﻿#pragma once
 
-#include "database_fwd.h"
 #include "redis_commands.h"
-
-#include <boost/asio/awaitable.hpp>
-#include <set>
-#include <string>
-#include <vector>
 
 namespace celeritas
 {
@@ -15,13 +9,6 @@ namespace celeritas
     public:
         using class_type = redis_set_commands;
         using base_type = redis_commands;
-
-        using int_awaitable_type = boost::asio::awaitable<int>;
-        using bool_awaitable_type = boost::asio::awaitable<bool>;
-        using string_set_type = std::set<std::string>;
-        using string_set_awaitable_type = boost::asio::awaitable<string_set_type>;
-        using array_type = std::vector<std::string>;
-        using array_awaitable_type = boost::asio::awaitable<array_type>;
 
         explicit redis_set_commands(redis_database_session& session) noexcept;
 

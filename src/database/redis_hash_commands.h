@@ -2,8 +2,6 @@
 
 #include "redis_commands.h"
 
-#include <map>
-
 namespace celeritas
 {
     class redis_hash_commands final : public redis_commands
@@ -11,17 +9,6 @@ namespace celeritas
     public:
         using class_tye = redis_hash_commands;
         using base_type = redis_commands;
-
-        using void_awaitable_type = boost::asio::awaitable<void>;
-        using int_awaitable_type = boost::asio::awaitable<int>;
-        using bool_awaitable_type = boost::asio::awaitable<bool>;
-        using optional_string = std::optional<std::string>;
-        using optional_string_awaitable_type = boost::asio::awaitable<optional_string>;
-        using map_type = std::map<std::string, std::string>;
-        using map_awaitable_type = boost::asio::awaitable<map_type>;
-        using field_container = std::vector<std::string>;
-        using array_type = std::vector<std::string>;
-        using array_awaitable_type = boost::asio::awaitable<array_type>;
 
         explicit redis_hash_commands(redis_database_session& session) noexcept;
 
@@ -39,7 +26,7 @@ namespace celeritas
         [[nodiscard]] int_awaitable_type async_delete(const std::string& key, const std::string& field) const;
 
         // 删除哈希表中多个字段。
-        [[nodiscard]] int_awaitable_type async_delete_many(const std::string& key, const field_container& fields) const;
+        [[nodiscard]] int_awaitable_type async_delete_many(const std::string& key, const array_type& fields) const;
 
         // 为哈希表 key 中的字段 field 的值加上增量 increment。
         // 返回：执行加法操作之后 field 的值。
@@ -50,7 +37,7 @@ namespace celeritas
         [[nodiscard]] optional_string_awaitable_type async_get(const std::string& key, const std::string& field) const;
 
         // 批量获取多个字段的值。
-        [[nodiscard]] array_awaitable_type async_get_many(const std::string& key, const field_container& fields) const;
+        [[nodiscard]] array_awaitable_type async_get_many(const std::string& key, const array_type& fields) const;
 
         // 获取哈希表中的所有字段名。
         [[nodiscard]] array_awaitable_type async_get_fields(const std::string& key) const;

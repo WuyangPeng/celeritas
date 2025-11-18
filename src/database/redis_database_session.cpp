@@ -257,7 +257,7 @@ celeritas::basis_database celeritas::redis_database_session::get_basis_database(
 
 celeritas::database_session::basis_database_manager_awaitable_type celeritas::redis_database_session::select_one(const basis_database_manager& database, const database_field_container& field_name_container)
 {
-    redis_hash_commands::field_container field_container{};
+    redis_hash_commands::key_container field_container{};
     for (const auto& element : field_name_container)
     {
         field_container.emplace_back(element.get_field_name());
@@ -357,7 +357,7 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
     }
     const auto key = generate_key(database);
     co_await redis_hash_commands_.async_set_many(key, field_value);
-    co_await redis_key_commands_.set_expire_seconds(key, expire_seconds_);
+    co_await redis_key_commands_.async_set_expire_seconds(key, expire_seconds_);
     co_return;
 }
 

@@ -98,7 +98,7 @@ celeritas::redis_commands::array_awaitable_type celeritas::redis_commands::async
     co_return co_await session_.async_execute_command_return_array_type(command);
 }
 
-celeritas::redis_commands::map_type_awaitable_type celeritas::redis_commands::async_execute_command_return_map_type(const std::string& command) const
+celeritas::redis_commands::map_awaitable_type celeritas::redis_commands::async_execute_command_return_map_type(const std::string& command) const
 {
     co_return co_await session_.async_execute_command_return_map_type(command);
 }

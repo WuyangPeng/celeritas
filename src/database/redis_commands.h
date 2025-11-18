@@ -38,7 +38,7 @@ namespace celeritas
         using array_type = std::vector<std::string>;
         using array_awaitable_type = boost::asio::awaitable<array_type>;
         using map_type = std::map<std::string, std::string>;
-        using map_type_awaitable_type = boost::asio::awaitable<map_type>;
+        using map_awaitable_type = boost::asio::awaitable<map_type>;
         using optional_double = std::optional<double>;
         using optional_double_awaitable_type = boost::asio::awaitable<optional_double>;
         using optional_int = std::optional<int>;
@@ -70,7 +70,7 @@ namespace celeritas
 
         [[nodiscard]] array_awaitable_type async_execute_command_return_array_type(const std::string& command) const;
 
-        [[nodiscard]] map_type_awaitable_type async_execute_command_return_map_type(const std::string& command) const;
+        [[nodiscard]] map_awaitable_type async_execute_command_return_map_type(const std::string& command) const;
 
         [[nodiscard]] optional_double_awaitable_type async_execute_command_return_optional_double(const std::string& command) const;
 
