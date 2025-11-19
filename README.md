@@ -571,16 +571,16 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 * **🔌 协议端口 (`protocol_port`)**
     - **作用**：封装了服务支持的网络协议类型和对应的端口号。
-    - **特点**: 包含 `server_network_type` (网络协议类型) 和 `port` (端口号)。
-    - **功能**: 提供获取协议类型和端口号的方法。
+    - **特点**：包含 `server_network_type` (网络协议类型) 和 `port` (端口号)。
+    - **功能**：提供获取协议类型和端口号的方法。
 
 
 * **📝 服务信息 (`service_info`)**
     - **作用**：封装了单个服务实例的所有必要信息。
-    - **特点**: 包含 `instance_id` (实例唯一ID)、`service_name` (服务名称)、`host` (主机地址)、`game_server_id` (
+    - **特点**：包含 `instance_id` (实例唯一ID)、`service_name` (服务名称)、`host` (主机地址)、`game_server_id` (
       游戏服ID)、`last_heartbeat` (上次心跳时间)、`protocol_port_container` (协议端口列表)、`health_check_level_type` (
       健康检查级别)和`start_server_time` (启动时间)。
-    - **功能**: 提供获取和设置这些信息的方法。
+    - **功能**：提供获取和设置这些信息的方法。
 
 
 * **⚙️ 服务注册客户端 (`service_registry`)**
@@ -599,34 +599,50 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 请求）。它将消息分发给对应的业务逻辑处理器，实现业务逻辑与网络协议的解耦。
 
 * **健康检查级别 (`health_check_level_type`)**
-    - **作用**: 定义了服务实例的健康状态级别。
-    - **特点**: 枚举类型，包含 `health` (健康), `warning` (警告), `error` (错误)。
+    - **作用**：定义了服务实例的健康状态级别。
+    - **特点**：枚举类型，包含 `health` (健康), `warning` (警告), `error` (错误)。
+
 
 * **健康检查 (`health_check`)**
-    - **作用**: 提供服务实例的健康检查功能。
+    - **作用**：提供服务实例的健康检查功能。
     - **功能**:
         - 获取当前服务实例的健康级别。
         - 设置当前服务实例的健康级别。
 
+
 * **关闭请求消息处理器 (`close_request_message_handler`)**
-    - **作用**: 处理客户端发起的关闭连接请求。
-    - **功能**: 接收并处理`close_request`消息，执行连接关闭逻辑。
+    - **作用**：处理客户端发起的关闭连接请求。
+    - **功能**：接收并处理`close_request`消息，执行连接关闭逻辑。
+
 
 * **发现请求消息处理器 (`discover_request_message_handler`)**
-    - **作用**: 处理客户端或服务发起的发现服务请求。
-    - **功能**: 接收并处理`discover_request`消息，返回可用服务实例列表。
+    - **作用**：处理客户端或服务发起的发现服务请求。
+    - **功能**：接收并处理`discover_request`消息，返回可用服务实例列表。
+
 
 * **发现响应消息处理器 (`discover_response_message_handler`)**
-    - **作用**: 处理服务发现请求的响应。
-    - **功能**: 接收并处理`discover_response`消息，更新本地服务列表。
+    - **作用**：处理服务发现请求的响应。
+    - **功能**：接收并处理`discover_response`消息，更新本地服务列表。
+
 
 * **注册请求消息处理器 (`register_request_message_handler`)**
-    - **作用**: 处理服务实例向服务注册中心发起的注册请求。
-    - **功能**: 接收并处理`register_request`消息，将服务信息注册到注册中心。
+    - **作用**：处理服务实例向服务注册中心发起的注册请求。
+    - **功能**：接收并处理`register_request`消息，将服务信息注册到注册中心。
+
 
 * **注册响应消息处理器 (`register_response_message_handler`)**
-    - **作用**: 处理服务注册请求的响应。
-    - **功能**: 接收并处理`register_response`消息，确认服务注册结果。
+    - **作用**：处理服务注册请求的响应。
+    - **功能**：接收并处理`register_response`消息，确认服务注册结果。
+
+
+* **HTTP健康检查请求处理器 (`health_check_request_http_message_handler`)**
+    - **作用**：处理来自客户端的`HTTP`健康检查请求。
+    - **功能**：接收并处理`HTTP` `GET`请求，返回服务当前的健康状态。
+
+
+* **HTTP健康检查响应处理器 (`health_check_response_http_message_handler`)**
+    - **作用**：处理`HTTP`健康检查请求的响应。
+    - **功能**：接收并处理`HTTP`响应，通常用于内部服务间健康状态的同步或监控。
 
 #### initializer（初始化）
 
