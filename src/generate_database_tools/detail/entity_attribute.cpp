@@ -18,17 +18,17 @@ celeritas::entity_attribute::optional_string celeritas::entity_attribute::get_in
 
 bool celeritas::entity_attribute::is_bool_type() const
 {
-    return data_type_ == "bool_type";
+    return data_type_ == "bool";
 }
 
 bool celeritas::entity_attribute::is_noexcept_type() const
 {
-    return data_type_ == "int32_type" ||
-           data_type_ == "int32_count_type" ||
-           data_type_ == "int64_type" ||
-           data_type_ == "int64_count_type" ||
-           data_type_ == "double_type" ||
-           data_type_ == "bool_type";
+    return data_type_ == "int32" ||
+           data_type_ == "int32_count" ||
+           data_type_ == "int64" ||
+           data_type_ == "int64_count" ||
+           data_type_ == "double" ||
+           data_type_ == "bool";
 }
 
 bool celeritas::entity_attribute::is_count_type() const
