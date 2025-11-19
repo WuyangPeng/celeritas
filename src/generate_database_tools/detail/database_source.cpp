@@ -18,7 +18,7 @@ void celeritas::database_source::generate(const database_attribute& attribute, c
         boost::replace_all(database_get_define_content, "${entity_type}", element.get_data_type());
         boost::replace_all(database_get_define_content, "${entity}", element.get_entity_name());
 
-        if (element.get_data_type() == "bool_type")
+        if (element.is_bool_type())
         {
             boost::replace_all(database_get_define_content, "${is_bool}", "is");
         }
@@ -27,12 +27,7 @@ void celeritas::database_source::generate(const database_attribute& attribute, c
             boost::replace_all(database_get_define_content, "${is_bool}", "get");
         }
 
-        if (element.get_data_type() == "int32_type" ||
-            element.get_data_type() == "int32_count_type" ||
-            element.get_data_type() == "int64_type" ||
-            element.get_data_type() == "int64_count_type" ||
-            element.get_data_type() == "double_type" ||
-            element.get_data_type() == "bool_type")
+        if (element.is_noexcept_type())
         {
             boost::replace_all(database_get_define_content, "${entity_is_noexcept}", " noexcept");
         }
@@ -44,7 +39,7 @@ void celeritas::database_source::generate(const database_attribute& attribute, c
         boost::replace_all(database_set_define_content, "${entity_type}", element.get_data_type());
         boost::replace_all(database_set_define_content, "${entity}", element.get_entity_name());
 
-        if (element.get_data_type() == "bool_type")
+        if (element.is_bool_type())
         {
             boost::replace_all(database_set_define_content, "${is_bool}", "is");
         }
@@ -53,7 +48,7 @@ void celeritas::database_source::generate(const database_attribute& attribute, c
             boost::replace_all(database_set_define_content, "${is_bool}", "get");
         }
 
-        if (element.get_data_type().find("_count") != std::string::npos)
+        if (element.is_count_type())
         {
             auto database_modify_define_content = database_template_file.get_database_modify_define_content();
 

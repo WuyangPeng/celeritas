@@ -1,6 +1,7 @@
 ﻿#include "database_attribute_container.h"
 #include "database_header.h"
 #include "database_source.h"
+#include "database_template_file.h"
 #include "generate_database_file.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"

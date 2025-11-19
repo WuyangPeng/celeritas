@@ -21,6 +21,14 @@ namespace celeritas
 
         [[nodiscard]] optional_string get_index_type() const;
 
+        [[nodiscard]] bool is_bool_type() const;
+
+        [[nodiscard]] bool is_noexcept_type() const;
+
+        [[nodiscard]] bool is_count_type() const;
+
+        [[nodiscard]] bool is_key_type() const;
+
         void set_entity_name(const std::string& entityName);
 
         void set_data_type(const std::string& dataType);

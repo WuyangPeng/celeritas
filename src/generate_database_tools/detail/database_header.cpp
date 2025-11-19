@@ -8,75 +8,15 @@ void celeritas::database_header::generate(const database_attribute& attribute, c
 {
     for (const auto& element : attribute)
     {
-        auto database_get_declaration_content = database_template_file.get_database_get_declaration_content();
-        auto database_set_declaration_content = database_template_file.get_database_set_declaration_content();
-        auto database_describe_content = database_template_file.get_database_describe_content();
-        auto field_content = database_template_file.get_field_content();
-
-        boost::replace_all(database_get_declaration_content, "${entity_type}", element.get_data_type());
-        boost::replace_all(database_get_declaration_content, "${entity}", element.get_entity_name());
-
-        if (element.get_data_type() == "bool_type")
+        if (element.is_count_type())
         {
-            boost::replace_all(database_get_declaration_content, "${is_bool}", "is");
-        }
-        else
-        {
-            boost::replace_all(database_get_declaration_content, "${is_bool}", "get");
+            database_modify_declaration_ += create_database_modify_declaration_content(element, database_template_file);
         }
 
-        if (element.get_data_type() == "int32_type" ||
-            element.get_data_type() == "int32_count_type" ||
-            element.get_data_type() == "int64_type" ||
-            element.get_data_type() == "int64_count_type" ||
-            element.get_data_type() == "double_type" ||
-            element.get_data_type() == "bool_type")
-        {
-            boost::replace_all(database_get_declaration_content, "${entity_is_noexcept}", " noexcept");
-        }
-        else
-        {
-            boost::replace_all(database_get_declaration_content, "${entity_is_noexcept}", "");
-        }
-
-        boost::replace_all(database_set_declaration_content, "${entity_type}", element.get_data_type());
-        boost::replace_all(database_set_declaration_content, "${entity}", element.get_entity_name());
-
-        if (element.get_data_type().find("_count") != std::string::npos)
-        {
-            auto database_modify_declaration_content = database_template_file.get_database_modify_declaration_content();
-
-            boost::replace_all(database_modify_declaration_content, "${entity_type}", element.get_data_type());
-            boost::replace_all(database_modify_declaration_content, "${entity}", element.get_entity_name());
-
-            database_modify_declaration_ += database_modify_declaration_content;
-        }
-        const auto index_type = element.get_index_type();
-        if (index_type.has_value() && index_type->find("key") != std::string::npos)
-        {
-            boost::replace_all(database_describe_content, "${entity_is_key}", "_id");
-        }
-        else
-        {
-            boost::replace_all(database_describe_content, "${entity_is_key}", element.get_entity_name());
-        }
-        boost::replace_all(database_describe_content, "${entity}", element.get_entity_name());
-
-        boost::replace_all(field_content, "${entity}", element.get_entity_name());
-        boost::replace_all(field_content, "${entity_type}", element.get_data_type());
-        if (index_type.has_value())
-        {
-            boost::replace_all(field_content, "${entity_is_index}", ", database_index_type::" + *index_type);
-        }
-        else
-        {
-            boost::replace_all(field_content, "${entity_is_index}", "");
-        }
-
-        database_get_declaration_ += database_get_declaration_content;
-        database_set_declaration_ += database_set_declaration_content;
-        database_describe_ += database_describe_content;
-        field_ += field_content;
+        database_get_declaration_ += create_database_get_declaration_content(element, database_template_file);
+        database_set_declaration_ += create_database_set_declaration_content(element, database_template_file);
+        database_describe_ += create_database_describe_content(element, database_template_file);
+        field_ += create_field_content(element, database_template_file);
     }
 }
 
@@ -103,5 +43,90 @@ const std::string& celeritas::database_header::get_database_describe() const noe
 const std::string& celeritas::database_header::get_field() const noexcept
 {
     return field_;
+}
+
+std::string celeritas::database_header::create_database_get_declaration_content(const entity_attribute& entity_attribute, const database_template_file& database_template_file)
+{
+    auto database_get_declaration_content = database_template_file.get_database_get_declaration_content();
+
+    boost::replace_all(database_get_declaration_content, "${entity_type}", entity_attribute.get_data_type());
+    boost::replace_all(database_get_declaration_content, "${entity}", entity_attribute.get_entity_name());
+
+    if (entity_attribute.is_bool_type())
+    {
+        boost::replace_all(database_get_declaration_content, "${is_bool}", "is");
+    }
+    else
+    {
+        boost::replace_all(database_get_declaration_content, "${is_bool}", "get");
+    }
+
+    if (entity_attribute.is_noexcept_type())
+    {
+        boost::replace_all(database_get_declaration_content, "${entity_is_noexcept}", " noexcept");
+    }
+    else
+    {
+        boost::replace_all(database_get_declaration_content, "${entity_is_noexcept}", "");
+    }
+
+    return database_get_declaration_content;
+}
+
+std::string celeritas::database_header::create_database_set_declaration_content(const entity_attribute& entity_attribute, const database_template_file& database_template_file)
+{
+    auto database_set_declaration_content = database_template_file.get_database_set_declaration_content();
+
+    boost::replace_all(database_set_declaration_content, "${entity_type}", entity_attribute.get_data_type());
+    boost::replace_all(database_set_declaration_content, "${entity}", entity_attribute.get_entity_name());
+
+    return database_set_declaration_content;
+}
+
+std::string celeritas::database_header::create_database_modify_declaration_content(const entity_attribute& entity_attribute, const database_template_file& database_template_file)
+{
+    auto database_modify_declaration_content = database_template_file.get_database_modify_declaration_content();
+
+    boost::replace_all(database_modify_declaration_content, "${entity_type}", entity_attribute.get_data_type());
+    boost::replace_all(database_modify_declaration_content, "${entity}", entity_attribute.get_entity_name());
+
+    return database_modify_declaration_content;
+}
+
+std::string celeritas::database_header::create_database_describe_content(const entity_attribute& entity_attribute, const database_template_file& database_template_file)
+{
+    auto database_describe_content = database_template_file.get_database_describe_content();
+
+    if (entity_attribute.is_key_type())
+    {
+        boost::replace_all(database_describe_content, "${entity_is_key}", "_id");
+    }
+    else
+    {
+        boost::replace_all(database_describe_content, "${entity_is_key}", entity_attribute.get_entity_name());
+    }
+
+    boost::replace_all(database_describe_content, "${entity}", entity_attribute.get_entity_name());
+
+    return database_describe_content;
+}
+
+std::string celeritas::database_header::create_field_content(const entity_attribute& entity_attribute, const database_template_file& database_template_file)
+{
+    auto field_content = database_template_file.get_field_content();
+
+    boost::replace_all(field_content, "${entity}", entity_attribute.get_entity_name());
+    boost::replace_all(field_content, "${entity_type}", entity_attribute.get_data_type());
+
+    if (const auto index_type = entity_attribute.get_index_type();
+        index_type.has_value())
+    {
+        boost::replace_all(field_content, "${entity_is_index}", ", database_index_type::" + *index_type);
+    }
+    else
+    {
+        boost::replace_all(field_content, "${entity_is_index}", "");
+    }
+    return field_content;
 }
 

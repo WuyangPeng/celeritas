@@ -16,6 +16,31 @@ celeritas::entity_attribute::optional_string celeritas::entity_attribute::get_in
     return index_type_;
 }
 
+bool celeritas::entity_attribute::is_bool_type() const
+{
+    return data_type_ == "bool_type";
+}
+
+bool celeritas::entity_attribute::is_noexcept_type() const
+{
+    return data_type_ == "int32_type" ||
+           data_type_ == "int32_count_type" ||
+           data_type_ == "int64_type" ||
+           data_type_ == "int64_count_type" ||
+           data_type_ == "double_type" ||
+           data_type_ == "bool_type";
+}
+
+bool celeritas::entity_attribute::is_count_type() const
+{
+    return data_type_.find("_count") != std::string::npos;
+}
+
+bool celeritas::entity_attribute::is_key_type() const
+{
+    return index_type_.has_value() && index_type_ == "key";
+}
+
 void celeritas::entity_attribute::set_entity_name(const std::string& entityName)
 {
     entity_name_ = entityName;
