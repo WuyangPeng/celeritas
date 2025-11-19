@@ -65,7 +65,7 @@ namespace celeritas
 
         [[nodiscard]] static basis_database_manager to_basis_database_manager(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container, const document_view_type& view);
 
-        [[nodiscard]] collection_type get_collection(const std::string_view& collection_name) const;
+        [[nodiscard]] collection_type get_collection(std::string_view collection_name) const;
 
         mongo_client_unique_ptr client_;
         mongo_database_unique_ptr database_;

@@ -267,7 +267,7 @@ celeritas::basis_database_manager celeritas::mongo_database_session::to_basis_da
     return select;
 }
 
-celeritas::mongo_database_session::collection_type celeritas::mongo_database_session::get_collection(const std::string_view& collection_name) const
+celeritas::mongo_database_session::collection_type celeritas::mongo_database_session::get_collection(const std::string_view collection_name) const
 {
-    return (*database_)[collection_name];
+    return (*database_)[collection_name.data()];
 }

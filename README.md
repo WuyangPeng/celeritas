@@ -308,6 +308,7 @@
     - **接口**：定义了处理器必须实现的纯虚函数：`get_supported_type_name()`（获取支持的消息类型名称）和`handle(...)`
       （核心处理逻辑）。
 
+
 * **🎯 Protobuf消息处理器（`concrete_message_handler<Message>`）**
     - **作用**：`Protobuf`消息处理器的模板实现基类，继承自 `protobuf_base_message_handler`。旨在简化具体业务处理器的实现。
     - **功能**：
@@ -335,6 +336,119 @@
     - **线程安全**：使用`std::shared_mutex`保护内部注册表，确保注册操作的线程安全。
 
 #### database（数据库）
+
+数据库模块提供了一个统一的、与具体数据库类型无关的接口，用于执行数据持久化操作。它支持多种数据库（MySQL, MongoDB,
+Redis），并提供了连接池管理、数据抽象和命令封装等功能。
+
+##### 基础定义与数据表示 (Basic Definitions & Data Representation)
+
+* **📊 `database_data_type`, `database_index_type`, `database_change_type`**
+    - **作用**: 这组枚举类型是数据库模块的基石，分别定义了支持的数据类型（如`string`, `int32`）、字段的索引类型（如主键、唯一键）和数据库操作的类型（如
+      `insert`, `update`, `delete`）。
+    - **特点**: 提供了类型安全的常量，避免了使用魔法字符串或数字，增强了代码的可读性和可维护性。
+
+* **🏷️ `database_field`**
+    - **作用**: 表示数据库表的单个字段（列）的元数据。
+    - **特点**: 封装了字段的名称、数据类型 (`database_data_type`) 和索引类型 (`database_index_type`)。它是定义
+      `database_entity` 的基本组成部分。
+
+* **🧱 `basis_database`**
+    - **作用**: 框架中数据交换的核心单元，用于封装单个字段的数据。它是一个与具体数据库无关的通用数据容器。
+    - **特点**: 内部使用 `std::any` 存储不同类型的值，并记录字段名和数据类型 (`database_data_type`)。提供了
+      `get_value<T>()`、`get_string()` 等方法来安全地访问数据。
+
+* **📦 `basis_database_container`**
+    - **作用**: 作为 `basis_database` 对象的容器，通常用于表示数据库中的一行记录或一个文档。
+    - **特点**: 本质上是一个 `std::vector<basis_database>`，提供了一种标准方式来组织和传递多个字段的数据。
+
+* **⚙️ `basis_database_manager`**
+    - **作用**: 一个高级数据管理器，用于封装和操作 `basis_database_container`。它不仅存储数据，还能跟踪数据的变更状态。
+    - **功能**:
+        - 存储主键 (`key`) 和数据 (`database`)。
+        - 记录数据的变更类型 (`database_change_type`)，如 `insert_type`, `update_type`, `delete_type`。
+        - 提供了 `modify()` 方法来更新字段值，并自动将变更类型设置为 `update_type`。
+
+##### 实体与ORM (Entity & ORM)
+
+* **🧬 `entity<...>`**
+    - **作用**: 一个编译时模板元编程工具，用于以声明方式定义数据库表的结构。
+    - **特点**: 通过模板参数接收字段名、数据类型和索引类型，从而在编译时生成表的元数据。这是 `generate_database_tools`
+      工具生成代码的基础。
+
+* **🏛️ `database_entity`**
+    - **作用**: 数据库表的运行时表示。它由 `entity` 定义生成，用于在程序运行时执行实际的数据库操作。
+    - **功能**:
+        - 提供了 `select_one()`, `select_all()`, `update()`, `insert()`, `delete()` 等高级数据操作接口。
+        - 内部封装了与 `database_pool_manager` 的交互，自动处理数据库会话的获取和释放。
+
+##### 会话与连接池 (Session & Connection Pool)
+
+* **🌐 `database_session`**
+    - **作用**: 定义了数据库会话的抽象接口，是所有具体数据库会话（如 MySQL, MongoDB, Redis）的基类。
+    - **接口**: 提供了 `select_one()`, `select_all()`, `execute_changes()` 等纯虚函数，强制子类实现标准的数据库操作。
+
+* **🗄️ `mysql_database_session`**
+    - **作用**: `database_session` 针对 MySQL 的具体实现。
+    - **特点**: 封装了 `boost::mysql` 库的 API 调用细节，将底层的 MySQL 操作适配到统一的 `database_session` 接口。
+
+* **📄 `mongo_database_session`**
+    - **作用**: `database_session` 针对 MongoDB 的具体实现。
+    - **特点**: 封装了 `mongocxx` 驱动的 API 调用细节，将底层的文档操作适配到统一的 `database_session` 接口。
+
+* **⚡ `redis_database_session`**
+    - **作用**: `database_session` 针对 Redis 的具体实现。
+    - **特点**: 封装了 `hiredis` 库的 API 调用细节，提供了执行原生 Redis 命令的能力，并作为所有 `redis_*_commands` 类的基础。
+
+* **💧 `connection_pool_base<SessionType>`**
+    - **作用**: 一个通用的、基于模板的数据库连接池基类。
+    - **功能**: 实现了连接池的核心逻辑，包括异步获取 (`acquire`)、归还 (`release`) 连接，以及定时清理 (`cleanup`) 空闲连接。
+
+* **🏊 `database_pool`**
+    - **作用**: `connection_pool_base` 的具体实现，用于管理特定类型 `database_session` 的连接池。
+    - **特点**: 封装了创建和管理特定数据库会话（如 `mysql_database_session`）的逻辑。
+
+* **👨‍💼 `database_pool_manager`**
+    - **作用**: 一个单例管理器，负责创建、存储和提供对项目中所有 `database_pool` 的全局访问。
+    - **核心功能**:
+        - 在服务器启动时，根据配置初始化所有需要的数据库连接池。
+        - 提供 `get_session<SessionType>()` 接口，允许业务代码方便地从指定的连接池中获取一个数据库会话。
+
+##### Redis 命令封装 (Redis Command Wrappers)
+
+* **📜 `redis_commands`**
+    - **作用**: 所有 Redis 命令封装类的基类。
+    - **特点**: 持有一个 `redis_database_session` 的共享指针，所有子类命令都通过这个会话执行。
+
+* **🔑 `redis_key_commands`**
+    - **作用**: 封装与 Redis 键 (Key) 相关的操作。
+    - **功能**: 提供类型安全的函数来执行 `DEL`, `EXISTS`, `EXPIRE`, `TTL` 等命令，管理键的生命周期和存在性。
+
+* **📝 `redis_string_commands`**
+    - **作用**: 封装与 Redis 字符串 (String) 相关的操作。
+    - **功能**: 提供类型安全的函数来执行 `GET`, `SET`, `INCR`, `DECR` 等命令，用于基本的键值存储。
+
+* **🗂️ `redis_hash_commands`**
+    - **作用**: 封装与 Redis 哈希 (Hash) 相关的操作。
+    - **功能**: 提供类型安全的函数来执行 `HGET`, `HSET`, `HGETALL`, `HDEL` 等命令，适用于存储对象结构。
+
+* **📋 `redis_list_commands`**
+    - **作用**: 封装与 Redis 列表 (List) 相关的操作。
+    - **功能**: 提供类型安全的函数来执行 `LPUSH`, `RPOP`, `LRANGE`, `LLEN` 等命令，适用于实现队列或时间线等功能。
+
+* **🧩 `redis_set_commands`**
+    - **作用**: 封装与 Redis 集合 (Set) 相关的操作。
+    - **功能**: 提供类型安全的函数来执行 `SADD`, `SREM`, `SMEMBERS`, `SISMEMBER` 等命令，用于存储无序且唯一的元素集合。
+
+* **📈 `redis_sorted_set_commands`**
+    - **作用**: 封装与 Redis 有序集合 (Sorted Set) 相关的操作。
+    - **功能**: 提供类型安全的函数来执行 `ZADD`, `ZREM`, `ZRANGE`, `ZSCORE` 等命令，适用于排行榜、优先级队列等场景。
+
+* **⚖️ `sorted_set_member_score`**
+    - **作用**: 一个简单的数据结构，用于表示 Redis 有序集合（Sorted Set）中一个成员及其对应的分数。
+
+* **🔍 `scan_result`**
+    - **作用**: 封装了 Redis `SCAN`、`HSCAN`、`SSCAN`、`ZSCAN` 等迭代命令的返回结果。
+    - **特点**: 包含下一次迭代所需的游标 (`cursor`) 和当前批次获取的数据 (`data`)。
 
 #### network（网络）
 
