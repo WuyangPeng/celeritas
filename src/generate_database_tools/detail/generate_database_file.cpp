@@ -91,11 +91,40 @@ std::string celeritas::generate_database_file::generate_header_content(const dat
     boost::replace_all(entity_h_content, "${key_type}", attribute.get_key_type());
     boost::replace_all(entity_h_content, "${key_name}", attribute.get_key_name());
 
-    std::string database_get_declaration{};
-    std::string database_set_declaration{};
-    std::string database_modify_declaration{};
-    std::string database_describe{};
-    std::string field{};
+    const auto snippets = generate_header_snippets(attribute);
+
+    boost::replace_all(entity_h_content, "${database_get_declaration}", snippets.database_get_declaration);
+    boost::replace_all(entity_h_content, "${database_set_declaration}", snippets.database_set_declaration);
+    boost::replace_all(entity_h_content, "${database_modify_declaration}", snippets.database_modify_declaration);
+    boost::replace_all(entity_h_content, "${declaration}", snippets.database_describe);
+    boost::replace_all(entity_h_content, "${field}", snippets.field);
+
+    return entity_h_content;
+}
+
+std::string celeritas::generate_database_file::generate_source_content(const database_attribute& attribute) const
+{
+    auto entity_cpp_content = database_template_file_.get_entity_cpp_content();
+
+    boost::replace_all(entity_cpp_content, "${key_type}", attribute.get_key_type());
+    boost::replace_all(entity_cpp_content, "${key_name}", attribute.get_key_name());
+
+    const auto snippets = generate_source_snippets(attribute);
+
+    boost::replace_all(entity_cpp_content, "${database_get_define}", snippets.database_get_define);
+    boost::replace_all(entity_cpp_content, "${database_set_define}", snippets.database_set_define);
+    boost::replace_all(entity_cpp_content, "${database_modify_define}", snippets.database_modify_define);
+    boost::replace_all(entity_cpp_content, "${field_assignment}", snippets.field_assignment);
+    boost::replace_all(entity_cpp_content, "${field_init}", snippets.field_init);
+    boost::replace_all(entity_cpp_content, "${class_name}", attribute.get_class_name());
+    boost::replace_all(entity_cpp_content, "${database_field}", snippets.database_field);
+
+    return entity_cpp_content;
+}
+
+celeritas::generate_database_file::header_strings celeritas::generate_database_file::generate_header_snippets(const database_attribute& attribute) const
+{
+    header_strings snippets{};
 
     for (const auto& element : attribute)
     {
@@ -140,7 +169,7 @@ std::string celeritas::generate_database_file::generate_header_content(const dat
             boost::replace_all(database_modify_declaration_content, "${entity_type}", element.get_data_type());
             boost::replace_all(database_modify_declaration_content, "${entity}", element.get_entity_name());
 
-            database_modify_declaration += database_modify_declaration_content;
+            snippets.database_modify_declaration += database_modify_declaration_content;
         }
         const auto index_type = element.get_index_type();
         if (index_type.has_value() && index_type->find("key") != std::string::npos)
@@ -164,34 +193,18 @@ std::string celeritas::generate_database_file::generate_header_content(const dat
             boost::replace_all(field_content, "${entity_is_index}", "");
         }
 
-        database_get_declaration += database_get_declaration_content;
-        database_set_declaration += database_set_declaration_content;
-        database_describe += database_describe_content;
-        field += field_content;
+        snippets.database_get_declaration += database_get_declaration_content;
+        snippets.database_set_declaration += database_set_declaration_content;
+        snippets.database_describe += database_describe_content;
+        snippets.field += field_content;
     }
 
-    boost::replace_all(entity_h_content, "${database_get_declaration}", database_get_declaration);
-    boost::replace_all(entity_h_content, "${database_set_declaration}", database_set_declaration);
-    boost::replace_all(entity_h_content, "${database_modify_declaration}", database_modify_declaration);
-    boost::replace_all(entity_h_content, "${declaration}", database_describe);
-    boost::replace_all(entity_h_content, "${field}", field);
-
-    return entity_h_content;
+    return snippets;
 }
 
-std::string celeritas::generate_database_file::generate_source_content(const database_attribute& attribute) const
+celeritas::generate_database_file::source_strings celeritas::generate_database_file::generate_source_snippets(const database_attribute& attribute) const
 {
-    auto entity_cpp_content = database_template_file_.get_entity_cpp_content();
-
-    boost::replace_all(entity_cpp_content, "${key_type}", attribute.get_key_type());
-    boost::replace_all(entity_cpp_content, "${key_name}", attribute.get_key_name());
-
-    std::string database_get_define{};
-    std::string database_set_define{};
-    std::string database_modify_define{};
-    std::string field_assignment{};
-    std::string field_init{};
-    std::string database_field{};
+    source_strings snippets{};
 
     auto index = 0;
     for (const auto& element : attribute)
@@ -247,7 +260,7 @@ std::string celeritas::generate_database_file::generate_source_content(const dat
             boost::replace_all(database_modify_define_content, "${entity_type}", element.get_data_type());
             boost::replace_all(database_modify_define_content, "${entity}", element.get_entity_name());
 
-            database_modify_define += database_modify_define_content;
+            snippets.database_modify_define += database_modify_define_content;
         }
 
         boost::replace_all(field_assignment_content, "${entity_type}", element.get_data_type());
@@ -278,7 +291,7 @@ std::string celeritas::generate_database_file::generate_source_content(const dat
             !index_type.has_value() ||
             index_type->find("key") == std::string::npos)
         {
-            field_init += field_init_content;
+            snippets.field_init += field_init_content;
         }
 
         boost::replace_all(database_field_content, "${entity}", element.get_entity_name());
@@ -300,21 +313,13 @@ std::string celeritas::generate_database_file::generate_source_content(const dat
             boost::replace_all(database_field_content, "${entity_indent}", "                                                                ");
         }
 
-        database_get_define += database_get_define_content;
-        database_set_define += database_set_define_content;
-        field_assignment += field_assignment_content;
-        database_field += database_field_content;
+        snippets.database_get_define += database_get_define_content;
+        snippets.database_set_define += database_set_define_content;
+        snippets.field_assignment += field_assignment_content;
+        snippets.database_field += database_field_content;
 
         ++index;
     }
 
-    boost::replace_all(entity_cpp_content, "${database_get_define}", database_get_define);
-    boost::replace_all(entity_cpp_content, "${database_set_define}", database_set_define);
-    boost::replace_all(entity_cpp_content, "${database_modify_define}", database_modify_define);
-    boost::replace_all(entity_cpp_content, "${field_assignment}", field_assignment);
-    boost::replace_all(entity_cpp_content, "${field_init}", field_init);
-    boost::replace_all(entity_cpp_content, "${class_name}", attribute.get_class_name());
-    boost::replace_all(entity_cpp_content, "${database_field}", database_field);
-
-    return entity_cpp_content;
+    return snippets;
 }
