@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "network/network_fwd.h"
 #include "network/session_write.h"
 
 #include <boost/beast.hpp>

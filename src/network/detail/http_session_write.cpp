@@ -121,11 +121,15 @@ celeritas::http_session_write::bool_awaitable_type celeritas::http_session_write
     const auto body_size = buffer_guard.get_effective_size();
 
     // 构建 HTTP GET 请求
-    boost::beast::http::request<boost::beast::http::buffer_body> request{ boost::beast::http::verb::get, path, 11 }; // HTTP/1.1
+
+    // HTTP/1.1
+    boost::beast::http::request<boost::beast::http::buffer_body> request{ boost::beast::http::verb::get, path, 11 };
     request.set(boost::beast::http::field::host, host_);
     request.set(boost::beast::http::field::user_agent, BOOST_BEAST_VERSION_STRING);
     request.set(boost::beast::http::field::content_type, "application/octet-stream");
-    request.content_length(body_size); // 必须设置 Content-Length
+
+    // 必须设置 Content-Length
+    request.content_length(body_size);
 
     request.body().data = buffer_guard.get();
     request.body().size = body_size;

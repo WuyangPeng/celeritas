@@ -1,5 +1,4 @@
-﻿#include "message_header.h"
-#include "session_base.h"
+﻿#include "session_base.h"
 #include "common/buffer_pool.h"
 #include "detail/write_protobuf_message.h"
 

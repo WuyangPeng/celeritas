@@ -4,7 +4,7 @@
 
 namespace celeritas
 {
-    class http_response_session_run : public http_session_run
+    class http_response_session_run final : public http_session_run
     {
     public:
         using class_type = http_response_session_run;

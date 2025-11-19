@@ -1,9 +1,9 @@
 ﻿#pragma once
 
 #include "generic_session.h"
+#include "common/noexcept_safe_call_and_log.h"
 #include "detail/tcp_session_run.tpp"
 #include "detail/tcp_session_write.tpp"
-#include "common/noexcept_safe_call_and_log.h"
 
 template <typename SocketType>
 celeritas::generic_session<SocketType>::generic_session(socket_type socket,
@@ -41,6 +41,15 @@ celeritas::session_base::void_awaitable_type celeritas::generic_session<SocketTy
 }
 
 template <typename SocketType>
+void celeritas::generic_session<SocketType>::stop()
+{
+    if (is_open())
+    {
+        socket_.close();
+    }
+}
+
+template <typename SocketType>
 bool celeritas::generic_session<SocketType>::is_open() const
 {
     return socket_.is_open();
@@ -50,15 +59,6 @@ template <typename SocketType>
 bool celeritas::generic_session<SocketType>::is_full() const
 {
     return session_write_->is_full();
-}
-
-template <typename SocketType>
-void celeritas::generic_session<SocketType>::stop()
-{
-    if (is_open())
-    {
-        socket_.close();
-    }
 }
 
 template <typename SocketType>

@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "message_header.h"
 #include "generic_session.h"
 #include "proto/celeritas.pb.h"
 
