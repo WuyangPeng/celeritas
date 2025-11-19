@@ -57,33 +57,9 @@ void celeritas::initializer::call_back(const message_header& message_header, buf
         return;
     }
 
-    switch (request->payload_case())
+    if (!application_loader_->dispatch(header, *request, request, session, resource_loader_))
     {
-        case proto::celeritas::PayloadCase::kCeleritasRequest:
-        {
-            if (const auto& celeritas_request = request->celeritas_request();
-                !application_loader_->dispatch(header, celeritas_request, request, session, resource_loader_))
-            {
-                LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch celeritas request.";
-            }
-            break;
-        }
-
-        case proto::celeritas::PayloadCase::kCeleritasResponse:
-        {
-            if (const auto& celeritas_response = request->celeritas_response();
-                !application_loader_->dispatch(header, celeritas_response, request, session, resource_loader_))
-            {
-                LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch celeritas response.";
-            }
-            break;
-        }
-
-        case proto::celeritas::PayloadCase::PAYLOAD_NOT_SET:
-        {
-            LOG_CHANNEL(initializer_channel, error) << "消息体为空.";
-            break;
-        }
+        LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch celeritas message.";
     }
 }
 
@@ -111,7 +87,7 @@ std::string celeritas::initializer::get_server_type() const
     return server_type;
 }
 
-celeritas::header celeritas::initializer::get_header(const message_header& message_header, const buffer_guard& buffer_guard) const
+celeritas::header celeritas::initializer::get_header(const message_header& message_header, const buffer_guard& buffer_guard)
 {
     proto::common::header header_request{};
 

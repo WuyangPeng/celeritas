@@ -56,7 +56,7 @@ namespace celeritas
 
         [[nodiscard]] std::string get_server_type() const;
 
-        [[nodiscard]] header get_header(const message_header& message_header, const buffer_guard& buffer_guard) const;
+        [[nodiscard]] static header get_header(const message_header& message_header, const buffer_guard& buffer_guard);
 
         void initialize_default_logger();
 

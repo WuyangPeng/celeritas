@@ -3,7 +3,6 @@
 #include "common/resource_loader_base.h"
 #include "config/app_config.h"
 #include "detail/initializer_internal_fwd.h"
-#include "message/header.h"
 #include "message/message_fwd.h"
 #include "network/listener.h"
 #include "network/network_message_callback.h"
