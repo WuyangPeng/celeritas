@@ -35,6 +35,10 @@ namespace celeritas
     class game_configuration_loader;
     class game_application_loader;
 
+    class battle_resource_loader;
+    class battle_configuration_loader;
+    class battle_application_loader;
+
     class payment_resource_loader;
     class payment_configuration_loader;
     class payment_application_loader;

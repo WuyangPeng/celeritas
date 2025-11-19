@@ -5,6 +5,9 @@
 #include "auth_server/auth_application_loader.h"
 #include "auth_server/auth_configuration_loader.h"
 #include "auth_server/auth_resource_loader.h"
+#include "battle_server/battle_application_loader.h"
+#include "battle_server/battle_configuration_loader.h"
+#include "battle_server/battle_resource_loader.h"
 #include "chat_server/chat_application_loader.h"
 #include "chat_server/chat_configuration_loader.h"
 #include "chat_server/chat_resource_loader.h"
@@ -58,6 +61,10 @@ celeritas::initializer_factory::configuration_loader_unique_ptr celeritas::initi
     {
         return std::make_unique<game_configuration_loader>(config_file_path);
     }
+    else if (server_type == battle_type)
+    {
+        return std::make_unique<battle_configuration_loader>(config_file_path);
+    }
     else if (server_type == payment_type)
     {
         return std::make_unique<payment_configuration_loader>(config_file_path);
@@ -104,6 +111,10 @@ celeritas::initializer_factory::resource_loader_shared_ptr celeritas::initialize
     {
         return std::make_unique<game_resource_loader>(app_config);
     }
+    else if (server_type == battle_type)
+    {
+        return std::make_unique<battle_resource_loader>(app_config);
+    }
     else if (server_type == payment_type)
     {
         return std::make_unique<payment_resource_loader>(app_config);
@@ -149,6 +160,10 @@ celeritas::initializer_factory::application_loader_unique_ptr celeritas::initial
     else if (server_type == game_type)
     {
         return std::make_unique<game_application_loader>(app_config);
+    }
+    else if (server_type == battle_type)
+    {
+        return std::make_unique<battle_application_loader>(app_config);
     }
     else if (server_type == payment_type)
     {

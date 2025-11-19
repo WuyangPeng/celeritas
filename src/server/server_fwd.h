@@ -20,4 +20,5 @@ namespace celeritas
     constexpr std::string_view admin_type = "admin";
     constexpr std::string_view cross_type = "cross";
     constexpr std::string_view chat_type = "chat";
+    constexpr std::string_view battle_type = "battle";
 }

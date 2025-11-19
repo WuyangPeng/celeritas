@@ -49,6 +49,7 @@ declare -A servers=(
     ["player"]="${server_root_dir}/player_server:${server_root_dir}/player.pid"
     ["logic"]="${server_root_dir}/logic_server:${server_root_dir}/logic.pid"
     ["game"]="${server_root_dir}/game_server:${server_root_dir}/game.pid"
+    ["battle"]="${server_root_dir}/battle_server:${server_root_dir}/battle.pid"
     ["cross"]="${server_root_dir}/cross_server:${server_root_dir}/cross.pid"
 )
 

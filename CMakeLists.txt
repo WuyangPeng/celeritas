@@ -383,27 +383,29 @@ target_link_libraries(celeritas_lib INTERFACE
 # 服务器
 add_subdirectory(cmake/service_registry_server)
 add_subdirectory(cmake/auth_server)
+add_subdirectory(cmake/payment_server)
+add_subdirectory(cmake/admin_server)
+add_subdirectory(cmake/chat_server)
 add_subdirectory(cmake/gateway_server)
 add_subdirectory(cmake/player_server)
 add_subdirectory(cmake/logic_server)
 add_subdirectory(cmake/game_server)
-add_subdirectory(cmake/payment_server)
-add_subdirectory(cmake/admin_server)
+add_subdirectory(cmake/battle_server)
 add_subdirectory(cmake/cross_server)
-add_subdirectory(cmake/chat_server)
 
 # 安装规则
 install(TARGETS
         service_registry_server
         auth_server
+        payment_server
+        admin_server
+        chat_server
         gateway_server
         player_server
         logic_server
         game_server
-        payment_server
-        admin_server
         cross_server
-        chat_server
+        battle_server
         DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
 
 set(APP_RUNTIME_RPATH "$ORIGIN/lib")
@@ -411,14 +413,15 @@ set(APP_RUNTIME_RPATH "$ORIGIN/lib")
 set_target_properties(
         service_registry_server
         auth_server
+        payment_server
+        admin_server
+        chat_server
         gateway_server
         player_server
         logic_server
         game_server
-        payment_server
-        admin_server
         cross_server
-        chat_server
+        battle_server
         PROPERTIES INSTALL_RPATH "${APP_RUNTIME_RPATH}")
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/config/"
