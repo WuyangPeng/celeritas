@@ -347,6 +347,12 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
       `insert`, `update`, `delete`）。
     - **特点**: 提供了类型安全的常量，避免了使用魔法字符串或数字，增强了代码的可读性和可维护性。
 
+
+* **🔬 `database_data_Type_traits<Type>`**
+    - **作用**: 一个模板元编程工具，用于在编译时获取 `database_data_type` 枚举值与实际 C++ 类型之间的映射关系。
+    - **特点**: 通过模板特化，为每个 `database_data_type` 值定义了对应的 `Type`（例如，`database_data_type::string_type` 对应
+      `std::string`），是实现类型安全数据访问的关键。
+
 * **🏷️ `database_field`**
     - **作用**: 表示数据库表的单个字段（列）的元数据。
     - **特点**: 封装了字段的名称、数据类型 (`database_data_type`) 和索引类型 (`database_index_type`)。它是定义
