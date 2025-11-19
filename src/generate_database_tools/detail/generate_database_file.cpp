@@ -122,9 +122,9 @@ std::string celeritas::generate_database_file::generate_source_content(const dat
     return entity_cpp_content;
 }
 
-celeritas::generate_database_file::header_strings celeritas::generate_database_file::generate_header_snippets(const database_attribute& attribute) const
+celeritas::generate_database_file::database_header celeritas::generate_database_file::generate_header_snippets(const database_attribute& attribute) const
 {
-    header_strings snippets{};
+    database_header snippets{};
 
     for (const auto& element : attribute)
     {
@@ -202,9 +202,9 @@ celeritas::generate_database_file::header_strings celeritas::generate_database_f
     return snippets;
 }
 
-celeritas::generate_database_file::source_strings celeritas::generate_database_file::generate_source_snippets(const database_attribute& attribute) const
+celeritas::generate_database_file::database_source celeritas::generate_database_file::generate_source_snippets(const database_attribute& attribute) const
 {
-    source_strings snippets{};
+    database_source snippets{};
 
     auto index = 0;
     for (const auto& element : attribute)

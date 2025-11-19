@@ -21,7 +21,7 @@ namespace celeritas
         void execute() override;
 
     private:
-        struct header_strings
+        struct database_header
         {
             std::string database_get_declaration;
             std::string database_set_declaration;
@@ -30,7 +30,7 @@ namespace celeritas
             std::string field;
         };
 
-        struct source_strings
+        struct database_source
         {
             std::string database_get_define;
             std::string database_set_define;
@@ -50,9 +50,9 @@ namespace celeritas
 
         [[nodiscard]] std::string generate_source_content(const database_attribute& attribute) const;
 
-        [[nodiscard]] header_strings generate_header_snippets(const database_attribute& attribute) const;
+        [[nodiscard]] database_header generate_header_snippets(const database_attribute& attribute) const;
 
-        [[nodiscard]] source_strings generate_source_snippets(const database_attribute& attribute) const;
+        [[nodiscard]] database_source generate_source_snippets(const database_attribute& attribute) const;
 
         std::string relative_path_;
         std::string database_file_;
