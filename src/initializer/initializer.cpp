@@ -3,6 +3,7 @@
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "database/database_pool_manager.h"
+#include "message/header.h"
 #include "network/message_header.h"
 #include "proto/celeritas.pb.h"
 #include "proto/common/common.pb.h"
