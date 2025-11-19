@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "common/common_fwd.h"
-#include "message/message_fwd.h"
 #include "service_registry/service_info.h"
 
 #include <boost/log/trivial.hpp>

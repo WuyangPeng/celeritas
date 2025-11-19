@@ -77,7 +77,7 @@ celeritas::service_registry_impl::registry_type celeritas::service_registry_impl
     return registry_;
 }
 
-void celeritas::service_registry_impl::set_service_health(const std::string& instance_id, health_check_level_type health_check_level)
+void celeritas::service_registry_impl::set_service_health(const std::string& instance_id, const health_check_level_type health_check_level)
 {
     std::lock_guard lock{ mutex_ };
 
