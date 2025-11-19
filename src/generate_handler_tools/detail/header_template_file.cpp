@@ -2,8 +2,7 @@
 #include "common/celeritas_error.h"
 #include "generate_handler_tools/generate_handler_tools_fwd.h"
 
-#include <boost/filesystem/path.hpp>
-
+#include <filesystem>
 #include <fstream>
 
 using namespace std::literals;
@@ -21,7 +20,7 @@ std::string celeritas::header_template_file::get_handler_generated_h_content() c
 
 void celeritas::header_template_file::load_template()
 {
-    const boost::filesystem::path path{ template_directory_ };
+    const std::filesystem::path path{ template_directory_ };
     const auto file_name = path / handler_generated_template_name;
 
     std::ifstream is{ file_name.string(), std::ios::binary };

@@ -1,8 +1,8 @@
 ﻿#include "generate_handler_header_file.h"
 #include "header_template_file.h"
 
-#include <boost/filesystem/operations.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 
 celeritas::generate_handler_header_file::generate_handler_header_file(std::string handler_directory, std::string output_directory, std::string template_directory, handler_file handler_file)
@@ -17,7 +17,7 @@ void celeritas::generate_handler_header_file::execute()
 
     std::string content{};
 
-    boost::filesystem::path handler_directory_path{ handler_directory_ };
+    const boost::filesystem::path handler_directory_path{ handler_directory_ };
 
     auto parent_path = handler_directory_path.parent_path();
 

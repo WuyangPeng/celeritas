@@ -1,6 +1,6 @@
-﻿#include "process.h"
-#include "generate_handler_tools.h"
+﻿#include "generate_handler_tools.h"
 #include "generate_handler_tools_fwd.h"
+#include "process.h"
 #include "common/command_line_config.tpp"
 #include "common/logger.h"
 #include "server/server_fwd.h"

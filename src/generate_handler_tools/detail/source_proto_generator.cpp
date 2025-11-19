@@ -76,7 +76,7 @@ std::string celeritas::source_proto_generator::get_add_handler_function(const st
 std::string celeritas::source_proto_generator::get_entry_enum_name(const std::string& field)
 {
     auto entry_enum_name = field;
-    std::vector<std::string> parts;
+    std::vector<std::string> parts{};
 
     boost::split(parts, entry_enum_name, boost::is_any_of("_"));
 

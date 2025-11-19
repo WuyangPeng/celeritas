@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "handler_template_file.h"
 #include "generator.h"
+#include "handler_template_file.h"
 
 #include <string>
 
