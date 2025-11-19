@@ -34,6 +34,10 @@ namespace celeritas
 
         [[nodiscard]] static std::string create_field_assignment_content(int index, const database_attribute& attribute, const entity_attribute& entity_attribute, const database_template_file& database_template_file);
 
+        [[nodiscard]] static std::string create_field_init_content(int index, const database_attribute& attribute, const entity_attribute& entity_attribute, const database_template_file& database_template_file);
+
+        [[nodiscard]] static std::string create_database_field_content(int index, const database_attribute& attribute, const entity_attribute& entity_attribute, const database_template_file& database_template_file);
+
         std::string database_get_define_;
         std::string database_set_define_;
         std::string database_modify_define_;

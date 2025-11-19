@@ -9,56 +9,20 @@ void celeritas::database_source::generate(const database_attribute& attribute, c
     auto index = 0;
     for (const auto& element : attribute)
     {
-        auto field_init_content = database_template_file.get_field_init_content();
-        auto database_field_content = database_template_file.get_database_field_content();
-
         if (element.is_count_type())
         {
             database_modify_define_ += create_database_modify_define_content(element, database_template_file);
         }
 
-        boost::replace_all(field_init_content, "${entity_type}", element.get_data_type());
-        boost::replace_all(field_init_content, "${entity}", element.get_entity_name());
-
-        if (index + 1 == attribute.size())
+        if (!element.is_key_type())
         {
-            boost::replace_all(field_init_content, "${field_is_end}", "");
-        }
-        else
-        {
-            boost::replace_all(field_init_content, "${field_is_end}", ",");
-        }
-
-        if (const auto index_type = element.get_index_type();
-            !index_type.has_value() ||
-            index_type->find("key") == std::string::npos)
-        {
-            field_init_ += field_init_content;
-        }
-
-        boost::replace_all(database_field_content, "${entity}", element.get_entity_name());
-        if (index + 1 == attribute.size())
-        {
-            boost::replace_all(database_field_content, "${field_is_end}", "");
-        }
-        else
-        {
-            boost::replace_all(database_field_content, "${field_is_end}", ",\n");
-        }
-
-        if (index == 0)
-        {
-            boost::replace_all(database_field_content, "${entity_indent}", "");
-        }
-        else
-        {
-            boost::replace_all(database_field_content, "${entity_indent}", "                                                                ");
+            field_init_ += create_field_init_content(index, attribute, element, database_template_file);
         }
 
         database_get_define_ += create_database_get_define_content(element, database_template_file);
         database_set_define_ += create_database_set_define_content(element, database_template_file);
         field_assignment_ += create_field_assignment_content(index, attribute, element, database_template_file);
-        database_field_ += database_field_content;
+        database_field_ += create_database_field_content(index, attribute, element, database_template_file);
 
         ++index;
     }
@@ -168,5 +132,50 @@ std::string celeritas::database_source::create_field_assignment_content(const in
     }
 
     return field_assignment_content;
+}
+
+std::string celeritas::database_source::create_field_init_content(const int index, const database_attribute& attribute, const entity_attribute& entity_attribute, const database_template_file& database_template_file)
+{
+    auto field_init_content = database_template_file.get_field_init_content();
+
+    boost::replace_all(field_init_content, "${entity_type}", entity_attribute.get_data_type());
+    boost::replace_all(field_init_content, "${entity}", entity_attribute.get_entity_name());
+
+    if (index + 1 == attribute.size())
+    {
+        boost::replace_all(field_init_content, "${field_is_end}", "");
+    }
+    else
+    {
+        boost::replace_all(field_init_content, "${field_is_end}", ",");
+    }
+
+    return field_init_content;
+}
+
+std::string celeritas::database_source::create_database_field_content(int index, const database_attribute& attribute, const entity_attribute& entity_attribute, const database_template_file& database_template_file)
+{
+    auto database_field_content = database_template_file.get_database_field_content();
+
+    boost::replace_all(database_field_content, "${entity}", entity_attribute.get_entity_name());
+    if (index + 1 == attribute.size())
+    {
+        boost::replace_all(database_field_content, "${field_is_end}", "");
+    }
+    else
+    {
+        boost::replace_all(database_field_content, "${field_is_end}", ",\n");
+    }
+
+    if (index == 0)
+    {
+        boost::replace_all(database_field_content, "${entity_indent}", "");
+    }
+    else
+    {
+        boost::replace_all(database_field_content, "${entity_indent}", "                                                                ");
+    }
+
+    return database_field_content;
 }
 
