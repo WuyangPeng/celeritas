@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "generate_database_tools_internal_fwd.h"
-#include "database_template_file.h"
+
 #include <string>
 
 namespace celeritas
@@ -13,11 +13,15 @@ namespace celeritas
 
         void generate(const database_attribute& attribute, const database_template_file& database_template_file);
 
-        [[nodiscard]] const std::string& get_database_get_declaration() const noexcept { return database_get_declaration_; }
-        [[nodiscard]] const std::string& get_database_set_declaration() const noexcept { return database_set_declaration_; }
-        [[nodiscard]] const std::string& get_database_modify_declaration() const noexcept { return database_modify_declaration_; }
-        [[nodiscard]] const std::string& get_database_describe() const noexcept { return database_describe_; }
-        [[nodiscard]] const std::string& get_field() const noexcept { return field_; }
+        [[nodiscard]] const std::string& get_database_get_declaration() const noexcept;
+
+        [[nodiscard]] const std::string& get_database_set_declaration() const noexcept;
+
+        [[nodiscard]] const std::string& get_database_modify_declaration() const noexcept;
+
+        [[nodiscard]] const std::string& get_database_describe() const noexcept;
+
+        [[nodiscard]] const std::string& get_field() const noexcept;
 
     private:
         std::string database_get_declaration_;

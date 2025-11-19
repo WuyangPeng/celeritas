@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "generate_database_tools_internal_fwd.h"
-#include "database_template_file.h"
+
 #include <string>
 
 namespace celeritas
@@ -13,12 +13,17 @@ namespace celeritas
 
         void generate(const database_attribute& attribute, const database_template_file& database_template_file);
 
-        [[nodiscard]] const std::string& get_database_get_define() const noexcept { return database_get_define_; }
-        [[nodiscard]] const std::string& get_database_set_define() const noexcept { return database_set_define_; }
-        [[nodiscard]] const std::string& get_database_modify_define() const noexcept { return database_modify_define_; }
-        [[nodiscard]] const std::string& get_field_assignment() const noexcept { return field_assignment_; }
-        [[nodiscard]] const std::string& get_field_init() const noexcept { return field_init_; }
-        [[nodiscard]] const std::string& get_database_field() const noexcept { return database_field_; }
+        [[nodiscard]] const std::string& get_database_get_define() const noexcept;
+
+        [[nodiscard]] const std::string& get_database_set_define() const noexcept;
+
+        [[nodiscard]] const std::string& get_database_modify_define() const noexcept;
+
+        [[nodiscard]] const std::string& get_field_assignment() const noexcept;
+
+        [[nodiscard]] const std::string& get_field_init() const noexcept;
+
+        [[nodiscard]] const std::string& get_database_field() const noexcept;
 
     private:
         std::string database_get_define_;
