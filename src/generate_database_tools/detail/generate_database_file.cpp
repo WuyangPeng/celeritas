@@ -143,12 +143,12 @@ void celeritas::generate_database_file::generate_entity_h_file(const database_at
     std::filesystem::path path{ output_directory_ };
     path /= relative_path_;
     std::filesystem::create_directory(path);
-    path /= (class_name + ".h");
+    path /= class_name + ".h";
 
     if (const auto file_name = path.string();
         !is_content_same(file_name, entity_h_content))
     {
-        save_handler(file_name, entity_h_content);
+        save_database(file_name, entity_h_content);
     }
 }
 
@@ -296,11 +296,11 @@ void celeritas::generate_database_file::generate_entity_cpp_file(const database_
     std::filesystem::path path{ output_directory_ };
     path /= relative_path_;
     std::filesystem::create_directory(path);
-    path /= (class_name + ".cpp");
+    path /= class_name + ".cpp";
 
     if (const auto file_name = path.string();
         !is_content_same(file_name, entity_cpp_content))
     {
-        save_handler(file_name, entity_cpp_content);
+        save_database(file_name, entity_cpp_content);
     }
 }

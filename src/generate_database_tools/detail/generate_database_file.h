@@ -8,7 +8,7 @@
 
 namespace celeritas
 {
-    class generate_database_file : public generator
+    class generate_database_file final : public generator
     {
     public:
         using class_type = generate_database_file;

@@ -1,6 +1,6 @@
 ﻿#include "generate_database.h"
-#include "process.h"
 #include "generate_database_tools_fwd.h"
+#include "process.h"
 #include "common/celeritas_error.h"
 
 #include <filesystem>

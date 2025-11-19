@@ -21,7 +21,7 @@ bool celeritas::generator::is_content_same(const std::string& file_name, const s
     return false;
 }
 
-void celeritas::generator::save_handler(const std::string& file_name, const std::string& content)
+void celeritas::generator::save_database(const std::string& file_name, const std::string& content)
 {
     std::ofstream os{ file_name, std::ios::binary };
 

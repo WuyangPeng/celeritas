@@ -1,9 +1,9 @@
 ﻿#include "generate_register_handler_helper_file.h"
 #include "register_handler_template_file.h"
 
-#include <boost/filesystem/operations.hpp>
 #include <boost/algorithm/string.hpp>
-#include <boost/filesystem/path.hpp>
+
+#include <filesystem>
 
 celeritas::generate_register_handler_helper_file::generate_register_handler_helper_file(std::string handler_directory, std::string output_directory, std::string template_directory, handler_name handler_file, handler_name http_handler_file)
     : handler_directory_{ std::move(handler_directory) }, output_directory_{ std::move(output_directory) }, template_directory_{ std::move(template_directory) }, handler_file_{ std::move(handler_file) }, http_handler_file_{ std::move(http_handler_file) }
@@ -39,7 +39,7 @@ void celeritas::generate_register_handler_helper_file::execute()
 
     boost::replace_all(register_handler_helper_cpp_content, "${http_register}", http_content);
 
-    boost::filesystem::path path{ output_directory_ };
+    std::filesystem::path path{ output_directory_ };
     path = path / "register_handler_helper.cpp";
 
     if (const auto file_name = path.string();

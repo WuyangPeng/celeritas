@@ -26,6 +26,26 @@ celeritas::database_attribute::entity_type celeritas::database_attribute::get_en
     return entity_;
 }
 
+std::string celeritas::database_attribute::get_key_type() const
+{
+    return key_type_;
+}
+
+std::string celeritas::database_attribute::get_key_name() const
+{
+    return key_name_;
+}
+
+celeritas::database_attribute::entity_const_iterator celeritas::database_attribute::begin() const
+{
+    return entity_.cbegin();
+}
+
+celeritas::database_attribute::entity_const_iterator celeritas::database_attribute::end() const
+{
+    return entity_.cend();
+}
+
 void celeritas::database_attribute::set_class_name(const std::string& class_name)
 {
     class_name_ = class_name;
@@ -59,26 +79,6 @@ void celeritas::database_attribute::set_entity(const entity_type& entity)
 int celeritas::database_attribute::size() const
 {
     return entity_.size();
-}
-
-std::string celeritas::database_attribute::get_key_type() const
-{
-    return key_type_;
-}
-
-std::string celeritas::database_attribute::get_key_name() const
-{
-    return key_name_;
-}
-
-celeritas::database_attribute::entity_const_iterator celeritas::database_attribute::begin() const
-{
-    return entity_.cbegin();
-}
-
-celeritas::database_attribute::entity_const_iterator celeritas::database_attribute::end() const
-{
-    return entity_.cend();
 }
 
 celeritas::database_attribute celeritas::tag_invoke(boost::json::value_to_tag<database_attribute>, boost::json::value const& value)

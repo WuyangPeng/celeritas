@@ -25,6 +25,6 @@ namespace celeritas
 
         [[nodiscard]] static bool is_content_same(const std::string& file_name, const std::string& content);
 
-        static void save_handler(const std::string& file_name, const std::string& content);
+        static void save_database(const std::string& file_name, const std::string& content);
     };
 }

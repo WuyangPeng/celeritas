@@ -55,7 +55,7 @@ void celeritas::database_template_file::load_template(std::string_view template_
         throw celeritas_error("failed to load "s + template_name.data());
     }
 
-    content.assign((std::istreambuf_iterator{ is }), (std::istreambuf_iterator<char>()));
+    content.assign(std::istreambuf_iterator{ is }, std::istreambuf_iterator<char>());
 }
 
 std::string celeritas::database_template_file::get_entity_h_content() const
