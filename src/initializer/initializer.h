@@ -2,7 +2,6 @@
 
 #include "daemon.h"
 #include "initializer_factory.h"
-#include "common/buffer_guard.h"
 #include "network/network_message_callback.h"
 
 #include <boost/filesystem.hpp>

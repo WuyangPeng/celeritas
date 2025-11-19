@@ -1,5 +1,4 @@
 ﻿#include "resource_loader.h"
-#include "boost/beast/http/message_fwd.hpp"
 #include "common/logger.h"
 #include "common/random_helper.h"
 #include "database/database_pool_manager.h"
@@ -15,7 +14,6 @@
 #include "proto/celeritas.pb.h"
 #include "server/server_fwd.h"
 #include "service_registry/detail/service_registry_internal_fwd.h"
-#include "service_registry_server/service_registry_server.h"
 
 #include <ranges>
 

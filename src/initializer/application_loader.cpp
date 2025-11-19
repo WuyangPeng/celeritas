@@ -5,8 +5,6 @@
 #include "../handler/manual/health_check_response_http_message_handler.h"
 #include "handler/generated/request_message_handler.h"
 #include "handler/generated/response_message_handler.h"
-#include "handler/generated/service_request_message_handler.h"
-#include "handler/generated/service_response_message_handler.h"
 #include "generated/register_handler_helper.h"
 #include "message/protobuf_handle_parameter.h"
 
