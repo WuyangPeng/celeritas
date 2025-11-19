@@ -48,9 +48,45 @@ void celeritas::generate_database_file::generate_entity_h_file(const database_at
 
     LOG_CHANNEL(celeritas::default_channel, trace) << "generate from file : " << database_file_ << ",class header file:" << class_name;
 
+    const auto entity_h_content = generate_header_content(attribute);
+
+    std::filesystem::path path{ output_directory_ };
+    path /= relative_path_;
+    std::filesystem::create_directory(path);
+    path /= class_name + ".h";
+
+    if (const auto file_name = path.string();
+        !is_content_same(file_name, entity_h_content))
+    {
+        save_database(file_name, entity_h_content);
+    }
+}
+
+void celeritas::generate_database_file::generate_entity_cpp_file(const database_attribute& attribute)
+{
+    const auto class_name = attribute.get_class_name();
+
+    LOG_CHANNEL(celeritas::default_channel, trace) << "generate from file : " << database_file_ << ",class source file:" << class_name;
+
+    const auto entity_cpp_content = generate_source_content(attribute);
+
+    std::filesystem::path path{ output_directory_ };
+    path /= relative_path_;
+    std::filesystem::create_directory(path);
+    path /= class_name + ".cpp";
+
+    if (const auto file_name = path.string();
+        !is_content_same(file_name, entity_cpp_content))
+    {
+        save_database(file_name, entity_cpp_content);
+    }
+}
+
+std::string celeritas::generate_database_file::generate_header_content(const database_attribute& attribute) const
+{
     auto entity_h_content = database_template_file_.get_entity_h_content();
 
-    boost::replace_all(entity_h_content, "${class_name}", class_name);
+    boost::replace_all(entity_h_content, "${class_name}", attribute.get_class_name());
     boost::replace_all(entity_h_content, "${database_name}", attribute.get_database_name());
     boost::replace_all(entity_h_content, "${key_type}", attribute.get_key_type());
     boost::replace_all(entity_h_content, "${key_name}", attribute.get_key_name());
@@ -140,24 +176,11 @@ void celeritas::generate_database_file::generate_entity_h_file(const database_at
     boost::replace_all(entity_h_content, "${declaration}", database_describe);
     boost::replace_all(entity_h_content, "${field}", field);
 
-    std::filesystem::path path{ output_directory_ };
-    path /= relative_path_;
-    std::filesystem::create_directory(path);
-    path /= class_name + ".h";
-
-    if (const auto file_name = path.string();
-        !is_content_same(file_name, entity_h_content))
-    {
-        save_database(file_name, entity_h_content);
-    }
+    return entity_h_content;
 }
 
-void celeritas::generate_database_file::generate_entity_cpp_file(const database_attribute& attribute)
+std::string celeritas::generate_database_file::generate_source_content(const database_attribute& attribute) const
 {
-    const auto class_name = attribute.get_class_name();
-
-    LOG_CHANNEL(celeritas::default_channel, trace) << "generate from file : " << database_file_ << ",class source file:" << class_name;
-
     auto entity_cpp_content = database_template_file_.get_entity_cpp_content();
 
     boost::replace_all(entity_cpp_content, "${key_type}", attribute.get_key_type());
@@ -290,17 +313,8 @@ void celeritas::generate_database_file::generate_entity_cpp_file(const database_
     boost::replace_all(entity_cpp_content, "${database_modify_define}", database_modify_define);
     boost::replace_all(entity_cpp_content, "${field_assignment}", field_assignment);
     boost::replace_all(entity_cpp_content, "${field_init}", field_init);
-    boost::replace_all(entity_cpp_content, "${class_name}", class_name);
+    boost::replace_all(entity_cpp_content, "${class_name}", attribute.get_class_name());
     boost::replace_all(entity_cpp_content, "${database_field}", database_field);
 
-    std::filesystem::path path{ output_directory_ };
-    path /= relative_path_;
-    std::filesystem::create_directory(path);
-    path /= class_name + ".cpp";
-
-    if (const auto file_name = path.string();
-        !is_content_same(file_name, entity_cpp_content))
-    {
-        save_database(file_name, entity_cpp_content);
-    }
+    return entity_cpp_content;
 }

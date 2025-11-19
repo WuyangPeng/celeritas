@@ -27,6 +27,10 @@ namespace celeritas
 
         void generate_entity_cpp_file(const database_attribute& attribute);
 
+        [[nodiscard]] std::string generate_header_content(const database_attribute& attribute) const;
+
+        [[nodiscard]] std::string generate_source_content(const database_attribute& attribute) const;
+
         std::string relative_path_;
         std::string database_file_;
         std::string output_directory_;
