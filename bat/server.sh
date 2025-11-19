@@ -51,6 +51,7 @@ declare -A servers=(
     ["game"]="${server_root_dir}/game_server:${server_root_dir}/game.pid"
     ["battle"]="${server_root_dir}/battle_server:${server_root_dir}/battle.pid"
     ["cross"]="${server_root_dir}/cross_server:${server_root_dir}/cross.pid"
+    ["log"]="${server_root_dir}/log_server:${server_root_dir}/log.pid"
 )
 
 # 检查操作是否有效

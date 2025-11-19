@@ -392,6 +392,7 @@ add_subdirectory(cmake/logic_server)
 add_subdirectory(cmake/game_server)
 add_subdirectory(cmake/battle_server)
 add_subdirectory(cmake/cross_server)
+add_subdirectory(cmake/log_server)
 
 # 安装规则
 install(TARGETS
@@ -404,8 +405,9 @@ install(TARGETS
         player_server
         logic_server
         game_server
-        cross_server
         battle_server
+        cross_server
+        log_server
         DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}")
 
 set(APP_RUNTIME_RPATH "$ORIGIN/lib")
@@ -420,8 +422,9 @@ set_target_properties(
         player_server
         logic_server
         game_server
-        cross_server
         battle_server
+        cross_server
+        log_server
         PROPERTIES INSTALL_RPATH "${APP_RUNTIME_RPATH}")
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/config/"

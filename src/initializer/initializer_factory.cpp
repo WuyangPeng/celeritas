@@ -24,6 +24,9 @@
 #include "logic_server/logic_application_loader.h"
 #include "logic_server/logic_configuration_loader.h"
 #include "logic_server/logic_resource_loader.h"
+#include "log_server/log_application_loader.h"
+#include "log_server/log_configuration_loader.h"
+#include "log_server/log_resource_loader.h"
 #include "payment_server/payment_application_loader.h"
 #include "payment_server/payment_configuration_loader.h"
 #include "payment_server/payment_resource_loader.h"
@@ -81,6 +84,10 @@ celeritas::initializer_factory::configuration_loader_unique_ptr celeritas::initi
     {
         return std::make_unique<chat_configuration_loader>(config_file_path);
     }
+    else if (server_type == log_type)
+    {
+        return std::make_unique<log_configuration_loader>(config_file_path);
+    }
 
     throw celeritas_error("unrecognized server type");
 }
@@ -131,6 +138,10 @@ celeritas::initializer_factory::resource_loader_shared_ptr celeritas::initialize
     {
         return std::make_unique<chat_resource_loader>(app_config);
     }
+    else if (server_type == log_type)
+    {
+        return std::make_unique<log_resource_loader>(app_config);
+    }
 
     throw celeritas_error("unrecognized server type");
 }
@@ -180,6 +191,10 @@ celeritas::initializer_factory::application_loader_unique_ptr celeritas::initial
     else if (server_type == chat_type)
     {
         return std::make_unique<chat_application_loader>(app_config);
+    }
+    else if (server_type == log_type)
+    {
+        return std::make_unique<log_application_loader>(app_config);
     }
 
     throw celeritas_error("unrecognized server type");

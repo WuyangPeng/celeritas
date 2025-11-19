@@ -54,4 +54,8 @@ namespace celeritas
     class chat_resource_loader;
     class chat_configuration_loader;
     class chat_application_loader;
+
+    class log_resource_loader;
+    class log_configuration_loader;
+    class log_application_loader;
 }
