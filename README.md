@@ -575,7 +575,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **功能**: 提供获取协议类型和端口号的方法。
 
 
-* **ℹ️ 服务信息 (`service_info`)**
+* **📝 服务信息 (`service_info`)**
     - **作用**：封装了单个服务实例的所有必要信息。
     - **特点**: 包含 `instance_id` (实例唯一ID)、`service_name` (服务名称)、`host` (主机地址)、`game_server_id` (
       游戏服ID)、`last_heartbeat` (上次心跳时间)、`protocol_port_container` (协议端口列表)、`health_check_level_type` (
