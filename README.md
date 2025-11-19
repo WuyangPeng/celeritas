@@ -595,6 +595,39 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 #### handler（处理器）
 
+处理器模块定义了消息处理器的抽象接口和注册机制，用于接收和处理来自网络层的各种消息（如`Protobuf`消息、`HTTP`
+请求）。它将消息分发给对应的业务逻辑处理器，实现业务逻辑与网络协议的解耦。
+
+* **健康检查级别 (`health_check_level_type`)**
+    - **作用**: 定义了服务实例的健康状态级别。
+    - **特点**: 枚举类型，包含 `health` (健康), `warning` (警告), `error` (错误)。
+
+* **健康检查 (`health_check`)**
+    - **作用**: 提供服务实例的健康检查功能。
+    - **功能**:
+        - `get_health_check_level_type()`: 获取当前服务实例的健康级别。
+        - `set_health_check_level_type(health_check_level_type health_check_level)`: 设置当前服务实例的健康级别。
+
+* **关闭请求消息处理器 (`close_request_message_handler`)**
+    - **作用**: 处理客户端发起的关闭连接请求。
+    - **功能**: 接收并处理 `close_request` 消息，执行连接关闭逻辑。
+
+* **发现请求消息处理器 (`discover_request_message_handler`)**
+    - **作用**: 处理客户端或服务发起的发现服务请求。
+    - **功能**: 接收并处理 `discover_request` 消息，返回可用服务实例列表。
+
+* **发现响应消息处理器 (`discover_response_message_handler`)**
+    - **作用**: 处理服务发现请求的响应。
+    - **功能**: 接收并处理 `discover_response` 消息，更新本地服务列表。
+
+* **注册请求消息处理器 (`register_request_message_handler`)**
+    - **作用**: 处理服务实例向服务注册中心发起的注册请求。
+    - **功能**: 接收并处理 `register_request` 消息，将服务信息注册到注册中心。
+
+* **注册响应消息处理器 (`register_response_message_handler`)**
+    - **作用**: 处理服务注册请求的响应。
+    - **功能**: 接收并处理 `register_response` 消息，确认服务注册结果。
+
 #### initializer（初始化）
 
 ### assist（辅助）
