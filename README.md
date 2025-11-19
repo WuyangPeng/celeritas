@@ -605,28 +605,28 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 * **健康检查 (`health_check`)**
     - **作用**: 提供服务实例的健康检查功能。
     - **功能**:
-        - `get_health_check_level_type()`: 获取当前服务实例的健康级别。
-        - `set_health_check_level_type(health_check_level_type health_check_level)`: 设置当前服务实例的健康级别。
+        - 获取当前服务实例的健康级别。
+        - 设置当前服务实例的健康级别。
 
 * **关闭请求消息处理器 (`close_request_message_handler`)**
     - **作用**: 处理客户端发起的关闭连接请求。
-    - **功能**: 接收并处理 `close_request` 消息，执行连接关闭逻辑。
+    - **功能**: 接收并处理`close_request`消息，执行连接关闭逻辑。
 
 * **发现请求消息处理器 (`discover_request_message_handler`)**
     - **作用**: 处理客户端或服务发起的发现服务请求。
-    - **功能**: 接收并处理 `discover_request` 消息，返回可用服务实例列表。
+    - **功能**: 接收并处理`discover_request`消息，返回可用服务实例列表。
 
 * **发现响应消息处理器 (`discover_response_message_handler`)**
     - **作用**: 处理服务发现请求的响应。
-    - **功能**: 接收并处理 `discover_response` 消息，更新本地服务列表。
+    - **功能**: 接收并处理`discover_response`消息，更新本地服务列表。
 
 * **注册请求消息处理器 (`register_request_message_handler`)**
     - **作用**: 处理服务实例向服务注册中心发起的注册请求。
-    - **功能**: 接收并处理 `register_request` 消息，将服务信息注册到注册中心。
+    - **功能**: 接收并处理`register_request`消息，将服务信息注册到注册中心。
 
 * **注册响应消息处理器 (`register_response_message_handler`)**
     - **作用**: 处理服务注册请求的响应。
-    - **功能**: 接收并处理 `register_response` 消息，确认服务注册结果。
+    - **功能**: 接收并处理`register_response`消息，确认服务注册结果。
 
 #### initializer（初始化）
 
