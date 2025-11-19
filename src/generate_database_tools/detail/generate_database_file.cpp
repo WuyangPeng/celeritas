@@ -1,11 +1,12 @@
 ﻿#include "database_attribute_container.h"
+#include "database_header.h"
+#include "database_source.h"
 #include "generate_database_file.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 
 #include <boost/json.hpp>
 #include <boost/algorithm/string.hpp>
-#include <boost/filesystem/path.hpp>
 
 #include <filesystem>
 #include <fstream>
@@ -91,13 +92,14 @@ std::string celeritas::generate_database_file::generate_header_content(const dat
     boost::replace_all(entity_h_content, "${key_type}", attribute.get_key_type());
     boost::replace_all(entity_h_content, "${key_name}", attribute.get_key_name());
 
-    const auto snippets = generate_header_snippets(attribute);
+    database_header header{};
+    header.generate(attribute, database_template_file_);
 
-    boost::replace_all(entity_h_content, "${database_get_declaration}", snippets.database_get_declaration);
-    boost::replace_all(entity_h_content, "${database_set_declaration}", snippets.database_set_declaration);
-    boost::replace_all(entity_h_content, "${database_modify_declaration}", snippets.database_modify_declaration);
-    boost::replace_all(entity_h_content, "${declaration}", snippets.database_describe);
-    boost::replace_all(entity_h_content, "${field}", snippets.field);
+    boost::replace_all(entity_h_content, "${database_get_declaration}", header.get_database_get_declaration());
+    boost::replace_all(entity_h_content, "${database_set_declaration}", header.get_database_set_declaration());
+    boost::replace_all(entity_h_content, "${database_modify_declaration}", header.get_database_modify_declaration());
+    boost::replace_all(entity_h_content, "${declaration}", header.get_database_describe());
+    boost::replace_all(entity_h_content, "${field}", header.get_field());
 
     return entity_h_content;
 }
@@ -109,217 +111,16 @@ std::string celeritas::generate_database_file::generate_source_content(const dat
     boost::replace_all(entity_cpp_content, "${key_type}", attribute.get_key_type());
     boost::replace_all(entity_cpp_content, "${key_name}", attribute.get_key_name());
 
-    const auto snippets = generate_source_snippets(attribute);
+    database_source source{};
+    source.generate(attribute, database_template_file_);
 
-    boost::replace_all(entity_cpp_content, "${database_get_define}", snippets.database_get_define);
-    boost::replace_all(entity_cpp_content, "${database_set_define}", snippets.database_set_define);
-    boost::replace_all(entity_cpp_content, "${database_modify_define}", snippets.database_modify_define);
-    boost::replace_all(entity_cpp_content, "${field_assignment}", snippets.field_assignment);
-    boost::replace_all(entity_cpp_content, "${field_init}", snippets.field_init);
+    boost::replace_all(entity_cpp_content, "${database_get_define}", source.get_database_get_define());
+    boost::replace_all(entity_cpp_content, "${database_set_define}", source.get_database_set_define());
+    boost::replace_all(entity_cpp_content, "${database_modify_define}", source.get_database_modify_define());
+    boost::replace_all(entity_cpp_content, "${field_assignment}", source.get_field_assignment());
+    boost::replace_all(entity_cpp_content, "${field_init}", source.get_field_init());
     boost::replace_all(entity_cpp_content, "${class_name}", attribute.get_class_name());
-    boost::replace_all(entity_cpp_content, "${database_field}", snippets.database_field);
+    boost::replace_all(entity_cpp_content, "${database_field}", source.get_database_field());
 
     return entity_cpp_content;
-}
-
-celeritas::generate_database_file::database_header celeritas::generate_database_file::generate_header_snippets(const database_attribute& attribute) const
-{
-    database_header snippets{};
-
-    for (const auto& element : attribute)
-    {
-        auto database_get_declaration_content = database_template_file_.get_database_get_declaration_content();
-        auto database_set_declaration_content = database_template_file_.get_database_set_declaration_content();
-        auto database_describe_content = database_template_file_.get_database_describe_content();
-        auto field_content = database_template_file_.get_field_content();
-
-        boost::replace_all(database_get_declaration_content, "${entity_type}", element.get_data_type());
-        boost::replace_all(database_get_declaration_content, "${entity}", element.get_entity_name());
-
-        if (element.get_data_type() == "bool_type")
-        {
-            boost::replace_all(database_get_declaration_content, "${is_bool}", "is");
-        }
-        else
-        {
-            boost::replace_all(database_get_declaration_content, "${is_bool}", "get");
-        }
-
-        if (element.get_data_type() == "int32_type" ||
-            element.get_data_type() == "int32_count_type" ||
-            element.get_data_type() == "int64_type" ||
-            element.get_data_type() == "int64_count_type" ||
-            element.get_data_type() == "double_type" ||
-            element.get_data_type() == "bool_type")
-        {
-            boost::replace_all(database_get_declaration_content, "${entity_is_noexcept}", " noexcept");
-        }
-        else
-        {
-            boost::replace_all(database_get_declaration_content, "${entity_is_noexcept}", "");
-        }
-
-        boost::replace_all(database_set_declaration_content, "${entity_type}", element.get_data_type());
-        boost::replace_all(database_set_declaration_content, "${entity}", element.get_entity_name());
-
-        if (element.get_data_type().find("_count") != std::string::npos)
-        {
-            auto database_modify_declaration_content = database_template_file_.get_database_modify_declaration_content();
-
-            boost::replace_all(database_modify_declaration_content, "${entity_type}", element.get_data_type());
-            boost::replace_all(database_modify_declaration_content, "${entity}", element.get_entity_name());
-
-            snippets.database_modify_declaration += database_modify_declaration_content;
-        }
-        const auto index_type = element.get_index_type();
-        if (index_type.has_value() && index_type->find("key") != std::string::npos)
-        {
-            boost::replace_all(database_describe_content, "${entity_is_key}", "_id");
-        }
-        else
-        {
-            boost::replace_all(database_describe_content, "${entity_is_key}", element.get_entity_name());
-        }
-        boost::replace_all(database_describe_content, "${entity}", element.get_entity_name());
-
-        boost::replace_all(field_content, "${entity}", element.get_entity_name());
-        boost::replace_all(field_content, "${entity_type}", element.get_data_type());
-        if (index_type.has_value())
-        {
-            boost::replace_all(field_content, "${entity_is_index}", ", database_index_type::" + *index_type);
-        }
-        else
-        {
-            boost::replace_all(field_content, "${entity_is_index}", "");
-        }
-
-        snippets.database_get_declaration += database_get_declaration_content;
-        snippets.database_set_declaration += database_set_declaration_content;
-        snippets.database_describe += database_describe_content;
-        snippets.field += field_content;
-    }
-
-    return snippets;
-}
-
-celeritas::generate_database_file::database_source celeritas::generate_database_file::generate_source_snippets(const database_attribute& attribute) const
-{
-    database_source snippets{};
-
-    auto index = 0;
-    for (const auto& element : attribute)
-    {
-        auto database_get_define_content = database_template_file_.get_database_get_define_content();
-        auto database_set_define_content = database_template_file_.get_database_set_define_content();
-        auto field_assignment_content = database_template_file_.get_field_assignment_content();
-        auto field_init_content = database_template_file_.get_field_init_content();
-        auto database_field_content = database_template_file_.get_database_field_content();
-
-        boost::replace_all(database_get_define_content, "${entity_type}", element.get_data_type());
-        boost::replace_all(database_get_define_content, "${entity}", element.get_entity_name());
-
-        if (element.get_data_type() == "bool_type")
-        {
-            boost::replace_all(database_get_define_content, "${is_bool}", "is");
-        }
-        else
-        {
-            boost::replace_all(database_get_define_content, "${is_bool}", "get");
-        }
-
-        if (element.get_data_type() == "int32_type" ||
-            element.get_data_type() == "int32_count_type" ||
-            element.get_data_type() == "int64_type" ||
-            element.get_data_type() == "int64_count_type" ||
-            element.get_data_type() == "double_type" ||
-            element.get_data_type() == "bool_type")
-        {
-            boost::replace_all(database_get_define_content, "${entity_is_noexcept}", " noexcept");
-        }
-        else
-        {
-            boost::replace_all(database_get_define_content, "${entity_is_noexcept}", "");
-        }
-
-        boost::replace_all(database_set_define_content, "${entity_type}", element.get_data_type());
-        boost::replace_all(database_set_define_content, "${entity}", element.get_entity_name());
-
-        if (element.get_data_type() == "bool_type")
-        {
-            boost::replace_all(database_set_define_content, "${is_bool}", "is");
-        }
-        else
-        {
-            boost::replace_all(database_set_define_content, "${is_bool}", "get");
-        }
-
-        if (element.get_data_type().find("_count") != std::string::npos)
-        {
-            auto database_modify_define_content = database_template_file_.get_database_modify_define_content();
-
-            boost::replace_all(database_modify_define_content, "${entity_type}", element.get_data_type());
-            boost::replace_all(database_modify_define_content, "${entity}", element.get_entity_name());
-
-            snippets.database_modify_define += database_modify_define_content;
-        }
-
-        boost::replace_all(field_assignment_content, "${entity_type}", element.get_data_type());
-        boost::replace_all(field_assignment_content, "${entity}", element.get_entity_name());
-
-        if (index + 1 == attribute.size())
-        {
-            boost::replace_all(field_assignment_content, "${field_is_end}", "");
-        }
-        else
-        {
-            boost::replace_all(field_assignment_content, "${field_is_end}", ",");
-        }
-
-        boost::replace_all(field_init_content, "${entity_type}", element.get_data_type());
-        boost::replace_all(field_init_content, "${entity}", element.get_entity_name());
-
-        if (index + 1 == attribute.size())
-        {
-            boost::replace_all(field_init_content, "${field_is_end}", "");
-        }
-        else
-        {
-            boost::replace_all(field_init_content, "${field_is_end}", ",");
-        }
-
-        if (const auto index_type = element.get_index_type();
-            !index_type.has_value() ||
-            index_type->find("key") == std::string::npos)
-        {
-            snippets.field_init += field_init_content;
-        }
-
-        boost::replace_all(database_field_content, "${entity}", element.get_entity_name());
-        if (index + 1 == attribute.size())
-        {
-            boost::replace_all(database_field_content, "${field_is_end}", "");
-        }
-        else
-        {
-            boost::replace_all(database_field_content, "${field_is_end}", ",\n");
-        }
-
-        if (index == 0)
-        {
-            boost::replace_all(database_field_content, "${entity_indent}", "");
-        }
-        else
-        {
-            boost::replace_all(database_field_content, "${entity_indent}", "                                                                ");
-        }
-
-        snippets.database_get_define += database_get_define_content;
-        snippets.database_set_define += database_set_define_content;
-        snippets.field_assignment += field_assignment_content;
-        snippets.database_field += database_field_content;
-
-        ++index;
-    }
-
-    return snippets;
 }

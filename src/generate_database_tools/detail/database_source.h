@@ -1,0 +1,31 @@
+﻿#pragma once
+
+#include "generate_database_tools_internal_fwd.h"
+#include "database_template_file.h"
+#include <string>
+
+namespace celeritas
+{
+    class database_source
+    {
+    public:
+        using class_type = database_source;
+
+        void generate(const database_attribute& attribute, const database_template_file& database_template_file);
+
+        [[nodiscard]] const std::string& get_database_get_define() const noexcept { return database_get_define_; }
+        [[nodiscard]] const std::string& get_database_set_define() const noexcept { return database_set_define_; }
+        [[nodiscard]] const std::string& get_database_modify_define() const noexcept { return database_modify_define_; }
+        [[nodiscard]] const std::string& get_field_assignment() const noexcept { return field_assignment_; }
+        [[nodiscard]] const std::string& get_field_init() const noexcept { return field_init_; }
+        [[nodiscard]] const std::string& get_database_field() const noexcept { return database_field_; }
+
+    private:
+        std::string database_get_define_;
+        std::string database_set_define_;
+        std::string database_modify_define_;
+        std::string field_assignment_;
+        std::string field_init_;
+        std::string database_field_;
+    };
+}

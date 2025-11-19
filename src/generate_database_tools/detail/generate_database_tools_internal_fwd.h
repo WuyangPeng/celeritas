@@ -8,4 +8,6 @@ namespace celeritas
     class database_attribute;
     class database_attribute_container;
     class generate;
+    class database_header;
+    class database_source;
 }
