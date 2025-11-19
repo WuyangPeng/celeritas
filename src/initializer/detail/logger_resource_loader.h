@@ -1,7 +1,6 @@
 ﻿#pragma once
 
-#include "config/logger_config.h"
-#include "config/logger_level_config.h"
+#include "config/config_fwd.h"
 
 namespace celeritas
 {

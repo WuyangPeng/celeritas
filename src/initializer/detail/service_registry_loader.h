@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "config/service_registry_config.h"
+#include "config/config_fwd.h"
 #include "network/network_fwd.h"
 
 #include <boost/asio.hpp>

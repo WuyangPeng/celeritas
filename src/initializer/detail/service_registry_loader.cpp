@@ -1,4 +1,5 @@
 ﻿#include "service_registry_loader.h"
+#include "config/service_registry_config.h"
 #include "network/tcp_client.h"
 
 celeritas::service_registry_loader::tcp_client_shared_ptr celeritas::service_registry_loader::loader_service_registry(io_context_type& io_context,

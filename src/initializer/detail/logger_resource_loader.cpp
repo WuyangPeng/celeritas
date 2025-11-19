@@ -1,5 +1,7 @@
 ﻿#include "logger_resource_loader.h"
 #include "common/logger.h"
+#include "config/logger_config.h"
+#include "config/logger_level_config.h"
 
 void celeritas::logger_resource_loader::loader_level_config(const logger_level_config& logger_level_config)
 {
