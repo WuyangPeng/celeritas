@@ -47,7 +47,7 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
 
 celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::guest_login_http_message_handler::do_guest_login(http_handle_parameter handle_parameter)
 {
-    const auto optional_device_id = handle_parameter.get_param("device_id");
+    const auto optional_device_id = handle_parameter.get_param(account::device_id_describe.data());
     if (!optional_device_id)
     {
         const guest_login_response response{ game_error_type::invalid_parameter, "device_id is required" };
