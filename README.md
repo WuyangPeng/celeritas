@@ -779,6 +779,15 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
         - 根据数据库定义文件，为每个表生成一个继承自`database_entity`的实体类。
         - 自动生成成员变量、`getter`/`setter` 方法、构造函数以及数据转换函数。
 
+
+* **📜 生成MySQL脚本 (`generate_mysql`)**
+    - **作用**：解析指定目录下的 `json` 数据库定义文件，并生成 `MySQL` 的 `CREATE TABLE` 脚本。
+    - **功能**：
+        - 自动将 `json` 中定义的字段类型（如 `int32`, `string`, `bool`）映射为 `MySQL` 的数据类型（如 `INT`, `VARCHAR`,
+          `TINYINT(1)`）。
+        - 自动处理主键、唯一键和普通索引的生成。
+        - 生成的脚本会保存到 `.sql` 文件。
+
 ### server（服务器）
 
 #### service registry（服务注册中心）

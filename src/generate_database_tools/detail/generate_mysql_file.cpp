@@ -17,77 +17,14 @@ std::string celeritas::generate_mysql_file::get_mysql_statement() const
 {
     const auto json_value = get_json_value();
 
-    std::stringstream sql_output{};
+    std::string result{};
 
     for (const auto& table_value : json_value.as_array())
     {
-        const auto& table_object = table_value.as_object();
-        const auto database_name = boost::json::value_to<std::string>(table_object.at("database_name"));
-
-        sql_output << "CREATE TABLE `" << database_name << "` (\n";
-
-        std::string primary_key_sql;
-        std::vector<std::string> unique_indexes{};
-        std::vector<std::string> indexes{};
-
-        for (const auto& entities = table_object.at("entity").as_array();
-             const auto& entity_value : entities)
-        {
-            const auto& entity_object = entity_value.as_object();
-            const auto entity_name = boost::json::value_to<std::string>(entity_object.at("entity_name"));
-            const auto data_type = boost::json::value_to<std::string>(entity_object.at("data_type"));
-            const auto comment = entity_object.count("comment") ? boost::json::value_to<std::string>(entity_object.at("comment")) : "";
-            const auto index_type = entity_object.count("index_type") ? boost::json::value_to<std::string>(entity_object.at("index_type")) : "";
-
-            sql_output << "  `" << entity_name << "` " << get_mysql_data_type(data_type);
-
-            sql_output << " NOT NULL";
-
-            if (index_type == "key")
-            {
-                primary_key_sql = "  PRIMARY KEY (`" + entity_name + "`)";
-            }
-            else if (index_type == "unique_index")
-            {
-                unique_indexes.push_back("  UNIQUE KEY `" + entity_name + "_unique` (`" + entity_name + "`)");
-            }
-            else if (index_type == "index")
-            {
-                indexes.push_back("  KEY `" + entity_name + "_index` (`" + entity_name + "`)");
-            }
-
-            if (!comment.empty())
-            {
-                sql_output << " COMMENT '" << comment << "'";
-            }
-            sql_output << ",\n";
-        }
-
-        if (!primary_key_sql.empty())
-        {
-            sql_output << primary_key_sql << ",\n";
-        }
-        for (const auto& unique_index : unique_indexes)
-        {
-            sql_output << unique_index << ",\n";
-        }
-        for (const auto& index : indexes)
-        {
-            sql_output << index << ",\n";
-        }
-
-        auto temp_sql = sql_output.str();
-        if (boost::algorithm::ends_with(temp_sql, ",\n"))
-        {
-            temp_sql.resize(temp_sql.length() - 2);
-        }
-        sql_output.str(temp_sql);
-        sql_output.seekp(0, std::ios_base::end);
-
-        sql_output << "\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;\n\n";
+        result += get_mysql_statement(table_value);
     }
 
-    return sql_output.str();
+    return result;
 }
 
 std::string celeritas::generate_mysql_file::get_mysql_data_type(const std::string& data_type)
@@ -143,5 +80,81 @@ celeritas::generate_mysql_file::json_value_type celeritas::generate_mysql_file::
     std::stringstream ss{};
     ss << file_stream.rdbuf();
     const auto json_content = ss.str();
+
     return boost::json::parse(json_content);
+}
+
+std::string celeritas::generate_mysql_file::get_mysql_statement(const json_value_type& table_value) const
+{
+    std::stringstream sql_output{};
+
+    const auto& table_object = table_value.as_object();
+    const auto database_name = boost::json::value_to<std::string>(table_object.at("database_name"));
+
+    sql_output << "CREATE TABLE `" << database_name << "` (\n";
+
+    std::string primary_key_sql{};
+    index_type unique_indexes{};
+    index_type indexes{};
+
+    for (const auto& entities = table_object.at("entity").as_array();
+         const auto& entity_value : entities)
+    {
+        const auto& entity_object = entity_value.as_object();
+        const auto entity_name = boost::json::value_to<std::string>(entity_object.at("entity_name"));
+        const auto data_type = boost::json::value_to<std::string>(entity_object.at("data_type"));
+        const auto comment = entity_object.count("comment") ? boost::json::value_to<std::string>(entity_object.at("comment")) : "";
+        const auto index_type = entity_object.count("index_type") ? boost::json::value_to<std::string>(entity_object.at("index_type")) : "";
+
+        sql_output << "  `" << entity_name << "` " << get_mysql_data_type(data_type);
+
+        sql_output << " NOT NULL";
+
+        if (index_type == "key")
+        {
+            primary_key_sql = "  PRIMARY KEY (`" + entity_name + "`)";
+        }
+        else if (index_type == "unique_index")
+        {
+            unique_indexes.push_back("  UNIQUE KEY `" + entity_name + "_unique` (`" + entity_name + "`)");
+        }
+        else if (index_type == "index")
+        {
+            indexes.push_back("  KEY `" + entity_name + "_index` (`" + entity_name + "`)");
+        }
+
+        if (!comment.empty())
+        {
+            sql_output << " COMMENT '" << comment << "'";
+        }
+        sql_output << ",\n";
+    }
+
+    if (!primary_key_sql.empty())
+    {
+        sql_output << primary_key_sql << ",\n";
+    }
+
+    for (const auto& unique_index : unique_indexes)
+    {
+        sql_output << unique_index << ",\n";
+    }
+
+    for (const auto& index : indexes)
+    {
+        sql_output << index << ",\n";
+    }
+
+    auto temp_sql = sql_output.str();
+    if (boost::algorithm::ends_with(temp_sql, ",\n"))
+    {
+        temp_sql.resize(temp_sql.length() - 2);
+    }
+
+    sql_output.str(temp_sql);
+    sql_output.seekp(0, std::ios_base::end);
+
+    sql_output << "\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;\n\n";
+
+    return sql_output.str();
 }

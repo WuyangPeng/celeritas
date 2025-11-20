@@ -17,10 +17,13 @@ namespace celeritas
 
     private:
         using json_value_type = boost::json::value;
+        using index_type = std::vector<std::string>;
 
         [[nodiscard]] static std::string get_mysql_data_type(const std::string& data_type);
 
         [[nodiscard]] json_value_type get_json_value() const;
+
+        [[nodiscard]] std::string get_mysql_statement(const json_value_type& table_value) const;
 
         std::string database_file_;
     };
