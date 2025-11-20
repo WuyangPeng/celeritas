@@ -2,7 +2,7 @@
 
 #include "test.h"
 #include "config/database_type.h"
-#include "database/basis_database_manager.h"
+#include "database/basis_database_manager.tpp"
 #include "database/database_change_type.h"
 #include "database/database_entity.tpp"
 #include "database/entity.tpp"
