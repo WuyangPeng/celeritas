@@ -264,6 +264,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(HANDLER_GENERATED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/handler/generated")
     set(INITIALIZER_GENERATED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/initializer/generated")
     set(DATABASE_GENERATED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/database/generated")
+    set(MYSQL_GENERATED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data/mysql")
 
     add_custom_target(generate_handler_code
 
@@ -343,6 +344,25 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             DEPENDS generate_database_tools
 
             COMMENT "Running tools to generate database source code into: ${DATABASE_GENERATED_DIR}"
+    )
+
+    add_custom_target(generate_mysql
+
+            # 添加创建目录的命令
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${MYSQL_GENERATED_DIR}
+
+            # COMMAND $<TARGET_FILE:generate_database_tools> 会获取编译好的 generate_database_tools 可执行文件的路径
+            COMMAND $<TARGET_FILE:generate_database_tools>
+
+            # 将生成目录作为参数传递给 generate_database_tools
+            --process=generate_mysql
+            --database_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/database
+            --output_directory=${MYSQL_GENERATED_DIR}
+
+            # 依赖于 generate_database_tools 目标本身，确保 generate_database_tools 在执行前已编译完成
+            DEPENDS generate_database_tools
+
+            COMMENT "Running tools to generate mysql statement into: ${MYSQL_GENERATED_DIR}"
     )
 
 endif ()

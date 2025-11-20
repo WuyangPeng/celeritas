@@ -1,4 +1,5 @@
 ﻿#include "generate_database.h"
+#include "generate_mysql.h"
 #include "generate_database_tools_fwd.h"
 #include "process.h"
 #include "common/celeritas_error.h"
@@ -16,6 +17,10 @@ celeritas::process::process_unique_ptr celeritas::process::create_process(const 
     if (process_name == process_generate_database)
     {
         return std::make_unique<generate_database>(command_line_config);
+    }
+    else if (process_name == process_generate_mysql)
+    {
+        return std::make_unique<generate_mysql>(command_line_config);
     }
 
     throw celeritas_error("unable to create generate database");

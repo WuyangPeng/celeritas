@@ -10,4 +10,6 @@ namespace celeritas
     class generate;
     class database_header;
     class database_source;
+    class generate_mysql_file;
+    class save_mysql_file;
 }
