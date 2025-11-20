@@ -153,7 +153,7 @@ std::string celeritas::database_source::create_field_init_content(const int inde
     return field_init_content;
 }
 
-std::string celeritas::database_source::create_database_field_content(int index, const database_attribute& attribute, const entity_attribute& entity_attribute, const database_template_file& database_template_file)
+std::string celeritas::database_source::create_database_field_content(const int index, const database_attribute& attribute, const entity_attribute& entity_attribute, const database_template_file& database_template_file)
 {
     auto database_field_content = database_template_file.get_database_field_content();
 
