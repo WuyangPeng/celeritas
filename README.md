@@ -131,7 +131,7 @@
         - 通过`get_default(level)` 或`get(channel_name,level)` 获取指定通道的日志实例。
     - **宏定义**：
         - `LOG(level)`：记录到默认日志通道。
-        - `LOG_CHANNEL(channel, level)`::记录到指定通道。
+        - `LOG_CHANNEL(channel, level)`：记录到指定通道。
     - **日志信息增强**：
         - 日志宏利用`C++20`的`std::source_location::current()`自动添加函数名`function_name()`、
           文件名`file_name()`和行号`line()`到日志记录中，极大地增强了调试能力。
