@@ -1,7 +1,7 @@
 ﻿#include "health_check_request_http_message_handler.h"
 #include "common/logger.h"
 #include "config/app_config.h"
-#include "handler/health_check.h"
+#include "handler/service_registry/health_check.h"
 #include "message/http_handle_parameter.h"
 
 celeritas::health_check_request_http_message_handler::health_check_request_http_message_handler(std::string path)
@@ -32,11 +32,11 @@ celeritas::health_check_request_http_message_handler::void_awaitable_type celeri
     }
     catch (const std::exception& error)
     {
-        LOG_CHANNEL(message_channel, error) << "health check error: " << error.what();
+        LOG_CHANNEL(handler_channel, error) << "health check error: " << error.what();
     }
     catch (...)
     {
-        LOG_CHANNEL(message_channel, fatal) << "health check unknown error.";
+        LOG_CHANNEL(handler_channel, fatal) << "health check unknown error.";
     }
 }
 

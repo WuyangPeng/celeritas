@@ -8,6 +8,9 @@ namespace celeritas
     {
         unknown = 0,
         success = 1,
+
+        // 通用错误
+        invalid_parameter = 100,
     };
 
     [[nodiscard]] std::string get_game_error_description(game_error_type game_error);

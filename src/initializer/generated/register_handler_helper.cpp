@@ -13,9 +13,6 @@ celeritas::register_handler_helper::register_handler_helper(message_registry_sha
 
 void celeritas::register_handler_helper::register_handler() const
 {
-    message_registry_->registerHandler(std::make_shared<close_request_message_handler>());
-    message_registry_->registerHandler(std::make_shared<discover_request_message_handler>());
-    message_registry_->registerHandler(std::make_shared<discover_response_message_handler>());
     message_registry_->registerHandler(std::make_shared<celeritas_message_handler>());
     message_registry_->registerHandler(std::make_shared<request_message_handler>());
     message_registry_->registerHandler(std::make_shared<response_message_handler>());
@@ -23,6 +20,9 @@ void celeritas::register_handler_helper::register_handler() const
     message_registry_->registerHandler(std::make_shared<service_registry_response_message_handler>());
     message_registry_->registerHandler(std::make_shared<service_request_message_handler>());
     message_registry_->registerHandler(std::make_shared<service_response_message_handler>());
+    message_registry_->registerHandler(std::make_shared<close_request_message_handler>());
+    message_registry_->registerHandler(std::make_shared<discover_request_message_handler>());
+    message_registry_->registerHandler(std::make_shared<discover_response_message_handler>());
     message_registry_->registerHandler(std::make_shared<register_request_message_handler>());
     message_registry_->registerHandler(std::make_shared<register_response_message_handler>());
 

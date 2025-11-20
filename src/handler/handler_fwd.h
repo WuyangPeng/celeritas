@@ -11,5 +11,7 @@ namespace celeritas
     class register_response_message_handler;
     class register_request_message_handler;
 
+    class guest_login_http_message_handler;
+
     enum class health_check_level_type;
 }

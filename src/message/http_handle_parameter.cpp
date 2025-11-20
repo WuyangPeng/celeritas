@@ -33,6 +33,21 @@ std::string celeritas::http_handle_parameter::get_response() const
     return response_;
 }
 
+celeritas::http_handle_parameter::optional_string celeritas::http_handle_parameter::get_param(const std::string& key) const
+{
+    if (const auto iter = params_.find(key);
+        iter != params_.end())
+    {
+        if (const auto& param = *iter;
+            param.has_value)
+        {
+            return param.value;
+        }
+    }
+
+    return std::nullopt;
+}
+
 void celeritas::http_handle_parameter::write(const std::string& response) const
 {
     if (const auto session_shared_ptr = session_.lock();

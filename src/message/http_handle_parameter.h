@@ -19,6 +19,7 @@ namespace celeritas
         using app_config_shared_ptr = std::shared_ptr<const app_config>;
         using io_context_type = boost::asio::io_context;
         using health_check_level_awaitable_type = boost::asio::awaitable<health_check_level_type>;
+        using optional_string = std::optional<std::string>;
 
         http_handle_parameter(io_context_type& io_context, std::string path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 
@@ -37,6 +38,8 @@ namespace celeritas
         [[nodiscard]] std::string get_path() const;
 
         [[nodiscard]] std::string get_response() const;
+
+        [[nodiscard]] optional_string get_param(const std::string& key) const;
 
         void write(const std::string& response) const;
 

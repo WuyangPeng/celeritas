@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "protocol_port.h"
-#include "../handler/health_check_level_type.h"
+#include "../handler/service_registry/health_check_level_type.h"
 
 #include <chrono>
 #include <string>
