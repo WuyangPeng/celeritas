@@ -1,4 +1,5 @@
 ﻿#include "guest_login_http_message_handler.h"
+#include "guest_login_response.h"
 #include "common/logger.h"
 #include "common/random_helper.h"
 #include "database/database_pool_manager.h"
@@ -32,7 +33,7 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
 {
     try
     {
-        co_await do_guest_login(std::move(handle_parameter));
+        co_return co_await do_guest_login(std::move(handle_parameter));
     }
     catch (const std::exception& error)
     {
@@ -49,11 +50,10 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     const auto optional_device_id = handle_parameter.get_param("device_id");
     if (!optional_device_id)
     {
-        boost::json::object response_json;
-        response_json["code"] = static_cast<int>(game_error_type::invalid_parameter);
-        response_json["message"] = "device_id is required";
-        handle_parameter.write(boost::json::serialize(response_json));
-        co_return ;
+        const guest_login_response response{ game_error_type::invalid_parameter, "device_id is required" };
+        handle_parameter.write(response.to_json_string());
+
+        co_return;
     }
 
     const auto device_id = *optional_device_id;
