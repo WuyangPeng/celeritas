@@ -2,6 +2,7 @@
 
 #include "register_handler_helper.h"
 #include "handler/generated/handler_generated.h"
+#include "message/concrete_message_handler.tpp"
 #include "message/http_message_registry.h"
 #include "message/protobuf_message_registry.h"
 
