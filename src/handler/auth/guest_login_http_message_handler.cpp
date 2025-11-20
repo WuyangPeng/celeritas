@@ -63,9 +63,9 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     select->add_key(basis_database{ account::device_id_describe, device_id });
     auto accounts = co_await pool->select_all(select, account::get_database_field_container());
 
+    auto account_id = 0LL;
     if (accounts.empty())
     {
-        const auto account_id = 0;
         account account{ database_type::mysql, account_id };
         account.set_device_id(device_id);
         account.set_account_name("guest_" + std::to_string(account_id));
@@ -76,65 +76,15 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     }
     else
     {
-      //  const auto account_id = accounts[0];
+        account account{ accounts[0] };
+
+        account_id = account.get_account_id();
     }
 
-    /*  account::get_select(database_type::mysql,)
-      auto session = pool->select_one("account");
-      if (!session)
-      {
-          // Handle error: failed to get database session
-          boost::json::object response_json;
-          response_json["code"] = static_cast<int>(game_error_type::server_error);
-          response_json["message"] = "Failed to get database session";
-          handle_parameter.write(boost::json::serialize(response_json));
-          co_return;
-      }
+    const auto token = generate_token(account_id);
 
-      auto account_entity = std::make_shared<celeritas::database_entity::account>();
-      auto accounts = account_entity->select_all(session, "device_id = '" + device_id + "'");
+    const guest_login_response response{ game_error_type::success, "login successful", token };
+    handle_parameter.write(response.to_json_string());
 
-      int64_t account_id = 0;
-
-      if (accounts.empty())
-      {
-          // Create a new guest account
-          account_id = celeritas::random_helper::generate(); // Assuming snowflake ID generator
-          account_entity->set_account_id(account_id);
-          account_entity->set_device_id(device_id);
-          account_entity->set_account_name("guest_" + std::to_string(account_id));
-          account_entity->set_account_type(0); // Guest account type
-          account_entity->set_create_time(celeritas::time_helper::get_utc_time());
-          account_entity->set_status(0); // Active status
-          account_entity->set_password_hash("");
-          account_entity->set_salt("");
-
-          if (!account_entity->insert(session))
-          {
-              // Handle error: failed to insert new account
-              boost::json::object response_json;
-              response_json["code"] = static_cast<int>(game_error_type::database_error);
-              response_json["message"] = "Failed to create guest account";
-              handle_parameter.write(boost::json::serialize(response_json));
-              co_return;
-          }
-      }
-      else
-      {
-          // Account exists, use the existing one
-          account_id = accounts[0]->get_account_id();
-          // Optionally, update last login time or other info here
-      }
-
-      // Generate token and send response
-      const std::string token = generate_token(account_id);
-
-      boost::json::object response_json;
-      response_json["code"] = static_cast<int>(game_error_type::ok);
-      response_json["token"] = token;
-      response_json["message"] = "Login successful";
-
-      handle_parameter.write(boost::json::serialize(response_json));
-  */
     co_return;
 }
