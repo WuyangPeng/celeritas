@@ -25,17 +25,17 @@ ${database_get_declaration}${database_set_declaration}${database_modify_declarat
 
         [[nodiscard]] static basis_database_manager_const_hared_ptr get_select(database_type database_type, traits::param_type::${key_type} ${key_name});
 
-        [[nodiscard]] static basis_database_manager_const_hared_ptr get_select_all(database_type database_type);
+        [[nodiscard]] static basis_database_manager_shared_ptr get_select_all(database_type database_type);
 
         [[nodiscard]] static constexpr std::string_view get_database_name()
         {
             return database_name;
         }
 
+${declaration}
     private:
         static constexpr std::string_view database_name{ "${database_name}" };
 
-${declaration}
         [[nodiscard]] static basis_database_container get_key_basis_database_container(traits::param_type::${key_type} ${key_name});
 
 ${field}    };

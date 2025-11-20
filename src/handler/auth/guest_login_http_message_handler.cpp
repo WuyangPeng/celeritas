@@ -56,9 +56,28 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
         co_return;
     }
 
-    const auto device_id = *optional_device_id;
+    const auto& device_id = *optional_device_id;
 
     const auto pool = database_pool_manager::get_instance().get_pool("mysql_db");
+    const auto select = account::get_select_all(database_type::mysql);
+    select->add_key(basis_database{ account::device_id_describe, device_id });
+    auto accounts = co_await pool->select_all(select, account::get_database_field_container());
+
+    if (accounts.empty())
+    {
+        const auto account_id = 0;
+        account account{ database_type::mysql, account_id };
+        account.set_device_id(device_id);
+        account.set_account_name("guest_" + std::to_string(account_id));
+        account.set_create_time(0);
+
+        // 返回值？？
+        co_await pool->execute_changes(account.get_modify());
+    }
+    else
+    {
+      //  const auto account_id = accounts[0];
+    }
 
     /*  account::get_select(database_type::mysql,)
       auto session = pool->select_one("account");

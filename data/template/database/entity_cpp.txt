@@ -4,6 +4,7 @@
 #include "config/database_type.h"
 #include "database/basis_database_manager.h"
 #include "database/database_change_type.h"
+#include "database/database_entity.tpp"
 #include "database/entity.tpp"
 
 celeritas::${class_name} celeritas::${class_name}::create(const basis_database_manager& entity, const database_type database_type, traits::param_type::${key_type} ${key_name})
@@ -38,7 +39,7 @@ celeritas::${class_name}::basis_database_manager_const_hared_ptr celeritas::${cl
                                                     get_key_basis_database_container(${key_name}));
 }
 
-celeritas::${class_name}::basis_database_manager_const_hared_ptr celeritas::${class_name}::get_select_all(const database_type database_type)
+celeritas::${class_name}::basis_database_manager_shared_ptr celeritas::${class_name}::get_select_all(const database_type database_type)
 {
     static const auto result = std::make_shared<basis_database_manager>(database_type,
                                                                         database_name,

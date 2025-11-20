@@ -50,6 +50,8 @@ namespace celeritas
 
         [[nodiscard]] bool is_modify() const;
 
+        void add_key(const basis_database& basis_database);
+
     private:
         [[nodiscard]] std::any get_any_value(std::string_view field_name) const;
 

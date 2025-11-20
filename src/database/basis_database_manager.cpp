@@ -65,6 +65,11 @@ bool celeritas::basis_database_manager::is_modify() const
     return 0 < database_.get_size() || change_type_ == database_change_type::delete_type;
 }
 
+void celeritas::basis_database_manager::add_key(const basis_database& basis_database)
+{
+    key_.modify(basis_database);
+}
+
 std::any celeritas::basis_database_manager::get_any_value(const std::string_view field_name) const
 {
     return database_.get_any_value(field_name);

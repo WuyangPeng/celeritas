@@ -57,15 +57,12 @@ namespace celeritas
 
         [[nodiscard]] static basis_database_manager_const_hared_ptr get_select(database_type database_type, traits::param_type::int64_type account_id);
 
-        [[nodiscard]] static basis_database_manager_const_hared_ptr get_select_all(database_type database_type);
+        [[nodiscard]] static basis_database_manager_shared_ptr get_select_all(database_type database_type);
 
         [[nodiscard]] static constexpr std::string_view get_database_name()
         {
             return database_name;
         }
-
-    private:
-        static constexpr std::string_view database_name{ "account" };
 
         static constexpr std::string_view account_id_describe{ "_id" };
         static constexpr std::string_view account_name_describe{ "account_name" };
@@ -75,6 +72,9 @@ namespace celeritas
         static constexpr std::string_view device_id_describe{ "device_id" };
         static constexpr std::string_view create_time_describe{ "create_time" };
         static constexpr std::string_view status_describe{ "status" };
+
+    private:
+        static constexpr std::string_view database_name{ "account" };
 
         [[nodiscard]] static basis_database_container get_key_basis_database_container(traits::param_type::int64_type account_id);
 

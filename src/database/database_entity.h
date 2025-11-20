@@ -36,14 +36,14 @@ namespace celeritas
         [[nodiscard]] bool is_modify() const;
 
     protected:
+        using basis_database_manager_shared_ptr = std::shared_ptr<basis_database_manager>;
+
         void add_modify(const basis_database& basis_database);
 
         template <typename T>
         void add_modify(std::string_view field_name, T value);
 
     private:
-        using basis_database_manager_shared_ptr = std::shared_ptr<basis_database_manager>;
-
         basis_database_container entity_;
         basis_database_manager_shared_ptr modify_;
     };
