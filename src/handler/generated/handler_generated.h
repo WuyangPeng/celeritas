@@ -12,6 +12,7 @@
 #include "handler/generated/service_registry_response_message_handler.h"
 #include "handler/generated/service_request_message_handler.h"
 #include "handler/generated/service_response_message_handler.h"
+#include "handler/guest_login_http_message_handler.h"
 #include "handler/manual/health_check_request_http_message_handler.h"
 #include "handler/manual/health_check_response_http_message_handler.h"
 #include "handler/register_request_message_handler.h"

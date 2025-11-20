@@ -36,18 +36,16 @@ else ()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -fvisibility=hidden")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -fvisibility=hidden")
 
+    # 共享库不允许未定义符号
     if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
-        # 共享库不允许未定义符号
         set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,defs")
 
     else ()
 
-        # 共享库不允许未定义符号
         set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
 
     endif ()
-
 
     set(LIB_DIRECTORY lib64)
     set(BIN_DIRECTORY bin64)
