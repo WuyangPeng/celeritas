@@ -443,7 +443,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 * **📜 Redis命令基类 (`redis_commands`)**
     - **作用**：所有`Redis`命令封装类的基类。
-    - **特点**：持有一个 `redis_database_session` 的共享指针，所有子类命令都通过这个会话执行。
+    - **特点**：持有一个 `redis_database_session` 的引用，所有子类命令都通过这个会话执行。
 
 
 * **🔑 Redis键命令 (`redis_key_commands`)**
