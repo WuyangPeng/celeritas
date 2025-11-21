@@ -33,6 +33,6 @@ namespace celeritas
 
         [[nodiscard]] static account_awaitable_type get_account(const result_container& accounts, const database_pool_shared_ptr& database_pool, const std::string& device_id, const const_app_config_shared_ptr& app_config);
 
-        [[nodiscard]] std::string generate_token(int64_t account_id) const;
+        [[nodiscard]] static std::string generate_token();
     };
 }

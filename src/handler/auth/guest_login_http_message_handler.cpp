@@ -11,6 +11,9 @@
 #include "server/game_error_type.h"
 
 #include <boost/json.hpp>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 std::string celeritas::guest_login_http_message_handler::get_supported_type_name() const
 {
@@ -67,7 +70,7 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
 
     auto account = co_await get_account(accounts, pool, device_id, handle_parameter.get_app_config());
 
-    const auto token = generate_token(account.get_account_id());
+    const auto token = generate_token();
 
     const guest_login_response response{ game_error_type::success, "login successful", token };
     handle_parameter.write(response.to_json_string());
@@ -97,7 +100,10 @@ celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::g
     co_return account;
 }
 
-std::string celeritas::guest_login_http_message_handler::generate_token(int64_t account_id) const
+std::string celeritas::guest_login_http_message_handler::generate_token()
 {
-    return "token_for_account_" + std::to_string(account_id);
+    boost::uuids::random_generator generator{};
+    const auto uuid = generator();
+
+    return boost::uuids::to_string(uuid);
 }
