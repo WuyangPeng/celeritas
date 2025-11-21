@@ -25,12 +25,13 @@ namespace celeritas
         using result_container = database_pool::result_container;
         using account_awaitable_type = boost::asio::awaitable<account>;
         using database_pool_shared_ptr = std::shared_ptr<database_pool>;
+        using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
 
         [[nodiscard]] void_awaitable_type guest_login(http_handle_parameter handle_parameter);
 
         [[nodiscard]] void_awaitable_type do_guest_login(http_handle_parameter handle_parameter);
 
-        [[nodiscard]] account_awaitable_type get_account(const result_container& accounts, const database_pool_shared_ptr& database_pool, const std::string& device_id) const;
+        [[nodiscard]] static account_awaitable_type get_account(const result_container& accounts, const database_pool_shared_ptr& database_pool, const std::string& device_id, const const_app_config_shared_ptr& app_config);
 
         [[nodiscard]] std::string generate_token(int64_t account_id) const;
     };

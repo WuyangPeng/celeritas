@@ -1,5 +1,7 @@
 ﻿#include "server_config_reader.h"
+#include "common/common_fwd.h"
 #include "config/config_fwd.h"
+#include "common/celeritas_error.h"
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
@@ -20,6 +22,18 @@ celeritas::server_config celeritas::server_config_reader::load_config(const std:
     // 可选配置项
     const auto game_server_id = node.get<std::string>("game_server_id", "");
     const auto worker_pool = node.get<int>("worker_pool", default_worker_pool_size);
+    const auto datacenter_id = node.get<int>("datacenter_id", default_datacenter_id);
+    const auto worker_id = node.get<int>("worker_id", default_worker_id);
+
+    if (datacenter_id > max_datacenter_id || datacenter_id < 0)
+    {
+        throw celeritas_error("datacenter id can't be greater than " + std::to_string(max_datacenter_id) + " or less than 0");
+    }
+
+    if (worker_id > max_worker_id || worker_id < 0)
+    {
+        throw celeritas_error("worker id can't be greater than " + std::to_string(max_worker_id) + " or less than 0");
+    }
 
     server_config::server_network_config_container_type container{};
 
@@ -31,7 +45,7 @@ celeritas::server_config celeritas::server_config_reader::load_config(const std:
         }
     }
 
-    return server_config{ instance_id, service_name, container, game_server_id, host, worker_pool };
+    return server_config{ instance_id, service_name, container, game_server_id, host, worker_pool, datacenter_id, worker_id };
 }
 
 celeritas::server_network_config celeritas::server_config_reader::get_server_network_config(const node_type& node)

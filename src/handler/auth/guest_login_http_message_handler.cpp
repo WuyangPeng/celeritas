@@ -2,6 +2,8 @@
 #include "guest_login_response.h"
 #include "common/logger.h"
 #include "common/random_helper.h"
+#include "common/snowflake_generator.h"
+#include "config/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/mysql_database_session.h"
 #include "database/generated/mysql/account.h"
@@ -63,7 +65,7 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     select->add_key(basis_database{ account::device_id_describe, device_id });
     auto accounts = co_await pool->select_all(select, account::get_database_field_container());
 
-    auto account = co_await get_account(accounts, pool, device_id);
+    auto account = co_await get_account(accounts, pool, device_id, handle_parameter.get_app_config());
 
     const auto token = generate_token(account.get_account_id());
 
@@ -73,11 +75,13 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     co_return;
 }
 
-celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::guest_login_http_message_handler::get_account(const result_container& accounts, const database_pool_shared_ptr& database_pool, const std::string& device_id) const
+celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::guest_login_http_message_handler::get_account(const result_container& accounts, const database_pool_shared_ptr& database_pool, const std::string& device_id, const const_app_config_shared_ptr& app_config)
 {
     if (accounts.empty())
     {
-        auto account_id = 0;
+        const auto server_config = app_config->get_server_config();
+        const auto account_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
+
         account account{ database_type::mysql, account_id };
         account.set_device_id(device_id);
         account.set_account_name("guest_" + std::to_string(account_id));
@@ -87,7 +91,7 @@ celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::g
 
         co_return account;
     }
-    
+
     account account{ accounts[0] };
 
     co_return account;

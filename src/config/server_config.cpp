@@ -6,13 +6,17 @@ celeritas::server_config::server_config(std::string instance_id,
                                         server_network_config_container_type server_network_config,
                                         std::string game_server_id,
                                         std::string host,
-                                        const int worker_pool_size) noexcept
+                                        const int worker_pool_size,
+                                        const int datacenter_id,
+                                        const int worker_id) noexcept
     : instance_id_{ std::move(instance_id) },
       service_name_{ std::move(service_name) },
       server_network_config_{ std::move(server_network_config) },
       game_server_id_{ std::move(game_server_id) },
       host_{ std::move(host) },
-      worker_pool_size_{ worker_pool_size }
+      worker_pool_size_{ worker_pool_size },
+      datacenter_id_{ datacenter_id },
+      worker_id_{ worker_id }
 {
 }
 
@@ -54,4 +58,14 @@ int celeritas::server_config::get_worker_pool_size() const noexcept
 std::string celeritas::server_config::get_host() const
 {
     return host_;
+}
+
+int celeritas::server_config::get_datacenter_id() const
+{
+    return datacenter_id_;
+}
+
+int celeritas::server_config::get_worker_id() const
+{
+    return worker_id_;
 }

@@ -14,6 +14,7 @@ namespace celeritas
     class command_line_config;
     class session;
     class resource_loader_base;
+    class snowflake_generator;
 
     constexpr std::string_view channel{ "channel" };
     constexpr std::string_view default_channel{ "default" };
@@ -34,4 +35,20 @@ namespace celeritas
     constexpr std::string_view log_line{ "line" };
 
     constexpr std::string_view config_file_path_command_line{ "config_file_path" };
+
+    constexpr auto worker_id_bits = 5;
+    constexpr auto datacenter_id_bits = 5;
+    constexpr auto sequence_bits = 10;
+    constexpr auto max_worker_id = (1 << worker_id_bits) - 1;
+    constexpr auto max_datacenter_id = (1 << datacenter_id_bits) - 1;
+
+    // 2021-01-01 00:00:00 UTC
+    constexpr auto epoch = 1609459200000;
+
+    constexpr auto worker_id_shift = sequence_bits;
+    constexpr auto datacenter_id_shift = sequence_bits + worker_id_bits;
+    constexpr auto timestamp_left_shift = sequence_bits + worker_id_bits + datacenter_id_bits;
+    constexpr auto sequence_mask = (1 << sequence_bits) - 1;
+
+    constexpr auto max_clock_skew_ms = 5;
 }
