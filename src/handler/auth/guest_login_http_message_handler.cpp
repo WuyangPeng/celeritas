@@ -51,7 +51,7 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
         LOG_CHANNEL(handler_channel, fatal) << "health check unknown error.";
     }
 
-    const guest_login_response response{ game_error_type::unknown, get_game_error_description(game_error_type::unknown) };
+    const guest_login_response response{ game_error_type::unknown, "unknown error" };
     handle_parameter.write(response.to_json_string());
 }
 
