@@ -63,30 +63,34 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     select->add_key(basis_database{ account::device_id_describe, device_id });
     auto accounts = co_await pool->select_all(select, account::get_database_field_container());
 
-    auto account_id = 0LL;
-    if (accounts.empty())
-    {
-        account account{ database_type::mysql, account_id };
-        account.set_device_id(device_id);
-        account.set_account_name("guest_" + std::to_string(account_id));
-        account.set_create_time(0);
+    auto account = co_await get_account(accounts, pool, device_id);
 
-        // 返回值？？
-        co_await pool->execute_changes(account.get_modify());
-    }
-    else
-    {
-        account account{ accounts[0] };
-
-        account_id = account.get_account_id();
-    }
-
-    const auto token = generate_token(account_id);
+    const auto token = generate_token(account.get_account_id());
 
     const guest_login_response response{ game_error_type::success, "login successful", token };
     handle_parameter.write(response.to_json_string());
 
     co_return;
+}
+
+celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::guest_login_http_message_handler::get_account(const result_container& accounts, const database_pool_shared_ptr& database_pool, const std::string& device_id) const
+{
+    if (accounts.empty())
+    {
+        auto account_id = 0;
+        account account{ database_type::mysql, account_id };
+        account.set_device_id(device_id);
+        account.set_account_name("guest_" + std::to_string(account_id));
+        account.set_create_time(0);
+
+        co_await database_pool->execute_changes(account.get_modify());
+
+        co_return account;
+    }
+    
+    account account{ accounts[0] };
+
+    co_return account;
 }
 
 std::string celeritas::guest_login_http_message_handler::generate_token(int64_t account_id) const
