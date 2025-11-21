@@ -7,6 +7,8 @@ namespace celeritas
     class server_base;
     class celeritas_game_error;
     enum class game_error_type;
+    enum class account_type;
+    enum class account_status_type;
 
     constexpr std::string_view generate_handler_tools_type = "generate_handler_tools";
     constexpr std::string_view generate_database_tools_type = "generate_database_tools";

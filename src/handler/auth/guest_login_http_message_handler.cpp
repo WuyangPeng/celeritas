@@ -8,6 +8,8 @@
 #include "database/generated/mysql/account.h"
 #include "database/generated/redis/session_token.h"
 #include "message/http_handle_parameter.h"
+#include "server/account_status_type.h"
+#include "server/account_type.h"
 #include "server/game_error_type.h"
 
 #include <boost/json.hpp>
@@ -99,6 +101,8 @@ celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::g
         account.set_device_id(device_id);
         account.set_account_name("guest_" + std::to_string(account_id));
         account.set_create_time(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+        account.set_account_type(static_cast<int>(account_type::guest));
+        account.set_status(static_cast<int>(account_status_type::normal));
 
         co_await database_pool->execute_changes(account.get_modify());
 
