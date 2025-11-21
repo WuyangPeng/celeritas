@@ -1,4 +1,4 @@
-CREATE TABLE `session` (
+CREATE TABLE `session_token` (
   `token` VARCHAR(255) NOT NULL,
   `account_id` BIGINT NOT NULL COMMENT '账号id',
   PRIMARY KEY (`token`)

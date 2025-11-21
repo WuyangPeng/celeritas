@@ -44,4 +44,5 @@ namespace celeritas
     constexpr auto redis_cursor_one_request_size = 100;
 
     constexpr std::string_view auth_db_name = "auth_db";
+    constexpr std::string_view redis_db_name = "redis_db";
 }

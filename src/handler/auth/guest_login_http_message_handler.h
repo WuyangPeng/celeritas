@@ -27,9 +27,9 @@ namespace celeritas
         using database_pool_shared_ptr = std::shared_ptr<database_pool>;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
 
-        [[nodiscard]] void_awaitable_type guest_login(http_handle_parameter handle_parameter);
+        [[nodiscard]] static void_awaitable_type guest_login(http_handle_parameter handle_parameter);
 
-        [[nodiscard]] void_awaitable_type do_guest_login(http_handle_parameter handle_parameter);
+        [[nodiscard]] static void_awaitable_type do_guest_login(http_handle_parameter handle_parameter);
 
         [[nodiscard]] static account_awaitable_type get_account(const result_container& accounts, const database_pool_shared_ptr& database_pool, const std::string& device_id, const const_app_config_shared_ptr& app_config);
 

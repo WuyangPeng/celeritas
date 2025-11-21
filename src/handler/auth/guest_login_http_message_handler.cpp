@@ -1,12 +1,12 @@
 ﻿#include "guest_login_http_message_handler.h"
 #include "guest_login_response.h"
 #include "common/logger.h"
-#include "common/random_helper.h"
 #include "common/snowflake_generator.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/mysql_database_session.h"
 #include "database/generated/mysql/account.h"
+#include "database/generated/redis/session_token.h"
 #include "message/http_handle_parameter.h"
 #include "server/game_error_type.h"
 
@@ -48,6 +48,9 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     {
         LOG_CHANNEL(handler_channel, fatal) << "health check unknown error.";
     }
+
+    const guest_login_response response{ game_error_type::unknown, get_game_error_description(game_error_type::unknown) };
+    handle_parameter.write(response.to_json_string());
 }
 
 celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::guest_login_http_message_handler::do_guest_login(http_handle_parameter handle_parameter)
@@ -72,6 +75,13 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
 
     const auto token = generate_token();
 
+    const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
+
+    session_token session_token{ database_type::redis, token };
+    session_token.set_token(token);
+
+    co_await redis_pool->execute_changes(session_token.get_modify());
+
     const guest_login_response response{ game_error_type::success, "login successful", token };
     handle_parameter.write(response.to_json_string());
 
@@ -88,7 +98,7 @@ celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::g
         account account{ database_type::mysql, account_id };
         account.set_device_id(device_id);
         account.set_account_name("guest_" + std::to_string(account_id));
-        account.set_create_time(0);
+        account.set_create_time(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
 
         co_await database_pool->execute_changes(account.get_modify());
 

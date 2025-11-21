@@ -9,17 +9,17 @@
 
 namespace celeritas
 {
-    class session final : public database_entity
+    class session_token final : public database_entity
     {
     public:
-        using class_type = session;
+        using class_type = session_token;
         using base_type = database_entity;
 
-        [[nodiscard]] static session create(const basis_database_manager& entity, database_type database_type, traits::param_type::string_type token);
+        [[nodiscard]] static session_token create(const basis_database_manager& entity, database_type database_type, traits::param_type::string_type token);
 
-        explicit session(const basis_database_manager& entity);
+        explicit session_token(const basis_database_manager& entity);
 
-        session(database_type database_type, traits::param_type::string_type token);
+        session_token(database_type database_type, traits::param_type::string_type token);
 
         [[nodiscard]] traits::string_type get_token() const;
 
@@ -44,7 +44,7 @@ namespace celeritas
         static constexpr std::string_view account_id_describe{ "account_id" };
 
     private:
-        static constexpr std::string_view database_name{ "session" };
+        static constexpr std::string_view database_name{ "session_token" };
 
         [[nodiscard]] static basis_database_container get_key_basis_database_container(traits::param_type::string_type token);
 
