@@ -10,18 +10,18 @@
 
 #include <boost/json.hpp>
 
-std::string generate_token(const int64_t account_id)
-{
-    return "token_for_account_" + std::to_string(account_id);
-}
-
 std::string celeritas::guest_login_http_message_handler::get_supported_type_name() const
 {
-    return "guest_login";
+    return guest_login_path.data();
 }
 
 bool celeritas::guest_login_http_message_handler::handle(const http_handle_parameter& handle_parameter, const http_message_registry_weak_ptr& message_registry)
 {
+    if (handle_parameter.get_server_type() != auth_type)
+    {
+        return false;
+    }
+
     co_spawn(handle_parameter.get_io_context(),
              guest_login(handle_parameter),
              boost::asio::detached);
@@ -58,7 +58,7 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
 
     const auto& device_id = *optional_device_id;
 
-    const auto pool = database_pool_manager::get_instance().get_pool("mysql_db");
+    const auto pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
     const auto select = account::get_select_all(database_type::mysql);
     select->add_key(basis_database{ account::device_id_describe, device_id });
     auto accounts = co_await pool->select_all(select, account::get_database_field_container());
@@ -87,4 +87,9 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     handle_parameter.write(response.to_json_string());
 
     co_return;
+}
+
+std::string celeritas::guest_login_http_message_handler::generate_token(int64_t account_id) const
+{
+    return "token_for_account_" + std::to_string(account_id);
 }

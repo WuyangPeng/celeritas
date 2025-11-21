@@ -32,6 +32,8 @@ namespace celeritas
 
         resource_loader_base& operator=(resource_loader_base&& rhs) noexcept = default;
 
+        [[nodiscard]] virtual std::string_view get_server_type() const = 0;
+
         virtual void process_check_tcp_clients_by_duration(io_context_type& io_context) = 0;
 
         virtual void process_service_registry_by_duration() = 0;

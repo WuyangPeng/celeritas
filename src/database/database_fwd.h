@@ -42,4 +42,6 @@ namespace celeritas
     constexpr auto cleanup_database_expired_timer = std::chrono::hours(1);
 
     constexpr auto redis_cursor_one_request_size = 100;
+
+    constexpr std::string_view auth_db_name = "auth_db";
 }

@@ -83,3 +83,14 @@ celeritas::http_handle_parameter::io_context_type& celeritas::http_handle_parame
 {
     return io_context_;
 }
+
+std::string_view celeritas::http_handle_parameter::get_server_type() const
+{
+    if (const auto resource_loader_shared_ptr = resource_loader_.lock();
+        resource_loader_shared_ptr != nullptr)
+    {
+        return resource_loader_shared_ptr->get_server_type();
+    }
+
+    throw celeritas_error("resource_loader is null.");
+}

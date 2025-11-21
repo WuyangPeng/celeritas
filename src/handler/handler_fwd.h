@@ -14,4 +14,6 @@ namespace celeritas
     class guest_login_http_message_handler;
 
     enum class health_check_level_type;
+
+    constexpr std::string_view guest_login_path = "/login/guest";
 }

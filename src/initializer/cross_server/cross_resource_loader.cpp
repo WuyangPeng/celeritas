@@ -1,7 +1,7 @@
 ﻿#include "cross_resource_loader.h"
 
-celeritas::cross_resource_loader::cross_resource_loader(app_config_shared_ptr app_config)
-    : base_type{ std::move(app_config) }
+celeritas::cross_resource_loader::cross_resource_loader(const std::string_view server_type, app_config_shared_ptr app_config)
+    : base_type{ server_type, std::move(app_config) }
 {
 }
 

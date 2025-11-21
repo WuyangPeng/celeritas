@@ -1,7 +1,7 @@
 ﻿#include "admin_resource_loader.h"
 
-celeritas::admin_resource_loader::admin_resource_loader(app_config_shared_ptr app_config)
-    : base_type{ std::move(app_config) }
+celeritas::admin_resource_loader::admin_resource_loader(const std::string_view server_type, app_config_shared_ptr app_config)
+    : base_type{ server_type, std::move(app_config) }
 {
 }
 

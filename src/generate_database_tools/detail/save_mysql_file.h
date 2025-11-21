@@ -12,11 +12,12 @@ namespace celeritas
         using class_type = save_mysql_file;
         using base_type = generator;
 
-        explicit save_mysql_file(std::string output_directory, std::string content);
+        explicit save_mysql_file(std::string file_name, std::string output_directory, std::string content);
 
         void execute() override;
 
     private:
+        std::string file_name_;
         std::string output_directory_;
         std::string content_;
     };

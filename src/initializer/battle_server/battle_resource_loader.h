@@ -10,7 +10,7 @@ namespace celeritas
         using class_type = battle_resource_loader;
         using base_type = resource_loader;
 
-        explicit battle_resource_loader(app_config_shared_ptr app_config);
+        explicit battle_resource_loader(std::string_view server_type, app_config_shared_ptr app_config);
 
     private:
         void service_initialize_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback) override;

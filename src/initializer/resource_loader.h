@@ -20,7 +20,7 @@ namespace celeritas
 
         using health_check_level_awaitable_type = boost::asio::awaitable<health_check_level_type>;
 
-        explicit resource_loader(app_config_shared_ptr app_config);
+        explicit resource_loader(std::string_view server_type, app_config_shared_ptr app_config);
 
         ~resource_loader() noexcept override = default;
 
@@ -31,6 +31,8 @@ namespace celeritas
         resource_loader(resource_loader&& rhs) noexcept = delete;
 
         resource_loader& operator=(resource_loader&& rhs) noexcept = delete;
+
+        [[nodiscard]] std::string_view get_server_type() const override;
 
         void initialize(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
 
@@ -91,5 +93,6 @@ namespace celeritas
         service_registry_timer_shared_ptr service_registry_timer_;
         buffer_pool_timer_shared_ptr buffer_pool_timer_;
         int64_t start_server_time_;
+        std::string_view server_type_;
     };
 }

@@ -17,7 +17,7 @@
 
 #include <ranges>
 
-celeritas::resource_loader::resource_loader(app_config_shared_ptr app_config)
+celeritas::resource_loader::resource_loader(const std::string_view server_type, app_config_shared_ptr app_config)
     : app_config_{ std::move(app_config) },
       listener_{},
       tcp_clients_{},
@@ -25,8 +25,14 @@ celeritas::resource_loader::resource_loader(app_config_shared_ptr app_config)
       check_tcp_clients_timer_{},
       service_registry_timer_{},
       buffer_pool_timer_{},
-      start_server_time_{ std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count() }
+      start_server_time_{ std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count() },
+      server_type_{ server_type }
 {
+}
+
+std::string_view celeritas::resource_loader::get_server_type() const
+{
+    return server_type_;
 }
 
 void celeritas::resource_loader::initialize(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)

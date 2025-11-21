@@ -37,19 +37,17 @@ void celeritas::generate_mysql::check_directory() const
 
 void celeritas::generate_mysql::generate(const std::string& directory)
 {
-    std::string content{};
-
     for (const auto& entry : std::filesystem::recursive_directory_iterator(directory))
     {
         if (entry.is_regular_file() && entry.path().extension() == ".json")
         {
             generate_mysql_file generate_mysql_file{ entry.path().string() };
 
-            content += generate_mysql_file.get_mysql_statement();
+            const auto content = generate_mysql_file.get_mysql_statement();
+
+            save_mysql_file save_mysql_file{ entry.path().filename().string(), output_directory_, content };
+            save_mysql_file.execute();
         }
     }
-
-    save_mysql_file save_mysql_file{ output_directory_, content };
-    save_mysql_file.execute();
 }
 

@@ -49,6 +49,8 @@ namespace celeritas
 
         [[nodiscard]] io_context_type& get_io_context() const;
 
+        [[nodiscard]] std::string_view get_server_type() const;
+
     private:
         using session_weak_ptr = std::weak_ptr<session>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;

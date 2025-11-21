@@ -24,5 +24,7 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type guest_login(http_handle_parameter handle_parameter);
 
         [[nodiscard]] void_awaitable_type do_guest_login(http_handle_parameter handle_parameter);
+
+        [[nodiscard]] std::string generate_token(int64_t account_id) const;
     };
 }
