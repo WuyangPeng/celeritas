@@ -14,13 +14,13 @@ celeritas::session_token celeritas::session_token::create(const basis_database_m
 
 celeritas::session_token::session_token(const basis_database_manager& entity)
     : base_type{ entity },
-      token_{ entity.get_value<database_data_type::string_type>(token_describe) },
+      token_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : token_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) }
 {
 }
 
 celeritas::session_token::session_token(const database_type database_type, traits::param_type::string_type token)
-    : base_type{ database_type, database_name.data(), get_key_basis_database_container(token) },
+    : base_type{ database_type, database_name.data(), get_key_basis_database_container(database_type, token) },
       token_{ token },
       account_id_{ traits::int64_type{} }
 {
@@ -70,7 +70,7 @@ celeritas::session_token::basis_database_manager_const_hared_ptr celeritas::sess
     return std::make_shared<basis_database_manager>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(token));
+                                                    get_key_basis_database_container(database_type, token));
 }
 
 celeritas::session_token::basis_database_manager_shared_ptr celeritas::session_token::get_select_all(const database_type database_type)
@@ -83,9 +83,11 @@ celeritas::session_token::basis_database_manager_shared_ptr celeritas::session_t
     return result;
 }
 
-celeritas::basis_database_container celeritas::session_token::get_key_basis_database_container(traits::param_type::string_type token)
+celeritas::basis_database_container celeritas::session_token::get_key_basis_database_container(const database_type database_type, traits::param_type::string_type token)
 {
-    basis_database_container basis_database_container{ basis_database_container::object_container{ basis_database{ token_describe, token } } };
+    const auto field_name = database_type == database_type::mongo ? "_id" : token_describe;
+
+    basis_database_container basis_database_container{ basis_database_container::object_container{ basis_database{ field_name, token } } };
 
     return basis_database_container;
 }

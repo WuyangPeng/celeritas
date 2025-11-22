@@ -97,15 +97,7 @@ std::string celeritas::database_header::create_database_describe_content(const e
 {
     auto database_describe_content = database_template_file.get_database_describe_content();
 
-    if (entity_attribute.is_key_type())
-    {
-        boost::replace_all(database_describe_content, "${entity_is_key}", "_id");
-    }
-    else
-    {
-        boost::replace_all(database_describe_content, "${entity_is_key}", entity_attribute.get_entity_name());
-    }
-
+    boost::replace_all(database_describe_content, "${entity_is_key}", entity_attribute.get_entity_name());
     boost::replace_all(database_describe_content, "${entity}", entity_attribute.get_entity_name());
 
     return database_describe_content;

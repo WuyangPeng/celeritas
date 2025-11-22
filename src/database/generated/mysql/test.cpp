@@ -14,7 +14,7 @@ celeritas::test celeritas::test::create(const basis_database_manager& entity, co
 
 celeritas::test::test(const basis_database_manager& entity)
     : base_type{ entity },
-      user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
+      user_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : user_id_describe) },
       chapter_id_{ entity.get_value<database_data_type::int32_type>(chapter_id_describe) },
       chapter_name_{ entity.get_value<database_data_type::string_type>(chapter_name_describe) },
       chance_winning_{ entity.get_value<database_data_type::double_type>(chance_winning_describe) },
@@ -25,7 +25,7 @@ celeritas::test::test(const basis_database_manager& entity)
 }
 
 celeritas::test::test(const database_type database_type, traits::param_type::int64_type user_id)
-    : base_type{ database_type, database_name.data(), get_key_basis_database_container(user_id) },
+    : base_type{ database_type, database_name.data(), get_key_basis_database_container(database_type, user_id) },
       user_id_{ user_id },
       chapter_id_{ traits::int32_type{} },
       chapter_name_{ traits::string_type{} },
@@ -174,7 +174,7 @@ celeritas::test::basis_database_manager_const_hared_ptr celeritas::test::get_sel
     return std::make_shared<basis_database_manager>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(user_id));
+                                                    get_key_basis_database_container(database_type, user_id));
 }
 
 celeritas::test::basis_database_manager_shared_ptr celeritas::test::get_select_all(const database_type database_type)
@@ -187,9 +187,11 @@ celeritas::test::basis_database_manager_shared_ptr celeritas::test::get_select_a
     return result;
 }
 
-celeritas::basis_database_container celeritas::test::get_key_basis_database_container(traits::param_type::int64_type user_id)
+celeritas::basis_database_container celeritas::test::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type user_id)
 {
-    basis_database_container basis_database_container{ basis_database_container::object_container{ basis_database{ user_id_describe, user_id } } };
+    const auto field_name = database_type == database_type::mongo ? "_id" : user_id_describe;
+
+    basis_database_container basis_database_container{ basis_database_container::object_container{ basis_database{ field_name, user_id } } };
 
     return basis_database_container;
 }

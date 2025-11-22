@@ -1,5 +1,6 @@
 ﻿#include "guest_login_http_message_handler.h"
 #include "guest_login_response.h"
+#include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "common/snowflake_generator.h"
 #include "config/app_config.h"
@@ -44,11 +45,11 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     }
     catch (const std::exception& error)
     {
-        LOG_CHANNEL(handler_channel, error) << "health check error: " << error.what();
+        LOG_CHANNEL(handler_channel, error) << "guest login error: " << error.what();
     }
     catch (...)
     {
-        LOG_CHANNEL(handler_channel, fatal) << "health check unknown error.";
+        LOG_CHANNEL(handler_channel, fatal) << "guest login unknown error.";
     }
 
     const guest_login_response response{ game_error_type::unknown, "unknown error" };
@@ -104,9 +105,12 @@ celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::g
         account.set_account_type(static_cast<int>(account_type::guest));
         account.set_status(static_cast<int>(account_status_type::normal));
 
-        co_await database_pool->execute_changes(account.get_modify());
+        if (co_await database_pool->execute_changes(account.get_modify()))
+        {
+            co_return account;
+        }
 
-        co_return account;
+        throw celeritas_error("guest login error");
     }
 
     account account{ accounts[0] };

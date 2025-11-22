@@ -40,13 +40,13 @@ namespace celeritas
             return database_name;
         }
 
-        static constexpr std::string_view token_describe{ "_id" };
+        static constexpr std::string_view token_describe{ "token" };
         static constexpr std::string_view account_id_describe{ "account_id" };
 
     private:
         static constexpr std::string_view database_name{ "session_token" };
 
-        [[nodiscard]] static basis_database_container get_key_basis_database_container(traits::param_type::string_type token);
+        [[nodiscard]] static basis_database_container get_key_basis_database_container(database_type database_type, traits::param_type::string_type token);
 
         entity<token_describe, database_data_type::string_type, database_index_type::key> token_;
         entity<account_id_describe, database_data_type::int64_type> account_id_;

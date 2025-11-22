@@ -4,58 +4,58 @@
 
 #include <boost/numeric/conversion/cast.hpp>
 
-celeritas::basis_database::basis_database(const std::string_view fieldName)
-    : class_type{ fieldName, database_data_type::null_type, nullptr }
+celeritas::basis_database::basis_database(const std::string_view field_name)
+    : class_type{ field_name, database_data_type::null_type, nullptr }
 {
 }
 
-celeritas::basis_database::basis_database(const std::string_view fieldName, const std::string& value)
-    : class_type{ fieldName, database_data_type::string_type, value }
+celeritas::basis_database::basis_database(const std::string_view field_name, const std::string& value)
+    : class_type{ field_name, database_data_type::string_type, value }
 {
 }
 
-celeritas::basis_database::basis_database(const std::string_view fieldName, const int32_t value)
-    : class_type{ fieldName, database_data_type::int32_type, value }
+celeritas::basis_database::basis_database(const std::string_view field_name, const int32_t value)
+    : class_type{ field_name, database_data_type::int32_type, value }
 {
 }
 
-celeritas::basis_database::basis_database(const std::string_view fieldName, const int64_t value)
-    : class_type{ fieldName, database_data_type::int64_type, value }
+celeritas::basis_database::basis_database(const std::string_view field_name, const int64_t value)
+    : class_type{ field_name, database_data_type::int64_type, value }
 {
 }
 
-celeritas::basis_database::basis_database(const std::string_view fieldName, const uint64_t value)
-    : class_type{ fieldName, database_data_type::int64_type, boost::numeric_cast<int64_t>(value) }
+celeritas::basis_database::basis_database(const std::string_view field_name, const uint64_t value)
+    : class_type{ field_name, database_data_type::int64_type, boost::numeric_cast<int64_t>(value) }
 {
 }
 
-celeritas::basis_database::basis_database(const std::string_view fieldName, const byte_array& value)
-    : class_type{ fieldName, database_data_type::byte_array_type, value }
+celeritas::basis_database::basis_database(const std::string_view field_name, const byte_array& value)
+    : class_type{ field_name, database_data_type::byte_array_type, value }
 {
 }
 
-celeritas::basis_database::basis_database(const std::string_view fieldName, const bool value)
-    : class_type{ fieldName, database_data_type::bool_type, value }
+celeritas::basis_database::basis_database(const std::string_view field_name, const bool value)
+    : class_type{ field_name, database_data_type::bool_type, value }
 {
 }
 
-celeritas::basis_database::basis_database(const std::string_view fieldName, const string_array& value)
-    : class_type{ fieldName, database_data_type::string_array_type, value }
+celeritas::basis_database::basis_database(const std::string_view field_name, const string_array& value)
+    : class_type{ field_name, database_data_type::string_array_type, value }
 {
 }
 
-celeritas::basis_database::basis_database(const std::string_view fieldName, const int32_array& value)
-    : class_type{ fieldName, database_data_type::int32_array_type, value }
+celeritas::basis_database::basis_database(const std::string_view field_name, const int32_array& value)
+    : class_type{ field_name, database_data_type::int32_array_type, value }
 {
 }
 
-celeritas::basis_database::basis_database(const std::string_view fieldName, const int64_array& value)
-    : class_type{ fieldName, database_data_type::int64_array_type, value }
+celeritas::basis_database::basis_database(const std::string_view field_name, const int64_array& value)
+    : class_type{ field_name, database_data_type::int64_array_type, value }
 {
 }
 
-celeritas::basis_database::basis_database(const std::string_view fieldName, const double_array& value)
-    : class_type{ fieldName, database_data_type::double_array_type, value }
+celeritas::basis_database::basis_database(const std::string_view field_name, const double_array& value)
+    : class_type{ field_name, database_data_type::double_array_type, value }
 {
 }
 
@@ -176,7 +176,7 @@ std::string celeritas::basis_database::get_quotation_mark_string() const
     return get_string();
 }
 
-celeritas::basis_database::basis_database(const std::string_view fieldName, const database_data_type dataType, std::any value)
-    : field_name_{ fieldName }, data_type_{ dataType }, value_{ std::move(value) }
+celeritas::basis_database::basis_database(const std::string_view field_name, const database_data_type dataType, std::any value)
+    : field_name_{ field_name }, data_type_{ dataType }, value_{ std::move(value) }
 {
 }

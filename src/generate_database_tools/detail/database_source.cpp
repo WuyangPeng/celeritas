@@ -17,11 +17,11 @@ void celeritas::database_source::generate(const database_attribute& attribute, c
         if (!element.is_key_type())
         {
             field_init_ += create_field_init_content(index, attribute, element, database_template_file);
+            field_assignment_ += create_field_assignment_content(index, attribute, element, database_template_file);
         }
 
         database_get_define_ += create_database_get_define_content(element, database_template_file);
         database_set_define_ += create_database_set_define_content(element, database_template_file);
-        field_assignment_ += create_field_assignment_content(index, attribute, element, database_template_file);
         database_field_ += create_database_field_content(index, attribute, element, database_template_file);
 
         ++index;

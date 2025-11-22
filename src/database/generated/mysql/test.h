@@ -64,7 +64,7 @@ namespace celeritas
             return database_name;
         }
 
-        static constexpr std::string_view user_id_describe{ "_id" };
+        static constexpr std::string_view user_id_describe{ "user_id" };
         static constexpr std::string_view chapter_id_describe{ "chapter_id" };
         static constexpr std::string_view chapter_name_describe{ "chapter_name" };
         static constexpr std::string_view chance_winning_describe{ "chance_winning" };
@@ -75,7 +75,7 @@ namespace celeritas
     private:
         static constexpr std::string_view database_name{ "test" };
 
-        [[nodiscard]] static basis_database_container get_key_basis_database_container(traits::param_type::int64_type user_id);
+        [[nodiscard]] static basis_database_container get_key_basis_database_container(database_type database_type, traits::param_type::int64_type user_id);
 
         entity<user_id_describe, database_data_type::int64_type, database_index_type::key> user_id_;
         entity<chapter_id_describe, database_data_type::int32_type> chapter_id_;

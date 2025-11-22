@@ -24,33 +24,33 @@ namespace celeritas
         using double_array = std::vector<double>;
 
     public:
-        explicit basis_database(std::string_view fieldName);
+        explicit basis_database(std::string_view field_name);
 
-        basis_database(std::string_view fieldName, const std::string& value);
+        basis_database(std::string_view field_name, const std::string& value);
 
-        basis_database(std::string_view fieldName, int32_t value);
+        basis_database(std::string_view field_name, int32_t value);
 
-        basis_database(std::string_view fieldName, int64_t value);
+        basis_database(std::string_view field_name, int64_t value);
 
-        basis_database(std::string_view fieldName, uint64_t value);
+        basis_database(std::string_view field_name, uint64_t value);
 
-        basis_database(std::string_view fieldName, const byte_array& value);
+        basis_database(std::string_view field_name, const byte_array& value);
 
-        basis_database(std::string_view fieldName, bool value);
+        basis_database(std::string_view field_name, bool value);
 
-        basis_database(std::string_view fieldName, const string_array& value);
+        basis_database(std::string_view field_name, const string_array& value);
 
-        basis_database(std::string_view fieldName, const int32_array& value);
+        basis_database(std::string_view field_name, const int32_array& value);
 
-        basis_database(std::string_view fieldName, const int64_array& value);
+        basis_database(std::string_view field_name, const int64_array& value);
 
-        basis_database(std::string_view fieldName, const double_array& value);
+        basis_database(std::string_view field_name, const double_array& value);
 
         template <typename T> requires(std::is_integral_v<T>)
-        basis_database(std::string_view fieldName, T value);
+        basis_database(std::string_view field_name, T value);
 
         template <typename T> requires(std::is_floating_point_v<T>)
-        basis_database(std::string_view fieldName, T value);
+        basis_database(std::string_view field_name, T value);
 
         [[nodiscard]] std::string_view get_field_name() const noexcept;
 
@@ -71,7 +71,7 @@ namespace celeritas
         [[nodiscard]] std::string get_quotation_mark_string() const;
 
     private:
-        basis_database(std::string_view fieldName, database_data_type dataType, std::any value);
+        basis_database(std::string_view field_name, database_data_type dataType, std::any value);
 
         std::string_view field_name_;
         database_data_type data_type_ = database_data_type::null_type;

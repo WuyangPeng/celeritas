@@ -42,7 +42,7 @@ namespace celeritas
 
         [[nodiscard]] virtual bool_awaitable_type is_health() = 0;
 
-        [[nodiscard]] virtual void_awaitable_type execute_changes(const basis_database_manager_const_shared_ptr& database) = 0;
+        [[nodiscard]] virtual bool_awaitable_type execute_changes(const basis_database_manager_const_shared_ptr& database) = 0;
 
         [[nodiscard]] virtual basis_database_manager_awaitable_type select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) = 0;
 

@@ -14,11 +14,12 @@ celeritas::${class_name} celeritas::${class_name}::create(const basis_database_m
 
 celeritas::${class_name}::${class_name}(const basis_database_manager& entity)
     : base_type{ entity },
+      ${key_name}_{ entity.get_value<database_data_type::${key_type}>(entity.get_database_type() == database_type::mongo ? "_id" : ${key_name}_describe) },
 ${field_assignment}{
 }
 
 celeritas::${class_name}::${class_name}(const database_type database_type, traits::param_type::${key_type} ${key_name})
-    : base_type{ database_type, database_name.data(), get_key_basis_database_container(${key_name}) },
+    : base_type{ database_type, database_name.data(), get_key_basis_database_container(database_type, ${key_name}) },
       ${key_name}_{ ${key_name} },
 ${field_init}{
     add_modify(${key_name}_describe, ${key_name});
@@ -36,7 +37,7 @@ celeritas::${class_name}::basis_database_manager_const_hared_ptr celeritas::${cl
     return std::make_shared<basis_database_manager>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(${key_name}));
+                                                    get_key_basis_database_container(database_type, ${key_name}));
 }
 
 celeritas::${class_name}::basis_database_manager_shared_ptr celeritas::${class_name}::get_select_all(const database_type database_type)
@@ -49,9 +50,11 @@ celeritas::${class_name}::basis_database_manager_shared_ptr celeritas::${class_n
     return result;
 }
 
-celeritas::basis_database_container celeritas::${class_name}::get_key_basis_database_container(traits::param_type::${key_type} ${key_name})
+celeritas::basis_database_container celeritas::${class_name}::get_key_basis_database_container(const database_type database_type, traits::param_type::${key_type} ${key_name})
 {
-    basis_database_container basis_database_container{ basis_database_container::object_container{ basis_database{ ${key_name}_describe, ${key_name} } } };
+    const auto field_name = database_type == database_type::mongo ? "_id" : ${key_name}_describe;
+
+    basis_database_container basis_database_container{ basis_database_container::object_container{ basis_database{ field_name, ${key_name} } } };
 
     return basis_database_container;
 }

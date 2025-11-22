@@ -36,7 +36,7 @@ ${declaration}
     private:
         static constexpr std::string_view database_name{ "${database_name}" };
 
-        [[nodiscard]] static basis_database_container get_key_basis_database_container(traits::param_type::${key_type} ${key_name});
+        [[nodiscard]] static basis_database_container get_key_basis_database_container(database_type database_type, traits::param_type::${key_type} ${key_name});
 
 ${field}    };
 }

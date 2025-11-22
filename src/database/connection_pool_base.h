@@ -58,7 +58,7 @@ namespace celeritas
 
         [[nodiscard]] bool_awaitable_type is_health() override;
 
-        [[nodiscard]] void_awaitable_type execute_changes(const basis_database_manager_const_shared_ptr& database) override;
+        [[nodiscard]] bool_awaitable_type execute_changes(const basis_database_manager_const_shared_ptr& database) override;
 
         [[nodiscard]] basis_database_manager_awaitable_type select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) override;
 

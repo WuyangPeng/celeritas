@@ -14,7 +14,7 @@ celeritas::account celeritas::account::create(const basis_database_manager& enti
 
 celeritas::account::account(const basis_database_manager& entity)
     : base_type{ entity },
-      account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
+      account_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : account_id_describe) },
       account_name_{ entity.get_value<database_data_type::string_type>(account_name_describe) },
       account_type_{ entity.get_value<database_data_type::int32_type>(account_type_describe) },
       password_hash_{ entity.get_value<database_data_type::string_type>(password_hash_describe) },
@@ -26,7 +26,7 @@ celeritas::account::account(const basis_database_manager& entity)
 }
 
 celeritas::account::account(const database_type database_type, traits::param_type::int64_type account_id)
-    : base_type{ database_type, database_name.data(), get_key_basis_database_container(account_id) },
+    : base_type{ database_type, database_name.data(), get_key_basis_database_container(database_type, account_id) },
       account_id_{ account_id },
       account_name_{ traits::string_type{} },
       account_type_{ traits::int32_type{} },
@@ -178,7 +178,7 @@ celeritas::account::basis_database_manager_const_hared_ptr celeritas::account::g
     return std::make_shared<basis_database_manager>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(account_id));
+                                                    get_key_basis_database_container(database_type, account_id));
 }
 
 celeritas::account::basis_database_manager_shared_ptr celeritas::account::get_select_all(const database_type database_type)
@@ -191,9 +191,11 @@ celeritas::account::basis_database_manager_shared_ptr celeritas::account::get_se
     return result;
 }
 
-celeritas::basis_database_container celeritas::account::get_key_basis_database_container(traits::param_type::int64_type account_id)
+celeritas::basis_database_container celeritas::account::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type account_id)
 {
-    basis_database_container basis_database_container{ basis_database_container::object_container{ basis_database{ account_id_describe, account_id } } };
+    const auto field_name = database_type == database_type::mongo ? "_id" : account_id_describe;
+
+    basis_database_container basis_database_container{ basis_database_container::object_container{ basis_database{ field_name, account_id } } };
 
     return basis_database_container;
 }

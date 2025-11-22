@@ -64,7 +64,7 @@ namespace celeritas
             return database_name;
         }
 
-        static constexpr std::string_view account_id_describe{ "_id" };
+        static constexpr std::string_view account_id_describe{ "account_id" };
         static constexpr std::string_view account_name_describe{ "account_name" };
         static constexpr std::string_view account_type_describe{ "account_type" };
         static constexpr std::string_view password_hash_describe{ "password_hash" };
@@ -76,7 +76,7 @@ namespace celeritas
     private:
         static constexpr std::string_view database_name{ "account" };
 
-        [[nodiscard]] static basis_database_container get_key_basis_database_container(traits::param_type::int64_type account_id);
+        [[nodiscard]] static basis_database_container get_key_basis_database_container(database_type database_type, traits::param_type::int64_type account_id);
 
         entity<account_id_describe, database_data_type::int64_type, database_index_type::key> account_id_;
         entity<account_name_describe, database_data_type::string_type, database_index_type::unique_index> account_name_;

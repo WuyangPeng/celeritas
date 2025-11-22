@@ -159,7 +159,7 @@ std::string celeritas::mysql_statement_generator::generate_select_statement(cons
         result += value.get_field_name();
         result += "` = ";
 
-        result += value.get_sql_field_string();
+        result += value.get_quotation_mark_string();
 
         if (keyIndex != key.get_size())
         {
