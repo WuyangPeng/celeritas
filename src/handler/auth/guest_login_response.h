@@ -2,6 +2,7 @@
 
 #include "server/server_fwd.h"
 
+#include <cstdint>
 #include <string>
 
 namespace celeritas
@@ -13,7 +14,7 @@ namespace celeritas
 
         guest_login_response(game_error_type code, std::string message);
 
-        guest_login_response(game_error_type code, std::string message, std::string token);
+        guest_login_response(game_error_type code, std::string message, std::string token, int64_t expire_milliseconds);
 
         [[nodiscard]] std::string to_json_string() const;
 
@@ -21,5 +22,6 @@ namespace celeritas
         game_error_type code_;
         std::string message_;
         std::string token_;
+        int64_t expire_milliseconds_;
     };
 }

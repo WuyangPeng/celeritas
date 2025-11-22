@@ -5,12 +5,12 @@
 #include <boost/property_tree/ptree.hpp>
 
 celeritas::guest_login_response::guest_login_response(const game_error_type code, std::string message)
-    : code_{ code }, message_{ std::move(message) }, token_{}
+    : code_{ code }, message_{ std::move(message) }, token_{}, expire_milliseconds_{}
 {
 }
 
-celeritas::guest_login_response::guest_login_response(const game_error_type code, std::string message, std::string token)
-    : code_{ code }, message_{ std::move(message) }, token_{ std::move(token) }
+celeritas::guest_login_response::guest_login_response(const game_error_type code, std::string message, std::string token, int64_t expire_milliseconds)
+    : code_{ code }, message_{ std::move(message) }, token_{ std::move(token) }, expire_milliseconds_{ expire_milliseconds }
 {
 }
 
@@ -20,6 +20,7 @@ std::string celeritas::guest_login_response::to_json_string() const
     tree.put("code", static_cast<int>(code_));
     tree.put("message", message_);
     tree.put("token", token_);
+    tree.put("expire_milliseconds", expire_milliseconds_);
 
     try
     {

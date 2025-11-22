@@ -82,14 +82,14 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
 
     session_token session_token{ database_type::redis, token };
     session_token.set_token(token);
-    const auto database_config = handle_parameter.get_app_config()->get_database_config(redis_db_name.data());
-    const auto current_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-    const auto expire_milliseconds = current_time + database_config.get_expire_seconds() * milliseconds;
-    session_token.set_expire_milliseconds(expire_milliseconds);
 
     if (co_await redis_pool->execute_changes(session_token.get_modify()))
     {
-        const guest_login_response response{ game_error_type::success, "login successful", token };
+        const auto database_config = handle_parameter.get_app_config()->get_database_config(redis_db_name.data());
+        const auto current_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        const auto expire_milliseconds = current_time + database_config.get_expire_seconds() * milliseconds;
+
+        const guest_login_response response{ game_error_type::success, "login successful", token, expire_milliseconds };
         handle_parameter.write(response.to_json_string());
     }
     else
