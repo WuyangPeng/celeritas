@@ -51,4 +51,6 @@ namespace celeritas
     constexpr auto sequence_mask = (1 << sequence_bits) - 1;
 
     constexpr auto max_clock_skew_ms = 5;
+
+    constexpr auto milliseconds = 1000;
 }

@@ -100,7 +100,8 @@ namespace celeritas
 
     private:
         using redis_context_unique_ptr = std::unique_ptr<redis_context>;
-        using redis_reply_awaitable_type = boost::asio::awaitable<redis_reply>;
+        using redis_reply_unique_ptr = std::unique_ptr<redis_reply>;
+        using redis_reply_awaitable_type = boost::asio::awaitable<redis_reply_unique_ptr>;
 
         void check_initialized() const;
 

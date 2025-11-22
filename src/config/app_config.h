@@ -35,6 +35,8 @@ namespace celeritas
 
         [[nodiscard]] database_config_container get_database_config() const;
 
+        [[nodiscard]] database_config get_database_config(const std::string& db_name) const;
+
         [[nodiscard]] server_config get_server_config() const;
 
         [[nodiscard]] health_check_url_config get_health_check_url_config() const;

@@ -2,6 +2,7 @@
 
 #include "common/common_fwd.h"
 #include "config/config_fwd.h"
+#include "config/database_config.h"
 #include "handler/handler_fwd.h"
 
 #include <boost/asio.hpp>
@@ -50,6 +51,8 @@ namespace celeritas
         [[nodiscard]] io_context_type& get_io_context() const;
 
         [[nodiscard]] std::string_view get_server_type() const;
+
+        [[nodiscard]] database_config get_database_config(const std::string& db_name) const;
 
     private:
         using session_weak_ptr = std::weak_ptr<session>;

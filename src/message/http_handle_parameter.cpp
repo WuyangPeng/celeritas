@@ -2,6 +2,7 @@
 #include "common/celeritas_error.h"
 #include "common/resource_loader_base.h"
 #include "common/session.h"
+#include "config/app_config.h"
 
 celeritas::http_handle_parameter::http_handle_parameter(io_context_type& io_context, std::string path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
     : io_context_{ io_context }, path_{ std::move(path) }, params_{ params }, response_{}, session_{ session }, resource_loader_{ resource_loader }
@@ -90,6 +91,19 @@ std::string_view celeritas::http_handle_parameter::get_server_type() const
         resource_loader_shared_ptr != nullptr)
     {
         return resource_loader_shared_ptr->get_server_type();
+    }
+
+    throw celeritas_error("resource_loader is null.");
+}
+
+celeritas::database_config celeritas::http_handle_parameter::get_database_config(const std::string& db_name) const
+{
+    if (const auto resource_loader_shared_ptr = resource_loader_.lock();
+        resource_loader_shared_ptr != nullptr)
+    {
+        const auto app_config = resource_loader_shared_ptr->get_app_config();
+
+        return app_config->get_database_config(db_name);
     }
 
     throw celeritas_error("resource_loader is null.");

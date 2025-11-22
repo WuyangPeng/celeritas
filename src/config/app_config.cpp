@@ -1,4 +1,5 @@
 ﻿#include "app_config.h"
+#include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "detail/database_config_reader.h"
 #include "detail/health_check_url_config_reader.h"
@@ -84,6 +85,17 @@ celeritas::app_config::logger_config_container celeritas::app_config::get_logger
 celeritas::app_config::database_config_container celeritas::app_config::get_database_config() const
 {
     return database_;
+}
+
+celeritas::database_config celeritas::app_config::get_database_config(const std::string& db_name) const
+{
+    const auto iter = database_.find(db_name);
+    if (iter != database_.cend())
+    {
+        return iter->second;
+    }
+
+    throw celeritas_error("db is not exist,db name:" + db_name);
 }
 
 celeritas::server_config celeritas::app_config::get_server_config() const
