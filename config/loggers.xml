@@ -58,6 +58,13 @@
         <log_file_name>config</log_file_name>
         <rotation_size>50</rotation_size>
     </logger>
+    <logger name="handler_logger">
+        <level>trace</level>
+        <console_enabled>true</console_enabled>
+        <channel_name>handler</channel_name>
+        <log_file_name>handler</log_file_name>
+        <rotation_size>50</rotation_size>
+    </logger>
     <logger name="server_logger">
         <level>trace</level>
         <console_enabled>true</console_enabled>
