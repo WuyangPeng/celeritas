@@ -356,7 +356,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
             # 将生成目录作为参数传递给 generate_database_tools
             --process=generate_mysql
-            --database_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/database
+            --database_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/database/mysql
             --output_directory=${MYSQL_GENERATED_DIR}
 
             # 依赖于 generate_database_tools 目标本身，确保 generate_database_tools 在执行前已编译完成
