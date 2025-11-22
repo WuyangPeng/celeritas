@@ -156,9 +156,20 @@ celeritas::connection_pool_base<SessionType>::bool_awaitable_type celeritas::con
 template <typename SessionType>
 celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::connection_pool_base<SessionType>::execute_changes(const basis_database_manager_const_shared_ptr& database)
 {
-    auto session = co_await async_get_session();
+    try
+    {
+        auto session = co_await async_get_session();
 
-    co_return co_await session->execute_changes(database);
+        co_return co_await session->execute_changes(database);
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(database_channel, error) << "execute changes error:" << error.what();
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(database_channel, fatal) << "execute changes unknown exception";
+    }
 }
 
 template <typename SessionType>
