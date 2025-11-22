@@ -69,6 +69,38 @@ std::string celeritas::generate_mysql_file::get_mysql_data_type(const std::strin
     return "TEXT";
 }
 
+std::string celeritas::generate_mysql_file::get_mysql_default_type(const std::string& data_type)
+{
+    if (data_type == "int32" || data_type == "int32_count")
+    {
+        return "0";
+    }
+
+    if (data_type == "int64" || data_type == "int64_count")
+    {
+        return "0";
+    }
+
+    if (data_type == "string")
+    {
+        return "\"\"";
+    }
+
+    if (data_type == "double")
+    {
+        return "0.0";
+    }
+
+    if (data_type == "bool")
+    {
+        return "0";
+    }
+
+    LOG_CHANNEL(celeritas::default_channel, error) << "Unknown data type: " << data_type;
+
+    return "\"\"";
+}
+
 celeritas::generate_mysql_file::json_value_type celeritas::generate_mysql_file::get_json_value() const
 {
     std::ifstream file_stream{ database_file_ };
@@ -84,7 +116,7 @@ celeritas::generate_mysql_file::json_value_type celeritas::generate_mysql_file::
     return boost::json::parse(json_content);
 }
 
-std::string celeritas::generate_mysql_file::get_mysql_statement(const json_value_type& table_value) const
+std::string celeritas::generate_mysql_file::get_mysql_statement(const json_value_type& table_value)
 {
     std::stringstream sql_output{};
 
@@ -121,6 +153,13 @@ std::string celeritas::generate_mysql_file::get_mysql_statement(const json_value
         else if (index_type == "index")
         {
             indexes.push_back("  KEY `" + entity_name + "_index` (`" + entity_name + "`)");
+        }
+        else
+        {
+            if (data_type != "binary")
+            {
+                sql_output << " DEFAULT " << get_mysql_default_type(data_type);
+            }
         }
 
         if (!comment.empty())
