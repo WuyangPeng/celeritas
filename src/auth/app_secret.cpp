@@ -21,10 +21,14 @@ std::string celeritas::app_secret::get_key(int app_id)
     throw celeritas_error("app_secret not registered");
 }
 
-void celeritas::app_secret::start_auto_reload()
+void celeritas::app_secret::load_from_db(io_context_type& io_context)
 {
 }
 
-void celeritas::app_secret::reload_from_db(int app_id)
+void celeritas::app_secret::reload_from_db(io_context_type& io_context, int app_id)
 {
+    if (app_id == 0)
+    {
+        load_from_db(io_context);
+    }
 }
