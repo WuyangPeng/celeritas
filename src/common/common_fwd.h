@@ -53,4 +53,5 @@ namespace celeritas
     constexpr auto max_clock_skew_ms = 5;
 
     constexpr auto milliseconds = 1000;
+    constexpr auto minute = 60 * milliseconds;
 }

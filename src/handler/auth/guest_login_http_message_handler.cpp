@@ -1,5 +1,7 @@
 ﻿#include "guest_login_http_message_handler.h"
+#include "auth/app_secret.h"
 #include "auth/guest_login_response.h"
+#include "boost/lexical_cast.hpp"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "common/snowflake_generator.h"
@@ -13,6 +15,8 @@
 #include "server/account_type.h"
 #include "server/game_error_type.h"
 
+#include <boost/algorithm/hex.hpp>
+#include <boost/algorithm/string/case_conv.hpp>
 #include <boost/json.hpp>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
@@ -67,7 +71,55 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
         co_return;
     }
 
+    const auto optional_app_id = handle_parameter.get_param("app_id");
+    if (!optional_app_id)
+    {
+        const guest_login_response response{ game_error_type::invalid_parameter, "app_id is required" };
+        handle_parameter.write(response.to_json_string());
+
+        co_return;
+    }
+
+    const auto optional_timestamp = handle_parameter.get_param("timestamp");
+    if (!optional_timestamp)
+    {
+        const guest_login_response response{ game_error_type::invalid_parameter, "timestamp is required" };
+        handle_parameter.write(response.to_json_string());
+
+        co_return;
+    }
+
+    const auto optional_sign = handle_parameter.get_param("sign");
+    if (!optional_sign)
+    {
+        const guest_login_response response{ game_error_type::invalid_parameter, "sign is required" };
+        handle_parameter.write(response.to_json_string());
+
+        co_return;
+    }
+
     const auto& device_id = *optional_device_id;
+    const auto app_id = boost::lexical_cast<int>(*optional_app_id);
+    const auto secret = app_secret::get_instance().get_key(app_id);
+    const auto timestamp = boost::lexical_cast<int64_t>(*optional_timestamp);
+
+    const auto current_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+
+    // 检查时间戳，如果请求时间是 5 分钟前的，直接拒绝
+    if (current_time - timestamp > minute * 5)
+    {
+        const guest_login_response response{ game_error_type::timestamp_expired, "timestamp is expired" };
+        handle_parameter.write(response.to_json_string());
+
+        co_return;
+    }
+
+    const auto hmac_sha256 = calculate_hmac_sha256(app_id, device_id, timestamp, secret);
+    if (hmac_sha256 != *optional_sign)
+    {
+        const guest_login_response response{ game_error_type::sign_error, "sign error" };
+        handle_parameter.write(response.to_json_string());
+    }
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
     const auto select = account::get_select_all(database_type::mysql);
@@ -87,7 +139,6 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     if (co_await redis_pool->execute_changes(session_token.get_modify()))
     {
         const auto database_config = handle_parameter.get_app_config()->get_database_config(redis_db_name.data());
-        const auto current_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
         const auto expire_milliseconds = current_time + database_config.get_expire_seconds() * milliseconds;
 
         const guest_login_response response{ game_error_type::success, "login successful", token, expire_milliseconds };
@@ -136,4 +187,26 @@ std::string celeritas::guest_login_http_message_handler::generate_token()
     const auto uuid = generator();
 
     return boost::uuids::to_string(uuid);
+}
+
+std::string celeritas::guest_login_http_message_handler::calculate_hmac_sha256(int app_id, const std::string& device_id, int64_t timestamp, const std::string& secret_key)
+{
+    const auto data = std::format("{}{}{}", app_id, device_id, timestamp);
+
+    std::array<unsigned char,EVP_MAX_MD_SIZE> result{};
+    unsigned int result_length{};
+
+    // HMAC 计算
+    // 参数: 算法, Key, Key长度, 数据, 数据长度, 输出Buffer, 输出长度指针
+    HMAC(EVP_sha256(),
+         secret_key.c_str(), secret_key.length(),
+         (unsigned char*)data.c_str(), data.length(),
+         result.data(), &result_length);
+
+    // Hex 转换
+    std::string hex_output{};
+    boost::algorithm::hex(result.data(), result.data() + result_length, std::back_inserter(hex_output));
+    boost::algorithm::to_lower(hex_output);
+
+    return hex_output;
 }

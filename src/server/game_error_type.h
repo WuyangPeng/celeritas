@@ -11,7 +11,11 @@ namespace celeritas
 
         // 通用错误
         invalid_parameter = 100,
-        redis_error = 101,
+        timestamp_expired = 101,
+        sign_error = 102,
+
+        // 数据库错误
+        redis_error = 1000,
     };
 
     [[nodiscard]] std::string get_game_error_description(game_error_type game_error);

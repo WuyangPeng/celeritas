@@ -33,6 +33,8 @@ namespace celeritas
 
         [[nodiscard]] static account_awaitable_type get_account(const result_container& accounts, const database_pool_shared_ptr& database_pool, const std::string& device_id, const const_app_config_shared_ptr& app_config);
 
-        [[nodiscard]] static std::string generate_token();
+        static std::string generate_token();
+
+        [[nodiscard]] static std::string calculate_hmac_sha256(int app_id, const std::string& device_id, int64_t timestamp, const std::string& secret_key);
     };
 }
