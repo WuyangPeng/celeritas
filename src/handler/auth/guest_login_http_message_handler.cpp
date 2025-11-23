@@ -69,19 +69,19 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
 
     const auto& device_id = *optional_device_id;
 
-    const auto pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
     const auto select = account::get_select_all(database_type::mysql);
     select->add_key(basis_database{ account::device_id_describe, device_id });
-    auto accounts = co_await pool->select_all(select, account::get_database_field_container());
-
-    auto account = co_await get_account(accounts, pool, device_id, handle_parameter.get_app_config());
+    auto accounts = co_await mysql_pool->select_all(select, account::get_database_field_container());
+    const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
+    auto account = co_await get_account(accounts, redis_pool, device_id, handle_parameter.get_app_config());
 
     const auto token = generate_token();
 
-    const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
-
     session_token session_token{ database_type::redis, token };
     session_token.set_token(token);
+    session_token.set_account_id(account.get_account_id());
+    session_token.set_is_new_account(accounts.empty());
 
     if (co_await redis_pool->execute_changes(session_token.get_modify()))
     {
@@ -108,7 +108,8 @@ celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::g
         const auto server_config = app_config->get_server_config();
         const auto account_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
 
-        account account{ database_type::mysql, account_id };
+        // 账号只存入redis，等待玩家真正登陆时再写入mysql
+        account account{ database_type::redis, account_id };
         account.set_device_id(device_id);
         account.set_account_name("guest_" + std::to_string(account_id));
         account.set_create_time(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
