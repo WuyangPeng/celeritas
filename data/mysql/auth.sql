@@ -1,3 +1,12 @@
+CREATE TABLE `apps` (
+  `app_id` BIGINT NOT NULL COMMENT 'app id',
+  `game_name` VARCHAR(255) NOT NULL COMMENT '游戏名字',
+  `app_secret` VARCHAR(255) NOT NULL DEFAULT "" COMMENT '签名',
+  `status` INT NOT NULL DEFAULT 0 COMMENT '游戏状态',
+  PRIMARY KEY (`app_id`),
+  KEY `game_name_index` (`game_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 CREATE TABLE `account` (
   `account_id` BIGINT NOT NULL COMMENT '全局唯一ID，雪花算法生成',
   `account_name` VARCHAR(255) NOT NULL COMMENT '正式账号的用户名',

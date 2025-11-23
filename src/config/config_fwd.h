@@ -24,6 +24,7 @@ namespace celeritas
     constexpr auto default_database_min_connections = 4;
     constexpr auto default_database_max_connections = 10;
     constexpr auto default_database_timeout_seconds = 5;
+    constexpr auto default_database_expire_seconds = 86400;
     constexpr auto default_worker_pool_size = 4;
     constexpr auto min_worker_pool_size = 1;
     constexpr auto default_datacenter_id = 0;

@@ -30,6 +30,7 @@
 - database 数据库
 - network 网络
 - service_registry 服务注册
+- auth 认证
 - handler 处理器
 - initializer 初始化
 - server 服务器
@@ -610,6 +611,8 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
         - 启动内部定时器，用于定期检查和清理不健康或失联的服务实例。
         - 从注册中心移除指定的服务实例。
         - 更新指定服务实例的健康检查级别。
+
+#### auth（认证）
 
 #### handler（处理器）
 

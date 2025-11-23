@@ -1,5 +1,5 @@
 ﻿#include "guest_login_http_message_handler.h"
-#include "guest_login_response.h"
+#include "auth/guest_login_response.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "common/snowflake_generator.h"
@@ -83,6 +83,7 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     session_token.set_account_id(account.get_account_id());
     session_token.set_is_new_account(accounts.empty());
 
+    // 这里没有删除旧的token，旧的token依赖redis有效时间进行删除。
     if (co_await redis_pool->execute_changes(session_token.get_modify()))
     {
         const auto database_config = handle_parameter.get_app_config()->get_database_config(redis_db_name.data());

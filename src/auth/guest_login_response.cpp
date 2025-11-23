@@ -1,4 +1,4 @@
-﻿#include "guest_login_response.h"
+﻿#include "auth/guest_login_response.h"
 #include "common/celeritas_error.h"
 
 #include <boost/property_tree/json_parser.hpp>
