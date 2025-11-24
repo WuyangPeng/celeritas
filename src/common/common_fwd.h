@@ -37,9 +37,9 @@ namespace celeritas
 
     constexpr std::string_view config_file_path_command_line{ "config_file_path" };
 
-    constexpr auto worker_id_bits = 5;
+    constexpr auto worker_id_bits = 8;
     constexpr auto datacenter_id_bits = 5;
-    constexpr auto sequence_bits = 10;
+    constexpr auto sequence_bits = 6;
     constexpr auto max_worker_id = (1 << worker_id_bits) - 1;
     constexpr auto max_datacenter_id = (1 << datacenter_id_bits) - 1;
 
