@@ -369,7 +369,6 @@ endif ()
 
 # 静态库
 add_subdirectory(cmake/config)
-add_subdirectory(cmake/worker_pool)
 add_subdirectory(cmake/message)
 add_subdirectory(cmake/database)
 add_subdirectory(cmake/network)
@@ -390,7 +389,6 @@ target_link_libraries(celeritas_lib INTERFACE
         network
         database
         message
-        worker_pool
         config
         common
         boost

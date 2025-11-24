@@ -5,7 +5,7 @@
 #include "initializer/initializer_fwd.h"
 #include "message/protobuf_message_registry.h"
 #include "common/common_fwd.h"
-#include "worker_pool/worker_pool.h"
+#include "../common/worker_pool.h"
 
 #include <boost/url.hpp>
 

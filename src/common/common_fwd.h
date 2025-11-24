@@ -15,21 +15,22 @@ namespace celeritas
     class session;
     class resource_loader_base;
     class snowflake_generator;
+    class thread_safe_queue;
+    class worker_pool;
 
     constexpr std::string_view channel{ "channel" };
     constexpr std::string_view default_channel{ "default" };
     constexpr std::string_view unregistered_channel{ "unregistered" };
     constexpr std::string_view common_channel{ "common" };
-    constexpr std::string_view network_channel{ "network" };
-    constexpr std::string_view worker_pool_channel{ "worker_pool" };
-    constexpr std::string_view database_channel{ "database" };
-    constexpr std::string_view initializer_channel{ "initializer" };
-    constexpr std::string_view handler_channel{ "handler" };
-    constexpr std::string_view message_channel{ "message" };
     constexpr std::string_view config_channel{ "config" };
-    constexpr std::string_view server_channel{ "server" };
+    constexpr std::string_view message_channel{ "message" };
+    constexpr std::string_view database_channel{ "database" };
+    constexpr std::string_view network_channel{ "network" };
     constexpr std::string_view service_registry_channel{ "service_registry" };
     constexpr std::string_view auth_channel{ "auth" };
+    constexpr std::string_view handler_channel{ "handler" };
+    constexpr std::string_view initializer_channel{ "initializer" };
+    constexpr std::string_view server_channel{ "server" };
 
     constexpr std::string_view log_function{ "function" };
     constexpr std::string_view log_file{ "file" };

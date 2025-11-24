@@ -15,7 +15,7 @@ celeritas::worker_pool::~worker_pool() noexcept
     noexcept_safe_call_and_log([this] {
                                    this->queue_.stop();
                                },
-                               worker_pool_channel,
+                               common_channel,
                                "Error while stopping thread_safe_queue: ");
 }
 
@@ -41,11 +41,11 @@ bool celeritas::worker_pool::execute_task()
     }
     catch (const std::exception& error)
     {
-        LOG_CHANNEL(worker_pool_channel, error) << "Task threw an exception: " << error.what();
+        LOG_CHANNEL(common_channel, error) << "Task threw an exception: " << error.what();
     }
     catch (...)
     {
-        LOG_CHANNEL(worker_pool_channel, fatal) << "Task threw an unknown exception";
+        LOG_CHANNEL(common_channel, fatal) << "Task threw an unknown exception";
     }
 
     return true;
@@ -60,7 +60,7 @@ bool celeritas::worker_pool::get_and_run_task()
     }
     task();
 
-    LOG_CHANNEL(worker_pool_channel, debug) << "Task is run.";
+    LOG_CHANNEL(common_channel, debug) << "Task is run.";
 
     return true;
 }

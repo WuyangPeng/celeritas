@@ -2,18 +2,18 @@
 
 本设计旨在为一款高性能游戏服务器提供一个基础框架。该框架将使用C++20标准和boost库，实现一个异步、多线程、高吞吐量的系统。
 
-## supported Platforms（支持平台）：
+## supported Platforms（支持平台）
 
 - linux
 - windows
 
-## supported Compiler（支持编译器）：
+## supported Compiler（支持编译器）
 
-- gcc 14.2  (linux)
+- gcc 14.2 (linux)
 - MinGW 15.2 (windows)
-- Visual Studio 2022  (windows)
+- Visual Studio 2022 (windows)
 
-## dependency Library（依赖库）：
+## dependency Library（依赖库）
 
 - boost 1.88.0
 - protobuf 32.1
@@ -21,11 +21,10 @@
 - mongo v4.1
 - hiredis v1.3.0
 
-## lib（静态库）：
+## lib（静态库）
 
 - common 通用
 - config 配置
-- worker_pool 工作池
 - message 消息
 - database 数据库
 - network 网络
@@ -35,12 +34,12 @@
 - initializer 初始化
 - server 服务器
 
-## assist（辅助）：
+## assist（辅助）
 
 - generate_handler_tools 生成处理器工具
 - generate_database_tools 生成数据库工具
 
-## server（服务器）：
+## server（服务器）
 
 - service registry 服务注册中心
 - auth 认证
@@ -134,7 +133,7 @@
         - 自动添加 `--help, -h` 选项，并处理退出请求。
         - 提供 `get<T>(key)` 模板方法获取配置，键不存在时抛出 `celeritas_error` 异常。
 
-##### 日志 (Logging)
+##### logging(日志)
 
 * **📜 日志系统（`logger`）**
     - **作用**：基于`boost::log`实现的统一日志记录接口。
@@ -150,7 +149,7 @@
         - 日志宏利用`C++20`的`std::source_location::current()`自动添加函数名`function_name()`、
           文件名`file_name()`和行号`line()`到日志记录中，极大地增强了调试能力。
 
-##### 缓冲区管理 (Buffer Management)
+##### buffer management(缓冲区管理)
 
 * **💾 缓冲区数据结构（`buffer_pool_data`）**
     - **作用**：封装底层的 `std::vector<char>`，作为缓冲区池管理的基本数据单元。
@@ -169,7 +168,28 @@
     - **安全**：在析构时**自动**将其归还 `release()`到 `buffer_pool`，其析构函数标记为`noexcept`，并依赖
       `noexcept_safe_call_and_log`确保归还操作的安全性。
 
-##### 框架基类（Framework Base Classes）
+##### worker pool（工作池）
+
+* **💧 线程安全队列（`thread_safe_queue`）**
+    - **作用**：实现一个线程安全的任务队列，用于在生产者和消费者之间安全地传递任务。
+    - **特点**：使用`std::mutex`和`std::condition_variable`实现同步和阻塞等待机制。
+    - **核心功能**：
+        - **入队（`push`）**：将任务推入队列，并使用`notify_one()`唤醒一个等待中的工作线程。
+        - **出队（`pop`）**：阻塞等待直到队列非空或队列被停止。
+        - **停止（`stop`）**：设置内部标志`stop_ = true`，并使用`notify_all()`唤醒所有等待中的线程，使其安全退出。
+
+
+* **💻 工作池（`worker_pool`）**
+    - **作用**：实现一个高性能、多线程的任务处理工作池，用于异步执行任务，充分利用多核CPU资源。
+    - **核心功能**：管理一组工作线程并提供任务提交接口。
+    - **构造与销毁**：
+        - **构造函数**：在创建时启动指定数量的工作线程。
+        - **析构函数**：在析构时安全地停止内部的线程安全队列，并利用`noexcept_safe_call_and_log`确保停止操作的安全性。
+    - **任务提交**：将一个任务类型为`std::function<void()>`提交到内部的队列中等待执行。
+    - **异常处理**：工作线程内部捕获任务执行过程中抛出的`std::exception`或任何未知异常，防止异常逃逸出工作线程，并利用
+      `LOG_CHANNEL`记录错误信息。
+
+##### framework base classes（框架基类）
 
 * **⏰ 定时器基类（`timer_base`）**
     - **作用**：基于`boost::asio::steady_timer`实现的**周期性**异步定时器基类。
@@ -199,7 +219,7 @@
 
 配置模块定义了服务器启动所需的核心配置数据结构。
 
-##### **基础配置类型（`Basic Config Types`）**
+##### basic config types（基础配置类型）
 
 * **🌐 服务器网络类型（`server_network_type`）**
     - **作用**：一个枚举类型，用于明确表示服务器支持的网络通信协议。它是网络配置的基础。
@@ -212,7 +232,7 @@
     - **枚举值**：`unknown`、`mysql`、`mongodb`、`redis`。
     - **功能**：提供了全局函数`get_database_type(const std::string&)`，用于将数据库类型名称字符串转换为对应的枚举值。
 
-##### 局部配置结构（`Local Configuration Structures`）
+##### local configuration structures（局部配置结构）
 
 * **🔌 服务器网络配置（`server_network_config`）**
     - **作用**：封装单个服务器实例的一个网络监听配置，即一个协议类型和对应的端口号。
@@ -254,7 +274,7 @@
     - **作用**：包含单个日志通道的配置信息，如文件输出、旋转大小和通道级别。
     - **成员**：包含日志通道名称、文件目录、文件名、日志级别和文件旋转大小等。
 
-##### 聚合配置结构与顶级配置（`Aggregate and Top-Level Configurations`）
+##### aggregate and top-level configurations（聚合配置结构与顶级配置）
 
 * **⚙️ 服务器配置（`server_config`）**
     - **作用**：包含一个服务器实例的所有全局配置信息。
@@ -274,34 +294,11 @@
         - **配置加载**：提供一系列公共`load_xxx_config(const std::string& filename)`方法，负责从配置文件中解析并初始化所有子配置。
         - **配置访问**：提供公共`get_xxx_config()`方法，用于在程序运行时获取已加载的配置实例或配置容器。
 
-#### worker_pool（工作池）
-
-工作池模块是框架中负责高性能并发执行的核心组件。它的设计目标是有效管理和复用一组工作线程，以异步方式处理提交的任务，从而最大限度地利用多核处理器资源，避免频繁创建和销毁线程带来的开销。
-
-* **💧 线程安全队列（`thread_safe_queue`）**
-    - **作用**：实现一个线程安全的任务队列，用于在生产者和消费者之间安全地传递任务。
-    - **特点**：使用`std::mutex`和`std::condition_variable`实现同步和阻塞等待机制。
-    - **核心功能**：
-        - **入队（`push`）**：将任务推入队列，并使用`notify_one()`唤醒一个等待中的工作线程。
-        - **出队（`pop`）**：阻塞等待直到队列非空或队列被停止。
-        - **停止（`stop`）**：设置内部标志`stop_ = true`，并使用`notify_all()`唤醒所有等待中的线程，使其安全退出。
-
-
-* **💻 工作池（`worker_pool`）**
-    - **作用**：实现一个高性能、多线程的任务处理工作池，用于异步执行任务，充分利用多核CPU资源。
-    - **核心功能**：管理一组工作线程并提供任务提交接口。
-    - **构造与销毁**：
-        - **构造函数**：在创建时启动指定数量的工作线程。
-        - **析构函数**：在析构时安全地停止内部的线程安全队列，并利用`noexcept_safe_call_and_log`确保停止操作的安全性。
-    - **任务提交**：将一个任务类型为`std::function<void()>`提交到内部的队列中等待执行。
-    - **异常处理**：工作线程内部捕获任务执行过程中抛出的`std::exception`或任何未知异常，防止异常逃逸出工作线程，并利用
-      `LOG_CHANNEL`记录错误信息。
-
 #### message（消息）
 
 消息模块主要负责网络通信中消息的抽象、头部定义、传输所需参数的管理，以及消息处理器的抽象、具体实现和分发注册机制。
 
-##### 基础消息结构（Basic Message Structure）
+##### basic message structure（基础消息结构）
 
 * **🏷️ 消息头部（`header`）**
     - **作用**：封装了消息的头部信息，用于标识消息的路由和内容上下文。包含RPC标识(`rpc`)、用户ID(`user_id`)和错误码 (
@@ -309,7 +306,7 @@
     - **特点**：支持多种`Protobuf`消息头部类型（如`server_message_header`、`client_message_header`等）的构造。
     - **功能**：提供了`get_message()`方法，根据内部成员的值自动生成对应的`Protobuf`头部消息实例。
 
-##### 消息处理参数封装（Message Handle Parameters）
+##### message handle parameters（消息处理参数封装）
 
 * **📦 Protobuf消息处理参数（`protobuf_handle_parameter`）**
     - **作用**：封装处理一个`Protobuf`消息请求所需的全部上下文信息。
@@ -324,7 +321,7 @@
     - **成员**：包含`io_context`、请求路径 (`path`)、参数(`params`)、会话(`session`) 和资源加载器(`resource_loader`)。
     - **功能**：提供了向当前会话写回`HTTP`响应字符串(`write(response)`)、获取请求路径和获取应用配置等方法。
 
-##### 抽象处理器基类（Abstract Handler Base Classes）
+##### abstract handler base classes（抽象处理器基类）
 
 * **⚙️ Protobuf消息处理器基类（`protobuf_base_message_handler`）**
     - **作用**：定义所有`Protobuf`消息处理器的抽象基类。
@@ -345,7 +342,7 @@
     - **作用**：定义所有`HTTP`消息处理器的抽象基类。
     - **接口**：定义了处理器必须实现的纯虚函数：`get_supported_type_name()`（获取支持的 URL 路径）和`handle(...)`（核心处理逻辑）。
 
-##### 消息分发注册机制（Message Dispatch and Registry）
+##### message dispatch and registry（消息分发注册机制）
 
 * **🔄 Protobuf消息注册与分发（`protobuf_message_registry`）**
     - **作用**：负责集中注册和运行时查找`Protobuf`消息处理器，并将收到的消息分发给对应的处理器实例。
@@ -363,7 +360,7 @@
 数据库模块提供了一个统一的、与具体数据库类型无关的接口，用于执行数据持久化操作。它支持多种数据库（MySQL, MongoDB,
 Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
-##### 基础定义与数据表示 (Basic Definitions & Data Representation)
+##### basic definitions & data representation (基础定义与数据表示)
 
 * **📊 数据库基础类型 (`database_data_type`, `database_index_type`, `database_change_type`)**
     - **作用**：这组枚举类型是数据库模块的基石，分别定义了支持的数据类型（如`string`, `int32`）、字段的索引类型（如主键、唯一键）和数据库操作的类型（如
@@ -401,7 +398,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
         - 记录数据的变更类型 (`database_change_type`)，如 `insert_type`, `update_type`, `delete_type`。
         - 提供了 `modify()` 方法来更新字段值。
 
-##### 实体 (Entity)
+##### entity (实体)
 
 * **🧬 编译时实体 (`entity<...>`)**
     - **作用**：一个编译时模板元编程工具，用于以声明方式定义数据库表的结构。
@@ -414,7 +411,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
         - 提供了 `select_one()`, `select_all()`, `update()`, `insert()`, `delete()` 等高级数据操作接口。
         - 内部封装了与 `database_pool_manager` 的交互，自动处理数据库会话的获取和释放。
 
-##### 会话 (Session)
+##### session (会话)
 
 * **🌐 数据库会话基类 (`database_session`)**
     - **作用**：定义了数据库会话的抽象接口，是所有具体数据库会话（如 MySQL, MongoDB, Redis）的基类。
@@ -435,7 +432,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **作用**：`database_session` 针对 Redis 的具体实现。
     - **特点**：封装了 `hiredis` 库的 API 调用细节，提供了执行原生 Redis 命令的能力，并作为所有 `redis_*_commands` 类的基础。
 
-##### 连接池 (Connection Pool)
+##### connection pool (连接池)
 
 * **💧 连接池基类 (`connection_pool_base<SessionType>`)**
     - **作用**：一个通用的、基于模板的数据库连接池基类。
@@ -453,7 +450,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
         - 在服务器启动时，根据配置初始化所有需要的数据库连接池。
         - 提供 `get_session<SessionType>()` 接口，允许业务代码方便地从指定的连接池中获取一个数据库会话。
 
-##### Redis 命令封装 (Redis Command Wrappers)
+##### redis command wrappers（redis命令封装）
 
 * **📜 Redis命令基类 (`redis_commands`)**
     - **作用**：所有`Redis`命令封装类的基类。
@@ -502,7 +499,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 网络模块提供了高性能、可扩展的异步网络通信框架，支持多种协议（`TCP`, `HTTP`, `WebSocket`），并提供了连接管理、消息处理和事件回调等功能。
 
-##### 核心抽象 (Core Abstractions)
+##### core abstractions(核心抽象)
 
 * **🌐 会话基类 (`session_base`)**
     - **作用**：定义了所有具体网络会话的抽象接口。
@@ -520,7 +517,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **作用**：定义网络消息的头部结构。
     - **特点**：包含消息的元数据，如消息类型、长度、`RPC`、`ID`等，用于消息的解析和路由。
 
-##### 会话实现 (Session Implementations)
+##### session implementations (会话实现)
 
 * **🔗 通用会话 (`generic_session<SocketType>`)**
     - **作用**：一个模板化的会话基类，用于处理底层`Socket`类型的通用网络操作。
@@ -534,7 +531,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **作用**：处理`WebSocket`协议的会话。
     - **特点**：专注于 WebSocket 帧的解析、构建和握手过程。
 
-##### 会话辅助组件 (Session Helper Components)
+##### session helper components (会话辅助组件)
 
 * **🏃 会话运行器 (`session_run`)**
     - **作用**：管理会话的异步读写循环，驱动会话的持续运行。
@@ -548,7 +545,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **作用**：定义会话事件的回调接口。
     - **特点**：允许业务逻辑订阅会话的连接建立、数据接收、连接关闭等事件。
 
-##### 监听器实现 (Listener Implementations)
+##### listener implementations (监听器实现)
 
 * **🤝 监听器连接接受器 (`listener_accept`)**
     - **作用**：负责异步接受新的客户端连接。
@@ -574,7 +571,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **作用**：监听并接受 WebSocket 客户端连接。
     - **特点**：基于`listener`实现，专注于`WebSocket`协议的连接管理和握手过程。
 
-##### 客户端实现 (Client Implementations)
+##### client implementations (客户端实现)
 
 * **➡️ TCP客户端 (`tcp_client`)**
     - **作用**：用于主动发起`TCP`连接并进行通信。
@@ -584,7 +581,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **作用**：用于主动发起`HTTP`请求并接收响应。
     - **特点**：封装了`HTTP`请求的构建和发送，以及响应的解析。
 
-#### service_registry（服务注册）
+#### 服务注册（service registry）
 
 服务注册库提供了一套客户端接口和机制，用于服务在分布式环境中进行注册、发现和健康检查，是实现微服务间动态通信的基础。
 
@@ -630,7 +627,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 处理器模块定义了消息处理器的抽象接口和注册机制，用于接收和处理来自网络层的各种消息（如`Protobuf`消息、`HTTP`
 请求）。它将消息分发给对应的业务逻辑处理器，实现业务逻辑与网络协议的解耦。
 
-##### 基础定义 (Basic Definitions)
+##### basic definitions（基础定义）
 
 * **🩺 健康检查级别 (`health_check_level_type`)**
     - **作用**：定义了服务实例的健康状态级别。
@@ -643,7 +640,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
         - 获取当前服务实例的健康级别。
         - 设置当前服务实例的健康级别。
 
-##### 服务注册与发现 (Service Registry & Discovery)
+##### service registry & discovery (服务注册与发现)
 
 * **🔍 发现请求消息处理器 (`discover_request_message_handler`)**
     - **作用**：处理客户端或服务发起的发现服务请求。
@@ -669,13 +666,13 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **作用**：处理客户端发起的关闭连接请求。
     - **功能**：接收并处理`close_request`消息，执行连接关闭逻辑。
 
-##### 认证处理器 (Auth Handlers)
+##### auth handlers (认证处理器)
 
 * **🔄 重载应用数据库消息处理器 (`reload_app_db_message_handler`)**
     - **作用**：处理重新加载应用数据库配置的请求。
     - **功能**：接收并处理`reload_app_db_message`消息，根据`app_id`触发`app_secret`单例从数据库中重新加载指定应用的密钥信息。
 
-##### HTTP 处理器 (HTTP Handlers)
+##### http handlers（HTTP 处理器）
 
 * **🌐 HTTP健康检查请求处理器 (`health_check_request_http_message_handler`)**
     - **作用**：处理来自客户端的`HTTP`健康检查请求。
@@ -694,7 +691,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 初始化模块负责在服务器启动时，根据不同的服务器类型，执行一系列的初始化任务，包括加载配置、加载资源和初始化应用程序。
 
-##### 核心初始化器 (Core Initializers)
+##### core initializers (核心初始化器)
 
 * **⚙️ 初始化器 (`initializer`)**
     - **作用**：作为初始化流程的总控制器，协调各个加载器的执行。
@@ -708,7 +705,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
         - 创建资源加载器。
         - 创建应用程序加载器。
 
-##### 加载器基类 (Loader Base Classes)
+##### loader base classes (加载器基类)
 
 * **🔧 配置加载器 (`configuration_loader`)**
     - **作用**：定义了所有配置加载器的抽象基类。
@@ -724,13 +721,13 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **作用**：定义了所有应用程序加载器的抽象基类。
     - **接口**：`load()`: 纯虚函数，用于初始化应用程序。
 
-##### 初始化辅助工具 (Initialization Helpers)
+##### initialization helpers (初始化辅助工具)
 
 * **✍️ 处理器注册助手 (`register_handler_helper`)**
     - **作用**：一个模板辅助类，用于简化在初始化阶段向消息注册中心（`message_registry`）注册多个消息处理器的过程。
     - **功能**：提供模板化的注册方法，自动创建处理器实例并将其注册到对应的消息注册中心，减少了应用加载器中的重复代码。
 
-##### 系统工具 (System Utilities)
+##### system utilities (系统工具)
 
 * **🛡️ 守护进程 (`daemon`)**
     - **作用**：提供将服务器程序以守护进程模式运行的功能。
