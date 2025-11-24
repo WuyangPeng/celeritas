@@ -43,7 +43,7 @@ namespace celeritas
 
         void register_handler(const base_message_handler_shared_ptr& handler);
 
-        [[nodiscard]] bool dispatch(const header& header, const protobuf_message& current_message, const protobuf_message_shared_ptr& request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
+        [[nodiscard]] bool dispatch(io_context_type& io_context, const header& header, const protobuf_message& current_message, const protobuf_message_shared_ptr& request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 
         [[nodiscard]] bool dispatch(io_context_type& io_context, const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 

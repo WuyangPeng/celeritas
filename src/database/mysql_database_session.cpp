@@ -139,7 +139,7 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::my
         co_return populate_database_from_row(database, field_name_container, rows[0]);
     }
 
-    co_return database->get_select();
+    co_return std::nullopt;
 }
 
 celeritas::database_session::result_container_awaitable_type celeritas::mysql_database_session::select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)

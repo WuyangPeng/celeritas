@@ -213,8 +213,10 @@ celeritas::database_session::result_container_awaitable_type celeritas::redis_da
     result_container container{};
     for (const auto& element : keys)
     {
-        const auto select = co_await select_one(element, database, field_name_container);
-        container.emplace_back(select);
+        if (const auto select = co_await select_one(element, database, field_name_container))
+        {
+            container.emplace_back(*select);
+        }
     }
 
     co_return container;

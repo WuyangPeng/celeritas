@@ -30,6 +30,7 @@
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/unknown_field_set.h"
 #include "proto/service/registry.pb.h"
+#include "proto/service/auth.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -134,6 +135,7 @@ class service_request final : public ::google::protobuf::Message
   }
   enum PayloadCase {
     kRegistry = 1,
+    kAuth = 2,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 0;
@@ -225,6 +227,7 @@ class service_request final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kRegistryFieldNumber = 1,
+    kAuthFieldNumber = 2,
   };
   // .celeritas.proto.service.service_registry_request registry = 1;
   bool has_registry() const;
@@ -245,17 +248,37 @@ class service_request final : public ::google::protobuf::Message
   ::celeritas::proto::service::service_registry_request* PROTOBUF_NONNULL _internal_mutable_registry();
 
   public:
+  // .celeritas.proto.service.auth_request auth = 2;
+  bool has_auth() const;
+  private:
+  bool _internal_has_auth() const;
+
+  public:
+  void clear_auth() ;
+  const ::celeritas::proto::service::auth_request& auth() const;
+  [[nodiscard]] ::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE release_auth();
+  ::celeritas::proto::service::auth_request* PROTOBUF_NONNULL mutable_auth();
+  void set_allocated_auth(::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_auth(::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE unsafe_arena_release_auth();
+
+  private:
+  const ::celeritas::proto::service::auth_request& _internal_auth() const;
+  ::celeritas::proto::service::auth_request* PROTOBUF_NONNULL _internal_mutable_auth();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.service.service_request)
  private:
   class _Internal;
   void set_has_registry();
+  void set_has_auth();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
-                                   1, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 2,
+                                   2, 0,
                                    2>
       _table_;
 
@@ -278,6 +301,7 @@ class service_request final : public ::google::protobuf::Message
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
       ::celeritas::proto::service::service_registry_request* PROTOBUF_NULLABLE registry_;
+      ::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE auth_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -372,6 +396,76 @@ inline ::celeritas::proto::service::service_registry_request* PROTOBUF_NONNULL s
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::service_registry_request* _msg = _internal_mutable_registry();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_request.registry)
+  return _msg;
+}
+
+// .celeritas.proto.service.auth_request auth = 2;
+inline bool service_request::has_auth() const {
+  return payload_case() == kAuth;
+}
+inline bool service_request::_internal_has_auth() const {
+  return payload_case() == kAuth;
+}
+inline void service_request::set_has_auth() {
+  _impl_._oneof_case_[0] = kAuth;
+}
+inline ::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE service_request::release_auth() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_request.auth)
+  if (payload_case() == kAuth) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.auth_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.auth_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::service::auth_request& service_request::_internal_auth() const {
+  return payload_case() == kAuth ? *_impl_.payload_.auth_ : reinterpret_cast<::celeritas::proto::service::auth_request&>(::celeritas::proto::service::_auth_request_default_instance_);
+}
+inline const ::celeritas::proto::service::auth_request& service_request::auth() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_request.auth)
+  return _internal_auth();
+}
+inline ::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE service_request::unsafe_arena_release_auth() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_request.auth)
+  if (payload_case() == kAuth) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.auth_;
+    _impl_.payload_.auth_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void service_request::unsafe_arena_set_allocated_auth(
+    ::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_auth();
+    _impl_.payload_.auth_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_request.auth)
+}
+inline ::celeritas::proto::service::auth_request* PROTOBUF_NONNULL service_request::_internal_mutable_auth() {
+  if (payload_case() != kAuth) {
+    clear_payload();
+    set_has_auth();
+    _impl_.payload_.auth_ = 
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::service::auth_request>(GetArena());
+  }
+  return _impl_.payload_.auth_;
+}
+inline ::celeritas::proto::service::auth_request* PROTOBUF_NONNULL service_request::mutable_auth()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::service::auth_request* _msg = _internal_mutable_auth();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_request.auth)
   return _msg;
 }
 

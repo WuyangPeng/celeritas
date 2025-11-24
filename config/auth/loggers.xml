@@ -9,4 +9,11 @@
         <log_file_name>auth_server</log_file_name>
         <rotation_size>10</rotation_size>
     </logger>
+    <logger name="auth_logger">
+        <level>trace</level>
+        <console_enabled>true</console_enabled>
+        <channel_name>auth</channel_name>
+        <log_file_name>auth</log_file_name>
+        <rotation_size>50</rotation_size>
+    </logger>
 </loggers>

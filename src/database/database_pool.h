@@ -17,7 +17,8 @@ namespace celeritas
         using basis_database_manager_const_shared_ptr = std::shared_ptr<const basis_database_manager>;
         using result_container = std::vector<basis_database_manager>;
         using database_field_container = std::vector<database_field>;
-        using basis_database_manager_awaitable_type = boost::asio::awaitable<basis_database_manager>;
+        using optional_basis_database_manager = std::optional<basis_database_manager>;
+        using basis_database_manager_awaitable_type = boost::asio::awaitable<optional_basis_database_manager>;
         using result_container_awaitable_type = boost::asio::awaitable<result_container>;
 
         database_pool() noexcept = default;

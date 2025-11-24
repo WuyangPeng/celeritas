@@ -145,7 +145,7 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::mo
         co_return to_basis_database_manager(database, field_name_container, result.value());
     }
 
-    co_return database->get_select();
+    co_return std::nullopt;
 }
 
 celeritas::database_session::result_container_awaitable_type celeritas::mongo_database_session::select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)

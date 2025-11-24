@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+
+package celeritas.proto.service;
+
+// 重载app数据库
+message reload_app_db_request {
+  int32 app_id = 1;
+}
+
+message reload_app_db_response {
+}
+
+message auth_request {
+  oneof payload {
+    reload_app_db_request reload_app_db = 1;
+  }
+}
+
+message auth_response {
+  oneof payload {
+    reload_app_db_response reload_app_db = 1;
+  }
+}
+
+

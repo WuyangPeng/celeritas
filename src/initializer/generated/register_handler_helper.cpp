@@ -13,6 +13,9 @@ celeritas::register_handler_helper::register_handler_helper(message_registry_sha
 
 void celeritas::register_handler_helper::register_handler() const
 {
+    message_registry_->registerHandler(std::make_shared<reload_app_db_message_handler>());
+    message_registry_->registerHandler(std::make_shared<auth_request_message_handler>());
+    message_registry_->registerHandler(std::make_shared<auth_response_message_handler>());
     message_registry_->registerHandler(std::make_shared<celeritas_message_handler>());
     message_registry_->registerHandler(std::make_shared<request_message_handler>());
     message_registry_->registerHandler(std::make_shared<response_message_handler>());

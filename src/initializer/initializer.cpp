@@ -58,7 +58,7 @@ void celeritas::initializer::call_back(const message_header& message_header, buf
         return;
     }
 
-    if (!application_loader_->dispatch(header, *request, request, session, resource_loader_))
+    if (!application_loader_->dispatch(io_context_, header, *request, request, session, resource_loader_))
     {
         LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch celeritas message.";
     }

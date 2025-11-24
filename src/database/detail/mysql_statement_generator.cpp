@@ -102,9 +102,13 @@ std::string celeritas::mysql_statement_generator::generate_delete_statement(cons
 
     result += "DELETE FROM `";
     result += database->get_database_name();
-    result += "` WHERE ";
 
     const auto key = database->get_key();
+    if (key.get_size() != 0)
+    {
+        result += "` WHERE ";
+    }
+
     auto index = 1;
     for (const auto& value : key)
     {
@@ -143,17 +147,30 @@ std::string celeritas::mysql_statement_generator::generate_select_statement(cons
         {
             result += " , ";
         }
+        else
+        {
+            result += " ";
+        }
 
         ++index;
     }
 
     result += "FROM `";
     result += database.get_database_name();
-    result += "` WHERE ";
+
+    const auto key = database.get_key();
+
+    if (key.get_size() != 0)
+    {
+        result += "` WHERE ";
+    }
+    else
+    {
+        result += "` ";
+    }
 
     auto keyIndex = 1;
-    for (const auto key = database.get_key();
-         const auto& value : key)
+    for (const auto& value : key)
     {
         result += "`";
         result += value.get_field_name();

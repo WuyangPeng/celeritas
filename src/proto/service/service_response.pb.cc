@@ -67,6 +67,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_response, _impl_._oneof_case_[0]),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_response, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_response, _impl_.payload_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -80,25 +81,28 @@ const char descriptor_table_protodef_proto_2fservice_2fservice_5fresponse_2eprot
     protodesc_cold) = {
     "\n$proto/service/service_response.proto\022\027"
     "celeritas.proto.service\032\034proto/service/r"
-    "egistry.proto\"e\n\020service_response\022F\n\010reg"
-    "istry\030\001 \001(\01322.celeritas.proto.service.se"
-    "rvice_registry_responseH\000B\t\n\007payloadb\006pr"
-    "oto3"
+    "egistry.proto\032\030proto/service/auth.proto\""
+    "\235\001\n\020service_response\022F\n\010registry\030\001 \001(\01322"
+    ".celeritas.proto.service.service_registr"
+    "y_responseH\000\0226\n\004auth\030\002 \001(\0132&.celeritas.p"
+    "roto.service.auth_responseH\000B\t\n\007payloadb"
+    "\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
-    descriptor_table_proto_2fservice_2fservice_5fresponse_2eproto_deps[1] = {
+    descriptor_table_proto_2fservice_2fservice_5fresponse_2eproto_deps[2] = {
+        &::descriptor_table_proto_2fservice_2fauth_2eproto,
         &::descriptor_table_proto_2fservice_2fregistry_2eproto,
 };
 static ::absl::once_flag descriptor_table_proto_2fservice_2fservice_5fresponse_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fservice_5fresponse_2eproto = {
     false,
     false,
-    204,
+    287,
     descriptor_table_protodef_proto_2fservice_2fservice_5fresponse_2eproto,
     "proto/service/service_response.proto",
     &descriptor_table_proto_2fservice_2fservice_5fresponse_2eproto_once,
     descriptor_table_proto_2fservice_2fservice_5fresponse_2eproto_deps,
-    1,
+    2,
     1,
     schemas,
     file_default_instances,
@@ -141,6 +145,30 @@ void service_response::clear_registry() {
     clear_has_payload();
   }
 }
+void service_response::set_allocated_auth(::celeritas::proto::service::auth_response* PROTOBUF_NULLABLE auth) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (auth) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(auth)->GetArena();
+    if (message_arena != submessage_arena) {
+      auth = ::google::protobuf::internal::GetOwnedMessage(message_arena, auth, submessage_arena);
+    }
+    set_has_auth();
+    _impl_.payload_.auth_ = auth;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_response.auth)
+}
+void service_response::clear_auth() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kAuth) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.auth_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.auth_);
+    }
+    clear_has_payload();
+  }
+}
 service_response::service_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, service_response_class_data_.base()) {
@@ -176,6 +204,9 @@ service_response::service_response(
       break;
       case kRegistry:
         _impl_.payload_.registry_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.registry_);
+        break;
+      case kAuth:
+        _impl_.payload_.auth_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.auth_);
         break;
   }
 
@@ -217,6 +248,14 @@ void service_response::clear_payload() {
         delete _impl_.payload_.registry_;
       } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
         ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.registry_);
+      }
+      break;
+    }
+    case kAuth: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.auth_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.auth_);
       }
       break;
     }
@@ -271,17 +310,17 @@ service_response::GetClassData() const {
   return service_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
+const ::_pbi::TcParseTable<0, 2, 2, 0, 2>
 service_response::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    2, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    1,  // num_aux_entries
+    2,  // num_field_entries
+    2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     service_response_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -296,9 +335,12 @@ service_response::_table_ = {
   }}, {{
     // .celeritas.proto.service.service_registry_response registry = 1;
     {PROTOBUF_FIELD_OFFSET(service_response, _impl_.payload_.registry_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.service.auth_response auth = 2;
+    {PROTOBUF_FIELD_OFFSET(service_response, _impl_.payload_.auth_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_registry_response>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::service::auth_response>()},
   }},
   {{
   }},
@@ -332,13 +374,22 @@ PROTOBUF_NOINLINE void service_response::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // .celeritas.proto.service.service_registry_response registry = 1;
-  if (this_.payload_case() == kRegistry) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, *this_._impl_.payload_.registry_, this_._impl_.payload_.registry_->GetCachedSize(), target,
-        stream);
+  switch (this_.payload_case()) {
+    case kRegistry: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          1, *this_._impl_.payload_.registry_, this_._impl_.payload_.registry_->GetCachedSize(), target,
+          stream);
+      break;
+    }
+    case kAuth: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          2, *this_._impl_.payload_.auth_, this_._impl_.payload_.auth_->GetCachedSize(), target,
+          stream);
+      break;
+    }
+    default:
+      break;
   }
-
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -367,6 +418,12 @@ PROTOBUF_NOINLINE void service_response::Clear() {
     case kRegistry: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.registry_);
+      break;
+    }
+    // .celeritas.proto.service.auth_response auth = 2;
+    case kAuth: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.auth_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -405,6 +462,14 @@ void service_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
           _this->_impl_.payload_.registry_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.registry_);
         } else {
           _this->_impl_.payload_.registry_->MergeFrom(*from._impl_.payload_.registry_);
+        }
+        break;
+      }
+      case kAuth: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.auth_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.auth_);
+        } else {
+          _this->_impl_.payload_.auth_->MergeFrom(*from._impl_.payload_.auth_);
         }
         break;
       }

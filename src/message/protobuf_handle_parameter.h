@@ -3,6 +3,7 @@
 #include "header.h"
 #include "common/common_fwd.h"
 
+#include <boost/asio/io_context.hpp>
 #include <google/protobuf/message.h>
 
 namespace celeritas
@@ -15,8 +16,9 @@ namespace celeritas
         using protobuf_message_shared_ptr = std::shared_ptr<protobuf_message>;
         using session_shared_ptr = std::shared_ptr<session>;
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
+        using io_context_type = boost::asio::io_context;
 
-        protobuf_handle_parameter(const header& header, protobuf_message_shared_ptr request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
+        protobuf_handle_parameter(io_context_type& io_context, const header& header, protobuf_message_shared_ptr request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 
         void write(const protobuf_message& response) const;
 
@@ -24,10 +26,13 @@ namespace celeritas
 
         [[nodiscard]] protobuf_message_shared_ptr get_protobuf_message() const;
 
+        [[nodiscard]] io_context_type& get_io_context() const;
+
     private:
         using session_weak_ptr = std::weak_ptr<session>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
 
+        io_context_type& io_context_;
         header header_;
         protobuf_message_shared_ptr request_message_;
         session_weak_ptr session_;

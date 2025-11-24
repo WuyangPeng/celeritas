@@ -3,8 +3,8 @@
 #include "common/resource_loader_base.h"
 #include "common/session.h"
 
-celeritas::protobuf_handle_parameter::protobuf_handle_parameter(const header& header, protobuf_message_shared_ptr request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
-    : header_{ header }, request_message_{ std::move(request_message) }, session_{ session }, resource_loader_{ resource_loader }
+celeritas::protobuf_handle_parameter::protobuf_handle_parameter(io_context_type& io_context, const header& header, protobuf_message_shared_ptr request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
+    : io_context_{ io_context }, header_{ header }, request_message_{ std::move(request_message) }, session_{ session }, resource_loader_{ resource_loader }
 {
 }
 
@@ -32,4 +32,9 @@ void celeritas::protobuf_handle_parameter::write(const std::string& server_type,
 celeritas::protobuf_handle_parameter::protobuf_message_shared_ptr celeritas::protobuf_handle_parameter::get_protobuf_message() const
 {
     return request_message_;
+}
+
+celeritas::protobuf_handle_parameter::io_context_type& celeritas::protobuf_handle_parameter::get_io_context() const
+{
+    return io_context_;
 }
