@@ -109,7 +109,7 @@ celeritas::apps::basis_database_manager_const_hared_ptr celeritas::apps::get_sel
                                                     get_key_basis_database_container(database_type, app_id));
 }
 
-celeritas::apps::basis_database_manager_shared_ptr celeritas::apps::get_select_all(const database_type database_type)
+celeritas::apps::basis_database_manager_shared_ptr celeritas::apps::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<basis_database_manager>(database_type,
                                                                         database_name,

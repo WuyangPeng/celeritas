@@ -25,19 +25,21 @@ namespace celeritas
 
         [[nodiscard]] traits::int32_type get_code() const noexcept;
 
-        [[nodiscard]] traits::int32_type get_retry_count() const noexcept;
+        [[nodiscard]] traits::int32_count_type get_retry_count() const noexcept;
 
         void set_phone(traits::param_type::string_type phone);
 
         void set_code(traits::param_type::int32_type code);
 
-        void set_retry_count(traits::param_type::int32_type retry_count);
+        void set_retry_count(traits::param_type::int32_count_type retry_count);
+
+        void modify_retry_count(traits::param_type::int32_count_type retry_count);
 
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
         [[nodiscard]] static basis_database_manager_const_hared_ptr get_select(database_type database_type, traits::param_type::string_type phone);
 
-        [[nodiscard]] static basis_database_manager_shared_ptr get_select_all(database_type database_type);
+        [[nodiscard]] static basis_database_manager_shared_ptr get_select(database_type database_type);
 
         [[nodiscard]] static constexpr std::string_view get_database_name()
         {
@@ -55,6 +57,6 @@ namespace celeritas
 
         entity<phone_describe, database_data_type::string_type, database_index_type::key> phone_;
         entity<code_describe, database_data_type::int32_type> code_;
-        entity<retry_count_describe, database_data_type::int32_type> retry_count_;
+        entity<retry_count_describe, database_data_type::int32_count_type> retry_count_;
     };
 }

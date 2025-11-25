@@ -15,4 +15,5 @@ namespace celeritas
     constexpr auto sms_limit_expiration_time = 60;
     constexpr auto sms_limit_code_begin = 100000;
     constexpr auto sms_limit_code_end = 999999;
+    constexpr auto sms_code_retry_count = 5;
 }

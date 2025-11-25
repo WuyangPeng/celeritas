@@ -16,7 +16,7 @@ celeritas::sms_code::sms_code(const basis_database_manager& entity)
     : base_type{ entity },
       phone_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : phone_describe) },
       code_{ entity.get_value<database_data_type::int32_type>(code_describe) },
-      retry_count_{ entity.get_value<database_data_type::int32_type>(retry_count_describe) }
+      retry_count_{ entity.get_value<database_data_type::int32_count_type>(retry_count_describe) }
 {
 }
 
@@ -24,7 +24,7 @@ celeritas::sms_code::sms_code(const database_type database_type, traits::param_t
     : base_type{ database_type, database_name.data(), get_key_basis_database_container(database_type, phone) },
       phone_{ phone },
       code_{ traits::int32_type{} },
-      retry_count_{ traits::int32_type{} }
+      retry_count_{ traits::int32_count_type{} }
 {
     add_modify(phone_describe, phone);
 }
@@ -39,7 +39,7 @@ celeritas::traits::int32_type celeritas::sms_code::get_code() const noexcept
     return code_.get_value();
 }
 
-celeritas::traits::int32_type celeritas::sms_code::get_retry_count() const noexcept
+celeritas::traits::int32_count_type celeritas::sms_code::get_retry_count() const noexcept
 {
     return retry_count_.get_value();
 }
@@ -64,7 +64,7 @@ void celeritas::sms_code::set_code(traits::param_type::int32_type code)
     }
 }
 
-void celeritas::sms_code::set_retry_count(traits::param_type::int32_type retry_count)
+void celeritas::sms_code::set_retry_count(traits::param_type::int32_count_type retry_count)
 {
     if (retry_count != get_retry_count())
     {
@@ -72,6 +72,13 @@ void celeritas::sms_code::set_retry_count(traits::param_type::int32_type retry_c
 
         add_modify(retry_count_describe, get_retry_count());
     }
+}
+
+void celeritas::sms_code::modify_retry_count(traits::param_type::int32_count_type retry_count)
+{
+    retry_count_.modify_value(retry_count);
+
+    add_modify(retry_count_describe, get_retry_count());
 }
 
 const celeritas::database_entity::database_field_container& celeritas::sms_code::get_database_field_container()
@@ -91,7 +98,7 @@ celeritas::sms_code::basis_database_manager_const_hared_ptr celeritas::sms_code:
                                                     get_key_basis_database_container(database_type, phone));
 }
 
-celeritas::sms_code::basis_database_manager_shared_ptr celeritas::sms_code::get_select_all(const database_type database_type)
+celeritas::sms_code::basis_database_manager_shared_ptr celeritas::sms_code::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<basis_database_manager>(database_type,
                                                                         database_name,

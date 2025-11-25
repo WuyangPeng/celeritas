@@ -89,6 +89,8 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
     {
         const send_sms_response response{ game_error_type::sign_error, "sign error" };
         handle_parameter_.write(response.to_json_string());
+
+        co_return;
     }
 
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
@@ -97,6 +99,8 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
     {
         const send_sms_response response{ game_error_type::sent_too_frequently, "sent too frequently" };
         handle_parameter_.write(response.to_json_string());
+
+        co_return;
     }
 
     sms_code sms_code{ database_type::redis, phone };

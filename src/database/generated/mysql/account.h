@@ -25,15 +25,11 @@ namespace celeritas
 
         [[nodiscard]] traits::string_type get_account_name() const;
 
-        [[nodiscard]] traits::int32_type get_account_type() const noexcept;
-
         [[nodiscard]] traits::string_type get_password_hash() const;
 
         [[nodiscard]] traits::string_type get_salt() const;
 
         [[nodiscard]] traits::string_type get_device_id() const;
-
-        [[nodiscard]] traits::string_type get_phone() const;
 
         [[nodiscard]] traits::int64_type get_create_time() const noexcept;
 
@@ -43,15 +39,11 @@ namespace celeritas
 
         void set_account_name(traits::param_type::string_type account_name);
 
-        void set_account_type(traits::param_type::int32_type account_type);
-
         void set_password_hash(traits::param_type::string_type password_hash);
 
         void set_salt(traits::param_type::string_type salt);
 
         void set_device_id(traits::param_type::string_type device_id);
-
-        void set_phone(traits::param_type::string_type phone);
 
         void set_create_time(traits::param_type::int64_type create_time);
 
@@ -61,7 +53,7 @@ namespace celeritas
 
         [[nodiscard]] static basis_database_manager_const_hared_ptr get_select(database_type database_type, traits::param_type::int64_type account_id);
 
-        [[nodiscard]] static basis_database_manager_shared_ptr get_select_all(database_type database_type);
+        [[nodiscard]] static basis_database_manager_shared_ptr get_select(database_type database_type);
 
         [[nodiscard]] static constexpr std::string_view get_database_name()
         {
@@ -70,11 +62,9 @@ namespace celeritas
 
         static constexpr std::string_view account_id_describe{ "account_id" };
         static constexpr std::string_view account_name_describe{ "account_name" };
-        static constexpr std::string_view account_type_describe{ "account_type" };
         static constexpr std::string_view password_hash_describe{ "password_hash" };
         static constexpr std::string_view salt_describe{ "salt" };
         static constexpr std::string_view device_id_describe{ "device_id" };
-        static constexpr std::string_view phone_describe{ "phone" };
         static constexpr std::string_view create_time_describe{ "create_time" };
         static constexpr std::string_view status_describe{ "status" };
 
@@ -85,11 +75,9 @@ namespace celeritas
 
         entity<account_id_describe, database_data_type::int64_type, database_index_type::key> account_id_;
         entity<account_name_describe, database_data_type::string_type, database_index_type::unique_index> account_name_;
-        entity<account_type_describe, database_data_type::int32_type> account_type_;
         entity<password_hash_describe, database_data_type::string_type> password_hash_;
         entity<salt_describe, database_data_type::string_type> salt_;
-        entity<device_id_describe, database_data_type::string_type, database_index_type::index> device_id_;
-        entity<phone_describe, database_data_type::string_type, database_index_type::index> phone_;
+        entity<device_id_describe, database_data_type::string_type, database_index_type::unique_index> device_id_;
         entity<create_time_describe, database_data_type::int64_type> create_time_;
         entity<status_describe, database_data_type::int32_type> status_;
     };

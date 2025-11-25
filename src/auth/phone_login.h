@@ -23,14 +23,14 @@ namespace celeritas
         using result_container = database_pool::result_container;
         using database_pool_shared_ptr = std::shared_ptr<database_pool>;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
+        using optional_basis_database_manager = std::optional<basis_database_manager>;
 
         [[nodiscard]] static std::string calculate_hmac_sha256(int app_id, const std::string& phone, const std::string& device_id, int code, int64_t timestamp, const std::string& secret_key);
 
         [[nodiscard]] std::string generate_token();
 
-        [[nodiscard]] account_awaitable_type get_account(const result_container& accounts, const database_pool_shared_ptr& database_pool, const std::string& device_id, const std::string& phone, const const_app_config_shared_ptr& app_config);
+        [[nodiscard]] account_awaitable_type get_account(const optional_basis_database_manager& basis_database_manager, const database_pool_shared_ptr& redis_pool, const database_pool_shared_ptr& mysql_pool, const std::string& device_id, const std::string& phone, const const_app_config_shared_ptr& app_config);
 
         http_handle_parameter handle_parameter_;
-        bool is_new_account_;
     };
 }

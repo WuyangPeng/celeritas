@@ -128,6 +128,8 @@ std::string celeritas::generate_mysql_file::get_mysql_statement(const json_value
     std::string primary_key_sql{};
     index_type unique_indexes{};
     index_type indexes{};
+    index_type composite_unique_indexes{};
+    index_type composite_indexes{};
 
     for (const auto& entities = table_object.at("entity").as_array();
          const auto& entity_value : entities)
@@ -148,18 +150,24 @@ std::string celeritas::generate_mysql_file::get_mysql_statement(const json_value
         }
         else if (index_type == "unique_index")
         {
-            unique_indexes.push_back("  UNIQUE KEY `" + entity_name + "_unique` (`" + entity_name + "`)");
+            unique_indexes.emplace_back("  UNIQUE KEY `" + entity_name + "_unique` (`" + entity_name + "`)");
         }
         else if (index_type == "index")
         {
-            indexes.push_back("  KEY `" + entity_name + "_index` (`" + entity_name + "`)");
+            indexes.emplace_back("  KEY `" + entity_name + "_index` (`" + entity_name + "`)");
         }
-        else
+        else if (index_type == "composite_unique_index")
         {
-            if (data_type != "binary")
-            {
-                sql_output << " DEFAULT " << get_mysql_default_type(data_type);
-            }
+            composite_unique_indexes.emplace_back(entity_name);
+        }
+        else if (index_type == "composite_index")
+        {
+            composite_indexes.emplace_back(entity_name);
+        }
+
+        if (data_type != "binary" && index_type != "key" && index_type != "unique_index" && index_type != "composite_unique_index")
+        {
+            sql_output << " DEFAULT " << get_mysql_default_type(data_type);
         }
 
         if (!comment.empty())
@@ -182,6 +190,66 @@ std::string celeritas::generate_mysql_file::get_mysql_statement(const json_value
     for (const auto& index : indexes)
     {
         sql_output << index << ",\n";
+    }
+
+    if (!composite_unique_indexes.empty())
+    {
+        sql_output << "  UNIQUE KEY `";
+    }
+
+    for (const auto& index : composite_unique_indexes)
+    {
+        sql_output << index << '_';
+    }
+
+    if (!composite_unique_indexes.empty())
+    {
+        sql_output << "unique` (";
+    }
+
+    auto current_index = 0;
+    for (const auto& index : composite_unique_indexes)
+    {
+        sql_output << '`' << index;
+        ++current_index;
+        if (current_index == composite_unique_indexes.size())
+        {
+            sql_output << "`),\n";
+        }
+        else
+        {
+            sql_output << "`,";
+        }
+    }
+
+    if (!composite_indexes.empty())
+    {
+        sql_output << "  KEY `";
+    }
+
+    for (const auto& index : composite_indexes)
+    {
+        sql_output << index << '_';
+    }
+
+    if (!composite_indexes.empty())
+    {
+        sql_output << "index` (";
+    }
+
+    current_index = 0;
+    for (const auto& index : composite_indexes)
+    {
+        sql_output << '`' << index;
+        ++current_index;
+        if (current_index == composite_indexes.size())
+        {
+            sql_output << "`),\n";
+        }
+        else
+        {
+            sql_output << "`,";
+        }
     }
 
     auto temp_sql = sql_output.str();

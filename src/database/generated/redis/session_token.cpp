@@ -91,7 +91,7 @@ celeritas::session_token::basis_database_manager_const_hared_ptr celeritas::sess
                                                     get_key_basis_database_container(database_type, token));
 }
 
-celeritas::session_token::basis_database_manager_shared_ptr celeritas::session_token::get_select_all(const database_type database_type)
+celeritas::session_token::basis_database_manager_shared_ptr celeritas::session_token::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<basis_database_manager>(database_type,
                                                                         database_name,

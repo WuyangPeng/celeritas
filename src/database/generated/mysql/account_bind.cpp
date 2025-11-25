@@ -1,0 +1,147 @@
+// 此文件是自动生成，请勿手动修改。
+
+#include "account_bind.h"
+#include "config/database_type.h"
+#include "database/basis_database_manager.tpp"
+#include "database/database_change_type.h"
+#include "database/database_entity.tpp"
+#include "database/entity.tpp"
+
+celeritas::account_bind celeritas::account_bind::create(const basis_database_manager& entity, const database_type database_type, traits::param_type::int64_type account_bind_id)
+{
+    return entity.is_modify() ? account_bind{ entity } : account_bind{ database_type, account_bind_id };
+}
+
+celeritas::account_bind::account_bind(const basis_database_manager& entity)
+    : base_type{ entity },
+      account_bind_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : account_bind_id_describe) },
+      account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
+      account_type_{ entity.get_value<database_data_type::int32_type>(account_type_describe) },
+      auth_key_{ entity.get_value<database_data_type::string_type>(auth_key_describe) },
+      is_primary_{ entity.get_value<database_data_type::bool_type>(is_primary_describe) }
+{
+}
+
+celeritas::account_bind::account_bind(const database_type database_type, traits::param_type::int64_type account_bind_id)
+    : base_type{ database_type, database_name.data(), get_key_basis_database_container(database_type, account_bind_id) },
+      account_bind_id_{ account_bind_id },
+      account_id_{ traits::int64_type{} },
+      account_type_{ traits::int32_type{} },
+      auth_key_{ traits::string_type{} },
+      is_primary_{ traits::bool_type{} }
+{
+    add_modify(account_bind_id_describe, account_bind_id);
+}
+
+celeritas::traits::int64_type celeritas::account_bind::get_account_bind_id() const noexcept
+{
+    return account_bind_id_.get_value();
+}
+
+celeritas::traits::int64_type celeritas::account_bind::get_account_id() const noexcept
+{
+    return account_id_.get_value();
+}
+
+celeritas::traits::int32_type celeritas::account_bind::get_account_type() const noexcept
+{
+    return account_type_.get_value();
+}
+
+celeritas::traits::string_type celeritas::account_bind::get_auth_key() const
+{
+    return auth_key_.get_value();
+}
+
+celeritas::traits::bool_type celeritas::account_bind::is_is_primary() const noexcept
+{
+    return is_primary_.get_value();
+}
+
+void celeritas::account_bind::set_account_bind_id(traits::param_type::int64_type account_bind_id)
+{
+    if (account_bind_id != get_account_bind_id())
+    {
+        account_bind_id_.set_value(account_bind_id);
+
+        add_modify(account_bind_id_describe, get_account_bind_id());
+    }
+}
+
+void celeritas::account_bind::set_account_id(traits::param_type::int64_type account_id)
+{
+    if (account_id != get_account_id())
+    {
+        account_id_.set_value(account_id);
+
+        add_modify(account_id_describe, get_account_id());
+    }
+}
+
+void celeritas::account_bind::set_account_type(traits::param_type::int32_type account_type)
+{
+    if (account_type != get_account_type())
+    {
+        account_type_.set_value(account_type);
+
+        add_modify(account_type_describe, get_account_type());
+    }
+}
+
+void celeritas::account_bind::set_auth_key(traits::param_type::string_type auth_key)
+{
+    if (auth_key != get_auth_key())
+    {
+        auth_key_.set_value(auth_key);
+
+        add_modify(auth_key_describe, get_auth_key());
+    }
+}
+
+void celeritas::account_bind::set_is_primary(traits::param_type::bool_type is_primary)
+{
+    if (is_primary != is_is_primary())
+    {
+        is_primary_.set_value(is_primary);
+
+        add_modify(is_primary_describe, is_is_primary());
+    }
+}
+
+const celeritas::database_entity::database_field_container& celeritas::account_bind::get_database_field_container()
+{
+    static const database_field_container field_name_container{ decltype(account_bind_id_)::get_database_field(),
+                                                                decltype(account_id_)::get_database_field(),
+                                                                decltype(account_type_)::get_database_field(),
+                                                                decltype(auth_key_)::get_database_field(),
+                                                                decltype(is_primary_)::get_database_field() };
+
+    return field_name_container;
+}
+
+celeritas::account_bind::basis_database_manager_const_hared_ptr celeritas::account_bind::get_select(const database_type database_type, traits::param_type::int64_type account_bind_id)
+{
+    return std::make_shared<basis_database_manager>(database_type,
+                                                    database_name,
+                                                    database_change_type::select_type,
+                                                    get_key_basis_database_container(database_type, account_bind_id));
+}
+
+celeritas::account_bind::basis_database_manager_shared_ptr celeritas::account_bind::get_select(const database_type database_type)
+{
+    static const auto result = std::make_shared<basis_database_manager>(database_type,
+                                                                        database_name,
+                                                                        database_change_type::select_type,
+                                                                        basis_database_container{});
+
+    return result;
+}
+
+celeritas::basis_database_container celeritas::account_bind::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type account_bind_id)
+{
+    const auto field_name = database_type == database_type::mongo ? "_id" : account_bind_id_describe;
+
+    basis_database_container basis_database_container{ basis_database_container::object_container{ basis_database{ field_name, account_bind_id } } };
+
+    return basis_database_container;
+}

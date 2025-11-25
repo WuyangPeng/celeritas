@@ -1,4 +1,5 @@
 ﻿#include "app_secret.h"
+#include "auth_fwd.h"
 #include "phone_login.h"
 #include "phone_login_response.h"
 #include "common/celeritas_error.h"
@@ -6,6 +7,7 @@
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/account.h"
+#include "database/generated/mysql/account_bind.h"
 #include "database/generated/redis/session_token.h"
 #include "database/generated/redis/sms_code.h"
 #include "server/account_status_type.h"
@@ -23,7 +25,7 @@
 #include <regex>
 
 celeritas::phone_login::phone_login(http_handle_parameter handle_parameter)
-    : handle_parameter_{ std::move(handle_parameter) }, is_new_account_{ false }
+    : handle_parameter_{ std::move(handle_parameter) }
 {
 }
 
@@ -115,6 +117,8 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
     {
         const phone_login_response response{ game_error_type::sign_error, "sign error" };
         handle_parameter_.write(response.to_json_string());
+
+        co_return;
     }
 
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
@@ -124,28 +128,44 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
     {
         const phone_login_response response{ game_error_type::code_expired, "code is expired" };
         handle_parameter_.write(response.to_json_string());
+
+        co_return;
     }
 
-    if (sms_code sms_code{ *optional_sms_code };
-        sms_code.get_code() != code)
+    sms_code sms_code{ *optional_sms_code };
+    if (sms_code.get_code() != code)
     {
         const phone_login_response response{ game_error_type::code_error, "code is error" };
         handle_parameter_.write(response.to_json_string());
+
+        sms_code.modify_retry_count(1);
+
+        if (sms_code.get_retry_count() >= sms_code_retry_count)
+        {
+            co_await redis_pool->execute_changes(sms_code.get_delete());
+        }
+        else
+        {
+            co_await redis_pool->execute_changes(sms_code.get_modify());
+        }
+
+        co_return;
     }
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
-    const auto select = account::get_select_all(database_type::mysql);
-    select->add_key(basis_database{ account::phone_describe, phone });
-    auto accounts = co_await mysql_pool->select_all(select, account::get_database_field_container());
+    const auto select = account::get_select(database_type::mysql);
+    select->add_key(basis_database{ account_bind::account_type_describe, static_cast<int>(account_type::phone) });
+    select->add_key(basis_database{ account_bind::auth_key_describe, phone });
+    auto optional_account_bind = co_await mysql_pool->select_one(select, account::get_database_field_container());
 
-    auto account = co_await get_account(accounts, redis_pool, device_id, phone, handle_parameter_.get_app_config());
+    auto account = co_await get_account(optional_account_bind, redis_pool, mysql_pool, device_id, phone, handle_parameter_.get_app_config());
 
     const auto token = generate_token();
 
     session_token session_token{ database_type::redis, token };
     session_token.set_token(token);
     session_token.set_account_id(account.get_account_id());
-    session_token.set_is_new_account(is_new_account_);
+    session_token.set_is_new_account(!optional_account_bind);
 
     // 这里没有删除旧的token，旧的token依赖redis有效时间进行删除。
     if (co_await redis_pool->execute_changes(session_token.get_modify()))
@@ -161,6 +181,8 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
         const phone_login_response response{ game_error_type::redis_error, "redis error" };
         handle_parameter_.write(response.to_json_string());
     }
+
+    co_await redis_pool->execute_changes(sms_code.get_delete());
 
     co_return;
 }
@@ -195,14 +217,16 @@ std::string celeritas::phone_login::generate_token()
     return boost::uuids::to_string(uuid);
 }
 
-celeritas::phone_login::account_awaitable_type celeritas::phone_login::get_account(const result_container& accounts, const database_pool_shared_ptr& database_pool, const std::string& device_id, const std::string& phone, const const_app_config_shared_ptr& app_config)
+celeritas::phone_login::account_awaitable_type celeritas::phone_login::get_account(const optional_basis_database_manager& basis_database_manager, const database_pool_shared_ptr& redis_pool, const database_pool_shared_ptr& mysql_pool, const std::string& device_id, const std::string& phone, const const_app_config_shared_ptr& app_config)
 {
-    for (const auto& element : accounts)
+    if (basis_database_manager)
     {
-        if (element.get_value<database_data_type::int32_type>(account::account_type_describe, static_cast<int>(account_type::invalid)) == static_cast<int>(account_type::phone))
+        account_bind account_bind{ *basis_database_manager };
+
+        if (auto optional_account = co_await mysql_pool->select_one(account::get_select(database_type::mysql, account_bind.get_account_id()), account::get_database_field_container()))
         {
-            account account{ element };
-            is_new_account_ = false;
+            account account{ *optional_account };
+
             co_return account;
         }
     }
@@ -213,15 +237,23 @@ celeritas::phone_login::account_awaitable_type celeritas::phone_login::get_accou
     // 账号只存入redis，等待玩家真正登陆时再写入mysql
     account account{ database_type::redis, account_id };
     account.set_device_id(device_id);
-    account.set_phone(phone);
     account.set_account_name("phone_" + std::to_string(account_id));
     account.set_create_time(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
-    account.set_account_type(static_cast<int>(account_type::phone));
     account.set_status(static_cast<int>(account_status_type::normal));
 
-    if (co_await database_pool->execute_changes(account.get_modify()))
+    if (co_await redis_pool->execute_changes(account.get_modify()))
     {
-        is_new_account_ = true;
+        co_return account;
+    }
+
+    const auto account_bind_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
+    account_bind account_bind{ database_type::redis, account_bind_id };
+    account_bind.set_account_id(account_id);
+    account_bind.set_account_type(static_cast<int>(account_type::phone));
+    account_bind.set_is_primary(true);
+
+    if (co_await redis_pool->execute_changes(account_bind.get_modify()))
+    {
         co_return account;
     }
 

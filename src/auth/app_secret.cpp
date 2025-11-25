@@ -55,7 +55,7 @@ celeritas::app_secret::void_awaitable_type celeritas::app_secret::load_from_db()
 celeritas::app_secret::void_awaitable_type celeritas::app_secret::do_load_from_db()
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
-    const auto select = apps::get_select_all(database_type::mysql);
+    const auto select = apps::get_select(database_type::mysql);
     const auto result = co_await mysql_pool->select_all(select, apps::get_database_field_container());
 
     apps_type apps_type{};

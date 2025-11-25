@@ -37,7 +37,7 @@ namespace celeritas
 
         [[nodiscard]] static basis_database_manager_const_hared_ptr get_select(database_type database_type, traits::param_type::string_type token);
 
-        [[nodiscard]] static basis_database_manager_shared_ptr get_select_all(database_type database_type);
+        [[nodiscard]] static basis_database_manager_shared_ptr get_select(database_type database_type);
 
         [[nodiscard]] static constexpr std::string_view get_database_name()
         {

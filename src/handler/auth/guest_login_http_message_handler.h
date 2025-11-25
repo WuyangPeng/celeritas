@@ -26,17 +26,16 @@ namespace celeritas
         using account_awaitable_type = boost::asio::awaitable<account>;
         using database_pool_shared_ptr = std::shared_ptr<database_pool>;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
+        using optional_basis_database_manager = std::optional<basis_database_manager>;
 
         [[nodiscard]] void_awaitable_type guest_login(http_handle_parameter handle_parameter);
 
         [[nodiscard]] void_awaitable_type do_guest_login(http_handle_parameter handle_parameter);
 
-        [[nodiscard]] account_awaitable_type get_account(const result_container& accounts, const database_pool_shared_ptr& database_pool, const std::string& device_id, const const_app_config_shared_ptr& app_config);
+        [[nodiscard]] account_awaitable_type get_account(const optional_basis_database_manager& basis_database_manager, const database_pool_shared_ptr& database_pool, const std::string& device_id, const const_app_config_shared_ptr& app_config);
 
         [[nodiscard]] static std::string generate_token();
 
         [[nodiscard]] static std::string calculate_hmac_sha256(int app_id, const std::string& device_id, int64_t timestamp, const std::string& secret_key);
-
-        bool is_new_account_ = false;
     };
 }

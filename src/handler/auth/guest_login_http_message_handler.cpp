@@ -119,21 +119,23 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     {
         const guest_login_response response{ game_error_type::sign_error, "sign error" };
         handle_parameter.write(response.to_json_string());
+
+        co_return;
     }
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
-    const auto select = account::get_select_all(database_type::mysql);
+    const auto select = account::get_select(database_type::mysql);
     select->add_key(basis_database{ account::device_id_describe, device_id });
-    auto accounts = co_await mysql_pool->select_all(select, account::get_database_field_container());
+    auto optional_account = co_await mysql_pool->select_one(select, account::get_database_field_container());
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
-    auto account = co_await get_account(accounts, redis_pool, device_id, handle_parameter.get_app_config());
+    auto account = co_await get_account(optional_account, redis_pool, device_id, handle_parameter.get_app_config());
 
     const auto token = generate_token();
 
     session_token session_token{ database_type::redis, token };
     session_token.set_token(token);
     session_token.set_account_id(account.get_account_id());
-    session_token.set_is_new_account(is_new_account_);
+    session_token.set_is_new_account(!optional_account);
 
     // 这里没有删除旧的token，旧的token依赖redis有效时间进行删除。
     if (co_await redis_pool->execute_changes(session_token.get_modify()))
@@ -153,17 +155,13 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     co_return;
 }
 
-celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::guest_login_http_message_handler::get_account(const result_container& accounts, const database_pool_shared_ptr& database_pool, const std::string& device_id, const const_app_config_shared_ptr& app_config)
+celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::guest_login_http_message_handler::get_account(const optional_basis_database_manager& basis_database_manager, const database_pool_shared_ptr& database_pool, const std::string& device_id, const const_app_config_shared_ptr& app_config)
 {
-    for (const auto& element : accounts)
+    if (basis_database_manager)
     {
-        if (element.get_value<database_data_type::int32_type>(account::account_type_describe, static_cast<int>(account_type::invalid)) == static_cast<int>(account_type::guest))
-        {
-            account account{ element };
-            is_new_account_ = false;
+        account account{ *basis_database_manager };
 
-            co_return account;
-        }
+        co_return account;
     }
 
     const auto server_config = app_config->get_server_config();
@@ -174,12 +172,10 @@ celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::g
     account.set_device_id(device_id);
     account.set_account_name("guest_" + std::to_string(account_id));
     account.set_create_time(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
-    account.set_account_type(static_cast<int>(account_type::guest));
     account.set_status(static_cast<int>(account_status_type::normal));
 
     if (co_await database_pool->execute_changes(account.get_modify()))
     {
-        is_new_account_ = true;
         co_return account;
     }
 
