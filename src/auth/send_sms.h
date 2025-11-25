@@ -17,6 +17,8 @@ namespace celeritas
     private:
         [[nodiscard]] static std::string calculate_hmac_sha256(int app_id, const std::string& phone, int64_t timestamp, const std::string& secret_key);
 
+        void send_sdk_sms(const std::string& phone, int code);
+
         http_handle_parameter handle_parameter_;
     };
 }

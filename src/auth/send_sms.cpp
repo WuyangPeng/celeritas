@@ -2,6 +2,7 @@
 #include "auth_fwd.h"
 #include "send_sms.h"
 #include "send_sms_response.h"
+#include "common/random_helper.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/redis/sms_code.h"
 #include "database/generated/redis/sms_limit.h"
@@ -99,7 +100,7 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
     }
 
     sms_code sms_code{ database_type::redis, phone };
-    sms_code.set_code(111);
+    sms_code.set_code(random_helper::get_random_int(100000, 999999));
 
     sms_limit sms_limit{ database_type::redis, phone };
     sms_limit.set_exist(true);
@@ -133,4 +134,8 @@ std::string celeritas::send_sms::calculate_hmac_sha256(int app_id, const std::st
     boost::algorithm::to_lower(hex_output);
 
     return hex_output;
+}
+
+void celeritas::send_sms::send_sdk_sms(const std::string& phone, int code)
+{
 }
