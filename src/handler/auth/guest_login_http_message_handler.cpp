@@ -133,7 +133,7 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     session_token session_token{ database_type::redis, token };
     session_token.set_token(token);
     session_token.set_account_id(account.get_account_id());
-    session_token.set_is_new_account(accounts.empty());
+    session_token.set_is_new_account(is_new_account_);
 
     // 这里没有删除旧的token，旧的token依赖redis有效时间进行删除。
     if (co_await redis_pool->execute_changes(session_token.get_modify()))
@@ -160,6 +160,7 @@ celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::g
         if (element.get_value<database_data_type::int32_type>(account::account_type_describe, static_cast<int>(account_type::invalid)) == static_cast<int>(account_type::guest))
         {
             account account{ element };
+            is_new_account_ = false;
 
             co_return account;
         }
@@ -178,6 +179,7 @@ celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::g
 
     if (co_await database_pool->execute_changes(account.get_modify()))
     {
+        is_new_account_ = true;
         co_return account;
     }
 

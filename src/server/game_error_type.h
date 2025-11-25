@@ -14,6 +14,8 @@ namespace celeritas
         timestamp_expired = 101,
         sign_error = 102,
         sent_too_frequently = 103,
+        code_expired = 104,
+        code_error = 105,
 
         // 数据库错误
         redis_error = 1000,

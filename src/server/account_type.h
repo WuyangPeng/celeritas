@@ -6,5 +6,6 @@ namespace celeritas
     {
         invalid = -1,
         guest = 0,
+        phone = 1,
     };
 }

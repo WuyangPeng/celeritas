@@ -6,6 +6,8 @@ namespace celeritas
     class app_secret;
     class send_sms_response;
     class send_sms;
+    class phone_login_response;
+    class phone_login;
 
     enum class app_status_type;
 
