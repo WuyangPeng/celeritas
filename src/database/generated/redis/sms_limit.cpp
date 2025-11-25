@@ -1,0 +1,93 @@
+// 此文件是自动生成，请勿手动修改。
+
+#include "sms_limit.h"
+#include "config/database_type.h"
+#include "database/basis_database_manager.tpp"
+#include "database/database_change_type.h"
+#include "database/database_entity.tpp"
+#include "database/entity.tpp"
+
+celeritas::sms_limit celeritas::sms_limit::create(const basis_database_manager& entity, const database_type database_type, traits::param_type::string_type phone)
+{
+    return entity.is_modify() ? sms_limit{ entity } : sms_limit{ database_type, phone };
+}
+
+celeritas::sms_limit::sms_limit(const basis_database_manager& entity)
+    : base_type{ entity },
+      phone_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : phone_describe) },
+      exist_{ entity.get_value<database_data_type::bool_type>(exist_describe) }
+{
+}
+
+celeritas::sms_limit::sms_limit(const database_type database_type, traits::param_type::string_type phone)
+    : base_type{ database_type, database_name.data(), get_key_basis_database_container(database_type, phone) },
+      phone_{ phone },
+      exist_{ traits::bool_type{} }
+{
+    add_modify(phone_describe, phone);
+}
+
+celeritas::traits::string_type celeritas::sms_limit::get_phone() const
+{
+    return phone_.get_value();
+}
+
+celeritas::traits::bool_type celeritas::sms_limit::is_exist() const noexcept
+{
+    return exist_.get_value();
+}
+
+void celeritas::sms_limit::set_phone(traits::param_type::string_type phone)
+{
+    if (phone != get_phone())
+    {
+        phone_.set_value(phone);
+
+        add_modify(phone_describe, get_phone());
+    }
+}
+
+void celeritas::sms_limit::set_exist(traits::param_type::bool_type exist)
+{
+    if (exist != is_exist())
+    {
+        exist_.set_value(exist);
+
+        add_modify(exist_describe, is_exist());
+    }
+}
+
+const celeritas::database_entity::database_field_container& celeritas::sms_limit::get_database_field_container()
+{
+    static const database_field_container field_name_container{ decltype(phone_)::get_database_field(),
+                                                                decltype(exist_)::get_database_field() };
+
+    return field_name_container;
+}
+
+celeritas::sms_limit::basis_database_manager_const_hared_ptr celeritas::sms_limit::get_select(const database_type database_type, traits::param_type::string_type phone)
+{
+    return std::make_shared<basis_database_manager>(database_type,
+                                                    database_name,
+                                                    database_change_type::select_type,
+                                                    get_key_basis_database_container(database_type, phone));
+}
+
+celeritas::sms_limit::basis_database_manager_shared_ptr celeritas::sms_limit::get_select_all(const database_type database_type)
+{
+    static const auto result = std::make_shared<basis_database_manager>(database_type,
+                                                                        database_name,
+                                                                        database_change_type::select_type,
+                                                                        basis_database_container{});
+
+    return result;
+}
+
+celeritas::basis_database_container celeritas::sms_limit::get_key_basis_database_container(const database_type database_type, traits::param_type::string_type phone)
+{
+    const auto field_name = database_type == database_type::mongo ? "_id" : phone_describe;
+
+    basis_database_container basis_database_container{ basis_database_container::object_container{ basis_database{ field_name, phone } } };
+
+    return basis_database_container;
+}

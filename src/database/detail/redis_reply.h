@@ -19,6 +19,7 @@ namespace celeritas
         using map_type = std::map<std::string, std::string>;
         using optional_double = std::optional<double>;
         using optional_int = std::optional<int>;
+        using optional_map_type = std::optional<map_type>;
 
         explicit redis_reply(redis_context& redis_context, const std::string& command);
 
@@ -45,6 +46,8 @@ namespace celeritas
         [[nodiscard]] array_type to_array() const;
 
         [[nodiscard]] map_type to_map() const;
+
+        [[nodiscard]] optional_map_type to_optional_map() const;
 
         [[nodiscard]] scan_result to_scan_result() const;
 

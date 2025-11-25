@@ -98,7 +98,7 @@ celeritas::database_session::bool_awaitable_type celeritas::mongo_database_sessi
     }
 }
 
-celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database_session::execute_changes(const basis_database_manager_const_shared_ptr& database)
+celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database_session::execute_changes(const basis_database_manager_const_shared_ptr& database, int expiration_time)
 {
     co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
 

@@ -36,6 +36,8 @@ namespace celeritas
         using array_awaitable_type = boost::asio::awaitable<array_type>;
         using map_type = std::map<std::string, std::string>;
         using map_awaitable_type = boost::asio::awaitable<map_type>;
+        using optional_map_type = std::optional<map_type>;
+        using optional_map_awaitable_type = boost::asio::awaitable<optional_map_type>;
         using scan_result_awaitable_type = boost::asio::awaitable<scan_result>;
 
         redis_database_session(std::string_view host,
@@ -90,9 +92,11 @@ namespace celeritas
 
         [[nodiscard]] optional_int_awaitable_type async_execute_command_return_optional_int(const std::string& command) const;
 
+        [[nodiscard]] optional_map_awaitable_type async_execute_command_return_optional_map_type(const std::string& command) const;
+
         [[nodiscard]] scan_result_awaitable_type async_execute_command_return_scan_result(const std::string& command) const;
 
-        [[nodiscard]] void_awaitable_type execute_changes(const basis_database_manager_const_shared_ptr& database) override;
+        [[nodiscard]] void_awaitable_type execute_changes(const basis_database_manager_const_shared_ptr& database, int expiration_time) override;
 
         [[nodiscard]] basis_database_manager_awaitable_type select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) override;
 
@@ -109,7 +113,7 @@ namespace celeritas
 
         [[nodiscard]] redis_reply_awaitable_type async_execute_command_return_reply(const std::string& command) const;
 
-        [[nodiscard]] void_awaitable_type save_database(const basis_database_manager_const_shared_ptr& database) const;
+        [[nodiscard]] void_awaitable_type save_database(const basis_database_manager_const_shared_ptr& database, int expiration_time) const;
 
         [[nodiscard]] void_awaitable_type delete_database(const basis_database_manager_const_shared_ptr& database) const;
 

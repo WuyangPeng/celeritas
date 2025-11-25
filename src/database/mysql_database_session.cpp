@@ -100,7 +100,7 @@ celeritas::database_session::bool_awaitable_type celeritas::mysql_database_sessi
     }
 }
 
-celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::execute_changes(const basis_database_manager_const_shared_ptr& database)
+celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::execute_changes(const basis_database_manager_const_shared_ptr& database, int expiration_time)
 {
     switch (database->get_change_type())
     {

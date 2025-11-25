@@ -158,6 +158,13 @@ celeritas::redis_database_session::optional_int_awaitable_type celeritas::redis_
     co_return redis_reply->to_optional_int();
 }
 
+celeritas::redis_database_session::optional_map_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_map_type(const std::string& command) const
+{
+    const auto redis_reply = co_await async_execute_command_return_reply(command);
+
+    co_return redis_reply->to_optional_map();
+}
+
 celeritas::redis_database_session::scan_result_awaitable_type celeritas::redis_database_session::async_execute_command_return_scan_result(const std::string& command) const
 {
     const auto redis_reply = co_await async_execute_command_return_reply(command);
@@ -165,7 +172,7 @@ celeritas::redis_database_session::scan_result_awaitable_type celeritas::redis_d
     co_return redis_reply->to_scan_result();
 }
 
-celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::execute_changes(const basis_database_manager_const_shared_ptr& database)
+celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::execute_changes(const basis_database_manager_const_shared_ptr& database, int expiration_time)
 {
     switch (database->get_change_type())
     {
@@ -177,7 +184,7 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
         case database_change_type::update_type:
         case database_change_type::insert_type:
         {
-            co_return co_await save_database(database);
+            co_return co_await save_database(database, expiration_time);
         }
 
         case database_change_type::delete_type:
@@ -189,7 +196,14 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
 
 celeritas::database_session::basis_database_manager_awaitable_type celeritas::redis_database_session::select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
 {
-    const auto result = co_await redis_hash_commands_.async_get_all(redis_key_data_converter::generate_key(database));
+    const auto optional_result = co_await redis_hash_commands_.async_get_all(redis_key_data_converter::generate_key(database));
+    if (!optional_result)
+    {
+        co_return std::nullopt;
+    }
+
+    const auto& result = *optional_result;
+
     auto select = database->get_select();
 
     for (const auto& element : field_name_container)
@@ -246,7 +260,7 @@ celeritas::redis_database_session::redis_reply_awaitable_type celeritas::redis_d
     co_return std::make_unique<redis_reply>(*redis_context_.get(), command);
 }
 
-celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::save_database(const basis_database_manager_const_shared_ptr& database) const
+celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::save_database(const basis_database_manager_const_shared_ptr& database, int expiration_time) const
 {
     redis_commands::key_value_container field_value{};
     for (const auto& element : database->get_database())
@@ -254,9 +268,14 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
         field_value.emplace_back(element.get_field_name(), element.get_string());
     }
 
+    if (expiration_time == 0)
+    {
+        expiration_time = redis_parameter_.get_expire_seconds();
+    }
+
     const auto key = redis_key_data_converter::generate_key(database);
     co_await redis_hash_commands_.async_set_many(key, field_value);
-    co_await redis_key_commands_.async_set_expire_seconds(key, redis_parameter_.get_expire_seconds());
+    co_await redis_key_commands_.async_set_expire_seconds(key, expiration_time);
 
     co_return;
 }
@@ -269,7 +288,13 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
 
 celeritas::database_session::basis_database_manager_awaitable_type celeritas::redis_database_session::select_one(const std::string& key, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) const
 {
-    const auto result = co_await redis_hash_commands_.async_get_all(key);
+    const auto optional_result = co_await redis_hash_commands_.async_get_all(key);
+    if (!optional_result)
+    {
+        co_return std::nullopt;
+    }
+
+    const auto& result = *optional_result;
 
     basis_database_manager select{ database->get_database_type(),
                                    database->get_database_name(),

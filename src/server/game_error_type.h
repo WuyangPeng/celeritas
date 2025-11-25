@@ -13,6 +13,7 @@ namespace celeritas
         invalid_parameter = 100,
         timestamp_expired = 101,
         sign_error = 102,
+        sent_too_frequently = 103,
 
         // 数据库错误
         redis_error = 1000,

@@ -4,6 +4,7 @@
 
 #include "handler/auth/guest_login_http_message_handler.h"
 #include "handler/auth/reload_app_db_message_handler.h"
+#include "handler/auth/send_sms_http_message_handler.h"
 #include "handler/generated/auth_request_message_handler.h"
 #include "handler/generated/auth_response_message_handler.h"
 #include "handler/generated/celeritas_message_handler.h"

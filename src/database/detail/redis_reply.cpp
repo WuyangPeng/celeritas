@@ -136,6 +136,51 @@ celeritas::redis_reply::map_type celeritas::redis_reply::to_map() const
     return result;
 }
 
+celeritas::redis_reply::optional_map_type celeritas::redis_reply::to_optional_map() const
+{
+    if (redis_reply_->type == REDIS_REPLY_NIL)
+    {
+        return std::nullopt;
+    }
+
+    if (redis_reply_->type != REDIS_REPLY_ARRAY)
+    {
+        throw celeritas_error("Reply type mismatch: Expected ARRAY for map conversion.");
+    }
+
+    const auto num_elements = redis_reply_->elements;
+
+    if (num_elements % 2 != 0)
+    {
+        throw celeritas_error("Map conversion failed: Expected even number of elements for Key-Value map, got " + std::to_string(num_elements));
+    }
+
+    if (num_elements == 0)
+    {
+        return {};
+    }
+
+    map_type result{};
+
+    for (auto i = 0; i < num_elements; i += 2)
+    {
+        const auto key_element = redis_reply_->element[i];
+        const auto value_element = redis_reply_->element[i + 1];
+
+        if (key_element->type != REDIS_REPLY_STRING)
+        {
+            throw celeritas_error("Map Key element is not a STRING.");
+        }
+        std::string key{ key_element->str, key_element->len };
+
+        auto value = to_string_from_element(value_element);
+
+        result.emplace(std::move(key), std::move(value));
+    }
+
+    return result;
+}
+
 celeritas::scan_result celeritas::redis_reply::to_scan_result() const
 {
     if (redis_reply_->type != REDIS_REPLY_ARRAY)

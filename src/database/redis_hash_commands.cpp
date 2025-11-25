@@ -61,9 +61,9 @@ celeritas::redis_hash_commands::array_awaitable_type celeritas::redis_hash_comma
     co_return co_await async_execute_command_return_array_type(command);
 }
 
-celeritas::redis_hash_commands::map_awaitable_type celeritas::redis_hash_commands::async_get_all(const std::string& key) const
+celeritas::redis_hash_commands::optional_map_awaitable_type celeritas::redis_hash_commands::async_get_all(const std::string& key) const
 {
     const auto command = std::string("HGETALL ") + get_prefixed_key(key);
 
-    co_return co_await async_execute_command_return_map_type(command);
+    co_return co_await async_execute_command_return_optional_map_type(command);
 }

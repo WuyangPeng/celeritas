@@ -1,7 +1,6 @@
 ﻿#include "guest_login_http_message_handler.h"
 #include "auth/app_secret.h"
 #include "auth/guest_login_response.h"
-#include "boost/lexical_cast.hpp"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "common/snowflake_generator.h"
@@ -15,6 +14,7 @@
 #include "server/account_type.h"
 #include "server/game_error_type.h"
 
+#include <boost/lexical_cast.hpp>
 #include <boost/algorithm/hex.hpp>
 #include <boost/algorithm/string/case_conv.hpp>
 #include <boost/json.hpp>
