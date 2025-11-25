@@ -1,7 +1,7 @@
 CREATE TABLE `test` (
   `user_id` BIGINT NOT NULL,
   `chapter_id` INT NOT NULL DEFAULT 0,
-  `chapter_name` VARCHAR(255) NOT NULL DEFAULT "",
+  `chapter_name` VARCHAR(255) NOT NULL,
   `chance_winning` DOUBLE NOT NULL DEFAULT 0.0,
   `winning` TINYINT(1) NOT NULL DEFAULT 0,
   `currency` BIGINT NOT NULL DEFAULT 0,

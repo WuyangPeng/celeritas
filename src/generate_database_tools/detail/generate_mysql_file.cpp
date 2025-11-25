@@ -165,7 +165,7 @@ std::string celeritas::generate_mysql_file::get_mysql_statement(const json_value
             composite_indexes.emplace_back(entity_name);
         }
 
-        if (data_type != "binary" && index_type != "key" && index_type != "unique_index" && index_type != "composite_unique_index")
+        if (data_type != "binary" && data_type != "string" && index_type != "key" && index_type != "unique_index" && index_type != "composite_unique_index")
         {
             sql_output << " DEFAULT " << get_mysql_default_type(data_type);
         }

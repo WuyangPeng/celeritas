@@ -8,6 +8,8 @@ namespace celeritas
     class send_sms;
     class phone_login_response;
     class phone_login;
+    class phone_bind_response;
+    class phone_bind;
 
     enum class app_status_type;
 

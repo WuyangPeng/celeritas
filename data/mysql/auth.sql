@@ -1,7 +1,7 @@
 CREATE TABLE `apps` (
   `app_id` BIGINT NOT NULL COMMENT 'app id',
-  `game_name` VARCHAR(255) NOT NULL DEFAULT "" COMMENT '游戏名字',
-  `app_secret` VARCHAR(255) NOT NULL DEFAULT "" COMMENT '签名',
+  `game_name` VARCHAR(255) NOT NULL COMMENT '游戏名字',
+  `app_secret` VARCHAR(255) NOT NULL COMMENT '签名',
   `status` INT NOT NULL DEFAULT 0 COMMENT '游戏状态',
   PRIMARY KEY (`app_id`),
   KEY `game_name_index` (`game_name`)
@@ -10,8 +10,8 @@ CREATE TABLE `apps` (
 CREATE TABLE `account` (
   `account_id` BIGINT NOT NULL COMMENT '全局唯一ID，雪花算法生成',
   `account_name` VARCHAR(255) NOT NULL COMMENT '正式账号的用户名',
-  `password_hash` VARCHAR(255) NOT NULL DEFAULT "" COMMENT '加密后的密码',
-  `salt` VARCHAR(255) NOT NULL DEFAULT "" COMMENT '密码盐值(视加密算法而定)',
+  `password_hash` VARCHAR(255) NOT NULL COMMENT '加密后的密码',
+  `salt` VARCHAR(255) NOT NULL COMMENT '密码盐值(视加密算法而定)',
   `device_id` VARCHAR(255) NOT NULL COMMENT '游客登录凭证',
   `create_time` BIGINT NOT NULL DEFAULT 0 COMMENT '创建时间',
   `status` INT NOT NULL DEFAULT 0 COMMENT '账号状态',

@@ -31,15 +31,6 @@ celeritas::phone_login::phone_login(http_handle_parameter handle_parameter)
 
 celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
 {
-    const auto optional_device_id = handle_parameter_.get_param(account::device_id_describe.data());
-    if (!optional_device_id)
-    {
-        const phone_login_response response{ game_error_type::invalid_parameter, "device_id is required" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
-
     const auto optional_phone = handle_parameter_.get_param("phone");
     if (!optional_phone)
     {
@@ -107,12 +98,11 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
         co_return;
     }
 
-    const auto& device_id = *optional_device_id;
     const auto app_id = boost::lexical_cast<int>(*optional_app_id);
     const auto secret = app_secret::get_instance().get_key(app_id);
     const auto code = boost::lexical_cast<int>(*optional_code);
 
-    if (const auto hmac_sha256 = calculate_hmac_sha256(app_id, phone, device_id, code, timestamp, secret);
+    if (const auto hmac_sha256 = calculate_hmac_sha256(app_id, phone, code, timestamp, secret);
         hmac_sha256 != *optional_sign)
     {
         const phone_login_response response{ game_error_type::sign_error, "sign error" };
@@ -158,7 +148,7 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
     select->add_key(basis_database{ account_bind::auth_key_describe, phone });
     auto optional_account_bind = co_await mysql_pool->select_one(select, account::get_database_field_container());
 
-    auto account = co_await get_account(optional_account_bind, redis_pool, mysql_pool, device_id, phone, handle_parameter_.get_app_config());
+    auto account = co_await get_account(optional_account_bind, redis_pool, mysql_pool, phone, handle_parameter_.get_app_config());
 
     const auto token = generate_token();
 
@@ -187,9 +177,9 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
     co_return;
 }
 
-std::string celeritas::phone_login::calculate_hmac_sha256(int app_id, const std::string& phone, const std::string& device_id, int code, int64_t timestamp, const std::string& secret_key)
+std::string celeritas::phone_login::calculate_hmac_sha256(int app_id, const std::string& phone, int code, int64_t timestamp, const std::string& secret_key)
 {
-    const auto data = std::format("{}{}{}{}{}", app_id, phone, device_id, code, timestamp);
+    const auto data = std::format("{}{}{}{}", app_id, phone, code, timestamp);
 
     std::array<unsigned char, EVP_MAX_MD_SIZE> result{};
     unsigned int result_length{};
@@ -217,7 +207,11 @@ std::string celeritas::phone_login::generate_token()
     return boost::uuids::to_string(uuid);
 }
 
-celeritas::phone_login::account_awaitable_type celeritas::phone_login::get_account(const optional_basis_database_manager& basis_database_manager, const database_pool_shared_ptr& redis_pool, const database_pool_shared_ptr& mysql_pool, const std::string& device_id, const std::string& phone, const const_app_config_shared_ptr& app_config)
+celeritas::phone_login::account_awaitable_type celeritas::phone_login::get_account(const optional_basis_database_manager& basis_database_manager,
+                                                                                   const database_pool_shared_ptr& redis_pool,
+                                                                                   const database_pool_shared_ptr& mysql_pool,
+                                                                                   const std::string& phone,
+                                                                                   const const_app_config_shared_ptr& app_config)
 {
     if (basis_database_manager)
     {
@@ -236,7 +230,6 @@ celeritas::phone_login::account_awaitable_type celeritas::phone_login::get_accou
 
     // 账号只存入redis，等待玩家真正登陆时再写入mysql
     account account{ database_type::redis, account_id };
-    account.set_device_id(device_id);
     account.set_account_name("phone_" + std::to_string(account_id));
     account.set_create_time(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
     account.set_status(static_cast<int>(account_status_type::normal));
@@ -249,6 +242,7 @@ celeritas::phone_login::account_awaitable_type celeritas::phone_login::get_accou
     const auto account_bind_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
     account_bind account_bind{ database_type::redis, account_bind_id };
     account_bind.set_account_id(account_id);
+    account_bind.set_auth_key(phone);
     account_bind.set_account_type(static_cast<int>(account_type::phone));
     account_bind.set_is_primary(true);
 
