@@ -11,11 +11,11 @@ namespace celeritas
         {
             f();
         }
-        catch (const std::exception& e)
+        catch (const std::exception& exception)
         {
             try
             {
-                LOG_CHANNEL(log_channel, error) << error_message << e.what();
+                LOG_CHANNEL(log_channel, error) << error_message << exception.what();
             }
             catch (...)
             {
@@ -26,7 +26,7 @@ namespace celeritas
         {
             try
             {
-                LOG_CHANNEL(log_channel, fatal) << "Unknown error: " << error_message;
+                LOG_CHANNEL(log_channel, fatal) << "unknown error: " << error_message;
             }
             catch (...)
             {

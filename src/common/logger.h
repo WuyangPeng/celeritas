@@ -44,7 +44,7 @@ namespace celeritas
     if (auto logger = logger_handle; !logger) \
         static_cast<void>(0); /* 短路: 日志关闭 */ \
     else if (constexpr auto location = std::source_location::current(); false) \
-        static_cast<void>(0); /* 永远不会执行，仅用于声明 location */ \
+        static_cast<void>(1); /* 永远不会执行，仅用于声明 location */ \
     else \
         BOOST_LOG_STREAM_SEV(logger->get(), boost::log::trivial::severity_level::level) \
         << boost::log::add_value(celeritas::log_function.data(), location.function_name()) \

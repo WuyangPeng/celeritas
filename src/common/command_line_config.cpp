@@ -1,5 +1,4 @@
 ﻿#include "command_line_config.h"
-#include "boost/url/host_type.hpp"
 #include "common/logger.h"
 
 celeritas::command_line_config::command_line_config(const int argc, char** argv, const std::string_view server_type)

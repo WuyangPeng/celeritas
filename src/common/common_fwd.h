@@ -45,8 +45,8 @@ namespace celeritas
     constexpr auto max_worker_id = (1 << worker_id_bits) - 1;
     constexpr auto max_datacenter_id = (1 << datacenter_id_bits) - 1;
 
-    // 2021-01-01 00:00:00 UTC
-    constexpr auto epoch = 1609459200000;
+    // 2025-04-12 06:20:00 UTC
+    constexpr auto epoch = 1744438800000;
 
     constexpr auto worker_id_shift = sequence_bits;
     constexpr auto datacenter_id_shift = sequence_bits + worker_id_bits;

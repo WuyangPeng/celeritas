@@ -1,8 +1,5 @@
 ﻿#pragma once
 
-#include "config/app_config.h"
-#include "handler/auth/guest_login_http_message_handler.h"
-
 #include <random>
 
 namespace celeritas
