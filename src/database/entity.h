@@ -29,7 +29,7 @@ namespace celeritas
             return Type;
         }
 
-        [[nodiscard]] static constexpr database_index_type GetIndexType() noexcept
+        [[nodiscard]] static constexpr database_index_type get_index_type() noexcept
         {
             return Index;
         }

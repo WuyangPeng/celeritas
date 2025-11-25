@@ -108,7 +108,7 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
     const auto& device_id = *optional_device_id;
     const auto app_id = boost::lexical_cast<int>(*optional_app_id);
     const auto secret = app_secret::get_instance().get_key(app_id);
-    const auto code = boost::lexical_cast<int64_t>(*optional_code);
+    const auto code = boost::lexical_cast<int>(*optional_code);
 
     if (const auto hmac_sha256 = calculate_hmac_sha256(app_id, phone, device_id, code, timestamp, secret);
         hmac_sha256 != *optional_sign)
