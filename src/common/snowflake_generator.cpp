@@ -1,6 +1,7 @@
 ﻿#include "celeritas_error.h"
 #include "common_fwd.h"
 #include "snowflake_generator.h"
+#include "time_helper.h"
 
 #include <chrono>
 #include <mutex>
@@ -14,7 +15,7 @@ celeritas::snowflake_generator& celeritas::snowflake_generator::get_instance()
 
 int64_t celeritas::snowflake_generator::generate(const int datacenter_id, const int worker_id)
 {
-    auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    auto timestamp = time_helper::get_current_milliseconds();
 
     if (timestamp < last_timestamp_)
     {
@@ -57,11 +58,12 @@ celeritas::snowflake_generator::snowflake_generator() noexcept
 
 int64_t celeritas::snowflake_generator::til_next_millis(const int64_t last_timestamp)
 {
-    auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    auto timestamp = time_helper::get_current_milliseconds();
 
     while (timestamp <= last_timestamp)
     {
-        timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        timestamp = time_helper::get_current_milliseconds();
     }
+
     return timestamp;
 }
