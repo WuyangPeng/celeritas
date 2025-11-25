@@ -1,7 +1,6 @@
 ﻿#include "phone_bind_http_message_handler.h"
 #include "auth/phone_bind_response.h"
-#include "auth/phone_login.h"
-#include "auth/phone_login_response.h"
+#include "auth/phone_bind.h"
 #include "common/logger.h"
 #include "handler/handler_fwd.h"
 #include "message/http_handle_parameter.h"
@@ -31,6 +30,8 @@ celeritas::phone_bind_http_message_handler::void_awaitable_type celeritas::phone
 {
     try
     {
+        phone_bind phone_bind{ std::move(handle_parameter) };
+        co_return co_await phone_bind.response();
     }
     catch (const std::exception& error)
     {
