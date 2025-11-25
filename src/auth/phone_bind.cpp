@@ -11,6 +11,8 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/hex.hpp>
 #include <boost/algorithm/string/case_conv.hpp>
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
 #include <openssl/evp.h>
 #include <openssl/hmac.h>
 
@@ -127,7 +129,7 @@ celeritas::phone_bind::void_awaitable_type celeritas::phone_bind::response()
 
     account account{ *optional_account };
     account.set_device_id(account.get_account_name());
-
+    account.set_password_hash(generate_token());
     const auto server_config = handle_parameter_.get_app_config()->get_server_config();
     const auto account_bind_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
     account_bind account_bind{ database_type::redis, account_bind_id };
@@ -169,4 +171,12 @@ std::string celeritas::phone_bind::calculate_hmac_sha256(int app_id, const std::
     boost::algorithm::to_lower(hex_output);
 
     return hex_output;
+}
+
+std::string celeritas::phone_bind::generate_token()
+{
+    boost::uuids::random_generator generator{};
+    const auto uuid = generator();
+
+    return boost::uuids::to_string(uuid);
 }

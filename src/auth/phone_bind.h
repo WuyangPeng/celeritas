@@ -27,6 +27,8 @@ namespace celeritas
 
         [[nodiscard]] static std::string calculate_hmac_sha256(int app_id, const std::string& phone, const std::string& device_id, int code, int64_t timestamp, const std::string& secret_key);
 
+        [[nodiscard]] std::string generate_token();
+
         http_handle_parameter handle_parameter_;
     };
 }

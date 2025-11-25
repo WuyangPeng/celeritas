@@ -11,7 +11,6 @@
 #include "database/generated/redis/session_token.h"
 #include "message/http_handle_parameter.h"
 #include "server/account_status_type.h"
-#include "server/account_type.h"
 #include "server/game_error_type.h"
 
 #include <boost/lexical_cast.hpp>
@@ -130,7 +129,7 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
     auto account = co_await get_account(optional_account, redis_pool, device_id, handle_parameter.get_app_config());
 
-    if (account.get_account_name() == account.get_device_id())
+    if (!account.get_password_hash().empty())
     {
         const guest_login_response response{ game_error_type::no_guest_account, "no guest account" };
         handle_parameter.write(response.to_json_string());

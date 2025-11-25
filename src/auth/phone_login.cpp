@@ -233,6 +233,8 @@ celeritas::phone_login::account_awaitable_type celeritas::phone_login::get_accou
     account.set_account_name("phone_" + std::to_string(account_id));
     account.set_create_time(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
     account.set_status(static_cast<int>(account_status_type::normal));
+    account.set_device_id(account.get_account_name());
+    account.set_password_hash(generate_token());
 
     if (co_await redis_pool->execute_changes(account.get_modify()))
     {
