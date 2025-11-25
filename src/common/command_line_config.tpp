@@ -11,5 +11,5 @@ T celeritas::command_line_config::get(const std::string& key) const
         return variables_[key].as<T>();
     }
 
-    throw celeritas_error("Attempted to access unregistered or invalid key: " + key);
+    throw celeritas_error("attempted to access unregistered or invalid key: {}", key);
 }

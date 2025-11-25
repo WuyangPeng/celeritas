@@ -57,14 +57,19 @@ void celeritas::command_line_config::add_program_options(const int argc, char** 
 {
     try
     {
-        boost::program_options::store(boost::program_options::parse_command_line(argc, argv, options_description_), variables_);
-        boost::program_options::notify(variables_);
+        do_add_program_options(argc, argv);
     }
     catch (const boost::program_options::error& error)
     {
         LOG(error) << "Command line parsing error: " << error.what();
         exit_requested_ = true;
     }
+}
+
+void celeritas::command_line_config::do_add_program_options(const int argc, char** argv)
+{
+    boost::program_options::store(boost::program_options::parse_command_line(argc, argv, options_description_), variables_);
+    boost::program_options::notify(variables_);
 }
 
 void celeritas::command_line_config::print_help()

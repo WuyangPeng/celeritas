@@ -33,6 +33,8 @@ namespace celeritas
 
         void add_program_options(int argc, char** argv);
 
+        void do_add_program_options(int argc, char** argv);
+
         void print_help();
 
         options_description_type options_description_;
