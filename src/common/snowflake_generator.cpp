@@ -3,7 +3,6 @@
 #include "snowflake_generator.h"
 #include "time_helper.h"
 
-#include <chrono>
 #include <mutex>
 
 celeritas::snowflake_generator& celeritas::snowflake_generator::get_instance()
