@@ -133,6 +133,12 @@
         - 自动添加 `--help, -h` 选项，并处理退出请求。
         - 提供 `get<T>(key)` 模板方法获取配置，键不存在时抛出 `celeritas_error` 异常。
 
+* **⏱️ 时间工具（`time_helper`）**
+    - **作用**：提供获取当前时间的辅助函数。
+    - **功能**：
+        - **获取当前毫秒时间戳**：`get_current_milliseconds_since_epoch()` 返回自 `1970-01-01 00:00:00 UTC` 以来的毫秒数。
+        - **获取当前秒时间戳**：`get_current_seconds_since_epoch()` 返回自 `1970-01-01 00:00:00 UTC` 以来的秒数。
+
 ##### logging(日志)
 
 * **📜 日志系统（`logger`）**
