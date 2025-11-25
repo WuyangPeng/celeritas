@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "common/common_fwd.h"
+#include "common/thread_safe_queue.h"
 #include "config/config_fwd.h"
 #include "config/database_config.h"
 #include "handler/handler_fwd.h"
@@ -16,15 +17,17 @@ namespace celeritas
         using class_type = http_handle_parameter;
         using session_shared_ptr = std::shared_ptr<session>;
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
+        using application_loader_shared_ptr = std::shared_ptr<application_loader_base>;
         using urls_params_view_type = boost::urls::params_view;
         using app_config_shared_ptr = std::shared_ptr<const app_config>;
         using io_context_type = boost::asio::io_context;
         using health_check_level_awaitable_type = boost::asio::awaitable<health_check_level_type>;
         using optional_string = std::optional<std::string>;
+        using task_type = thread_safe_queue::task_type;
 
-        http_handle_parameter(io_context_type& io_context, std::string path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
+        http_handle_parameter(io_context_type& io_context, std::string path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader, const application_loader_shared_ptr& application_loader);
 
-        http_handle_parameter(io_context_type& io_context, std::string path, std::string params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
+        http_handle_parameter(io_context_type& io_context, std::string path, std::string params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader, const application_loader_shared_ptr& application_loader);
 
         ~http_handle_parameter() noexcept = default;
 
@@ -54,9 +57,12 @@ namespace celeritas
 
         [[nodiscard]] database_config get_database_config(const std::string& db_name) const;
 
+        void submit_task(task_type task);
+
     private:
         using session_weak_ptr = std::weak_ptr<session>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
+        using application_loader_weak_ptr = std::weak_ptr<application_loader_base>;
 
         io_context_type& io_context_;
         std::string path_;
@@ -64,5 +70,6 @@ namespace celeritas
         std::string response_;
         session_weak_ptr session_;
         resource_loader_weak_ptr resource_loader_;
+        application_loader_weak_ptr application_loader_;
     };
 }

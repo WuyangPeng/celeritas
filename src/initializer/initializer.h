@@ -46,7 +46,7 @@ namespace celeritas
     private:
         using configuration_loader_unique_ptr = initializer_factory::configuration_loader_unique_ptr;
         using resource_loader_shared_ptr = initializer_factory::resource_loader_shared_ptr;
-        using application_loader_unique_ptr = initializer_factory::application_loader_unique_ptr;
+        using application_loader_shared_ptr = initializer_factory::application_loader_shared_ptr;
         using path_type = boost::filesystem::path;
         using io_context_type = boost::asio::io_context;
         using executor_type = boost::asio::io_context::executor_type;
@@ -75,7 +75,7 @@ namespace celeritas
         path_type current_path_;
         configuration_loader_unique_ptr configuration_loader_;
         resource_loader_shared_ptr resource_loader_;
-        application_loader_unique_ptr application_loader_;
+        application_loader_shared_ptr application_loader_;
         io_context_type io_context_;
         executor_work_guard_type work_guard_;
         daemon_unique_ptr daemon_;

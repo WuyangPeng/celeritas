@@ -25,9 +25,13 @@ namespace celeritas
 
         [[nodiscard]] traits::int32_type get_code() const noexcept;
 
+        [[nodiscard]] traits::int32_type get_retry_count() const noexcept;
+
         void set_phone(traits::param_type::string_type phone);
 
         void set_code(traits::param_type::int32_type code);
+
+        void set_retry_count(traits::param_type::int32_type retry_count);
 
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
@@ -42,6 +46,7 @@ namespace celeritas
 
         static constexpr std::string_view phone_describe{ "phone" };
         static constexpr std::string_view code_describe{ "code" };
+        static constexpr std::string_view retry_count_describe{ "retry_count" };
 
     private:
         static constexpr std::string_view database_name{ "sms_code" };
@@ -50,5 +55,6 @@ namespace celeritas
 
         entity<phone_describe, database_data_type::string_type, database_index_type::key> phone_;
         entity<code_describe, database_data_type::int32_type> code_;
+        entity<retry_count_describe, database_data_type::int32_type> retry_count_;
     };
 }

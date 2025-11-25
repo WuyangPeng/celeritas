@@ -100,7 +100,7 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
     }
 
     sms_code sms_code{ database_type::redis, phone };
-    sms_code.set_code(random_helper::get_random_int(100000, 999999));
+    sms_code.set_code(random_helper::get_random_int(sms_limit_code_begin, sms_limit_code_end));
 
     sms_limit sms_limit{ database_type::redis, phone };
     sms_limit.set_exist(true);
@@ -110,6 +110,10 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
 
     const send_sms_response response{ game_error_type::success, "send sms success" };
     handle_parameter_.write(response.to_json_string());
+
+    handle_parameter_.submit_task([this,sms_code] {
+        send_sdk_sms(sms_code);
+    });
 
     co_return;
 }
@@ -136,6 +140,6 @@ std::string celeritas::send_sms::calculate_hmac_sha256(int app_id, const std::st
     return hex_output;
 }
 
-void celeritas::send_sms::send_sdk_sms(const std::string& phone, int code)
+void celeritas::send_sms::send_sdk_sms(const sms_code& sms_code)
 {
 }

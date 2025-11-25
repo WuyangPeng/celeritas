@@ -100,101 +100,101 @@ celeritas::initializer_factory::resource_loader_shared_ptr celeritas::initialize
     }
     else if (server_type == auth_type)
     {
-        return std::make_unique<auth_resource_loader>(server_type, app_config);
+        return std::make_shared<auth_resource_loader>(server_type, app_config);
     }
     else if (server_type == gateway_type)
     {
-        return std::make_unique<gateway_resource_loader>(server_type, app_config);
+        return std::make_shared<gateway_resource_loader>(server_type, app_config);
     }
     else if (server_type == player_type)
     {
-        return std::make_unique<player_resource_loader>(server_type, app_config);
+        return std::make_shared<player_resource_loader>(server_type, app_config);
     }
     else if (server_type == logic_type)
     {
-        return std::make_unique<logic_resource_loader>(server_type, app_config);
+        return std::make_shared<logic_resource_loader>(server_type, app_config);
     }
     else if (server_type == game_type)
     {
-        return std::make_unique<game_resource_loader>(server_type, app_config);
+        return std::make_shared<game_resource_loader>(server_type, app_config);
     }
     else if (server_type == battle_type)
     {
-        return std::make_unique<battle_resource_loader>(server_type, app_config);
+        return std::make_shared<battle_resource_loader>(server_type, app_config);
     }
     else if (server_type == payment_type)
     {
-        return std::make_unique<payment_resource_loader>(server_type, app_config);
+        return std::make_shared<payment_resource_loader>(server_type, app_config);
     }
     else if (server_type == admin_type)
     {
-        return std::make_unique<admin_resource_loader>(server_type, app_config);
+        return std::make_shared<admin_resource_loader>(server_type, app_config);
     }
     else if (server_type == cross_type)
     {
-        return std::make_unique<cross_resource_loader>(server_type, app_config);
+        return std::make_shared<cross_resource_loader>(server_type, app_config);
     }
     else if (server_type == chat_type)
     {
-        return std::make_unique<chat_resource_loader>(server_type, app_config);
+        return std::make_shared<chat_resource_loader>(server_type, app_config);
     }
     else if (server_type == log_type)
     {
-        return std::make_unique<log_resource_loader>(server_type, app_config);
+        return std::make_shared<log_resource_loader>(server_type, app_config);
     }
 
     throw celeritas_error("unrecognized server type");
 }
 
-celeritas::initializer_factory::application_loader_unique_ptr celeritas::initializer_factory::create_application_loader(const std::string_view& server_type, const app_config_shared_ptr& app_config)
+celeritas::initializer_factory::application_loader_shared_ptr celeritas::initializer_factory::create_application_loader(const std::string_view& server_type, const app_config_shared_ptr& app_config)
 {
     if (server_type == service_registry_type)
     {
-        return std::make_unique<service_registry_application_loader>(app_config);
+        return std::make_shared<service_registry_application_loader>(app_config);
     }
     else if (server_type == auth_type)
     {
-        return std::make_unique<auth_application_loader>(app_config);
+        return std::make_shared<auth_application_loader>(app_config);
     }
     else if (server_type == gateway_type)
     {
-        return std::make_unique<gateway_application_loader>(app_config);
+        return std::make_shared<gateway_application_loader>(app_config);
     }
     else if (server_type == player_type)
     {
-        return std::make_unique<player_application_loader>(app_config);
+        return std::make_shared<player_application_loader>(app_config);
     }
     else if (server_type == logic_type)
     {
-        return std::make_unique<logic_application_loader>(app_config);
+        return std::make_shared<logic_application_loader>(app_config);
     }
     else if (server_type == game_type)
     {
-        return std::make_unique<game_application_loader>(app_config);
+        return std::make_shared<game_application_loader>(app_config);
     }
     else if (server_type == battle_type)
     {
-        return std::make_unique<battle_application_loader>(app_config);
+        return std::make_shared<battle_application_loader>(app_config);
     }
     else if (server_type == payment_type)
     {
-        return std::make_unique<payment_application_loader>(app_config);
+        return std::make_shared<payment_application_loader>(app_config);
     }
     else if (server_type == admin_type)
     {
-        return std::make_unique<admin_application_loader>(app_config);
+        return std::make_shared<admin_application_loader>(app_config);
     }
     else if (server_type == cross_type)
     {
-        return std::make_unique<cross_application_loader>(app_config);
+        return std::make_shared<cross_application_loader>(app_config);
     }
     else if (server_type == chat_type)
     {
-        return std::make_unique<chat_application_loader>(app_config);
+        return std::make_shared<chat_application_loader>(app_config);
     }
     else if (server_type == log_type)
     {
-        return std::make_unique<log_application_loader>(app_config);
+        return std::make_shared<log_application_loader>(app_config);
     }
 
     throw celeritas_error("unrecognized server type");

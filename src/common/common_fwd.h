@@ -14,6 +14,7 @@ namespace celeritas
     class command_line_config;
     class session;
     class resource_loader_base;
+    class application_loader_base;
     class snowflake_generator;
     class thread_safe_queue;
     class worker_pool;

@@ -1,26 +1,27 @@
 ﻿#include "http_handle_parameter.h"
+#include "common/application_loader_base.h"
 #include "common/celeritas_error.h"
 #include "common/resource_loader_base.h"
 #include "common/session.h"
 #include "config/app_config.h"
 
-celeritas::http_handle_parameter::http_handle_parameter(io_context_type& io_context, std::string path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
-    : io_context_{ io_context }, path_{ std::move(path) }, params_{ params }, response_{}, session_{ session }, resource_loader_{ resource_loader }
+celeritas::http_handle_parameter::http_handle_parameter(io_context_type& io_context, std::string path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader, const application_loader_shared_ptr& application_loader)
+    : io_context_{ io_context }, path_{ std::move(path) }, params_{ params }, response_{}, session_{ session }, resource_loader_{ resource_loader }, application_loader_{ application_loader }
 {
 }
 
-celeritas::http_handle_parameter::http_handle_parameter(io_context_type& io_context, std::string path, std::string params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
-    : io_context_{ io_context }, path_{ std::move(path) }, params_{}, response_{ std::move(params) }, session_{ session }, resource_loader_{ resource_loader }
+celeritas::http_handle_parameter::http_handle_parameter(io_context_type& io_context, std::string path, std::string params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader, const application_loader_shared_ptr& application_loader)
+    : io_context_{ io_context }, path_{ std::move(path) }, params_{}, response_{ std::move(params) }, session_{ session }, resource_loader_{ resource_loader }, application_loader_{ application_loader }
 {
 }
 
 celeritas::http_handle_parameter::http_handle_parameter(const http_handle_parameter& rhs)
-    : io_context_{ rhs.io_context_ }, path_{ rhs.path_ }, params_{ rhs.params_ }, response_{ rhs.response_ }, session_{ rhs.session_ }, resource_loader_{ rhs.resource_loader_ }
+    : io_context_{ rhs.io_context_ }, path_{ rhs.path_ }, params_{ rhs.params_ }, response_{ rhs.response_ }, session_{ rhs.session_ }, resource_loader_{ rhs.resource_loader_ }, application_loader_{ rhs.application_loader_ }
 {
 }
 
 celeritas::http_handle_parameter::http_handle_parameter(http_handle_parameter&& rhs) noexcept
-    : io_context_{ rhs.io_context_ }, path_{ std::move(rhs.path_) }, params_{ rhs.params_ }, response_{ std::move(rhs.response_) }, session_{ std::move(rhs.session_) }, resource_loader_{ std::move(rhs.resource_loader_) }
+    : io_context_{ rhs.io_context_ }, path_{ std::move(rhs.path_) }, params_{ rhs.params_ }, response_{ std::move(rhs.response_) }, session_{ std::move(rhs.session_) }, resource_loader_{ std::move(rhs.resource_loader_) }, application_loader_{ std::move(rhs.application_loader_) }
 {
 }
 
@@ -106,5 +107,16 @@ celeritas::database_config celeritas::http_handle_parameter::get_database_config
         return app_config->get_database_config(db_name);
     }
 
-    throw celeritas_error("resource_loader is null.");
+    throw celeritas_error("resource loader is null.");
+}
+
+void celeritas::http_handle_parameter::submit_task(task_type task)
+{
+    if (const auto application_loader_shared_ptr = application_loader_.lock();
+        application_loader_shared_ptr != nullptr)
+    {
+        return application_loader_shared_ptr->submit_task(std::move(task));
+    }
+
+    throw celeritas_error("application loader is null.");
 }

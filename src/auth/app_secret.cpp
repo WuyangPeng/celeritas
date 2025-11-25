@@ -1,4 +1,5 @@
 ﻿#include "app_secret.h"
+#include "app_status_type.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "database/database_pool_manager.h"
@@ -17,6 +18,10 @@ std::string celeritas::app_secret::get_key(int app_id)
     if (const auto iter = apps_.find(app_id);
         iter != apps_.cend())
     {
+        if (iter->second.get_status() == static_cast<int>(app_status_type::close))
+        {
+            throw celeritas_error("app is close.");
+        }
         return iter->second.get_app_secret();
     }
 

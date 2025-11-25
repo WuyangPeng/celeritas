@@ -39,17 +39,22 @@ bool celeritas::application_loader::dispatch(io_context_type& io_context, const 
 
 bool celeritas::application_loader::dispatch(io_context_type& io_context, const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
 {
-    return http_message_registry_->dispatch(http_handle_parameter{ io_context, path, params, session, resource_loader });
+    return http_message_registry_->dispatch(http_handle_parameter{ io_context, path, params, session, resource_loader, shared_from_this() });
 }
 
 bool celeritas::application_loader::dispatch(io_context_type& io_context, const std::string& path, const std::string& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
 {
-    return http_message_registry_->dispatch(http_handle_parameter{ io_context, path, params, session, resource_loader });
+    return http_message_registry_->dispatch(http_handle_parameter{ io_context, path, params, session, resource_loader, shared_from_this() });
 }
 
 celeritas::application_loader::message_registry_weak_ptr celeritas::application_loader::get_message_registry()
 {
     return message_registry_;
+}
+
+void celeritas::application_loader::submit_task(task_type task)
+{
+    worker_pool_->submit(std::move(task));
 }
 
 void celeritas::application_loader::initialize_worker_pool()
