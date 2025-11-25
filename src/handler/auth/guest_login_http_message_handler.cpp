@@ -130,6 +130,14 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
     auto account = co_await get_account(optional_account, redis_pool, device_id, handle_parameter.get_app_config());
 
+    if (account.get_account_name() == account.get_device_id())
+    {
+        const guest_login_response response{ game_error_type::no_guest_account, "no guest account" };
+        handle_parameter.write(response.to_json_string());
+
+        co_return;
+    }
+
     const auto token = generate_token();
 
     session_token session_token{ database_type::redis, token };

@@ -17,6 +17,7 @@ namespace celeritas
         code_expired = 104,
         code_error = 105,
         account_error = 106,
+        no_guest_account = 107,
 
         // 数据库错误
         redis_error = 1000,
