@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "database/generated/mysql/apps.h"
+#include "database/generated/mysql/auth/apps.h"
 
 #include <boost/asio.hpp>
 

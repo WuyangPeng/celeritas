@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "database/database_pool.h"
-#include "database/generated/mysql/account.h"
+#include "database/generated/mysql/auth/account.h"
 #include "message/http_handle_parameter.h"
 
 #include <boost/asio/awaitable.hpp>

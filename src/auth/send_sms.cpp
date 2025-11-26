@@ -5,8 +5,8 @@
 #include "common/hmac_sha_256.h"
 #include "common/random_helper.h"
 #include "database/database_pool_manager.h"
-#include "database/generated/redis/sms_code.h"
-#include "database/generated/redis/sms_limit.h"
+#include "database/generated/redis/auth/sms_code.h"
+#include "database/generated/redis/auth/sms_limit.h"
 #include "server/game_error_type.h"
 
 #include <boost/lexical_cast.hpp>

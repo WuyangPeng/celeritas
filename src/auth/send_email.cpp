@@ -7,8 +7,8 @@
 #include "common/hmac_sha_256.h"
 #include "common/random_helper.h"
 #include "database/database_pool_manager.h"
-#include "database/generated/redis/email_code.h"
-#include "database/generated/redis/email_limit.h"
+#include "database/generated/redis/auth/email_code.h"
+#include "database/generated/redis/auth/email_limit.h"
 #include "server/game_error_type.h"
 
 #include <boost/lexical_cast.hpp>

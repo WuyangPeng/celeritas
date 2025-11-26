@@ -1,20 +1,20 @@
 ﻿#include "app_secret.h"
 #include "phone_bind.h"
 #include "phone_bind_response.h"
+#include "common/hmac_sha_256.h"
 #include "common/snowflake_generator.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
-#include "database/generated/mysql/account_bind.h"
+#include "database/generated/mysql/auth/account_bind.h"
+#include "database/generated/redis/auth/session_token.h"
 #include "server/account_type.h"
 #include "server/game_error_type.h"
 
 #include <boost/lexical_cast.hpp>
-#include <boost/algorithm/hex.hpp>
 #include <boost/algorithm/string/case_conv.hpp>
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <openssl/evp.h>
-#include <openssl/hmac.h>
 
 #include <regex>
 
@@ -25,14 +25,15 @@ celeritas::phone_bind::phone_bind(http_handle_parameter handle_parameter)
 
 celeritas::phone_bind::void_awaitable_type celeritas::phone_bind::response()
 {
-    const auto optional_device_id = handle_parameter_.get_param(account::device_id_describe.data());
-    if (!optional_device_id)
+    const auto optional_token = handle_parameter_.get_param("token");
+    if (!optional_token)
     {
-        const phone_bind_response response{ game_error_type::invalid_parameter, "device_id is required" };
+        const phone_bind_response response{ game_error_type::invalid_parameter, "token is required" };
         handle_parameter_.write(response.to_json_string());
 
         co_return;
     }
+
     const auto optional_phone = handle_parameter_.get_param("phone");
     if (!optional_phone)
     {
@@ -100,12 +101,12 @@ celeritas::phone_bind::void_awaitable_type celeritas::phone_bind::response()
         co_return;
     }
 
-    const auto& device_id = *optional_device_id;
+    const auto& token = *optional_token;
     const auto app_id = boost::lexical_cast<int>(*optional_app_id);
     const auto secret = app_secret::get_instance().get_key(app_id);
     const auto code = boost::lexical_cast<int>(*optional_code);
 
-    if (const auto hmac_sha256 = calculate_hmac_sha256(app_id, phone, device_id, code, timestamp, secret);
+    if (const auto hmac_sha256 = calculate_hmac_sha256(app_id, phone, token, code, timestamp, secret);
         hmac_sha256 != *optional_sign)
     {
         const phone_bind_response response{ game_error_type::sign_error, "sign error" };
@@ -113,10 +114,21 @@ celeritas::phone_bind::void_awaitable_type celeritas::phone_bind::response()
 
         co_return;
     }
+    const auto session_token_select = session_token::get_select(database_type::redis, token);
+    const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
+    const auto session_token_result = co_await redis_pool->select_one(session_token_select, session_token::get_database_field_container());
+    if (!session_token_result)
+    {
+        const phone_bind_response response{ game_error_type::token_error, "token error" };
+        handle_parameter_.write(response.to_json_string());
+
+        co_return;
+    }
+
+    session_token session_token{ *session_token_result };
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
-    const auto select = account::get_select(database_type::mysql);
-    select->add_key(basis_database{ account::device_id_describe, device_id });
+    const auto select = account::get_select(database_type::mysql, session_token.get_account_id());
     auto optional_account = co_await mysql_pool->select_one(select, account::get_database_field_container());
 
     if (!optional_account)
@@ -140,8 +152,12 @@ celeritas::phone_bind::void_awaitable_type celeritas::phone_bind::response()
     }
 
     account account{ *optional_account };
-    account.set_device_id(account.get_account_name());
-    account.set_password_hash(generate_token());
+    if (account.get_password_hash().empty())
+    {
+        account.set_device_id(account.get_account_name());
+        account.set_password_hash(generate_token());
+    }
+
     const auto server_config = handle_parameter_.get_app_config()->get_server_config();
     const auto account_bind_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
     account_bind account_bind{ database_type::redis, account_bind_id };
@@ -150,7 +166,7 @@ celeritas::phone_bind::void_awaitable_type celeritas::phone_bind::response()
     account_bind.set_account_type(static_cast<int>(account_type::phone));
     account_bind.set_is_primary(true);
 
-    if (co_await mysql_pool->execute_changes(account_bind.get_modify()) &&
+    if (co_await mysql_pool->execute_changes(account.get_modify()) &&
         co_await mysql_pool->execute_changes(account_bind.get_modify()))
     {
         const phone_bind_response response{ game_error_type::success, "phone bind success" };
@@ -163,26 +179,11 @@ celeritas::phone_bind::void_awaitable_type celeritas::phone_bind::response()
     }
 }
 
-std::string celeritas::phone_bind::calculate_hmac_sha256(int app_id, const std::string& phone, const std::string& device_id, int code, int64_t timestamp, const std::string& secret_key)
+std::string celeritas::phone_bind::calculate_hmac_sha256(int app_id, const std::string& phone, const std::string& token, int code, int64_t timestamp, const std::string& secret_key)
 {
-    const auto data = std::format("{}{}{}{}{}", app_id, phone, device_id, code, timestamp);
+    const auto data = std::format("{}{}{}{}{}", app_id, phone, token, code, timestamp);
 
-    std::array<unsigned char, EVP_MAX_MD_SIZE> result{};
-    unsigned int result_length{};
-
-    // HMAC 计算
-    // 参数: 算法, Key, Key长度, 数据, 数据长度, 输出Buffer, 输出长度指针
-    HMAC(EVP_sha256(),
-         secret_key.c_str(), secret_key.length(),
-         (unsigned char*)data.c_str(), data.length(),
-         result.data(), &result_length);
-
-    // Hex 转换
-    std::string hex_output{};
-    boost::algorithm::hex(result.data(), result.data() + result_length, std::back_inserter(hex_output));
-    boost::algorithm::to_lower(hex_output);
-
-    return hex_output;
+    return hmac_sha256::calculate(data, secret_key);
 }
 
 std::string celeritas::phone_bind::generate_token()

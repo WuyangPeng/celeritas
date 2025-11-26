@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "database/generated/redis/email_code.h"
+#include "database/generated/redis/auth/email_code.h"
 #include "message/http_handle_parameter.h"
 
 namespace celeritas

@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "database/database_entity.h"
 #include "database/database_data_type_traits.h"
+#include "database/database_entity.h"
 #include "database/database_index_type.h"
 #include "database/entity.h"
 
@@ -39,18 +39,13 @@ namespace celeritas
 
         [[nodiscard]] static basis_database_manager_shared_ptr get_select(database_type database_type);
 
-        [[nodiscard]] static constexpr std::string_view get_database_name()
-        {
-            return database_name;
-        }
+        static constexpr std::string_view database_name{ "session_token" };
 
         static constexpr std::string_view token_describe{ "token" };
         static constexpr std::string_view account_id_describe{ "account_id" };
         static constexpr std::string_view is_new_account_describe{ "is_new_account" };
 
     private:
-        static constexpr std::string_view database_name{ "session_token" };
-
         [[nodiscard]] static basis_database_container get_key_basis_database_container(database_type database_type, traits::param_type::string_type token);
 
         entity<token_describe, database_data_type::string_type, database_index_type::key> token_;

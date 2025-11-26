@@ -158,6 +158,11 @@ celeritas::connection_pool_base<SessionType>::bool_awaitable_type celeritas::con
 {
     try
     {
+        if (!database->is_modify())
+        {
+            co_return true;
+        }
+
         auto session = co_await async_get_session();
 
         co_await session->execute_changes(database, expiration_time);

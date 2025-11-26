@@ -54,6 +54,12 @@ void celeritas::generate_database_file::generate_entity_h_file(const database_at
 
     std::filesystem::path path{ output_directory_ };
     path /= relative_path_;
+
+    std::filesystem::path database_file_path{ database_file_ };
+    auto file_name = database_file_path.filename();
+    file_name = file_name.replace_extension("");
+    path /= file_name;
+
     std::filesystem::create_directory(path);
     path /= class_name + ".h";
 
@@ -74,6 +80,12 @@ void celeritas::generate_database_file::generate_entity_cpp_file(const database_
 
     std::filesystem::path path{ output_directory_ };
     path /= relative_path_;
+
+    std::filesystem::path database_file_path{ database_file_ };
+    auto file_name = database_file_path.filename();
+    file_name = file_name.replace_extension("");
+    path /= file_name;
+
     std::filesystem::create_directory(path);
     path /= class_name + ".cpp";
 
