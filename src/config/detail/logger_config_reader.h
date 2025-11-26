@@ -25,6 +25,8 @@ namespace celeritas
 
         void load_config();
 
+        void load_node(const std::string& name, const node_type& node);
+
         void load_node(const node_type& node);
 
         std::string filename_;

@@ -25,7 +25,7 @@ celeritas::http_message_registry::http_base_message_handler_optional_type celeri
 {
     const auto typeName = handle_parameter.get_path();
 
-    std::lock_guard lock{ mutex_ };
+    std::shared_lock lock{ mutex_ };
 
     if (const auto iter = registry_.find(typeName);
         iter != registry_.end())

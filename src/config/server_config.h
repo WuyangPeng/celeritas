@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "config_fwd.h"
 #include "server_network_config.h"
 
 #include <string>
@@ -44,7 +45,7 @@ namespace celeritas
         server_network_config_container_type server_network_config_;
         std::string game_server_id_;
         std::string host_;
-        int worker_pool_size_ = 0;
+        int worker_pool_size_ = default_worker_pool_size;
         int datacenter_id_ = 0;
         int worker_id_ = 0;
     };

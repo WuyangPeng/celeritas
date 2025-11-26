@@ -20,5 +20,5 @@ celeritas::server_network_type celeritas::get_server_network_type(const std::str
         return iter->second;
     }
 
-    throw celeritas_error("server_network_type error,name = {}", server_network_name);
+    throw celeritas_error{ "server network type error,name = " + server_network_name };
 }

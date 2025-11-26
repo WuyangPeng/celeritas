@@ -26,7 +26,7 @@ celeritas::protobuf_message_registry::base_message_handler_optional_type celerit
 {
     const auto typeName = current_message.GetTypeName();
 
-    std::lock_guard lock{ mutex_ };
+    std::shared_lock lock{ mutex_ };
 
     if (const auto iter = registry_.find(typeName.data());
         iter != registry_.cend())

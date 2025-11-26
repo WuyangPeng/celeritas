@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "config_fwd.h"
 #include "database_type.h"
 
 #include <string>
@@ -55,9 +56,9 @@ namespace celeritas
         std::string user_;
         std::string password_;
         std::string db_name_;
-        int min_connections_ = 4;
-        int max_connections_ = 10;
-        int timeout_seconds_ = 5;
-        int expire_seconds_ = 0;
+        int min_connections_ = default_database_min_connections;
+        int max_connections_ = default_database_max_connections;
+        int timeout_seconds_ = default_database_timeout_seconds;
+        int expire_seconds_ = default_database_expire_seconds;
     };
 }

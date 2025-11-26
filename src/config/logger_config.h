@@ -1,8 +1,8 @@
 ﻿#pragma once
 
+#include "config_fwd.h"
 #include "common/detail/logger_namespace.h"
 
-#include <boost/log/trivial.hpp>
 #include <boost/property_tree/ptree.hpp>
 
 namespace celeritas
@@ -36,6 +36,6 @@ namespace celeritas
         bool console_enabled_ = false;
         std::string channel_name_;
         std::string log_file_name_;
-        int rotation_size_ = 0;
+        int rotation_size_ = default_logger_rotation_size;
     };
 }

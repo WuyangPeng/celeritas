@@ -43,7 +43,7 @@ celeritas::database_config celeritas::database_config_reader::get_database_node(
     const auto expire_seconds = node.get<int>("expire_seconds", default_database_expire_seconds);
     if (database_type == database_type::redis && expire_seconds <= 0)
     {
-        throw celeritas_error("redis expire seconds must be greater than 0.");
+        throw celeritas_error{ "redis expire seconds must be greater than 0." };
     }
 
     return database_config{ name, database_type, host, port, user, password, db_name, min_connections, max_connections, timeout_seconds, expire_seconds };

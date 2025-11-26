@@ -28,25 +28,30 @@ void celeritas::logger_config_reader::load_config()
 
     for (const auto& [name , node] : tree.get_child("loggers"))
     {
-        if (name == "logger")
+        load_node(name, node);
+    }
+}
+
+void celeritas::logger_config_reader::load_node(const std::string& name, const node_type& node)
+{
+    if (name == "logger")
+    {
+        load_node(node);
+    }
+    else if (name == "global_level")
+    {
+        if (const auto global_level = node.get<std::string>("", "");
+            !global_level.empty())
         {
-            load_node(node);
+            logger_level_.set_default_level(logger_config::get_severity_level_type(global_level));
         }
-        else if (name == "global_level")
+    }
+    else if (name == "console_level")
+    {
+        if (const auto console_level = node.get<std::string>("", "");
+            !console_level.empty())
         {
-            if (const auto global_level = node.get<std::string>("", "");
-                !global_level.empty())
-            {
-                logger_level_.set_default_level(logger_config::get_severity_level_type(global_level));
-            }
-        }
-        else if (name == "console_level")
-        {
-            if (const auto console_level = node.get<std::string>("", "");
-                !console_level.empty())
-            {
-                logger_level_.set_console_level(logger_config::get_severity_level_type(console_level));
-            }
+            logger_level_.set_console_level(logger_config::get_severity_level_type(console_level));
         }
     }
 }

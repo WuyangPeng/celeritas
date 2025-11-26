@@ -13,6 +13,7 @@ namespace celeritas
     class health_check_url_config;
     class database_config;
     class logger_config;
+
     class server_config;
     class app_config;
 

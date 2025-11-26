@@ -3,6 +3,7 @@
 #include "common/detail/logger_namespace.h"
 
 #include <boost/log/trivial.hpp>
+#include <optional>
 
 namespace celeritas
 {
@@ -24,9 +25,9 @@ namespace celeritas
         void set_console_level(severity_level_type severity_level_type);
 
     private:
-        severity_level_type default_level_ = severity_level_type::trace;
-        bool is_set_default_level_ = false;
-        severity_level_type console_level_ = severity_level_type::trace;
-        bool is_set_console_level_ = false;
+        using optional_severity_level_type = std::optional<severity_level_type>;
+
+        optional_severity_level_type default_level_;
+        optional_severity_level_type console_level_;
     };
 }

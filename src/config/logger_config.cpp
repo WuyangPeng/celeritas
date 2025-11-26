@@ -65,5 +65,5 @@ celeritas::severity_level_type celeritas::logger_config::get_severity_level_type
         return iter->second;
     }
 
-    throw celeritas_error("get_severity_level_type error,name =" + severity_level_name);
+    throw celeritas_error{ "get_severity_level_type error,name =" + severity_level_name };
 }

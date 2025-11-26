@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "config_fwd.h"
+
 #include <string>
 
 namespace celeritas
@@ -19,8 +21,8 @@ namespace celeritas
 
     private:
         std::string url_;
-        int interval_ = 0;
-        int timeout_ = 0;
+        int interval_ = default_health_check_interval;
+        int timeout_ = default_health_check_timeout;
     };
 }
 

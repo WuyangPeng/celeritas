@@ -56,7 +56,7 @@ int64_t celeritas::snowflake_generator::handle_clock_backwards(const int64_t tim
         return til_next_millis(last_timestamp_);
     }
 
-    throw celeritas_error("clock moved backwards. Refusing to generate id for {} milliseconds.", offset);
+    throw celeritas_error{ "clock moved backwards. Refusing to generate id for {} milliseconds.", offset };
 }
 
 void celeritas::snowflake_generator::update_timestamp_and_sequence(int64_t timestamp)

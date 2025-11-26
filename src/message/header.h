@@ -28,6 +28,16 @@ namespace celeritas
         [[nodiscard]] message_shared_ptr get_message() const;
 
     private:
+        [[nodiscard]] message_shared_ptr get_to_gateway_message() const;
+
+        [[nodiscard]] message_shared_ptr get_gateway_message() const;
+
+        [[nodiscard]] message_shared_ptr get_server_message() const;
+
+        [[nodiscard]] message_shared_ptr get_client_message() const;
+
+        [[nodiscard]] message_shared_ptr get_empty_message() const;
+
         int32_t rpc = 0;
         int64_t user_id = 0;
         int32_t code = 0;

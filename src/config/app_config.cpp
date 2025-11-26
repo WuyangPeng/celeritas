@@ -89,13 +89,13 @@ celeritas::app_config::database_config_container celeritas::app_config::get_data
 
 celeritas::database_config celeritas::app_config::get_database_config(const std::string& db_name) const
 {
-    const auto iter = database_.find(db_name);
-    if (iter != database_.cend())
+    if (const auto iter = database_.find(db_name);
+        iter != database_.cend())
     {
         return iter->second;
     }
 
-    throw celeritas_error("db is not exist,db name:" + db_name);
+    throw celeritas_error{ "db is not exist,db name:" + db_name };
 }
 
 celeritas::server_config celeritas::app_config::get_server_config() const

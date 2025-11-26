@@ -12,17 +12,23 @@ namespace celeritas
     {
     public:
         using class_type = protobuf_handle_parameter;
+        using io_context_type = boost::asio::io_context;
         using protobuf_message = google::protobuf::Message;
         using protobuf_message_shared_ptr = std::shared_ptr<protobuf_message>;
         using session_shared_ptr = std::shared_ptr<session>;
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
-        using io_context_type = boost::asio::io_context;
+        using application_loader_shared_ptr = std::shared_ptr<application_loader_base>;
 
-        protobuf_handle_parameter(io_context_type& io_context, const header& header, protobuf_message_shared_ptr request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
+        protobuf_handle_parameter(io_context_type& io_context,
+                                  const header& header,
+                                  protobuf_message_shared_ptr request_message,
+                                  const session_shared_ptr& session,
+                                  const resource_loader_shared_ptr& resource_loader,
+                                  const application_loader_shared_ptr& application_loader);
 
         void write(const protobuf_message& response) const;
 
-        void write(const std::string& server_type, const protobuf_message& request) const;
+        void write(const std::string& server_type, const protobuf_message& message) const;
 
         [[nodiscard]] protobuf_message_shared_ptr get_protobuf_message() const;
 
@@ -31,11 +37,13 @@ namespace celeritas
     private:
         using session_weak_ptr = std::weak_ptr<session>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
+        using application_loader_weak_ptr = std::weak_ptr<application_loader_base>;
 
         io_context_type& io_context_;
         header header_;
         protobuf_message_shared_ptr request_message_;
         session_weak_ptr session_;
         resource_loader_weak_ptr resource_loader_;
+        application_loader_weak_ptr application_loader_;
     };
 }

@@ -33,7 +33,7 @@ celeritas::concrete_message_handler<Message>::handler_function_type celeritas::c
     const auto iter = handler_.find(payload_case);
     if (iter == handler_.cend())
     {
-        throw celeritas_error("No handler function found for payload_case");
+        throw celeritas_error{ "No handler function found for payload_case" };
     }
 
     return iter->second;
@@ -42,15 +42,15 @@ celeritas::concrete_message_handler<Message>::handler_function_type celeritas::c
 template <typename Message>
 bool celeritas::concrete_message_handler<Message>::handle_forward(const protobuf_handle_parameter& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
 {
-    const auto message_registry_shared_ptr = message_registry.lock();
-    if (message_registry_shared_ptr == nullptr)
+    if (const auto message_registry_shared_ptr = message_registry.lock();
+        message_registry_shared_ptr == nullptr)
     {
-        return false;
+        const auto handler = get_handler_function(current_message.payload_case());
+
+        return handler(handle_parameter, current_message, message_registry_shared_ptr);
     }
 
-    const auto handler = get_handler_function(current_message.payload_case());
-
-    return handler(handle_parameter, current_message, message_registry_shared_ptr);
+    return false;
 }
 
 template <typename Message>
@@ -60,7 +60,7 @@ bool celeritas::concrete_message_handler<Message>::handle_dispatch(const protobu
     if (const auto& result = (current_message.*get_function)();
         !message_registry->dispatch(handle_parameter, result))
     {
-        LOG_CHANNEL(message_channel, error) << "Failed to dispatch message.";
+        LOG_CHANNEL(message_channel, error) << "failed to dispatch message.";
         return false;
     }
 

@@ -1,7 +1,7 @@
 ﻿#include "server_config_reader.h"
+#include "common/celeritas_error.h"
 #include "common/common_fwd.h"
 #include "config/config_fwd.h"
-#include "common/celeritas_error.h"
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
@@ -27,12 +27,12 @@ celeritas::server_config celeritas::server_config_reader::load_config(const std:
 
     if (datacenter_id > max_datacenter_id || datacenter_id < 0)
     {
-        throw celeritas_error("datacenter id can't be greater than " + std::to_string(max_datacenter_id) + " or less than 0");
+        throw celeritas_error{ "datacenter id can't be greater than {} or less than 0", max_datacenter_id };
     }
 
     if (worker_id > max_worker_id || worker_id < 0)
     {
-        throw celeritas_error("worker id can't be greater than " + std::to_string(max_worker_id) + " or less than 0");
+        throw celeritas_error{ "worker id can't be greater than {} or less than 0", max_worker_id };
     }
 
     server_config::server_network_config_container_type container{};
