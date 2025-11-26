@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "connection_pool.h"
+#include "database_entity_change.h"
 #include "common/logger.h"
 
 template <typename SessionType>
