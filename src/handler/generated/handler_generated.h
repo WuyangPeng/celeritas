@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "handler/auth/email_login_http_message_handler.h"
 #include "handler/auth/guest_login_http_message_handler.h"
 #include "handler/auth/phone_bind_http_message_handler.h"
 #include "handler/auth/phone_login_http_message_handler.h"

@@ -20,4 +20,5 @@ namespace celeritas
     constexpr std::string_view phone_login_path = "/login/phone";
     constexpr std::string_view phone_bind_path = "/login/bind";
     constexpr std::string_view send_email_path = "/login/send_email";
+    constexpr std::string_view email_login_path = "/login/email";
 }
