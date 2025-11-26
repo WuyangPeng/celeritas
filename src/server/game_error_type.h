@@ -16,12 +16,15 @@ namespace celeritas
         sent_too_frequently = 103,
         code_expired = 104,
         code_error = 105,
-        account_error = 106,
-        no_guest_account = 107,
+
+        // auth错误
+        account_error = 1000,
+        no_guest_account = 1001,
+        account_bound = 1002,
 
         // 数据库错误
-        redis_error = 1000,
-        mysql_error = 1001,
+        redis_error = 2000,
+        mysql_error = 2001,
     };
 
     [[nodiscard]] std::string get_game_error_description(game_error_type game_error);

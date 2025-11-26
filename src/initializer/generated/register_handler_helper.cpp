@@ -30,6 +30,7 @@ void celeritas::register_handler_helper::register_handler() const
     message_registry_->registerHandler(std::make_shared<register_response_message_handler>());
 
 
+    http_message_registry_->registerHandler(std::make_shared<email_bind_http_message_handler>());
     http_message_registry_->registerHandler(std::make_shared<email_login_http_message_handler>());
     http_message_registry_->registerHandler(std::make_shared<guest_login_http_message_handler>());
     http_message_registry_->registerHandler(std::make_shared<phone_bind_http_message_handler>());
