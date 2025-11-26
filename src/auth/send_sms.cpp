@@ -2,6 +2,7 @@
 #include "auth_fwd.h"
 #include "send_sms.h"
 #include "send_sms_response.h"
+#include "common/hmac_sha_256.h"
 #include "common/random_helper.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/redis/sms_code.h"
@@ -33,7 +34,7 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
     }
 
     const auto& phone = *optional_phone;
-    if (const std::regex phone_regex(R"(^1\d{10}$)");
+    if (const std::regex phone_regex{ R"(^1\d{10}$)" };
         !std::regex_match(phone, phone_regex))
     {
         const send_sms_response response{ game_error_type::invalid_parameter, "phone is invalid" };
@@ -126,22 +127,7 @@ std::string celeritas::send_sms::calculate_hmac_sha256(int app_id, const std::st
 {
     const auto data = std::format("{}{}{}", app_id, phone, timestamp);
 
-    std::array<unsigned char, EVP_MAX_MD_SIZE> result{};
-    unsigned int result_length{};
-
-    // HMAC 计算
-    // 参数: 算法, Key, Key长度, 数据, 数据长度, 输出Buffer, 输出长度指针
-    HMAC(EVP_sha256(),
-         secret_key.c_str(), secret_key.length(),
-         (unsigned char*)data.c_str(), data.length(),
-         result.data(), &result_length);
-
-    // Hex 转换
-    std::string hex_output{};
-    boost::algorithm::hex(result.data(), result.data() + result_length, std::back_inserter(hex_output));
-    boost::algorithm::to_lower(hex_output);
-
-    return hex_output;
+    return hmac_sha256::calculate(data, secret_key);
 }
 
 void celeritas::send_sms::send_sdk_sms(const sms_code& sms_code)

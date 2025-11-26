@@ -8,6 +8,7 @@ namespace celeritas
     class random_helper;
     class time_helper;
     class snowflake_generator;
+    class hmac_sha256;
     class command_line_config;
 
     class logger;
