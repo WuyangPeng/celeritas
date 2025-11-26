@@ -2,11 +2,6 @@
 #include "buffer_pool.h"
 #include "noexcept_safe_call_and_log.h"
 
-celeritas::buffer_guard::buffer_guard(buffer_pool_data buffer_data)
-    : buffer_data_{ std::move(buffer_data) }, effective_size_{ 0 }
-{
-}
-
 celeritas::buffer_guard::buffer_guard(buffer_pool_data buffer_data, const size_t effective_size)
     : buffer_data_{ std::move(buffer_data) }, effective_size_{ effective_size }
 {
@@ -57,7 +52,7 @@ size_t celeritas::buffer_guard::get_effective_size() const
     return effective_size_;
 }
 
-void celeritas::buffer_guard::set_effective_size(size_t size)
+void celeritas::buffer_guard::set_effective_size(const size_t size)
 {
     effective_size_ = size;
 }

@@ -16,37 +16,18 @@ int64_t celeritas::snowflake_generator::generate(const int datacenter_id, const 
 {
     auto timestamp = time_helper::get_current_milliseconds();
 
+    std::lock_guard lock{ id_mutex_ };
+
     if (timestamp < last_timestamp_)
     {
-        if (const auto offset = last_timestamp_ - timestamp;
-            offset < max_clock_skew_ms)
-        {
-            timestamp = til_next_millis(last_timestamp_);
-        }
-        else
-        {
-            throw celeritas_error("clock moved backwards. Refusing to generate id for " + std::to_string(offset) + " milliseconds.");
-        }
+        timestamp = handle_clock_backwards(timestamp);
     }
 
-    if (last_timestamp_ == timestamp)
-    {
-        sequence_ = (sequence_ + 1) & sequence_mask;
-        if (sequence_ == 0)
-        {
-            timestamp = til_next_millis(last_timestamp_);
-        }
-    }
-    else
-    {
-        sequence_ = 0;
-    }
+    update_timestamp_and_sequence(timestamp);
 
-    last_timestamp_ = timestamp;
-
-    return ((timestamp - epoch) << timestamp_left_shift) |
-           (datacenter_id << datacenter_id_shift) |
-           (worker_id << worker_id_shift) |
+    return (last_timestamp_ - epoch) << timestamp_left_shift |
+           static_cast<int64_t>(datacenter_id) << datacenter_id_shift |
+           static_cast<int64_t>(worker_id) << worker_id_shift |
            sequence_;
 }
 
@@ -65,4 +46,33 @@ int64_t celeritas::snowflake_generator::til_next_millis(const int64_t last_times
     }
 
     return timestamp;
+}
+
+int64_t celeritas::snowflake_generator::handle_clock_backwards(const int64_t timestamp) const
+{
+    const auto offset = last_timestamp_ - timestamp;
+    if (offset < max_clock_skew_ms)
+    {
+        return til_next_millis(last_timestamp_);
+    }
+
+    throw celeritas_error("clock moved backwards. Refusing to generate id for {} milliseconds.", offset);
+}
+
+void celeritas::snowflake_generator::update_timestamp_and_sequence(int64_t timestamp)
+{
+    if (last_timestamp_ == timestamp)
+    {
+        sequence_ = sequence_ + 1 & sequence_mask;
+        if (sequence_ == 0)
+        {
+            timestamp = til_next_millis(last_timestamp_);
+        }
+    }
+    else
+    {
+        sequence_ = 0;
+    }
+
+    last_timestamp_ = timestamp;
 }

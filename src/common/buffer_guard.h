@@ -13,8 +13,6 @@ namespace celeritas
         using class_type = buffer_guard;
         using source_type = std::span<const char>;
 
-        explicit buffer_guard(buffer_pool_data buffer_data);
-
         buffer_guard(buffer_pool_data buffer_data, size_t effective_size);
 
         ~buffer_guard() noexcept;

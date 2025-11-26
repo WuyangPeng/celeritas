@@ -16,7 +16,7 @@ celeritas::worker_pool::~worker_pool() noexcept
                                    this->queue_.stop();
                                },
                                common_channel,
-                               "Error while stopping thread_safe_queue: ");
+                               "error while stopping thread_safe_queue: ");
 }
 
 void celeritas::worker_pool::submit(task_type task)
@@ -60,7 +60,7 @@ bool celeritas::worker_pool::get_and_run_task()
     }
     task();
 
-    LOG_CHANNEL(common_channel, debug) << "Task is run.";
+    LOG_CHANNEL(common_channel, debug) << "task is run.";
 
     return true;
 }

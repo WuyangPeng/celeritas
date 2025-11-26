@@ -25,6 +25,10 @@ namespace celeritas
 
         [[nodiscard]] static int64_t til_next_millis(int64_t last_timestamp);
 
+        [[nodiscard]] int64_t handle_clock_backwards(int64_t timestamp) const;
+
+        void update_timestamp_and_sequence(int64_t timestamp);
+
         std::mutex id_mutex_;
         int64_t last_timestamp_ = -1;
         int64_t sequence_ = 0;

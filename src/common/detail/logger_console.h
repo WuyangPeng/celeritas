@@ -17,7 +17,7 @@ namespace celeritas
 
         void init_console();
 
-        void update_console_filter(severity_level_type console_level);
+        void update_console_filter(severity_level_type console_level) const;
 
         void update_console_filter(severity_level_type console_level, const std::string& channel_name, bool also_to_console);
 

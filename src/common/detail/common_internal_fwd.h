@@ -7,6 +7,7 @@ namespace celeritas
     class logger_console;
     class logger_support;
     class logger_level;
+
     class buffer_pool_impl;
     class buffer_pool_bucket;
 

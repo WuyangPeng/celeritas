@@ -5,20 +5,25 @@
 namespace celeritas
 {
     class celeritas_error;
+    class random_helper;
     class time_helper;
+    class snowflake_generator;
+    class command_line_config;
+
     class logger;
+
     class buffer_pool_data;
     class buffer_pool;
     class buffer_guard;
+
+    class thread_safe_queue;
+    class worker_pool;
+
     class timer_base;
-    class random_helper;
-    class command_line_config;
     class session;
     class resource_loader_base;
     class application_loader_base;
-    class snowflake_generator;
-    class thread_safe_queue;
-    class worker_pool;
+    class celeritas_main;
 
     constexpr std::string_view channel{ "channel" };
     constexpr std::string_view default_channel{ "default" };

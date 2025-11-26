@@ -1,9 +1,9 @@
-﻿#include "logger_support.h"
-#include "logger_console.h"
+﻿#include "logger_console.h"
+#include "logger_support.h"
 #include "common/common_fwd.h"
 
-#include <boost/log/utility/setup/console.hpp>
 #include <boost/log/expressions.hpp>
+#include <boost/log/utility/setup/console.hpp>
 
 void celeritas::logger_console::init_console()
 {
@@ -14,7 +14,7 @@ void celeritas::logger_console::init_console()
     }
 }
 
-void celeritas::logger_console::update_console_filter(severity_level_type console_level)
+void celeritas::logger_console::update_console_filter(severity_level_type console_level) const
 {
     if (!console_sink_)
     {
@@ -25,6 +25,7 @@ void celeritas::logger_console::update_console_filter(severity_level_type consol
 
     auto channel_filter = log_expressions::has_attr(channel.data()) &&
                           log_expressions::attr<std::string>(channel.data()) == "";
+
     for (const auto& element : console_channels_)
     {
         channel_filter = channel_filter ||
@@ -36,7 +37,7 @@ void celeritas::logger_console::update_console_filter(severity_level_type consol
     console_sink_->set_filter(console_filter);
 }
 
-void celeritas::logger_console::update_console_filter(severity_level_type console_level, const std::string& channel_name, bool also_to_console)
+void celeritas::logger_console::update_console_filter(const severity_level_type console_level, const std::string& channel_name, const bool also_to_console)
 {
     if (also_to_console)
     {

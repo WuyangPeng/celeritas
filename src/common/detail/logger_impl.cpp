@@ -1,5 +1,5 @@
-﻿#include "logger_support.h"
-#include "logger_impl.h"
+﻿#include "logger_impl.h"
+#include "logger_support.h"
 #include "common/common_fwd.h"
 #include "config/config_fwd.h"
 
@@ -71,7 +71,7 @@ void celeritas::logger_impl::init_file(const std::string& channel_name,
     level_.set_channel_level(channel_name, file_level, also_to_console);
 }
 
-celeritas::logger_impl::severity_logger_optional_type celeritas::logger_impl::get(std::string_view channel_name, severity_level_type level)
+celeritas::logger_impl::severity_logger_optional_type celeritas::logger_impl::get(const std::string_view channel_name, const severity_level_type level)
 {
     std::shared_lock lock{ mutex_ };
 
