@@ -65,7 +65,7 @@ namespace celeritas
 
         [[nodiscard]] results_awaitable_type async_handle_and_retry(const std::string& sql, const error_code_type& error_code);
 
-        [[nodiscard]] static basis_database_manager populate_database_from_row(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container, const row_view_type& row);
+        [[nodiscard]] static database_entity_change populate_database_from_row(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container, const row_view_type& row);
 
         connection_type connection_;
         mysql_parameter mysql_parameter_;

@@ -9,23 +9,20 @@
 
 namespace celeritas
 {
-    class basis_database_manager
+    class database_entity_change
     {
     public:
-        using class_type = basis_database_manager;
+        using class_type = database_entity_change;
+        using basis_database_container_const_shared_ptr = std::shared_ptr<const basis_database_container>;
 
-        using object_container = std::vector<basis_database>;
-
-        basis_database_manager(database_type database_type,
+        database_entity_change(database_type database_type,
                                std::string_view database_name,
                                database_change_type change_type,
-                               basis_database_container key);
+                               basis_database_container_const_shared_ptr key);
 
-        basis_database_manager(database_type database_type,
+        database_entity_change(database_type database_type,
                                std::string_view database_name,
-                               database_change_type change_type,
-                               basis_database_container key,
-                               basis_database_container database);
+                               database_change_type change_type);
 
         [[nodiscard]] database_type get_database_type() const noexcept;
 
@@ -33,15 +30,13 @@ namespace celeritas
 
         [[nodiscard]] database_change_type get_change_type() const noexcept;
 
-        [[nodiscard]] basis_database_container get_key() const noexcept;
+        [[nodiscard]] basis_database_container_const_shared_ptr get_key() const noexcept;
 
-        [[nodiscard]] basis_database_container get_database() const noexcept;
+        [[nodiscard]] basis_database_container_const_shared_ptr get_database() const noexcept;
 
-        [[nodiscard]] basis_database_manager get_select() const;
+        [[nodiscard]] database_entity_change get_select() const;
 
         void modify(const basis_database& basis_database);
-
-        void set(const basis_database_container& database);
 
         void clear();
 
@@ -50,16 +45,15 @@ namespace celeritas
 
         [[nodiscard]] bool is_modify() const;
 
-        void add_key(const basis_database& basis_database);
-
     private:
+        using basis_database_container_shared_ptr = std::shared_ptr<basis_database_container>;
+
         [[nodiscard]] std::any get_any_value(std::string_view field_name) const;
 
-    private:
         database_type database_type_;
         std::string_view database_name_;
         database_change_type change_type_;
-        basis_database_container key_;
-        basis_database_container database_;
+        basis_database_container_const_shared_ptr key_;
+        basis_database_container_shared_ptr database_;
     };
 }

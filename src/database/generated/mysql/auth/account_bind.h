@@ -4,6 +4,7 @@
 
 #include "database/database_data_type_traits.h"
 #include "database/database_entity.h"
+#include "database/database_entity_change.h"
 #include "database/database_index_type.h"
 #include "database/entity.h"
 
@@ -15,9 +16,9 @@ namespace celeritas
         using class_type = account_bind;
         using base_type = database_entity;
 
-        [[nodiscard]] static account_bind create(const basis_database_manager& entity, database_type database_type, traits::param_type::int64_type account_bind_id);
+        [[nodiscard]] static account_bind create(const database_entity_change& entity, database_type database_type, traits::param_type::int64_type account_bind_id);
 
-        explicit account_bind(const basis_database_manager& entity);
+        explicit account_bind(const database_entity_change& entity);
 
         account_bind(database_type database_type, traits::param_type::int64_type account_bind_id);
 
@@ -43,9 +44,11 @@ namespace celeritas
 
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
-        [[nodiscard]] static basis_database_manager_const_hared_ptr get_select(database_type database_type, traits::param_type::int64_type account_bind_id);
+        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type);
 
-        [[nodiscard]] static basis_database_manager_shared_ptr get_select(database_type database_type);
+        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, traits::param_type::int64_type account_bind_id);
+
+        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, const basis_database_container_const_shared_ptr& key);
 
         static constexpr std::string_view database_name{ "account_bind" };
 
@@ -56,7 +59,7 @@ namespace celeritas
         static constexpr std::string_view is_primary_describe{ "is_primary" };
 
     private:
-        [[nodiscard]] static basis_database_container get_key_basis_database_container(database_type database_type, traits::param_type::int64_type account_bind_id);
+        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::int64_type account_bind_id);
 
         entity<account_bind_id_describe, database_data_type::int64_type, database_index_type::key> account_bind_id_;
         entity<account_id_describe, database_data_type::int64_type, database_index_type::index> account_id_;

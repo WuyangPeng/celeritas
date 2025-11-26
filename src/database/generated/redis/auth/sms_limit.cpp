@@ -2,17 +2,17 @@
 
 #include "sms_limit.h"
 #include "config/database_type.h"
-#include "database/basis_database_manager.tpp"
+#include "database/database_entity_change.tpp"
 #include "database/database_change_type.h"
 #include "database/database_entity.tpp"
 #include "database/entity.tpp"
 
-celeritas::sms_limit celeritas::sms_limit::create(const basis_database_manager& entity, const database_type database_type, traits::param_type::string_type phone)
+celeritas::sms_limit celeritas::sms_limit::create(const database_entity_change& entity, const database_type database_type, traits::param_type::string_type phone)
 {
     return entity.is_modify() ? sms_limit{ entity } : sms_limit{ database_type, phone };
 }
 
-celeritas::sms_limit::sms_limit(const basis_database_manager& entity)
+celeritas::sms_limit::sms_limit(const database_entity_change& entity)
     : base_type{ entity },
       phone_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : phone_describe) },
       exist_{ entity.get_value<database_data_type::bool_type>(exist_describe) }
@@ -65,29 +65,36 @@ const celeritas::database_entity::database_field_container& celeritas::sms_limit
     return field_name_container;
 }
 
-celeritas::sms_limit::basis_database_manager_const_hared_ptr celeritas::sms_limit::get_select(const database_type database_type, traits::param_type::string_type phone)
+celeritas::sms_limit::database_entity_change_const_shared_ptr celeritas::sms_limit::get_select(const database_type database_type)
 {
-    return std::make_shared<basis_database_manager>(database_type,
+    static const auto result = std::make_shared<database_entity_change>(database_type,
+                                                                        database_name,
+                                                                        database_change_type::select_type);
+
+    return result;
+}
+
+celeritas::sms_limit::database_entity_change_const_shared_ptr celeritas::sms_limit::get_select(const database_type database_type, traits::param_type::string_type phone)
+{
+    return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
                                                     get_key_basis_database_container(database_type, phone));
 }
 
-celeritas::sms_limit::basis_database_manager_shared_ptr celeritas::sms_limit::get_select(const database_type database_type)
+celeritas::sms_limit::database_entity_change_const_shared_ptr celeritas::sms_limit::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
 {
-    static const auto result = std::make_shared<basis_database_manager>(database_type,
-                                                                        database_name,
-                                                                        database_change_type::select_type,
-                                                                        basis_database_container{});
-
-    return result;
+    return std::make_shared<database_entity_change>(database_type,
+                                                    database_name,
+                                                    database_change_type::select_type,
+                                                    key);
 }
 
-celeritas::basis_database_container celeritas::sms_limit::get_key_basis_database_container(const database_type database_type, traits::param_type::string_type phone)
+celeritas::sms_limit::basis_database_container_const_shared_ptr celeritas::sms_limit::get_key_basis_database_container(const database_type database_type, traits::param_type::string_type phone)
 {
     const auto field_name = database_type == database_type::mongo ? "_id" : phone_describe;
 
-    basis_database_container basis_database_container{ basis_database_container::object_container{ basis_database{ field_name, phone } } };
+    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, phone });
 
-    return basis_database_container;
+    return container;
 }

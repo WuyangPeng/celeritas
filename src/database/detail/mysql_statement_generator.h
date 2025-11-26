@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "database/basis_database_manager.h"
+#include "database/database_entity_change.h"
 #include "database/database_field.h"
 
 #include <memory>
@@ -13,7 +13,7 @@ namespace celeritas
     public:
         using class_type = mysql_statement_generator;
         using database_field_container = std::vector<database_field>;
-        using basis_database_manager_const_shared_ptr = std::shared_ptr<const basis_database_manager>;
+        using basis_database_manager_const_shared_ptr = std::shared_ptr<const database_entity_change>;
 
         [[nodiscard]] static std::string generate_insert_statement(const basis_database_manager_const_shared_ptr& database);
 
@@ -21,6 +21,6 @@ namespace celeritas
 
         [[nodiscard]] static std::string generate_delete_statement(const basis_database_manager_const_shared_ptr& database);
 
-        [[nodiscard]] static std::string generate_select_statement(const database_field_container& field_name_container, const basis_database_manager& database);
+        [[nodiscard]] static std::string generate_select_statement(const database_field_container& field_name_container, const database_entity_change& database);
     };
 }

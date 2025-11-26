@@ -143,9 +143,9 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
     }
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
-    const auto select = account::get_select(database_type::mysql);
-    select->add_key(basis_database{ account_bind::account_type_describe, static_cast<int>(account_type::phone) });
-    select->add_key(basis_database{ account_bind::auth_key_describe, phone });
+    const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::phone) },
+                                                                                                            { account_bind::auth_key_describe, phone } });
+    const auto select = account::get_select(database_type::mysql, key);
     auto optional_account_bind = co_await mysql_pool->select_one(select, account::get_database_field_container());
 
     auto account = co_await get_account(optional_account_bind, redis_pool, mysql_pool, phone, handle_parameter_.get_app_config());

@@ -20,8 +20,6 @@ namespace celeritas
 
         explicit basis_database_container(object_container container);
 
-        [[nodiscard]] object_container get_container() const;
-
         void modify(const basis_database& basis_database);
 
         void set(const object_container& container);

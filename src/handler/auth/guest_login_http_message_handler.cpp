@@ -123,8 +123,9 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     }
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
-    const auto select = account::get_select(database_type::mysql);
-    select->add_key(basis_database{ account::device_id_describe, device_id });
+    const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account::device_id_describe, device_id } });
+
+    const auto select = account::get_select(database_type::mysql, key);
     auto optional_account = co_await mysql_pool->select_one(select, account::get_database_field_container());
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
     auto account = co_await get_account(optional_account, redis_pool, device_id, handle_parameter.get_app_config());

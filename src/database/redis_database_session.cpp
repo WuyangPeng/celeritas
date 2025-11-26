@@ -1,5 +1,5 @@
 ﻿#include "basis_database.tpp"
-#include "basis_database_manager.h"
+#include "database_entity_change.h"
 #include "database_change_type.h"
 #include "database_field.h"
 #include "redis_database_session.h"
@@ -263,7 +263,7 @@ celeritas::redis_database_session::redis_reply_awaitable_type celeritas::redis_d
 celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::save_database(const basis_database_manager_const_shared_ptr& database, int expiration_time) const
 {
     redis_commands::key_value_container field_value{};
-    for (const auto& element : database->get_database())
+    for (const auto& element : *database->get_database())
     {
         field_value.emplace_back(element.get_field_name(), element.get_string());
     }
@@ -296,7 +296,7 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::re
 
     const auto& result = *optional_result;
 
-    basis_database_manager select{ database->get_database_type(),
+    database_entity_change select{ database->get_database_type(),
                                    database->get_database_name(),
                                    database_change_type::select_type,
                                    redis_key_data_converter::get_key(key, database) };

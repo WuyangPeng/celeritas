@@ -2,17 +2,17 @@
 
 #include "email_limit.h"
 #include "config/database_type.h"
-#include "database/basis_database_manager.tpp"
+#include "database/database_entity_change.tpp"
 #include "database/database_change_type.h"
 #include "database/database_entity.tpp"
 #include "database/entity.tpp"
 
-celeritas::email_limit celeritas::email_limit::create(const basis_database_manager& entity, const database_type database_type, traits::param_type::string_type email)
+celeritas::email_limit celeritas::email_limit::create(const database_entity_change& entity, const database_type database_type, traits::param_type::string_type email)
 {
     return entity.is_modify() ? email_limit{ entity } : email_limit{ database_type, email };
 }
 
-celeritas::email_limit::email_limit(const basis_database_manager& entity)
+celeritas::email_limit::email_limit(const database_entity_change& entity)
     : base_type{ entity },
       email_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : email_describe) },
       exist_{ entity.get_value<database_data_type::bool_type>(exist_describe) }
@@ -65,29 +65,36 @@ const celeritas::database_entity::database_field_container& celeritas::email_lim
     return field_name_container;
 }
 
-celeritas::email_limit::basis_database_manager_const_hared_ptr celeritas::email_limit::get_select(const database_type database_type, traits::param_type::string_type email)
+celeritas::email_limit::database_entity_change_const_shared_ptr celeritas::email_limit::get_select(const database_type database_type)
 {
-    return std::make_shared<basis_database_manager>(database_type,
+    static const auto result = std::make_shared<database_entity_change>(database_type,
+                                                                        database_name,
+                                                                        database_change_type::select_type);
+
+    return result;
+}
+
+celeritas::email_limit::database_entity_change_const_shared_ptr celeritas::email_limit::get_select(const database_type database_type, traits::param_type::string_type email)
+{
+    return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
                                                     get_key_basis_database_container(database_type, email));
 }
 
-celeritas::email_limit::basis_database_manager_shared_ptr celeritas::email_limit::get_select(const database_type database_type)
+celeritas::email_limit::database_entity_change_const_shared_ptr celeritas::email_limit::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
 {
-    static const auto result = std::make_shared<basis_database_manager>(database_type,
-                                                                        database_name,
-                                                                        database_change_type::select_type,
-                                                                        basis_database_container{});
-
-    return result;
+    return std::make_shared<database_entity_change>(database_type,
+                                                    database_name,
+                                                    database_change_type::select_type,
+                                                    key);
 }
 
-celeritas::basis_database_container celeritas::email_limit::get_key_basis_database_container(const database_type database_type, traits::param_type::string_type email)
+celeritas::email_limit::basis_database_container_const_shared_ptr celeritas::email_limit::get_key_basis_database_container(const database_type database_type, traits::param_type::string_type email)
 {
     const auto field_name = database_type == database_type::mongo ? "_id" : email_describe;
 
-    basis_database_container basis_database_container{ basis_database_container::object_container{ basis_database{ field_name, email } } };
+    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, email });
 
-    return basis_database_container;
+    return container;
 }

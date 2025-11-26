@@ -4,6 +4,18 @@
 
 namespace celeritas
 {
+    enum class database_data_type;
+    enum class database_index_type;
+    enum class database_change_type;
+
+    template <database_data_type Type>
+    struct database_data_Type_traits;
+
+    class database_field;
+    class basis_database;
+    class basis_database_container;
+    class database_entity_change;
+
     template <typename SessionType>
     class connection_pool_base;
 
@@ -21,19 +33,8 @@ namespace celeritas
     class redis_set_commands;
     class redis_sorted_set_commands;
     class sorted_set_member_score;
-    class basis_database;
-    class basis_database_container;
-    class basis_database_manager;
     class database_entity;
-    class database_field;
     class scan_result;
-
-    enum class database_data_type;
-    enum class database_index_type;
-    enum class database_change_type;
-
-    template <database_data_type Type>
-    struct database_data_Type_traits;
 
     template <const std::string_view& FieldName, database_data_type Type, database_index_type Index>
     class entity;

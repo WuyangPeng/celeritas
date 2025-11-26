@@ -12,13 +12,13 @@ std::string celeritas::mysql_statement_generator::generate_insert_statement(cons
 
     const auto container = database->get_database();
     auto index = 1;
-    for (const auto& value : container)
+    for (const auto& value : *container)
     {
         result += "`";
         result += value.get_field_name();
         result += "`";
 
-        if (index != container.get_size())
+        if (index != container->get_size())
         {
             result += " , ";
         }
@@ -29,11 +29,11 @@ std::string celeritas::mysql_statement_generator::generate_insert_statement(cons
     result += ") VALUES(";
 
     index = 1;
-    for (const auto& value : container)
+    for (const auto& value : *container)
     {
         result += value.get_quotation_mark_string();
 
-        if (index != container.get_size())
+        if (index != container->get_size())
         {
             result += " , ";
         }
@@ -56,14 +56,14 @@ std::string celeritas::mysql_statement_generator::generate_update_statement(cons
 
     const auto container = database->get_database();
     auto index = 1;
-    for (const auto& value : container)
+    for (const auto& value : *container)
     {
         result += "`";
         result += value.get_field_name();
         result += "` = ";
         result += value.get_sql_field_string();
 
-        if (index != container.get_size())
+        if (index != container->get_size())
         {
             result += " , ";
         }
@@ -76,14 +76,14 @@ std::string celeritas::mysql_statement_generator::generate_update_statement(cons
     const auto key = database->get_key();
 
     index = 1;
-    for (const auto& value : key)
+    for (const auto& value : *key)
     {
         result += "`";
         result += value.get_field_name();
         result += "` = ";
         result += value.get_sql_field_string();
 
-        if (index != key.get_size())
+        if (index != key->get_size())
         {
             result += " AND ";
         }
@@ -104,20 +104,20 @@ std::string celeritas::mysql_statement_generator::generate_delete_statement(cons
     result += database->get_database_name();
 
     const auto key = database->get_key();
-    if (key.get_size() != 0)
+    if (key->get_size() != 0)
     {
         result += "` WHERE ";
     }
 
     auto index = 1;
-    for (const auto& value : key)
+    for (const auto& value : *key)
     {
         result += "`";
         result += value.get_field_name();
         result += "` = ";
         result += value.get_sql_field_string();
 
-        if (index != key.get_size())
+        if (index != key->get_size())
         {
             result += " AND ";
         }
@@ -130,7 +130,7 @@ std::string celeritas::mysql_statement_generator::generate_delete_statement(cons
     return result;
 }
 
-std::string celeritas::mysql_statement_generator::generate_select_statement(const database_field_container& field_name_container, const basis_database_manager& database)
+std::string celeritas::mysql_statement_generator::generate_select_statement(const database_field_container& field_name_container, const database_entity_change& database)
 {
     std::string result{};
 
@@ -160,7 +160,7 @@ std::string celeritas::mysql_statement_generator::generate_select_statement(cons
 
     const auto key = database.get_key();
 
-    if (key.get_size() != 0)
+    if (key->get_size() != 0)
     {
         result += "` WHERE ";
     }
@@ -170,7 +170,7 @@ std::string celeritas::mysql_statement_generator::generate_select_statement(cons
     }
 
     auto keyIndex = 1;
-    for (const auto& value : key)
+    for (const auto& value : *key)
     {
         result += "`";
         result += value.get_field_name();
@@ -178,7 +178,7 @@ std::string celeritas::mysql_statement_generator::generate_select_statement(cons
 
         result += value.get_quotation_mark_string();
 
-        if (keyIndex != key.get_size())
+        if (keyIndex != key->get_size())
         {
             result += " AND ";
         }

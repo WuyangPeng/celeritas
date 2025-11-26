@@ -4,6 +4,7 @@
 
 #include "database/database_data_type_traits.h"
 #include "database/database_entity.h"
+#include "database/database_entity_change.h"
 #include "database/database_index_type.h"
 #include "database/entity.h"
 
@@ -15,9 +16,9 @@ namespace celeritas
         using class_type = email_code;
         using base_type = database_entity;
 
-        [[nodiscard]] static email_code create(const basis_database_manager& entity, database_type database_type, traits::param_type::string_type email);
+        [[nodiscard]] static email_code create(const database_entity_change& entity, database_type database_type, traits::param_type::string_type email);
 
-        explicit email_code(const basis_database_manager& entity);
+        explicit email_code(const database_entity_change& entity);
 
         email_code(database_type database_type, traits::param_type::string_type email);
 
@@ -37,9 +38,11 @@ namespace celeritas
 
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
-        [[nodiscard]] static basis_database_manager_const_hared_ptr get_select(database_type database_type, traits::param_type::string_type email);
+        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type);
 
-        [[nodiscard]] static basis_database_manager_shared_ptr get_select(database_type database_type);
+        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, traits::param_type::string_type email);
+
+        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, const basis_database_container_const_shared_ptr& key);
 
         static constexpr std::string_view database_name{ "email_code" };
 
@@ -48,7 +51,7 @@ namespace celeritas
         static constexpr std::string_view retry_count_describe{ "retry_count" };
 
     private:
-        [[nodiscard]] static basis_database_container get_key_basis_database_container(database_type database_type, traits::param_type::string_type email);
+        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::string_type email);
 
         entity<email_describe, database_data_type::string_type, database_index_type::key> email_;
         entity<code_describe, database_data_type::int32_type> code_;

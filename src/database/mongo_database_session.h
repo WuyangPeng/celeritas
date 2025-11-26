@@ -63,7 +63,7 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type do_async_connect();
 
-        [[nodiscard]] static basis_database_manager to_basis_database_manager(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container, const document_view_type& view);
+        [[nodiscard]] static database_entity_change to_basis_database_manager(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container, const document_view_type& view);
 
         [[nodiscard]] collection_type get_collection(std::string_view collection_name) const;
 

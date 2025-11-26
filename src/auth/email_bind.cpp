@@ -138,10 +138,9 @@ celeritas::email_bind::void_awaitable_type celeritas::email_bind::response()
 
         co_return;
     }
-
-    const auto account_bind_select = account_bind::get_select(database_type::mysql);
-    account_bind_select->add_key(basis_database{ account_bind::account_type_describe, static_cast<int>(account_type::email) });
-    account_bind_select->add_key(basis_database{ account_bind::auth_key_describe, email });
+    const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::email) },
+                                                                                                            { account_bind::auth_key_describe, email } });
+    const auto account_bind_select = account_bind::get_select(database_type::mysql, key);
     auto optional_account_bind = co_await mysql_pool->select_one(account_bind_select, account::get_database_field_container());
     if (optional_account_bind)
     {

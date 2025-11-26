@@ -2,17 +2,17 @@
 
 #include "apps.h"
 #include "config/database_type.h"
-#include "database/basis_database_manager.tpp"
+#include "database/database_entity_change.tpp"
 #include "database/database_change_type.h"
 #include "database/database_entity.tpp"
 #include "database/entity.tpp"
 
-celeritas::apps celeritas::apps::create(const basis_database_manager& entity, const database_type database_type, traits::param_type::int64_type app_id)
+celeritas::apps celeritas::apps::create(const database_entity_change& entity, const database_type database_type, traits::param_type::int64_type app_id)
 {
     return entity.is_modify() ? apps{ entity } : apps{ database_type, app_id };
 }
 
-celeritas::apps::apps(const basis_database_manager& entity)
+celeritas::apps::apps(const database_entity_change& entity)
     : base_type{ entity },
       app_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : app_id_describe) },
       game_name_{ entity.get_value<database_data_type::string_type>(game_name_describe) },
@@ -101,29 +101,36 @@ const celeritas::database_entity::database_field_container& celeritas::apps::get
     return field_name_container;
 }
 
-celeritas::apps::basis_database_manager_const_hared_ptr celeritas::apps::get_select(const database_type database_type, traits::param_type::int64_type app_id)
+celeritas::apps::database_entity_change_const_shared_ptr celeritas::apps::get_select(const database_type database_type)
 {
-    return std::make_shared<basis_database_manager>(database_type,
+    static const auto result = std::make_shared<database_entity_change>(database_type,
+                                                                        database_name,
+                                                                        database_change_type::select_type);
+
+    return result;
+}
+
+celeritas::apps::database_entity_change_const_shared_ptr celeritas::apps::get_select(const database_type database_type, traits::param_type::int64_type app_id)
+{
+    return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
                                                     get_key_basis_database_container(database_type, app_id));
 }
 
-celeritas::apps::basis_database_manager_shared_ptr celeritas::apps::get_select(const database_type database_type)
+celeritas::apps::database_entity_change_const_shared_ptr celeritas::apps::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
 {
-    static const auto result = std::make_shared<basis_database_manager>(database_type,
-                                                                        database_name,
-                                                                        database_change_type::select_type,
-                                                                        basis_database_container{});
-
-    return result;
+    return std::make_shared<database_entity_change>(database_type,
+                                                    database_name,
+                                                    database_change_type::select_type,
+                                                    key);
 }
 
-celeritas::basis_database_container celeritas::apps::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type app_id)
+celeritas::apps::basis_database_container_const_shared_ptr celeritas::apps::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type app_id)
 {
     const auto field_name = database_type == database_type::mongo ? "_id" : app_id_describe;
 
-    basis_database_container basis_database_container{ basis_database_container::object_container{ basis_database{ field_name, app_id } } };
+    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, app_id });
 
-    return basis_database_container;
+    return container;
 }

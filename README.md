@@ -410,7 +410,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **特点**：本质上是一个 `std::vector<basis_database>`，提供了一种标准方式来组织和传递多个字段的数据。
 
 
-* **⚙️ 数据管理器 (`basis_database_manager`)**
+* **⚙️ 数据实体变更 (`database_entity_change`)**
     - **作用**：一个高级数据管理器，用于封装和操作 `basis_database_container`。它不仅存储数据，还能跟踪数据的变更状态。
     - **功能**:
         - 存储主键 (`key`) 和数据 (`database`)。

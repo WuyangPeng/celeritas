@@ -2,17 +2,17 @@
 
 #include "session_token.h"
 #include "config/database_type.h"
-#include "database/basis_database_manager.tpp"
+#include "database/database_entity_change.tpp"
 #include "database/database_change_type.h"
 #include "database/database_entity.tpp"
 #include "database/entity.tpp"
 
-celeritas::session_token celeritas::session_token::create(const basis_database_manager& entity, const database_type database_type, traits::param_type::string_type token)
+celeritas::session_token celeritas::session_token::create(const database_entity_change& entity, const database_type database_type, traits::param_type::string_type token)
 {
     return entity.is_modify() ? session_token{ entity } : session_token{ database_type, token };
 }
 
-celeritas::session_token::session_token(const basis_database_manager& entity)
+celeritas::session_token::session_token(const database_entity_change& entity)
     : base_type{ entity },
       token_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : token_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
@@ -83,29 +83,36 @@ const celeritas::database_entity::database_field_container& celeritas::session_t
     return field_name_container;
 }
 
-celeritas::session_token::basis_database_manager_const_hared_ptr celeritas::session_token::get_select(const database_type database_type, traits::param_type::string_type token)
+celeritas::session_token::database_entity_change_const_shared_ptr celeritas::session_token::get_select(const database_type database_type)
 {
-    return std::make_shared<basis_database_manager>(database_type,
+    static const auto result = std::make_shared<database_entity_change>(database_type,
+                                                                        database_name,
+                                                                        database_change_type::select_type);
+
+    return result;
+}
+
+celeritas::session_token::database_entity_change_const_shared_ptr celeritas::session_token::get_select(const database_type database_type, traits::param_type::string_type token)
+{
+    return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
                                                     get_key_basis_database_container(database_type, token));
 }
 
-celeritas::session_token::basis_database_manager_shared_ptr celeritas::session_token::get_select(const database_type database_type)
+celeritas::session_token::database_entity_change_const_shared_ptr celeritas::session_token::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
 {
-    static const auto result = std::make_shared<basis_database_manager>(database_type,
-                                                                        database_name,
-                                                                        database_change_type::select_type,
-                                                                        basis_database_container{});
-
-    return result;
+    return std::make_shared<database_entity_change>(database_type,
+                                                    database_name,
+                                                    database_change_type::select_type,
+                                                    key);
 }
 
-celeritas::basis_database_container celeritas::session_token::get_key_basis_database_container(const database_type database_type, traits::param_type::string_type token)
+celeritas::session_token::basis_database_container_const_shared_ptr celeritas::session_token::get_key_basis_database_container(const database_type database_type, traits::param_type::string_type token)
 {
     const auto field_name = database_type == database_type::mongo ? "_id" : token_describe;
 
-    basis_database_container basis_database_container{ basis_database_container::object_container{ basis_database{ field_name, token } } };
+    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, token });
 
-    return basis_database_container;
+    return container;
 }

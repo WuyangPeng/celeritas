@@ -16,12 +16,12 @@ namespace celeritas
         using io_context_type = boost::asio::io_context;
         using database_pool_shared_ptr = std::shared_ptr<database_pool>;
         using bool_awaitable_type = boost::asio::awaitable<bool>;
-        using result_container = std::vector<basis_database_manager>;
+        using result_container = std::vector<database_entity_change>;
         using database_field_container = std::vector<database_field>;
-        using optional_basis_database_manager = std::optional<basis_database_manager>;
+        using optional_basis_database_manager = std::optional<database_entity_change>;
         using basis_database_manager_awaitable_type = boost::asio::awaitable<optional_basis_database_manager>;
         using result_container_awaitable_type = boost::asio::awaitable<result_container>;
-        using basis_database_manager_const_shared_ptr = std::shared_ptr<const basis_database_manager>;
+        using basis_database_manager_const_shared_ptr = std::shared_ptr<const database_entity_change>;
 
         [[nodiscard]] static database_pool_manager& get_instance();
 

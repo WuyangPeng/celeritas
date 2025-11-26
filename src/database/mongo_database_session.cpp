@@ -1,5 +1,5 @@
 #include "basis_database.tpp"
-#include "basis_database_manager.h"
+#include "database_entity_change.h"
 #include "database_change_type.h"
 #include "database_data_type.h"
 #include "mongo_database_session.h"
@@ -138,7 +138,7 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::mo
 
     auto collection = get_collection(database->get_database_name());
 
-    auto key_document = mongo_row_data_converter::get_document(database->get_key());
+    auto key_document = mongo_row_data_converter::get_document(*database->get_key());
 
     if (const auto result = collection.find_one(key_document.extract()))
     {
@@ -154,7 +154,7 @@ celeritas::database_session::result_container_awaitable_type celeritas::mongo_da
 
     auto collection = get_collection(database->get_database_name());
 
-    auto key_document = mongo_row_data_converter::get_document(database->get_key());
+    auto key_document = mongo_row_data_converter::get_document(*database->get_key());
 
     auto result = collection.find(key_document.extract());
 
@@ -184,8 +184,8 @@ bool celeritas::mongo_database_session::do_is_health() const
 
 void celeritas::mongo_database_session::update_document(const basis_database_manager_const_shared_ptr& database) const
 {
-    auto keyDocument = mongo_row_data_converter::get_document(database->get_key());
-    auto updateDocument = mongo_row_data_converter::get_document(database->get_database());
+    auto keyDocument = mongo_row_data_converter::get_document(*database->get_key());
+    auto updateDocument = mongo_row_data_converter::get_document(*database->get_database());
 
     auto collection = get_collection(database->get_database_name());
     collection.update_one(keyDocument.extract(), updateDocument.extract());
@@ -195,7 +195,7 @@ void celeritas::mongo_database_session::insert_document(const basis_database_man
 {
     auto collection = get_collection(database->get_database_name());
 
-    auto document = mongo_row_data_converter::get_document(database->get_database());
+    auto document = mongo_row_data_converter::get_document(*database->get_database());
 
     collection.insert_one(document.extract());
 }
@@ -204,7 +204,7 @@ void celeritas::mongo_database_session::delete_document(const basis_database_man
 {
     auto collection = get_collection(database->get_database_name());
 
-    auto document = mongo_row_data_converter::get_document(database->get_key());
+    auto document = mongo_row_data_converter::get_document(*database->get_key());
 
     collection.delete_one(document.extract());
 }
@@ -253,7 +253,7 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
     co_return;
 }
 
-celeritas::basis_database_manager celeritas::mongo_database_session::to_basis_database_manager(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container, const document_view_type& view)
+celeritas::database_entity_change celeritas::mongo_database_session::to_basis_database_manager(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container, const document_view_type& view)
 {
     auto select = database->get_select();
     for (const auto& element : view)

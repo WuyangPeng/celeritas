@@ -18,11 +18,11 @@ std::string celeritas::redis_key_data_converter::generate_key(const basis_databa
 
     auto index = 1;
     for (const auto keys = database->get_key();
-         const auto& key : keys)
+         const auto& key : *keys)
     {
         result += key.get_quotation_mark_string();
 
-        if (index != keys.get_size())
+        if (index != keys->get_size())
         {
             result += "_";
         }
@@ -125,25 +125,25 @@ celeritas::basis_database celeritas::redis_key_data_converter::get_basis_databas
     }
 }
 
-celeritas::basis_database_container celeritas::redis_key_data_converter::get_key(const std::string& key, const basis_database_manager_const_shared_ptr& database)
+celeritas::redis_key_data_converter::basis_database_container_const_shared_ptr celeritas::redis_key_data_converter::get_key(const std::string& key, const basis_database_manager_const_shared_ptr& database)
 {
     const auto extracted_key_values = get_key_value(key);
 
     const auto key_type = database->get_key();
-    if (extracted_key_values.size() != key_type.get_size())
+    if (extracted_key_values.size() != key_type->get_size())
     {
         throw celeritas_error("key size is error.");
     }
 
     basis_database_container::object_container objects{};
     auto index = 0;
-    for (const auto& value : key_type)
+    for (const auto& value : *key_type)
     {
         objects.emplace_back(value.get_field_name(), extracted_key_values.at(index));
         ++index;
     }
 
-    return basis_database_container{ objects };
+    return std::make_shared<basis_database_container>(objects);
 }
 
 celeritas::redis_key_data_converter::array_type celeritas::redis_key_data_converter::get_key_value(const std::string& key)

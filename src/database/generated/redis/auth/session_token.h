@@ -4,6 +4,7 @@
 
 #include "database/database_data_type_traits.h"
 #include "database/database_entity.h"
+#include "database/database_entity_change.h"
 #include "database/database_index_type.h"
 #include "database/entity.h"
 
@@ -15,9 +16,9 @@ namespace celeritas
         using class_type = session_token;
         using base_type = database_entity;
 
-        [[nodiscard]] static session_token create(const basis_database_manager& entity, database_type database_type, traits::param_type::string_type token);
+        [[nodiscard]] static session_token create(const database_entity_change& entity, database_type database_type, traits::param_type::string_type token);
 
-        explicit session_token(const basis_database_manager& entity);
+        explicit session_token(const database_entity_change& entity);
 
         session_token(database_type database_type, traits::param_type::string_type token);
 
@@ -35,9 +36,11 @@ namespace celeritas
 
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
-        [[nodiscard]] static basis_database_manager_const_hared_ptr get_select(database_type database_type, traits::param_type::string_type token);
+        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type);
 
-        [[nodiscard]] static basis_database_manager_shared_ptr get_select(database_type database_type);
+        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, traits::param_type::string_type token);
+
+        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, const basis_database_container_const_shared_ptr& key);
 
         static constexpr std::string_view database_name{ "session_token" };
 
@@ -46,7 +49,7 @@ namespace celeritas
         static constexpr std::string_view is_new_account_describe{ "is_new_account" };
 
     private:
-        [[nodiscard]] static basis_database_container get_key_basis_database_container(database_type database_type, traits::param_type::string_type token);
+        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::string_type token);
 
         entity<token_describe, database_data_type::string_type, database_index_type::key> token_;
         entity<account_id_describe, database_data_type::int64_type> account_id_;

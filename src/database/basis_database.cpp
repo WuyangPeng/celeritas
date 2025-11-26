@@ -78,7 +78,7 @@ std::string celeritas::basis_database::get_sql_field_string() const
 {
     if (data_type_ == database_data_type::string_type)
     {
-        return "`" + std::any_cast<database_data_Type_traits<database_data_type::string_type>::Type>(value_) + "`";
+        return "`" + get_value<database_data_type::string_type>() + "`";
     }
 
     return get_string();
@@ -92,37 +92,37 @@ std::string celeritas::basis_database::get_string() const
         {
             case database_data_type::string_type:
             {
-                return std::any_cast<database_data_Type_traits<database_data_type::string_type>::Type>(value_);
+                return get_value<database_data_type::string_type>();
             }
 
             case database_data_type::int32_type:
             {
-                return std::to_string(std::any_cast<database_data_Type_traits<database_data_type::int32_type>::Type>(value_));
+                return std::to_string(get_value<database_data_type::int32_type>());
             }
 
             case database_data_type::int32_count_type:
             {
-                return std::to_string(std::any_cast<database_data_Type_traits<database_data_type::int32_count_type>::Type>(value_));
+                return std::to_string(get_value<database_data_type::int32_count_type>());
             }
 
             case database_data_type::int64_type:
             {
-                return std::to_string(std::any_cast<database_data_Type_traits<database_data_type::int64_type>::Type>(value_));
+                return std::to_string(get_value<database_data_type::int64_type>());
             }
 
             case database_data_type::int64_count_type:
             {
-                return std::to_string(std::any_cast<database_data_Type_traits<database_data_type::int64_count_type>::Type>(value_));
+                return std::to_string(get_value<database_data_type::int64_count_type>());
             }
 
             case database_data_type::double_type:
             {
-                return std::to_string(std::any_cast<database_data_Type_traits<database_data_type::double_type>::Type>(value_));
+                return std::to_string(get_value<database_data_type::double_type>());
             }
 
             case database_data_type::bool_type:
             {
-                if (const auto result = std::any_cast<database_data_Type_traits<database_data_type::bool_type>::Type>(value_);
+                if (const auto result = get_value<database_data_type::bool_type>();
                     result)
                 {
                     return "true";
@@ -152,7 +152,7 @@ std::string celeritas::basis_database::get_string() const
 
             case database_data_type::byte_array_type:
             {
-                const auto& byteArray = std::any_cast<const byte_array&>(value_);
+                const auto& byteArray = get_value<database_data_type::byte_array_type>();
                 return std::string{ byteArray.begin(), byteArray.end() };
             }
 
@@ -170,7 +170,7 @@ std::string celeritas::basis_database::get_quotation_mark_string() const
 {
     if (data_type_ == database_data_type::string_type)
     {
-        return "\"" + std::any_cast<database_data_Type_traits<database_data_type::string_type>::Type>(value_) + "\"";
+        return "\"" + get_value<database_data_type::string_type>() + "\"";
     }
 
     return get_string();

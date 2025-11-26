@@ -26,7 +26,7 @@ namespace celeritas
         using account_awaitable_type = boost::asio::awaitable<account>;
         using database_pool_shared_ptr = std::shared_ptr<database_pool>;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
-        using optional_basis_database_manager = std::optional<basis_database_manager>;
+        using optional_basis_database_manager = std::optional<database_entity_change>;
 
         [[nodiscard]] void_awaitable_type guest_login(http_handle_parameter handle_parameter);
 

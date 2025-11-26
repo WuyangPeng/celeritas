@@ -7,14 +7,14 @@
 #include <sstream>
 
 template <typename T> requires (std::is_integral_v<T>)
-celeritas::basis_database::basis_database(const std::string_view fieldName, T value)
-    : class_type{ fieldName, database_data_type::int32_type, value }
+celeritas::basis_database::basis_database(const std::string_view field_name, T value)
+    : class_type{ field_name, database_data_type::int32_type, value }
 {
 }
 
 template <typename T> requires (std::is_floating_point_v<T>)
-celeritas::basis_database::basis_database(const std::string_view fieldName, T value)
-    : class_type{ fieldName, database_data_type::double_type, value }
+celeritas::basis_database::basis_database(const std::string_view field_name, T value)
+    : class_type{ field_name, database_data_type::double_type, value }
 {
 }
 
@@ -34,11 +34,11 @@ template <celeritas::database_data_type Type>
 std::string celeritas::basis_database::get_array_string_value() const
 {
     const auto value = get_value<Type>();
-    std::ostringstream os;
-    for (auto iter = value.begin(); iter != value.end(); ++iter)
+    std::ostringstream os{};
+    for (auto iter = value.cbegin(); iter != value.cend(); ++iter)
     {
         os << *iter;
-        if (std::next(iter) != value.end())
+        if (std::next(iter) != value.cend())
         {
             os << "|";
         }

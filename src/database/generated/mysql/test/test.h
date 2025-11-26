@@ -4,6 +4,7 @@
 
 #include "database/database_data_type_traits.h"
 #include "database/database_entity.h"
+#include "database/database_entity_change.h"
 #include "database/database_index_type.h"
 #include "database/entity.h"
 
@@ -15,9 +16,9 @@ namespace celeritas
         using class_type = test;
         using base_type = database_entity;
 
-        [[nodiscard]] static test create(const basis_database_manager& entity, database_type database_type, traits::param_type::int64_type user_id);
+        [[nodiscard]] static test create(const database_entity_change& entity, database_type database_type, traits::param_type::int64_type user_id);
 
-        explicit test(const basis_database_manager& entity);
+        explicit test(const database_entity_change& entity);
 
         test(database_type database_type, traits::param_type::int64_type user_id);
 
@@ -55,9 +56,11 @@ namespace celeritas
 
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
-        [[nodiscard]] static basis_database_manager_const_hared_ptr get_select(database_type database_type, traits::param_type::int64_type user_id);
+        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type);
 
-        [[nodiscard]] static basis_database_manager_shared_ptr get_select(database_type database_type);
+        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, traits::param_type::int64_type user_id);
+
+        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, const basis_database_container_const_shared_ptr& key);
 
         static constexpr std::string_view database_name{ "test" };
 
@@ -70,7 +73,7 @@ namespace celeritas
         static constexpr std::string_view count_describe{ "count" };
 
     private:
-        [[nodiscard]] static basis_database_container get_key_basis_database_container(database_type database_type, traits::param_type::int64_type user_id);
+        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::int64_type user_id);
 
         entity<user_id_describe, database_data_type::int64_type, database_index_type::key> user_id_;
         entity<chapter_id_describe, database_data_type::int32_type> chapter_id_;

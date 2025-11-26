@@ -1,6 +1,8 @@
 ﻿#include "basis_database_container.h"
 #include "common/celeritas_error.h"
 
+#include <boost/numeric/conversion/cast.hpp>
+
 #include <algorithm>
 
 celeritas::basis_database_container::basis_database_container(const basis_database& basisDatabase)
@@ -11,11 +13,6 @@ celeritas::basis_database_container::basis_database_container(const basis_databa
 celeritas::basis_database_container::basis_database_container(object_container container)
     : container_{ std::move(container) }
 {
-}
-
-celeritas::basis_database_container::object_container celeritas::basis_database_container::get_container() const
-{
-    return container_;
 }
 
 void celeritas::basis_database_container::modify(const basis_database& basis_database)
@@ -49,7 +46,7 @@ std::any celeritas::basis_database_container::get_any_value(std::string_view fie
         return result->get_any_value();
     }
 
-    throw celeritas_error("field_name does not exist");
+    throw celeritas_error{ "field_name does not exist" };
 }
 
 celeritas::basis_database_container::object_container_const_iter celeritas::basis_database_container::begin() const noexcept
@@ -64,5 +61,5 @@ celeritas::basis_database_container::object_container_const_iter celeritas::basi
 
 int celeritas::basis_database_container::get_size() const
 {
-    return container_.size();
+    return boost::numeric_cast<int>(container_.size());
 }

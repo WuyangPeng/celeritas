@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "basis_database_container.h"
-#include "basis_database_manager.h"
+#include "database_entity_change.h"
 #include "config/config_fwd.h"
 
 namespace celeritas
@@ -11,11 +11,12 @@ namespace celeritas
     public:
         using class_type = database_entity;
         using database_field_container = std::vector<database_field>;
-        using basis_database_manager_const_hared_ptr = std::shared_ptr<const basis_database_manager>;
+        using basis_database_container_const_shared_ptr = std::shared_ptr<const basis_database_container>;
+        using database_entity_change_const_shared_ptr = std::shared_ptr<const database_entity_change>;
 
-        database_entity(database_type database_type, std::string_view database_name, const basis_database_container& key);
+        database_entity(database_type database_type, std::string_view database_name, const basis_database_container_const_shared_ptr& key);
 
-        explicit database_entity(const basis_database_manager& entity);
+        explicit database_entity(const database_entity_change& entity);
 
         virtual ~database_entity() noexcept = default;
 
@@ -27,16 +28,16 @@ namespace celeritas
 
         database_entity& operator=(database_entity&& rhs) noexcept = default;
 
-        [[nodiscard]] basis_database_manager_const_hared_ptr get_modify() const;
+        [[nodiscard]] database_entity_change_const_shared_ptr get_modify() const;
 
-        [[nodiscard]] basis_database_manager_const_hared_ptr get_delete() const;
+        [[nodiscard]] database_entity_change_const_shared_ptr get_delete() const;
 
         void clear_modify();
 
         [[nodiscard]] bool is_modify() const;
 
     protected:
-        using basis_database_manager_shared_ptr = std::shared_ptr<basis_database_manager>;
+        using database_entity_change_shared_ptr = std::shared_ptr<database_entity_change>;
 
         void add_modify(const basis_database& basis_database);
 
@@ -45,6 +46,6 @@ namespace celeritas
 
     private:
         basis_database_container entity_;
-        basis_database_manager_shared_ptr modify_;
+        database_entity_change_shared_ptr modify_;
     };
 }

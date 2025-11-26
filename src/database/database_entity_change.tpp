@@ -1,9 +1,9 @@
 ﻿#pragma once
 
-#include "basis_database_manager.h"
+#include "database_entity_change.h"
 
 template <celeritas::database_data_type Type>
-celeritas::database_data_Type_traits<Type>::Type celeritas::basis_database_manager::get_value(const std::string_view field_name, typename boost::call_traits<typename database_data_Type_traits<Type>::Type>::param_type default_value) const
+celeritas::database_data_Type_traits<Type>::Type celeritas::database_entity_change::get_value(const std::string_view field_name, typename boost::call_traits<typename database_data_Type_traits<Type>::Type>::param_type default_value) const
 {
     if (const auto result = get_any_value(field_name);
         result.has_value())
