@@ -7,11 +7,6 @@
 #include "database/database_entity.tpp"
 #include "database/entity.tpp"
 
-celeritas::apps celeritas::apps::create(const database_entity_change& entity, const database_type database_type, traits::param_type::int64_type app_id)
-{
-    return entity.is_modify() ? apps{ entity } : apps{ database_type, app_id };
-}
-
 celeritas::apps::apps(const database_entity_change& entity)
     : base_type{ entity },
       app_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : app_id_describe) },
@@ -22,7 +17,7 @@ celeritas::apps::apps(const database_entity_change& entity)
 }
 
 celeritas::apps::apps(const database_type database_type, traits::param_type::int64_type app_id)
-    : base_type{ database_type, database_name.data(), get_key_basis_database_container(database_type, app_id) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, app_id) },
       app_id_{ app_id },
       game_name_{ traits::string_type{} },
       app_secret_{ traits::string_type{} },

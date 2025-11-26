@@ -16,8 +16,6 @@ namespace celeritas
         using class_type = account;
         using base_type = database_entity;
 
-        [[nodiscard]] static account create(const database_entity_change& entity, database_type database_type, traits::param_type::int64_type account_id);
-
         explicit account(const database_entity_change& entity);
 
         account(database_type database_type, traits::param_type::int64_type account_id);

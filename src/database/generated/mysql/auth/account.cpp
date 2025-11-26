@@ -7,11 +7,6 @@
 #include "database/database_entity.tpp"
 #include "database/entity.tpp"
 
-celeritas::account celeritas::account::create(const database_entity_change& entity, const database_type database_type, traits::param_type::int64_type account_id)
-{
-    return entity.is_modify() ? account{ entity } : account{ database_type, account_id };
-}
-
 celeritas::account::account(const database_entity_change& entity)
     : base_type{ entity },
       account_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : account_id_describe) },
@@ -25,7 +20,7 @@ celeritas::account::account(const database_entity_change& entity)
 }
 
 celeritas::account::account(const database_type database_type, traits::param_type::int64_type account_id)
-    : base_type{ database_type, database_name.data(), get_key_basis_database_container(database_type, account_id) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, account_id) },
       account_id_{ account_id },
       account_name_{ traits::string_type{} },
       password_hash_{ traits::string_type{} },

@@ -16,8 +16,6 @@ namespace celeritas
         using class_type = sms_code;
         using base_type = database_entity;
 
-        [[nodiscard]] static sms_code create(const database_entity_change& entity, database_type database_type, traits::param_type::string_type phone);
-
         explicit sms_code(const database_entity_change& entity);
 
         sms_code(database_type database_type, traits::param_type::string_type phone);

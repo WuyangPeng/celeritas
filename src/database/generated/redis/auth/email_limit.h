@@ -16,8 +16,6 @@ namespace celeritas
         using class_type = email_limit;
         using base_type = database_entity;
 
-        [[nodiscard]] static email_limit create(const database_entity_change& entity, database_type database_type, traits::param_type::string_type email);
-
         explicit email_limit(const database_entity_change& entity);
 
         email_limit(database_type database_type, traits::param_type::string_type email);

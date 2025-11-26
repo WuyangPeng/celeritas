@@ -3,12 +3,12 @@
 #include "database_entity.h"
 
 celeritas::database_entity::database_entity(const database_type database_type, const std::string_view database_name, const basis_database_container_const_shared_ptr& key)
-    : entity_{ *key }, modify_{ std::make_shared<database_entity_change>(database_type, database_name, database_change_type::insert_type, key) }
+    : modify_{ std::make_shared<database_entity_change>(database_type, database_name, database_change_type::insert_type, key) }
 {
 }
 
 celeritas::database_entity::database_entity(const database_entity_change& entity)
-    : entity_{ *entity.get_database() }, modify_{ std::make_shared<database_entity_change>(entity.get_database_type(), entity.get_database_name(), database_change_type::update_type, entity.get_key()) }
+    : modify_{ std::make_shared<database_entity_change>(entity.get_database_type(), entity.get_database_name(), database_change_type::update_type, entity.get_key()) }
 {
 }
 
@@ -34,6 +34,5 @@ bool celeritas::database_entity::is_modify() const
 
 void celeritas::database_entity::add_modify(const basis_database& basis_database)
 {
-    entity_.modify(basis_database);
     modify_->modify(basis_database);
 }

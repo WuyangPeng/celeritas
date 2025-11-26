@@ -7,11 +7,6 @@
 #include "database/database_entity.tpp"
 #include "database/entity.tpp"
 
-celeritas::email_code celeritas::email_code::create(const database_entity_change& entity, const database_type database_type, traits::param_type::string_type email)
-{
-    return entity.is_modify() ? email_code{ entity } : email_code{ database_type, email };
-}
-
 celeritas::email_code::email_code(const database_entity_change& entity)
     : base_type{ entity },
       email_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : email_describe) },
@@ -21,7 +16,7 @@ celeritas::email_code::email_code(const database_entity_change& entity)
 }
 
 celeritas::email_code::email_code(const database_type database_type, traits::param_type::string_type email)
-    : base_type{ database_type, database_name.data(), get_key_basis_database_container(database_type, email) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, email) },
       email_{ email },
       code_{ traits::int32_type{} },
       retry_count_{ traits::int32_count_type{} }

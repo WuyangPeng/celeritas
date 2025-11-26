@@ -7,11 +7,6 @@
 #include "database/database_entity.tpp"
 #include "database/entity.tpp"
 
-celeritas::session_token celeritas::session_token::create(const database_entity_change& entity, const database_type database_type, traits::param_type::string_type token)
-{
-    return entity.is_modify() ? session_token{ entity } : session_token{ database_type, token };
-}
-
 celeritas::session_token::session_token(const database_entity_change& entity)
     : base_type{ entity },
       token_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : token_describe) },
@@ -21,7 +16,7 @@ celeritas::session_token::session_token(const database_entity_change& entity)
 }
 
 celeritas::session_token::session_token(const database_type database_type, traits::param_type::string_type token)
-    : base_type{ database_type, database_name.data(), get_key_basis_database_container(database_type, token) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, token) },
       token_{ token },
       account_id_{ traits::int64_type{} },
       is_new_account_{ traits::bool_type{} }

@@ -16,8 +16,6 @@ namespace celeritas
         using class_type = apps;
         using base_type = database_entity;
 
-        [[nodiscard]] static apps create(const database_entity_change& entity, database_type database_type, traits::param_type::int64_type app_id);
-
         explicit apps(const database_entity_change& entity);
 
         apps(database_type database_type, traits::param_type::int64_type app_id);

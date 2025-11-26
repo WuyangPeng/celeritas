@@ -427,8 +427,8 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 * **🏛️ 运行时实体 (`database_entity`)**
     - **作用**：数据库表的运行时表示。它由 `entity` 定义生成，用于在程序运行时执行实际的数据库操作。
     - **功能**:
-        - 提供了 `select_one()`, `select_all()`, `update()`, `insert()`, `delete()` 等高级数据操作接口。
-        - 内部封装了与 `database_pool_manager` 的交互，自动处理数据库会话的获取和释放。
+        - 提供了 `get_modify()`, `get_delete()`等数据操作接口。
+        - 内部封装了与 `database_entity_change` 的交互。
 
 ##### session (会话)
 

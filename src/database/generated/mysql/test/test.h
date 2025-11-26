@@ -16,8 +16,6 @@ namespace celeritas
         using class_type = test;
         using base_type = database_entity;
 
-        [[nodiscard]] static test create(const database_entity_change& entity, database_type database_type, traits::param_type::int64_type user_id);
-
         explicit test(const database_entity_change& entity);
 
         test(database_type database_type, traits::param_type::int64_type user_id);

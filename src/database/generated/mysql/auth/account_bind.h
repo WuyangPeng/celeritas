@@ -16,8 +16,6 @@ namespace celeritas
         using class_type = account_bind;
         using base_type = database_entity;
 
-        [[nodiscard]] static account_bind create(const database_entity_change& entity, database_type database_type, traits::param_type::int64_type account_bind_id);
-
         explicit account_bind(const database_entity_change& entity);
 
         account_bind(database_type database_type, traits::param_type::int64_type account_bind_id);

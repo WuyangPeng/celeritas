@@ -11,8 +11,8 @@ namespace celeritas
     public:
         using class_type = database_entity;
         using database_field_container = std::vector<database_field>;
-        using basis_database_container_const_shared_ptr = std::shared_ptr<const basis_database_container>;
         using database_entity_change_const_shared_ptr = std::shared_ptr<const database_entity_change>;
+        using basis_database_container_const_shared_ptr = std::shared_ptr<const basis_database_container>;
 
         database_entity(database_type database_type, std::string_view database_name, const basis_database_container_const_shared_ptr& key);
 
@@ -45,7 +45,6 @@ namespace celeritas
         void add_modify(std::string_view field_name, T value);
 
     private:
-        basis_database_container entity_;
         database_entity_change_shared_ptr modify_;
     };
 }

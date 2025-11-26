@@ -16,8 +16,6 @@ namespace celeritas
         using class_type = ${class_name};
         using base_type = database_entity;
 
-        [[nodiscard]] static ${class_name} create(const database_entity_change& entity, database_type database_type, traits::param_type::${key_type} ${key_name});
-
         explicit ${class_name}(const database_entity_change& entity);
 
         ${class_name}(database_type database_type, traits::param_type::${key_type} ${key_name});

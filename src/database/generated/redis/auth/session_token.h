@@ -16,8 +16,6 @@ namespace celeritas
         using class_type = session_token;
         using base_type = database_entity;
 
-        [[nodiscard]] static session_token create(const database_entity_change& entity, database_type database_type, traits::param_type::string_type token);
-
         explicit session_token(const database_entity_change& entity);
 
         session_token(database_type database_type, traits::param_type::string_type token);
