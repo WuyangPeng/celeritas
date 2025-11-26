@@ -2,7 +2,7 @@
 
 using namespace std::literals;
 
-std::string celeritas::mysql_statement_generator::generate_insert_statement(const basis_database_manager_const_shared_ptr& database)
+std::string celeritas::mysql_statement_generator::generate_insert_statement(const database_entity_change_const_shared_ptr& database)
 {
     std::string result{};
 
@@ -46,7 +46,7 @@ std::string celeritas::mysql_statement_generator::generate_insert_statement(cons
     return result;
 }
 
-std::string celeritas::mysql_statement_generator::generate_update_statement(const basis_database_manager_const_shared_ptr& database)
+std::string celeritas::mysql_statement_generator::generate_update_statement(const database_entity_change_const_shared_ptr& database)
 {
     std::string result{};
 
@@ -96,7 +96,7 @@ std::string celeritas::mysql_statement_generator::generate_update_statement(cons
     return result;
 }
 
-std::string celeritas::mysql_statement_generator::generate_delete_statement(const basis_database_manager_const_shared_ptr& database)
+std::string celeritas::mysql_statement_generator::generate_delete_statement(const database_entity_change_const_shared_ptr& database)
 {
     std::string result{};
 
@@ -130,7 +130,7 @@ std::string celeritas::mysql_statement_generator::generate_delete_statement(cons
     return result;
 }
 
-std::string celeritas::mysql_statement_generator::generate_select_statement(const database_field_container& field_name_container, const database_entity_change& database)
+std::string celeritas::mysql_statement_generator::generate_select_statement(const database_field_container& field_name_container, const database_entity_change_const_shared_ptr& database)
 {
     std::string result{};
 
@@ -156,9 +156,9 @@ std::string celeritas::mysql_statement_generator::generate_select_statement(cons
     }
 
     result += "FROM `";
-    result += database.get_database_name();
+    result += database->get_database_name();
 
-    const auto key = database.get_key();
+    const auto key = database->get_key();
 
     if (key->get_size() != 0)
     {

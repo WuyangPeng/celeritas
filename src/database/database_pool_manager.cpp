@@ -1,5 +1,4 @@
-﻿#include "database_entity_change.h"
-#include "connection_pool_base.tpp"
+﻿#include "connection_pool.tpp"
 #include "database_pool_manager.h"
 #include "mongo_database_session.h"
 #include "mysql_database_session.h"
@@ -99,30 +98,6 @@ celeritas::database_pool_manager::bool_awaitable_type celeritas::database_pool_m
     co_return true;
 }
 
-void celeritas::database_pool_manager::execute_changes(io_context_type& io_context, const std::string& name, const basis_database_manager_const_shared_ptr& database)
-{
-    const auto pool = get_pool(name);
-
-    boost::asio::co_spawn(io_context,
-                          [pool,database] {
-                              return pool->execute_changes(database);
-                          }, boost::asio::detached);
-}
-
-celeritas::database_pool_manager::basis_database_manager_awaitable_type celeritas::database_pool_manager::select_one(const std::string& name, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
-{
-    const auto pool = get_pool(name);
-
-    co_return co_await pool->select_one(database, field_name_container);
-}
-
-celeritas::database_pool_manager::result_container_awaitable_type celeritas::database_pool_manager::select_all(const std::string& name, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
-{
-    const auto pool = get_pool(name);
-
-    co_return co_await pool->select_all(database, field_name_container);
-}
-
 celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mysql_pool(const std::string& name,
                                                                                                                io_context_type& io_context,
                                                                                                                const std::string& host,
@@ -133,7 +108,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
                                                                                                                const int min_connections,
                                                                                                                const int max_connections)
 {
-    auto pool = std::make_shared<connection_pool_base<mysql_database_session> >(io_context, host, port, user, password, db_name, min_connections, max_connections);
+    auto pool = std::make_shared<connection_pool<mysql_database_session> >(io_context, host, port, user, password, db_name, min_connections, max_connections);
 
     std::lock_guard lock{ mutex_ };
 
@@ -156,7 +131,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
 
     const auto url = "mongodb://" + user + ":" + password + "@" + host + ":" + std::to_string(port) + "/" + db_name;
 
-    auto pool = std::make_shared<connection_pool_base<mongo_database_session> >(io_context, url, db_name, min_connections, max_connections);
+    auto pool = std::make_shared<connection_pool<mongo_database_session> >(io_context, url, db_name, min_connections, max_connections);
 
     std::lock_guard lock{ mutex_ };
 
@@ -176,7 +151,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
                                                                                                                const int max_connections,
                                                                                                                const int expire_seconds)
 {
-    auto pool = std::make_shared<connection_pool_base<redis_database_session> >(io_context, host, port, user, password, db_name, min_connections, max_connections, expire_seconds);
+    auto pool = std::make_shared<connection_pool<redis_database_session> >(io_context, host, port, user, password, db_name, min_connections, max_connections, expire_seconds);
 
     std::lock_guard lock{ mutex_ };
 

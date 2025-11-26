@@ -96,11 +96,11 @@ namespace celeritas
 
         [[nodiscard]] scan_result_awaitable_type async_execute_command_return_scan_result(const std::string& command) const;
 
-        [[nodiscard]] void_awaitable_type execute_changes(const basis_database_manager_const_shared_ptr& database, int expiration_time) override;
+        [[nodiscard]] void_awaitable_type execute_changes(const database_entity_change_const_shared_ptr& database, int expiration_time) override;
 
-        [[nodiscard]] basis_database_manager_awaitable_type select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) override;
+        [[nodiscard]] database_entity_change_awaitable_type select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) override;
 
-        [[nodiscard]] result_container_awaitable_type select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) override;
+        [[nodiscard]] result_container_awaitable_type select_all(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) override;
 
     private:
         using redis_context_unique_ptr = std::unique_ptr<redis_context>;
@@ -113,11 +113,11 @@ namespace celeritas
 
         [[nodiscard]] redis_reply_awaitable_type async_execute_command_return_reply(const std::string& command) const;
 
-        [[nodiscard]] void_awaitable_type save_database(const basis_database_manager_const_shared_ptr& database, int expiration_time) const;
+        [[nodiscard]] void_awaitable_type save_database(const database_entity_change_const_shared_ptr& database, int expiration_time) const;
 
-        [[nodiscard]] void_awaitable_type delete_database(const basis_database_manager_const_shared_ptr& database) const;
+        [[nodiscard]] void_awaitable_type delete_database(const database_entity_change_const_shared_ptr& database) const;
 
-        [[nodiscard]] basis_database_manager_awaitable_type select_one(const std::string& key, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) const;
+        [[nodiscard]] database_entity_change_awaitable_type select_one(const std::string& key, const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) const;
 
         io_context_type& io_context_;
         redis_context_unique_ptr redis_context_;

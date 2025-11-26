@@ -54,6 +54,11 @@ celeritas::database_entity_change celeritas::database_entity_change::get_select(
     return database_entity_change{ database_type_, database_name_, database_change_type::select_type, key_ };
 }
 
+celeritas::database_entity_change celeritas::database_entity_change::get_select(const basis_database_container_const_shared_ptr& key) const
+{
+    return database_entity_change{ database_type_, database_name_, database_change_type::select_type, key };
+}
+
 void celeritas::database_entity_change::modify(const basis_database& basis_database)
 {
     database_->modify(basis_database);

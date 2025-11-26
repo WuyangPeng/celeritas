@@ -117,11 +117,11 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
     }
 }
 
-celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_converter::get_document(const basis_database_container& container)
+celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_converter::get_document(const basis_database_container_const_shared_ptr& container)
 {
     document_type document{};
 
-    for (const auto& value : container)
+    for (const auto& value : *container)
     {
         std::string fieldName{ value.get_field_name() };
         switch (value.get_data_type())

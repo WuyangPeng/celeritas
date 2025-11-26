@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "database/database_pool.h"
+#include "database/database_pool_base.h"
 #include "database/generated/mysql/auth/account.h"
 #include "message/http_handle_parameter.h"
 
@@ -20,8 +20,8 @@ namespace celeritas
 
     private:
         using account_awaitable_type = boost::asio::awaitable<account>;
-        using result_container = database_pool::result_container;
-        using database_pool_shared_ptr = std::shared_ptr<database_pool>;
+        using result_container = database_pool_base::result_container;
+        using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
         using optional_basis_database_manager = std::optional<database_entity_change>;
 

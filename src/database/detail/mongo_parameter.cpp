@@ -1,7 +1,7 @@
 #include "mongo_parameter.h"
 
-celeritas::mongo_parameter::mongo_parameter(std::string_view uri, std::string_view db_name)
-    : uri_{ uri }, db_name_{ db_name }
+celeritas::mongo_parameter::mongo_parameter(std::string uri, std::string db_name)
+    : uri_{ std::move(uri) }, db_name_{ std::move(db_name) }
 {
 }
 

@@ -1,17 +1,17 @@
 ﻿#pragma once
 
-#include "connection_pool_base.h"
+#include "connection_pool.h"
 #include "common/logger.h"
 
 template <typename SessionType>
-celeritas::connection_pool_base<SessionType>::connection_pool_base(io_context_type& io_context,
-                                                                   std::string host,
-                                                                   const int port,
-                                                                   std::string user,
-                                                                   std::string password,
-                                                                   std::string db_name,
-                                                                   const int min_connections,
-                                                                   const int max_connections)
+celeritas::connection_pool<SessionType>::connection_pool(io_context_type& io_context,
+                                                         std::string host,
+                                                         const int port,
+                                                         std::string user,
+                                                         std::string password,
+                                                         std::string db_name,
+                                                         const int min_connections,
+                                                         const int max_connections)
     : io_context_{ io_context },
       host_{ std::move(host) },
       port_{ port },
@@ -27,15 +27,15 @@ celeritas::connection_pool_base<SessionType>::connection_pool_base(io_context_ty
 }
 
 template <typename SessionType>
-celeritas::connection_pool_base<SessionType>::connection_pool_base(io_context_type& io_context,
-                                                                   std::string host,
-                                                                   const int port,
-                                                                   std::string user,
-                                                                   std::string password,
-                                                                   std::string db_name,
-                                                                   const int min_connections,
-                                                                   const int max_connections,
-                                                                   const int expire_seconds)
+celeritas::connection_pool<SessionType>::connection_pool(io_context_type& io_context,
+                                                         std::string host,
+                                                         const int port,
+                                                         std::string user,
+                                                         std::string password,
+                                                         std::string db_name,
+                                                         const int min_connections,
+                                                         const int max_connections,
+                                                         const int expire_seconds)
     : io_context_{ io_context },
       host_{ std::move(host) },
       port_{ port },
@@ -51,11 +51,11 @@ celeritas::connection_pool_base<SessionType>::connection_pool_base(io_context_ty
 }
 
 template <typename SessionType>
-celeritas::connection_pool_base<SessionType>::connection_pool_base(io_context_type& io_context,
-                                                                   std::string uri,
-                                                                   std::string db_name,
-                                                                   const int min_connections,
-                                                                   const int max_connections)
+celeritas::connection_pool<SessionType>::connection_pool(io_context_type& io_context,
+                                                         std::string uri,
+                                                         std::string db_name,
+                                                         const int min_connections,
+                                                         const int max_connections)
     : io_context_{ io_context },
       host_{},
       port_{},
@@ -71,7 +71,7 @@ celeritas::connection_pool_base<SessionType>::connection_pool_base(io_context_ty
 }
 
 template <typename SessionType>
-celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::connection_pool_base<SessionType>::async_initialize()
+celeritas::connection_pool<SessionType>::void_awaitable_type celeritas::connection_pool<SessionType>::async_initialize()
 {
     for (auto i = 0u; i < min_connections_; ++i)
     {
@@ -80,7 +80,7 @@ celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::con
 }
 
 template <typename SessionType>
-celeritas::connection_pool_base<SessionType>::session_awaitable_type celeritas::connection_pool_base<SessionType>::async_get_session()
+celeritas::connection_pool<SessionType>::session_awaitable_type celeritas::connection_pool<SessionType>::async_get_session()
 {
     auto session = try_get_existing_session();
     if (session != nullptr)
@@ -103,7 +103,7 @@ celeritas::connection_pool_base<SessionType>::session_awaitable_type celeritas::
 }
 
 template <typename SessionType>
-void celeritas::connection_pool_base<SessionType>::release_session(const session_shared_ptr& session)
+void celeritas::connection_pool<SessionType>::release_session(const session_shared_ptr& session)
 {
     std::lock_guard lock{ mutex_ };
 
@@ -122,7 +122,7 @@ void celeritas::connection_pool_base<SessionType>::release_session(const session
 }
 
 template <typename SessionType>
-void celeritas::connection_pool_base<SessionType>::cleanup_database_by_duration()
+void celeritas::connection_pool<SessionType>::cleanup_database_by_duration()
 {
     std::lock_guard lock{ mutex_ };
 
@@ -146,7 +146,7 @@ void celeritas::connection_pool_base<SessionType>::cleanup_database_by_duration(
 }
 
 template <typename SessionType>
-celeritas::connection_pool_base<SessionType>::bool_awaitable_type celeritas::connection_pool_base<SessionType>::is_health()
+celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connection_pool<SessionType>::is_health()
 {
     auto session = co_await async_get_session();
 
@@ -154,7 +154,7 @@ celeritas::connection_pool_base<SessionType>::bool_awaitable_type celeritas::con
 }
 
 template <typename SessionType>
-celeritas::connection_pool_base<SessionType>::bool_awaitable_type celeritas::connection_pool_base<SessionType>::execute_changes(const basis_database_manager_const_shared_ptr& database, int expiration_time)
+celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connection_pool<SessionType>::execute_changes(const basis_database_manager_const_shared_ptr& database, int expiration_time)
 {
     try
     {
@@ -182,7 +182,7 @@ celeritas::connection_pool_base<SessionType>::bool_awaitable_type celeritas::con
 }
 
 template <typename SessionType>
-celeritas::database_pool::basis_database_manager_awaitable_type celeritas::connection_pool_base<SessionType>::select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
+celeritas::database_pool_base::basis_database_manager_awaitable_type celeritas::connection_pool<SessionType>::select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
 {
     auto session = co_await async_get_session();
 
@@ -190,7 +190,7 @@ celeritas::database_pool::basis_database_manager_awaitable_type celeritas::conne
 }
 
 template <typename SessionType>
-celeritas::database_pool::result_container_awaitable_type celeritas::connection_pool_base<SessionType>::select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
+celeritas::database_pool_base::result_container_awaitable_type celeritas::connection_pool<SessionType>::select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
 {
     auto session = co_await async_get_session();
 
@@ -198,7 +198,7 @@ celeritas::database_pool::result_container_awaitable_type celeritas::connection_
 }
 
 template <typename SessionType>
-celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::connection_pool_base<SessionType>::async_one_initialize()
+celeritas::connection_pool<SessionType>::void_awaitable_type celeritas::connection_pool<SessionType>::async_one_initialize()
 {
     try
     {
@@ -216,7 +216,7 @@ celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::con
 }
 
 template <typename SessionType>
-celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::connection_pool_base<SessionType>::do_async_one_initialize()
+celeritas::connection_pool<SessionType>::void_awaitable_type celeritas::connection_pool<SessionType>::do_async_one_initialize()
 {
     auto session = std::make_shared<SessionType>(host_, port_, user_, password_, uri_, db_name_, expire_seconds_, io_context_);
     co_await session->async_connect();
@@ -229,7 +229,7 @@ celeritas::connection_pool_base<SessionType>::void_awaitable_type celeritas::con
 }
 
 template <typename SessionType>
-celeritas::connection_pool_base<SessionType>::session_shared_ptr celeritas::connection_pool_base<SessionType>::try_get_existing_session()
+celeritas::connection_pool<SessionType>::session_shared_ptr celeritas::connection_pool<SessionType>::try_get_existing_session()
 {
     std::lock_guard lock{ mutex_ };
 
@@ -246,7 +246,7 @@ celeritas::connection_pool_base<SessionType>::session_shared_ptr celeritas::conn
 }
 
 template <typename SessionType>
-celeritas::connection_pool_base<SessionType>::session_awaitable_type celeritas::connection_pool_base<SessionType>::async_initiate_session()
+celeritas::connection_pool<SessionType>::session_awaitable_type celeritas::connection_pool<SessionType>::async_initiate_session()
 {
     // 如果没有可用会话，将当前协程挂起并加入等待队列。
     // 使用 async_initiate 创建一个自定义的异步操作。

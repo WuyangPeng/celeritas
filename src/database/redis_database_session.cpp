@@ -1,6 +1,6 @@
 ﻿#include "basis_database.tpp"
-#include "database_entity_change.h"
 #include "database_change_type.h"
+#include "database_entity_change.h"
 #include "database_field.h"
 #include "redis_database_session.h"
 #include "common/celeritas_error.h"
@@ -172,7 +172,7 @@ celeritas::redis_database_session::scan_result_awaitable_type celeritas::redis_d
     co_return redis_reply->to_scan_result();
 }
 
-celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::execute_changes(const basis_database_manager_const_shared_ptr& database, int expiration_time)
+celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::execute_changes(const database_entity_change_const_shared_ptr& database, int expiration_time)
 {
     switch (database->get_change_type())
     {
@@ -194,7 +194,7 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
     }
 }
 
-celeritas::database_session::basis_database_manager_awaitable_type celeritas::redis_database_session::select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
+celeritas::database_session::database_entity_change_awaitable_type celeritas::redis_database_session::select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container)
 {
     const auto optional_result = co_await redis_hash_commands_.async_get_all(redis_key_data_converter::generate_key(database));
     if (!optional_result)
@@ -218,7 +218,7 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::re
     co_return select;
 }
 
-celeritas::database_session::result_container_awaitable_type celeritas::redis_database_session::select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
+celeritas::database_session::result_container_awaitable_type celeritas::redis_database_session::select_all(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container)
 {
     const auto pattern = database->get_database_name().data() + ":*"s;
 
@@ -260,7 +260,7 @@ celeritas::redis_database_session::redis_reply_awaitable_type celeritas::redis_d
     co_return std::make_unique<redis_reply>(*redis_context_.get(), command);
 }
 
-celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::save_database(const basis_database_manager_const_shared_ptr& database, int expiration_time) const
+celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::save_database(const database_entity_change_const_shared_ptr& database, int expiration_time) const
 {
     redis_commands::key_value_container field_value{};
     for (const auto& element : *database->get_database())
@@ -280,13 +280,13 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
     co_return;
 }
 
-celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::delete_database(const basis_database_manager_const_shared_ptr& database) const
+celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::delete_database(const database_entity_change_const_shared_ptr& database) const
 {
     co_await redis_key_commands_.async_delete(redis_key_data_converter::generate_key(database));
     co_return;
 }
 
-celeritas::database_session::basis_database_manager_awaitable_type celeritas::redis_database_session::select_one(const std::string& key, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) const
+celeritas::database_session::database_entity_change_awaitable_type celeritas::redis_database_session::select_one(const std::string& key, const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) const
 {
     const auto optional_result = co_await redis_hash_commands_.async_get_all(key);
     if (!optional_result)
@@ -296,10 +296,7 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::re
 
     const auto& result = *optional_result;
 
-    database_entity_change select{ database->get_database_type(),
-                                   database->get_database_name(),
-                                   database_change_type::select_type,
-                                   redis_key_data_converter::get_key(key, database) };
+    auto select = database->get_select(redis_key_data_converter::get_key(key, database));
 
     for (const auto& field : field_name_container)
     {

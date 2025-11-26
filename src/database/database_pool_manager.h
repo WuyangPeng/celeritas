@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "database_pool.h"
+#include "database_pool_base.h"
 #include "config/database_type.h"
 
 #include <mongocxx/instance.hpp>
@@ -14,7 +14,7 @@ namespace celeritas
     public:
         using class_type = database_pool_manager;
         using io_context_type = boost::asio::io_context;
-        using database_pool_shared_ptr = std::shared_ptr<database_pool>;
+        using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
         using bool_awaitable_type = boost::asio::awaitable<bool>;
         using result_container = std::vector<database_entity_change>;
         using database_field_container = std::vector<database_field>;
@@ -44,12 +44,6 @@ namespace celeritas
         void release_pool();
 
         [[nodiscard]] bool_awaitable_type is_health();
-
-        void execute_changes(io_context_type& io_context, const std::string& name, const basis_database_manager_const_shared_ptr& database);
-
-        [[nodiscard]] basis_database_manager_awaitable_type select_one(const std::string& name, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container);
-
-        [[nodiscard]] result_container_awaitable_type select_all(const std::string& name, const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container);
 
     private:
         using database_pool_container = std::map<std::string, database_pool_shared_ptr>;

@@ -17,12 +17,12 @@
 
 using namespace std::literals;
 
-celeritas::mysql_database_session::mysql_database_session(const std::string_view host,
+celeritas::mysql_database_session::mysql_database_session(const std::string& host,
                                                           const int port,
-                                                          const std::string_view user,
-                                                          const std::string_view password,
-                                                          const std::string_view uri,
-                                                          const std::string_view db_name,
+                                                          const std::string& user,
+                                                          const std::string& password,
+                                                          const std::string& uri,
+                                                          const std::string& db_name,
                                                           int expire_seconds,
                                                           io_context_type& io_context,
                                                           ssl_io_context_type* ssl_context)
@@ -37,7 +37,7 @@ celeritas::mysql_database_session::~mysql_database_session() noexcept
                                    connection_.close();
                                },
                                common_channel,
-                               "Unexpected error during MySQL connection close: ");
+                               "Unexpected error during mysql connection close: ");
 }
 
 celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::async_connect()
@@ -57,7 +57,7 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
     }
     catch (const boost::system::system_error& error)
     {
-        LOG_CHANNEL(database_channel, error) << "async_query exception" << error.what();
+        LOG_CHANNEL(database_channel, error) << "async query exception" << error.what();
 
         retry_error = error.code();
     }
@@ -72,7 +72,7 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
         co_return co_await async_handle_and_retry(sql, retry_error.value());
     }
 
-    co_return results_type{};
+    throw celeritas_error{ "mysql async query unknown exception" };
 }
 
 celeritas::database_session::bool_awaitable_type celeritas::mysql_database_session::is_health()
@@ -85,22 +85,22 @@ celeritas::database_session::bool_awaitable_type celeritas::mysql_database_sessi
     }
     catch (const boost::system::system_error& error)
     {
-        LOG_CHANNEL(database_channel, warning) << "MySQL health check failed with error: " << error.what();
+        LOG_CHANNEL(database_channel, warning) << "mysql health check failed with error: " << error.what();
         co_return false;
     }
     catch (const std::exception& error)
     {
-        LOG_CHANNEL(database_channel, error) << "MySQL health check failed with unexpected exception: " << error.what();
+        LOG_CHANNEL(database_channel, error) << "mysql health check failed with unexpected exception: " << error.what();
         co_return false;
     }
     catch (...)
     {
-        LOG_CHANNEL(database_channel, fatal) << "MySQL health check failed with unknown exception";
+        LOG_CHANNEL(database_channel, fatal) << "mysql health check failed with unknown exception";
         co_return false;
     }
 }
 
-celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::execute_changes(const basis_database_manager_const_shared_ptr& database, int expiration_time)
+celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::execute_changes(const database_entity_change_const_shared_ptr& database, int expiration_time)
 {
     switch (database->get_change_type())
     {
@@ -129,9 +129,9 @@ celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database
     co_return;
 }
 
-celeritas::database_session::basis_database_manager_awaitable_type celeritas::mysql_database_session::select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
+celeritas::database_session::database_entity_change_awaitable_type celeritas::mysql_database_session::select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container)
 {
-    const auto result = co_await async_query(mysql_statement_generator::generate_select_statement(field_name_container, *database) + " LIMIT 1;");
+    const auto result = co_await async_query(mysql_statement_generator::generate_select_statement(field_name_container, database) + " LIMIT 1;");
 
     if (const auto& rows = result.rows();
         !rows.empty())
@@ -142,9 +142,9 @@ celeritas::database_session::basis_database_manager_awaitable_type celeritas::my
     co_return std::nullopt;
 }
 
-celeritas::database_session::result_container_awaitable_type celeritas::mysql_database_session::select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
+celeritas::database_session::result_container_awaitable_type celeritas::mysql_database_session::select_all(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container)
 {
-    const auto result = co_await async_query(mysql_statement_generator::generate_select_statement(field_name_container, *database) + ";");
+    const auto result = co_await async_query(mysql_statement_generator::generate_select_statement(field_name_container, database) + ";");
 
     result_container container{};
 
@@ -202,13 +202,14 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
         }
     }
 
-    throw celeritas_error("async_query exception.");
+    throw celeritas_error("async query exception.");
 }
 
-celeritas::database_entity_change celeritas::mysql_database_session::populate_database_from_row(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container, const row_view_type& row)
+celeritas::database_entity_change celeritas::mysql_database_session::populate_database_from_row(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container, const row_view_type& row)
 {
     auto select = database->get_select();
     auto index = 0;
+
     for (const auto& value : row)
     {
         select.modify(mysql_row_data_converter::get_basis_database(field_name_container.at(index), value));

@@ -10,7 +10,7 @@ namespace celeritas
     public:
         using class_type = cleanup_database_session_timer;
         using base_type = timer_base;
-        using database_pool_weak_ptr = std::weak_ptr<database_pool>;
+        using database_pool_weak_ptr = std::weak_ptr<database_pool_base>;
 
         explicit cleanup_database_session_timer(io_context_type& io_context, duration_type interval, database_pool_weak_ptr database_pool);
 

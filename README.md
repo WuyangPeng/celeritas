@@ -453,14 +453,14 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 ##### connection pool (连接池)
 
-* **💧 连接池基类 (`connection_pool_base<SessionType>`)**
-    - **作用**：一个通用的、基于模板的数据库连接池基类。
+* **🏊 数据库连接池基类 (`database_pool_base`)**
+    - **作用**：定义了数据库连接池的抽象接口，是所有具体连接池实现（如 `connection_pool<SessionType>`）的基类。
+    - **特点**：提供了执行数据库操作（如查询、修改）和管理连接池（如健康检查）的统一接口，实现了业务逻辑与具体连接池实现的解耦。
+
+
+* **💧 数据库连接池 (`connection_pool<SessionType>`)**
+    - **作用**：一个通用的、基于模板的数据库连接池。
     - **功能**：实现了连接池的核心逻辑，包括异步获取 (`acquire`)、归还 (`release`) 连接，以及定时清理 (`cleanup`) 空闲连接。
-
-
-* **🏊 数据库连接池 (`database_pool`)**
-    - **作用**：`connection_pool_base` 的具体实现，用于管理特定类型 `database_session` 的连接池。
-    - **特点**：封装了创建和管理特定数据库会话（如 `mysql_database_session`）的逻辑。
 
 
 * **👨‍💼 数据库连接池管理器 (`database_pool_manager`)**

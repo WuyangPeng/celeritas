@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "database_pool.h"
+#include "database_pool_base.h"
 
 #include <boost/asio.hpp>
 #include <boost/asio/awaitable.hpp>
@@ -9,41 +9,41 @@
 namespace celeritas
 {
     template <typename SessionType>
-    class connection_pool_base final : public database_pool
+    class connection_pool final : public database_pool_base
     {
     public:
-        using class_type = connection_pool_base;
-        using base_type = database_pool;
+        using class_type = connection_pool;
+        using base_type = database_pool_base;
 
         using io_context_type = boost::asio::io_context;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using session_shared_ptr = std::shared_ptr<SessionType>;
         using session_awaitable_type = boost::asio::awaitable<session_shared_ptr>;
 
-        connection_pool_base(io_context_type& io_context,
-                             std::string host,
-                             int port,
-                             std::string user,
-                             std::string password,
-                             std::string db_name,
-                             int min_connections,
-                             int max_connections);
+        connection_pool(io_context_type& io_context,
+                        std::string host,
+                        int port,
+                        std::string user,
+                        std::string password,
+                        std::string db_name,
+                        int min_connections,
+                        int max_connections);
 
-        connection_pool_base(io_context_type& io_context,
-                             std::string host,
-                             int port,
-                             std::string user,
-                             std::string password,
-                             std::string db_name,
-                             int min_connections,
-                             int max_connections,
-                             int expire_seconds);
+        connection_pool(io_context_type& io_context,
+                        std::string host,
+                        int port,
+                        std::string user,
+                        std::string password,
+                        std::string db_name,
+                        int min_connections,
+                        int max_connections,
+                        int expire_seconds);
 
-        connection_pool_base(io_context_type& io_context,
-                             std::string uri,
-                             std::string db_name,
-                             int min_connections,
-                             int max_connections);
+        connection_pool(io_context_type& io_context,
+                        std::string uri,
+                        std::string db_name,
+                        int min_connections,
+                        int max_connections);
 
         // 异步初始化连接池
         [[nodiscard]] void_awaitable_type async_initialize() override;

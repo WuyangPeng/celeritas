@@ -19,12 +19,12 @@ namespace celeritas
         using results_type = boost::mysql::results;
         using results_awaitable_type = boost::asio::awaitable<results_type>;
 
-        mysql_database_session(std::string_view host,
+        mysql_database_session(const std::string& host,
                                int port,
-                               std::string_view user,
-                               std::string_view password,
-                               std::string_view uri,
-                               std::string_view db_name,
+                               const std::string& user,
+                               const std::string& password,
+                               const std::string& uri,
+                               const std::string& db_name,
                                int expire_seconds,
                                io_context_type& io_context,
                                ssl_io_context_type* ssl_context = nullptr);
@@ -47,11 +47,11 @@ namespace celeritas
 
         [[nodiscard]] bool_awaitable_type is_health() override;
 
-        [[nodiscard]] void_awaitable_type execute_changes(const basis_database_manager_const_shared_ptr& database, int expiration_time) override;
+        [[nodiscard]] void_awaitable_type execute_changes(const database_entity_change_const_shared_ptr& database, int expiration_time) override;
 
-        [[nodiscard]] basis_database_manager_awaitable_type select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) override;
+        [[nodiscard]] database_entity_change_awaitable_type select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) override;
 
-        [[nodiscard]] result_container_awaitable_type select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) override;
+        [[nodiscard]] result_container_awaitable_type select_all(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) override;
 
     private:
         using connection_type = boost::mysql::any_connection;
@@ -65,7 +65,7 @@ namespace celeritas
 
         [[nodiscard]] results_awaitable_type async_handle_and_retry(const std::string& sql, const error_code_type& error_code);
 
-        [[nodiscard]] static database_entity_change populate_database_from_row(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container, const row_view_type& row);
+        [[nodiscard]] static database_entity_change populate_database_from_row(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container, const row_view_type& row);
 
         connection_type connection_;
         mysql_parameter mysql_parameter_;

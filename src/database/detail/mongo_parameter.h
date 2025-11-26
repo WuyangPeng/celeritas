@@ -9,7 +9,7 @@ namespace celeritas
     public:
         using class_type = mongo_parameter;
 
-        mongo_parameter(std::string_view uri, std::string_view db_name);
+        mongo_parameter(std::string uri, std::string db_name);
 
         [[nodiscard]] std::string get_uri() const;
 

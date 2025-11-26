@@ -16,15 +16,23 @@ namespace celeritas
     class basis_database_container;
     class database_entity_change;
 
-    template <typename SessionType>
-    class connection_pool_base;
+    template <const std::string_view& FieldName, database_data_type Type, database_index_type Index>
+    class entity;
 
-    class database_pool_manager;
-    class database_pool;
+    class database_entity;
+
     class database_session;
     class mysql_database_session;
     class mongo_database_session;
     class redis_database_session;
+
+    class database_pool_base;
+
+    template <typename SessionType>
+    class connection_pool;
+
+    class database_pool_manager;
+
     class redis_commands;
     class redis_key_commands;
     class redis_string_commands;
@@ -33,11 +41,7 @@ namespace celeritas
     class redis_set_commands;
     class redis_sorted_set_commands;
     class sorted_set_member_score;
-    class database_entity;
     class scan_result;
-
-    template <const std::string_view& FieldName, database_data_type Type, database_index_type Index>
-    class entity;
 
     constexpr auto cleanup_database_timer = std::chrono::minutes(30);
     constexpr auto cleanup_database_expired_timer = std::chrono::hours(1);
