@@ -34,5 +34,7 @@ namespace celeritas
         health_check_level_type health_check_level_ = health_check_level_type::health;
     };
 
-    [[nodiscard]] health_check tag_invoke(boost::json::value_to_tag<health_check>, boost::json::value const& value);
+    [[nodiscard]] health_check tag_invoke(boost::json::value_to_tag<health_check>, const boost::json::value& value);
+
+    void tag_invoke(boost::json::value_from_tag, boost::json::value& value, const health_check& health_check);
 }
