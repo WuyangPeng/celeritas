@@ -4,7 +4,7 @@
 #include "common/thread_safe_queue.h"
 #include "config/config_fwd.h"
 #include "config/database_config.h"
-#include "handler/handler_fwd.h"
+#include "service_registry/service_registry_fwd.h"
 
 #include <boost/asio.hpp>
 #include <boost/url.hpp>

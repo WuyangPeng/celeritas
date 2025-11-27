@@ -47,12 +47,7 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::run()
         }
         catch (...)
         {
-            LOG_CHANNEL(network_channel, fatal) << listener
-            unknown
-            error.
-
-
-            ";
+            LOG_CHANNEL(network_channel, fatal) << "listener unknown error.";
         }
     }
 

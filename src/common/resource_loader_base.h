@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 #include "config/config_fwd.h"
-#include "handler/handler_fwd.h"
 #include "message/message_fwd.h"
+#include "service_registry/service_registry_fwd.h"
 
 #include <boost/asio.hpp>
 #include <google/protobuf/message.h>

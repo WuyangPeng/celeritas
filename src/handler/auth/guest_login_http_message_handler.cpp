@@ -9,6 +9,7 @@
 #include "database/mysql_database_session.h"
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/redis/auth/session_token.h"
+#include "handler/handler_fwd.h"
 #include "message/http_handle_parameter.h"
 #include "server/account_status_type.h"
 #include "server/game_error_type.h"
