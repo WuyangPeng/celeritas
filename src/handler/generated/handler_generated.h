@@ -5,6 +5,8 @@
 #include "handler/auth/email_bind_http_message_handler.h"
 #include "handler/auth/email_login_http_message_handler.h"
 #include "handler/auth/guest_login_http_message_handler.h"
+#include "handler/auth/password_bind_http_message_handler.h"
+#include "handler/auth/password_login_http_message_handler.h"
 #include "handler/auth/phone_bind_http_message_handler.h"
 #include "handler/auth/phone_login_http_message_handler.h"
 #include "handler/auth/reload_app_db_message_handler.h"

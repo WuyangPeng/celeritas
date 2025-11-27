@@ -50,4 +50,6 @@ namespace celeritas
 
     constexpr std::string_view auth_db_name = "auth_db";
     constexpr std::string_view redis_db_name = "redis_db";
+
+    constexpr std::string_view redis_ok = "OK";
 }

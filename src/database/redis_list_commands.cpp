@@ -83,7 +83,7 @@ celeritas::redis_list_commands::blocking_left_pop_awaitable_type celeritas::redi
 {
     if (keys.empty())
     {
-        throw celeritas_error("blocking left pop requires at least one key.");
+        throw celeritas_error{ "blocking left pop requires at least one key." };
     }
 
     const auto command = "BLPOP" + get_keys_command(keys) + " " + std::to_string(timeout_seconds);
@@ -97,7 +97,7 @@ celeritas::redis_list_commands::blocking_left_pop_awaitable_type celeritas::redi
 
     if (array_result.size() != 2)
     {
-        throw celeritas_error("blocking left pop  returned an array with an unexpected number of elements.");
+        throw celeritas_error{ "blocking left pop  returned an array with an unexpected number of elements." };
     }
 
     co_return blocking_left_pop_result_type{ { array_result[0], array_result[1] } };

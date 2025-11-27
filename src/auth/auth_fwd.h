@@ -16,6 +16,10 @@ namespace celeritas
     class email_login;
     class email_bind_response;
     class email_bind;
+    class password_login_response;
+    class password_login;
+    class password_bind_response;
+    class password_bind;
 
     enum class app_status_type;
 

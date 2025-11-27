@@ -142,6 +142,14 @@ celeritas::password_login::void_awaitable_type celeritas::password_login::respon
         if (optional_account_result)
         {
             account account{ *optional_account_result };
+            if (account.get_salt().empty())
+            {
+                const password_login_response response{ game_error_type::password_error, "password error" };
+                handle_parameter_.write(response.to_json_string());
+
+                co_return;
+            }
+
             if (hmac_sha256::calculate(password, account.get_salt()) != account.get_password_hash())
             {
                 const password_login_response response{ game_error_type::password_error, "password error" };

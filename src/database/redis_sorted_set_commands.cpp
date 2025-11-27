@@ -127,7 +127,7 @@ celeritas::redis_sorted_set_commands::sorted_set_member_score_container celerita
 {
     if (array_result.size() % 2 != 0)
     {
-        throw celeritas_error("ZRANGE/ZREVRANGE with scores returned an array with odd number of elements.");
+        throw celeritas_error{ "ZRANGE/ZREVRANGE with scores returned an array with odd number of elements." };
     }
 
     sorted_set_member_score_container result{};
@@ -152,7 +152,7 @@ celeritas::sorted_set_member_score celeritas::redis_sorted_set_commands::convert
     }
     catch (const std::exception& e)
     {
-        throw celeritas_error("ZRANGE/ZREVRANGE: failed to convert score string to double: " + score + ". Error: " + e.what());
+        throw celeritas_error{ "ZRANGE/ZREVRANGE: failed to convert score string to double: " + score + ". Error: " + e.what() };
     }
 }
 

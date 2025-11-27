@@ -143,7 +143,7 @@ celeritas::redis_commands::scan_result_awaitable_type celeritas::redis_commands:
 celeritas::redis_commands::bool_awaitable_type celeritas::redis_commands::async_execute_command_is_ok(const std::string& command) const
 {
     if (const auto result = co_await async_execute_command_return_optional_string(command);
-        result && *result == "OK")
+        result && *result == redis_ok)
     {
         co_return true;
     }

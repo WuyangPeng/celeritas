@@ -19,7 +19,7 @@ celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_co
 
     if (expire_seconds_comma.empty())
     {
-        throw celeritas_error("the expiration time is invalid.");
+        throw celeritas_error{ "the expiration time is invalid." };
     }
 
     const auto set_command = "SET " + get_prefixed_key(key) + " " + get_quoted_value_command(value) + expire_seconds_comma + " NX";
