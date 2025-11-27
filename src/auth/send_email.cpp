@@ -9,7 +9,7 @@
 #include "database/database_pool_manager.h"
 #include "database/generated/redis/auth/email_code.h"
 #include "database/generated/redis/auth/email_limit.h"
-#include "server/game_error_type.h"
+#include "../message/game_error_type.h"
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/case_conv.hpp>

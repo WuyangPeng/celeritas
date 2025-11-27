@@ -2,9 +2,13 @@
 
 namespace celeritas
 {
+    enum class game_error_type;
+
     class header;
     class protobuf_handle_parameter;
     class http_handle_parameter;
+    class celeritas_game_error;
+    class http_response;
 
     class protobuf_base_message_handler;
     class http_base_message_handler;

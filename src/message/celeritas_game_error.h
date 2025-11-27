@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "game_error_type.h"
+#include "message/game_error_type.h"
 #include "common/celeritas_error.h"
 
 namespace celeritas

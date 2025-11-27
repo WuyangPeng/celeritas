@@ -13,7 +13,7 @@
 #include "handler/handler_fwd.h"
 #include "message/http_handle_parameter.h"
 #include "server/account_status_type.h"
-#include "server/game_error_type.h"
+#include "../../message/game_error_type.h"
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/hex.hpp>

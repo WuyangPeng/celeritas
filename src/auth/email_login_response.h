@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "server/server_fwd.h"
+#include "message/message_fwd.h"
 
 #include <cstdint>
 #include <string>

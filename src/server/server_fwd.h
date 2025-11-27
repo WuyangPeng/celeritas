@@ -5,8 +5,6 @@
 namespace celeritas
 {
     class server_base;
-    class celeritas_game_error;
-    enum class game_error_type;
     enum class account_type;
     enum class account_status_type;
 

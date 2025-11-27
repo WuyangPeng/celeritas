@@ -61,11 +61,11 @@ celeritas::health_check celeritas::tag_invoke(boost::json::value_to_tag<health_c
     }
     catch (const std::out_of_range& error)
     {
-        throw celeritas_error{ "json deserialization failed: Missing 'instance_id' or 'health_check_level' key."s + error.what() };
+        throw celeritas_error{ "json deserialization failed: missing 'instance_id' or 'health_check_level' key."s + error.what() };
     }
     catch (const boost::system::system_error& error)
     {
-        throw celeritas_error{ "json deserialization failed: Invalid value type for key."s + error.what() };
+        throw celeritas_error{ "json deserialization failed: invalid value type for key."s + error.what() };
     }
 }
 

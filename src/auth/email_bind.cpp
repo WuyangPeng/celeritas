@@ -8,7 +8,7 @@
 #include "database/generated/mysql/auth/account_bind.h"
 #include "database/generated/redis/auth/session_token.h"
 #include "server/account_type.h"
-#include "server/game_error_type.h"
+#include "../message/game_error_type.h"
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/case_conv.hpp>
