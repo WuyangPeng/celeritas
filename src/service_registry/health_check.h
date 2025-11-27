@@ -29,6 +29,9 @@ namespace celeritas
 
         [[nodiscard]] static health_check from_json_string(const std::string& json_string);
 
+        static constexpr std::string_view instance_id_description = "instance_id";
+        static constexpr std::string_view health_check_level_description = "health_check_level";
+
     private:
         std::string instance_id_;
         health_check_level_type health_check_level_ = health_check_level_type::health;

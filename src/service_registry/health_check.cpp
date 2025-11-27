@@ -54,8 +54,8 @@ celeritas::health_check celeritas::tag_invoke(boost::json::value_to_tag<health_c
 
     try
     {
-        auto instance_id = boost::json::value_to<std::string>(object.at("instance_id"));
-        const auto health_check_level = boost::json::value_to<int>(object.at("health_check_level"));
+        auto instance_id = boost::json::value_to<std::string>(object.at(health_check::instance_id_description));
+        const auto health_check_level = boost::json::value_to<int>(object.at(health_check::health_check_level_description));
 
         return health_check{ std::move(instance_id), static_cast<health_check_level_type>(health_check_level) };
     }
@@ -72,7 +72,7 @@ celeritas::health_check celeritas::tag_invoke(boost::json::value_to_tag<health_c
 void celeritas::tag_invoke(boost::json::value_from_tag, boost::json::value& value, const health_check& health_check)
 {
     value = {
-        { "instance_id", health_check.get_instance_id() },
-        { "health_check_level", static_cast<int>(health_check.get_health_check_level()) }
+        { health_check::instance_id_description, health_check.get_instance_id() },
+        { health_check::health_check_level_description, static_cast<int>(health_check.get_health_check_level()) }
     };
 }
