@@ -25,6 +25,7 @@
 #include <openssl/rand.h>
 
 #include <regex>
+#include <vector>
 
 celeritas::password_login::password_login(http_handle_parameter handle_parameter)
     : handle_parameter_{ std::move(handle_parameter) }
@@ -141,7 +142,7 @@ celeritas::password_login::void_awaitable_type celeritas::password_login::respon
         if (optional_account_result)
         {
             account account{ *optional_account_result };
-            if (account.get_password_hash() != password)
+            if (hmac_sha256::calculate(password, account.get_salt()) != account.get_password_hash())
             {
                 const password_login_response response{ game_error_type::password_error, "password error" };
                 handle_parameter_.write(response.to_json_string());
@@ -163,7 +164,12 @@ celeritas::password_login::void_awaitable_type celeritas::password_login::respon
     account.set_create_time(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
     account.set_status(static_cast<int>(account_status_type::normal));
     account.set_device_id(account.get_account_name());
-    account.set_password_hash(password);
+
+    const auto salt = generate_token();
+    const auto hashed_password = hmac_sha256::calculate(password, salt);
+    account.set_salt(salt);
+    account.set_password_hash(hashed_password);
+
     account.set_app_id(app_id);
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
     if (!co_await redis_pool->execute_changes(account.get_modify()))
