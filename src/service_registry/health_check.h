@@ -12,6 +12,7 @@ namespace celeritas
     {
     public:
         using class_type = health_check;
+        using json_value = boost::json::value;
 
         health_check() noexcept = default;
 
@@ -29,15 +30,21 @@ namespace celeritas
 
         [[nodiscard]] static health_check from_json_string(const std::string& json_string);
 
+        [[nodiscard]] static health_check tag_invoke(const json_value& value);
+
         static constexpr std::string_view instance_id_description = "instance_id";
         static constexpr std::string_view health_check_level_description = "health_check_level";
 
     private:
+        [[nodiscard]] static health_check do_from_json_string(const std::string& json_string);
+
         std::string instance_id_;
         health_check_level_type health_check_level_ = health_check_level_type::health;
     };
 
-    [[nodiscard]] health_check tag_invoke(boost::json::value_to_tag<health_check>, const boost::json::value& value);
+    using health_check_tag = boost::json::value_to_tag<health_check>;
 
-    void tag_invoke(boost::json::value_from_tag, boost::json::value& value, const health_check& health_check);
+    [[nodiscard]] health_check tag_invoke(health_check_tag, const health_check::json_value& value);
+
+    void tag_invoke(boost::json::value_from_tag, health_check::json_value& value, const health_check& health_check);
 }

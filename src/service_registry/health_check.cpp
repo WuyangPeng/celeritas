@@ -39,8 +39,7 @@ celeritas::health_check celeritas::health_check::from_json_string(const std::str
 {
     try
     {
-        const auto value = boost::json::parse(json_string);
-        return boost::json::value_to<health_check>(value);
+        return do_from_json_string(json_string);
     }
     catch (const std::exception& e)
     {
@@ -48,16 +47,26 @@ celeritas::health_check celeritas::health_check::from_json_string(const std::str
     }
 }
 
-celeritas::health_check celeritas::tag_invoke(boost::json::value_to_tag<health_check>, const boost::json::value& value)
+celeritas::health_check celeritas::health_check::tag_invoke(const json_value& value)
 {
     const auto& object = value.as_object();
+    auto instance_id = boost::json::value_to<std::string>(object.at(instance_id_description));
+    const auto health_check_level = boost::json::value_to<int>(object.at(health_check_level_description));
 
+    return health_check{ std::move(instance_id), static_cast<health_check_level_type>(health_check_level) };
+}
+
+celeritas::health_check celeritas::health_check::do_from_json_string(const std::string& json_string)
+{
+    const auto value = boost::json::parse(json_string);
+    return boost::json::value_to<health_check>(value);
+}
+
+celeritas::health_check celeritas::tag_invoke(health_check_tag, const health_check::json_value& value)
+{
     try
     {
-        auto instance_id = boost::json::value_to<std::string>(object.at(health_check::instance_id_description));
-        const auto health_check_level = boost::json::value_to<int>(object.at(health_check::health_check_level_description));
-
-        return health_check{ std::move(instance_id), static_cast<health_check_level_type>(health_check_level) };
+        return health_check::tag_invoke(value);
     }
     catch (const std::out_of_range& error)
     {
@@ -69,7 +78,7 @@ celeritas::health_check celeritas::tag_invoke(boost::json::value_to_tag<health_c
     }
 }
 
-void celeritas::tag_invoke(boost::json::value_from_tag, boost::json::value& value, const health_check& health_check)
+void celeritas::tag_invoke(boost::json::value_from_tag, health_check::json_value& value, const health_check& health_check)
 {
     value = {
         { health_check::instance_id_description, health_check.get_instance_id() },
