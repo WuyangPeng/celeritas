@@ -2,6 +2,8 @@
 
 #include "service_registry/health_check_level_type.h"
 
+#include <boost/json.hpp>
+
 #include <string>
 
 namespace celeritas
@@ -11,11 +13,17 @@ namespace celeritas
     public:
         using class_type = health_check;
 
+        health_check() noexcept = default;
+
         health_check(std::string instance_id, health_check_level_type health_check_level);
 
         [[nodiscard]] std::string get_instance_id() const;
 
         [[nodiscard]] health_check_level_type get_health_check_level() const;
+
+        void set_instance_id(const std::string& instance_id);
+
+        void set_health_check_level(health_check_level_type health_check_level);
 
         [[nodiscard]] std::string to_json_string() const;
 
@@ -23,6 +31,8 @@ namespace celeritas
 
     private:
         std::string instance_id_;
-        health_check_level_type health_check_level_;
+        health_check_level_type health_check_level_ = health_check_level_type::health;
     };
+
+    [[nodiscard]] health_check tag_invoke(boost::json::value_to_tag<health_check>, boost::json::value const& value);
 }

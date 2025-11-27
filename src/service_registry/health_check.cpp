@@ -63,3 +63,41 @@ celeritas::health_check celeritas::health_check::from_json_string(const std::str
         throw celeritas_error("json deserialization failed: Missing or invalid key in json: " + std::string(e.what()));
     }
 }
+
+void celeritas::health_check::set_instance_id(const std::string& instance_id)
+{
+    instance_id_ = instance_id;
+}
+
+void celeritas::health_check::set_health_check_level(const health_check_level_type health_check_level)
+{
+    health_check_level_ = health_check_level;
+}
+
+celeritas::health_check celeritas::tag_invoke(boost::json::value_to_tag<health_check>, boost::json::value const& value)
+{
+    const auto& object = value.as_object();
+    health_check attribute{};
+
+    // 必填字段: instance_id
+    if (object.contains("instance_id"))
+    {
+        attribute.set_instance_id(boost::json::value_to<std::string>(object.at("instance_id")));
+    }
+    else
+    {
+        throw celeritas_error("ClassDefinition missing 'instance_id'");
+    }
+
+    // 必填字段: health_check_level
+    if (object.contains("health_check_level"))
+    {
+        attribute.set_health_check_level(static_cast<health_check_level_type>(boost::json::value_to<int>(object.at("health_check_level"))));
+    }
+    else
+    {
+        throw celeritas_error("ClassDefinition missing 'health_check_level'");
+    }
+
+    return attribute;
+}
