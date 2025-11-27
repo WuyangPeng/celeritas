@@ -14,6 +14,7 @@
 #include "message/http_handle_parameter.h"
 #include "server/account_status_type.h"
 #include "../../message/game_error_type.h"
+#include "server/server_fwd.h"
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/hex.hpp>
