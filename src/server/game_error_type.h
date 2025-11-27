@@ -17,6 +17,7 @@ namespace celeritas
         code_expired = 104,
         code_error = 105,
         token_error = 106,
+        password_error = 107,
 
         // auth错误
         account_error = 1000,

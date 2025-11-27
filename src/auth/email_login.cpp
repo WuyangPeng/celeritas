@@ -147,9 +147,9 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
                                                                                                             { account_bind::auth_key_describe, email },
                                                                                                             { account_bind::app_id_describe, app_id } });
 
-    const auto select = account::get_select(database_type::mysql, key);
+    const auto select = account_bind::get_select(database_type::mysql, key);
 
-    auto optional_account_bind = co_await mysql_pool->select_one(select, account::get_database_field_container());
+    auto optional_account_bind = co_await mysql_pool->select_one(select, account_bind::get_database_field_container());
 
     auto account = co_await get_account(optional_account_bind, redis_pool, mysql_pool, app_id, email, handle_parameter_.get_app_config());
 

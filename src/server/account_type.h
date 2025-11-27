@@ -7,6 +7,7 @@ namespace celeritas
         invalid = -1,
         guest = 0,
         phone = 1,
-        email = 1,
+        email = 2,
+        password = 3,
     };
 }

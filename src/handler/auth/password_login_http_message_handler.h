@@ -6,13 +6,13 @@
 
 namespace celeritas
 {
-    class phone_bind_http_message_handler final : public http_base_message_handler
+    class password_login_http_message_handler final : public http_base_message_handler
     {
     public:
-        using class_type = phone_bind_http_message_handler;
+        using class_type = password_login_http_message_handler;
         using base_type = http_base_message_handler;
 
-        phone_bind_http_message_handler() noexcept = default;
+        password_login_http_message_handler() noexcept = default;
 
         [[nodiscard]] std::string get_supported_type_name() const override;
 
