@@ -37,7 +37,7 @@ celeritas::listener_sessions::session_shared_ptr celeritas::listener_sessions::g
     const auto iter = sessions_.find(id);
     if (iter == sessions_.cend())
     {
-        throw celeritas_error("no session found for id {}", id);
+        throw celeritas_error{ "no session found for id {}", id };
     }
 
     return iter->second;

@@ -548,12 +548,12 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 * **📄 HTTP会话 (`http_session`)**
     - **作用**：处理`HTTP`协议的会话。
-    - **特点**：专注于HTTP请求和响应的解析与构建。
+    - **特点**：专注于`HTTP`请求和响应的解析与构建。
 
 
 * **🕸️ WebSocket会话 (`websocket_session`)**
     - **作用**：处理`WebSocket`协议的会话。
-    - **特点**：专注于 WebSocket 帧的解析、构建和握手过程。
+    - **特点**：专注于`WebSocket`帧的解析、构建和握手过程。
 
 ##### session helper components（会话辅助组件）
 

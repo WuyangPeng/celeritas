@@ -10,7 +10,7 @@ celeritas::tcp_listener::tcp_listener(io_context_type& io_context,
       acceptor_{ io_context, boost::asio::ip::tcp::endpoint{ boost::asio::ip::tcp::v4(), boost::numeric_cast<uint_least16_t>(port) } },
       listener_accept_{ std::make_shared<tcp_listener_accept>(acceptor_, get_game_server_id(), get_network_message_callback()) }
 {
-    LOG_CHANNEL(network_channel, info) << "Listening on port " << port << "...";
+    LOG_CHANNEL(network_channel, info) << "listening on port " << port << "...";
 }
 
 void celeritas::tcp_listener::stop()

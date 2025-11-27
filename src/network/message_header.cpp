@@ -63,7 +63,7 @@ void celeritas::message_header::set_span(const source_type& span)
 {
     if (span.size() < get_self_size())
     {
-        throw celeritas_error("Insufficient span size");
+        throw celeritas_error{ "insufficient span size" };
     }
 
     std::ranges::copy(span, reinterpret_cast<char*>(this));

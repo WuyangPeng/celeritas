@@ -78,7 +78,9 @@ void celeritas::http_session::do_write(buffer_guard data)
 celeritas::http_session::session_write_shared_ptr celeritas::http_session::get_session_write(socket_type& socket, const bool is_server, std::string host, const std::string& path)
 {
     if (is_server)
+    {
         return std::make_shared<http_response_session_write>(socket);
+    }
 
     return std::make_shared<http_request_session_write>(socket, std::move(host), path);
 }
@@ -86,7 +88,9 @@ celeritas::http_session::session_write_shared_ptr celeritas::http_session::get_s
 celeritas::http_session::session_run_shared_ptr celeritas::http_session::get_session_run(socket_type& socket, const bool is_server, int64_t session_id, const session_callback& session_callback, const std::string& path)
 {
     if (is_server)
+    {
         return std::make_shared<http_request_session_run>(socket, session_id, session_callback);
+    }
 
     return std::make_shared<http_response_session_run>(socket, session_id, session_callback, path);
 }

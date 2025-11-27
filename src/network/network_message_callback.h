@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "common/buffer_guard.h"
 #include "common/common_fwd.h"
 #include "common/session.h"
 #include "network/network_fwd.h"

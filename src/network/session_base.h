@@ -6,6 +6,7 @@
 #include "message/header.h"
 
 #include <boost/asio/awaitable.hpp>
+
 #include <memory>
 
 namespace celeritas
@@ -37,8 +38,8 @@ namespace celeritas
         [[nodiscard]] virtual bool is_full() const = 0;
 
     protected:
-        using network_message_callback_weak_ptr = session_callback::network_message_callback_weak_ptr;
         using message_shared_ptr = header::message_shared_ptr;
+        using network_message_callback_weak_ptr = session_callback::network_message_callback_weak_ptr;
 
         void remove_session();
 

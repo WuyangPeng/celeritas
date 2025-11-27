@@ -1,5 +1,6 @@
 ﻿#include "crash.h"
 #include "initializer.h"
+#include "common/buffer_guard.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "database/database_pool_manager.h"

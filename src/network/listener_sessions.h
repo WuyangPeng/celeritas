@@ -18,16 +18,6 @@ namespace celeritas
 
         listener_sessions() noexcept = default;
 
-        virtual ~listener_sessions() noexcept = default;
-
-        listener_sessions(const listener_sessions& rhs) = delete;
-
-        listener_sessions& operator=(const listener_sessions& rhs) = delete;
-
-        listener_sessions(listener_sessions&& rhs) noexcept = delete;
-
-        listener_sessions& operator=(listener_sessions&& rhs) noexcept = delete;
-
         void remove_session(int64_t session_id) override;
 
     protected:

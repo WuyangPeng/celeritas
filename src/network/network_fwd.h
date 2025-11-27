@@ -2,24 +2,28 @@
 
 namespace celeritas
 {
+    class session_base;
+    class listener;
+    class network_message_callback;
+    class message_header;
+
     template <typename SocketType>
     class generic_session;
 
-    class session_base;
-    class websocket_session;
     class http_session;
-    class listener;
+    class websocket_session;
+
+    class session_run;
+    class session_write;
+    class session_callback;
+
     class listener_accept;
-    class websocket_listener;
+    class listener_sessions_base;
+    class listener_sessions;
     class tcp_listener;
     class http_listener;
+    class websocket_listener;
+
     class tcp_client;
-    class session_write;
-    class session_run;
-    class session_callback;
-    class network_message_callback;
-    class message_header;
-    class listener_sessions;
-    class listener_sessions_base;
     class http_client;
 }
