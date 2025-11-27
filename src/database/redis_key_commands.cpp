@@ -79,7 +79,7 @@ celeritas::redis_key_commands::string_awaitable_type celeritas::redis_key_comman
         co_return *result;
     }
 
-    throw celeritas_error("get type is error.");
+    throw celeritas_error{ "get type is error." };
 }
 
 celeritas::redis_commands::scan_result_awaitable_type celeritas::redis_key_commands::async_scan(const std::string& pattern, const int cursor, const int count) const

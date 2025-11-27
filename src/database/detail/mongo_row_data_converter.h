@@ -22,5 +22,8 @@ namespace celeritas
         [[nodiscard]] static basis_database get_basis_database(const database_field_container& field_name_container, const document_element_type& row_view);
 
         [[nodiscard]] static document_type get_document(const basis_database_container_const_shared_ptr& container);
+
+        template <typename ArrayType>
+        [[nodiscard]] static basis_database to_numeric_array_basis(const database_field& field, const document_element_type& row_view);
     };
 }

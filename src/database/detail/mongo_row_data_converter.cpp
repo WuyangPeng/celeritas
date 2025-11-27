@@ -1,16 +1,13 @@
-﻿#include "mongo_row_data_converter.h"
+﻿#include "mongo_row_data_converter.tpp"
 #include "common/celeritas_error.h"
 #include "database/basis_database.tpp"
 #include "database/basis_database_container.h"
 #include "database/database_data_type.h"
 #include "database/database_field.h"
 
-#include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <bsoncxx/types.hpp>
-
-#include <ranges>
 
 using namespace std::literals;
 
@@ -22,7 +19,7 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
 
     if (iter == field_name_container.cend())
     {
-        throw celeritas_error("field name is error,name ="s + row_view.key().data());
+        throw celeritas_error{ "field name is error,name ="s + row_view.key().data() };
     }
 
     switch (iter->get_data_type())
@@ -35,17 +32,25 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
 
         case database_data_type::int32_type:
         case database_data_type::int32_count_type:
+        {
             return basis_database{ iter->get_field_name(), row_view.get_int32() };
+        }
 
         case database_data_type::int64_type:
         case database_data_type::int64_count_type:
+        {
             return basis_database{ iter->get_field_name(), row_view.get_int64() };
+        }
 
         case database_data_type::double_type:
+        {
             return basis_database{ iter->get_field_name(), row_view.get_double().value };
+        }
 
         case database_data_type::bool_type:
+        {
             return basis_database{ iter->get_field_name(), row_view.get_bool() };
+        }
 
         case database_data_type::string_array_type:
         {
@@ -62,44 +67,17 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
 
         case database_data_type::int32_array_type:
         {
-            const std::string value{ row_view.get_string().value };
-            auto split_view = value | std::views::split('|');
-
-            auto int_view = split_view | std::views::transform([](const auto& subrange) {
-                const std::string result{ subrange.begin(), subrange.end() };
-                return boost::lexical_cast<int32_t>(result);
-            });
-            const basis_database::int32_array result{ int_view.begin(), int_view.end() };
-
-            return basis_database{ iter->get_field_name(), result };
+            return to_numeric_array_basis<basis_database::int32_array>(*iter, row_view);
         }
 
         case database_data_type::int64_array_type:
         {
-            const std::string value{ row_view.get_string().value };
-            auto split_view = value | std::views::split('|');
-
-            auto int_view = split_view | std::views::transform([](const auto& subrange) {
-                const std::string result{ subrange.begin(), subrange.end() };
-                return boost::lexical_cast<int64_t>(result);
-            });
-            const basis_database::int64_array result{ int_view.begin(), int_view.end() };
-
-            return basis_database{ iter->get_field_name(), result };
+            return to_numeric_array_basis<basis_database::int64_array>(*iter, row_view);
         }
 
         case database_data_type::double_array_type:
         {
-            const std::string value{ row_view.get_string().value };
-            auto split_view = value | std::views::split('|');
-
-            auto int_view = split_view | std::views::transform([](const auto& subrange) {
-                const std::string result{ subrange.begin(), subrange.end() };
-                return boost::lexical_cast<double>(result);
-            });
-            const basis_database::double_array result{ int_view.begin(), int_view.end() };
-
-            return basis_database{ iter->get_field_name(), result };
+            return to_numeric_array_basis<basis_database::double_array>(*iter, row_view);
         }
 
         case database_data_type::byte_array_type:
@@ -196,3 +174,4 @@ celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_con
 
     return document;
 }
+

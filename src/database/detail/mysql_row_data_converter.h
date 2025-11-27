@@ -13,5 +13,8 @@ namespace celeritas
         using field_view_type = boost::mysql::field_view;
 
         [[nodiscard]] static basis_database get_basis_database(const database_field& field_name, const field_view_type& row_view);
+
+        template <typename ArrayType>
+        [[nodiscard]] static basis_database to_numeric_array_basis(const database_field& field_name, const field_view_type& row_view);
     };
 }

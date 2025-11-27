@@ -3,17 +3,17 @@
 
 using namespace std::literals;
 
-celeritas::redis_context::redis_context(const std::string& host, int port)
-    : redis_context_{ ::redisConnect(host.c_str(), port) }
+celeritas::redis_context::redis_context(const std::string& host, const int port)
+    : redis_context_{ redisConnect(host.c_str(), port) }
 {
     if (redis_context_ == nullptr)
     {
-        throw celeritas_error("failed to connect to redis server");
+        throw celeritas_error{ "failed to connect to redis server" };
     }
 
     if (redis_context_->err != REDIS_OK)
     {
-        throw celeritas_error("failed to connect to redis server: "s + redis_context_->errstr);
+        throw celeritas_error{ "failed to connect to redis server: "s + redis_context_->errstr };
     }
 }
 
@@ -21,7 +21,7 @@ celeritas::redis_context::~redis_context() noexcept
 {
     if (redis_context_ != nullptr)
     {
-        ::redisFree(redis_context_);
+        redisFree(redis_context_);
     }
 }
 

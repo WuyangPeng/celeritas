@@ -9,7 +9,7 @@ namespace celeritas
     public:
         using class_type = sorted_set_member_score;
 
-        sorted_set_member_score(const std::string& member, double score);
+        sorted_set_member_score(std::string member, double score);
 
         [[nodiscard]] std::string get_member() const;
 

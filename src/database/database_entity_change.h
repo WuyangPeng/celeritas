@@ -5,8 +5,6 @@
 #include "boost/call_traits.hpp"
 #include "config/config_fwd.h"
 
-#include <vector>
-
 namespace celeritas
 {
     class database_entity_change

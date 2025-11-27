@@ -1,4 +1,4 @@
-﻿#include "redis_key_data_converter.h"
+﻿#include "redis_key_data_converter.tpp"
 #include "common/celeritas_error.h"
 #include "database/basis_database.tpp"
 #include "database/database_data_type.h"
@@ -74,41 +74,17 @@ celeritas::basis_database celeritas::redis_key_data_converter::get_basis_databas
 
         case database_data_type::int32_array_type:
         {
-            auto split_view = value | std::views::split('|');
-
-            auto int_view = split_view | std::views::transform([](const auto& subrange) {
-                const std::string result{ subrange.begin(), subrange.end() };
-                return boost::lexical_cast<int32_t>(result);
-            });
-            const basis_database::int32_array result{ int_view.begin(), int_view.end() };
-
-            return basis_database{ field_name.get_field_name(), result };
+            return to_numeric_array_basis<basis_database::int32_array>(field_name, value);
         }
 
         case database_data_type::int64_array_type:
         {
-            auto split_view = value | std::views::split('|');
-
-            auto int_view = split_view | std::views::transform([](const auto& subrange) {
-                const std::string result{ subrange.begin(), subrange.end() };
-                return boost::lexical_cast<int64_t>(result);
-            });
-            const basis_database::int64_array result{ int_view.begin(), int_view.end() };
-
-            return basis_database{ field_name.get_field_name(), result };
+            return to_numeric_array_basis<basis_database::int64_array>(field_name, value);
         }
 
         case database_data_type::double_array_type:
         {
-            auto split_view = value | std::views::split('|');
-
-            auto int_view = split_view | std::views::transform([](const auto& subrange) {
-                const std::string result{ subrange.begin(), subrange.end() };
-                return boost::lexical_cast<double>(result);
-            });
-            const basis_database::double_array result{ int_view.begin(), int_view.end() };
-
-            return basis_database{ field_name.get_field_name(), result };
+            return to_numeric_array_basis<basis_database::double_array>(field_name, value);
         }
 
         case database_data_type::byte_array_type:

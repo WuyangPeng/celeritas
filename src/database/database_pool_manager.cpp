@@ -57,7 +57,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
         return pool->second;
     }
 
-    throw celeritas_error("get pool ,name = " + name + " is  not exist.");
+    throw celeritas_error{ "get pool name = " + name + " is  not exist." };
 }
 
 void celeritas::database_pool_manager::start_cleanup_timer(io_context_type& io_context)

@@ -1,6 +1,6 @@
 ﻿#include "basis_database.tpp"
-#include "database_entity_change.h"
 #include "database_change_type.h"
+#include "database_entity_change.h"
 #include "mysql_database_session.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
@@ -37,7 +37,7 @@ celeritas::mysql_database_session::~mysql_database_session() noexcept
                                    connection_.close();
                                },
                                common_channel,
-                               "Unexpected error during mysql connection close: ");
+                               "unexpected error during mysql connection close: ");
 }
 
 celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::async_connect()

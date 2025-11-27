@@ -26,5 +26,8 @@ namespace celeritas
         using array_type = std::vector<std::string>;
 
         [[nodiscard]] static array_type get_key_value(const std::string& key);
+
+        template <typename ArrayType>
+        [[nodiscard]] static basis_database to_numeric_array_basis(const database_field& field_name, const std::string& value);
     };
 }
