@@ -16,18 +16,15 @@ std::string celeritas::redis_key_data_converter::generate_key(const basis_databa
     result += database->get_database_name();
     result += ":";
 
-    auto index = 1;
-    for (const auto keys = database->get_key();
-         const auto& key : *keys)
+    const auto& keys = *database->get_key();
+    for (auto iter = keys.begin(); iter != keys.end(); ++iter)
     {
-        result += key.get_quotation_mark_string();
+        result += iter->get_quotation_mark_string();
 
-        if (index != keys->get_size())
+        if (std::next(iter) != keys.end())
         {
             result += "_";
         }
-
-        ++index;
     }
 
     return result;
@@ -105,15 +102,15 @@ celeritas::redis_key_data_converter::basis_database_container_const_shared_ptr c
 {
     const auto extracted_key_values = get_key_value(key);
 
-    const auto key_type = database->get_key();
-    if (extracted_key_values.size() != key_type->get_size())
+    const auto& key_type = *database->get_key();
+    if (extracted_key_values.size() != key_type.get_size())
     {
-        throw celeritas_error("key size is error.");
+        throw celeritas_error{ "key size is error." };
     }
 
     basis_database_container::object_container objects{};
     auto index = 0;
-    for (const auto& value : *key_type)
+    for (const auto& value : key_type)
     {
         objects.emplace_back(value.get_field_name(), extracted_key_values.at(index));
         ++index;
@@ -129,7 +126,7 @@ celeritas::redis_key_data_converter::array_type celeritas::redis_key_data_conver
 
     if (parts.size() < 2)
     {
-        throw celeritas_error("redis key size is error.");
+        throw celeritas_error{ "redis key size is error." };
     }
 
     const auto& key_values = parts.back();

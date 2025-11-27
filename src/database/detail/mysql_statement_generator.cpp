@@ -1,4 +1,4 @@
-﻿#include "mysql_statement_generator.h"
+﻿#include "mysql_statement_generator.tpp"
 
 using namespace std::literals;
 
@@ -10,36 +10,16 @@ std::string celeritas::mysql_statement_generator::generate_insert_statement(cons
     result += database->get_database_name();
     result += "`(";
 
-    const auto container = database->get_database();
-    auto index = 1;
-    for (const auto& value : *container)
-    {
-        result += "`";
-        result += value.get_field_name();
-        result += "`";
-
-        if (index != container->get_size())
-        {
-            result += " , ";
-        }
-
-        ++index;
-    }
+    const auto& container = *database->get_database();
+    result += join_container(container, " , ", "", [](const auto& value) {
+        return "`"s + value.get_field_name().data() + "`";
+    });
 
     result += ") VALUES(";
 
-    index = 1;
-    for (const auto& value : *container)
-    {
-        result += value.get_quotation_mark_string();
-
-        if (index != container->get_size())
-        {
-            result += " , ";
-        }
-
-        ++index;
-    }
+    result += join_container(container, " , ", "", [](const auto& value) {
+        return value.get_quotation_mark_string();
+    });
 
     result += ");";
 
@@ -54,42 +34,19 @@ std::string celeritas::mysql_statement_generator::generate_update_statement(cons
     result += database->get_database_name();
     result += "` SET ";
 
-    const auto container = database->get_database();
-    auto index = 1;
-    for (const auto& value : *container)
-    {
-        result += "`";
-        result += value.get_field_name();
-        result += "` = ";
-        result += value.get_sql_field_string();
+    const auto container = *database->get_database();
 
-        if (index != container->get_size())
-        {
-            result += " , ";
-        }
-
-        ++index;
-    }
+    result += join_container(container, " , ", "", [](const auto& value) {
+        return "`"s + value.get_field_name().data() + "` = " + value.get_sql_field_string();
+    });
 
     result += "WHERE ";
 
-    const auto key = database->get_key();
+    const auto& key = *database->get_key();
 
-    index = 1;
-    for (const auto& value : *key)
-    {
-        result += "`";
-        result += value.get_field_name();
-        result += "` = ";
-        result += value.get_sql_field_string();
-
-        if (index != key->get_size())
-        {
-            result += " AND ";
-        }
-
-        ++index;
-    }
+    result += join_container(key, " AND ", "", [](const auto& value) {
+        return "`"s + value.get_field_name().data() + "` = " + value.get_sql_field_string();
+    });
 
     result += " LIMIT 1;";
 
@@ -103,27 +60,15 @@ std::string celeritas::mysql_statement_generator::generate_delete_statement(cons
     result += "DELETE FROM `";
     result += database->get_database_name();
 
-    const auto key = database->get_key();
-    if (key->get_size() != 0)
+    const auto& key = *database->get_key();
+    if (key.get_size() != 0)
     {
         result += "` WHERE ";
     }
 
-    auto index = 1;
-    for (const auto& value : *key)
-    {
-        result += "`";
-        result += value.get_field_name();
-        result += "` = ";
-        result += value.get_sql_field_string();
-
-        if (index != key->get_size())
-        {
-            result += " AND ";
-        }
-
-        ++index;
-    }
+    result += join_container(key, " AND ", "", [](const auto& value) {
+        return "`"s + value.get_field_name().data() + "` = " + value.get_sql_field_string();
+    });
 
     result += " LIMIT 1;";
 
@@ -136,31 +81,16 @@ std::string celeritas::mysql_statement_generator::generate_select_statement(cons
 
     result += "SELECT ";
 
-    auto index = 1u;
-    for (const auto& value : field_name_container)
-    {
-        result += "`";
-        result += value.get_field_name();
-        result += "`";
-
-        if (index != field_name_container.size())
-        {
-            result += " , ";
-        }
-        else
-        {
-            result += " ";
-        }
-
-        ++index;
-    }
+    result += join_container(field_name_container, " , ", " ", [](const auto& value) {
+        return "`"s + value.get_field_name().data() + "`";
+    });
 
     result += "FROM `";
     result += database->get_database_name();
 
-    const auto key = database->get_key();
+    const auto& key = *database->get_key();
 
-    if (key->get_size() != 0)
+    if (key.get_size() != 0)
     {
         result += "` WHERE ";
     }
@@ -169,22 +99,10 @@ std::string celeritas::mysql_statement_generator::generate_select_statement(cons
         result += "` ";
     }
 
-    auto keyIndex = 1;
-    for (const auto& value : *key)
-    {
-        result += "`";
-        result += value.get_field_name();
-        result += "` = ";
-
-        result += value.get_quotation_mark_string();
-
-        if (keyIndex != key->get_size())
-        {
-            result += " AND ";
-        }
-
-        ++keyIndex;
-    }
+    result += join_container(key, " AND ", "", [](const auto& value) {
+        return "`"s + value.get_field_name().data() + "` = " + value.get_quotation_mark_string();
+    });
 
     return result;
 }
+

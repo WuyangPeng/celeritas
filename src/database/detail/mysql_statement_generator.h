@@ -22,5 +22,9 @@ namespace celeritas
         [[nodiscard]] static std::string generate_delete_statement(const database_entity_change_const_shared_ptr& database);
 
         [[nodiscard]] static std::string generate_select_statement(const database_field_container& field_name_container, const database_entity_change_const_shared_ptr& database);
+
+    private:
+        template <typename C, typename F>
+        [[nodiscard]] static std::string join_container(const C& container, std::string_view separator, std::string_view tail_separator, F&& func);
     };
 }

@@ -33,7 +33,7 @@ namespace celeritas
 
         redis_reply& operator=(redis_reply&& rhs) noexcept = default;
 
-        [[nodiscard]] ::redisReply* GetRedisReply() noexcept;
+        [[nodiscard]] redisReply* GetRedisReply() noexcept;
 
         [[nodiscard]] int to_integer() const;
 
@@ -54,12 +54,12 @@ namespace celeritas
     private:
         void init(redis_context& redis_context, const std::string& command) const;
 
-        [[nodiscard]] static std::string to_string_from_element(const ::redisReply* element);
+        [[nodiscard]] static std::string to_string_from_element(const redisReply* element);
 
         [[nodiscard]] std::string get_cursor() const;
 
         [[nodiscard]] array_type get_keys() const;
 
-        ::redisReply* redis_reply_;
+        redisReply* redis_reply_;
     };
 }

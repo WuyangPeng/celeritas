@@ -1,18 +1,19 @@
 ﻿#include "redis_reply.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
+#include "database/database_fwd.h"
 
 using namespace std::literals;
 
 celeritas::redis_reply::redis_reply(redis_context& redis_context, const std::string& command)
-    : redis_reply_{ static_cast<redisReply*>(::redisCommand(redis_context.get_redis_context(), command.c_str())) }
+    : redis_reply_{ static_cast<redisReply*>(redisCommand(redis_context.get_redis_context(), command.c_str())) }
 {
     init(redis_context, command);
 }
 
 celeritas::redis_reply::~redis_reply() noexcept
 {
-    ::freeReplyObject(redis_reply_);
+    freeReplyObject(redis_reply_);
 }
 
 redisReply* celeritas::redis_reply::GetRedisReply() noexcept
@@ -27,7 +28,7 @@ int celeritas::redis_reply::to_integer() const
         return static_cast<int>(redis_reply_->integer);
     }
 
-    throw celeritas_error("Redis reply type mismatch: expected INTEGER");
+    throw celeritas_error{ "redis reply type mismatch: expected integer" };
 }
 
 celeritas::redis_reply::optional_int celeritas::redis_reply::to_optional_int() const
@@ -42,7 +43,7 @@ celeritas::redis_reply::optional_int celeritas::redis_reply::to_optional_int() c
         return static_cast<int>(redis_reply_->integer);
     }
 
-    throw celeritas_error("Redis reply type mismatch: expected INTEGER");
+    throw celeritas_error("redis reply type mismatch: expected integer");
 }
 
 celeritas::redis_reply::optional_double celeritas::redis_reply::to_optional_double() const
@@ -57,7 +58,7 @@ celeritas::redis_reply::optional_double celeritas::redis_reply::to_optional_doub
         return static_cast<int>(redis_reply_->dval);
     }
 
-    throw celeritas_error("Redis reply type mismatch: expected DOUBLE");
+    throw celeritas_error{ "Redis reply type mismatch: expected DOUBLE" };
 }
 
 celeritas::redis_reply::optional_string celeritas::redis_reply::to_optional_string() const
@@ -72,14 +73,14 @@ celeritas::redis_reply::optional_string celeritas::redis_reply::to_optional_stri
         return std::string{ redis_reply_->str, redis_reply_->len };
     }
 
-    throw celeritas_error("Reply type mismatch: Expected STRING or NIL, got type " + std::to_string(redis_reply_->type));
+    throw celeritas_error{ "reply type mismatch: Expected STRING or NIL, got type " + std::to_string(redis_reply_->type) };
 }
 
 celeritas::redis_reply::array_type celeritas::redis_reply::to_array() const
 {
     if (redis_reply_->type != REDIS_REPLY_ARRAY)
     {
-        throw celeritas_error("Reply type mismatch: Expected ARRAY, got type " + std::to_string(redis_reply_->type));
+        throw celeritas_error{ "reply type mismatch: Expected ARRAY, got type " + std::to_string(redis_reply_->type) };
     }
 
     array_type result{};
@@ -100,14 +101,14 @@ celeritas::redis_reply::map_type celeritas::redis_reply::to_map() const
 {
     if (redis_reply_->type != REDIS_REPLY_ARRAY)
     {
-        throw celeritas_error("Reply type mismatch: Expected ARRAY for map conversion.");
+        throw celeritas_error{ "reply type mismatch: Expected ARRAY for map conversion." };
     }
 
     const auto num_elements = redis_reply_->elements;
 
     if (num_elements % 2 != 0)
     {
-        throw celeritas_error("Map conversion failed: Expected even number of elements for Key-Value map, got " + std::to_string(num_elements));
+        throw celeritas_error{ "map conversion failed: Expected even number of elements for Key-Value map, got {}", num_elements };
     }
 
     if (num_elements == 0)
@@ -124,7 +125,7 @@ celeritas::redis_reply::map_type celeritas::redis_reply::to_map() const
 
         if (key_element->type != REDIS_REPLY_STRING)
         {
-            throw celeritas_error("Map Key element is not a STRING.");
+            throw celeritas_error{ "map Key element is not a string." };
         }
         std::string key{ key_element->str, key_element->len };
 
@@ -145,14 +146,14 @@ celeritas::redis_reply::optional_map_type celeritas::redis_reply::to_optional_ma
 
     if (redis_reply_->type != REDIS_REPLY_ARRAY)
     {
-        throw celeritas_error("Reply type mismatch: Expected ARRAY for map conversion.");
+        throw celeritas_error{ "reply type mismatch: expected array for map conversion." };
     }
 
     const auto num_elements = redis_reply_->elements;
 
     if (num_elements % 2 != 0)
     {
-        throw celeritas_error("Map conversion failed: Expected even number of elements for Key-Value map, got " + std::to_string(num_elements));
+        throw celeritas_error{ "map conversion failed: expected even number of elements for key-value map, got {}", num_elements };
     }
 
     if (num_elements == 0)
@@ -169,7 +170,7 @@ celeritas::redis_reply::optional_map_type celeritas::redis_reply::to_optional_ma
 
         if (key_element->type != REDIS_REPLY_STRING)
         {
-            throw celeritas_error("Map Key element is not a STRING.");
+            throw celeritas_error{ "map key element is not a string." };
         }
         std::string key{ key_element->str, key_element->len };
 
@@ -185,13 +186,13 @@ celeritas::scan_result celeritas::redis_reply::to_scan_result() const
 {
     if (redis_reply_->type != REDIS_REPLY_ARRAY)
     {
-        throw celeritas_error("Reply type mismatch: Expected ARRAY for scan result conversion.");
+        throw celeritas_error{ "reply type mismatch: expected array for scan result conversion." };
     }
 
     if (const auto num_elements = redis_reply_->elements;
         num_elements != 2)
     {
-        throw celeritas_error(" scan result num failed: got " + std::to_string(num_elements));
+        throw celeritas_error{ " scan result num failed: got {}", num_elements };
     }
 
     auto cursor = get_cursor();
@@ -207,7 +208,7 @@ void celeritas::redis_reply::init(redis_context& redis_context, const std::strin
 
     if (redis_reply_ == nullptr)
     {
-        throw celeritas_error("command failed (NULL reply):  "s + redis_context.get_redis_context()->errstr);
+        throw celeritas_error{ "command failed (NULL reply):  "s + redis_context.get_redis_context()->errstr };
     }
 
     std::string result_message{};
@@ -218,13 +219,13 @@ void celeritas::redis_reply::init(redis_context& redis_context, const std::strin
 
     if (redis_reply_->type == REDIS_REPLY_ERROR)
     {
-        throw celeritas_error("command failed (Redis ERROR reply):  " + result_message);
+        throw celeritas_error{ "command failed (redis error reply):  " + result_message };
     }
 
     // 特殊处理 AUTH 命令，确保它是 OK (如果需要严格检查)
-    if (command.find("AUTH") == 0 && redis_reply_->type == REDIS_REPLY_STATUS && result_message != "OK")
+    if (command.find("AUTH") == 0 && redis_reply_->type == REDIS_REPLY_STATUS && result_message != redis_ok)
     {
-        throw celeritas_error("command failed (AUTH NOT OK):  " + result_message);
+        throw celeritas_error{ "command failed (not ok):  " + result_message };
     }
 }
 
@@ -251,12 +252,12 @@ std::string celeritas::redis_reply::to_string_from_element(const redisReply* ele
         case REDIS_REPLY_ERROR:
         {
             // 如果子元素是错误，直接抛出异常
-            throw celeritas_error("Redis array element contained an ERROR: " + std::string{ element->str, element->len });
+            throw celeritas_error{ "redis array element contained an error: " + std::string{ element->str, element->len } };
         }
         default:
         {
             // 处理其他不支持的类型
-            throw celeritas_error("Redis array element contained an unsupported type: " + std::to_string(element->type));
+            throw celeritas_error{ "redis array element contained an unsupported type: {}", element->type };
         }
     }
 }
@@ -266,7 +267,7 @@ std::string celeritas::redis_reply::get_cursor() const
     const auto cursor_element = redis_reply_->element[0];
     if (cursor_element->type != REDIS_REPLY_STRING)
     {
-        throw celeritas_error("cursor Key element is not a STRING.");
+        throw celeritas_error{ "cursor Key element is not a string." };
     }
     return std::string{ cursor_element->str, cursor_element->len };
 }
@@ -276,7 +277,7 @@ celeritas::redis_reply::array_type celeritas::redis_reply::get_keys() const
     const auto keys_element = redis_reply_->element[1];
     if (keys_element->type != REDIS_REPLY_ARRAY)
     {
-        throw celeritas_error("Keys element is not a STRING.");
+        throw celeritas_error{ "keys element is not a string." };
     }
 
     array_type keys{};
