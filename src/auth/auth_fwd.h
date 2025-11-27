@@ -2,9 +2,13 @@
 
 namespace celeritas
 {
+    enum class app_status_type;
+
+    class app_secret;
+
     class guest_login;
     class guest_login_response;
-    class app_secret;
+
     class send_sms_response;
     class send_sms;
     class phone_login_response;
@@ -21,8 +25,6 @@ namespace celeritas
     class password_login;
     class password_bind_response;
     class password_bind;
-
-    enum class app_status_type;
 
     constexpr auto sms_code_expiration_time = 300;
     constexpr auto sms_limit_expiration_time = 60;

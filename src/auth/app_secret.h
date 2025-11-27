@@ -20,9 +20,9 @@ namespace celeritas
 
         [[nodiscard]] std::string get_key(int64_t app_id);
 
-        void reload_from_db(io_context_type& io_context, int64_t app_id);
+        static void reload_from_db(io_context_type& io_context, int64_t app_id);
 
-        void load_from_db(io_context_type& io_context);
+        static void load_from_db(io_context_type& io_context);
 
     private:
         using apps_type = std::unordered_map<int64_t, apps>;

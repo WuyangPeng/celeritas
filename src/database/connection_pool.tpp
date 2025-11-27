@@ -155,7 +155,7 @@ celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connecti
 }
 
 template <typename SessionType>
-celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connection_pool<SessionType>::execute_changes(const basis_database_manager_const_shared_ptr& database, int expiration_time)
+celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connection_pool<SessionType>::execute_changes(const database_entity_change_const_shared_ptr& database, int expiration_time)
 {
     try
     {
@@ -183,7 +183,7 @@ celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connecti
 }
 
 template <typename SessionType>
-celeritas::database_pool_base::basis_database_manager_awaitable_type celeritas::connection_pool<SessionType>::select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
+celeritas::database_pool_base::basis_database_manager_awaitable_type celeritas::connection_pool<SessionType>::select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container)
 {
     auto session = co_await async_get_session();
 
@@ -191,7 +191,7 @@ celeritas::database_pool_base::basis_database_manager_awaitable_type celeritas::
 }
 
 template <typename SessionType>
-celeritas::database_pool_base::result_container_awaitable_type celeritas::connection_pool<SessionType>::select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container)
+celeritas::database_pool_base::result_container_awaitable_type celeritas::connection_pool<SessionType>::select_all(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container)
 {
     auto session = co_await async_get_session();
 

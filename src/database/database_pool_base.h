@@ -14,7 +14,7 @@ namespace celeritas
         using void_awaitable_type = boost::asio::awaitable<void>;
         using bool_awaitable_type = boost::asio::awaitable<bool>;
         using error_code_type = boost::system::error_code;
-        using basis_database_manager_const_shared_ptr = std::shared_ptr<const database_entity_change>;
+        using database_entity_change_const_shared_ptr = std::shared_ptr<const database_entity_change>;
         using result_container = std::vector<database_entity_change>;
         using database_field_container = std::vector<database_field>;
         using optional_basis_database_manager = std::optional<database_entity_change>;
@@ -43,13 +43,13 @@ namespace celeritas
 
         [[nodiscard]] virtual bool_awaitable_type is_health() = 0;
 
-        [[nodiscard]] bool_awaitable_type execute_changes(const basis_database_manager_const_shared_ptr& database);
+        [[nodiscard]] bool_awaitable_type execute_changes(const database_entity_change_const_shared_ptr& database);
 
-        [[nodiscard]] virtual bool_awaitable_type execute_changes(const basis_database_manager_const_shared_ptr& database, int expiration_time) = 0;
+        [[nodiscard]] virtual bool_awaitable_type execute_changes(const database_entity_change_const_shared_ptr& database, int expiration_time) = 0;
 
-        [[nodiscard]] virtual basis_database_manager_awaitable_type select_one(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) = 0;
+        [[nodiscard]] virtual basis_database_manager_awaitable_type select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) = 0;
 
-        [[nodiscard]] virtual result_container_awaitable_type select_all(const basis_database_manager_const_shared_ptr& database, const database_field_container& field_name_container) = 0;
+        [[nodiscard]] virtual result_container_awaitable_type select_all(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) = 0;
 
     private:
         using cleanup_database_session_timer_shared_ptr = std::shared_ptr<cleanup_database_session_timer>;
