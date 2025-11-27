@@ -9,7 +9,7 @@
 #include "detail/server_resource_loader.h"
 #include "detail/service_registry_loader.h"
 #include "detail/service_registry_timer.h"
-#include "handler/service_registry/health_check_level_type.h"
+#include "../service_registry/health_check_level_type.h"
 #include "network/tcp_client.h"
 #include "proto/celeritas.pb.h"
 #include "server/server_fwd.h"

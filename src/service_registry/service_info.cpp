@@ -5,7 +5,7 @@ celeritas::service_info::service_info(std::string instance_id,
                                       std::string host,
                                       std::string game_server_id,
                                       protocol_port_container protocol_port,
-                                      int64_t start_server_time)
+                                      const int64_t start_server_time)
     : instance_id_{ std::move(instance_id) },
       service_name_{ std::move(service_name) },
       host_{ std::move(host) },

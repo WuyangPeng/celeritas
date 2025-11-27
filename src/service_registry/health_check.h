@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "health_check_level_type.h"
+#include "service_registry/health_check_level_type.h"
 
 #include <string>
 
