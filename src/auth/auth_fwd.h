@@ -2,6 +2,7 @@
 
 namespace celeritas
 {
+    class guest_login;
     class guest_login_response;
     class app_secret;
     class send_sms_response;
