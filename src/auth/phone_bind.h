@@ -25,7 +25,7 @@ namespace celeritas
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
         using optional_basis_database_manager = std::optional<database_entity_change>;
 
-        [[nodiscard]] static std::string calculate_hmac_sha256(int app_id, const std::string& phone, const std::string& token, int code, int64_t timestamp, const std::string& secret_key);
+        [[nodiscard]] static std::string calculate_hmac_sha256(int64_t app_id, const std::string& phone, const std::string& token, int code, int64_t timestamp, const std::string& secret_key);
 
         [[nodiscard]] std::string generate_token();
 

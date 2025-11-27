@@ -102,7 +102,7 @@ celeritas::email_bind::void_awaitable_type celeritas::email_bind::response()
     }
 
     const auto& token = *optional_token;
-    const auto app_id = boost::lexical_cast<int>(*optional_app_id);
+    const auto app_id = boost::lexical_cast<int64_t>(*optional_app_id);
     const auto secret = app_secret::get_instance().get_key(app_id);
     const auto code = boost::lexical_cast<int>(*optional_code);
 
@@ -139,10 +139,10 @@ celeritas::email_bind::void_awaitable_type celeritas::email_bind::response()
         co_return;
     }
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::email) },
-                                                                                                            { account_bind::auth_key_describe, email } });
+                                                                                                            { account_bind::auth_key_describe, email },
+                                                                                                            { account_bind::app_id_describe, app_id } });
     const auto account_bind_select = account_bind::get_select(database_type::mysql, key);
-    auto optional_account_bind = co_await mysql_pool->select_one(account_bind_select, account::get_database_field_container());
-    if (optional_account_bind)
+    if (auto optional_account_bind = co_await mysql_pool->select_one(account_bind_select, account::get_database_field_container()))
     {
         const email_bind_response response{ game_error_type::account_bound, "account bound" };
         handle_parameter_.write(response.to_json_string());
@@ -159,11 +159,11 @@ celeritas::email_bind::void_awaitable_type celeritas::email_bind::response()
 
     const auto server_config = handle_parameter_.get_app_config()->get_server_config();
     const auto account_bind_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
-    account_bind account_bind{ database_type::redis, account_bind_id };
+    account_bind account_bind{ database_type::mysql, account_bind_id };
     account_bind.set_account_id(account.get_account_id());
     account_bind.set_auth_key(email);
+    account_bind.set_app_id(app_id);
     account_bind.set_account_type(static_cast<int>(account_type::phone));
-    account_bind.set_is_primary(true);
 
     if (co_await mysql_pool->execute_changes(account.get_modify()) &&
         co_await mysql_pool->execute_changes(account_bind.get_modify()))
@@ -178,7 +178,7 @@ celeritas::email_bind::void_awaitable_type celeritas::email_bind::response()
     }
 }
 
-std::string celeritas::email_bind::calculate_hmac_sha256(int app_id, const std::string& email, const std::string& token, int code, int64_t timestamp, const std::string& secret_key)
+std::string celeritas::email_bind::calculate_hmac_sha256(int64_t app_id, const std::string& email, const std::string& token, int code, int64_t timestamp, const std::string& secret_key)
 {
     const auto data = std::format("{}{}{}{}{}", app_id, email, token, code, timestamp);
 

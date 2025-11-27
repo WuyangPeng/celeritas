@@ -82,7 +82,7 @@ celeritas::send_email::void_awaitable_type celeritas::send_email::response()
         co_return;
     }
 
-    const auto app_id = boost::lexical_cast<int>(*optional_app_id);
+    const auto app_id = boost::lexical_cast<int64_t>(*optional_app_id);
     const auto secret = app_secret::get_instance().get_key(app_id);
 
     if (const auto hmac_sha256 = calculate_hmac_sha256(app_id, email, timestamp, secret);
@@ -123,7 +123,7 @@ celeritas::send_email::void_awaitable_type celeritas::send_email::response()
     co_return;
 }
 
-std::string celeritas::send_email::calculate_hmac_sha256(int app_id, const std::string& email, int64_t timestamp, const std::string& secret_key)
+std::string celeritas::send_email::calculate_hmac_sha256(int64_t app_id, const std::string& email, int64_t timestamp, const std::string& secret_key)
 {
     const auto data = std::format("{}{}{}", app_id, email, timestamp);
 

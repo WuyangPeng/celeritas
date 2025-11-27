@@ -18,14 +18,14 @@ namespace celeritas
 
         [[nodiscard]] static app_secret& get_instance();
 
-        [[nodiscard]] std::string get_key(int app_id);
+        [[nodiscard]] std::string get_key(int64_t app_id);
 
-        void reload_from_db(io_context_type& io_context, int app_id);
+        void reload_from_db(io_context_type& io_context, int64_t app_id);
 
         void load_from_db(io_context_type& io_context);
 
     private:
-        using apps_type = std::unordered_map<int, apps>;
+        using apps_type = std::unordered_map<int64_t, apps>;
 
         app_secret() noexcept = default;
 
@@ -33,9 +33,9 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type do_load_from_db();
 
-        [[nodiscard]] void_awaitable_type load_from_db(int app_id);
+        [[nodiscard]] void_awaitable_type load_from_db(int64_t app_id);
 
-        [[nodiscard]] void_awaitable_type do_load_from_db(int app_id);
+        [[nodiscard]] void_awaitable_type do_load_from_db(int64_t app_id);
 
         apps_type apps_;
         std::shared_mutex mutex_;

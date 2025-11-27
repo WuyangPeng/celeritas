@@ -98,7 +98,7 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     }
 
     const auto& device_id = *optional_device_id;
-    const auto app_id = boost::lexical_cast<int>(*optional_app_id);
+    const auto app_id = boost::lexical_cast<int64_t>(*optional_app_id);
     const auto secret = app_secret::get_instance().get_key(app_id);
     const auto timestamp = boost::lexical_cast<int64_t>(*optional_timestamp);
 
@@ -123,12 +123,13 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     }
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
-    const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account::device_id_describe, device_id } });
+    const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account::device_id_describe, device_id },
+                                                                                                            { account::app_id_describe, app_id } });
 
     const auto select = account::get_select(database_type::mysql, key);
     auto optional_account = co_await mysql_pool->select_one(select, account::get_database_field_container());
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
-    auto account = co_await get_account(optional_account, redis_pool, device_id, handle_parameter.get_app_config());
+    auto account = co_await get_account(optional_account, redis_pool, app_id, device_id, handle_parameter.get_app_config());
 
     if (!account.get_password_hash().empty())
     {
@@ -163,7 +164,7 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
     co_return;
 }
 
-celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::guest_login_http_message_handler::get_account(const optional_basis_database_manager& basis_database_manager, const database_pool_shared_ptr& database_pool, const std::string& device_id, const const_app_config_shared_ptr& app_config)
+celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::guest_login_http_message_handler::get_account(const optional_basis_database_manager& basis_database_manager, const database_pool_shared_ptr& database_pool, int64_t app_id, const std::string& device_id, const const_app_config_shared_ptr& app_config)
 {
     if (basis_database_manager)
     {
@@ -178,6 +179,7 @@ celeritas::guest_login_http_message_handler::account_awaitable_type celeritas::g
     // 账号只存入redis，等待玩家真正登陆时再写入mysql
     account account{ database_type::redis, account_id };
     account.set_device_id(device_id);
+    account.set_app_id(app_id);
     account.set_account_name("guest_" + std::to_string(account_id));
     account.set_create_time(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
     account.set_status(static_cast<int>(account_status_type::normal));
@@ -198,7 +200,7 @@ std::string celeritas::guest_login_http_message_handler::generate_token()
     return boost::uuids::to_string(uuid);
 }
 
-std::string celeritas::guest_login_http_message_handler::calculate_hmac_sha256(int app_id, const std::string& device_id, int64_t timestamp, const std::string& secret_key)
+std::string celeritas::guest_login_http_message_handler::calculate_hmac_sha256(int64_t app_id, const std::string& device_id, int64_t timestamp, const std::string& secret_key)
 {
     const auto data = std::format("{}{}{}", app_id, device_id, timestamp);
 

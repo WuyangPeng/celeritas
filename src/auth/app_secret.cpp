@@ -11,7 +11,7 @@ celeritas::app_secret& celeritas::app_secret::get_instance()
     return instance;
 }
 
-std::string celeritas::app_secret::get_key(int app_id)
+std::string celeritas::app_secret::get_key(const int64_t app_id)
 {
     std::shared_lock lock{ mutex_ };
 
@@ -69,7 +69,7 @@ celeritas::app_secret::void_awaitable_type celeritas::app_secret::do_load_from_d
     apps_ = apps_type;
 }
 
-celeritas::app_secret::void_awaitable_type celeritas::app_secret::load_from_db(const int app_id)
+celeritas::app_secret::void_awaitable_type celeritas::app_secret::load_from_db(const int64_t app_id)
 {
     try
     {
@@ -85,7 +85,7 @@ celeritas::app_secret::void_awaitable_type celeritas::app_secret::load_from_db(c
     }
 }
 
-celeritas::app_secret::void_awaitable_type celeritas::app_secret::do_load_from_db(const int app_id)
+celeritas::app_secret::void_awaitable_type celeritas::app_secret::do_load_from_db(const int64_t app_id)
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
     const auto select = apps::get_select(database_type::mysql, app_id);
@@ -98,7 +98,7 @@ celeritas::app_secret::void_awaitable_type celeritas::app_secret::do_load_from_d
     }
 }
 
-void celeritas::app_secret::reload_from_db(io_context_type& io_context, const int app_id)
+void celeritas::app_secret::reload_from_db(io_context_type& io_context, const int64_t app_id)
 {
     if (app_id == 0)
     {

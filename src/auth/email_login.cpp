@@ -98,7 +98,7 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
         co_return;
     }
 
-    const auto app_id = boost::lexical_cast<int>(*optional_app_id);
+    const auto app_id = boost::lexical_cast<int64_t>(*optional_app_id);
     const auto secret = app_secret::get_instance().get_key(app_id);
     const auto code = boost::lexical_cast<int>(*optional_code);
 
@@ -144,13 +144,14 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::email) },
-                                                                                                            { account_bind::auth_key_describe, email } });
+                                                                                                            { account_bind::auth_key_describe, email },
+                                                                                                            { account_bind::app_id_describe, app_id } });
 
     const auto select = account::get_select(database_type::mysql, key);
 
     auto optional_account_bind = co_await mysql_pool->select_one(select, account::get_database_field_container());
 
-    auto account = co_await get_account(optional_account_bind, redis_pool, mysql_pool, email, handle_parameter_.get_app_config());
+    auto account = co_await get_account(optional_account_bind, redis_pool, mysql_pool, app_id, email, handle_parameter_.get_app_config());
 
     const auto token = generate_token();
 
@@ -179,7 +180,7 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
     co_return;
 }
 
-std::string celeritas::email_login::calculate_hmac_sha256(int app_id, const std::string& email, int code, int64_t timestamp, const std::string& secret_key)
+std::string celeritas::email_login::calculate_hmac_sha256(int64_t app_id, const std::string& email, int code, int64_t timestamp, const std::string& secret_key)
 {
     const auto data = std::format("{}{}{}{}", app_id, email, code, timestamp);
 
@@ -197,6 +198,7 @@ std::string celeritas::email_login::generate_token()
 celeritas::email_login::account_awaitable_type celeritas::email_login::get_account(const optional_basis_database_manager& basis_database_manager,
                                                                                    const database_pool_shared_ptr& redis_pool,
                                                                                    const database_pool_shared_ptr& mysql_pool,
+                                                                                   int64_t app_id,
                                                                                    const std::string& email,
                                                                                    const const_app_config_shared_ptr& app_config)
 {
@@ -222,6 +224,7 @@ celeritas::email_login::account_awaitable_type celeritas::email_login::get_accou
     account.set_status(static_cast<int>(account_status_type::normal));
     account.set_device_id(account.get_account_name());
     account.set_password_hash(generate_token());
+    account.set_app_id(app_id);
 
     if (co_await redis_pool->execute_changes(account.get_modify()))
     {
@@ -233,7 +236,7 @@ celeritas::email_login::account_awaitable_type celeritas::email_login::get_accou
     account_bind.set_account_id(account_id);
     account_bind.set_auth_key(email);
     account_bind.set_account_type(static_cast<int>(account_type::email));
-    account_bind.set_is_primary(true);
+    account_bind.set_app_id(app_id);
 
     if (co_await redis_pool->execute_changes(account_bind.get_modify()))
     {

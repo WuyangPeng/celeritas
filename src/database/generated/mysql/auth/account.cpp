@@ -14,6 +14,7 @@ celeritas::account::account(const database_entity_change& entity)
       password_hash_{ entity.get_value<database_data_type::string_type>(password_hash_describe) },
       salt_{ entity.get_value<database_data_type::string_type>(salt_describe) },
       device_id_{ entity.get_value<database_data_type::string_type>(device_id_describe) },
+      app_id_{ entity.get_value<database_data_type::int64_type>(app_id_describe) },
       create_time_{ entity.get_value<database_data_type::int64_type>(create_time_describe) },
       status_{ entity.get_value<database_data_type::int32_type>(status_describe) }
 {
@@ -26,6 +27,7 @@ celeritas::account::account(const database_type database_type, traits::param_typ
       password_hash_{ traits::string_type{} },
       salt_{ traits::string_type{} },
       device_id_{ traits::string_type{} },
+      app_id_{ traits::int64_type{} },
       create_time_{ traits::int64_type{} },
       status_{ traits::int32_type{} }
 {
@@ -55,6 +57,11 @@ celeritas::traits::string_type celeritas::account::get_salt() const
 celeritas::traits::string_type celeritas::account::get_device_id() const
 {
     return device_id_.get_value();
+}
+
+celeritas::traits::int64_type celeritas::account::get_app_id() const noexcept
+{
+    return app_id_.get_value();
 }
 
 celeritas::traits::int64_type celeritas::account::get_create_time() const noexcept
@@ -117,6 +124,16 @@ void celeritas::account::set_device_id(traits::param_type::string_type device_id
     }
 }
 
+void celeritas::account::set_app_id(traits::param_type::int64_type app_id)
+{
+    if (app_id != get_app_id())
+    {
+        app_id_.set_value(app_id);
+
+        add_modify(app_id_describe, get_app_id());
+    }
+}
+
 void celeritas::account::set_create_time(traits::param_type::int64_type create_time)
 {
     if (create_time != get_create_time())
@@ -144,6 +161,7 @@ const celeritas::database_entity::database_field_container& celeritas::account::
                                                                 decltype(password_hash_)::get_database_field(),
                                                                 decltype(salt_)::get_database_field(),
                                                                 decltype(device_id_)::get_database_field(),
+                                                                decltype(app_id_)::get_database_field(),
                                                                 decltype(create_time_)::get_database_field(),
                                                                 decltype(status_)::get_database_field() };
 
