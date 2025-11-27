@@ -57,7 +57,6 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type do_write_immediately(buffer_guard data) override;
 
-    private:
         web_socket_stream_type websocket_;
         session_run_shared_ptr websocket_run_;
         session_write_shared_ptr websocket_write_;

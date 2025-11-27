@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "common/buffer_guard.h"
 #include "network/session_write.h"
 
 #include <boost/beast.hpp>

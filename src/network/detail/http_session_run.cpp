@@ -34,20 +34,24 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::run()
             if (error.code() == boost::asio::error::eof ||
                 error.code() == boost::asio::error::connection_reset)
             {
-                LOG_CHANNEL(network_channel, info) << "Session closed gracefully.";
+                LOG_CHANNEL(network_channel, info) << "session closed gracefully.";
             }
             else
             {
-                LOG_CHANNEL(network_channel, warning) << "Session error: " << error.what();
+                LOG_CHANNEL(network_channel, warning) << "session error: " << error.what();
             }
         }
         catch (const std::exception& error)
         {
-            LOG_CHANNEL(network_channel, error) << "An unexpected error occurred: " << error.what();
+            LOG_CHANNEL(network_channel, error) << "an unexpected error occurred: " << error.what();
         }
         catch (...)
         {
-            LOG_CHANNEL(network_channel, fatal) << "Listener unknown error.";
+            LOG_CHANNEL(network_channel, fatal) << listener
+            unknown
+            error.
+
+            ";
         }
     }
 
@@ -108,7 +112,7 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_
     if (const auto status = response.result();
         status != boost::beast::http::status::ok)
     {
-        LOG_CHANNEL(network_channel, error) << "HTTP Error: " << status << " - " << response.reason();
+        LOG_CHANNEL(network_channel, error) << "http error: " << status << " - " << response.reason();
         co_return;
     }
 
@@ -120,9 +124,9 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_
 
     const auto& body_content = response.body();
 
-    LOG_CHANNEL(network_channel, trace) << "Response Body Size: " << body_content.size() << std::endl;
+    LOG_CHANNEL(network_channel, trace) << "response body size: " << body_content.size() << std::endl;
 
-    LOG_CHANNEL(network_channel, trace) << "Response Body:" << body_content;
+    LOG_CHANNEL(network_channel, trace) << "response body:" << body_content;
 
     call_back(path + response_suffix.data(), body_content);
 }

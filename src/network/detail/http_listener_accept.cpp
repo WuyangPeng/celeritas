@@ -71,7 +71,7 @@ void celeritas::http_listener_accept::start_new_session(socket_type socket)
     // 成功接受连接
     const auto current_session_id = get_next_session_id();
 
-    LOG_CHANNEL(network_channel, info) << "Accepted new HTTP connection [" << current_session_id << "] from: " << socket.remote_endpoint();
+    LOG_CHANNEL(network_channel, info) << "accepted new http connection [" << current_session_id << "] from: " << socket.remote_endpoint();
     const auto session = std::make_shared<http_session>(std::move(socket), current_session_id, game_server_id_, session_callback{ shared_from_this(), callback_ }, true, "", "");
 
     add_session(session);

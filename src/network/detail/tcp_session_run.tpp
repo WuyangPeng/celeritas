@@ -90,7 +90,7 @@ celeritas::session_run::void_awaitable_type celeritas::tcp_session_run<SocketTyp
         auto buffer_guard = std::move(*buffer_guard_optional);
         co_await read_data_with_timeout(boost::asio::buffer(buffer_guard.get(), buffer_guard.get_effective_size()));
 
-        LOG_CHANNEL(network_channel, debug) << "Received message of type: "
+        LOG_CHANNEL(network_channel, debug) << "received message of type: "
                                             << header.get_header_type()
                                             << ",header size:"
                                             << header.get_header_size()
@@ -117,9 +117,9 @@ celeritas::tcp_session_run<SocketType>::read_awaitable_type celeritas::tcp_sessi
     {
         if (read_error_code == boost::asio::error::operation_aborted)
         {
-            throw boost::system::system_error(boost::asio::error::timed_out, "Read timed out");
+            throw boost::system::system_error(boost::asio::error::timed_out, "read timed out");
         }
-        throw boost::system::system_error(read_error_code, "Failed to read data");
+        throw boost::system::system_error(read_error_code, "failed to read data");
     }
 
     co_return bytes_read;

@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 #include "common/buffer_guard.h"
-#include "message/header.h"
 #include "common/common_fwd.h"
+#include "message/header.h"
 
 namespace celeritas
 {
