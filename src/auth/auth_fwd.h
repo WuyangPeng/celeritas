@@ -14,12 +14,13 @@ namespace celeritas
     class guest_login;
     class guest_login_response;
 
-    class send_sms_response;
     class send_sms;
-    class phone_login_response;
+    class send_sms_response;
     class phone_login;
-    class phone_bind_response;
+    class phone_login_response;
     class phone_bind;
+    class phone_bind_response;
+
     class send_email_response;
     class send_email;
     class email_login_response;
