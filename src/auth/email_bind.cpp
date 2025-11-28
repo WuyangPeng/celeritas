@@ -182,7 +182,7 @@ std::string celeritas::email_bind::calculate_hmac_sha256(int64_t app_id, const s
 {
     const auto data = std::format("{}{}{}{}{}", app_id, email, token, code, timestamp);
 
-    return hmac_sha256::calculate(data, secret_key);
+    return hmac_sha256::calculate(secret_key, data);
 }
 
 std::string celeritas::email_bind::generate_token()

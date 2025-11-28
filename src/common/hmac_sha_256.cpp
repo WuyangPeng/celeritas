@@ -7,7 +7,7 @@
 
 #include <array>
 
-std::string celeritas::hmac_sha256::calculate(const std::string& data, const std::string& secret_key)
+std::string celeritas::hmac_sha256::calculate(const std::string& secret_key, const std::string& data)
 {
     std::array<unsigned char, EVP_MAX_MD_SIZE> result{};
     unsigned int result_length{};

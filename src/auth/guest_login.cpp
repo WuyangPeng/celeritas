@@ -11,6 +11,7 @@
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "database/generated/redis/auth/session_token.h"
+#include "detail/guest_login_parameter.h"
 #include "server/account_status_type.h"
 
 #include <boost/lexical_cast.hpp>
@@ -26,66 +27,16 @@ celeritas::guest_login::guest_login(http_handle_parameter handle_parameter)
 
 celeritas::guest_login::void_awaitable_type celeritas::guest_login::response()
 {
-    const auto optional_device_id = get_param(account::device_id_describe.data());
-    if (!optional_device_id)
-    {
-        const guest_login_response response{ game_error_type::invalid_parameter, "device_id is required" };
-        write(response);
+    guest_login_parameter guest_login_parameter{ get_http_handle_parameter() };
 
+    if (guest_login_parameter.is_failure())
+    {
+        write(guest_login_parameter.get_response());
         co_return;
     }
 
-    const auto optional_app_id = get_param("app_id");
-    if (!optional_app_id)
-    {
-        const guest_login_response response{ game_error_type::invalid_parameter, "app_id is required" };
-        write(response);
-
-        co_return;
-    }
-
-    const auto optional_timestamp = get_param("timestamp");
-    if (!optional_timestamp)
-    {
-        const guest_login_response response{ game_error_type::invalid_parameter, "timestamp is required" };
-        write(response);
-
-        co_return;
-    }
-
-    const auto optional_sign = get_param("sign");
-    if (!optional_sign)
-    {
-        const guest_login_response response{ game_error_type::invalid_parameter, "sign is required" };
-        write(response);
-
-        co_return;
-    }
-
-    const auto& device_id = *optional_device_id;
-    const auto app_id = boost::lexical_cast<int64_t>(*optional_app_id);
-    const auto secret = app_secret::get_instance().get_key(app_id);
-    const auto timestamp = boost::lexical_cast<int64_t>(*optional_timestamp);
-
-    const auto current_time = time_helper::get_current_milliseconds();
-
-    // 检查时间戳，如果请求时间是 5 分钟前的，直接拒绝
-    if (current_time - timestamp > minute * 5)
-    {
-        const guest_login_response response{ game_error_type::timestamp_expired, "timestamp is expired" };
-        write(response);
-
-        co_return;
-    }
-
-    const auto hmac_sha256 = calculate_hmac_sha256(app_id, device_id, timestamp, secret);
-    if (hmac_sha256 != *optional_sign)
-    {
-        const guest_login_response response{ game_error_type::sign_error, "sign error" };
-        write(response);
-
-        co_return;
-    }
+    const auto app_id = guest_login_parameter.get_app_id();
+    const auto device_id = guest_login_parameter.get_device_id();
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account::device_id_describe, device_id },
@@ -115,7 +66,7 @@ celeritas::guest_login::void_awaitable_type celeritas::guest_login::response()
     if (co_await redis_pool->execute_changes(session_token.get_modify()))
     {
         const auto database_config = get_app_config()->get_database_config(redis_db_name.data());
-        const auto expire_milliseconds = current_time + database_config.get_expire_seconds() * milliseconds;
+        const auto expire_milliseconds = time_helper::get_current_milliseconds() + database_config.get_expire_seconds() * milliseconds;
 
         const guest_login_response response{ game_error_type::success, "login successful", token, expire_milliseconds };
         write(response);
@@ -127,13 +78,6 @@ celeritas::guest_login::void_awaitable_type celeritas::guest_login::response()
     }
 
     co_return;
-}
-
-std::string celeritas::guest_login::calculate_hmac_sha256(int64_t app_id, const std::string& device_id, int64_t timestamp, const std::string& secret_key)
-{
-    const auto data = std::format("{}{}{}", app_id, device_id, timestamp);
-
-    return hmac_sha256::calculate(data, secret_key);
 }
 
 celeritas::guest_login::account_awaitable_type celeritas::guest_login::get_account(const optional_basis_database_manager& basis_database_manager,

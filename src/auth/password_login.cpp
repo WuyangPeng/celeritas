@@ -210,7 +210,7 @@ std::string celeritas::password_login::calculate_hmac_sha256(int64_t app_id, con
 {
     const auto data = std::format("{}{}{}{}", app_id, account, password, timestamp);
 
-    return hmac_sha256::calculate(data, secret_key);
+    return hmac_sha256::calculate(secret_key, data);
 }
 
 std::string celeritas::password_login::generate_token()

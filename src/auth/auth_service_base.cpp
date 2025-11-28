@@ -31,3 +31,8 @@ celeritas::auth_service_base::app_config_const_shared_ptr celeritas::auth_servic
 {
     return handle_parameter_.get_app_config();
 }
+
+const celeritas::http_handle_parameter& celeritas::auth_service_base::get_http_handle_parameter() const
+{
+    return handle_parameter_;
+}

@@ -183,7 +183,7 @@ std::string celeritas::phone_bind::calculate_hmac_sha256(int64_t app_id, const s
 {
     const auto data = std::format("{}{}{}{}{}", app_id, phone, token, code, timestamp);
 
-    return hmac_sha256::calculate(data, secret_key);
+    return hmac_sha256::calculate(secret_key, data);
 }
 
 std::string celeritas::phone_bind::generate_token()

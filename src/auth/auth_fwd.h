@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "common/common_fwd.h"
+
 namespace celeritas
 {
     enum class app_status_type;
@@ -7,6 +9,7 @@ namespace celeritas
     class app_secret;
     class auth_service_base;
     class token_http_response;
+    class auth_login;
 
     class guest_login;
     class guest_login_response;
@@ -36,4 +39,5 @@ namespace celeritas
     constexpr auto sms_limit_code_end = 999999;
     constexpr auto sms_code_retry_count = 5;
     constexpr auto email_code_retry_count = 5;
+    constexpr auto http_request_timestamp_expired = minute * 5;
 }

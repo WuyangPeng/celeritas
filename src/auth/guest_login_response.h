@@ -10,6 +10,8 @@ namespace celeritas
         using class_type = guest_login_response;
         using bass_type = token_http_response;
 
+        guest_login_response() noexcept = default;
+
         guest_login_response(game_error_type code, std::string message);
 
         guest_login_response(game_error_type code, std::string message, std::string token, int64_t expire_milliseconds);

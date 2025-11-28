@@ -23,8 +23,6 @@ namespace celeritas
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
         using optional_basis_database_manager = std::optional<database_entity_change>;
 
-        [[nodiscard]] static std::string calculate_hmac_sha256(int64_t app_id, const std::string& device_id, int64_t timestamp, const std::string& secret_key);
-
         [[nodiscard]] static account_awaitable_type get_account(const optional_basis_database_manager& basis_database_manager,
                                                                 const database_pool_shared_ptr& redis_pool,
                                                                 int64_t app_id,

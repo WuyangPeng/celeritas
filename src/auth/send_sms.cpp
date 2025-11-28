@@ -127,7 +127,7 @@ std::string celeritas::send_sms::calculate_hmac_sha256(int64_t app_id, const std
 {
     const auto data = std::format("{}{}{}", app_id, phone, timestamp);
 
-    return hmac_sha256::calculate(data, secret_key);
+    return hmac_sha256::calculate(secret_key, data);
 }
 
 void celeritas::send_sms::send_sdk_sms(const sms_code& sms_code)
