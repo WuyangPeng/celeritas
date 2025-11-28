@@ -3,6 +3,11 @@
 
 using namespace std::literals;
 
+celeritas::token_http_response::token_http_response(const game_error_type code)
+    : bass_type{ code }, token_{}, expire_milliseconds_{}
+{
+}
+
 celeritas::token_http_response::token_http_response(const game_error_type code, std::string message)
     : bass_type{ code, std::move(message) }, token_{}, expire_milliseconds_{}
 {

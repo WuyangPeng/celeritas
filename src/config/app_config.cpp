@@ -1,6 +1,7 @@
 ﻿#include "app_config.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
+#include "common/time_helper.h"
 #include "detail/database_config_reader.h"
 #include "detail/health_check_url_config_reader.h"
 #include "detail/logger_config_reader.h"
@@ -111,6 +112,13 @@ celeritas::health_check_url_config celeritas::app_config::get_health_check_url_c
 celeritas::app_config::service_registry_config_container celeritas::app_config::get_service_registry_config() const
 {
     return service_registry_;
+}
+
+int64_t celeritas::app_config::get_expire_milliseconds(const std::string& db_name) const
+{
+    const auto database_config = get_database_config(db_name);
+
+    return time_helper::get_current_milliseconds() + database_config.get_expire_seconds() * milliseconds;
 }
 
 void celeritas::app_config::do_load_databases_config(const std::string& filename)

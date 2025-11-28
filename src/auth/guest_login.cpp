@@ -1,24 +1,14 @@
 ﻿#include "app_secret.h"
 #include "guest_login.h"
 #include "guest_login_response.h"
-#include "../message/game_error_type.h"
 #include "common/celeritas_error.h"
-#include "common/hmac_sha_256.h"
-#include "common/snowflake_generator.h"
-#include "common/time_helper.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "database/generated/redis/auth/session_token.h"
 #include "detail/guest_login_parameter.h"
-#include "server/account_status_type.h"
-
-#include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string/case_conv.hpp>
-#include <openssl/evp.h>
-
-#include <regex>
+#include "message/game_error_type.h"
 
 celeritas::guest_login::guest_login(http_handle_parameter handle_parameter)
     : base_type{ std::move(handle_parameter) }
@@ -39,75 +29,45 @@ celeritas::guest_login::void_awaitable_type celeritas::guest_login::response()
     const auto device_id = guest_login_parameter.get_device_id();
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
-    const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account::device_id_describe, device_id },
-                                                                                                            { account::app_id_describe, app_id } });
+    auto optional_account = co_await get_optional_account(app_id, device_id, mysql_pool);
 
-    const auto select = account::get_select(database_type::mysql, key);
-    auto optional_account = co_await mysql_pool->select_one(select, account::get_database_field_container());
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
-    auto account = co_await get_account(optional_account, redis_pool, app_id, device_id, get_app_config());
+    auto account = co_await get_account(app_id, device_id, optional_account, redis_pool, get_app_config());
 
     if (!account.get_password_hash().empty())
     {
-        const guest_login_response response{ game_error_type::no_guest_account, "no guest account" };
-        write(response);
-
+        write(guest_login_response{ game_error_type::no_guest_account });
         co_return;
     }
 
-    const auto token = generate_token();
-
-    session_token session_token{ database_type::redis, token };
-    session_token.set_token(token);
-    session_token.set_account_id(account.get_account_id());
-    session_token.set_is_new_account(!optional_account);
-
     // 这里没有删除旧的token，旧的token依赖redis有效时间进行删除。
-    if (co_await redis_pool->execute_changes(session_token.get_modify()))
+    if (auto session_token = co_await create_session_token(account, !optional_account, redis_pool))
     {
-        const auto database_config = get_app_config()->get_database_config(redis_db_name.data());
-        const auto expire_milliseconds = time_helper::get_current_milliseconds() + database_config.get_expire_seconds() * milliseconds;
-
-        const guest_login_response response{ game_error_type::success, "login successful", token, expire_milliseconds };
-        write(response);
+        write(guest_login_response{ game_error_type::success,
+                                    "login successful",
+                                    session_token.value().get_token(),
+                                    get_app_config()->get_expire_milliseconds(redis_db_name.data()) });
     }
     else
     {
-        const guest_login_response response{ game_error_type::redis_error, "redis error" };
-        write(response);
+        write(guest_login_response{ game_error_type::redis_error });
     }
 
     co_return;
 }
 
-celeritas::guest_login::account_awaitable_type celeritas::guest_login::get_account(const optional_basis_database_manager& basis_database_manager,
-                                                                                   const database_pool_shared_ptr& redis_pool,
-                                                                                   int64_t app_id,
+celeritas::guest_login::account_awaitable_type celeritas::guest_login::get_account(const int64_t app_id,
                                                                                    const std::string& device_id,
+                                                                                   const optional_database_entity_change& database_entity_change,
+                                                                                   const database_pool_shared_ptr& redis_pool,
                                                                                    const const_app_config_shared_ptr& app_config)
 {
-    if (basis_database_manager)
+    if (database_entity_change)
     {
-        account account{ *basis_database_manager };
+        account account{ *database_entity_change };
 
         co_return account;
     }
 
-    const auto server_config = app_config->get_server_config();
-    const auto account_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
-
-    // 账号只存入redis，等待玩家真正登陆时再写入mysql
-    account account{ database_type::redis, account_id };
-    account.set_device_id(device_id);
-    account.set_app_id(app_id);
-    account.set_account_name("guest_" + std::to_string(account_id));
-    account.set_create_time(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
-    account.set_status(static_cast<int>(account_status_type::normal));
-
-    if (co_await redis_pool->execute_changes(account.get_modify()))
-    {
-        co_return account;
-    }
-
-    throw celeritas_error("guest login error");
+    co_return co_await create_new_account(app_id, device_id, redis_pool, app_config);
 }

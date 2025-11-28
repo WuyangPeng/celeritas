@@ -690,6 +690,15 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **特点**：提供数据库访问、Token 生成、HMAC 签名计算以及账户检索等通用辅助方法，供具体的认证逻辑（如登录、绑定）复用。
 
 
+* **👋 认证登录 (`auth_login`)**
+    - **作用**：处理用户登录认证的核心逻辑。
+    - **特点**：封装了用户登录的完整流程，包括查询、创建账户以及会话管理。
+    - **功能**:
+        - **`get_optional_account`**: 根据`app_id`和`device_id`从`MySQL`数据库中查询账户信息。
+        - **`create_new_account`**: 创建一个新的账户。
+        - **`create_session_token`**: 为成功登录或新创建的账户生成一个会话令牌（`session token`），并存储在 Redis 中。
+
+
 * **📦 Token HTTP响应 (`token_http_response`)**
     - **作用**：封装了Token验证 `HTTP` 请求的响应数据。
     - **特点**：继承自`http_response`，并额外包含Token和Token有效期，并提供了 `to_json_string()` 方法将其序列化为 `JSON`

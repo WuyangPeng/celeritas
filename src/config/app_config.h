@@ -43,6 +43,8 @@ namespace celeritas
 
         [[nodiscard]] service_registry_config_container get_service_registry_config() const;
 
+        [[nodiscard]] int64_t get_expire_milliseconds(const std::string& db_name) const;
+
     private:
         void do_load_databases_config(const std::string& filename);
 

@@ -12,6 +12,8 @@ namespace celeritas
 
         token_http_response() noexcept = default;
 
+        explicit token_http_response(game_error_type code);
+
         token_http_response(game_error_type code, std::string message);
 
         token_http_response(game_error_type code, std::string message, std::string token, int64_t expire_milliseconds);

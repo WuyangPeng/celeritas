@@ -1,6 +1,11 @@
 ﻿#include "guest_login_response.h"
 #include "common/celeritas_error.h"
 
+celeritas::guest_login_response::guest_login_response(const game_error_type code)
+    : bass_type{ code }
+{
+}
+
 celeritas::guest_login_response::guest_login_response(const game_error_type code, std::string message)
     : bass_type{ code, std::move(message) }
 {

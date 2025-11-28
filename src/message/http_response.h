@@ -16,6 +16,8 @@ namespace celeritas
 
         http_response() noexcept = default;
 
+        explicit http_response(game_error_type code);
+
         http_response(game_error_type code, std::string message);
 
         virtual ~http_response() noexcept = default;

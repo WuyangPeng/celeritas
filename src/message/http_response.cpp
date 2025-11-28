@@ -3,6 +3,11 @@
 
 using namespace std::literals;
 
+celeritas::http_response::http_response(const game_error_type code)
+    : code_{ code }, message_{ get_game_error_description(code) }
+{
+}
+
 celeritas::http_response::http_response(const game_error_type code, std::string message)
     : code_{ code }, message_{ std::move(message) }
 {
