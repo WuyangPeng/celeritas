@@ -26,6 +26,8 @@ namespace celeritas
 
         [[nodiscard]] traits::string_type get_app_secret() const;
 
+        [[nodiscard]] traits::int64_type get_sms_provider_id() const noexcept;
+
         [[nodiscard]] traits::int32_type get_status() const noexcept;
 
         void set_app_id(traits::param_type::int64_type app_id);
@@ -33,6 +35,8 @@ namespace celeritas
         void set_game_name(traits::param_type::string_type game_name);
 
         void set_app_secret(traits::param_type::string_type app_secret);
+
+        void set_sms_provider_id(traits::param_type::int64_type sms_provider_id);
 
         void set_status(traits::param_type::int32_type status);
 
@@ -49,6 +53,7 @@ namespace celeritas
         static constexpr std::string_view app_id_describe{ "app_id" };
         static constexpr std::string_view game_name_describe{ "game_name" };
         static constexpr std::string_view app_secret_describe{ "app_secret" };
+        static constexpr std::string_view sms_provider_id_describe{ "sms_provider_id" };
         static constexpr std::string_view status_describe{ "status" };
 
     private:
@@ -57,6 +62,7 @@ namespace celeritas
         entity<app_id_describe, database_data_type::int64_type, database_index_type::key> app_id_;
         entity<game_name_describe, database_data_type::string_type, database_index_type::index> game_name_;
         entity<app_secret_describe, database_data_type::string_type> app_secret_;
+        entity<sms_provider_id_describe, database_data_type::int64_type> sms_provider_id_;
         entity<status_describe, database_data_type::int32_type> status_;
     };
 }

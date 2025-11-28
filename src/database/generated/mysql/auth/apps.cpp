@@ -12,6 +12,7 @@ celeritas::apps::apps(const database_entity_change& entity)
       app_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : app_id_describe) },
       game_name_{ entity.get_value<database_data_type::string_type>(game_name_describe) },
       app_secret_{ entity.get_value<database_data_type::string_type>(app_secret_describe) },
+      sms_provider_id_{ entity.get_value<database_data_type::int64_type>(sms_provider_id_describe) },
       status_{ entity.get_value<database_data_type::int32_type>(status_describe) }
 {
 }
@@ -21,6 +22,7 @@ celeritas::apps::apps(const database_type database_type, traits::param_type::int
       app_id_{ app_id },
       game_name_{ traits::string_type{} },
       app_secret_{ traits::string_type{} },
+      sms_provider_id_{ traits::int64_type{} },
       status_{ traits::int32_type{} }
 {
     add_modify(app_id_describe, app_id);
@@ -39,6 +41,11 @@ celeritas::traits::string_type celeritas::apps::get_game_name() const
 celeritas::traits::string_type celeritas::apps::get_app_secret() const
 {
     return app_secret_.get_value();
+}
+
+celeritas::traits::int64_type celeritas::apps::get_sms_provider_id() const noexcept
+{
+    return sms_provider_id_.get_value();
 }
 
 celeritas::traits::int32_type celeritas::apps::get_status() const noexcept
@@ -76,6 +83,16 @@ void celeritas::apps::set_app_secret(traits::param_type::string_type app_secret)
     }
 }
 
+void celeritas::apps::set_sms_provider_id(traits::param_type::int64_type sms_provider_id)
+{
+    if (sms_provider_id != get_sms_provider_id())
+    {
+        sms_provider_id_.set_value(sms_provider_id);
+
+        add_modify(sms_provider_id_describe, get_sms_provider_id());
+    }
+}
+
 void celeritas::apps::set_status(traits::param_type::int32_type status)
 {
     if (status != get_status())
@@ -91,6 +108,7 @@ const celeritas::database_entity::database_field_container& celeritas::apps::get
     static const database_field_container field_name_container{ decltype(app_id_)::get_database_field(),
                                                                 decltype(game_name_)::get_database_field(),
                                                                 decltype(app_secret_)::get_database_field(),
+                                                                decltype(sms_provider_id_)::get_database_field(),
                                                                 decltype(status_)::get_database_field() };
 
     return field_name_container;
