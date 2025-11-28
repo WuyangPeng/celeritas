@@ -29,7 +29,7 @@ void celeritas::guest_login_parameter::init()
     const auto optional_device_id = get_param(account::device_id_describe.data());
     if (!optional_device_id)
     {
-        response_ = guest_login_response{ game_error_type::invalid_parameter, "device_id is required" };
+        response_ = guest_login_response{ game_error_type::invalid_parameter, "device id is required" };
         return;
     }
 
@@ -46,6 +46,6 @@ void celeritas::guest_login_parameter::init()
     if (const auto hmac_sha256 = hmac_sha256::calculate_with_args(secret, get_app_id(), device_id_, get_timestamp());
         hmac_sha256 != get_sign())
     {
-        response_ = guest_login_response{ game_error_type::sign_error, "sign error" };
+        response_ = guest_login_response{ game_error_type::sign_error };
     }
 }
