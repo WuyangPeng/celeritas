@@ -16,7 +16,12 @@ celeritas::guest_login_response::guest_login_response(const game_error_type code
 {
 }
 
-celeritas::guest_login_response::guest_login_response(bass_type http_response)
+celeritas::guest_login_response::guest_login_response(bass_type token_http_response)
+    : bass_type{ std::move(token_http_response) }
+{
+}
+
+celeritas::guest_login_response::guest_login_response(http_response http_response)
     : bass_type{ std::move(http_response) }
 {
 }

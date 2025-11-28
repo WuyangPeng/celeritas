@@ -18,7 +18,9 @@ namespace celeritas
 
         token_http_response(game_error_type code, std::string message, std::string token, int64_t expire_milliseconds);
 
-        token_http_response(http_response http_response, std::string token, int64_t expire_milliseconds);
+        token_http_response(bass_type http_response, std::string token, int64_t expire_milliseconds);
+
+        explicit token_http_response(bass_type http_response);
 
         [[nodiscard]] std::string get_token() const;
 

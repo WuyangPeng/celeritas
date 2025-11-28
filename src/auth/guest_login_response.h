@@ -18,7 +18,9 @@ namespace celeritas
 
         guest_login_response(game_error_type code, std::string message, std::string token, int64_t expire_milliseconds);
 
-        explicit guest_login_response(bass_type http_response);
+        explicit guest_login_response(bass_type token_http_response);
+
+        explicit guest_login_response(http_response http_response);
 
         [[nodiscard]] static guest_login_response from_json_string(const std::string& json_string);
     };

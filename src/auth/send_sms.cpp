@@ -85,7 +85,7 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
     const auto app_id = boost::lexical_cast<int64_t>(*optional_app_id);
     const auto secret = app_secret::get_instance().get_key(app_id);
 
-    if (const auto hmac_sha256 = calculate_hmac_sha256(app_id, phone, timestamp, secret);
+    if (const auto hmac_sha256 = hmac_sha256::calculate_with_args(secret, app_id, phone, timestamp);
         hmac_sha256 != *optional_sign)
     {
         const send_sms_response response{ game_error_type::sign_error, "sign error" };
@@ -125,9 +125,7 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
 
 std::string celeritas::send_sms::calculate_hmac_sha256(int64_t app_id, const std::string& phone, int64_t timestamp, const std::string& secret_key)
 {
-    const auto data = std::format("{}{}{}", app_id, phone, timestamp);
-
-    return hmac_sha256::calculate(secret_key, data);
+    return hmac_sha256::calculate_with_args(secret_key, app_id, phone, timestamp);
 }
 
 void celeritas::send_sms::send_sdk_sms(const sms_code& sms_code)

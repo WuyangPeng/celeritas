@@ -18,8 +18,13 @@ celeritas::token_http_response::token_http_response(const game_error_type code, 
 {
 }
 
-celeritas::token_http_response::token_http_response(http_response http_response, std::string token, const int64_t expire_milliseconds)
+celeritas::token_http_response::token_http_response(bass_type http_response, std::string token, const int64_t expire_milliseconds)
     : bass_type{ std::move(http_response) }, token_{ std::move(token) }, expire_milliseconds_{ expire_milliseconds }
+{
+}
+
+celeritas::token_http_response::token_http_response(bass_type http_response)
+    : bass_type{ std::move(http_response) }, token_{}, expire_milliseconds_{}
 {
 }
 
