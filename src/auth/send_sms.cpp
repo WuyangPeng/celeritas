@@ -7,7 +7,7 @@
 #include "database/database_pool_manager.h"
 #include "database/generated/redis/auth/sms_code.h"
 #include "database/generated/redis/auth/sms_limit.h"
-#include "../message/game_error_type.h"
+#include "message/game_error_type.h"
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/hex.hpp>
