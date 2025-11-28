@@ -10,10 +10,8 @@
 #include "message/game_error_type.h"
 
 #include <boost/lexical_cast.hpp>
-#include <boost/algorithm/hex.hpp>
 #include <boost/algorithm/string/case_conv.hpp>
 #include <openssl/evp.h>
-#include <openssl/hmac.h>
 
 #include <regex>
 
@@ -83,9 +81,9 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
     }
 
     const auto app_id = boost::lexical_cast<int64_t>(*optional_app_id);
-    const auto secret = app_secret::get_instance().get_key(app_id);
+    const auto app = app_secret::get_instance().get_apps(app_id);
 
-    if (const auto hmac_sha256 = hmac_sha256::calculate_with_args(secret, app_id, phone, timestamp);
+    if (const auto hmac_sha256 = hmac_sha256::calculate_with_args(app.get_app_secret(), app_id, phone, timestamp);
         hmac_sha256 != *optional_sign)
     {
         const send_sms_response response{ game_error_type::sign_error, "sign error" };
@@ -116,8 +114,8 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
     const send_sms_response response{ game_error_type::success, "send sms success" };
     handle_parameter_.write(response.to_json_string());
 
-    handle_parameter_.submit_task([this,sms_code] {
-        send_sdk_sms(sms_code);
+    handle_parameter_.submit_task([this,sms_code,app] {
+        send_sdk_sms(sms_code, app);
     });
 
     co_return;
@@ -128,6 +126,6 @@ std::string celeritas::send_sms::calculate_hmac_sha256(int64_t app_id, const std
     return hmac_sha256::calculate_with_args(secret_key, app_id, phone, timestamp);
 }
 
-void celeritas::send_sms::send_sdk_sms(const sms_code& sms_code)
+void celeritas::send_sms::send_sdk_sms(const sms_code& sms_code, const apps& apps)
 {
 }

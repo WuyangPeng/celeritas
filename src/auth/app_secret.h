@@ -20,6 +20,8 @@ namespace celeritas
 
         [[nodiscard]] std::string get_key(int64_t app_id);
 
+        [[nodiscard]] apps get_apps(int64_t app_id);
+
         static void reload_from_db(io_context_type& io_context, int64_t app_id);
 
         static void load_from_db(io_context_type& io_context);

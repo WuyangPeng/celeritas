@@ -30,6 +30,8 @@ namespace celeritas
 
         [[nodiscard]] traits::string_type get_api_secret() const;
 
+        [[nodiscard]] traits::string_type get_decryption_key() const;
+
         [[nodiscard]] traits::bool_type is_is_active() const noexcept;
 
         [[nodiscard]] traits::int32_type get_process_type() const noexcept;
@@ -43,6 +45,8 @@ namespace celeritas
         void set_api_key(traits::param_type::string_type api_key);
 
         void set_api_secret(traits::param_type::string_type api_secret);
+
+        void set_decryption_key(traits::param_type::string_type decryption_key);
 
         void set_is_active(traits::param_type::bool_type is_active);
 
@@ -63,6 +67,7 @@ namespace celeritas
         static constexpr std::string_view base_url_describe{ "base_url" };
         static constexpr std::string_view api_key_describe{ "api_key" };
         static constexpr std::string_view api_secret_describe{ "api_secret" };
+        static constexpr std::string_view decryption_key_describe{ "decryption_key" };
         static constexpr std::string_view is_active_describe{ "is_active" };
         static constexpr std::string_view process_type_describe{ "process_type" };
 
@@ -74,6 +79,7 @@ namespace celeritas
         entity<base_url_describe, database_data_type::string_type> base_url_;
         entity<api_key_describe, database_data_type::string_type> api_key_;
         entity<api_secret_describe, database_data_type::string_type> api_secret_;
+        entity<decryption_key_describe, database_data_type::string_type> decryption_key_;
         entity<is_active_describe, database_data_type::bool_type> is_active_;
         entity<process_type_describe, database_data_type::int32_type> process_type_;
     };

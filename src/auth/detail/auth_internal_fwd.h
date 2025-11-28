@@ -6,6 +6,10 @@ namespace celeritas
 {
     class auth_parameter;
     class guest_login_parameter;
+    class send_sms_to_providers;
+    class tencent_cloud_sms;
+
+    enum class send_sms_type;
 
     constexpr std::string_view timestamp_describe = "timestamp";
     constexpr std::string_view sign_describe = "sign";

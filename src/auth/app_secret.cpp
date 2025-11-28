@@ -13,6 +13,11 @@ celeritas::app_secret& celeritas::app_secret::get_instance()
 
 std::string celeritas::app_secret::get_key(const int64_t app_id)
 {
+    return get_apps(app_id).get_app_secret();
+}
+
+celeritas::apps celeritas::app_secret::get_apps(const int64_t app_id)
+{
     std::shared_lock lock{ mutex_ };
 
     if (const auto iter = apps_.find(app_id);
@@ -22,7 +27,7 @@ std::string celeritas::app_secret::get_key(const int64_t app_id)
         {
             throw celeritas_error{ "app is close." };
         }
-        return iter->second.get_app_secret();
+        return iter->second;
     }
 
     throw celeritas_error{ "app_secret not registered" };
