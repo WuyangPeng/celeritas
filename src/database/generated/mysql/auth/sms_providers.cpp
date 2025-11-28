@@ -15,7 +15,7 @@ celeritas::sms_providers::sms_providers(const database_entity_change& entity)
       api_key_{ entity.get_value<database_data_type::string_type>(api_key_describe) },
       api_secret_{ entity.get_value<database_data_type::string_type>(api_secret_describe) },
       decryption_key_{ entity.get_value<database_data_type::string_type>(decryption_key_describe) },
-      is_active_{ entity.get_value<database_data_type::bool_type>(is_active_describe) },
+      active_{ entity.get_value<database_data_type::bool_type>(active_describe) },
       process_type_{ entity.get_value<database_data_type::int32_type>(process_type_describe) }
 {
 }
@@ -28,7 +28,7 @@ celeritas::sms_providers::sms_providers(const database_type database_type, trait
       api_key_{ traits::string_type{} },
       api_secret_{ traits::string_type{} },
       decryption_key_{ traits::string_type{} },
-      is_active_{ traits::bool_type{} },
+      active_{ traits::bool_type{} },
       process_type_{ traits::int32_type{} }
 {
     add_modify(provider_id_describe, provider_id);
@@ -64,9 +64,9 @@ celeritas::traits::string_type celeritas::sms_providers::get_decryption_key() co
     return decryption_key_.get_value();
 }
 
-celeritas::traits::bool_type celeritas::sms_providers::is_is_active() const noexcept
+celeritas::traits::bool_type celeritas::sms_providers::is_active() const noexcept
 {
-    return is_active_.get_value();
+    return active_.get_value();
 }
 
 celeritas::traits::int32_type celeritas::sms_providers::get_process_type() const noexcept
@@ -134,13 +134,13 @@ void celeritas::sms_providers::set_decryption_key(traits::param_type::string_typ
     }
 }
 
-void celeritas::sms_providers::set_is_active(traits::param_type::bool_type is_active)
+void celeritas::sms_providers::set_active(traits::param_type::bool_type active)
 {
-    if (is_active != is_is_active())
+    if (active != is_active())
     {
-        is_active_.set_value(is_active);
+        active_.set_value(active);
 
-        add_modify(is_active_describe, is_is_active());
+        add_modify(active_describe, is_active());
     }
 }
 
@@ -162,7 +162,7 @@ const celeritas::database_entity::database_field_container& celeritas::sms_provi
                                                                 decltype(api_key_)::get_database_field(),
                                                                 decltype(api_secret_)::get_database_field(),
                                                                 decltype(decryption_key_)::get_database_field(),
-                                                                decltype(is_active_)::get_database_field(),
+                                                                decltype(active_)::get_database_field(),
                                                                 decltype(process_type_)::get_database_field() };
 
     return field_name_container;

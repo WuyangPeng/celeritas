@@ -30,7 +30,7 @@ celeritas::apps celeritas::app_secret::get_apps(const int64_t app_id)
         return iter->second;
     }
 
-    throw celeritas_error{ "app_secret not registered" };
+    throw celeritas_error{ "app secret not registered" };
 }
 
 void celeritas::app_secret::reload_from_db(io_context_type& io_context, const int64_t app_id)

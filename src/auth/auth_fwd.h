@@ -7,6 +7,7 @@ namespace celeritas
     enum class app_status_type;
 
     class app_secret;
+    class app_sms_providers;
     class auth_service_base;
     class token_http_response;
     class auth_login;

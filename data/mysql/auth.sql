@@ -15,7 +15,7 @@ CREATE TABLE `sms_providers` (
   `api_key` VARCHAR(255) NOT NULL COMMENT '密钥 ID',
   `api_secret` VARCHAR(255) NOT NULL COMMENT '密钥 Secret',
   `decryption_key` VARCHAR(255) NOT NULL COMMENT '解密密钥',
-  `is_active` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否启用',
+  `active` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否启用',
   `process_type` INT NOT NULL DEFAULT 0 COMMENT '处理类型',
   PRIMARY KEY (`provider_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
