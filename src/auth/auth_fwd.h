@@ -5,6 +5,8 @@ namespace celeritas
     enum class app_status_type;
 
     class app_secret;
+    class auth_service_base;
+    class token_http_response;
 
     class guest_login;
     class guest_login_response;

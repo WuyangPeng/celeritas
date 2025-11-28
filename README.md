@@ -684,6 +684,17 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **作用**：作为单例类，负责从数据库中异步加载和缓存应用的密钥信息。
     - **特点**：提供线程安全的 `get_key(app_id)` 方法来获取指定应用的密钥，并支持通过 `reload_from_db` 进行热重载。
 
+
+* **⚙️ 认证服务基类 (`auth_service_base`)**
+    - **作用**：作为认证模块中所有业务逻辑处理类的基类。
+    - **特点**：提供数据库访问、Token 生成、HMAC 签名计算以及账户检索等通用辅助方法，供具体的认证逻辑（如登录、绑定）复用。
+
+
+* **📦 Token HTTP响应 (`token_http_response`)**
+    - **作用**：封装了Token验证 `HTTP` 请求的响应数据。
+    - **特点**：继承自`http_response`，并额外包含Token和Token有效期，并提供了 `to_json_string()` 方法将其序列化为 `JSON`
+      格式。
+
 ##### 游客认证 (Guest Authentication)
 
 * **👋 游客登录 (`guest_login`)**

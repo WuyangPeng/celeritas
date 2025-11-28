@@ -36,7 +36,7 @@ namespace celeritas
 
         void set_message(const std::string& message);
 
-        [[nodiscard]] std::string to_json_string() const;
+        [[nodiscard]] virtual std::string to_json_string() const;
 
         [[nodiscard]] static http_response from_json_string(const std::string& json_string);
 
