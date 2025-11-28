@@ -20,9 +20,9 @@ namespace celeritas
 
         [[nodiscard]] sms_providers get_sms_providers(int64_t provider_id);
 
-        static void reload_from_db(io_context_type& io_context, int64_t provider_id);
+        void reload_from_db(io_context_type& io_context, int64_t provider_id);
 
-        static void load_from_db(io_context_type& io_context);
+        void load_from_db(io_context_type& io_context);
 
     private:
         using sms_providers_type = std::unordered_map<int64_t, sms_providers>;

@@ -35,16 +35,16 @@ void celeritas::app_sms_providers::reload_from_db(io_context_type& io_context, i
     }
 
     boost::asio::co_spawn(io_context,
-                          [provider_id] {
-                              return get_instance().load_from_db(provider_id);
+                          [provider_id,this] {
+                              return this->load_from_db(provider_id);
                           }, boost::asio::detached);
 }
 
 void celeritas::app_sms_providers::load_from_db(io_context_type& io_context)
 {
     boost::asio::co_spawn(io_context,
-                          [] {
-                              return get_instance().load_from_db();
+                          [this] {
+                              return this->load_from_db();
                           }, boost::asio::detached);
 }
 

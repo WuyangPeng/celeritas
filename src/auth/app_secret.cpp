@@ -41,16 +41,16 @@ void celeritas::app_secret::reload_from_db(io_context_type& io_context, const in
     }
 
     boost::asio::co_spawn(io_context,
-                          [app_id] {
-                              return get_instance().load_from_db(app_id);
+                          [app_id,this] {
+                              return this->load_from_db(app_id);
                           }, boost::asio::detached);
 }
 
 void celeritas::app_secret::load_from_db(io_context_type& io_context)
 {
     boost::asio::co_spawn(io_context,
-                          [] {
-                              return get_instance().load_from_db();
+                          [this] {
+                              return this->load_from_db();
                           }, boost::asio::detached);
 }
 
