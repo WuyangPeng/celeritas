@@ -9,17 +9,17 @@ celeritas::auth_service_base::auth_service_base(http_handle_parameter handle_par
 {
 }
 
+void celeritas::auth_service_base::write(const http_response& response) const
+{
+    handle_parameter_.write(response.to_json_string());
+}
+
 std::string celeritas::auth_service_base::generate_token()
 {
     boost::uuids::random_generator generator{};
     const auto uuid = generator();
 
     return boost::uuids::to_string(uuid);
-}
-
-void celeritas::auth_service_base::write(const http_response& response) const
-{
-    handle_parameter_.write(response.to_json_string());
 }
 
 celeritas::auth_service_base::optional_string celeritas::auth_service_base::get_param(const std::string& key) const

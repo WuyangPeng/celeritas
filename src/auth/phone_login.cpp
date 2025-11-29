@@ -1,8 +1,8 @@
 ﻿#include "app_secret.h"
-#include "auth_fwd.h"
 #include "phone_login.h"
 #include "phone_login_response.h"
 #include "common/celeritas_error.h"
+#include "common/logger.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/auth/account.h"
@@ -12,11 +12,6 @@
 #include "detail/phone_login_parameter.h"
 #include "message/game_error_type.h"
 #include "server/account_type.h"
-
-#include <boost/algorithm/string/case_conv.hpp>
-#include <openssl/evp.h>
-
-#include <regex>
 
 celeritas::phone_login::phone_login(http_handle_parameter handle_parameter)
     : base_type{ std::move(handle_parameter) }
@@ -29,28 +24,25 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
 
     if (phone_login_parameter.is_failure())
     {
-        write(phone_login_parameter.get_response());
+        co_return write(phone_login_parameter.get_response());
+    }
+
+    const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
+    const auto optional_sms_code = co_await phone_login_parameter.check_code(redis_pool, *this);
+    if (!optional_sms_code)
+    {
         co_return;
     }
 
     const auto app_id = phone_login_parameter.get_app_id();
-    const auto code = phone_login_parameter.get_code();
     const auto phone = phone_login_parameter.get_phone();
-
-    const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
-    const auto optional_sms_code = co_await check_code(code, phone, redis_pool);
-    if (!optional_sms_code)
-    {
-        write(phone_login_response{ game_error_type::code_error });
-        co_return;
-    }
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::phone) },
                                                                                                             { account_bind::auth_key_describe, phone },
                                                                                                             { account_bind::app_id_describe, app_id } });
-    const auto select = account_bind::get_select(database_type::mysql, key);
-    auto optional_account_bind = co_await mysql_pool->select_one(select, account_bind::get_database_field_container());
+
+    auto optional_account_bind = co_await mysql_pool->select_one(account_bind::get_select(database_type::mysql, key), account_bind::get_database_field_container());
 
     auto account = co_await get_account(optional_account_bind, redis_pool, mysql_pool, app_id, phone, get_app_config());
 
@@ -67,7 +59,10 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
         write(phone_login_response{ game_error_type::redis_error });
     }
 
-    co_await redis_pool->execute_changes(optional_sms_code->get_delete());
+    if (!co_await redis_pool->execute_changes(optional_sms_code->get_delete()))
+    {
+        LOG_CHANNEL(auth_channel, error) << "delete sms code error.";
+    }
 
     co_return;
 }
@@ -92,37 +87,4 @@ celeritas::phone_login::account_awaitable_type celeritas::phone_login::get_accou
     }
 
     co_return co_await create_new_account(app_id, phone, account_type::phone, "phone", redis_pool, app_config);
-}
-
-celeritas::phone_login::optional_sms_code_awaitable_type celeritas::phone_login::check_code(const int code,
-                                                                                            const std::string& phone,
-                                                                                            const database_pool_shared_ptr& redis_pool) const
-{
-    const auto sms_code_select = sms_code::get_select(database_type::redis, phone);
-    auto optional_sms_code = co_await redis_pool->select_one(sms_code_select, sms_code::get_database_field_container());
-    if (!optional_sms_code)
-    {
-        write(phone_login_response{ game_error_type::code_expired });
-
-        co_return std::nullopt;
-    }
-
-    sms_code sms_code{ *optional_sms_code };
-    if (sms_code.get_code() != code)
-    {
-        sms_code.modify_retry_count(1);
-
-        if (sms_code.get_retry_count() >= sms_code_retry_count)
-        {
-            co_await redis_pool->execute_changes(sms_code.get_delete());
-        }
-        else
-        {
-            co_await redis_pool->execute_changes(sms_code.get_modify());
-        }
-
-        co_return sms_code;
-    }
-
-    co_return std::nullopt;
 }

@@ -6,7 +6,7 @@
 #include <regex>
 
 celeritas::phone_parameter::phone_parameter(const http_handle_parameter& http_handle_parameter)
-    : base_type{ std::move(http_handle_parameter) }, phone_{}, apps_{}
+    : base_type{ http_handle_parameter }, phone_{}, apps_{}
 {
 }
 
@@ -28,16 +28,15 @@ celeritas::auth_parameter::optional_http_response celeritas::phone_parameter::ge
         return http_response{ game_error_type::invalid_parameter, "phone is required" };
     }
 
-    const auto& phone = *optional_phone;
+    phone_ = *optional_phone;
+
     if (const std::regex phone_regex{ R"(^1\d{10}$)" };
-        !std::regex_match(phone, phone_regex))
+        !std::regex_match(phone_, phone_regex))
     {
         return http_response{ game_error_type::invalid_parameter, "phone is invalid" };
     }
 
-    phone_ = *optional_phone;
-
-    if (const auto http_response = get_http_parameter())
+    if (const auto http_response = base_type::get_http_parameter())
     {
         return *http_response;
     }

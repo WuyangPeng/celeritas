@@ -28,14 +28,14 @@ namespace celeritas
 
         [[nodiscard]] virtual void_awaitable_type response() = 0;
 
+        void write(const http_response& response) const;
+
     protected:
         using optional_string = std::optional<std::string>;
         using app_config_const_shared_ptr = std::shared_ptr<const app_config>;
         using task_type = thread_safe_queue::task_type;
 
         [[nodiscard]] static std::string generate_token();
-
-        void write(const http_response& response) const;
 
         [[nodiscard]] optional_string get_param(const std::string& key) const;
 

@@ -12,7 +12,6 @@ namespace celeritas
     public:
         using class_type = send_sms;
         using base_type = auth_service_base;
-        using void_awaitable_type = boost::asio::awaitable<void>;
 
         explicit send_sms(http_handle_parameter handle_parameter);
 
