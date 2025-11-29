@@ -20,6 +20,11 @@ celeritas::phone_login_response::phone_login_response(bass_type token_http_respo
 {
 }
 
+celeritas::phone_login_response::phone_login_response(http_response http_response)
+    : bass_type{ std::move(http_response) }
+{
+}
+
 celeritas::phone_login_response celeritas::phone_login_response::from_json_string(const std::string& json_string)
 {
     auto token_http_response = bass_type::from_json_string(json_string);

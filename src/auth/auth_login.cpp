@@ -4,6 +4,7 @@
 #include "common/time_helper.h"
 #include "config/app_config.h"
 #include "database/database_pool_base.h"
+#include "database/generated/mysql/auth/account_bind.h"
 #include "server/account_status_type.h"
 
 celeritas::auth_login::auth_login(http_handle_parameter handle_parameter)
@@ -43,7 +44,7 @@ celeritas::auth_login::account_awaitable_type celeritas::auth_login::create_new_
         co_return account;
     }
 
-    throw celeritas_error("guest login error");
+    throw celeritas_error{ "guest login error" };
 }
 
 celeritas::auth_login::session_token_awaitable_type celeritas::auth_login::create_session_token(const account& account,
@@ -64,4 +65,43 @@ celeritas::auth_login::session_token_awaitable_type celeritas::auth_login::creat
     }
 
     co_return std::nullopt;
+}
+
+celeritas::auth_login::account_awaitable_type celeritas::auth_login::create_new_account(int64_t app_id,
+                                                                                        const std::string& auth_key,
+                                                                                        account_type account_type,
+                                                                                        const std::string& account_name_prefix,
+                                                                                        const database_pool_shared_ptr& redis_pool,
+                                                                                        const const_app_config_shared_ptr& app_config)
+{
+    const auto server_config = app_config->get_server_config();
+    const auto account_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
+
+    // 账号只存入redis，等待玩家真正登陆时再写入mysql
+    account account{ database_type::redis, account_id };
+    account.set_account_name(account_name_prefix + "_" + std::to_string(account_id));
+    account.set_create_time(time_helper::get_current_milliseconds());
+    account.set_status(static_cast<int>(account_status_type::normal));
+    account.set_device_id(account.get_account_name());
+    account.set_password_hash(generate_token());
+    account.set_app_id(app_id);
+
+    if (co_await redis_pool->execute_changes(account.get_modify()))
+    {
+        co_return account;
+    }
+
+    const auto account_bind_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
+    account_bind account_bind{ database_type::redis, account_bind_id };
+    account_bind.set_account_id(account_id);
+    account_bind.set_auth_key(auth_key);
+    account_bind.set_account_type(static_cast<int>(account_type));
+    account_bind.set_app_id(app_id);
+
+    if (co_await redis_pool->execute_changes(account_bind.get_modify()))
+    {
+        co_return account;
+    }
+
+    throw celeritas_error{ account_name_prefix + " login error" };
 }

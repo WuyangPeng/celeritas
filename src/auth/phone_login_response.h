@@ -18,6 +18,8 @@ namespace celeritas
 
         explicit phone_login_response(bass_type token_http_response);
 
+        explicit phone_login_response(http_response http_response);
+
         [[nodiscard]] static phone_login_response from_json_string(const std::string& json_string);
     };
 

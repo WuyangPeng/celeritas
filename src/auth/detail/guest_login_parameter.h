@@ -6,7 +6,7 @@
 
 namespace celeritas
 {
-    class guest_login_parameter : public auth_parameter
+    class guest_login_parameter final : public auth_parameter
     {
     public:
         using class_type = guest_login_parameter;
