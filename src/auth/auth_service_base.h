@@ -12,6 +12,7 @@ namespace celeritas
     public:
         using class_type = auth_service_base;
         using void_awaitable_type = boost::asio::awaitable<void>;
+        using io_context_type = boost::asio::io_context;
 
         explicit auth_service_base(http_handle_parameter handle_parameter);
 
@@ -30,6 +31,7 @@ namespace celeritas
     protected:
         using optional_string = std::optional<std::string>;
         using app_config_const_shared_ptr = std::shared_ptr<const app_config>;
+        using task_type = thread_safe_queue::task_type;
 
         [[nodiscard]] static std::string generate_token();
 
@@ -40,6 +42,10 @@ namespace celeritas
         [[nodiscard]] app_config_const_shared_ptr get_app_config() const;
 
         [[nodiscard]] const http_handle_parameter& get_http_handle_parameter() const;
+
+        void submit_task(task_type task) const;
+
+        [[nodiscard]] io_context_type& get_io_context() const;
 
     private:
         http_handle_parameter handle_parameter_;

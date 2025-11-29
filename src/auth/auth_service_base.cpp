@@ -36,3 +36,13 @@ const celeritas::http_handle_parameter& celeritas::auth_service_base::get_http_h
 {
     return handle_parameter_;
 }
+
+void celeritas::auth_service_base::submit_task(task_type task) const
+{
+    handle_parameter_.submit_task(std::move(task));
+}
+
+celeritas::auth_service_base::io_context_type& celeritas::auth_service_base::get_io_context() const
+{
+    return handle_parameter_.get_io_context();
+}

@@ -1,103 +1,38 @@
-﻿#include "app_secret.h"
+﻿#include "app_sms_providers.h"
 #include "auth_fwd.h"
 #include "send_sms.h"
 #include "send_sms_response.h"
-#include "common/hmac_sha_256.h"
 #include "common/random_helper.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/redis/auth/sms_code.h"
 #include "database/generated/redis/auth/sms_limit.h"
+#include "detail/send_sms_parameter.h"
+#include "detail/send_sms_to_providers.h"
 #include "message/game_error_type.h"
 
-#include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string/case_conv.hpp>
-#include <openssl/evp.h>
-
-#include <regex>
-
 celeritas::send_sms::send_sms(http_handle_parameter handle_parameter)
-    : handle_parameter_{ std::move(handle_parameter) }
+    : base_type{ std::move(handle_parameter) }
 {
 }
 
 celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
 {
-    const auto optional_phone = handle_parameter_.get_param("phone");
-    if (!optional_phone)
-    {
-        const send_sms_response response{ game_error_type::invalid_parameter, "phone is required" };
-        handle_parameter_.write(response.to_json_string());
+    send_sms_parameter send_sms_parameter{ get_http_handle_parameter() };
 
+    if (send_sms_parameter.is_failure())
+    {
+        write(send_sms_parameter.get_response());
         co_return;
     }
 
-    const auto& phone = *optional_phone;
-    if (const std::regex phone_regex{ R"(^1\d{10}$)" };
-        !std::regex_match(phone, phone_regex))
-    {
-        const send_sms_response response{ game_error_type::invalid_parameter, "phone is invalid" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
-
-    const auto optional_timestamp = handle_parameter_.get_param("timestamp");
-    if (!optional_timestamp)
-    {
-        const send_sms_response response{ game_error_type::invalid_parameter, "timestamp is required" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
-
-    const auto timestamp = boost::lexical_cast<int64_t>(*optional_timestamp);
-
-    // 检查时间戳，如果请求时间是 5 分钟前的，直接拒绝
-    if (const auto current_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-        current_time - timestamp > minute * 5)
-    {
-        const send_sms_response response{ game_error_type::timestamp_expired, "timestamp is expired" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
-
-    const auto optional_app_id = handle_parameter_.get_param("app_id");
-    if (!optional_app_id)
-    {
-        const send_sms_response response{ game_error_type::invalid_parameter, "app_id is required" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
-
-    const auto optional_sign = handle_parameter_.get_param("sign");
-    if (!optional_sign)
-    {
-        const send_sms_response response{ game_error_type::invalid_parameter, "sign is required" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
-
-    const auto app_id = boost::lexical_cast<int64_t>(*optional_app_id);
-    const auto app = app_secret::get_instance().get_apps(app_id);
-
-    if (const auto hmac_sha256 = hmac_sha256::calculate_with_args(app.get_app_secret(), app_id, phone, timestamp);
-        hmac_sha256 != *optional_sign)
-    {
-        const send_sms_response response{ game_error_type::sign_error, "sign error" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
+    const auto phone = send_sms_parameter.get_phone();
+    const auto app = send_sms_parameter.get_apps();
 
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
-    const auto select = sms_limit::get_select(database_type::redis, phone);
-    if (auto sms_limit = co_await redis_pool->select_one(select, sms_limit::get_database_field_container()))
+
+    if (auto sms_limit = co_await redis_pool->select_one(sms_limit::get_select(database_type::redis, phone), sms_limit::get_database_field_container()))
     {
-        const send_sms_response response{ game_error_type::sent_too_frequently, "sent too frequently" };
-        handle_parameter_.write(response.to_json_string());
+        write(send_sms_response{ game_error_type::sent_too_frequently, "sent too frequently" });
 
         co_return;
     }
@@ -111,21 +46,21 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
     co_await redis_pool->execute_changes(sms_code.get_modify(), sms_code_expiration_time);
     co_await redis_pool->execute_changes(sms_limit.get_modify(), sms_limit_expiration_time);
 
-    const send_sms_response response{ game_error_type::success, "send sms success" };
-    handle_parameter_.write(response.to_json_string());
+    write(send_sms_response{ game_error_type::success, "send sms success" });
 
-    handle_parameter_.submit_task([this,sms_code,app] {
-        send_sdk_sms(sms_code, app);
-    });
+    boost::asio::co_spawn(get_io_context(),
+                          [ sms_code,app] {
+                              return send_sdk_sms(sms_code, app);
+                          }, boost::asio::detached);
 
     co_return;
 }
 
-std::string celeritas::send_sms::calculate_hmac_sha256(int64_t app_id, const std::string& phone, int64_t timestamp, const std::string& secret_key)
+celeritas::send_sms::void_awaitable_type celeritas::send_sms::send_sdk_sms(const sms_code& sms_code, const apps& apps)
 {
-    return hmac_sha256::calculate_with_args(secret_key, app_id, phone, timestamp);
-}
+    const auto sms_providers = app_sms_providers::get_instance().get_sms_providers(apps.get_sms_provider_id());
 
-void celeritas::send_sms::send_sdk_sms(const sms_code& sms_code, const apps& apps)
-{
+    const auto provider = send_sms_to_providers::create(sms_code, sms_providers);
+
+    co_return co_await provider->execute();
 }
