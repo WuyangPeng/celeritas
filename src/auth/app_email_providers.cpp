@@ -73,8 +73,8 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
     email_providers_type email_providers_type{};
     for (const auto& row : apps_result)
     {
-        const email_providers sms_providers{ row };
-        email_providers_type.emplace(sms_providers.get_provider_id(), sms_providers);
+        const email_providers email_providers{ row };
+        email_providers_type.emplace(email_providers.get_provider_id(), email_providers);
     }
 
     std::unique_lock lock{ mutex_ };
@@ -101,9 +101,9 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
 
-    if (const auto sms_providers_result = co_await mysql_pool->select_one(email_providers::get_select(database_type::mysql, provider_id), email_providers::get_database_field_container()))
+    if (const auto optional_sms_providers = co_await mysql_pool->select_one(email_providers::get_select(database_type::mysql, provider_id), email_providers::get_database_field_container()))
     {
-        const email_providers email_providers{ *sms_providers_result };
+        const email_providers email_providers{ *optional_sms_providers };
 
         std::unique_lock lock{ mutex_ };
         email_providers_.emplace(email_providers.get_provider_id(), email_providers);

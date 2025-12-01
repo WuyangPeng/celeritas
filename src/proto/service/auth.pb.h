@@ -80,6 +80,14 @@ class reload_email_providers_db_response;
 struct reload_email_providers_db_responseDefaultTypeInternal;
 extern reload_email_providers_db_responseDefaultTypeInternal _reload_email_providers_db_response_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull reload_email_providers_db_response_class_data_;
+class reload_sdk_providers_db_request;
+struct reload_sdk_providers_db_requestDefaultTypeInternal;
+extern reload_sdk_providers_db_requestDefaultTypeInternal _reload_sdk_providers_db_request_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull reload_sdk_providers_db_request_class_data_;
+class reload_sdk_providers_db_response;
+struct reload_sdk_providers_db_responseDefaultTypeInternal;
+extern reload_sdk_providers_db_responseDefaultTypeInternal _reload_sdk_providers_db_response_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull reload_sdk_providers_db_response_class_data_;
 class reload_sms_providers_db_request;
 struct reload_sms_providers_db_requestDefaultTypeInternal;
 extern reload_sms_providers_db_requestDefaultTypeInternal _reload_sms_providers_db_request_default_instance_;
@@ -429,6 +437,332 @@ class reload_sms_providers_db_request final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull reload_sms_providers_db_request_class_data_;
+// -------------------------------------------------------------------
+
+class reload_sdk_providers_db_response final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:celeritas.proto.service.reload_sdk_providers_db_response) */ {
+ public:
+  inline reload_sdk_providers_db_response() : reload_sdk_providers_db_response(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(reload_sdk_providers_db_response* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(reload_sdk_providers_db_response));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR reload_sdk_providers_db_response(::google::protobuf::internal::ConstantInitialized);
+
+  inline reload_sdk_providers_db_response(const reload_sdk_providers_db_response& from) : reload_sdk_providers_db_response(nullptr, from) {}
+  inline reload_sdk_providers_db_response(reload_sdk_providers_db_response&& from) noexcept
+      : reload_sdk_providers_db_response(nullptr, ::std::move(from)) {}
+  inline reload_sdk_providers_db_response& operator=(const reload_sdk_providers_db_response& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline reload_sdk_providers_db_response& operator=(reload_sdk_providers_db_response&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const reload_sdk_providers_db_response& default_instance() {
+    return *reinterpret_cast<const reload_sdk_providers_db_response*>(
+        &_reload_sdk_providers_db_response_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(reload_sdk_providers_db_response& a, reload_sdk_providers_db_response& b) { a.Swap(&b); }
+  inline void Swap(reload_sdk_providers_db_response* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(reload_sdk_providers_db_response* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  reload_sdk_providers_db_response* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<reload_sdk_providers_db_response>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const reload_sdk_providers_db_response& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const reload_sdk_providers_db_response& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.service.reload_sdk_providers_db_response"; }
+
+ protected:
+  explicit reload_sdk_providers_db_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  reload_sdk_providers_db_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const reload_sdk_providers_db_response& from);
+  reload_sdk_providers_db_response(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, reload_sdk_providers_db_response&& from) noexcept
+      : reload_sdk_providers_db_response(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:celeritas.proto.service.reload_sdk_providers_db_response)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 0,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  friend struct ::TableStruct_proto_2fservice_2fauth_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull reload_sdk_providers_db_response_class_data_;
+// -------------------------------------------------------------------
+
+class reload_sdk_providers_db_request final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.service.reload_sdk_providers_db_request) */ {
+ public:
+  inline reload_sdk_providers_db_request() : reload_sdk_providers_db_request(nullptr) {}
+  ~reload_sdk_providers_db_request() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(reload_sdk_providers_db_request* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(reload_sdk_providers_db_request));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR reload_sdk_providers_db_request(::google::protobuf::internal::ConstantInitialized);
+
+  inline reload_sdk_providers_db_request(const reload_sdk_providers_db_request& from) : reload_sdk_providers_db_request(nullptr, from) {}
+  inline reload_sdk_providers_db_request(reload_sdk_providers_db_request&& from) noexcept
+      : reload_sdk_providers_db_request(nullptr, ::std::move(from)) {}
+  inline reload_sdk_providers_db_request& operator=(const reload_sdk_providers_db_request& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline reload_sdk_providers_db_request& operator=(reload_sdk_providers_db_request&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const reload_sdk_providers_db_request& default_instance() {
+    return *reinterpret_cast<const reload_sdk_providers_db_request*>(
+        &_reload_sdk_providers_db_request_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(reload_sdk_providers_db_request& a, reload_sdk_providers_db_request& b) { a.Swap(&b); }
+  inline void Swap(reload_sdk_providers_db_request* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(reload_sdk_providers_db_request* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  reload_sdk_providers_db_request* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<reload_sdk_providers_db_request>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const reload_sdk_providers_db_request& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const reload_sdk_providers_db_request& from) { reload_sdk_providers_db_request::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(reload_sdk_providers_db_request* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.service.reload_sdk_providers_db_request"; }
+
+ protected:
+  explicit reload_sdk_providers_db_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  reload_sdk_providers_db_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const reload_sdk_providers_db_request& from);
+  reload_sdk_providers_db_request(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, reload_sdk_providers_db_request&& from) noexcept
+      : reload_sdk_providers_db_request(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kSdkIdFieldNumber = 1,
+  };
+  // int32 sdk_id = 1;
+  void clear_sdk_id() ;
+  ::int32_t sdk_id() const;
+  void set_sdk_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_sdk_id() const;
+  void _internal_set_sdk_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:celeritas.proto.service.reload_sdk_providers_db_request)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const reload_sdk_providers_db_request& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::int32_t sdk_id_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fservice_2fauth_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull reload_sdk_providers_db_request_class_data_;
 // -------------------------------------------------------------------
 
 class reload_email_providers_db_response final : public ::google::protobuf::internal::ZeroFieldsBase
@@ -1142,9 +1476,10 @@ class auth_response final : public ::google::protobuf::Message
     kReloadAppDb = 1,
     kReloadSmsProvidersDb = 2,
     kReloadEmailProvidersDb = 3,
+    kReloadSdkProvidersDb = 4,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(auth_response& a, auth_response& b) { a.Swap(&b); }
   inline void Swap(auth_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1235,6 +1570,7 @@ class auth_response final : public ::google::protobuf::Message
     kReloadAppDbFieldNumber = 1,
     kReloadSmsProvidersDbFieldNumber = 2,
     kReloadEmailProvidersDbFieldNumber = 3,
+    kReloadSdkProvidersDbFieldNumber = 4,
   };
   // .celeritas.proto.service.reload_app_db_response reload_app_db = 1;
   bool has_reload_app_db() const;
@@ -1293,6 +1629,25 @@ class auth_response final : public ::google::protobuf::Message
   ::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF_NONNULL _internal_mutable_reload_email_providers_db();
 
   public:
+  // .celeritas.proto.service.reload_sdk_providers_db_response reload_sdk_providers_db = 4;
+  bool has_reload_sdk_providers_db() const;
+  private:
+  bool _internal_has_reload_sdk_providers_db() const;
+
+  public:
+  void clear_reload_sdk_providers_db() ;
+  const ::celeritas::proto::service::reload_sdk_providers_db_response& reload_sdk_providers_db() const;
+  [[nodiscard]] ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NULLABLE release_reload_sdk_providers_db();
+  ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NONNULL mutable_reload_sdk_providers_db();
+  void set_allocated_reload_sdk_providers_db(::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_reload_sdk_providers_db(::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NULLABLE unsafe_arena_release_reload_sdk_providers_db();
+
+  private:
+  const ::celeritas::proto::service::reload_sdk_providers_db_response& _internal_reload_sdk_providers_db() const;
+  ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NONNULL _internal_mutable_reload_sdk_providers_db();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.service.auth_response)
@@ -1301,11 +1656,12 @@ class auth_response final : public ::google::protobuf::Message
   void set_has_reload_app_db();
   void set_has_reload_sms_providers_db();
   void set_has_reload_email_providers_db();
+  void set_has_reload_sdk_providers_db();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 3,
-                                   3, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 4,
+                                   4, 0,
                                    2>
       _table_;
 
@@ -1330,6 +1686,7 @@ class auth_response final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE reload_app_db_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE reload_sms_providers_db_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE reload_email_providers_db_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE reload_sdk_providers_db_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -1401,9 +1758,10 @@ class auth_request final : public ::google::protobuf::Message
     kReloadAppDb = 1,
     kReloadSmsProvidersDb = 2,
     kReloadEmailProvidersDb = 3,
+    kReloadSdkProvidersDb = 4,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(auth_request& a, auth_request& b) { a.Swap(&b); }
   inline void Swap(auth_request* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1494,6 +1852,7 @@ class auth_request final : public ::google::protobuf::Message
     kReloadAppDbFieldNumber = 1,
     kReloadSmsProvidersDbFieldNumber = 2,
     kReloadEmailProvidersDbFieldNumber = 3,
+    kReloadSdkProvidersDbFieldNumber = 4,
   };
   // .celeritas.proto.service.reload_app_db_request reload_app_db = 1;
   bool has_reload_app_db() const;
@@ -1552,6 +1911,25 @@ class auth_request final : public ::google::protobuf::Message
   ::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_NONNULL _internal_mutable_reload_email_providers_db();
 
   public:
+  // .celeritas.proto.service.reload_sdk_providers_db_request reload_sdk_providers_db = 4;
+  bool has_reload_sdk_providers_db() const;
+  private:
+  bool _internal_has_reload_sdk_providers_db() const;
+
+  public:
+  void clear_reload_sdk_providers_db() ;
+  const ::celeritas::proto::service::reload_sdk_providers_db_request& reload_sdk_providers_db() const;
+  [[nodiscard]] ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NULLABLE release_reload_sdk_providers_db();
+  ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NONNULL mutable_reload_sdk_providers_db();
+  void set_allocated_reload_sdk_providers_db(::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_reload_sdk_providers_db(::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NULLABLE unsafe_arena_release_reload_sdk_providers_db();
+
+  private:
+  const ::celeritas::proto::service::reload_sdk_providers_db_request& _internal_reload_sdk_providers_db() const;
+  ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NONNULL _internal_mutable_reload_sdk_providers_db();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.service.auth_request)
@@ -1560,11 +1938,12 @@ class auth_request final : public ::google::protobuf::Message
   void set_has_reload_app_db();
   void set_has_reload_sms_providers_db();
   void set_has_reload_email_providers_db();
+  void set_has_reload_sdk_providers_db();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 3,
-                                   3, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 4,
+                                   4, 0,
                                    2>
       _table_;
 
@@ -1589,6 +1968,7 @@ class auth_request final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE reload_app_db_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE reload_sms_providers_db_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE reload_email_providers_db_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE reload_sdk_providers_db_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -1707,6 +2087,38 @@ inline void reload_email_providers_db_request::_internal_set_provider_id(::int32
 // -------------------------------------------------------------------
 
 // reload_email_providers_db_response
+
+// -------------------------------------------------------------------
+
+// reload_sdk_providers_db_request
+
+// int32 sdk_id = 1;
+inline void reload_sdk_providers_db_request::clear_sdk_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.sdk_id_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000001U;
+}
+inline ::int32_t reload_sdk_providers_db_request::sdk_id() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.reload_sdk_providers_db_request.sdk_id)
+  return _internal_sdk_id();
+}
+inline void reload_sdk_providers_db_request::set_sdk_id(::int32_t value) {
+  _internal_set_sdk_id(value);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.reload_sdk_providers_db_request.sdk_id)
+}
+inline ::int32_t reload_sdk_providers_db_request::_internal_sdk_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.sdk_id_;
+}
+inline void reload_sdk_providers_db_request::_internal_set_sdk_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.sdk_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// reload_sdk_providers_db_response
 
 // -------------------------------------------------------------------
 
@@ -1952,6 +2364,87 @@ inline ::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::reload_email_providers_db_request* _msg = _internal_mutable_reload_email_providers_db();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.service.auth_request.reload_email_providers_db)
+  return _msg;
+}
+
+// .celeritas.proto.service.reload_sdk_providers_db_request reload_sdk_providers_db = 4;
+inline bool auth_request::has_reload_sdk_providers_db() const {
+  return payload_case() == kReloadSdkProvidersDb;
+}
+inline bool auth_request::_internal_has_reload_sdk_providers_db() const {
+  return payload_case() == kReloadSdkProvidersDb;
+}
+inline void auth_request::set_has_reload_sdk_providers_db() {
+  _impl_._oneof_case_[0] = kReloadSdkProvidersDb;
+}
+inline void auth_request::clear_reload_sdk_providers_db() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kReloadSdkProvidersDb) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.reload_sdk_providers_db_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.reload_sdk_providers_db_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NULLABLE auth_request::release_reload_sdk_providers_db() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.auth_request.reload_sdk_providers_db)
+  if (payload_case() == kReloadSdkProvidersDb) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_request*>(_impl_.payload_.reload_sdk_providers_db_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.reload_sdk_providers_db_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::service::reload_sdk_providers_db_request& auth_request::_internal_reload_sdk_providers_db() const {
+  return payload_case() == kReloadSdkProvidersDb ? *reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_request*>(_impl_.payload_.reload_sdk_providers_db_) : reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_request&>(::celeritas::proto::service::_reload_sdk_providers_db_request_default_instance_);
+}
+inline const ::celeritas::proto::service::reload_sdk_providers_db_request& auth_request::reload_sdk_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.auth_request.reload_sdk_providers_db)
+  return _internal_reload_sdk_providers_db();
+}
+inline ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NULLABLE auth_request::unsafe_arena_release_reload_sdk_providers_db() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.auth_request.reload_sdk_providers_db)
+  if (payload_case() == kReloadSdkProvidersDb) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_request*>(_impl_.payload_.reload_sdk_providers_db_);
+    _impl_.payload_.reload_sdk_providers_db_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void auth_request::unsafe_arena_set_allocated_reload_sdk_providers_db(
+    ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_reload_sdk_providers_db();
+    _impl_.payload_.reload_sdk_providers_db_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.auth_request.reload_sdk_providers_db)
+}
+inline ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NONNULL auth_request::_internal_mutable_reload_sdk_providers_db() {
+  if (payload_case() != kReloadSdkProvidersDb) {
+    clear_payload();
+    set_has_reload_sdk_providers_db();
+    _impl_.payload_.reload_sdk_providers_db_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::service::reload_sdk_providers_db_request>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_request*>(_impl_.payload_.reload_sdk_providers_db_);
+}
+inline ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NONNULL auth_request::mutable_reload_sdk_providers_db()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::service::reload_sdk_providers_db_request* _msg = _internal_mutable_reload_sdk_providers_db();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.auth_request.reload_sdk_providers_db)
   return _msg;
 }
 
@@ -2208,6 +2701,87 @@ inline ::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::reload_email_providers_db_response* _msg = _internal_mutable_reload_email_providers_db();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.service.auth_response.reload_email_providers_db)
+  return _msg;
+}
+
+// .celeritas.proto.service.reload_sdk_providers_db_response reload_sdk_providers_db = 4;
+inline bool auth_response::has_reload_sdk_providers_db() const {
+  return payload_case() == kReloadSdkProvidersDb;
+}
+inline bool auth_response::_internal_has_reload_sdk_providers_db() const {
+  return payload_case() == kReloadSdkProvidersDb;
+}
+inline void auth_response::set_has_reload_sdk_providers_db() {
+  _impl_._oneof_case_[0] = kReloadSdkProvidersDb;
+}
+inline void auth_response::clear_reload_sdk_providers_db() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kReloadSdkProvidersDb) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.reload_sdk_providers_db_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.reload_sdk_providers_db_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NULLABLE auth_response::release_reload_sdk_providers_db() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.auth_response.reload_sdk_providers_db)
+  if (payload_case() == kReloadSdkProvidersDb) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_response*>(_impl_.payload_.reload_sdk_providers_db_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.reload_sdk_providers_db_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::service::reload_sdk_providers_db_response& auth_response::_internal_reload_sdk_providers_db() const {
+  return payload_case() == kReloadSdkProvidersDb ? *reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_response*>(_impl_.payload_.reload_sdk_providers_db_) : reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_response&>(::celeritas::proto::service::_reload_sdk_providers_db_response_default_instance_);
+}
+inline const ::celeritas::proto::service::reload_sdk_providers_db_response& auth_response::reload_sdk_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.auth_response.reload_sdk_providers_db)
+  return _internal_reload_sdk_providers_db();
+}
+inline ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NULLABLE auth_response::unsafe_arena_release_reload_sdk_providers_db() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.auth_response.reload_sdk_providers_db)
+  if (payload_case() == kReloadSdkProvidersDb) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_response*>(_impl_.payload_.reload_sdk_providers_db_);
+    _impl_.payload_.reload_sdk_providers_db_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void auth_response::unsafe_arena_set_allocated_reload_sdk_providers_db(
+    ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_reload_sdk_providers_db();
+    _impl_.payload_.reload_sdk_providers_db_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.auth_response.reload_sdk_providers_db)
+}
+inline ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NONNULL auth_response::_internal_mutable_reload_sdk_providers_db() {
+  if (payload_case() != kReloadSdkProvidersDb) {
+    clear_payload();
+    set_has_reload_sdk_providers_db();
+    _impl_.payload_.reload_sdk_providers_db_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::service::reload_sdk_providers_db_response>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_response*>(_impl_.payload_.reload_sdk_providers_db_);
+}
+inline ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NONNULL auth_response::mutable_reload_sdk_providers_db()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::service::reload_sdk_providers_db_response* _msg = _internal_mutable_reload_sdk_providers_db();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.auth_response.reload_sdk_providers_db)
   return _msg;
 }
 

@@ -101,9 +101,9 @@ celeritas::app_sms_providers::void_awaitable_type celeritas::app_sms_providers::
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
 
-    if (const auto sms_providers_result = co_await mysql_pool->select_one(sms_providers::get_select(database_type::mysql, provider_id), sms_providers::get_database_field_container()))
+    if (const auto optional_sms_providers = co_await mysql_pool->select_one(sms_providers::get_select(database_type::mysql, provider_id), sms_providers::get_database_field_container()))
     {
-        const sms_providers sms_providers{ *sms_providers_result };
+        const sms_providers sms_providers{ *optional_sms_providers };
 
         std::unique_lock lock{ mutex_ };
         sms_providers_.emplace(sms_providers.get_provider_id(), sms_providers);

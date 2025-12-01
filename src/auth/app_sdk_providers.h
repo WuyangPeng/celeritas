@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "sdk_providers_key.h"
-#include "database/generated/mysql/auth/sms_providers.h"
+#include "database/generated/mysql/auth/sdk_providers.h"
 
 #include <boost/asio.hpp>
 
@@ -19,14 +19,14 @@ namespace celeritas
 
         [[nodiscard]] static app_sdk_providers& get_instance();
 
-        [[nodiscard]] sms_providers get_sms_providers(int64_t provider_id);
+        [[nodiscard]] sdk_providers get_sdk_providers(const sdk_providers_key& sdk_providers_key);
 
-        void reload_from_db(io_context_type& io_context, int64_t provider_id);
+        void reload_from_db(io_context_type& io_context, int64_t sdk_id);
 
         void load_from_db(io_context_type& io_context);
 
     private:
-        using sms_providers_type = std::unordered_map<sdk_providers_key, sms_providers>;
+        using sdk_providers_type = std::unordered_map<sdk_providers_key, sdk_providers>;
 
         app_sdk_providers() noexcept = default;
 
@@ -34,11 +34,11 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type do_load_from_db();
 
-        [[nodiscard]] void_awaitable_type load_from_db(int64_t provider_id);
+        [[nodiscard]] void_awaitable_type load_from_db(int64_t sdk_id);
 
-        [[nodiscard]] void_awaitable_type do_load_from_db(int64_t provider_id);
+        [[nodiscard]] void_awaitable_type do_load_from_db(int64_t sdk_id);
 
-        sms_providers_type sms_providers_;
+        sdk_providers_type sdk_providers_;
         std::shared_mutex mutex_;
     };
 }
