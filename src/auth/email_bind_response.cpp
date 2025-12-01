@@ -1,5 +1,9 @@
 ﻿#include "email_bind_response.h"
-#include "common/celeritas_error.h"
+
+celeritas::email_bind_response::email_bind_response(const game_error_type code)
+    : bass_type{ code }
+{
+}
 
 celeritas::email_bind_response::email_bind_response(const game_error_type code, std::string message)
     : bass_type{ code, std::move(message) }

@@ -11,6 +11,7 @@ namespace celeritas
     class auth_service_base;
     class token_http_response;
     class auth_login;
+    class auth_bind;
 
     class guest_login;
     class guest_login_response;
@@ -22,12 +23,13 @@ namespace celeritas
     class phone_bind;
     class phone_bind_response;
 
-    class send_email_response;
     class send_email;
-    class email_login_response;
+    class send_email_response;
     class email_login;
-    class email_bind_response;
+    class email_login_response;
     class email_bind;
+    class email_bind_response;
+
     class password_login_response;
     class password_login;
     class password_bind_response;

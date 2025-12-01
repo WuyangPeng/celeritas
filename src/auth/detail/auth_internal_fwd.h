@@ -15,6 +15,7 @@ namespace celeritas
     class tencent_cloud_sms;
 
     enum class send_sms_type;
+    enum class send_email_type;
 
     constexpr std::string_view timestamp_describe = "timestamp";
     constexpr std::string_view sign_describe = "sign";

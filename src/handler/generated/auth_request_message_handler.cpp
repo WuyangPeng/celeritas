@@ -11,6 +11,12 @@ celeritas::auth_request_message_handler::auth_request_message_handler()
                             const message_registry_shared_ptr& message_registry) -> bool {
                              return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::reload_app_db);
                          });
+    add_handler_function(proto::service::auth_request::PayloadCase::kReloadEmailProvidersDb,
+                         [](const protobuf_handle_parameter& handle_parameter,
+                            const message_type& current_message,
+                            const message_registry_shared_ptr& message_registry) -> bool {
+                             return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::reload_email_providers_db);
+                         });
     add_handler_function(proto::service::auth_request::PayloadCase::kReloadSmsProvidersDb,
                          [](const protobuf_handle_parameter& handle_parameter,
                             const message_type& current_message,

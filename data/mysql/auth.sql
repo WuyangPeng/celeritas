@@ -3,12 +3,25 @@ CREATE TABLE `apps` (
   `game_name` VARCHAR(255) NOT NULL COMMENT '游戏名字',
   `app_secret` VARCHAR(255) NOT NULL COMMENT '签名',
   `sms_provider_id` BIGINT NOT NULL DEFAULT 0 COMMENT '短信服务商id',
+  `email_provider_id` BIGINT NOT NULL DEFAULT 0 COMMENT '邮件服务商id',
   `status` INT NOT NULL DEFAULT 0 COMMENT '游戏状态',
   PRIMARY KEY (`app_id`),
   KEY `game_name_index` (`game_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `sms_providers` (
+  `provider_id` BIGINT NOT NULL COMMENT '服务商id',
+  `provider_name` VARCHAR(255) NOT NULL COMMENT '服务商名称',
+  `base_url` VARCHAR(255) NOT NULL COMMENT '基础 API 地址',
+  `api_key` VARCHAR(255) NOT NULL COMMENT '密钥 ID',
+  `api_secret` VARCHAR(255) NOT NULL COMMENT '密钥 Secret',
+  `decryption_key` VARCHAR(255) NOT NULL COMMENT '解密密钥',
+  `active` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否启用',
+  `process_type` INT NOT NULL DEFAULT 0 COMMENT '处理类型',
+  PRIMARY KEY (`provider_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `email_providers` (
   `provider_id` BIGINT NOT NULL COMMENT '服务商id',
   `provider_name` VARCHAR(255) NOT NULL COMMENT '服务商名称',
   `base_url` VARCHAR(255) NOT NULL COMMENT '基础 API 地址',

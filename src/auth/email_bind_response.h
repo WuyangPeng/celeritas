@@ -10,6 +10,8 @@ namespace celeritas
         using class_type = email_bind_response;
         using bass_type = http_response;
 
+        explicit email_bind_response(game_error_type code);
+
         email_bind_response(game_error_type code, std::string message);
 
         explicit email_bind_response(bass_type http_response);

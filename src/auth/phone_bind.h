@@ -1,17 +1,15 @@
 ﻿#pragma once
 
-#include "auth_service_base.h"
-#include "database/database_pool_base.h"
-#include "database/generated/mysql/auth/account.h"
+#include "auth_bind.h"
 #include "message/http_handle_parameter.h"
 
 namespace celeritas
 {
-    class phone_bind final : public auth_service_base
+    class phone_bind final : public auth_bind
     {
     public:
         using class_type = phone_bind;
-        using base_type = auth_service_base;
+        using base_type = auth_bind;
 
         explicit phone_bind(http_handle_parameter handle_parameter);
 

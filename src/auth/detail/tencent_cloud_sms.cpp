@@ -1,7 +1,7 @@
 ﻿#include "tencent_cloud_sms.h"
 
-celeritas::tencent_cloud_sms::tencent_cloud_sms(const sms_code& sms_code, const sms_providers& sms_providers)
-    : base_type{ sms_code, sms_providers }
+celeritas::tencent_cloud_sms::tencent_cloud_sms(sms_code sms_code, sms_providers sms_providers)
+    : base_type{ std::move(sms_code), std::move(sms_providers) }
 {
 }
 

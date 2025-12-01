@@ -14,7 +14,7 @@ namespace celeritas
         using void_awaitable_type = boost::asio::awaitable<void>;
         using send_sms_to_providers_unique_ptr = std::unique_ptr<class_type>;
 
-        send_sms_to_providers(const sms_code& sms_code, const sms_providers& sms_providers);
+        send_sms_to_providers(sms_code sms_code, sms_providers sms_providers);
 
         virtual ~send_sms_to_providers() noexcept = default;
 
@@ -28,7 +28,7 @@ namespace celeritas
 
         [[nodiscard]] virtual void_awaitable_type execute() = 0;
 
-        [[nodiscard]] static send_sms_to_providers_unique_ptr create(const sms_code& sms_code, const sms_providers& sms_providers);
+        [[nodiscard]] static send_sms_to_providers_unique_ptr create(sms_code sms_code, sms_providers sms_providers);
 
     private:
         sms_code sms_code_;

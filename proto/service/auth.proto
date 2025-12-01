@@ -18,10 +18,19 @@ message reload_sms_providers_db_request {
 message reload_sms_providers_db_response {
 }
 
+// 重载email providers数据库
+message reload_email_providers_db_request {
+  int32 provider_id = 1;
+}
+
+message reload_email_providers_db_response {
+}
+
 message auth_request {
   oneof payload {
     reload_app_db_request reload_app_db = 1;
     reload_sms_providers_db_request reload_sms_providers_db = 2;
+    reload_email_providers_db_request reload_email_providers_db = 3;
   }
 }
 
@@ -29,6 +38,7 @@ message auth_response {
   oneof payload {
     reload_app_db_response reload_app_db = 1;
     reload_sms_providers_db_response reload_sms_providers_db = 2;
+    reload_email_providers_db_response reload_email_providers_db = 3;
   }
 }
 

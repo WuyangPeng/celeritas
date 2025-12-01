@@ -693,6 +693,14 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
         - **热重载**：支持通过 `reload_from_db` 方法重新加载特定服务商的配置，无需重启服务。
 
 
+* **✉️ 邮箱服务商管理器 (`app_email_providers`)**
+    - **作用**：作为单例类，负责从数据库中异步加载和缓存所有邮箱服务商（Email Provider）的配置信息。
+    - **特点**：
+        - **配置加载与缓存**：在服务启动时加载所有邮箱服务商配置，并缓存在内存中。
+        - **线程安全访问**：提供 `get_email_providers(provider_id)` 方法，以线程安全的方式获取指定服务商的配置。
+        - **热重载**：支持通过 `reload_from_db` 方法重新加载特定服务商的配置，无需重启服务。
+
+
 * **⚙️ 认证服务基类 (`auth_service_base`)**
     - **作用**：作为认证模块中所有业务逻辑处理类的基类。
     - **特点**：提供数据库访问、Token 生成、HMAC 签名计算以及账户检索等通用辅助方法，供具体的认证逻辑（如登录、绑定）复用。
@@ -705,6 +713,14 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
         - **`get_optional_account`**: 根据`app_id`和`device_id`从`MySQL`数据库中查询账户信息。
         - **`create_new_account`**: 创建一个新的账户。
         - **`create_session_token`**: 为成功登录或新创建的账户生成一个会话令牌（`session token`），并存储在 Redis 中。
+
+
+* **🤝 认证绑定 (`auth_bind`)**
+    - **作用**：处理用户账户绑定的核心逻辑。
+    - **特点**：封装了账户绑定的通用流程，包括获取账户和执行绑定操作。
+    - **功能**:
+        - **`get_account`**: 根据不同认证类型（手机、邮箱等）和令牌，从数据库中获取账户信息。
+        - **`bind`**: 将新的认证方式（如手机号）与现有账户进行关联。
 
 
 * **📦 Token HTTP响应 (`token_http_response`)**
@@ -847,6 +863,11 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 * **🔄 重载短信服务商数据库消息处理器 (`reload_sms_providers_db_message_handler`)**
     - **作用**：处理重新加载短信服务商数据库配置的请求。
     - **功能**：接收并处理 `reload_sms_providers_db_request` 消息，根据 `provider_id` 触发 `app_sms_providers` 单例从数据库中重新加载指定服务商的配置信息。
+
+
+* **🔄 重载邮箱服务商数据库消息处理器 (`reload_email_providers_db_message_handler`)**
+    - **作用**：处理重新加载邮箱服务商数据库配置的请求。
+    - **功能**：接收并处理 `reload_email_providers_db_request` 消息，根据 `provider_id` 触发 `app_email_providers` 单例从数据库中重新加载指定服务商的配置信息。
 
 ##### http handlers（HTTP 处理器）
 
