@@ -8,6 +8,7 @@
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "detail/phone_bind_parameter.h"
+#include "detail/phone_operation_parameter.tpp"
 #include "message/game_error_type.h"
 #include "server/account_type.h"
 
@@ -26,7 +27,7 @@ celeritas::phone_bind::void_awaitable_type celeritas::phone_bind::response()
     }
 
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
-    const auto optional_sms_code = co_await phone_bind_parameter.check_code(redis_pool, *this);
+    const auto optional_sms_code = co_await phone_bind_parameter.check_code<phone_bind_response>(redis_pool, *this);
     if (!optional_sms_code)
     {
         co_return;

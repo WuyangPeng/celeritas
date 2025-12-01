@@ -10,6 +10,7 @@
 #include "database/generated/redis/auth/session_token.h"
 #include "database/generated/redis/auth/sms_code.h"
 #include "detail/phone_login_parameter.h"
+#include "detail/phone_operation_parameter.tpp"
 #include "message/game_error_type.h"
 #include "server/account_type.h"
 
@@ -28,7 +29,7 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
     }
 
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
-    const auto optional_sms_code = co_await phone_login_parameter.check_code(redis_pool, *this);
+    const auto optional_sms_code = co_await phone_login_parameter.check_code<phone_login_response>(redis_pool, *this);
     if (!optional_sms_code)
     {
         co_return;
