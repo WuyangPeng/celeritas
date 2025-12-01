@@ -1,5 +1,4 @@
 ﻿#include "sdk_process.h"
-#include "send_sms_type.h"
 #include "we_chat_sdk_process.h"
 #include "auth/sdk_process_type.h"
 #include "common/celeritas_error.h"
