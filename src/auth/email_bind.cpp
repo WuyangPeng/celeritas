@@ -1,13 +1,14 @@
-﻿#include "email_bind.h"
-#include "app_secret.h"
+﻿#include "app_secret.h"
+#include "auth_bind.tpp"
+#include "email_bind.h"
 #include "email_bind_response.h"
 #include "common/logger.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "detail/email_bind_parameter.h"
-#include "server/account_type.h"
 #include "message/game_error_type.h"
+#include "server/account_type.h"
 
 celeritas::email_bind::email_bind(http_handle_parameter handle_parameter)
     : base_type{ std::move(handle_parameter) }

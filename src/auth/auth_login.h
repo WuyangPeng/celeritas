@@ -43,5 +43,13 @@ namespace celeritas
                                                                        const std::string& account_name_prefix,
                                                                        const database_pool_shared_ptr& redis_pool,
                                                                        const const_app_config_shared_ptr& app_config);
+
+        [[nodiscard]] static account_awaitable_type create_new_account(int64_t app_id,
+                                                                       const std::string& auth_key,
+                                                                       const std::string& password,
+                                                                       account_type account_type,
+                                                                       const std::string& account_name_prefix,
+                                                                       const database_pool_shared_ptr& redis_pool,
+                                                                       const const_app_config_shared_ptr& app_config);
     };
 }

@@ -19,6 +19,9 @@ namespace celeritas
     class email_login_parameter;
     class email_bind_parameter;
 
+    class password_parameter;
+    class password_login_response;
+
     class send_sms_to_providers;
     class tencent_cloud_sms;
     class send_email_to_providers;
@@ -31,6 +34,8 @@ namespace celeritas
     constexpr std::string_view sign_describe = "sign";
     constexpr std::string_view phone_describe = "phone";
     constexpr std::string_view email_describe = "email";
+    constexpr std::string_view account_describe = "account";
+    constexpr std::string_view password_describe = "password";
     constexpr std::string_view code_describe = "code";
     constexpr std::string_view token_describe = "token";
 }
