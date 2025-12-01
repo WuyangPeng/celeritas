@@ -1,194 +1,54 @@
 ﻿#include "email_bind.h"
 #include "app_secret.h"
 #include "email_bind_response.h"
-#include "common/hmac_sha_256.h"
-#include "common/snowflake_generator.h"
+#include "common/logger.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/auth/account_bind.h"
-#include "database/generated/redis/auth/session_token.h"
+#include "detail/email_bind_parameter.h"
 #include "server/account_type.h"
-#include "../message/game_error_type.h"
-
-#include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string/case_conv.hpp>
-#include <boost/uuid/random_generator.hpp>
-#include <boost/uuid/uuid_io.hpp>
-#include <openssl/evp.h>
-
-#include <regex>
+#include "message/game_error_type.h"
 
 celeritas::email_bind::email_bind(http_handle_parameter handle_parameter)
-    : handle_parameter_{ std::move(handle_parameter) }
+    : base_type{ std::move(handle_parameter) }
 {
 }
 
 celeritas::email_bind::void_awaitable_type celeritas::email_bind::response()
 {
-    const auto optional_token = handle_parameter_.get_param("token");
-    if (!optional_token)
-    {
-        const email_bind_response response{ game_error_type::invalid_parameter, "token is required" };
-        handle_parameter_.write(response.to_json_string());
+    email_bind_parameter email_bind_parameter{ get_http_handle_parameter() };
 
-        co_return;
+    if (email_bind_parameter.is_failure())
+    {
+        co_return write(email_bind_parameter.get_response());
     }
 
-    const auto optional_email = handle_parameter_.get_param("email");
-    if (!optional_email)
-    {
-        const email_bind_response response{ game_error_type::invalid_parameter, "email is required" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
-
-    const auto& email = *optional_email;
-    if (const std::regex email_regex{ R"(^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$)" };
-        !std::regex_match(email, email_regex))
-    {
-        const email_bind_response response{ game_error_type::invalid_parameter, "phone is invalid" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
-
-    const auto optional_timestamp = handle_parameter_.get_param("timestamp");
-    if (!optional_timestamp)
-    {
-        const email_bind_response response{ game_error_type::invalid_parameter, "timestamp is required" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
-
-    const auto timestamp = boost::lexical_cast<int64_t>(*optional_timestamp);
-    const auto current_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-
-    // 检查时间戳，如果请求时间是 15 分钟前的，直接拒绝
-    if (current_time - timestamp > minute * 15)
-    {
-        const email_bind_response response{ game_error_type::timestamp_expired, "timestamp is expired" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
-
-    const auto optional_app_id = handle_parameter_.get_param("app_id");
-    if (!optional_app_id)
-    {
-        const email_bind_response response{ game_error_type::invalid_parameter, "app_id is required" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
-
-    const auto optional_sign = handle_parameter_.get_param("sign");
-    if (!optional_sign)
-    {
-        const email_bind_response response{ game_error_type::invalid_parameter, "sign is required" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
-
-    const auto optional_code = handle_parameter_.get_param("code");
-    if (!optional_code)
-    {
-        const email_bind_response response{ game_error_type::invalid_parameter, "code is required" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
-
-    const auto& token = *optional_token;
-    const auto app_id = boost::lexical_cast<int64_t>(*optional_app_id);
-    const auto secret = app_secret::get_instance().get_key(app_id);
-    const auto code = boost::lexical_cast<int>(*optional_code);
-
-    if (const auto hmac_sha256 = calculate_hmac_sha256(app_id, email, token, code, timestamp, secret);
-        hmac_sha256 != *optional_sign)
-    {
-        const email_bind_response response{ game_error_type::sign_error, "sign error" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
-
-    const auto session_token_select = session_token::get_select(database_type::redis, token);
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
-    const auto session_token_result = co_await redis_pool->select_one(session_token_select, session_token::get_database_field_container());
-    if (!session_token_result)
+    const auto optional_email_code = co_await email_bind_parameter.check_code<email_bind_response>(redis_pool, *this);
+    if (!optional_email_code)
     {
-        const email_bind_response response{ game_error_type::token_error, "token error" };
-        handle_parameter_.write(response.to_json_string());
-
         co_return;
     }
 
-    session_token session_token{ *session_token_result };
+    const auto app_id = email_bind_parameter.get_app_id();
+    const auto email = email_bind_parameter.get_email();
+    const auto token = email_bind_parameter.get_token();
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
-    const auto select = account::get_select(database_type::mysql, session_token.get_account_id());
-    auto optional_account = co_await mysql_pool->select_one(select, account::get_database_field_container());
 
-    if (!optional_account)
+    auto optional_account = co_await get_account<email_bind_response>(app_id, email, token, account_type::email, redis_pool, mysql_pool);
+
+    if (auto account = *optional_account;
+        co_await bind(account, app_id, email, account_type::email, mysql_pool))
     {
-        const email_bind_response response{ game_error_type::account_error, "account error" };
-        handle_parameter_.write(response.to_json_string());
+        write(email_bind_response{ game_error_type::success, "email bind success" });
 
-        co_return;
-    }
-    const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::email) },
-                                                                                                            { account_bind::auth_key_describe, email },
-                                                                                                            { account_bind::app_id_describe, app_id } });
-    const auto account_bind_select = account_bind::get_select(database_type::mysql, key);
-    if (auto optional_account_bind = co_await mysql_pool->select_one(account_bind_select, account::get_database_field_container()))
-    {
-        const email_bind_response response{ game_error_type::account_bound, "account bound" };
-        handle_parameter_.write(response.to_json_string());
-
-        co_return;
-    }
-
-    account account{ *optional_account };
-    if (account.get_password_hash().empty())
-    {
-        account.set_device_id(account.get_account_name());
-        account.set_password_hash(generate_token());
-    }
-
-    const auto server_config = handle_parameter_.get_app_config()->get_server_config();
-    const auto account_bind_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
-    account_bind account_bind{ database_type::mysql, account_bind_id };
-    account_bind.set_account_id(account.get_account_id());
-    account_bind.set_auth_key(email);
-    account_bind.set_app_id(app_id);
-    account_bind.set_account_type(static_cast<int>(account_type::phone));
-
-    if (co_await mysql_pool->execute_changes(account.get_modify()) &&
-        co_await mysql_pool->execute_changes(account_bind.get_modify()))
-    {
-        const email_bind_response response{ game_error_type::success, "phone bind success" };
-        handle_parameter_.write(response.to_json_string());
+        if (!co_await redis_pool->execute_changes(optional_email_code->get_delete()))
+        {
+            LOG_CHANNEL(auth_channel, error) << "delete email code error.";
+        }
     }
     else
     {
-        const email_bind_response response{ game_error_type::mysql_error, "mysql error" };
-        handle_parameter_.write(response.to_json_string());
+        write(email_bind_response{ game_error_type::mysql_error });
     }
-}
-
-std::string celeritas::email_bind::calculate_hmac_sha256(int64_t app_id, const std::string& email, const std::string& token, int code, int64_t timestamp, const std::string& secret_key)
-{
-    const auto data = std::format("{}{}{}{}{}", app_id, email, token, code, timestamp);
-
-    return hmac_sha256::calculate(secret_key, data);
-}
-
-std::string celeritas::email_bind::generate_token()
-{
-    boost::uuids::random_generator generator{};
-    const auto uuid = generator();
-
-    return boost::uuids::to_string(uuid);
 }
