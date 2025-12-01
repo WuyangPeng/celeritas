@@ -1,13 +1,13 @@
-﻿#include "password_bind.h"
-#include "app_secret.h"
+﻿#include "app_secret.h"
+#include "auth_bind.tpp"
+#include "password_bind.h"
 #include "password_bind_response.h"
 #include "common/hmac_sha_256.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
-#include "database/generated/mysql/auth/account_bind.h"
 #include "detail/password_bind_parameter.h"
-#include "server/account_type.h"
 #include "message/game_error_type.h"
+#include "server/account_type.h"
 
 celeritas::password_bind::password_bind(http_handle_parameter handle_parameter)
     : base_type{ std::move(handle_parameter) }
