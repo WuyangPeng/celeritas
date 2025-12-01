@@ -13,6 +13,8 @@ namespace celeritas
     class phone_bind_parameter;
     class send_sms_to_providers;
     class tencent_cloud_sms;
+    class send_email_to_providers;
+    class tencent_cloud_email;
 
     enum class send_sms_type;
     enum class send_email_type;
