@@ -32,6 +32,10 @@ namespace celeritas
     class send_email_to_providers;
     class tencent_cloud_email;
 
+    class sdk_process_parameter;
+    class sdk_process;
+    class we_chat_sdk_process;
+
     enum class send_sms_type;
     enum class send_email_type;
 
