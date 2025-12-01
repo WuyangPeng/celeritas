@@ -9,7 +9,7 @@
 
 template <typename ResponseType>
 celeritas::auth_bind::optional_account_awaitable_type celeritas::auth_bind::get_account(int64_t app_id,
-                                                                                        const std::string& phone,
+                                                                                        const std::string& auth_key,
                                                                                         const std::string& token,
                                                                                         account_type account_type,
                                                                                         const database_pool_shared_ptr& redis_pool,
@@ -30,7 +30,7 @@ celeritas::auth_bind::optional_account_awaitable_type celeritas::auth_bind::get_
         write(ResponseType{ game_error_type::account_error });
     }
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type) },
-                                                                                                            { account_bind::auth_key_describe, phone },
+                                                                                                            { account_bind::auth_key_describe, auth_key },
                                                                                                             { account_bind::app_id_describe, app_id } });
 
     if (auto optional_account_bind = co_await mysql_pool->select_one(account_bind::get_select(database_type::mysql, key), account::get_database_field_container()))

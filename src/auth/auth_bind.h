@@ -22,7 +22,7 @@ namespace celeritas
 
         template <typename ResponseType>
         [[nodiscard]] optional_account_awaitable_type get_account(int64_t app_id,
-                                                                  const std::string& phone,
+                                                                  const std::string& auth_key,
                                                                   const std::string& token,
                                                                   account_type account_type,
                                                                   const database_pool_shared_ptr& redis_pool,
@@ -30,7 +30,14 @@ namespace celeritas
 
         [[nodiscard]] bool_awaitable_type bind(account& account,
                                                int64_t app_id,
-                                               const std::string& phone,
+                                               const std::string& auth_key,
+                                               account_type account_type,
+                                               const database_pool_shared_ptr& mysql_pool) const;
+
+        [[nodiscard]] bool_awaitable_type bind(account& account,
+                                               int64_t app_id,
+                                               const std::string& auth_key,
+                                               const std::string& password,
                                                account_type account_type,
                                                const database_pool_shared_ptr& mysql_pool) const;
     };

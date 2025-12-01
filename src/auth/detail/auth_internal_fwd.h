@@ -20,7 +20,8 @@ namespace celeritas
     class email_bind_parameter;
 
     class password_parameter;
-    class password_login_response;
+    class password_login_parameter;
+    class password_bind_parameter;
 
     class send_sms_to_providers;
     class tencent_cloud_sms;

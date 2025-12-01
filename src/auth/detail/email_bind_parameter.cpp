@@ -33,6 +33,8 @@ void celeritas::email_bind_parameter::init()
         return;
     }
 
+    token_ = *optional_token;
+
     if (const auto http_response = get_http_parameter())
     {
         response_ = email_bind_response{ *http_response };
