@@ -10,6 +10,7 @@
 #include "database/generated/redis/auth/email_code.h"
 #include "database/generated/redis/auth/session_token.h"
 #include "detail/email_login_parameter.h"
+#include "detail/email_operation_parameter.tpp"
 #include "message/game_error_type.h"
 #include "server/account_type.h"
 
@@ -70,7 +71,7 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
 celeritas::email_login::account_awaitable_type celeritas::email_login::get_account(const optional_database_entity_change& database_entity_change,
                                                                                    const database_pool_shared_ptr& redis_pool,
                                                                                    const database_pool_shared_ptr& mysql_pool,
-                                                                                   int64_t app_id,
+                                                                                   const int64_t app_id,
                                                                                    const std::string& email,
                                                                                    const const_app_config_shared_ptr& app_config)
 {

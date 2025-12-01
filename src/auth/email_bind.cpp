@@ -7,6 +7,7 @@
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "detail/email_bind_parameter.h"
+#include "detail/email_operation_parameter.tpp"
 #include "message/game_error_type.h"
 #include "server/account_type.h"
 

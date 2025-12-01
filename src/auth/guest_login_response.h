@@ -12,7 +12,7 @@ namespace celeritas
 
         guest_login_response() noexcept = default;
 
-        guest_login_response(game_error_type code);
+        explicit guest_login_response(game_error_type code);
 
         guest_login_response(game_error_type code, std::string message);
 

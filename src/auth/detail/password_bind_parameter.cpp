@@ -25,8 +25,8 @@ std::string celeritas::password_bind_parameter::get_token() const
 
 void celeritas::password_bind_parameter::init()
 {
-    const auto optional_token = get_param(token_describe.data());
-    if (!optional_token)
+    if (const auto optional_token = get_param(token_describe.data());
+        !optional_token)
     {
         response_ = password_bind_response{ game_error_type::invalid_parameter, "token is required" };
 

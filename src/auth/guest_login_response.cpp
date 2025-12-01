@@ -11,7 +11,7 @@ celeritas::guest_login_response::guest_login_response(const game_error_type code
 {
 }
 
-celeritas::guest_login_response::guest_login_response(const game_error_type code, std::string message, std::string token, int64_t expire_milliseconds)
+celeritas::guest_login_response::guest_login_response(const game_error_type code, std::string message, std::string token, const int64_t expire_milliseconds)
     : bass_type{ code, std::move(message), std::move(token), expire_milliseconds }
 {
 }
