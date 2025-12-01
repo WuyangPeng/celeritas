@@ -142,7 +142,7 @@ celeritas::database_session::database_entity_change_awaitable_type celeritas::mo
 
     if (const auto result = collection.find_one(key_document.extract()))
     {
-        co_return to_basis_database_manager(database, field_name_container, result.value());
+        co_return to_database_entity_change(database, field_name_container, result.value());
     }
 
     co_return std::nullopt;
@@ -161,7 +161,7 @@ celeritas::database_session::result_container_awaitable_type celeritas::mongo_da
     result_container result_container{};
     for (const auto& entity : result)
     {
-        result_container.emplace_back(to_basis_database_manager(database, field_name_container, entity));
+        result_container.emplace_back(to_database_entity_change(database, field_name_container, entity));
     }
 
     co_return result_container;
@@ -248,12 +248,15 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
 
     database_->run_command(ping_cmd.view());
 
-    LOG_CHANNEL(database_channel, info) << "MongoDB session connected to: " << mongo_parameter_.get_uri() << "/" << mongo_parameter_.get_db_name();
+    LOG_CHANNEL(database_channel, info) << "MongoDB session connected to: " << mongo_parameter_.get_uri() << "/" <<
+            mongo_parameter_.get_db_name();
 
     co_return;
 }
 
-celeritas::database_entity_change celeritas::mongo_database_session::to_basis_database_manager(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container, const document_view_type& view)
+celeritas::database_entity_change celeritas::mongo_database_session::to_database_entity_change(const database_entity_change_const_shared_ptr& database,
+                                                                                               const database_field_container& field_name_container,
+                                                                                               const document_view_type& view)
 {
     auto select = database->get_select();
     for (const auto& element : view)

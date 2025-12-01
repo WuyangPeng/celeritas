@@ -18,7 +18,8 @@ namespace celeritas
 
         [[nodiscard]] std::string get_supported_type_name() const override;
 
-        [[nodiscard]] bool handle(const http_handle_parameter& handle_parameter, const http_message_registry_weak_ptr& message_registry) override;
+        [[nodiscard]] bool handle(const http_handle_parameter& handle_parameter,
+                                  const http_message_registry_weak_ptr& message_registry) override;
 
     private:
         using void_awaitable_type = boost::asio::awaitable<void>;
@@ -26,7 +27,7 @@ namespace celeritas
         using account_awaitable_type = boost::asio::awaitable<account>;
         using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
-        using optional_basis_database_manager = std::optional<database_entity_change>;
+        using optional_database_entity_change = std::optional<database_entity_change>;
 
         [[nodiscard]] void_awaitable_type response(http_handle_parameter handle_parameter);
     };

@@ -32,15 +32,19 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type async_connect();
 
-        [[nodiscard]] cursor_awaitable_type async_find(std::string_view collection_name, const document_view_type& filter);
+        [[nodiscard]] cursor_awaitable_type async_find(std::string_view collection_name,
+                                                       const document_view_type& filter);
 
         [[nodiscard]] bool_awaitable_type is_health() override;
 
-        [[nodiscard]] void_awaitable_type execute_changes(const database_entity_change_const_shared_ptr& database, int expiration_time) override;
+        [[nodiscard]] void_awaitable_type execute_changes(const database_entity_change_const_shared_ptr& database,
+                                                          int expiration_time) override;
 
-        [[nodiscard]] database_entity_change_awaitable_type select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) override;
+        [[nodiscard]] database_entity_change_awaitable_type select_one(const database_entity_change_const_shared_ptr& database,
+                                                                       const database_field_container& field_name_container) override;
 
-        [[nodiscard]] result_container_awaitable_type select_all(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) override;
+        [[nodiscard]] result_container_awaitable_type select_all(const database_entity_change_const_shared_ptr& database,
+                                                                 const database_field_container& field_name_container) override;
 
     private:
         using mongo_client_unique_ptr = std::unique_ptr<mongocxx::client>;
@@ -57,13 +61,17 @@ namespace celeritas
 
         void delete_document(const database_entity_change_const_shared_ptr& database) const;
 
-        [[nodiscard]] cursor_awaitable_type async_execute_query(std::string_view collection_name, const document_view_type& filter) const;
+        [[nodiscard]] cursor_awaitable_type async_execute_query(std::string_view collection_name,
+                                                                const document_view_type& filter) const;
 
-        [[nodiscard]] cursor_awaitable_type async_handle_and_retry(std::string_view collection_name, const document_view_type& filter);
+        [[nodiscard]] cursor_awaitable_type async_handle_and_retry(std::string_view collection_name,
+                                                                   const document_view_type& filter);
 
         [[nodiscard]] void_awaitable_type do_async_connect();
 
-        [[nodiscard]] static database_entity_change to_basis_database_manager(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container, const document_view_type& view);
+        [[nodiscard]] static database_entity_change to_database_entity_change(const database_entity_change_const_shared_ptr& database,
+                                                                              const database_field_container& field_name_container,
+                                                                              const document_view_type& view);
 
         [[nodiscard]] collection_type get_collection(std::string_view collection_name) const;
 

@@ -52,7 +52,7 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
     {
         write(phone_login_response{ game_error_type::success,
                                     "login successful",
-                                    session_token.value().get_token(),
+                                    session_token->get_token(),
                                     get_app_config()->get_expire_milliseconds(redis_db_name.data()) });
     }
     else
@@ -68,16 +68,16 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
     co_return;
 }
 
-celeritas::phone_login::account_awaitable_type celeritas::phone_login::get_account(const optional_basis_database_manager& basis_database_manager,
+celeritas::phone_login::account_awaitable_type celeritas::phone_login::get_account(const optional_database_entity_change& database_entity_change,
                                                                                    const database_pool_shared_ptr& redis_pool,
                                                                                    const database_pool_shared_ptr& mysql_pool,
                                                                                    const int64_t app_id,
                                                                                    const std::string& phone,
                                                                                    const const_app_config_shared_ptr& app_config)
 {
-    if (basis_database_manager)
+    if (database_entity_change)
     {
-        const account_bind account_bind{ *basis_database_manager };
+        const account_bind account_bind{ *database_entity_change };
 
         if (const auto optional_account = co_await mysql_pool->select_one(account::get_select(database_type::mysql, account_bind.get_account_id()), account::get_database_field_container()))
         {

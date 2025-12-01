@@ -24,9 +24,9 @@ namespace celeritas
         using account_awaitable_type = boost::asio::awaitable<account>;
         using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
-        using optional_basis_database_manager = std::optional<database_entity_change>;
+        using optional_database_entity_change = std::optional<database_entity_change>;
 
-        [[nodiscard]] static account_awaitable_type get_account(const optional_basis_database_manager& basis_database_manager,
+        [[nodiscard]] static account_awaitable_type get_account(const optional_database_entity_change& database_entity_change,
                                                                 const database_pool_shared_ptr& redis_pool,
                                                                 const database_pool_shared_ptr& mysql_pool,
                                                                 int64_t app_id,
