@@ -33,6 +33,20 @@ CREATE TABLE `email_providers` (
   PRIMARY KEY (`provider_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE `sdk_providers` (
+  `sdk_id` BIGINT NOT NULL,
+  `app_id` BIGINT NOT NULL,
+  `process_type` INT NOT NULL COMMENT '处理类型',
+  `provider_name` VARCHAR(255) NOT NULL COMMENT '服务商名称',
+  `base_url` VARCHAR(255) NOT NULL COMMENT '基础 API 地址',
+  `api_key` VARCHAR(255) NOT NULL COMMENT '密钥 ID',
+  `api_secret` VARCHAR(255) NOT NULL COMMENT '密钥 Secret',
+  `decryption_key` VARCHAR(255) NOT NULL COMMENT '解密密钥',
+  `active` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否启用',
+  PRIMARY KEY (`sdk_id`),
+  UNIQUE KEY `app_id_process_type_unique` (`app_id`,`process_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 CREATE TABLE `account` (
   `account_id` BIGINT NOT NULL COMMENT '账号id，雪花算法生成',
   `account_name` VARCHAR(255) NOT NULL COMMENT '正式账号的用户名',

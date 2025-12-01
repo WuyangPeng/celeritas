@@ -5,10 +5,12 @@
 namespace celeritas
 {
     enum class app_status_type;
+    enum class sdk_process_type;
 
     class app_secret;
     class app_sms_providers;
     class auth_service_base;
+    class sdk_providers_key;
     class token_http_response;
     class auth_login;
     class auth_bind;
@@ -34,6 +36,9 @@ namespace celeritas
     class password_login;
     class password_bind_response;
     class password_bind;
+
+    class sdk_login_response;
+    class sdk_bind_response;
 
     constexpr auto sms_code_expiration_time = 300;
     constexpr auto sms_limit_expiration_time = 60;
