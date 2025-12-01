@@ -32,7 +32,7 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
 
     if (auto sms_limit = co_await redis_pool->select_one(sms_limit::get_select(database_type::redis, phone), sms_limit::get_database_field_container()))
     {
-        write(send_sms_response{ game_error_type::sent_too_frequently, "sent too frequently" });
+        write(send_sms_response{ game_error_type::sent_too_frequently });
 
         co_return;
     }
@@ -43,15 +43,20 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
     sms_limit sms_limit{ database_type::redis, phone };
     sms_limit.set_exist(true);
 
-    co_await redis_pool->execute_changes(sms_code.get_modify(), sms_code_expiration_time);
-    co_await redis_pool->execute_changes(sms_limit.get_modify(), sms_limit_expiration_time);
+    if (co_await redis_pool->execute_changes(sms_code.get_modify(), sms_code_expiration_time) &&
+        co_await redis_pool->execute_changes(sms_limit.get_modify(), sms_limit_expiration_time))
+    {
+        write(send_sms_response{ game_error_type::success, "send sms success" });
 
-    write(send_sms_response{ game_error_type::success, "send sms success" });
-
-    boost::asio::co_spawn(get_io_context(),
-                          [ sms_code,app] {
-                              return send_sdk_sms(sms_code, app);
-                          }, boost::asio::detached);
+        boost::asio::co_spawn(get_io_context(),
+                              [ sms_code,app] {
+                                  return send_sdk_sms(sms_code, app);
+                              }, boost::asio::detached);
+    }
+    else
+    {
+        write(send_sms_response{ game_error_type::redis_error });
+    }
 
     co_return;
 }
