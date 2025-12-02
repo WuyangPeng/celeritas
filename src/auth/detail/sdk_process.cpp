@@ -8,9 +8,9 @@ celeritas::sdk_process::sdk_process(sdk_process_parameter sdk_process_parameter)
 {
 }
 
-celeritas::sdk_process::sdk_process_unique_ptr celeritas::sdk_process::create_sdk_process(sdk_process_parameter sdk_process_parameter) const
+celeritas::sdk_process::sdk_process_unique_ptr celeritas::sdk_process::create_sdk_process(sdk_process_parameter sdk_process_parameter)
 {
-    switch (const auto process_type = sdk_process_parameter_.get_process_type())
+    switch (const auto process_type = sdk_process_parameter.get_process_type())
     {
         case sdk_process_type::we_chat:
         {

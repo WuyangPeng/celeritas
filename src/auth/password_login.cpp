@@ -1,6 +1,7 @@
 ﻿#include "password_login.h"
 #include "app_secret.h"
 #include "password_login_response.h"
+#include "sdk_process_type.h"
 #include "common/celeritas_error.h"
 #include "common/hmac_sha_256.h"
 #include "config/app_config.h"
@@ -32,6 +33,7 @@ celeritas::password_login::void_awaitable_type celeritas::password_login::respon
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::password) },
+                                                                                                            { account_bind::process_type_describe, static_cast<int>(sdk_process_type::null) },
                                                                                                             { account_bind::auth_key_describe, auth_key },
                                                                                                             { account_bind::app_id_describe, app_id } });
 
@@ -70,7 +72,7 @@ celeritas::password_login::void_awaitable_type celeritas::password_login::login(
         }
     }
 
-    const auto account = co_await create_new_account(app_id, auth_key, password, account_type::password, "password", redis_pool, get_app_config());
+    const auto account = co_await create_new_account(app_id, auth_key, password, account_type::password, sdk_process_type::null, "password", redis_pool, get_app_config());
 
     co_return co_await login(redis_pool, account, true);
 }

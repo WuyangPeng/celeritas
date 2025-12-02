@@ -1,20 +1,20 @@
 ﻿#pragma once
 
 #include "auth_login.h"
+#include "auth_fwd.h"
 #include "database/database_pool_base.h"
 #include "database/generated/mysql/auth/account.h"
-#include "database/generated/redis/auth/sms_code.h"
 #include "message/http_handle_parameter.h"
 
 namespace celeritas
 {
-    class phone_login final : public auth_login
+    class sdk_login final : public auth_login
     {
     public:
-        using class_type = phone_login;
+        using class_type = sdk_login;
         using base_type = auth_login;
 
-        explicit phone_login(http_handle_parameter handle_parameter);
+        explicit sdk_login(http_handle_parameter handle_parameter);
 
         [[nodiscard]] void_awaitable_type response() override;
 
@@ -28,7 +28,8 @@ namespace celeritas
                                                                 const database_pool_shared_ptr& redis_pool,
                                                                 const database_pool_shared_ptr& mysql_pool,
                                                                 int64_t app_id,
-                                                                const std::string& phone,
+                                                                const std::string& open_id,
+                                                                sdk_process_type sdk_process_type,
                                                                 const const_app_config_shared_ptr& app_config);
     };
 }

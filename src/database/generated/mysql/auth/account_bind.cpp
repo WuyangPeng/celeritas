@@ -12,6 +12,7 @@ celeritas::account_bind::account_bind(const database_entity_change& entity)
       account_bind_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : account_bind_id_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       account_type_{ entity.get_value<database_data_type::int32_type>(account_type_describe) },
+      process_type_{ entity.get_value<database_data_type::int32_type>(process_type_describe) },
       app_id_{ entity.get_value<database_data_type::int64_type>(app_id_describe) },
       auth_key_{ entity.get_value<database_data_type::string_type>(auth_key_describe) }
 {
@@ -22,6 +23,7 @@ celeritas::account_bind::account_bind(const database_type database_type, traits:
       account_bind_id_{ account_bind_id },
       account_id_{ traits::int64_type{} },
       account_type_{ traits::int32_type{} },
+      process_type_{ traits::int32_type{} },
       app_id_{ traits::int64_type{} },
       auth_key_{ traits::string_type{} }
 {
@@ -41,6 +43,11 @@ celeritas::traits::int64_type celeritas::account_bind::get_account_id() const no
 celeritas::traits::int32_type celeritas::account_bind::get_account_type() const noexcept
 {
     return account_type_.get_value();
+}
+
+celeritas::traits::int32_type celeritas::account_bind::get_process_type() const noexcept
+{
+    return process_type_.get_value();
 }
 
 celeritas::traits::int64_type celeritas::account_bind::get_app_id() const noexcept
@@ -83,6 +90,16 @@ void celeritas::account_bind::set_account_type(traits::param_type::int32_type ac
     }
 }
 
+void celeritas::account_bind::set_process_type(traits::param_type::int32_type process_type)
+{
+    if (process_type != get_process_type())
+    {
+        process_type_.set_value(process_type);
+
+        add_modify(process_type_describe, get_process_type());
+    }
+}
+
 void celeritas::account_bind::set_app_id(traits::param_type::int64_type app_id)
 {
     if (app_id != get_app_id())
@@ -108,6 +125,7 @@ const celeritas::database_entity::database_field_container& celeritas::account_b
     static const database_field_container field_name_container{ decltype(account_bind_id_)::get_database_field(),
                                                                 decltype(account_id_)::get_database_field(),
                                                                 decltype(account_type_)::get_database_field(),
+                                                                decltype(process_type_)::get_database_field(),
                                                                 decltype(app_id_)::get_database_field(),
                                                                 decltype(auth_key_)::get_database_field() };
 

@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "auth_fwd.h"
 #include "auth_service_base.h"
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/redis/auth/session_token.h"
@@ -40,6 +41,7 @@ namespace celeritas
         [[nodiscard]] static account_awaitable_type create_new_account(int64_t app_id,
                                                                        const std::string& auth_key,
                                                                        account_type account_type,
+                                                                       sdk_process_type sdk_process_type,
                                                                        const std::string& account_name_prefix,
                                                                        const database_pool_shared_ptr& redis_pool,
                                                                        const const_app_config_shared_ptr& app_config);
@@ -48,6 +50,7 @@ namespace celeritas
                                                                        const std::string& auth_key,
                                                                        const std::string& password,
                                                                        account_type account_type,
+                                                                       sdk_process_type sdk_process_type,
                                                                        const std::string& account_name_prefix,
                                                                        const database_pool_shared_ptr& redis_pool,
                                                                        const const_app_config_shared_ptr& app_config);

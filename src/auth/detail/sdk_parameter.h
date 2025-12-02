@@ -16,6 +16,8 @@ namespace celeritas
 
         [[nodiscard]] std::string get_sdk_token() const;
 
+        [[nodiscard]] sdk_process_type get_process_type() const;
+
         [[nodiscard]] apps get_apps() const;
 
         [[nodiscard]] optional_http_response get_http_parameter() override;

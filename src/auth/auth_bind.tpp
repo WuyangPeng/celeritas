@@ -2,6 +2,7 @@
 
 #include "auth_bind.h"
 #include "phone_bind_response.h"
+#include "sdk_process_type.h"
 #include "database/database_pool_base.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "database/generated/redis/auth/session_token.h"
@@ -30,6 +31,7 @@ celeritas::auth_bind::optional_account_awaitable_type celeritas::auth_bind::get_
         write(ResponseType{ game_error_type::account_error });
     }
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type) },
+                                                                                                            { account_bind::process_type_describe, static_cast<int>(sdk_process_type::null) },
                                                                                                             { account_bind::auth_key_describe, auth_key },
                                                                                                             { account_bind::app_id_describe, app_id } });
 

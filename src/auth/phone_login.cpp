@@ -1,6 +1,7 @@
 ﻿#include "app_secret.h"
 #include "phone_login.h"
 #include "phone_login_response.h"
+#include "sdk_process_type.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "config/app_config.h"
@@ -40,6 +41,7 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::phone) },
+                                                                                                            { account_bind::process_type_describe, static_cast<int>(sdk_process_type::null) },
                                                                                                             { account_bind::auth_key_describe, phone },
                                                                                                             { account_bind::app_id_describe, app_id } });
 
@@ -87,5 +89,5 @@ celeritas::phone_login::account_awaitable_type celeritas::phone_login::get_accou
         }
     }
 
-    co_return co_await create_new_account(app_id, phone, account_type::phone, "phone", redis_pool, app_config);
+    co_return co_await create_new_account(app_id, phone, account_type::phone, sdk_process_type::null, "phone", redis_pool, app_config);
 }

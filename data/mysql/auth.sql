@@ -65,10 +65,11 @@ CREATE TABLE `account_bind` (
   `account_bind_id` BIGINT NOT NULL COMMENT '账号绑定id，雪花算法生成',
   `account_id` BIGINT NOT NULL DEFAULT 0 COMMENT '账号id，雪花算法生成',
   `account_type` INT NOT NULL COMMENT '账号类型',
+  `process_type` INT NOT NULL COMMENT '处理类型',
   `app_id` BIGINT NOT NULL COMMENT '应用id',
   `auth_key` VARCHAR(255) NOT NULL COMMENT '具体的身份凭证',
   PRIMARY KEY (`account_bind_id`),
   KEY `account_id_index` (`account_id`),
-  UNIQUE KEY `account_type_app_id_auth_key_unique` (`account_type`,`app_id`,`auth_key`)
+  UNIQUE KEY `account_type_process_type_app_id_auth_key_unique` (`account_type`,`process_type`,`app_id`,`auth_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

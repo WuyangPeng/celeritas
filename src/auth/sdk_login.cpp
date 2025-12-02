@@ -1,0 +1,99 @@
+﻿#include "app_sdk_providers.h"
+#include "app_secret.h"
+#include "sdk_login.h"
+#include "sdk_login_response.h"
+#include "sdk_process_type.h"
+#include "common/celeritas_error.h"
+#include "common/logger.h"
+#include "config/app_config.h"
+#include "database/database_pool_manager.h"
+#include "database/generated/mysql/auth/account.h"
+#include "database/generated/mysql/auth/account_bind.h"
+#include "database/generated/redis/auth/session_token.h"
+#include "detail/sdk_login_parameter.h"
+#include "detail/sdk_process.h"
+#include "detail/sdk_process_parameter.h"
+#include "message/game_error_type.h"
+#include "server/account_type.h"
+
+celeritas::sdk_login::sdk_login(http_handle_parameter handle_parameter)
+    : base_type{ std::move(handle_parameter) }
+{
+}
+
+celeritas::sdk_login::void_awaitable_type celeritas::sdk_login::response()
+{
+    sdk_login_parameter sdk_login_parameter{ get_http_handle_parameter() };
+
+    if (sdk_login_parameter.is_failure())
+    {
+        co_return write(sdk_login_parameter.get_response());
+    }
+
+    const auto app_id = sdk_login_parameter.get_app_id();
+    const auto sdk_token = sdk_login_parameter.get_sdk_token();
+    const auto process_type = sdk_login_parameter.get_process_type();
+
+    const auto sdk_providers = app_sdk_providers::get_instance().get_sdk_providers(sdk_providers_key{ app_id, process_type });
+
+    sdk_process_parameter sdk_process_parameter{ sdk_token, sdk_providers };
+
+    const auto sdk_process = sdk_process::create_sdk_process(sdk_process_parameter);
+
+    const auto optional_open_id = co_await sdk_process->get_open_id();
+    if (!optional_open_id)
+    {
+        write(sdk_login_response{ game_error_type::sdk_error });
+    }
+
+    const auto open_id = *optional_open_id;
+
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::sdk) },
+                                                                                                            { account_bind::process_type_describe, static_cast<int>(process_type) },
+                                                                                                            { account_bind::auth_key_describe, open_id },
+                                                                                                            { account_bind::app_id_describe, app_id } });
+
+    auto optional_account_bind = co_await mysql_pool->select_one(account_bind::get_select(database_type::mysql, key), account_bind::get_database_field_container());
+    const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
+
+    auto account = co_await get_account(optional_account_bind, redis_pool, mysql_pool, app_id, open_id, process_type, get_app_config());
+
+    // 这里没有删除旧的token，旧的token依赖redis有效时间进行删除。
+    if (auto session_token = co_await create_session_token(account, !optional_account_bind, redis_pool))
+    {
+        write(sdk_login_response{ game_error_type::success,
+                                  "login successful",
+                                  session_token->get_token(),
+                                  get_app_config()->get_expire_milliseconds(redis_db_name.data()) });
+    }
+    else
+    {
+        write(sdk_login_response{ game_error_type::redis_error });
+    }
+
+    co_return;
+}
+
+celeritas::sdk_login::account_awaitable_type celeritas::sdk_login::get_account(const optional_database_entity_change& database_entity_change,
+                                                                               const database_pool_shared_ptr& redis_pool,
+                                                                               const database_pool_shared_ptr& mysql_pool,
+                                                                               const int64_t app_id,
+                                                                               const std::string& open_id,
+                                                                               const sdk_process_type sdk_process_type,
+                                                                               const const_app_config_shared_ptr& app_config)
+{
+    if (database_entity_change)
+    {
+        const account_bind account_bind{ *database_entity_change };
+
+        if (const auto optional_account = co_await mysql_pool->select_one(account::get_select(database_type::mysql, account_bind.get_account_id()), account::get_database_field_container()))
+        {
+            account account{ *optional_account };
+
+            co_return account;
+        }
+    }
+
+    co_return co_await create_new_account(app_id, open_id, account_type::sdk, sdk_process_type, "sdk", redis_pool, app_config);
+}

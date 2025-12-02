@@ -14,6 +14,11 @@ std::string celeritas::sdk_parameter::get_sdk_token() const
     return sdk_token_;
 }
 
+celeritas::sdk_process_type celeritas::sdk_parameter::get_process_type() const
+{
+    return process_type_;
+}
+
 celeritas::apps celeritas::sdk_parameter::get_apps() const
 {
     return *apps_;

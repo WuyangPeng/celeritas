@@ -28,7 +28,7 @@ namespace celeritas
 
         [[nodiscard]] virtual optional_string_awaitable_type get_open_id() = 0;
 
-        [[nodiscard]] sdk_process_unique_ptr create_sdk_process(sdk_process_parameter sdk_process_parameter) const;
+        [[nodiscard]] static sdk_process_unique_ptr create_sdk_process(sdk_process_parameter sdk_process_parameter);
 
     private:
         sdk_process_parameter sdk_process_parameter_;
