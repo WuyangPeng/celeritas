@@ -26,6 +26,7 @@ namespace celeritas
         using protobuf_message = google::protobuf::Message;
         using urls_params_view_type = boost::urls::params_view;
         using io_context_type = boost::asio::io_context;
+        using http_base_message_handler_shared_ptr = std::shared_ptr<http_base_message_handler>;
 
         explicit application_loader(app_config_shared_ptr app_config);
 
@@ -34,6 +35,8 @@ namespace celeritas
         void stop();
 
         void register_handler(const base_message_handler_shared_ptr& handler);
+
+        void register_handler(const http_base_message_handler_shared_ptr& handler);
 
         [[nodiscard]] bool dispatch(io_context_type& io_context, const header& header, const protobuf_message& current_message, const protobuf_message_shared_ptr& request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader);
 

@@ -18,7 +18,7 @@ namespace celeritas
         using session_shared_ptr = std::shared_ptr<session_base>;
         using base_message_handler_shared_ptr = std::shared_ptr<protobuf_base_message_handler>;
 
-        void registerHandler(const base_message_handler_shared_ptr& handler);
+        void register_handler(const base_message_handler_shared_ptr& handler);
 
         [[nodiscard]] bool dispatch(const protobuf_handle_parameter& handle_parameter, const protobuf_message& current_message);
 

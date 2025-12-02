@@ -26,8 +26,7 @@ bool celeritas::order_create_http_message_handler::handle(const http_handle_para
     return true;
 }
 
-celeritas::order_create_http_message_handler::void_awaitable_type
-    celeritas::order_create_http_message_handler::response(http_handle_parameter handle_parameter)
+celeritas::order_create_http_message_handler::void_awaitable_type celeritas::order_create_http_message_handler::response(http_handle_parameter handle_parameter)
 {
     try
     {

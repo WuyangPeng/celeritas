@@ -16,7 +16,7 @@ namespace celeritas
         using http_base_message_handler_shared_ptr = std::shared_ptr<http_base_message_handler>;
         using session_shared_ptr = std::shared_ptr<session_base>;
 
-        void registerHandler(const http_base_message_handler_shared_ptr& handler);
+        void register_handler(const http_base_message_handler_shared_ptr& handler);
 
         [[nodiscard]] bool dispatch(const http_handle_parameter& handle_parameter);
 

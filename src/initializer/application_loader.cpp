@@ -29,7 +29,12 @@ void celeritas::application_loader::stop()
 
 void celeritas::application_loader::register_handler(const base_message_handler_shared_ptr& handler)
 {
-    message_registry_->registerHandler(handler);
+    message_registry_->register_handler(handler);
+}
+
+void celeritas::application_loader::register_handler(const http_base_message_handler_shared_ptr& handler)
+{
+    http_message_registry_->register_handler(handler);
 }
 
 bool celeritas::application_loader::dispatch(io_context_type& io_context, const header& header, const protobuf_message& current_message, const protobuf_message_shared_ptr& request_message, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
@@ -77,6 +82,6 @@ void celeritas::application_loader::initialize_health_check()
 
     const auto url = health_check_url_config.get_url();
 
-    http_message_registry_->registerHandler(std::make_shared<health_check_request_http_message_handler>(url));
-    http_message_registry_->registerHandler(std::make_shared<health_check_response_http_message_handler>(url));
+    http_message_registry_->register_handler(std::make_shared<health_check_request_http_message_handler>(url));
+    http_message_registry_->register_handler(std::make_shared<health_check_response_http_message_handler>(url));
 }

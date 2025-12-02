@@ -1,4 +1,5 @@
 ﻿#include "protobuf_handle_parameter.h"
+#include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "common/resource_loader_base.h"
 #include "common/session.h"
@@ -56,4 +57,15 @@ celeritas::protobuf_handle_parameter::protobuf_message_shared_ptr celeritas::pro
 celeritas::protobuf_handle_parameter::io_context_type& celeritas::protobuf_handle_parameter::get_io_context() const
 {
     return io_context_;
+}
+
+celeritas::protobuf_handle_parameter::application_loader_shared_ptr celeritas::protobuf_handle_parameter::get_application_loader() const
+{
+    if (const auto application_loader_shared_ptr = application_loader_.lock();
+        application_loader_shared_ptr != nullptr)
+    {
+        return application_loader_shared_ptr;
+    }
+
+    throw celeritas_error{ "no application loader exists." };
 }

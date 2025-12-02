@@ -3,7 +3,7 @@
 
 #include <mutex>
 
-void celeritas::protobuf_message_registry::registerHandler(const base_message_handler_shared_ptr& handler)
+void celeritas::protobuf_message_registry::register_handler(const base_message_handler_shared_ptr& handler)
 {
     const auto typeName = handler->get_supported_type_name();
 

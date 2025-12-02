@@ -27,6 +27,22 @@ celeritas::sdk_payment_providers celeritas::app_sdk_payment_providers::get_sdk_p
     throw celeritas_error{ "sdk providers not registered" };
 }
 
+celeritas::sdk_payment_providers celeritas::app_sdk_payment_providers::get_sdk_providers(int64_t sdk_id)
+{
+    std::shared_lock lock{ mutex_ };
+
+    const auto iter = std::ranges::find_if(sdk_payment_providers_, [sdk_id](const auto& element) {
+        return element.second.get_sdk_id() == sdk_id;
+    });
+
+    if (iter != sdk_payment_providers_.cend())
+    {
+        return iter->second;
+    }
+
+    throw celeritas_error{ "sdk providers not registered,sdk id = {}", sdk_id };
+}
+
 void celeritas::app_sdk_payment_providers::reload_from_db(io_context_type& io_context, int64_t sdk_id)
 {
     if (sdk_id == 0)
@@ -46,6 +62,13 @@ void celeritas::app_sdk_payment_providers::load_from_db(io_context_type& io_cont
                           [this] {
                               return this->load_from_db();
                           }, boost::asio::detached);
+}
+
+celeritas::app_sdk_payment_providers::sdk_payment_providers_type celeritas::app_sdk_payment_providers::get_sdk_payment_providers()
+{
+    std::shared_lock lock{ mutex_ };
+
+    return sdk_payment_providers_;
 }
 
 celeritas::app_sdk_payment_providers::void_awaitable_type celeritas::app_sdk_payment_providers::load_from_db()

@@ -1,5 +1,7 @@
 ﻿#include "payment_application_loader.h"
+#include "handler/payment/manual/notify_http_message_handler.h"
 #include "message/concrete_message_handler.tpp"
+#include "payment/app_sdk_payment_providers.h"
 
 celeritas::payment_application_loader::payment_application_loader(app_config_shared_ptr app_config)
     : base_type{ std::move(app_config) }
@@ -13,4 +15,9 @@ void celeritas::payment_application_loader::service_initialize_application()
 
 void celeritas::payment_application_loader::register_message_handler()
 {
+    for (const auto sdk_payment_providers = app_sdk_payment_providers::get_instance().get_sdk_payment_providers();
+         const auto& sdk_payment_provider : sdk_payment_providers | std::views::values)
+    {
+        register_handler(std::make_shared<notify_http_message_handler>(sdk_payment_provider.get_sdk_id(), sdk_payment_provider.get_http_suffix()));
+    }
 }

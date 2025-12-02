@@ -22,7 +22,7 @@ void celeritas::generate_register_handler_helper_file::execute()
         auto file_path_boost = file;
         boost::replace_all(file_path_boost, ".h", "");
 
-        content += "    message_registry_->registerHandler(std::make_shared<" + file_path_boost + ">());\n";
+        content += "    message_registry_->register_handler(std::make_shared<" + file_path_boost + ">());\n";
     }
 
     boost::replace_all(register_handler_helper_cpp_content, "${register}", content);
@@ -34,7 +34,7 @@ void celeritas::generate_register_handler_helper_file::execute()
         auto file_path_boost = file;
         boost::replace_all(file_path_boost, ".h", "");
 
-        http_content += "    http_message_registry_->registerHandler(std::make_shared<" + file_path_boost + ">());\n";
+        http_content += "    http_message_registry_->register_handler(std::make_shared<" + file_path_boost + ">());\n";
     }
 
     boost::replace_all(register_handler_helper_cpp_content, "${http_register}", http_content);

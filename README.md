@@ -1028,6 +1028,11 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **功能**：接收并处理 `reload_sdk_payment_providers_db_request` 消息，根据 `provider_id` 触发
       `app_sdk_payment_providers` 单例从数据库中重新加载指定服务商的配置信息。
 
+
+* **🔔 支付通知HTTP请求处理器 (`notify_http_message_handler`)**
+    - **作用**：处理来自第三方平台的支付通知`HTTP`请求。
+    - **功能**：接收并处理`HTTP`通知，验证通知的合法性，并更新对应的支付订单状态。
+
 ##### http handlers（HTTP 处理器）
 
 * **🌐 HTTP健康检查请求处理器 (`health_check_request_http_message_handler`)**
