@@ -64,4 +64,5 @@ namespace celeritas
 
     constexpr auto milliseconds = 1000;
     constexpr auto minute = 60 * milliseconds;
+    constexpr auto http_request_timestamp_expired = minute * 5;
 }

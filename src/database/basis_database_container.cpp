@@ -46,7 +46,7 @@ std::any celeritas::basis_database_container::get_any_value(std::string_view fie
         return result->get_any_value();
     }
 
-    throw celeritas_error{ "field_name does not exist" };
+    throw celeritas_error{ "field name does not exist" };
 }
 
 celeritas::basis_database_container::object_container_const_iter celeritas::basis_database_container::begin() const noexcept

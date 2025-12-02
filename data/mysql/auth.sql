@@ -2,6 +2,7 @@ CREATE TABLE `apps` (
   `app_id` BIGINT NOT NULL COMMENT '应用id',
   `game_name` VARCHAR(255) NOT NULL COMMENT '游戏名字',
   `app_secret` VARCHAR(255) NOT NULL COMMENT '签名',
+  `app_payment_secret` VARCHAR(255) NOT NULL COMMENT '支付签名',
   `sms_provider_id` BIGINT NOT NULL DEFAULT 0 COMMENT '短信服务商id',
   `email_provider_id` BIGINT NOT NULL DEFAULT 0 COMMENT '邮件服务商id',
   `status` INT NOT NULL DEFAULT 0 COMMENT '游戏状态',

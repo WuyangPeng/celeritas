@@ -50,5 +50,5 @@ namespace celeritas
 
     [[nodiscard]] token_http_response tag_invoke(token_http_response_tag, const http_response::json_value& value);
 
-    void tag_invoke(boost::json::value_from_tag, token_http_response::json_value& value, const token_http_response& email_bind_response);
+    void tag_invoke(boost::json::value_from_tag, token_http_response::json_value& value, const token_http_response& token_http_response);
 }

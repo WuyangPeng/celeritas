@@ -98,12 +98,12 @@ celeritas::token_http_response celeritas::tag_invoke(token_http_response_tag, co
     }
 }
 
-void celeritas::tag_invoke(boost::json::value_from_tag, token_http_response::json_value& value, const token_http_response& email_bind_response)
+void celeritas::tag_invoke(boost::json::value_from_tag, token_http_response::json_value& value, const token_http_response& token_http_response)
 {
     value = {
-        { token_http_response::code_description, static_cast<int>(email_bind_response.get_code()) },
-        { token_http_response::message_description, email_bind_response.get_message() },
-        { token_http_response::token_description, email_bind_response.get_token() },
-        { token_http_response::expire_milliseconds_description, email_bind_response.get_expire_milliseconds() }
+        { token_http_response::code_description, static_cast<int>(token_http_response.get_code()) },
+        { token_http_response::message_description, token_http_response.get_message() },
+        { token_http_response::token_description, token_http_response.get_token() },
+        { token_http_response::expire_milliseconds_description, token_http_response.get_expire_milliseconds() }
     };
 }

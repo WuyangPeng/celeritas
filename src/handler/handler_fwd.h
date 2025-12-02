@@ -12,15 +12,17 @@ namespace celeritas
 
     class guest_login_http_message_handler;
 
-    constexpr std::string_view guest_login_path = "/login/guest";
-    constexpr std::string_view send_sms_path = "/login/send_sms";
-    constexpr std::string_view send_email_path = "/login/send_email";
-    constexpr std::string_view phone_login_path = "/login/phone";
-    constexpr std::string_view email_login_path = "/login/email";
-    constexpr std::string_view password_login_path = "/login/password";
-    constexpr std::string_view sdk_login_path = "/login/sdk";
-    constexpr std::string_view phone_bind_path = "/login/bind/phone";
-    constexpr std::string_view email_bind_path = "/login/bind/email";
-    constexpr std::string_view password_bind_path = "/login/bind/password";
-    constexpr std::string_view sdk_bind_path = "/login/bind/sdk";
+    constexpr std::string_view guest_login_path = "/api/v1/login/guest";
+    constexpr std::string_view send_sms_path = "/api/v1/login/send_sms";
+    constexpr std::string_view send_email_path = "/api/v1/login/send_email";
+    constexpr std::string_view phone_login_path = "/api/v1/login/phone";
+    constexpr std::string_view email_login_path = "/api/v1/login/email";
+    constexpr std::string_view password_login_path = "/api/v1/login/password";
+    constexpr std::string_view sdk_login_path = "/api/v1/login/sdk";
+    constexpr std::string_view phone_bind_path = "/api/v1/login/bind/phone";
+    constexpr std::string_view email_bind_path = "/api/v1/login/bind/email";
+    constexpr std::string_view password_bind_path = "/api/v1/login/bind/password";
+    constexpr std::string_view sdk_bind_path = "/api/v1/login/bind/sdk";
+
+    constexpr std::string_view order_create_path = "/api/v1/order/create";
 }
