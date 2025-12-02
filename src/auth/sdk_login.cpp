@@ -46,7 +46,7 @@ celeritas::sdk_login::void_awaitable_type celeritas::sdk_login::response()
         write(sdk_login_response{ game_error_type::sdk_error });
     }
 
-    const auto open_id = *optional_open_id;
+    const auto& open_id = *optional_open_id;
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::sdk) },

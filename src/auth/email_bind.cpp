@@ -40,7 +40,7 @@ celeritas::email_bind::void_awaitable_type celeritas::email_bind::response()
     auto optional_account = co_await get_account<email_bind_response>(app_id, email, token, account_type::email, redis_pool, mysql_pool);
 
     if (auto account = *optional_account;
-        co_await bind(account, app_id, email, account_type::email, mysql_pool))
+        co_await bind(account, app_id, email, account_type::email, sdk_process_type::null, mysql_pool))
     {
         write(email_bind_response{ game_error_type::success, "email bind success" });
 

@@ -41,7 +41,7 @@ celeritas::phone_bind::void_awaitable_type celeritas::phone_bind::response()
     auto optional_account = co_await get_account<phone_bind_response>(app_id, phone, token, account_type::phone, redis_pool, mysql_pool);
 
     if (auto account = *optional_account;
-        co_await bind(account, app_id, phone, account_type::phone, mysql_pool))
+        co_await bind(account, app_id, phone, account_type::phone, sdk_process_type::null, mysql_pool))
     {
         write(phone_bind_response{ game_error_type::success, "phone bind success" });
 

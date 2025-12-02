@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "auth_login.h"
 #include "auth_fwd.h"
+#include "auth_login.h"
 #include "database/database_pool_base.h"
 #include "database/generated/mysql/auth/account.h"
 #include "message/http_handle_parameter.h"

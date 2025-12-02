@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "auth_fwd.h"
 #include "auth_service_base.h"
 #include "database/generated/mysql/auth/account.h"
 #include "server/account_type.h"
@@ -32,6 +33,7 @@ namespace celeritas
                                                int64_t app_id,
                                                const std::string& auth_key,
                                                account_type account_type,
+                                               sdk_process_type sdk_process_type,
                                                const database_pool_shared_ptr& mysql_pool) const;
 
         [[nodiscard]] bool_awaitable_type bind(account& account,
@@ -39,6 +41,7 @@ namespace celeritas
                                                const std::string& auth_key,
                                                const std::string& password,
                                                account_type account_type,
+                                               sdk_process_type sdk_process_type,
                                                const database_pool_shared_ptr& mysql_pool) const;
     };
 }

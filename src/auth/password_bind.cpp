@@ -33,7 +33,7 @@ celeritas::password_bind::void_awaitable_type celeritas::password_bind::response
     auto optional_account = co_await get_account<password_bind_response>(app_id, auth_key, token, account_type::password, redis_pool, mysql_pool);
 
     if (auto account = *optional_account;
-        co_await bind(account, app_id, auth_key, password, account_type::password, mysql_pool))
+        co_await bind(account, app_id, auth_key, password, account_type::password, sdk_process_type::null, mysql_pool))
     {
         write(password_bind_response{ game_error_type::success, "password bind success" });
     }

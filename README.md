@@ -840,7 +840,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **作用**：封装了密码绑定 `HTTP` 请求的响应数据。
     - **特点**：包含错误码和提示信息，并提供了 `to_json_string()` 方法将其序列化为 `JSON` 格式。
 
-##### SDK认证 (SDK Authentication)
+##### SDK认证与绑定 (SDK Authentication & Binding)
 
 * **🚀 SDK登录 (`sdk_login`)**
     - **作用**：处理SDK登录的业务逻辑。
@@ -850,6 +850,16 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 * **📦 SDK登录响应 (`sdk_login_response`)**
     - **作用**：封装了SDK登录 `HTTP` 请求的响应数据。
     - **特点**：包含错误码、提示信息、访问令牌（`token`）和过期时间，并提供了 `to_json_string()` 方法将其序列化为 `JSON` 格式。
+
+
+* **🚀 SDK绑定 (`sdk_bind`)**
+    - **作用**：处理将SDK绑定到现有账户的业务逻辑。
+    - **特点**：验证SDK的有效性，并将SDK与用户账户关联。
+
+
+* **📦 SDK绑定响应 (`sdk_bind_response`)**
+    - **作用**：封装了SDK绑定 `HTTP` 请求的响应数据。
+    - **特点**：包含错误码和提示信息，并提供了 `to_json_string()` 方法将其序列化为 `JSON` 格式。
 
 #### handler（处理器）
 
@@ -891,17 +901,20 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 * **🔄 重载短信服务商数据库消息处理器 (`reload_sms_providers_db_message_handler`)**
     - **作用**：处理重新加载短信服务商数据库配置的请求。
-    - **功能**：接收并处理 `reload_sms_providers_db_request` 消息，根据 `provider_id` 触发 `app_sms_providers` 单例从数据库中重新加载指定服务商的配置信息。
+    - **功能**：接收并处理 `reload_sms_providers_db_request` 消息，根据 `provider_id` 触发 `app_sms_providers`
+      单例从数据库中重新加载指定服务商的配置信息。
 
 
 * **🔄 重载邮箱服务商数据库消息处理器 (`reload_email_providers_db_message_handler`)**
     - **作用**：处理重新加载邮箱服务商数据库配置的请求。
-    - **功能**：接收并处理 `reload_email_providers_db_request` 消息，根据 `provider_id` 触发 `app_email_providers` 单例从数据库中重新加载指定服务商的配置信息。
+    - **功能**：接收并处理 `reload_email_providers_db_request` 消息，根据 `provider_id` 触发 `app_email_providers`
+      单例从数据库中重新加载指定服务商的配置信息。
 
 
 * **🔄 重载SDK服务商数据库消息处理器 (`reload_sdk_providers_db_message_handler`)**
     - **作用**：处理重新加载SDK服务商数据库配置的请求。
-    - **功能**：接收并处理 `reload_sdk_providers_db_request` 消息，根据 `sdk_id` 触发 `app_sdk_providers` 单例从数据库中重新加载指定服务商的配置信息。
+    - **功能**：接收并处理 `reload_sdk_providers_db_request` 消息，根据 `sdk_id` 触发 `app_sdk_providers`
+      单例从数据库中重新加载指定服务商的配置信息。
 
 ##### http handlers（HTTP 处理器）
 
@@ -958,6 +971,16 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 * **🔑 密码绑定HTTP请求处理器 (`password_bind_http_message_handler`)**
     - **作用**：处理客户端发起的密码绑定`HTTP`请求。
     - **功能**：接收并处理`HTTP`请求，根据用户名和密码进行绑定。
+
+
+* **🚀 SDK登录HTTP请求处理器 (`sdk_login_http_message_handler`)**
+    - **作用**：处理客户端发起的SDK登录`HTTP`请求。
+    - **功能**：接收并处理`HTTP`请求，根据SDK信息进行登录。
+
+
+* **🚀 SDK绑定HTTP请求处理器 (`sdk_bind_http_message_handler`)**
+    - **作用**：处理客户端发起的SDK绑定`HTTP`请求。
+    - **功能**：接收并处理`HTTP`请求，根据SDK信息进行绑定。
 
 #### initializer（初始化）
 
