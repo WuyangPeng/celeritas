@@ -12,8 +12,8 @@
 #include "detail/sdk_login_parameter.h"
 #include "detail/sdk_process.h"
 #include "detail/sdk_process_parameter.h"
+#include "initializer/account_type.h"
 #include "message/game_error_type.h"
-#include "server/account_type.h"
 
 celeritas::sdk_login::sdk_login(http_handle_parameter handle_parameter)
     : base_type{ std::move(handle_parameter) }

@@ -8,8 +8,8 @@
 #include "database/generated/mysql/auth/account_bind.h"
 #include "detail/email_bind_parameter.h"
 #include "detail/email_operation_parameter.tpp"
+#include "initializer/account_type.h"
 #include "message/game_error_type.h"
-#include "server/account_type.h"
 
 celeritas::email_bind::email_bind(http_handle_parameter handle_parameter)
     : base_type{ std::move(handle_parameter) }

@@ -4,8 +4,8 @@
 #include "common/logger.h"
 #include "handler/handler_fwd.h"
 #include "message/http_handle_parameter.h"
-#include "../../message/game_error_type.h"
-#include "server/server_fwd.h"
+#include "message/game_error_type.h"
+#include "initializer/initializer_fwd.h"
 
 std::string celeritas::email_bind_http_message_handler::get_supported_type_name() const
 {

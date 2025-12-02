@@ -3,7 +3,7 @@
 #include "process.h"
 #include "common/command_line_config.tpp"
 #include "common/logger.h"
-#include "server/server_fwd.h"
+#include "initializer/initializer_fwd.h"
 
 #include <exception>
 

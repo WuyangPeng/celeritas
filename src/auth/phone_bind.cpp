@@ -9,8 +9,8 @@
 #include "database/generated/mysql/auth/account_bind.h"
 #include "detail/phone_bind_parameter.h"
 #include "detail/phone_operation_parameter.tpp"
+#include "initializer/account_type.h"
 #include "message/game_error_type.h"
-#include "server/account_type.h"
 
 celeritas::phone_bind::phone_bind(http_handle_parameter handle_parameter)
     : base_type{ std::move(handle_parameter) }

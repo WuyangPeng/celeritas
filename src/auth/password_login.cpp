@@ -9,7 +9,7 @@
 #include "database/generated/mysql/auth/account_bind.h"
 #include "database/generated/redis/auth/session_token.h"
 #include "detail/password_login_parameter.h"
-#include "server/account_type.h"
+#include "initializer/account_type.h"
 #include "message/game_error_type.h"
 
 celeritas::password_login::password_login(http_handle_parameter handle_parameter)

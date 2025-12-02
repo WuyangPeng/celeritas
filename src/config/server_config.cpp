@@ -1,5 +1,5 @@
 ﻿#include "server_config.h"
-#include "server/server_fwd.h"
+#include "initializer/initializer_fwd.h"
 
 celeritas::server_config::server_config(std::string instance_id,
                                         std::string service_name,

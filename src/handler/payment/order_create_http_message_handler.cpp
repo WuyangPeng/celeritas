@@ -4,14 +4,15 @@
 #include "handler/handler_fwd.h"
 #include "message/http_handle_parameter.h"
 #include "payment/order_create.h"
-#include "server/server_fwd.h"
+#include "initializer/initializer_fwd.h"
 
 std::string celeritas::order_create_http_message_handler::get_supported_type_name() const
 {
     return order_create_path.data();
 }
 
-bool celeritas::order_create_http_message_handler::handle(const http_handle_parameter& handle_parameter, const http_message_registry_weak_ptr& message_registry)
+bool celeritas::order_create_http_message_handler::handle(const http_handle_parameter& handle_parameter,
+                                                          const http_message_registry_weak_ptr& message_registry)
 {
     if (handle_parameter.get_server_type() != payment_type)
     {
@@ -25,7 +26,8 @@ bool celeritas::order_create_http_message_handler::handle(const http_handle_para
     return true;
 }
 
-celeritas::order_create_http_message_handler::void_awaitable_type celeritas::order_create_http_message_handler::response(http_handle_parameter handle_parameter)
+celeritas::order_create_http_message_handler::void_awaitable_type
+    celeritas::order_create_http_message_handler::response(http_handle_parameter handle_parameter)
 {
     try
     {

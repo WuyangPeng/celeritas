@@ -7,7 +7,7 @@
 #include "config/app_config.h"
 #include "database/database_pool_base.h"
 #include "database/generated/mysql/auth/account_bind.h"
-#include "server/account_status_type.h"
+#include "initializer/account_status_type.h"
 
 celeritas::auth_login::auth_login(http_handle_parameter handle_parameter)
     : base_type{ std::move(handle_parameter) }

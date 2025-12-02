@@ -4,7 +4,7 @@
 #include "auth_service_base.h"
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/redis/auth/session_token.h"
-#include "server/server_fwd.h"
+#include "initializer/initializer_fwd.h"
 
 namespace celeritas
 {
