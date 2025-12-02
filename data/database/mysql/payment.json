@@ -42,7 +42,7 @@
       },
       {
         "entity_name": "platform",
-        "data_type": "string",
+        "data_type": "int32",
         "index_type": "composite_unique_index",
         "comment": "支付平台"
       },
@@ -103,6 +103,53 @@
         "entity_name": "refund_amount",
         "data_type": "int32",
         "comment": "退款金额"
+      }
+    ]
+  },
+  {
+    "class_name": "sdk_payment_providers",
+    "database_name": "sdk_payment_providers",
+    "entity": [
+      {
+        "entity_name": "sdk_id",
+        "data_type": "int64",
+        "index_type": "key"
+      },
+      {
+        "entity_name": "app_id",
+        "data_type": "int64",
+        "index_type": "composite_unique_index"
+      },
+      {
+        "entity_name": "platform",
+        "data_type": "int32",
+        "index_type": "composite_unique_index",
+        "comment": "平台"
+      },
+      {
+        "entity_name": "provider_name",
+        "data_type": "string",
+        "comment": "服务商名称"
+      },
+      {
+        "entity_name": "api_key",
+        "data_type": "string",
+        "comment": "密钥 ID"
+      },
+      {
+        "entity_name": "api_secret",
+        "data_type": "string",
+        "comment": "密钥 Secret"
+      },
+      {
+        "entity_name": "decryption_key",
+        "data_type": "string",
+        "comment": "解密密钥"
+      },
+      {
+        "entity_name": "active",
+        "data_type": "bool",
+        "comment": "是否启用"
       }
     ]
   }

@@ -34,7 +34,7 @@ namespace celeritas
 
         [[nodiscard]] traits::int32_type get_amount() const noexcept;
 
-        [[nodiscard]] traits::string_type get_platform() const;
+        [[nodiscard]] traits::int32_type get_platform() const noexcept;
 
         [[nodiscard]] traits::string_type get_transaction_id() const;
 
@@ -72,7 +72,7 @@ namespace celeritas
 
         void set_amount(traits::param_type::int32_type amount);
 
-        void set_platform(traits::param_type::string_type platform);
+        void set_platform(traits::param_type::int32_type platform);
 
         void set_transaction_id(traits::param_type::string_type transaction_id);
 
@@ -136,7 +136,7 @@ namespace celeritas
         entity<role_id_describe, database_data_type::int64_type, database_index_type::composite_index> role_id_;
         entity<product_id_describe, database_data_type::string_type> product_id_;
         entity<amount_describe, database_data_type::int32_type> amount_;
-        entity<platform_describe, database_data_type::string_type, database_index_type::composite_unique_index> platform_;
+        entity<platform_describe, database_data_type::int32_type, database_index_type::composite_unique_index> platform_;
         entity<transaction_id_describe, database_data_type::string_type, database_index_type::composite_unique_index> transaction_id_;
         entity<status_describe, database_data_type::int32_type, database_index_type::composite_index> status_;
         entity<delivery_status_describe, database_data_type::int32_type> delivery_status_;

@@ -6,7 +6,7 @@ CREATE TABLE `orders` (
   `role_id` BIGINT NOT NULL DEFAULT 0 COMMENT '角色id',
   `product_id` VARCHAR(255) NOT NULL COMMENT '商品id',
   `amount` INT NOT NULL DEFAULT 0 COMMENT '订单金额',
-  `platform` VARCHAR(255) NOT NULL COMMENT '支付平台',
+  `platform` INT NOT NULL COMMENT '支付平台',
   `transaction_id` VARCHAR(255) NOT NULL COMMENT '第三方交易流水号',
   `status` INT NOT NULL DEFAULT 0 COMMENT '支付状态',
   `delivery_status` INT NOT NULL DEFAULT 0 COMMENT '发货状态',
@@ -23,5 +23,18 @@ CREATE TABLE `orders` (
   UNIQUE KEY `client_request_id_unique` (`client_request_id`),
   UNIQUE KEY `platform_transaction_id_unique` (`platform`,`transaction_id`),
   KEY `role_id_status_index` (`role_id`,`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `sdk_payment_providers` (
+  `sdk_id` BIGINT NOT NULL,
+  `app_id` BIGINT NOT NULL,
+  `platform` INT NOT NULL COMMENT '平台',
+  `provider_name` VARCHAR(255) NOT NULL COMMENT '服务商名称',
+  `api_key` VARCHAR(255) NOT NULL COMMENT '密钥 ID',
+  `api_secret` VARCHAR(255) NOT NULL COMMENT '密钥 Secret',
+  `decryption_key` VARCHAR(255) NOT NULL COMMENT '解密密钥',
+  `active` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否启用',
+  PRIMARY KEY (`sdk_id`),
+  UNIQUE KEY `app_id_platform_unique` (`app_id`,`platform`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

@@ -3,6 +3,7 @@
 #include "payment_parameter.h"
 #include "database/generated/mysql/auth/apps.h"
 #include "payment/order_create_http_response.h"
+#include "payment/payment_platform_type.h"
 
 namespace celeritas
 {
@@ -33,7 +34,7 @@ namespace celeritas
         int64_t role_id_;
         std::string product_id_;
         int amount_;
-        std::string platform_;
+        payment_platform_type platform_;
         optional_apps apps_;
     };
 }

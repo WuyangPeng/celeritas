@@ -16,7 +16,7 @@ celeritas::orders::orders(const database_entity_change& entity)
       role_id_{ entity.get_value<database_data_type::int64_type>(role_id_describe) },
       product_id_{ entity.get_value<database_data_type::string_type>(product_id_describe) },
       amount_{ entity.get_value<database_data_type::int32_type>(amount_describe) },
-      platform_{ entity.get_value<database_data_type::string_type>(platform_describe) },
+      platform_{ entity.get_value<database_data_type::int32_type>(platform_describe) },
       transaction_id_{ entity.get_value<database_data_type::string_type>(transaction_id_describe) },
       status_{ entity.get_value<database_data_type::int32_type>(status_describe) },
       delivery_status_{ entity.get_value<database_data_type::int32_type>(delivery_status_describe) },
@@ -40,7 +40,7 @@ celeritas::orders::orders(const database_type database_type, traits::param_type:
       role_id_{ traits::int64_type{} },
       product_id_{ traits::string_type{} },
       amount_{ traits::int32_type{} },
-      platform_{ traits::string_type{} },
+      platform_{ traits::int32_type{} },
       transaction_id_{ traits::string_type{} },
       status_{ traits::int32_type{} },
       delivery_status_{ traits::int32_type{} },
@@ -91,7 +91,7 @@ celeritas::traits::int32_type celeritas::orders::get_amount() const noexcept
     return amount_.get_value();
 }
 
-celeritas::traits::string_type celeritas::orders::get_platform() const
+celeritas::traits::int32_type celeritas::orders::get_platform() const noexcept
 {
     return platform_.get_value();
 }
@@ -221,7 +221,7 @@ void celeritas::orders::set_amount(traits::param_type::int32_type amount)
     }
 }
 
-void celeritas::orders::set_platform(traits::param_type::string_type platform)
+void celeritas::orders::set_platform(traits::param_type::int32_type platform)
 {
     if (platform != get_platform())
     {

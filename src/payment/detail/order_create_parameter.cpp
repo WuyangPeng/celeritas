@@ -89,7 +89,7 @@ void celeritas::order_create_parameter::init()
     role_id_ = boost::lexical_cast<int64_t>(*optional_role_id);
     product_id_ = *optional_product_id;
     amount_ = boost::lexical_cast<int>(*optional_amount);
-    platform_ = *optional_platform;
+    platform_ = static_cast<payment_platform_type>(boost::lexical_cast<int>(*optional_platform));
     apps_ = app_secret::get_instance().get_apps(get_app_id());
 
     if (const auto http_response = get_http_parameter())
@@ -97,7 +97,7 @@ void celeritas::order_create_parameter::init()
         response_ = order_create_http_response{ *http_response };
     }
 
-    if (const auto hmac_sha256 = hmac_sha256::calculate_with_args(apps_->get_app_payment_secret(), client_request_id_, account_id_, game_server_id_, role_id_, product_id_, amount_, platform_, get_timestamp());
+    if (const auto hmac_sha256 = hmac_sha256::calculate_with_args(apps_->get_app_payment_secret(), client_request_id_, account_id_, game_server_id_, role_id_, product_id_, amount_, static_cast<int>(platform_), get_timestamp());
         hmac_sha256 != get_sign())
     {
         response_ = order_create_http_response{ game_error_type::sign_error };

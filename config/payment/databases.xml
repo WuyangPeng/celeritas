@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databases>
-    <database name="auth_db">
+    <database name="payment_db">
         <database_type>mysql</database_type>
         <host>127.0.0.1</host>
         <port>3306</port>
