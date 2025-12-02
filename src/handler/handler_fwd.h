@@ -25,4 +25,5 @@ namespace celeritas
     constexpr std::string_view sdk_bind_path = "/api/v1/login/bind/sdk";
 
     constexpr std::string_view order_create_path = "/api/v1/order/create";
+    constexpr std::string_view notify_path = "/api/v1/notify";
 }

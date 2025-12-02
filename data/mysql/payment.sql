@@ -33,8 +33,10 @@ CREATE TABLE `sdk_payment_providers` (
   `api_key` VARCHAR(255) NOT NULL COMMENT '密钥 ID',
   `api_secret` VARCHAR(255) NOT NULL COMMENT '密钥 Secret',
   `decryption_key` VARCHAR(255) NOT NULL COMMENT '解密密钥',
+  `http_suffix` VARCHAR(255) NOT NULL COMMENT '回调地址后缀',
   `active` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否启用',
   PRIMARY KEY (`sdk_id`),
+  UNIQUE KEY `http_suffix_unique` (`http_suffix`),
   UNIQUE KEY `app_id_platform_unique` (`app_id`,`platform`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

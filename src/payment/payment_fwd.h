@@ -12,6 +12,7 @@ namespace celeritas
     class app_sdk_payment_providers;
     class payment_service_base;
 
+    class order_create;
     class order_create_http_response;
 
     constexpr auto default_order_timeout = minute * 30;

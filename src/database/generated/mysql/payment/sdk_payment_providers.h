@@ -34,6 +34,8 @@ namespace celeritas
 
         [[nodiscard]] traits::string_type get_decryption_key() const;
 
+        [[nodiscard]] traits::string_type get_http_suffix() const;
+
         [[nodiscard]] traits::bool_type is_active() const noexcept;
 
         void set_sdk_id(traits::param_type::int64_type sdk_id);
@@ -49,6 +51,8 @@ namespace celeritas
         void set_api_secret(traits::param_type::string_type api_secret);
 
         void set_decryption_key(traits::param_type::string_type decryption_key);
+
+        void set_http_suffix(traits::param_type::string_type http_suffix);
 
         void set_active(traits::param_type::bool_type active);
 
@@ -69,6 +73,7 @@ namespace celeritas
         static constexpr std::string_view api_key_describe{ "api_key" };
         static constexpr std::string_view api_secret_describe{ "api_secret" };
         static constexpr std::string_view decryption_key_describe{ "decryption_key" };
+        static constexpr std::string_view http_suffix_describe{ "http_suffix" };
         static constexpr std::string_view active_describe{ "active" };
 
     private:
@@ -81,6 +86,7 @@ namespace celeritas
         entity<api_key_describe, database_data_type::string_type> api_key_;
         entity<api_secret_describe, database_data_type::string_type> api_secret_;
         entity<decryption_key_describe, database_data_type::string_type> decryption_key_;
+        entity<http_suffix_describe, database_data_type::string_type, database_index_type::unique_index> http_suffix_;
         entity<active_describe, database_data_type::bool_type> active_;
     };
 }

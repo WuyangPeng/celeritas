@@ -28,6 +28,8 @@ namespace celeritas
 
         void write(const protobuf_message& response) const;
 
+        void write(const header& header, const protobuf_message& response) const;
+
         void write(const std::string& server_type, const protobuf_message& message) const;
 
         [[nodiscard]] protobuf_message_shared_ptr get_protobuf_message() const;

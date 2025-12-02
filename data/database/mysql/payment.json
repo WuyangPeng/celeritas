@@ -147,6 +147,12 @@
         "comment": "解密密钥"
       },
       {
+        "entity_name": "http_suffix",
+        "data_type": "string",
+        "index_type": "unique_index",
+        "comment": "回调地址后缀"
+      },
+      {
         "entity_name": "active",
         "data_type": "bool",
         "comment": "是否启用"

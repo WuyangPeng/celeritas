@@ -16,6 +16,7 @@ celeritas::sdk_payment_providers::sdk_payment_providers(const database_entity_ch
       api_key_{ entity.get_value<database_data_type::string_type>(api_key_describe) },
       api_secret_{ entity.get_value<database_data_type::string_type>(api_secret_describe) },
       decryption_key_{ entity.get_value<database_data_type::string_type>(decryption_key_describe) },
+      http_suffix_{ entity.get_value<database_data_type::string_type>(http_suffix_describe) },
       active_{ entity.get_value<database_data_type::bool_type>(active_describe) }
 {
 }
@@ -29,6 +30,7 @@ celeritas::sdk_payment_providers::sdk_payment_providers(const database_type data
       api_key_{ traits::string_type{} },
       api_secret_{ traits::string_type{} },
       decryption_key_{ traits::string_type{} },
+      http_suffix_{ traits::string_type{} },
       active_{ traits::bool_type{} }
 {
     add_modify(sdk_id_describe, sdk_id);
@@ -67,6 +69,11 @@ celeritas::traits::string_type celeritas::sdk_payment_providers::get_api_secret(
 celeritas::traits::string_type celeritas::sdk_payment_providers::get_decryption_key() const
 {
     return decryption_key_.get_value();
+}
+
+celeritas::traits::string_type celeritas::sdk_payment_providers::get_http_suffix() const
+{
+    return http_suffix_.get_value();
 }
 
 celeritas::traits::bool_type celeritas::sdk_payment_providers::is_active() const noexcept
@@ -144,6 +151,16 @@ void celeritas::sdk_payment_providers::set_decryption_key(traits::param_type::st
     }
 }
 
+void celeritas::sdk_payment_providers::set_http_suffix(traits::param_type::string_type http_suffix)
+{
+    if (http_suffix != get_http_suffix())
+    {
+        http_suffix_.set_value(http_suffix);
+
+        add_modify(http_suffix_describe, get_http_suffix());
+    }
+}
+
 void celeritas::sdk_payment_providers::set_active(traits::param_type::bool_type active)
 {
     if (active != is_active())
@@ -163,6 +180,7 @@ const celeritas::database_entity::database_field_container& celeritas::sdk_payme
                                                                 decltype(api_key_)::get_database_field(),
                                                                 decltype(api_secret_)::get_database_field(),
                                                                 decltype(decryption_key_)::get_database_field(),
+                                                                decltype(http_suffix_)::get_database_field(),
                                                                 decltype(active_)::get_database_field() };
 
     return field_name_container;

@@ -47,6 +47,7 @@ void celeritas::register_handler_helper::register_handler() const
     http_message_registry_->registerHandler(std::make_shared<sdk_login_http_message_handler>());
     http_message_registry_->registerHandler(std::make_shared<send_email_http_message_handler>());
     http_message_registry_->registerHandler(std::make_shared<send_sms_http_message_handler>());
+    http_message_registry_->registerHandler(std::make_shared<order_create_http_message_handler>());
 
 }
 

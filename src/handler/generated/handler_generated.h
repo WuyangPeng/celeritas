@@ -28,6 +28,7 @@
 #include "handler/generated/service_registry_response_message_handler.h"
 #include "handler/generated/service_request_message_handler.h"
 #include "handler/generated/service_response_message_handler.h"
+#include "handler/payment/order_create_http_message_handler.h"
 #include "handler/payment/reload_sdk_payment_providers_db_message_handler.h"
 #include "handler/service_registry/close_request_message_handler.h"
 #include "handler/service_registry/discover_request_message_handler.h"

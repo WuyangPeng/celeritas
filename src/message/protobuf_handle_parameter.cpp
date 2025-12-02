@@ -27,6 +27,15 @@ void celeritas::protobuf_handle_parameter::write(const protobuf_message& respons
     }
 }
 
+void celeritas::protobuf_handle_parameter::write(const header& header, const protobuf_message& response) const
+{
+    if (const auto session_shared_ptr = session_.lock();
+        session_shared_ptr != nullptr)
+    {
+        session_shared_ptr->write(header, response);
+    }
+}
+
 void celeritas::protobuf_handle_parameter::write(const std::string& server_type, const protobuf_message& message) const
 {
     if (const auto resource_loader_shared_ptr = resource_loader_.lock();
