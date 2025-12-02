@@ -5,8 +5,6 @@
 #include "database/generated/mysql/auth/account.h"
 #include "message/http_handle_parameter.h"
 
-#include <boost/asio/awaitable.hpp>
-
 namespace celeritas
 {
     class password_login final : public auth_login

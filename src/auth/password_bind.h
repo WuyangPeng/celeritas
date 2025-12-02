@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "auth_bind.h"
-#include "database/database_pool_base.h"
 #include "message/http_handle_parameter.h"
 
 namespace celeritas

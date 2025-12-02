@@ -1,5 +1,5 @@
-﻿#include "sdk_bind_parameter.h"
-#include "auth_internal_fwd.h"
+﻿#include "auth_internal_fwd.h"
+#include "sdk_bind_parameter.h"
 #include "common/hmac_sha_256.h"
 
 celeritas::sdk_bind_parameter::sdk_bind_parameter(const http_handle_parameter& http_handle_parameter)

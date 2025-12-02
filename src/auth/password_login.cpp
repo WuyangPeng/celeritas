@@ -2,7 +2,6 @@
 #include "app_secret.h"
 #include "password_login_response.h"
 #include "sdk_process_type.h"
-#include "common/celeritas_error.h"
 #include "common/hmac_sha_256.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
