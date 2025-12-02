@@ -680,6 +680,11 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
       暂停服务），是控制第三方应用接入权限的基础。
 
 
+* **🚀 SDK处理类型 (`sdk_process_type`)**
+    - **作用**：定义了不同的SDK处理流程类型。
+    - **特点**：使用`enum class`提供了类型安全的常量，用于区分不同的SDK服务（如 `we_chat` 微信）。
+
+
 * **🔑 应用密钥管理器 (`app_secret`)**
     - **作用**：作为单例类，负责从数据库中异步加载和缓存应用的密钥信息。
     - **特点**：提供线程安全的 `get_key(app_id)` 方法来获取指定应用的密钥，并支持通过 `reload_from_db` 进行热重载。
@@ -698,6 +703,19 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **特点**：
         - **配置加载与缓存**：在服务启动时加载所有邮箱服务商配置，并缓存在内存中。
         - **线程安全访问**：提供 `get_email_providers(provider_id)` 方法，以线程安全的方式获取指定服务商的配置。
+        - **热重载**：支持通过 `reload_from_db` 方法重新加载特定服务商的配置，无需重启服务。
+
+
+* **🔑 SDK服务商配置键 (`sdk_providers_key`)**
+    - **作用**：作为`app_sdk_providers`管理器的键，用于唯一标识一个SDK服务商的配置。
+    - **特点**：由`app_id`和`sdk_process_type`组成，确保了每个应用下的每种SDK处理流程都有唯一的配置入口。
+
+
+* **🛠️ SDK服务商管理器 (`app_sdk_providers`)**
+    - **作用**：作为单例类，负责从数据库中异步加载和缓存所有SDK服务商的配置信息。
+    - **特点**：
+        - **配置加载与缓存**：在服务启动时加载所有SDK服务商配置，并缓存在内存中。
+        - **线程安全访问**：提供 `get_sdk_providers(sdk_providers_key)` 方法，以线程安全的方式获取指定服务商的配置。
         - **热重载**：支持通过 `reload_from_db` 方法重新加载特定服务商的配置，无需重启服务。
 
 
@@ -868,6 +886,11 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 * **🔄 重载邮箱服务商数据库消息处理器 (`reload_email_providers_db_message_handler`)**
     - **作用**：处理重新加载邮箱服务商数据库配置的请求。
     - **功能**：接收并处理 `reload_email_providers_db_request` 消息，根据 `provider_id` 触发 `app_email_providers` 单例从数据库中重新加载指定服务商的配置信息。
+
+
+* **🔄 重载SDK服务商数据库消息处理器 (`reload_sdk_providers_db_message_handler`)**
+    - **作用**：处理重新加载SDK服务商数据库配置的请求。
+    - **功能**：接收并处理 `reload_sdk_providers_db_request` 消息，根据 `sdk_id` 触发 `app_sdk_providers` 单例从数据库中重新加载指定服务商的配置信息。
 
 ##### http handlers（HTTP 处理器）
 

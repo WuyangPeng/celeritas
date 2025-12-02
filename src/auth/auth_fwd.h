@@ -11,6 +11,7 @@ namespace celeritas
     class app_sms_providers;
     class auth_service_base;
     class sdk_providers_key;
+    class app_sdk_providers;
     class token_http_response;
     class auth_login;
     class auth_bind;
