@@ -21,12 +21,27 @@ namespace celeritas
 
         [[nodiscard]] apps get_apps() const;
 
+        [[nodiscard]] std::string get_client_request_id() const;
+
+        [[nodiscard]] int64_t get_account_id() const;
+
+        [[nodiscard]] std::string get_game_server_id() const;
+
+        [[nodiscard]] int64_t get_role_id() const;
+
+        [[nodiscard]] std::string get_product_id() const;
+
+        [[nodiscard]] int get_amount() const;
+
+        [[nodiscard]] payment_platform_type get_platform() const;
+
     private:
         using optional_order_create_http_response = std::optional<order_create_http_response>;
         using optional_apps = std::optional<apps>;
 
         void init();
 
+    private:
         optional_order_create_http_response response_;
         std::string client_request_id_;
         int64_t account_id_;

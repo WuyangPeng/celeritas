@@ -6,6 +6,7 @@ namespace celeritas
 {
     class payment_parameter;
     class order_create_parameter;
+    class payment_params_json;
 
     constexpr std::string_view timestamp_describe = "timestamp";
     constexpr std::string_view sign_describe = "sign";

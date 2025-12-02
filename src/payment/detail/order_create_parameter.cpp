@@ -103,3 +103,38 @@ void celeritas::order_create_parameter::init()
         response_ = order_create_http_response{ game_error_type::sign_error };
     }
 }
+
+std::string celeritas::order_create_parameter::get_client_request_id() const
+{
+    return client_request_id_;
+}
+
+int64_t celeritas::order_create_parameter::get_account_id() const
+{
+    return account_id_;
+}
+
+std::string celeritas::order_create_parameter::get_game_server_id() const
+{
+    return game_server_id_;
+}
+
+int64_t celeritas::order_create_parameter::get_role_id() const
+{
+    return role_id_;
+}
+
+std::string celeritas::order_create_parameter::get_product_id() const
+{
+    return product_id_;
+}
+
+int celeritas::order_create_parameter::get_amount() const
+{
+    return amount_;
+}
+
+celeritas::payment_platform_type celeritas::order_create_parameter::get_platform() const
+{
+    return platform_;
+}

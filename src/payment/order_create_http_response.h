@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "payment_platform_type.h"
 #include "message/http_response.h"
 
 namespace celeritas
@@ -16,9 +17,9 @@ namespace celeritas
 
         order_create_http_response(game_error_type code, std::string message);
 
-        order_create_http_response(game_error_type code, std::string message, std::string order_id, std::string platform, std::string payment_params_json, int amount);
+        order_create_http_response(game_error_type code, std::string message, std::string order_id, payment_platform_type platform, std::string payment_params_json, int amount);
 
-        order_create_http_response(bass_type http_response, std::string order_id, std::string platform, std::string payment_params_json, int amount);
+        order_create_http_response(bass_type http_response, std::string order_id, payment_platform_type platform, std::string payment_params_json, int amount);
 
         explicit order_create_http_response(bass_type http_response);
 
@@ -30,7 +31,7 @@ namespace celeritas
 
         [[nodiscard]] std::string get_order_id() const;
 
-        [[nodiscard]] std::string get_platform() const;
+        [[nodiscard]] payment_platform_type get_platform() const;
 
         [[nodiscard]] std::string get_payment_params_json() const;
 
@@ -45,7 +46,7 @@ namespace celeritas
         [[nodiscard]] static order_create_http_response do_from_json_string(const std::string& json_string);
 
         std::string order_id_;
-        std::string platform_;
+        payment_platform_type platform_ = payment_platform_type::null;
         std::string payment_params_json_;
         int amount_ = 0;
     };

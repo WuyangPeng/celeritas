@@ -13,13 +13,13 @@ celeritas::order_create_http_response::order_create_http_response(const game_err
 {
 }
 
-celeritas::order_create_http_response::order_create_http_response(const game_error_type code, std::string message, std::string order_id, std::string platform, std::string payment_params_json, int amount)
-    : bass_type{ code, std::move(message) }, order_id_{ std::move(order_id) }, platform_{ std::move(platform) }, payment_params_json_{ std::move(payment_params_json) }, amount_{ amount }
+celeritas::order_create_http_response::order_create_http_response(const game_error_type code, std::string message, std::string order_id, const payment_platform_type platform, std::string payment_params_json, int amount)
+    : bass_type{ code, std::move(message) }, order_id_{ std::move(order_id) }, platform_{ platform }, payment_params_json_{ std::move(payment_params_json) }, amount_{ amount }
 {
 }
 
-celeritas::order_create_http_response::order_create_http_response(bass_type http_response, std::string order_id, std::string platform, std::string payment_params_json, int amount)
-    : bass_type{ std::move(http_response) }, order_id_{ std::move(order_id) }, platform_{ std::move(platform) }, payment_params_json_{ std::move(payment_params_json) }, amount_{ amount }
+celeritas::order_create_http_response::order_create_http_response(bass_type http_response, std::string order_id, const payment_platform_type platform, std::string payment_params_json, int amount)
+    : bass_type{ std::move(http_response) }, order_id_{ std::move(order_id) }, platform_{ platform }, payment_params_json_{ std::move(payment_params_json) }, amount_{ amount }
 {
 }
 
@@ -51,11 +51,11 @@ celeritas::order_create_http_response celeritas::order_create_http_response::tag
 
     const auto& object = value.as_object();
     auto order_id = boost::json::value_to<std::string>(object.at(order_id_description));
-    auto platform = boost::json::value_to<std::string>(object.at(platform_description));
+    const auto platform = static_cast<payment_platform_type>(boost::json::value_to<int>(object.at(platform_description)));
     auto payment_params_json = boost::json::value_to<std::string>(object.at(payment_params_json_description));
-    auto amount = boost::json::value_to<int>(object.at(amount_description));
+    const auto amount = boost::json::value_to<int>(object.at(amount_description));
 
-    return order_create_http_response{ std::move(http_response), std::move(order_id), std::move(platform), std::move(payment_params_json), amount };
+    return order_create_http_response{ std::move(http_response), std::move(order_id), platform, std::move(payment_params_json), amount };
 }
 
 celeritas::order_create_http_response celeritas::order_create_http_response::do_from_json_string(const std::string& json_string)
@@ -69,7 +69,7 @@ std::string celeritas::order_create_http_response::get_order_id() const
     return order_id_;
 }
 
-std::string celeritas::order_create_http_response::get_platform() const
+celeritas::payment_platform_type celeritas::order_create_http_response::get_platform() const
 {
     return platform_;
 }
@@ -104,7 +104,7 @@ void celeritas::tag_invoke(boost::json::value_from_tag, order_create_http_respon
 {
     value = {
         { order_create_http_response::order_id_description, order_create_http_response.get_order_id() },
-        { order_create_http_response::platform_description, order_create_http_response.get_platform() },
+        { order_create_http_response::platform_description, static_cast<int>(order_create_http_response.get_platform()) },
         { order_create_http_response::payment_params_json_description, order_create_http_response.get_payment_params_json() },
         { order_create_http_response::amount_description, order_create_http_response.get_amount() }
     };

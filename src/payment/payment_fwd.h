@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "common/common_fwd.h"
+
 namespace celeritas
 {
     enum class payment_status_type;
@@ -11,4 +13,6 @@ namespace celeritas
     class payment_service_base;
 
     class order_create_http_response;
+
+    constexpr auto default_order_timeout = minute * 30;
 }
