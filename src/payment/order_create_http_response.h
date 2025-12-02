@@ -47,7 +47,7 @@ namespace celeritas
         std::string order_id_;
         std::string platform_;
         std::string payment_params_json_;
-        int amount_;
+        int amount_ = 0;
     };
 
     using order_create_http_response_tag = boost::json::value_to_tag<order_create_http_response>;
