@@ -1150,24 +1150,24 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 认证服务器是整个系统的安全入口，负责验证用户身份、管理账户信息，并生成和验证访问凭证（Token）。
 
-- 🔐 用户注册与登录 (User Registration & Login)（未实现）
+- 🔐 用户注册与登录 (User Registration & Login)
     - 提供新用户注册接口，支持游客登陆、手机号登陆、邮箱登陆、用户名/密码、第三方平台（如微信、QQ）等多种注册方式。
     - 处理用户登录请求，验证凭据（如密码哈希比对）。
     - 实现账户锁定、防暴力破解等安全机制。
 
 
-- 🎫 凭证生成与验证 (Token Generation & Validation)（未实现）
+- 🎫 凭证生成与验证 (Token Generation & Validation)
     - 登录成功后，生成一个有时效性的、包含用户身份信息的安全令牌（如 JWT, JSON Web Token）。
     - 提供对外的令牌验证接口，供其他业务服务器（如网关、游戏服务器）调用，以验证用户请求的合法性。
     - 管理令牌的生命周期，支持令牌刷新（Refresh Token）和强制失效（注销）。
 
 
-- 📇 账户信息管理 (Account Information Management)（未实现）
+- 📇 账户信息管理 (Account Information Management)
     - 存储和管理用户账户核心数据，如账户名、密码哈希、用户ID、创建时间等。
     - 与数据库交互，持久化账户信息。
 
 
-- 🔗 第三方平台集成 (Third-Party Integration)（未实现）
+- 🔗 第三方平台集成 (Third-Party Integration)
     - 处理来自第三方平台（如微信、Apple Game Center）的登录回调。
     - 根据第三方平台提供的用户信息，创建或关联本地账户。
 

@@ -13,6 +13,8 @@
 #include "handler/auth/reload_email_providers_db_message_handler.h"
 #include "handler/auth/reload_sdk_providers_db_message_handler.h"
 #include "handler/auth/reload_sms_providers_db_message_handler.h"
+#include "handler/auth/sdk_bind_http_message_handler.h"
+#include "handler/auth/sdk_login_http_message_handler.h"
 #include "handler/auth/send_email_http_message_handler.h"
 #include "handler/auth/send_sms_http_message_handler.h"
 #include "handler/generated/auth_request_message_handler.h"
