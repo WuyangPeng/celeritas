@@ -35,7 +35,6 @@
 - initializer 初始化
 - server 服务器
 
-
 ## assist（辅助）
 
 - generate_handler_tools 生成处理器工具
@@ -922,18 +921,6 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **功能**：接收并处理 `reload_sdk_providers_db_request` 消息，根据 `sdk_id` 触发 `app_sdk_providers`
       单例从数据库中重新加载指定服务商的配置信息。
 
-##### http handlers（HTTP 处理器）
-
-* **🌐 HTTP健康检查请求处理器 (`health_check_request_http_message_handler`)**
-    - **作用**：处理来自客户端的`HTTP`健康检查请求。
-    - **功能**：接收并处理`HTTP` `GET`请求，返回服务当前的健康状态。
-
-
-* **📨 HTTP健康检查响应处理器 (`health_check_response_http_message_handler`)**
-    - **作用**：处理`HTTP`健康检查请求的响应。
-    - **功能**：接收并处理`HTTP`响应，通常用于内部服务间健康状态的同步或监控。
-
-
 * **👋 游客登录HTTP请求处理器 (`guest_login_http_message_handler`)**
     - **作用**：处理客户端发起的游客登录`HTTP`请求。
     - **功能**：接收并处理`HTTP`请求，根据设备ID查找或创建新账户，并返回访问令牌。
@@ -987,6 +974,24 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 * **🚀 SDK绑定HTTP请求处理器 (`sdk_bind_http_message_handler`)**
     - **作用**：处理客户端发起的SDK绑定`HTTP`请求。
     - **功能**：接收并处理`HTTP`请求，根据SDK信息进行绑定。
+
+##### payment handlers (支付处理器)
+
+* **🔄 重载SDK支付服务商数据库消息处理器 (`reload_sdk_payment_providers_db_message_handler`)**
+    - **作用**：处理重新加载SDK支付服务商数据库配置的请求。
+    - **功能**：接收并处理 `reload_sdk_payment_providers_db_request` 消息，根据 `provider_id` 触发
+      `app_sdk_payment_providers` 单例从数据库中重新加载指定服务商的配置信息。
+
+##### http handlers（HTTP 处理器）
+
+* **🌐 HTTP健康检查请求处理器 (`health_check_request_http_message_handler`)**
+    - **作用**：处理来自客户端的`HTTP`健康检查请求。
+    - **功能**：接收并处理`HTTP` `GET`请求，返回服务当前的健康状态。
+
+
+* **📨 HTTP健康检查响应处理器 (`health_check_response_http_message_handler`)**
+    - **作用**：处理`HTTP`健康检查请求的响应。
+    - **功能**：接收并处理`HTTP`响应，通常用于内部服务间健康状态的同步或监控。
 
 #### initializer（初始化）
 

@@ -68,6 +68,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_request, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_request, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_request, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_request, _impl_.payload_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -81,28 +82,31 @@ const char descriptor_table_protodef_proto_2fservice_2fservice_5frequest_2eproto
     protodesc_cold) = {
     "\n#proto/service/service_request.proto\022\027c"
     "eleritas.proto.service\032\034proto/service/re"
-    "gistry.proto\032\030proto/service/auth.proto\"\232"
-    "\001\n\017service_request\022E\n\010registry\030\001 \001(\01321.c"
-    "eleritas.proto.service.service_registry_"
-    "requestH\000\0225\n\004auth\030\002 \001(\0132%.celeritas.prot"
-    "o.service.auth_requestH\000B\t\n\007payloadb\006pro"
-    "to3"
+    "gistry.proto\032\030proto/service/auth.proto\032\033"
+    "proto/service/payment.proto\"\327\001\n\017service_"
+    "request\022E\n\010registry\030\001 \001(\01321.celeritas.pr"
+    "oto.service.service_registry_requestH\000\0225"
+    "\n\004auth\030\002 \001(\0132%.celeritas.proto.service.a"
+    "uth_requestH\000\022;\n\007payment\030\003 \001(\0132(.celerit"
+    "as.proto.service.payment_requestH\000B\t\n\007pa"
+    "yloadb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
-    descriptor_table_proto_2fservice_2fservice_5frequest_2eproto_deps[2] = {
+    descriptor_table_proto_2fservice_2fservice_5frequest_2eproto_deps[3] = {
         &::descriptor_table_proto_2fservice_2fauth_2eproto,
+        &::descriptor_table_proto_2fservice_2fpayment_2eproto,
         &::descriptor_table_proto_2fservice_2fregistry_2eproto,
 };
 static ::absl::once_flag descriptor_table_proto_2fservice_2fservice_5frequest_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fservice_5frequest_2eproto = {
     false,
     false,
-    283,
+    373,
     descriptor_table_protodef_proto_2fservice_2fservice_5frequest_2eproto,
     "proto/service/service_request.proto",
     &descriptor_table_proto_2fservice_2fservice_5frequest_2eproto_once,
     descriptor_table_proto_2fservice_2fservice_5frequest_2eproto_deps,
-    2,
+    3,
     1,
     schemas,
     file_default_instances,
@@ -169,6 +173,30 @@ void service_request::clear_auth() {
     clear_has_payload();
   }
 }
+void service_request::set_allocated_payment(::celeritas::proto::service::payment_request* PROTOBUF_NULLABLE payment) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (payment) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(payment)->GetArena();
+    if (message_arena != submessage_arena) {
+      payment = ::google::protobuf::internal::GetOwnedMessage(message_arena, payment, submessage_arena);
+    }
+    set_has_payment();
+    _impl_.payload_.payment_ = payment;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_request.payment)
+}
+void service_request::clear_payment() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kPayment) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.payment_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.payment_);
+    }
+    clear_has_payload();
+  }
+}
 service_request::service_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, service_request_class_data_.base()) {
@@ -207,6 +235,9 @@ service_request::service_request(
         break;
       case kAuth:
         _impl_.payload_.auth_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.auth_);
+        break;
+      case kPayment:
+        _impl_.payload_.payment_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.payment_);
         break;
   }
 
@@ -256,6 +287,14 @@ void service_request::clear_payload() {
         delete _impl_.payload_.auth_;
       } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
         ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.auth_);
+      }
+      break;
+    }
+    case kPayment: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.payment_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.payment_);
       }
       break;
     }
@@ -310,17 +349,17 @@ service_request::GetClassData() const {
   return service_request_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 2, 2, 0, 2>
+const ::_pbi::TcParseTable<0, 3, 3, 0, 2>
 service_request::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 0,  // max_field_number, fast_idx_mask
+    3, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
-    2,  // num_aux_entries
+    3,  // num_field_entries
+    3,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     service_request_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -337,10 +376,13 @@ service_request::_table_ = {
     {PROTOBUF_FIELD_OFFSET(service_request, _impl_.payload_.registry_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.service.auth_request auth = 2;
     {PROTOBUF_FIELD_OFFSET(service_request, _impl_.payload_.auth_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.service.payment_request payment = 3;
+    {PROTOBUF_FIELD_OFFSET(service_request, _impl_.payload_.payment_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_registry_request>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::auth_request>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::service::payment_request>()},
   }},
   {{
   }},
@@ -387,6 +429,12 @@ PROTOBUF_NOINLINE void service_request::Clear() {
           stream);
       break;
     }
+    case kPayment: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          3, *this_._impl_.payload_.payment_, this_._impl_.payload_.payment_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     default:
       break;
   }
@@ -424,6 +472,12 @@ PROTOBUF_NOINLINE void service_request::Clear() {
     case kAuth: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.auth_);
+      break;
+    }
+    // .celeritas.proto.service.payment_request payment = 3;
+    case kPayment: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.payment_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -470,6 +524,14 @@ void service_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const :
           _this->_impl_.payload_.auth_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.auth_);
         } else {
           _this->_impl_.payload_.auth_->MergeFrom(*from._impl_.payload_.auth_);
+        }
+        break;
+      }
+      case kPayment: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.payment_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.payment_);
+        } else {
+          _this->_impl_.payload_.payment_->MergeFrom(*from._impl_.payload_.payment_);
         }
         break;
       }

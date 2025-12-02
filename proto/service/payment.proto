@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package celeritas.proto.service;
+
+// 重载sdk payment providers数据库
+message reload_sdk_payment_providers_db_request {
+  int32 sdk_id = 1;
+}
+
+message reload_sdk_payment_providers_db_response {
+}
+
+message payment_request {
+  oneof payload {
+    reload_sdk_payment_providers_db_request reload_sdk_payment_providers_db = 1;
+  }
+}
+
+message payment_response {
+  oneof payload {
+    reload_sdk_payment_providers_db_response reload_sdk_payment_providers_db = 1;
+  }
+}

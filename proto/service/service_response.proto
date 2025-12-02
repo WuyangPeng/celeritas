@@ -2,6 +2,7 @@
 
 import "proto/service/registry.proto";
 import "proto/service/auth.proto";
+import "proto/service/payment.proto";
 
 package celeritas.proto.service;
 
@@ -9,5 +10,6 @@ message service_response {
   oneof payload {
     service_registry_response registry = 1;
     auth_response auth = 2;
+    payment_response payment = 3;
   }
 }
