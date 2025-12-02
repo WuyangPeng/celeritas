@@ -30,9 +30,11 @@
 - network 网络
 - service_registry 服务注册
 - auth 认证
+- payment 支付
 - handler 处理器
 - initializer 初始化
 - server 服务器
+
 
 ## assist（辅助）
 
@@ -860,6 +862,10 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 * **📦 SDK绑定响应 (`sdk_bind_response`)**
     - **作用**：封装了SDK绑定 `HTTP` 请求的响应数据。
     - **特点**：包含错误码和提示信息，并提供了 `to_json_string()` 方法将其序列化为 `JSON` 格式。
+
+#### payment（支付）
+
+支付模块提供了一个基础框架，用于处理游戏内的支付请求。目前仅包含基础文件结构，具体支付业务逻辑尚未实现。
 
 #### handler（处理器）
 

@@ -1,0 +1,109 @@
+[
+  {
+    "class_name": "orders",
+    "database_name": "orders",
+    "entity": [
+      {
+        "entity_name": "id",
+        "data_type": "int64",
+        "index_type": "key"
+      },
+      {
+        "entity_name": "order_id",
+        "data_type": "string",
+        "index_type": "unique_index",
+        "comment": "商户订单号"
+      },
+      {
+        "entity_name": "account_id",
+        "data_type": "int64",
+        "comment": "账号ID"
+      },
+      {
+        "entity_name": "game_server_id",
+        "data_type": "string",
+        "comment": "区服id"
+      },
+      {
+        "entity_name": "role_id",
+        "data_type": "int64",
+        "index_type": "composite_index",
+        "comment": "角色id"
+      },
+      {
+        "entity_name": "product_id",
+        "data_type": "string",
+        "comment": "商品id"
+      },
+      {
+        "entity_name": "amount",
+        "data_type": "int32",
+        "comment": "订单金额"
+      },
+      {
+        "entity_name": "platform",
+        "data_type": "string",
+        "index_type": "composite_unique_index",
+        "comment": "支付平台"
+      },
+      {
+        "entity_name": "transaction_id",
+        "data_type": "string",
+        "index_type": "composite_unique_index",
+        "comment": "第三方交易流水号"
+      },
+      {
+        "entity_name": "status",
+        "data_type": "int32",
+        "index_type": "composite_index",
+        "comment": "支付状态"
+      },
+      {
+        "entity_name": "delivery_status",
+        "data_type": "int32",
+        "comment": "发货状态"
+      },
+      {
+        "entity_name": "client_request_id",
+        "data_type": "string",
+        "index_type": "unique_index",
+        "comment": "游戏服务器传入的唯一请求ID"
+      },
+      {
+        "entity_name": "retry_count",
+        "data_type": "int32",
+        "comment": "重试次数"
+      },
+      {
+        "entity_name": "create_time",
+        "data_type": "int64",
+        "comment": "订单创建时间"
+      },
+      {
+        "entity_name": "pay_time",
+        "data_type": "int64",
+        "comment": "支付成功时间"
+      },
+      {
+        "entity_name": "expire_time",
+        "data_type": "int64",
+        "comment": "订单支付超时时间"
+      },
+      {
+        "entity_name": "callback_data",
+        "data_type": "string",
+        "comment": "原始回调数据"
+      },
+      {
+        "entity_name": "refund_time",
+        "data_type": "int64",
+        "comment": "退款成功时间"
+      },
+      {
+        "entity_name": "refund_amount",
+        "data_type": "int32",
+        "comment": "退款金额"
+      }
+    ]
+  }
+]
