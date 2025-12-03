@@ -1,6 +1,6 @@
 ﻿# 测试环境安装
 
-## 安装docker
+## 安装 docker
 
 ### 执行下面三条命令。
 
@@ -35,7 +35,7 @@
 - 其中一条会出现
 - lrwxrwxrwx 1 root root 12 Feb 17 21:40 docker -> /data/docker
 
-### 启动docker
+### 启动 docker
 
 - systemctl start docker
 
@@ -43,13 +43,13 @@
 
 - systemctl enable docker.service
 
-## 安装portainer
+## 安装 portainer
 
 docker run --name portainer -d -p 35000:9000 -v /var/run/docker.sock:/var/run/docker.sock \
 --env TZ=:/etc/localtime -v /etc/localtime:/etc/localtime:ro --restart=always \
 --log-driver json-file --log-opt max-size=10m portainer/portainer
 
-## 安装svnadmin
+## 安装 svnadmin
 
 docker run -d --name svnadmin -p 35080:80 -p 33690:3690 \
 -v /data/svnadmin/:/home/svnadmin/ -v /data/svnadmin/conf.d/:/etc/httpd/conf.d/ \
@@ -57,7 +57,7 @@ docker run -d --name svnadmin -p 35080:80 -p 33690:3690 \
 --restart=always --log-driver json-file --log-opt max-size=10m \
 --privileged witersencom/svnadmin
 
-## 安装redis
+## 安装 redis
 
 docker run -d --name redis --restart=always --log-driver json-file --log-opt max-size=10m \
 --network host --env TZ=:/etc/localtime -v /etc/localtime:/etc/localtime:ro  \
@@ -65,14 +65,14 @@ docker run -d --name redis --restart=always --log-driver json-file --log-opt max
 -v /data/redis-data/conf/users.acl:/etc/redis/users.acl \
 redis redis-server /etc/redis/redis.conf --aclfile /etc/redis/users.acl --port 7001
 
-## 安装mongo
+## 安装 mongo
 
 docker run -itd --name mongo -p 27017:27017 -v /data/mongodb/data:/data/db \
 -v /data/mongodb/mongodump:/data/mongodump --restart=always \
 --env TZ=:/etc/localtime -v /etc/localtime:/etc/localtime:ro  \
 --log-driver json-file --log-opt max-size=10m mongo --auth
 
-## 安装mysql
+## 安装 mysql
 
 docker run -d --name mysql \
 -p 3306:3306 \
