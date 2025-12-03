@@ -10,7 +10,7 @@ celeritas::app_sdk_payment_providers& celeritas::app_sdk_payment_providers::get_
     return instance;
 }
 
-celeritas::sdk_payment_providers celeritas::app_sdk_payment_providers::get_sdk_providers(const sdk_payment_providers_key& sdk_payment_providers_key)
+celeritas::sdk_payment_providers celeritas::app_sdk_payment_providers::get_sdk_payment_providers(const sdk_payment_providers_key& sdk_payment_providers_key)
 {
     std::shared_lock lock{ mutex_ };
 
@@ -27,7 +27,7 @@ celeritas::sdk_payment_providers celeritas::app_sdk_payment_providers::get_sdk_p
     throw celeritas_error{ "sdk providers not registered" };
 }
 
-celeritas::sdk_payment_providers celeritas::app_sdk_payment_providers::get_sdk_providers(int64_t sdk_id)
+celeritas::sdk_payment_providers celeritas::app_sdk_payment_providers::get_sdk_payment_providers(int64_t sdk_id)
 {
     std::shared_lock lock{ mutex_ };
 

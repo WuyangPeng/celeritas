@@ -7,13 +7,13 @@
 
 namespace celeritas
 {
-    class notify_http_message_handler final : public http_base_message_handler
+    class refund_http_message_handler final : public http_base_message_handler
     {
     public:
-        using class_type = notify_http_message_handler;
+        using class_type = refund_http_message_handler;
         using base_type = http_base_message_handler;
 
-        explicit notify_http_message_handler(const sdk_payment_providers_key& sdk_payment_providers_key, std::string path_suffix);
+        explicit refund_http_message_handler(const sdk_payment_providers_key& sdk_payment_providers_key, std::string path_suffix);
 
         [[nodiscard]] std::string get_supported_type_name() const override;
 

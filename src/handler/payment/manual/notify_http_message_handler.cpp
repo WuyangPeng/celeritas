@@ -3,9 +3,10 @@
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_fwd.h"
 #include "message/http_handle_parameter.h"
+#include "payment/recharge_notify.h"
 
-celeritas::notify_http_message_handler::notify_http_message_handler(const int64_t sdk_id, std::string path_suffix)
-    : sdk_id_{ sdk_id }, path_suffix_{ std::move(path_suffix) }
+celeritas::notify_http_message_handler::notify_http_message_handler(const sdk_payment_providers_key& sdk_payment_providers_key, std::string path_suffix)
+    : sdk_payment_providers_key_{ sdk_payment_providers_key }, path_suffix_{ std::move(path_suffix) }
 {
 }
 
@@ -22,16 +23,19 @@ bool celeritas::notify_http_message_handler::handle(const http_handle_parameter&
     }
 
     boost::asio::co_spawn(handle_parameter.get_io_context(),
-                          response(handle_parameter),
+                          response(sdk_payment_providers_key_, handle_parameter),
                           boost::asio::detached);
 
     return true;
 }
 
-celeritas::notify_http_message_handler::void_awaitable_type celeritas::notify_http_message_handler::response(http_handle_parameter handle_parameter)
+celeritas::notify_http_message_handler::void_awaitable_type celeritas::notify_http_message_handler::response(const sdk_payment_providers_key sdk_payment_providers_key, http_handle_parameter handle_parameter)
 {
+    const auto recharge_notify = recharge_notify::create(sdk_payment_providers_key, std::move(handle_parameter));
+
     try
     {
+        co_await recharge_notify->execute();
     }
     catch (const std::exception& error)
     {
@@ -42,5 +46,6 @@ celeritas::notify_http_message_handler::void_awaitable_type celeritas::notify_ht
         LOG_CHANNEL(handler_channel, fatal) << "notify unknown error.";
     }
 
+    handle_parameter.write(recharge_notify->get_default_message());
     co_return;
 }

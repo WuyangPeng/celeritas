@@ -15,5 +15,11 @@ namespace celeritas
     class order_create;
     class order_create_http_response;
 
+    class recharge_notify;
+    class we_chat_recharge_notify;
+
+    class refund_notify;
+    class we_chat_refund_notify;
+
     constexpr auto default_order_timeout = minute * 30;
 }

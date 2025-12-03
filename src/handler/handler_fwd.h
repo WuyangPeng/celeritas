@@ -26,4 +26,6 @@ namespace celeritas
 
     constexpr std::string_view order_create_path = "/api/v1/order/create";
     constexpr std::string_view notify_path = "/api/v1/notify/";
+
+    constexpr std::string_view refund_path = "/refund/";
 }

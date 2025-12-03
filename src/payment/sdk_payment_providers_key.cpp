@@ -1,6 +1,6 @@
 ﻿#include "sdk_payment_providers_key.h"
 
-celeritas::sdk_payment_providers_key::sdk_payment_providers_key(const int64_t app_id, payment_platform_type payment_platform_type)
+celeritas::sdk_payment_providers_key::sdk_payment_providers_key(const int64_t app_id, const payment_platform_type payment_platform_type)
     : app_id_{ app_id }, payment_platform_type_{ payment_platform_type }
 {
 }

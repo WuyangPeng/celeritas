@@ -865,7 +865,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 支付模块提供了一个基础框架，用于处理游戏内的支付请求。
 
-##### 核心组件 (Core Components)
+##### 基础定义 (Basic Definitions)
 
 * **💰 支付状态 (`payment_status_type`)**
     * **作用**: 定义了支付订单的生命周期状态。
@@ -883,6 +883,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     * **作用**: 定义了集成的第三方支付平台类型。
     * **特点**: 使用 `enum class` 提供了类型安全的常量，用于区分不同的支付渠道。
 
+##### 配置管理 (Configuration Management)
 
 * **🔑 SDK支付服务商配置键 (`sdk_payment_providers_key`)**
     - **作用**：作为`app_sdk_payment_providers`管理器的键，用于唯一标识一个SDK支付服务商的配置。
@@ -896,6 +897,7 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
         - **线程安全访问**：提供 `get_sdk_payment_providers(sdk_payment_providers_key)` 方法，以线程安全的方式获取指定服务商的配置。
         - **热重载**：支持通过 `reload_from_db` 方法重新加载特定服务商的配置，无需重启服务。
 
+##### 核心服务 (Core Services)
 
 * **⚙️ 支付服务基类 (`payment_service_base`)**
     - **作用**：作为支付模块中所有业务逻辑处理类的基类。
@@ -911,6 +913,27 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **作用**：封装了创建订单 `HTTP` 请求的响应数据。
     - **特点**：继承自 `http_response`，并额外包含客户端发起支付所需的全部信息（如预支付交易单号、签名等），并提供了
       `to_json_string()` 方法将其序列化为 `JSON` 格式。
+
+##### 通知处理 (Notification Handling)
+
+* **🔔 充值通知 (`recharge_notify`)**
+    - **作用**：作为处理第三方支付平台异步通知的核心逻辑。
+    - **特点**：封装了验证通知、更新订单状态、以及向游戏逻辑服同步发货状态等通用流程。
+
+
+* **📦 微信充值通知 (`we_chat_recharge_notify`)**
+    - **作用**：处理来自微信支付的异步回调通知。
+    - **特点**：继承自`recharge_notify`，实现了针对微信支付协议的特定解析和验证逻辑。
+
+
+* **🔔 退款通知 (`refund_notify`)**
+    - **作用**：作为处理第三方支付平台异步退款通知的核心逻辑。
+    - **特点**：封装了验证退款通知、更新订单状态等通用流程。
+
+
+* **📦 微信退款通知 (`we_chat_refund_notify`)**
+    - **作用**：处理来自微信支付的异步退款通知。
+    - **特点**：继承自`refund_notify`，实现了针对微信支付协议的特定解析和验证逻辑。
 
 #### handler（处理器）
 
@@ -1031,6 +1054,11 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 * **🔔 支付通知HTTP请求处理器 (`notify_http_message_handler`)**
     - **作用**：处理来自第三方平台的支付通知`HTTP`请求。
+    - **功能**：接收并处理`HTTP`通知，验证通知的合法性，并更新对应的支付订单状态。
+
+
+* **🔔 退款HTTP请求处理器 (`refund_http_message_handler`)**
+    - **作用**：处理来自第三方平台的退款`HTTP`请求。
     - **功能**：接收并处理`HTTP`通知，验证通知的合法性，并更新对应的支付订单状态。
 
 ##### http handlers（HTTP 处理器）
@@ -1234,27 +1262,27 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 支付服务器的核心职责是处理游戏内的所有支付请求，确保交易的安全、准确和可靠。
 
-- 💰 支付请求处理 (Payment Request Processing)（未实现）
+- 💰 支付请求处理 (Payment Request Processing)
     - 接收来自客户端或游戏服务器的支付请求。
     - 验证支付请求的合法性，包括商品信息、金额、用户身份等。
 
 
-- 🤝 第三方支付平台集成 (Third-Party Payment Platform Integration)（未实现）
+- 🤝 第三方支付平台集成 (Third-Party Payment Platform Integration)
     - 对接各种第三方支付平台（如微信支付、支付宝、Apple Pay、Google Play Billing等）。
     - 处理支付回调通知，更新订单状态。
 
 
-- 🛡️ 交易安全与防作弊 (Transaction Security & Anti-Cheating)（未实现）
+- 🛡️ 交易安全与防作弊 (Transaction Security & Anti-Cheating)
     - 实现交易加密、签名验证等安全措施，防止支付信息被篡改。
     - 建立防作弊机制，检测和阻止恶意支付行为。
 
 
-- 📜 订单管理 (Order Management)（未实现）
+- 📜 订单管理 (Order Management)
     - 创建、查询、更新和管理支付订单。
     - 记录订单的详细信息，包括商品、金额、用户、支付状态、交易时间等。
 
 
-- 🔄 支付结果通知 (Payment Result Notification)（未实现）
+- 🔄 支付结果通知 (Payment Result Notification)
     - 将支付结果通知给相关的游戏服务器或客户端。
     - 处理支付失败、退款等异常情况。
 
@@ -1262,38 +1290,44 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 后台服务器（Admin Server）为游戏运营和管理人员提供强大的工具，用于管理游戏数据、用户账户、系统配置和运营活动，确保游戏的正常运行和健康发展。
 
-- ⚙️ 游戏数据管理 (Game Data Management)（未实现）
+- 🔐 后台登录 (Admin Login)
+    - 提供后台管理系统的登录接口。
+    - 验证后台用户的身份和权限。
+    - 登录成功后，生成用于后续操作认证的会话令牌。
+
+
+- ⚙️ 游戏数据管理 (Game Data Management)
     - 提供对游戏内各种数据（如物品、角色属性、任务、NPC等）的查询、修改、添加和删除功能。
     - 支持批量操作和数据导入/导出。
 
 
-- 👥 用户账户管理 (User Account Management)（未实现）
+- 👥 用户账户管理 (User Account Management)
     - 查询用户基本信息、游戏数据、充值记录等。
     - 支持封禁/解封用户、修改用户密码、重置角色数据等操作。
     - 提供用户行为日志查询，用于问题排查和作弊检测。
 
 
-- 📊 运营活动管理 (Operational Activity Management)（未实现）
+- 📊 运营活动管理 (Operational Activity Management)
     - 配置和发布游戏内活动（如充值活动、节日活动、限时副本）。
     - 实时监控活动数据和效果。
 
 
-- 📈 数据统计与分析 (Data Statistics & Analysis)（未实现）
-    - 提供关键运营数据（DAU, MAU, ARPU, LTV等）的实时监控和历史查询。
+- 📈 数据统计与分析 (Data Statistics & Analysis)
+    - 提供关键运营数据（DAU, MAU, LTV等）的实时监控和历史查询。
     - 生成各种报表，辅助运营决策。
 
 
-- 📢 公告与邮件系统 (Announcement & Mail System)（未实现）
+- 📢 公告与邮件系统 (Announcement & Mail System)
     - 发布游戏内公告、维护通知。
     - 发送全服或指定用户的游戏内邮件，支持附件（如道具、货币）。
 
 
-- 🛡️ 权限管理 (Permission Management)（未实现）
+- 🛡️ 权限管理 (Permission Management)
     - 管理后台用户的角色和权限，确保不同运营人员只能访问其职责范围内的功能。
     - 记录后台操作日志，方便审计和追溯。
 
 
-- 🛠️ 系统配置管理 (System Configuration Management)（未实现）
+- 🛠️ 系统配置管理 (System Configuration Management)
     - 动态修改游戏服务器的配置参数，无需重启服务器。
     - 管理游戏版本、资源更新等。
 
@@ -1301,33 +1335,33 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 聊天服务器负责处理游戏内所有玩家之间的实时通讯，包括私聊、群聊、频道聊天等，确保消息的及时传递和良好的社交体验。
 
-- 💬 实时消息传递 (Real-time Message Delivery)（未实现）
+- 💬 实时消息传递 (Real-time Message Delivery)
     - 支持点对点私聊功能。
     - 支持群组聊天和自定义频道聊天。
     - 支持世界频道、公会频道等公共聊天区域。
 
 
-- 📥 消息存储与离线消息 (Message Storage & Offline Messages)（未实现）
+- 📥 消息存储与离线消息 (Message Storage & Offline Messages)
     - 存储聊天记录，方便用户查询历史消息。
     - 实现离线消息机制，确保用户上线后能接收到离线期间的消息。
 
 
-- 🚫 消息过滤与敏感词 (Message Filtering & Sensitive Words)（未实现）
+- 🚫 消息过滤与敏感词 (Message Filtering & Sensitive Words)
     - 实时过滤聊天内容中的敏感词汇和不当信息。
     - 支持消息审核机制，对违规内容进行处理。
 
 
-- 😊 表情与富文本 (Emoticons & Rich Text)（未实现）
+- 😊 表情与富文本 (Emoticons & Rich Text)
     - 支持在聊天中使用表情符号。
     - 支持简单的富文本格式，如颜色、加粗等。
 
 
-- 📢 频道管理 (Channel Management)（未实现）
+- 📢 频道管理 (Channel Management)
     - 允许用户创建、加入和退出聊天频道。
     - 提供频道权限管理功能，如禁言、踢人、设置管理员等。
 
 
-- 👤 用户状态 (User Status)（未实现）
+- 👤 用户状态 (User Status)
     - 显示玩家的在线/离线状态。
     - 支持显示玩家“正在输入”的状态提示。
 
@@ -1335,37 +1369,37 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 网关服务器是客户端连接游戏服务器集群的唯一入口，负责客户端连接的接入、认证、消息转发和负载均衡等核心功能。
 
-- 🔗 客户端连接管理 (Client Connection Management)（未实现）
+- 🔗 客户端连接管理 (Client Connection Management)
     - 负责维护客户端与服务器之间的 TCP/WebSocket 等长连接。
     - 处理连接的建立、断开和心跳检测。
 
 
-- 🔐 身份认证与授权 (Authentication & Authorization)（未实现）
+- 🔐 身份认证与授权 (Authentication & Authorization)
     - 接收客户端的登录请求，并与认证服务器交互，验证用户身份。
     - 验证通过后，为客户端生成会话令牌，并管理会话状态。
 
 
-- 🔄 消息路由与转发 (Message Routing & Forwarding)（未实现）
+- 🔄 消息路由与转发 (Message Routing & Forwarding)
     - 根据消息类型和目标，将客户端请求转发到相应的后端业务服务器（如玩家服务器、逻辑服务器）。
     - 将后端服务器的响应消息转发回对应的客户端。
 
 
-- ⚖️ 负载均衡 (Load Balancing)（未实现）
+- ⚖️ 负载均衡 (Load Balancing)
     - 根据后端服务器的负载情况，将新的客户端连接分配到最合适的业务服务器实例。
     - 支持多种负载均衡策略（如轮询、最少连接、哈希等）。
 
 
-- 🛡️ 安全防护 (Security Protection)（未实现）
+- 🛡️ 安全防护 (Security Protection)
     - 实现基本的 DDoS 防护、流量清洗。
     - 过滤恶意请求和非法数据包。
 
 
-- 📈 流量控制与限流 (Traffic Control & Rate Limiting)（未实现）
+- 📈 流量控制与限流 (Traffic Control & Rate Limiting)
     - 限制单个客户端或总体的请求速率，防止服务器过载。
     - 支持动态调整限流策略。
 
 
-- 📊 状态监控与日志 (Status Monitoring & Logging)（未实现）
+- 📊 状态监控与日志 (Status Monitoring & Logging)
     - 实时监控网关的连接数、流量、错误率等关键指标。
     - 记录详细的连接和消息日志，方便故障排查和分析。
 
@@ -1373,36 +1407,36 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 玩家服务器（Player Server）是游戏中负责管理玩家核心数据和状态的关键组件。它主要关注玩家的持久化身份、资产和非实时游戏逻辑相关的状态，是玩家在游戏世界中的“身份档案”和“个人仓库”。
 
-- 👤 玩家数据管理 (Player Data Management)（未实现）
+- 👤 玩家数据管理 (Player Data Management)
     - 存储和管理玩家的角色基本信息（名称、等级、职业、外观等）。
     - 存储和管理玩家的虚拟资产（货币、道具、装备、背包）。
     - 存储和管理玩家的成就、任务进度、邮件、日志等非实时数据。
     - 与数据库进行交互，确保持久化存储和数据一致性。
 
 
-- 🌐 玩家状态管理 (Player State Management)（未实现）
+- 🌐 玩家状态管理 (Player State Management)
     - 维护玩家的在线/离线状态。
     - 记录玩家当前所在的游戏世界、场景或逻辑服务器实例。
     - 管理玩家的会话信息，确保玩家在不同游戏组件间的无缝切换。
 
 
-- 🤝 社交关系管理 (Social Relationship Management)（未实现）
+- 🤝 社交关系管理 (Social Relationship Management)
     - 处理好友列表、黑名单的添加、删除和查询。
     - 管理公会/帮派信息（如果公会不是一个独立的微服务）。
     - 提供玩家间的邮件系统。
 
 
-- 🎭 角色创建与选择 (Character Creation & Selection)（未实现）
+- 🎭 角色创建与选择 (Character Creation & Selection)
     - 处理玩家创建新角色、删除角色、选择角色进入游戏等操作。
     - 验证角色名称的合法性和唯一性。
 
 
-- 🔄 数据同步与一致性 (Data Synchronization & Consistency)（未实现）
+- 🔄 数据同步与一致性 (Data Synchronization & Consistency)
     - 确保玩家数据在不同游戏服务器（如逻辑服务器、战斗服务器）之间进行同步。
     - 处理玩家数据在服务器重启、宕机等情况下的恢复和一致性。
 
 
-- 💰 资源管理 (Resource Management)（未实现）
+- 💰 资源管理 (Resource Management)
     - 处理玩家拥有的虚拟货币、道具等资源的增减操作。
     - 确保资源操作的原子性和安全性，防止数据异常。
 
@@ -1410,35 +1444,35 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 逻辑服务器是处理大部分非实时、但与核心玩法紧密相关的游戏逻辑的“大脑”。它负责驱动玩家在游戏世界中的各种行为和状态变迁，是游戏核心玩法的实现者。
 
-- 任务系统 (Quest System)（未实现）
+- 任务系统 (Quest System)
     - 处理任务的接取、完成、放弃、进度更新等逻辑。
     - 管理任务链和任务奖励发放。
 
 
-- 🗺️ 场景与世界管理 (Scene & World Management)（未实现）
+- 🗺️ 场景与世界管理 (Scene & World Management)
     - 管理玩家在不同场景（地图）之间的切换逻辑。
     - 控制场景中非战斗相关的动态元素，如NPC的刷新、可采集物的状态等。
     - 驱动游戏世界中的定时事件或触发式事件。
 
 
-- 💬 NPC交互 (NPC Interaction)（未实现）
+- 💬 NPC交互 (NPC Interaction)
     - 处理与NPC的对话、商店买卖、任务交付等交互逻辑。
     - 管理NPC的行为和状态。
 
 
-- 🛠️ 玩家非战斗行为 (Player Non-Combat Actions)（未实现）
+- 🛠️ 玩家非战斗行为 (Player Non-Combat Actions)
     - 处理采集、合成、制造、装备强化、技能升级等非战斗核心循环逻辑。
     - 验证玩家操作的合法性，并更新玩家数据。
 
 
-- 🔄 服务间协调 (Inter-Service Coordination)（未实现）
+- 🔄 服务间协调 (Inter-Service Coordination)
     - 接收来自网关的玩家操作请求，并进行初步处理。
     - 与玩家服务器通信，获取和更新玩家的持久化数据（如扣除任务道具、增加经验值）。
     - 与游戏服务器（战斗服务器）通信，在进入/退出战斗时同步玩家状态。
     - 与聊天服务器等其他服务交互，以广播游戏事件（如玩家完成了某个重要成就）。
 
 
-- 📊 状态同步与广播 (State Synchronization & Broadcast)（未实现）
+- 📊 状态同步与广播 (State Synchronization & Broadcast)
     - 将游戏逻辑处理的结果同步给客户端，以更新UI和玩家视角内的世界状态。
     - 确保玩家的逻辑状态在各个后端服务之间保持一致。
 
@@ -1446,27 +1480,27 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 游戏服务器（Game Server）负责承载和执行某个特定游戏服的核心、独特游戏逻辑和功能。它管理该服内的游戏世界状态、玩家在该服内的具体行为，并驱动游戏核心玩法的运行。
 
-- 🎮 核心游戏玩法逻辑 (Core Gameplay Logic)（未实现）
+- 🎮 核心游戏玩法逻辑 (Core Gameplay Logic)
     - 实现游戏独有的规则、机制和系统，如独特的经济系统、复杂的制作系统、特定的任务链或世界事件。
     - 处理玩家在游戏世界中与游戏特定对象、系统或机制的交互。
 
 
-- 🗺️ 游戏世界/实例状态管理 (Game World/Instance State Management)（未实现）
+- 🗺️ 游戏世界/实例状态管理 (Game World/Instance State Management)
     - 维护特定游戏服内游戏世界的实时状态，包括地图、区域、副本或战场实例。
     - 管理该服内所有NPC、怪物、可交互物品和环境元素的生命周期和状态。
 
 
-- 🏃 玩家服内行为处理 (Player In-Shard Action Processing)（未实现）
+- 🏃 玩家服内行为处理 (Player In-Shard Action Processing)
     - 处理玩家在该游戏服内的各种操作，例如交易、与游戏对象互动、参与游戏服特有的活动或事件。
     - 验证玩家操作的合法性，并根据游戏规则更新游戏世界和玩家状态。
 
 
-- 🔄 游戏数据持久化与同步 (Game Data Persistence & Synchronization)（未实现）
+- 🔄 游戏数据持久化与同步 (Game Data Persistence & Synchronization)
     - 与玩家服务器通信，加载玩家进入该服所需的角色数据，并在玩家离开或数据变更时同步回玩家服务器。
     - 持久化该游戏服特有的世界状态数据（如副本进度、世界Boss状态）到数据库。
 
 
-- 📢 游戏事件管理与广播 (Game Event Management & Broadcasting)（未实现）
+- 📢 游戏事件管理与广播 (Game Event Management & Broadcasting)
     - 触发和管理游戏服内的各种事件，如定时活动、Boss刷新、天气变化等。
     - 向该服内所有相关玩家广播游戏事件通知和状态更新。
 
@@ -1474,29 +1508,29 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 战斗服务器（Battle Server）是游戏中处理最核心、最实时、对性能和同步要求最高的游戏逻辑的组件。它专注于管理和模拟游戏内的所有战斗行为，确保战斗过程的公平性、流畅性和一致性。
 
-- ⚔️ 实时战斗模拟与计算 (Real-time Battle Simulation & Calculation)（未实现）
+- ⚔️ 实时战斗模拟与计算 (Real-time Battle Simulation & Calculation)
     - 处理玩家和怪物的所有战斗操作，包括攻击、技能释放、移动、格挡、闪避等。
     - 执行精确的伤害计算、状态效果（Buff/Debuff）判定、技能冷却和资源消耗。
     - 模拟怪物 AI 的行为，驱动其在战斗中的决策和行动。
 
 
-- 🏟️ 战斗场景实例管理 (Battle Scene Instance Management)（未实现）
+- 🏟️ 战斗场景实例管理 (Battle Scene Instance Management)
     - 创建、管理和销毁独立的战斗实例（例如：竞技场、副本房间、战场区域）。
     - 维护每个战斗实例内所有参与者（玩家、怪物、NPC）的实时位置、朝向、生命值、状态等。
     - 处理玩家进入和退出战斗实例的逻辑。
 
 
-- ⚡ 高频状态同步与广播 (High-Frequency State Synchronization & Broadcasting)（未实现）
+- ⚡ 高频状态同步与广播 (High-Frequency State Synchronization & Broadcasting)
     - 以极高的频率将战斗实例内所有关键实体的状态变化（如位置、血量、动作、技能效果）同步给所有相关客户端。
     - 采用预测、回滚、插值等技术，处理网络延迟和丢包，确保客户端视觉上的流畅性和服务器权威性。
 
 
-- 🚫 权威判定与反作弊 (Authoritative Judgment & Anti-Cheating)（未实现）
+- 🚫 权威判定与反作弊 (Authoritative Judgment & Anti-Cheating)
     - 所有战斗相关的核心逻辑（如伤害判定、技能命中、移动有效性）都在服务器端进行权威判定。
     - 实现严格的作弊检测机制，防止客户端通过修改数据或发送非法操作来获取优势（如加速、瞬移、秒杀）。
 
 
-- 🤝 服务间交互 (Inter-Service Interaction)（未实现）
+- 🤝 服务间交互 (Inter-Service Interaction)
     - 与**玩家服务器**通信，获取玩家进入战斗时的角色属性、装备、技能数据，并在战斗结束后更新玩家的经验、掉落、任务进度等持久化数据。
     - 与**逻辑服务器**通信，同步战斗开始/结束时的玩家状态，或触发特定的游戏事件。
     - 可能与**聊天服务器**通信，广播战斗信息或场景事件。
@@ -1505,53 +1539,53 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 跨服服务器是游戏架构中用于连接不同游戏服务器玩家的桥梁。它使得来自不同服务器的玩家能够参与到共同的活动、竞技或社交互动中，打破了单一服务器的界限，扩展了游戏世界的规模和玩家的互动范围。
 
-- 🌐 跨服活动管理 (Cross-Server Activity Management)（未实现）
+- 🌐 跨服活动管理 (Cross-Server Activity Management)
     - 组织和管理跨服活动，如跨服战场、跨服竞技场、跨服副本等。
     - 负责跨服活动的匹配、房间创建和状态管理。
 
 
-- 🤝 跨服玩家匹配 (Cross-Server Player Matching)（未实现）
+- 🤝 跨服玩家匹配 (Cross-Server Player Matching)
     - 根据玩家的等级、战斗力、段位等信息，进行跨服匹配。
     - 支持多种匹配算法，确保匹配的公平性和效率。
 
 
-- 🔄 跨服数据同步 (Cross-Server Data Synchronization)（未实现）
+- 🔄 跨服数据同步 (Cross-Server Data Synchronization)
     - 在跨服活动期间，同步来自不同服务器的玩家数据。
     - 确保跨服活动结束后，玩家的奖励和数据能够正确地写回到各自的源服务器。
 
 
-- 💬 跨服聊天 (Cross-Server Chat)（未实现）
+- 💬 跨服聊天 (Cross-Server Chat)
     - 提供跨服聊天频道，让不同服务器的玩家可以进行实时交流。
 
 
-- 🏆 跨服排行榜 (Cross-Server Leaderboards)（未实现）
+- 🏆 跨服排行榜 (Cross-Server Leaderboards)
     - 实现跨服排行榜功能，展示所有服务器玩家的排名。
 
 #### log（日志服务器）
 
 日志服务器（Log Server）负责集中收集、存储、管理和分析来自所有游戏服务器的日志数据。它为开发、运维和数据分析团队提供统一的日志访问接口，是系统监控、故障排查和行为分析的重要基础。
 
-- 📥 收集 (Log Collection)（未实现）
+- 📥 收集 (Log Collection)
     - 接收来自各个游戏服务器的日志数据。
     - 支持多种日志传输协议（如 TCP、UDP、HTTP/HTTPS）。
     - 确保日志收集的可靠性和高吞吐量。
 
 
-- 🗄️ 存储 (Log Storage)（未实现）
+- 🗄️ 存储 (Log Storage)
     - 将收集到的日志数据持久化存储到适合大规模日志的存储系统（如 Elasticsearch, Kafka, HDFS, MongoDB）。
     - 支持日志的索引和压缩，优化存储空间和查询效率。
 
 
-- 🔍 查询与分析 (Log Query & Analysis)（未实现）
+- 🔍 查询与分析 (Log Query & Analysis)
     - 提供强大的日志查询接口，支持按时间、服务类型、日志级别、关键词等多种条件进行过滤和搜索。
     - 可能集成可视化工具，方便运营和开发人员进行日志分析和趋势洞察。
 
 
-- 🔔 告警 (Log Alerting)（未实现）
+- 🔔 告警 (Log Alerting)
     - 根据预设的规则（如错误率阈值、特定关键词出现频率），对异常日志事件触发告警。
     - 通过邮件、短信、Webhook 等方式通知相关人员。
 
 
-- ⏳ 生命周期管理 (Log Lifecycle Management)（未实现）
+- ⏳ 生命周期管理 (Log Lifecycle Management)
     - 管理日志数据的保留策略，定期归档或删除过期日志。
     - 确保日志存储符合法规和运营要求。

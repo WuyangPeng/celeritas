@@ -20,9 +20,9 @@ namespace celeritas
 
         [[nodiscard]] static app_sdk_payment_providers& get_instance();
 
-        [[nodiscard]] sdk_payment_providers get_sdk_providers(const sdk_payment_providers_key& sdk_payment_providers_key);
+        [[nodiscard]] sdk_payment_providers get_sdk_payment_providers(const sdk_payment_providers_key& sdk_payment_providers_key);
 
-        [[nodiscard]] sdk_payment_providers get_sdk_providers(int64_t sdk_id);
+        [[nodiscard]] sdk_payment_providers get_sdk_payment_providers(int64_t sdk_id);
 
         void reload_from_db(io_context_type& io_context, int64_t sdk_id);
 

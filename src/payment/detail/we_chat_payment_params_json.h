@@ -4,7 +4,7 @@
 
 namespace celeritas
 {
-    class we_chat_payment_params_json : public payment_params_json
+    class we_chat_payment_params_json final : public payment_params_json
     {
     public:
         using class_type = we_chat_payment_params_json;
