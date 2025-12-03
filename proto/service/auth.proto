@@ -34,12 +34,21 @@ message reload_sdk_providers_db_request {
 message reload_sdk_providers_db_response {
 }
 
+// 重载server cell数据库
+message reload_server_cell_db_request {
+  int32 cell_id = 1;
+}
+
+message reload_server_cell_db_response {
+}
+
 message auth_request {
   oneof payload {
     reload_app_db_request reload_app_db = 1;
     reload_sms_providers_db_request reload_sms_providers_db = 2;
     reload_email_providers_db_request reload_email_providers_db = 3;
     reload_sdk_providers_db_request reload_sdk_providers_db = 4;
+    reload_server_cell_db_request reload_server_cell_db = 5;
   }
 }
 
@@ -49,6 +58,7 @@ message auth_response {
     reload_sms_providers_db_response reload_sms_providers_db = 2;
     reload_email_providers_db_response reload_email_providers_db = 3;
     reload_sdk_providers_db_response reload_sdk_providers_db = 4;
+    reload_server_cell_db_response reload_server_cell_db = 5;
   }
 }
 

@@ -16,6 +16,7 @@ void celeritas::register_handler_helper::register_handler() const
     message_registry_->register_handler(std::make_shared<reload_app_db_message_handler>());
     message_registry_->register_handler(std::make_shared<reload_email_providers_db_message_handler>());
     message_registry_->register_handler(std::make_shared<reload_sdk_providers_db_message_handler>());
+    message_registry_->register_handler(std::make_shared<reload_server_cell_db_message_handler>());
     message_registry_->register_handler(std::make_shared<reload_sms_providers_db_message_handler>());
     message_registry_->register_handler(std::make_shared<auth_request_message_handler>());
     message_registry_->register_handler(std::make_shared<auth_response_message_handler>());

@@ -195,8 +195,11 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr discover_response::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : endpoints_{},
-        _cached_size_{0} {}
+      : _cached_size_{0},
+        endpoints_{},
+        service_name_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()) {}
 
 template <typename>
 PROTOBUF_CONSTEXPR discover_response::discover_response(::_pbi::ConstantInitialized)
@@ -316,8 +319,13 @@ const ::uint32_t
         0,
         1,
         2,
-        0x000, // bitmap
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::discover_response, _impl_._has_bits_),
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::discover_response, _impl_.service_name_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::discover_response, _impl_.endpoints_),
+        0,
+        ~0u,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::close_request, _impl_._has_bits_),
         4, // hasbit index offset
@@ -344,9 +352,9 @@ static const ::_pbi::MigrationSchema
         {23, sizeof(::celeritas::proto::service::discover_request)},
         {28, sizeof(::celeritas::proto::service::end_point)},
         {37, sizeof(::celeritas::proto::service::discover_response)},
-        {39, sizeof(::celeritas::proto::service::close_request)},
-        {44, sizeof(::celeritas::proto::service::service_registry_request)},
-        {50, sizeof(::celeritas::proto::service::service_registry_response)},
+        {44, sizeof(::celeritas::proto::service::close_request)},
+        {49, sizeof(::celeritas::proto::service::service_registry_request)},
+        {55, sizeof(::celeritas::proto::service::service_registry_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::service::_protocol_port_default_instance_._instance,
@@ -371,26 +379,27 @@ const char descriptor_table_protodef_proto_2fservice_2fregistry_2eproto[] ABSL_A
     "e\030\006 \001(\003\"\023\n\021register_response\"(\n\020discover"
     "_request\022\024\n\014service_name\030\001 \001(\t\":\n\tend_po"
     "int\022\014\n\004host\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\022\021\n\tis_he"
-    "alth\030\003 \001(\010\"J\n\021discover_response\0225\n\tendpo"
-    "ints\030\001 \003(\0132\".celeritas.proto.service.end"
-    "_point\"$\n\rclose_request\022\023\n\013instance_id\030\001"
-    " \001(\t\"\361\001\n\030service_registry_request\022D\n\017ser"
-    "ver_register\030\001 \001(\0132).celeritas.proto.ser"
-    "vice.register_requestH\000\022D\n\017server_discov"
-    "er\030\002 \001(\0132).celeritas.proto.service.disco"
-    "ver_requestH\000\022>\n\014server_close\030\003 \001(\0132&.ce"
-    "leritas.proto.service.close_requestH\000B\t\n"
-    "\007payload\"\264\001\n\031service_registry_response\022E"
-    "\n\017server_register\030\001 \001(\0132*.celeritas.prot"
-    "o.service.register_responseH\000\022E\n\017server_"
-    "discover\030\002 \001(\0132*.celeritas.proto.service"
-    ".discover_responseH\000B\t\n\007payloadb\006proto3"
+    "alth\030\003 \001(\010\"`\n\021discover_response\022\024\n\014servi"
+    "ce_name\030\001 \001(\t\0225\n\tendpoints\030\002 \003(\0132\".celer"
+    "itas.proto.service.end_point\"$\n\rclose_re"
+    "quest\022\023\n\013instance_id\030\001 \001(\t\"\361\001\n\030service_r"
+    "egistry_request\022D\n\017server_register\030\001 \001(\013"
+    "2).celeritas.proto.service.register_requ"
+    "estH\000\022D\n\017server_discover\030\002 \001(\0132).celerit"
+    "as.proto.service.discover_requestH\000\022>\n\014s"
+    "erver_close\030\003 \001(\0132&.celeritas.proto.serv"
+    "ice.close_requestH\000B\t\n\007payload\"\264\001\n\031servi"
+    "ce_registry_response\022E\n\017server_register\030"
+    "\001 \001(\0132*.celeritas.proto.service.register"
+    "_responseH\000\022E\n\017server_discover\030\002 \001(\0132*.c"
+    "eleritas.proto.service.discover_response"
+    "H\000B\t\n\007payloadb\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fservice_2fregistry_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fregistry_2eproto = {
     false,
     false,
-    959,
+    981,
     descriptor_table_protodef_proto_2fservice_2fregistry_2eproto,
     "proto/service/registry.proto",
     &descriptor_table_proto_2fservice_2fregistry_2eproto_once,
@@ -1894,6 +1903,10 @@ void end_point::InternalSwap(end_point* PROTOBUF_RESTRICT PROTOBUF_NONNULL other
 
 class discover_response::_Internal {
  public:
+  using HasBits =
+      decltype(::std::declval<discover_response>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(discover_response, _impl_._has_bits_);
 };
 
 discover_response::discover_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
@@ -1909,8 +1922,10 @@ PROTOBUF_NDEBUG_INLINE discover_response::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
     [[maybe_unused]] const ::celeritas::proto::service::discover_response& from_msg)
-      : endpoints_{visibility, arena, from.endpoints_},
-        _cached_size_{0} {}
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        endpoints_{visibility, arena, from.endpoints_},
+        service_name_(arena, from.service_name_) {}
 
 discover_response::discover_response(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
@@ -1931,8 +1946,9 @@ discover_response::discover_response(
 PROTOBUF_NDEBUG_INLINE discover_response::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-      : endpoints_{visibility, arena},
-        _cached_size_{0} {}
+      : _cached_size_{0},
+        endpoints_{visibility, arena},
+        service_name_(arena) {}
 
 inline void discover_response::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
@@ -1948,6 +1964,7 @@ inline void discover_response::SharedDtor(MessageLite& self) {
   }
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.service_name_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -1964,7 +1981,7 @@ constexpr auto discover_response::InternalNewImpl_() {
                   ::google::protobuf::Message::internal_visibility()),
   });
   if (arena_bits.has_value()) {
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
+    return ::google::protobuf::internal::MessageCreator::CopyInit(
         sizeof(discover_response), alignof(discover_response), *arena_bits);
   } else {
     return ::google::protobuf::internal::MessageCreator(&discover_response::PlacementNew_,
@@ -2006,16 +2023,16 @@ discover_response::GetClassData() const {
   return discover_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
+const ::_pbi::TcParseTable<1, 2, 1, 62, 2>
 discover_response::_table_ = {
   {
-    0,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(discover_response, _impl_._has_bits_),
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    2, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
+    2,  // num_field_entries
     1,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     discover_response_class_data_.base(),
@@ -2025,19 +2042,27 @@ discover_response::_table_ = {
     ::_pbi::TcParser::GetTable<::celeritas::proto::service::discover_response>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // repeated .celeritas.proto.service.end_point endpoints = 1;
+    // repeated .celeritas.proto.service.end_point endpoints = 2;
     {::_pbi::TcParser::FastMtR1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(discover_response, _impl_.endpoints_)}},
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(discover_response, _impl_.endpoints_)}},
+    // string service_name = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(discover_response, _impl_.service_name_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // repeated .celeritas.proto.service.end_point endpoints = 1;
-    {PROTOBUF_FIELD_OFFSET(discover_response, _impl_.endpoints_), 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // string service_name = 1;
+    {PROTOBUF_FIELD_OFFSET(discover_response, _impl_.service_name_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // repeated .celeritas.proto.service.end_point endpoints = 2;
+    {PROTOBUF_FIELD_OFFSET(discover_response, _impl_.endpoints_), -1, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::end_point>()},
   }},
   {{
+    "\51\14\0\0\0\0\0\0"
+    "celeritas.proto.service.discover_response"
+    "service_name"
   }},
 };
 PROTOBUF_NOINLINE void discover_response::Clear() {
@@ -2048,6 +2073,11 @@ PROTOBUF_NOINLINE void discover_response::Clear() {
   (void) cached_has_bits;
 
   _impl_.endpoints_.Clear();
+  cached_has_bits = _impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    _impl_.service_name_.ClearNonDefaultToEmpty();
+  }
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -2069,14 +2099,24 @@ PROTOBUF_NOINLINE void discover_response::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // repeated .celeritas.proto.service.end_point endpoints = 1;
+  // string service_name = 1;
+  if ((this_._impl_._has_bits_[0] & 0x00000001U) != 0) {
+    if (!this_._internal_service_name().empty()) {
+      const ::std::string& _s = this_._internal_service_name();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.service.discover_response.service_name");
+      target = stream->WriteStringMaybeAliased(1, _s, target);
+    }
+  }
+
+  // repeated .celeritas.proto.service.end_point endpoints = 2;
   for (unsigned i = 0, n = static_cast<unsigned>(
                            this_._internal_endpoints_size());
        i < n; i++) {
     const auto& repfield = this_._internal_endpoints().Get(i);
     target =
         ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1, repfield, repfield.GetCachedSize(),
+            2, repfield, repfield.GetCachedSize(),
             target, stream);
   }
 
@@ -2105,11 +2145,21 @@ PROTOBUF_NOINLINE void discover_response::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
    {
-    // repeated .celeritas.proto.service.end_point endpoints = 1;
+    // repeated .celeritas.proto.service.end_point endpoints = 2;
     {
       total_size += 1UL * this_._internal_endpoints_size();
       for (const auto& msg : this_._internal_endpoints()) {
         total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
+  }
+   {
+    // string service_name = 1;
+    cached_has_bits = this_._impl_._has_bits_[0];
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      if (!this_._internal_service_name().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_service_name());
       }
     }
   }
@@ -2130,6 +2180,17 @@ void discover_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const
 
   _this->_internal_mutable_endpoints()->MergeFrom(
       from._internal_endpoints());
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    if (!from._internal_service_name().empty()) {
+      _this->_internal_set_service_name(from._internal_service_name());
+    } else {
+      if (_this->_impl_.service_name_.IsDefault()) {
+        _this->_internal_set_service_name("");
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -2143,8 +2204,12 @@ void discover_response::CopyFrom(const discover_response& from) {
 
 void discover_response::InternalSwap(discover_response* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   _impl_.endpoints_.InternalSwap(&other->_impl_.endpoints_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.service_name_, &other->_impl_.service_name_, arena);
 }
 
 ::google::protobuf::Metadata discover_response::GetMetadata() const {

@@ -1480,9 +1480,10 @@ class discover_response final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kEndpointsFieldNumber = 1,
+    kEndpointsFieldNumber = 2,
+    kServiceNameFieldNumber = 1,
   };
-  // repeated .celeritas.proto.service.end_point endpoints = 1;
+  // repeated .celeritas.proto.service.end_point endpoints = 2;
   int endpoints_size() const;
   private:
   int _internal_endpoints_size() const;
@@ -1499,12 +1500,27 @@ class discover_response final : public ::google::protobuf::Message
   const ::celeritas::proto::service::end_point& endpoints(int index) const;
   ::celeritas::proto::service::end_point* PROTOBUF_NONNULL add_endpoints();
   const ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::end_point>& endpoints() const;
+  // string service_name = 1;
+  void clear_service_name() ;
+  const ::std::string& service_name() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_service_name(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_service_name();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_service_name();
+  void set_allocated_service_name(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_service_name() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_service_name(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_service_name();
+
+  public:
   // @@protoc_insertion_point(class_scope:celeritas.proto.service.discover_response)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
-                                   1, 0,
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   1, 62,
                                    2>
       _table_;
 
@@ -1523,8 +1539,10 @@ class discover_response final : public ::google::protobuf::Message
         ::google::protobuf::internal::InternalVisibility visibility,
         ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
         const discover_response& from_msg);
-    ::google::protobuf::RepeatedPtrField< ::celeritas::proto::service::end_point > endpoints_;
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::celeritas::proto::service::end_point > endpoints_;
+    ::google::protobuf::internal::ArenaStringPtr service_name_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2624,7 +2642,72 @@ inline void end_point::_internal_set_is_health(bool value) {
 
 // discover_response
 
-// repeated .celeritas.proto.service.end_point endpoints = 1;
+// string service_name = 1;
+inline void discover_response::clear_service_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.service_name_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000001U;
+}
+inline const ::std::string& discover_response::service_name() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.discover_response.service_name)
+  return _internal_service_name();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void discover_response::set_service_name(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  _impl_.service_name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.discover_response.service_name)
+}
+inline ::std::string* PROTOBUF_NONNULL discover_response::mutable_service_name()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_service_name();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.discover_response.service_name)
+  return _s;
+}
+inline const ::std::string& discover_response::_internal_service_name() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.service_name_.Get();
+}
+inline void discover_response::_internal_set_service_name(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  _impl_.service_name_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL discover_response::_internal_mutable_service_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  return _impl_.service_name_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE discover_response::release_service_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.discover_response.service_name)
+  if ((_impl_._has_bits_[0] & 0x00000001U) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001U;
+  auto* released = _impl_.service_name_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.service_name_.Set("", GetArena());
+  }
+  return released;
+}
+inline void discover_response::set_allocated_service_name(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001U;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001U;
+  }
+  _impl_.service_name_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.service_name_.IsDefault()) {
+    _impl_.service_name_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.discover_response.service_name)
+}
+
+// repeated .celeritas.proto.service.end_point endpoints = 2;
 inline int discover_response::_internal_endpoints_size() const {
   return _internal_endpoints().size();
 }

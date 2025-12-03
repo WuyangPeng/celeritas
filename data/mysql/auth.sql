@@ -48,6 +48,20 @@ CREATE TABLE `sdk_providers` (
   UNIQUE KEY `app_id_process_type_unique` (`app_id`,`process_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE `server_cell` (
+  `cell_id` BIGINT NOT NULL,
+  `game_server_id` VARCHAR(255) NOT NULL COMMENT '服务器id',
+  `server_name` VARCHAR(255) NOT NULL COMMENT '服务器名字',
+  `app_id` BIGINT NOT NULL DEFAULT 0 COMMENT '应用id',
+  `launch_time` BIGINT NOT NULL DEFAULT 0 COMMENT '开服时间',
+  `zone` VARCHAR(255) NOT NULL COMMENT '区域',
+  `is_close_display` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '当服务器不可连时，服务器列表是否显示',
+  `status` INT NOT NULL DEFAULT 0 COMMENT '游戏状态',
+  PRIMARY KEY (`cell_id`),
+  UNIQUE KEY `game_server_id_unique` (`game_server_id`),
+  KEY `app_id_index` (`app_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 CREATE TABLE `account` (
   `account_id` BIGINT NOT NULL COMMENT '账号id，雪花算法生成',
   `account_name` VARCHAR(255) NOT NULL COMMENT '正式账号的用户名',

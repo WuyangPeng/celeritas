@@ -12,6 +12,7 @@
 #include "handler/auth/reload_app_db_message_handler.h"
 #include "handler/auth/reload_email_providers_db_message_handler.h"
 #include "handler/auth/reload_sdk_providers_db_message_handler.h"
+#include "handler/auth/reload_server_cell_db_message_handler.h"
 #include "handler/auth/reload_sms_providers_db_message_handler.h"
 #include "handler/auth/sdk_bind_http_message_handler.h"
 #include "handler/auth/sdk_login_http_message_handler.h"

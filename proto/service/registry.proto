@@ -32,7 +32,8 @@ message end_point {
 }
 
 message discover_response {
-  repeated end_point endpoints = 1;
+  string service_name = 1;
+  repeated end_point endpoints = 2;
 }
 
 // 服务关闭消息
