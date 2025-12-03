@@ -12,6 +12,11 @@ celeritas::auth_resource_loader::auth_resource_loader(const std::string_view ser
 
 void celeritas::auth_resource_loader::service_initialize_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
 {
+    load_from_db(io_context);
+}
+
+void celeritas::auth_resource_loader::load_from_db(io_context_type& io_context)
+{
     app_secret::get_instance().load_from_db(io_context);
     app_sms_providers::get_instance().load_from_db(io_context);
     app_email_providers::get_instance().load_from_db(io_context);

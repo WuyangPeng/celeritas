@@ -14,7 +14,7 @@ namespace celeritas
         using resource_loader_weak_ptr = std::weak_ptr<service_registry_resource_loader>;
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
 
-        explicit health_check_timer(io_context_type& io_context, duration_type interval, resource_loader_weak_ptr resource_loader, const network_message_callback_weak_ptr& network_message_callback);
+        explicit health_check_timer(io_context_type& io_context, duration_type interval, resource_loader_weak_ptr resource_loader, network_message_callback_weak_ptr network_message_callback);
 
     private:
         void execute_timer_task() override;

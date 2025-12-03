@@ -14,5 +14,7 @@ namespace celeritas
 
     private:
         void service_initialize_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback) override;
+
+        static void load_from_db(io_context_type& io_context);
     };
 }
