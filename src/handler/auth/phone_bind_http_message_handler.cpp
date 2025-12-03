@@ -1,11 +1,11 @@
 ﻿#include "phone_bind_http_message_handler.h"
-#include "auth/phone_bind_response.h"
 #include "auth/phone_bind.h"
+#include "auth/phone_bind_response.h"
 #include "common/logger.h"
 #include "handler/handler_fwd.h"
+#include "initializer/initializer_fwd.h"
+#include "message/game_error_type.h"
 #include "message/http_handle_parameter.h"
-#include "../../message/game_error_type.h"
-#include "../../initializer/initializer_fwd.h"
 
 std::string celeritas::phone_bind_http_message_handler::get_supported_type_name() const
 {

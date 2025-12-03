@@ -1,4 +1,5 @@
-﻿#include "resource_loader.h"
+﻿#include "initializer_fwd.h"
+#include "resource_loader.h"
 #include "common/logger.h"
 #include "common/random_helper.h"
 #include "database/database_pool_manager.h"
@@ -9,10 +10,9 @@
 #include "detail/server_resource_loader.h"
 #include "detail/service_registry_loader.h"
 #include "detail/service_registry_timer.h"
-#include "../service_registry/health_check_level_type.h"
 #include "network/tcp_client.h"
 #include "proto/celeritas.pb.h"
-#include "initializer_fwd.h"
+#include "service_registry/health_check_level_type.h"
 #include "service_registry/detail/service_registry_internal_fwd.h"
 
 #include <ranges>

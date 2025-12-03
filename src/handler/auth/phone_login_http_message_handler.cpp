@@ -3,17 +3,20 @@
 #include "auth/phone_login_response.h"
 #include "common/logger.h"
 #include "handler/handler_fwd.h"
+#include "initializer/initializer_fwd.h"
+#include "message/game_error_type.h"
 #include "message/http_handle_parameter.h"
-#include "../../message/game_error_type.h"
-#include "../../initializer/initializer_fwd.h"
 
-std::string celeritas::phone_login_http_message_handler::get_supported_type_name() const {
+std::string celeritas::phone_login_http_message_handler::get_supported_type_name() const
+{
     return phone_login_path.data();
 }
 
-bool celeritas::phone_login_http_message_handler::handle(const http_handle_parameter &handle_parameter,
-                                                         const http_message_registry_weak_ptr &message_registry) {
-    if (handle_parameter.get_server_type() != auth_type) {
+bool celeritas::phone_login_http_message_handler::handle(const http_handle_parameter& handle_parameter,
+                                                         const http_message_registry_weak_ptr& message_registry)
+{
+    if (handle_parameter.get_server_type() != auth_type)
+    {
         return false;
     }
 
@@ -25,16 +28,22 @@ bool celeritas::phone_login_http_message_handler::handle(const http_handle_param
 }
 
 celeritas::phone_login_http_message_handler::void_awaitable_type celeritas::phone_login_http_message_handler::response(
-    http_handle_parameter handle_parameter) {
-    try {
-        phone_login phone_login{std::move(handle_parameter)};
+    http_handle_parameter handle_parameter)
+{
+    try
+    {
+        phone_login phone_login{ std::move(handle_parameter) };
         co_return co_await phone_login.response();
-    } catch (const std::exception &error) {
+    }
+    catch (const std::exception& error)
+    {
         LOG_CHANNEL(handler_channel, error) << "phone login error: " << error.what();
-    } catch (...) {
+    }
+    catch (...)
+    {
         LOG_CHANNEL(handler_channel, fatal) << "phone login unknown error.";
     }
 
-    const phone_login_response response{game_error_type::unknown, "unknown error"};
+    const phone_login_response response{ game_error_type::unknown, "unknown error" };
     handle_parameter.write(response.to_json_string());
 }
