@@ -22,3 +22,15 @@ celeritas::server_network_type celeritas::get_server_network_type(const std::str
 
     throw celeritas_error{ "server network type error,name = " + server_network_name };
 }
+
+const celeritas::server_network_type_container& celeritas::get_all_server_network_type()
+{
+    static server_network_type_container container{ server_network_type::tcp,
+                                                    server_network_type::http,
+                                                    server_network_type::websocket,
+                                                    server_network_type::tcp_ssl,
+                                                    server_network_type::https,
+                                                    server_network_type::websocket_secure };
+
+    return container;
+}

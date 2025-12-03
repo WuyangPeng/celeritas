@@ -6,22 +6,22 @@
 #include "service_registry/service_info.h"
 #include "service_registry/service_registry.h"
 
-bool celeritas::register_request_message_handler::handle_concrete(const protobuf_handle_parameter &handle_parameter,
-                                                                  const message_type &current_message,
-                                                                  const message_registry_weak_ptr &message_registry) {
+bool celeritas::register_request_message_handler::handle_concrete(const protobuf_handle_parameter& handle_parameter,
+                                                                  const message_type& current_message,
+                                                                  const message_registry_weak_ptr& message_registry)
+{
     service_info::protocol_port_container protocol_port_container{};
-    for (const auto &element: current_message.port()) {
+    for (const auto& element : current_message.port())
+    {
         protocol_port_container.emplace_back(static_cast<server_network_type>(element.protocol()), element.port());
     }
 
-    const service_info service_info{
-        current_message.instance_id(),
-        current_message.service_name(),
-        current_message.host(),
-        current_message.game_server_id(),
-        protocol_port_container,
-        current_message.start_server_time()
-    };
+    const service_info service_info{ current_message.instance_id(),
+                                     current_message.service_name(),
+                                     current_message.host(),
+                                     current_message.game_server_id(),
+                                     protocol_port_container,
+                                     current_message.start_server_time() };
 
     service_registry::register_service(service_info);
 

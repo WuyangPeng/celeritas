@@ -31,6 +31,8 @@ namespace celeritas
 
         void register_service(const service_info& info);
 
+        void clear_services(const std::string& service_name);
+
         [[nodiscard]] service_info_container_type get_services(const std::string& service_name);
 
         void start_cleanup_timer(io_context_type& io_context);

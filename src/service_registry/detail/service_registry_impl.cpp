@@ -20,6 +20,15 @@ void celeritas::service_registry_impl::register_service(const service_info& info
     }
 }
 
+void celeritas::service_registry_impl::clear_services(const std::string& service_name)
+{
+    std::lock_guard lock{ mutex_ };
+
+    erase_if(registry_, [service_name](const auto& element) {
+        return element.second.get_service_name() == service_name;
+    });
+}
+
 celeritas::service_registry_impl::service_info_container_type celeritas::service_registry_impl::get_services(const std::string& service_name)
 {
     std::lock_guard lock{ mutex_ };

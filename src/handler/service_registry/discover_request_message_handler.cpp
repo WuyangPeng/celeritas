@@ -13,12 +13,27 @@ bool celeritas::discover_request_message_handler::handle_concrete(const protobuf
     proto::celeritas response{};
     auto* discover_response = response.mutable_celeritas_response()->mutable_service()->mutable_registry()->mutable_server_discover();
 
+    const auto& container = get_all_server_network_type();
     for (const auto& service : services)
     {
-        auto* end_point = discover_response->add_endpoints();
-        end_point->set_host(service.get_host());
-        end_point->set_port(service.get_port(server_network_type::tcp));
-        end_point->set_is_health(service.get_health_check_level_type() == health_check_level_type::health);
+        auto* server_info = discover_response->add_server_info();
+        server_info->set_instance_id(service.get_instance_id());
+        server_info->set_game_server_id(service.get_game_server_id());
+        server_info->set_host(service.get_host());
+
+        for (const auto& network_type : container)
+        {
+            if (const auto port = service.get_port(network_type);
+                0 < port)
+            {
+                auto* protocol_port = server_info->add_port();
+                protocol_port->set_protocol(static_cast<int>(network_type));
+                protocol_port->set_port(port);
+            }
+        }
+
+        server_info->set_start_server_time(service.get_start_server_time());
+        server_info->set_is_health(service.get_health_check_level_type() == health_check_level_type::health);
     }
 
     handle_parameter.write(response);

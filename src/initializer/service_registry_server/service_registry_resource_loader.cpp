@@ -41,7 +41,7 @@ void celeritas::service_registry_resource_loader::start_health_check_timer(io_co
     health_check_timer_->start();
 }
 
-celeritas::service_registry_resource_loader::void_waitable_type celeritas::service_registry_resource_loader::send_health_check(http_client_shared_ptr http_client)
+celeritas::service_registry_resource_loader::void_waitable_type celeritas::service_registry_resource_loader::send_health_check(const http_client_shared_ptr http_client)
 {
     co_await http_client->connect();
 

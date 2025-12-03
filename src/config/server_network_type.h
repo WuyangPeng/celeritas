@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <string>
+#include <vector>
 
 namespace celeritas
 {
@@ -16,4 +17,8 @@ namespace celeritas
     };
 
     [[nodiscard]] server_network_type get_server_network_type(const std::string& server_network_name);
+
+    using server_network_type_container = std::vector<server_network_type>;
+
+    [[nodiscard]] const server_network_type_container& get_all_server_network_type();
 }

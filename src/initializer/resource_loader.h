@@ -55,7 +55,6 @@ namespace celeritas
     private:
         using listener_shared_ptr = std::shared_ptr<listener>;
         using listener_container_type = std::vector<listener_shared_ptr>;
-
         using steady_timer_type = boost::asio::steady_timer;
         using steady_timer_unique_ptr = std::unique_ptr<steady_timer_type>;
         using self_shared_ptr = std::shared_ptr<resource_loader>;

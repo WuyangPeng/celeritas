@@ -1,6 +1,4 @@
 ﻿#include "health_check_timer.h"
-
-#include <utility>
 #include "initializer/service_registry_server/service_registry_resource_loader.h"
 
 celeritas::health_check_timer::health_check_timer(io_context_type& io_context, const duration_type interval, resource_loader_weak_ptr resource_loader, network_message_callback_weak_ptr network_message_callback)
