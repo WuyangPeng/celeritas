@@ -1,7 +1,6 @@
 ﻿#include "cleanup_timer.h"
 #include "service_registry_impl.h"
 #include "service_registry_internal_fwd.h"
-#include "bsoncxx/array/element.hpp"
 #include "common/logger.h"
 
 #include <ranges>
