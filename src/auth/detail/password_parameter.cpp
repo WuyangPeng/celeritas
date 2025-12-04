@@ -5,7 +5,7 @@
 #include <regex>
 
 celeritas::password_parameter::password_parameter(const http_handle_parameter& http_handle_parameter)
-    : base_type{ http_handle_parameter }
+    : base_type{ http_handle_parameter }, account_{}, password_{}
 {
 }
 
@@ -32,9 +32,10 @@ celeritas::auth_parameter::optional_http_response celeritas::password_parameter:
         return http_response{ game_error_type::invalid_parameter, "account is required" };
     }
 
-    const auto& account_parameter = *optional_account;
+    account_ = *optional_account;
+
     if (const std::regex account_regex{ R"(^[a-zA-Z0-9_.-]{4,32}$)" };
-        !std::regex_match(account_parameter, account_regex))
+        !std::regex_match(account_, account_regex))
     {
         return http_response{ game_error_type::invalid_parameter, "account is invalid" };
     }
@@ -45,9 +46,10 @@ celeritas::auth_parameter::optional_http_response celeritas::password_parameter:
         return http_response{ game_error_type::invalid_parameter, "password is required" };
     }
 
-    const auto& password = *optional_password;
+    password_ = *optional_password;
+
     if (const std::regex password_regex{ R"(^[a-zA-Z0-9!@#$%^&*()_+-=]{8,32}$)" };
-        !std::regex_match(password, password_regex))
+        !std::regex_match(password_, password_regex))
     {
         return http_response{ game_error_type::invalid_parameter, "password is invalid" };
     }

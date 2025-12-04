@@ -36,6 +36,8 @@ namespace celeritas
     class sdk_process;
     class we_chat_sdk_process;
 
+    class login_servers_parameter;
+
     enum class send_sms_type;
     enum class send_email_type;
 
@@ -49,4 +51,7 @@ namespace celeritas
     constexpr std::string_view token_describe = "token";
     constexpr std::string_view sdk_token_describe = "sdk_token";
     constexpr std::string_view type_describe = "type";
+    constexpr std::string_view region_describe = "region";
+    constexpr std::string_view only_preferred_describe = "only_preferred";
+    constexpr std::string_view include_details_describe = "include_details";
 }

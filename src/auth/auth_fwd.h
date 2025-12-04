@@ -41,6 +41,8 @@ namespace celeritas
     class sdk_bind;
     class sdk_bind_response;
 
+    class login_servers_response;
+
     class server_cell_repository;
 
     constexpr auto sms_code_expiration_time = 300;
