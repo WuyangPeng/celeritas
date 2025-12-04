@@ -112,7 +112,8 @@ else ()
             log
             program_options
             url
-            json)
+            json
+            unit_test_framework)
 
     target_link_libraries(boost INTERFACE
             Boost::filesystem
@@ -125,7 +126,8 @@ else ()
             Boost::log
             Boost::program_options
             Boost::url
-            Boost::json)
+            Boost::json
+            Boost::unit_test_framework)
 
 endif ()
 
@@ -486,3 +488,6 @@ install(FILES ${THIRD_PARTY_DLLS}
         GROUP_EXECUTE
         WORLD_READ
         WORLD_EXECUTE)
+
+enable_testing()
+add_subdirectory(cmake/tests)
