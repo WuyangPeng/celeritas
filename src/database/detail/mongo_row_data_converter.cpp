@@ -7,8 +7,9 @@
 
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
-#include <bsoncxx/builder/basic/array.hpp>
+#include <bsoncxx/json.hpp>
 #include <bsoncxx/types.hpp>
+#include <bsoncxx/builder/basic/array.hpp>
 
 using namespace std::literals;
 
@@ -55,26 +56,22 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
 
         case database_data_type::string_array_type:
         {
-            const auto& array_view = row_view.get_array().value;
-            return basis_database{ iter->get_field_name(), get_numeric_array<std::string>(array_view) };
+            return basis_database{ iter->get_field_name(), get_numeric_array<std::string>(row_view.get_array().value) };
         }
 
         case database_data_type::int32_array_type:
         {
-            const auto& array_view = row_view.get_array().value;
-            return basis_database{ iter->get_field_name(), get_numeric_array<int32_t>(array_view) };
+            return basis_database{ iter->get_field_name(), get_numeric_array<int32_t>(row_view.get_array().value) };
         }
 
         case database_data_type::int64_array_type:
         {
-            const auto& array_view = row_view.get_array().value;
-            return basis_database{ iter->get_field_name(), get_numeric_array<int64_t>(array_view) };
+            return basis_database{ iter->get_field_name(), get_numeric_array<int64_t>(row_view.get_array().value) };
         }
 
         case database_data_type::double_array_type:
         {
-            const auto& array_view = row_view.get_array().value;
-            return basis_database{ iter->get_field_name(), get_numeric_array<double>(array_view) };
+            return basis_database{ iter->get_field_name(), get_numeric_array<double>(row_view.get_array().value) };
         }
 
         case database_data_type::byte_array_type:
@@ -83,6 +80,12 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
             const basis_database::byte_array result{ binary.bytes, binary.bytes + binary.size };
 
             return basis_database{ iter->get_field_name(), result };
+        }
+
+        case database_data_type::document_type:
+        {
+            const bsoncxx::document::value doc_value{ row_view.get_document().value };
+            return basis_database{ iter->get_field_name(), database_data_type::document_type, bsoncxx::to_json(doc_value) };
         }
 
         default:
@@ -181,6 +184,15 @@ celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_con
             {
                 const auto& byteArray = value.get_value<database_data_type::byte_array_type>();
                 document.append(bsoncxx::builder::basic::kvp(fieldName, bsoncxx::types::b_binary{ bsoncxx::binary_sub_type::k_binary, static_cast<uint32_t>(byteArray.size()), byteArray.data() }));
+                break;
+            }
+
+            case database_data_type::document_type:
+            {
+                const auto document_type = value.get_value<database_data_type::document_type>();
+                auto doc_value = bsoncxx::from_json(document_type);
+
+                document.append(bsoncxx::builder::basic::kvp(fieldName, doc_value));
                 break;
             }
 

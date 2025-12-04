@@ -156,6 +156,11 @@ std::string celeritas::basis_database::get_string() const
                 return std::string{ byteArray.begin(), byteArray.end() };
             }
 
+            case database_data_type::document_type:
+            {
+                return get_value<database_data_type::string_type>();
+            }
+
             default:
             {
                 return "";

@@ -13,6 +13,7 @@ celeritas::basis_database celeritas::mysql_row_data_converter::get_basis_databas
     switch (field_name.get_data_type())
     {
         case database_data_type::string_type:
+        case database_data_type::document_type:
         {
             return basis_database{ field_name.get_field_name(), row_view.as_string() };
         }

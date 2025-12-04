@@ -16,8 +16,6 @@ namespace celeritas
         using class_type = basis_database;
 
         using byte_array = std::vector<uint8_t>;
-        using object_shared_ptr = std::shared_ptr<basis_database>;
-        using object_array = std::vector<object_shared_ptr>;
         using string_array = std::vector<std::string>;
         using int32_array = std::vector<int32_t>;
         using int64_array = std::vector<int64_t>;
@@ -70,9 +68,9 @@ namespace celeritas
 
         [[nodiscard]] std::string get_quotation_mark_string() const;
 
-    private:
         basis_database(std::string_view field_name, database_data_type dataType, std::any value);
 
+    private:
         std::string_view field_name_;
         database_data_type data_type_ = database_data_type::null_type;
         std::any value_;

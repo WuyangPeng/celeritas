@@ -17,5 +17,6 @@ namespace celeritas
         double_array_type = 10,
         bool_type = 11,
         byte_array_type = 12,
+        document_type = 13,
     };
 }
