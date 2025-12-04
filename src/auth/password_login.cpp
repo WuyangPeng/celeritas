@@ -30,7 +30,7 @@ celeritas::password_login::void_awaitable_type celeritas::password_login::respon
     const auto auth_key = password_login_parameter.get_account();
     const auto password = password_login_parameter.get_password();
 
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::password) },
                                                                                                             { account_bind::process_type_describe, static_cast<int>(sdk_process_type::null) },
                                                                                                             { account_bind::auth_key_describe, auth_key },

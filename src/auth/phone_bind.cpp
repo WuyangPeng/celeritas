@@ -36,7 +36,7 @@ celeritas::phone_bind::void_awaitable_type celeritas::phone_bind::response()
     const auto app_id = phone_bind_parameter.get_app_id();
     const auto phone = phone_bind_parameter.get_phone();
     const auto token = phone_bind_parameter.get_token();
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
     auto optional_account = co_await get_account<phone_bind_response>(app_id, phone, token, account_type::phone, redis_pool, mysql_pool);
 

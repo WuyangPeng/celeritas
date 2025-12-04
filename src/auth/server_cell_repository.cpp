@@ -48,7 +48,7 @@ celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_re
 
 celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_repository::do_load_from_db()
 {
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
     const auto apps_result = co_await mysql_pool->select_all(server_cell::get_select(database_type::mysql), server_cell::get_database_field_container());
 
@@ -81,7 +81,7 @@ celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_re
 
 celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_repository::do_load_from_db(int64_t cell_id)
 {
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
     if (const auto optional_server_cell = co_await mysql_pool->select_one(server_cell::get_select(database_type::mysql, cell_id), server_cell::get_database_field_container()))
     {

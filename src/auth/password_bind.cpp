@@ -28,7 +28,7 @@ celeritas::password_bind::void_awaitable_type celeritas::password_bind::response
     const auto password = password_bind_parameter.get_password();
 
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
     auto optional_account = co_await get_account<password_bind_response>(app_id, auth_key, token, account_type::password, redis_pool, mysql_pool);
 

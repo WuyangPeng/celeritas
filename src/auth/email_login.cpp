@@ -39,7 +39,7 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
     const auto email = email_login_parameter.get_email();
     const auto app_id = email_login_parameter.get_app_id();
 
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::email) },
                                                                                                             { account_bind::process_type_describe, static_cast<int>(sdk_process_type::null) },
                                                                                                             { account_bind::auth_key_describe, email },

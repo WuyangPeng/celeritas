@@ -39,7 +39,7 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
     const auto app_id = phone_login_parameter.get_app_id();
     const auto phone = phone_login_parameter.get_phone();
 
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::phone) },
                                                                                                             { account_bind::process_type_describe, static_cast<int>(sdk_process_type::null) },
                                                                                                             { account_bind::auth_key_describe, phone },

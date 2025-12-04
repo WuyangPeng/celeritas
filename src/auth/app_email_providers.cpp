@@ -66,7 +66,7 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
 
 celeritas::app_email_providers::void_awaitable_type celeritas::app_email_providers::do_load_from_db()
 {
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
     const auto apps_result = co_await mysql_pool->select_all(email_providers::get_select(database_type::mysql), email_providers::get_database_field_container());
 
@@ -99,7 +99,7 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
 
 celeritas::app_email_providers::void_awaitable_type celeritas::app_email_providers::do_load_from_db(const int64_t provider_id)
 {
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
     if (const auto optional_sms_providers = co_await mysql_pool->select_one(email_providers::get_select(database_type::mysql, provider_id), email_providers::get_database_field_container()))
     {

@@ -35,7 +35,7 @@ celeritas::email_bind::void_awaitable_type celeritas::email_bind::response()
     const auto app_id = email_bind_parameter.get_app_id();
     const auto email = email_bind_parameter.get_email();
     const auto token = email_bind_parameter.get_token();
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
     auto optional_account = co_await get_account<email_bind_response>(app_id, email, token, account_type::email, redis_pool, mysql_pool);
 

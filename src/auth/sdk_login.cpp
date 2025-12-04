@@ -47,7 +47,7 @@ celeritas::sdk_login::void_awaitable_type celeritas::sdk_login::response()
 
     const auto& open_id = *optional_open_id;
 
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::sdk) },
                                                                                                             { account_bind::process_type_describe, static_cast<int>(process_type) },
                                                                                                             { account_bind::auth_key_describe, open_id },

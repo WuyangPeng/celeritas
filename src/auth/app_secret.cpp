@@ -72,7 +72,7 @@ celeritas::app_secret::void_awaitable_type celeritas::app_secret::load_from_db()
 
 celeritas::app_secret::void_awaitable_type celeritas::app_secret::do_load_from_db()
 {
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
     const auto apps_result = co_await mysql_pool->select_all(apps::get_select(database_type::mysql), apps::get_database_field_container());
 
@@ -105,7 +105,7 @@ celeritas::app_secret::void_awaitable_type celeritas::app_secret::load_from_db(c
 
 celeritas::app_secret::void_awaitable_type celeritas::app_secret::do_load_from_db(const int64_t app_id)
 {
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
     if (const auto apps_result = co_await mysql_pool->select_one(apps::get_select(database_type::mysql, app_id), apps::get_database_field_container()))
     {

@@ -26,7 +26,7 @@ namespace celeritas
 
         [[nodiscard]] container get_login_server_info() const;
 
-        [[nodiscard]] virtual std::string to_json_string() const override;
+        [[nodiscard]] std::string to_json_string() const override;
 
         [[nodiscard]] static login_servers_response from_json_string(const std::string& json_string);
 

@@ -46,6 +46,7 @@ namespace celeritas
     class player_role;
     class login_server_info;
     class login_servers_response;
+    class login_servers;
 
     class server_cell_repository;
 

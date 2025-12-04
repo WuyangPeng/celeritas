@@ -43,7 +43,7 @@ celeritas::sdk_bind::void_awaitable_type celeritas::sdk_bind::response()
     const auto& open_id = *optional_open_id;
     const auto token = sdk_bind_parameter.get_token();
 
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
 
     auto optional_account = co_await get_account<sdk_bind_response>(app_id, open_id, token, account_type::sdk, redis_pool, mysql_pool);

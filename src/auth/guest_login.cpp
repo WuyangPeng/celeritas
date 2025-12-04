@@ -28,7 +28,7 @@ celeritas::guest_login::void_awaitable_type celeritas::guest_login::response()
     const auto app_id = guest_login_parameter.get_app_id();
     const auto device_id = guest_login_parameter.get_device_id();
 
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(auth_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
     auto optional_account = co_await get_optional_account(app_id, device_id, mysql_pool);
 
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
