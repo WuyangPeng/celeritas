@@ -168,6 +168,11 @@
     - **枚举值**：`unknown`、`mysql`、`mongodb`、`redis`。
     - **功能**：提供了全局函数`get_database_type(const std::string&)`，用于将数据库类型名称字符串转换为对应的枚举值。
 
+
+* **🌍 全局配置 (`global_config`)**
+    - **作用**：`global_config` 类用于存储全局配置选项。
+  
+
 ### local configuration structures（局部配置结构）
 
 * **🔌 服务器网络配置（`server_network_config`）**

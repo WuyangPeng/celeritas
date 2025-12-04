@@ -11,7 +11,7 @@ namespace celeritas
 
         global_config() noexcept = default;
 
-        global_config(std::string external_host);
+        explicit global_config(std::string external_host);
 
         [[nodiscard]] std::string get_external_host() const;
 
