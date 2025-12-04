@@ -30,6 +30,17 @@ void celeritas::server_cell_repository::load_from_db(io_context_type& io_context
                           }, boost::asio::detached);
 }
 
+celeritas::server_cell_repository::optional_server_cell celeritas::server_cell_repository::get_server_cell(const std::string& game_server_id)
+{
+    if (const auto iter = game_server_.find(game_server_id);
+        iter != game_server_.cend())
+    {
+        return iter->second;
+    }
+
+    return std::nullopt;
+}
+
 celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_repository::load_from_db()
 {
     try
@@ -53,17 +64,20 @@ celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_re
     const auto apps_result = co_await mysql_pool->select_all(server_cell::get_select(database_type::mysql), server_cell::get_database_field_container());
 
     server_cell_type server_cell_type{};
+    game_server_type game_server_type{};
     for (const auto& row : apps_result)
     {
         const server_cell server_cell{ row };
         server_cell_type.emplace(server_cell.get_cell_id(), server_cell);
+        game_server_type.emplace(server_cell.get_game_server_id(), server_cell);
     }
 
     std::unique_lock lock{ mutex_ };
     server_cell_ = std::move(server_cell_type);
+    game_server_ = std::move(game_server_type);
 }
 
-celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_repository::load_from_db(int64_t cell_id)
+celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_repository::load_from_db(const int64_t cell_id)
 {
     try
     {
@@ -79,7 +93,7 @@ celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_re
     }
 }
 
-celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_repository::do_load_from_db(int64_t cell_id)
+celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_repository::do_load_from_db(const int64_t cell_id)
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
@@ -88,6 +102,13 @@ celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_re
         const server_cell server_cell{ *optional_server_cell };
 
         std::unique_lock lock{ mutex_ };
+
+        if (const auto iter = server_cell_.find(cell_id);
+            iter != server_cell_.cend())
+        {
+            game_server_.erase(iter->second.get_game_server_id());
+        }
         server_cell_.emplace(server_cell.get_cell_id(), server_cell);
+        game_server_.emplace(server_cell.get_game_server_id(), server_cell);
     }
 }

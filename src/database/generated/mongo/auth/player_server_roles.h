@@ -18,15 +18,15 @@ namespace celeritas
 
         explicit player_server_roles(const database_entity_change& entity);
 
-        player_server_roles(database_type database_type, traits::param_type::int64_type _id);
+        player_server_roles(database_type database_type, traits::param_type::int64_type id);
 
-        [[nodiscard]] traits::int64_type get__id() const noexcept;
+        [[nodiscard]] traits::int64_type get_id() const noexcept;
 
         [[nodiscard]] traits::document_array_type get_servers() const;
 
         [[nodiscard]] traits::int64_type get_update_time() const noexcept;
 
-        void set__id(traits::param_type::int64_type _id);
+        void set_id(traits::param_type::int64_type id);
 
         void set_servers(traits::param_type::document_array_type servers);
 
@@ -36,20 +36,20 @@ namespace celeritas
 
         [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type);
 
-        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, traits::param_type::int64_type _id);
+        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, traits::param_type::int64_type id);
 
         [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, const basis_database_container_const_shared_ptr& key);
 
         static constexpr std::string_view database_name{ "player_server_roles" };
 
-        static constexpr std::string_view _id_describe{ "_id" };
+        static constexpr std::string_view id_describe{ "id" };
         static constexpr std::string_view servers_describe{ "servers" };
         static constexpr std::string_view update_time_describe{ "update_time" };
 
     private:
-        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::int64_type _id);
+        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::int64_type id);
 
-        entity<_id_describe, database_data_type::int64_type, database_index_type::key> _id_;
+        entity<id_describe, database_data_type::int64_type, database_index_type::key> id_;
         entity<servers_describe, database_data_type::document_array_type> servers_;
         entity<update_time_describe, database_data_type::int64_type> update_time_;
     };

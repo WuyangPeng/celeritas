@@ -24,13 +24,13 @@ namespace celeritas
 
         [[nodiscard]] traits::int64_type get_account_id() const noexcept;
 
-        [[nodiscard]] traits::bool_type is_is_new_account() const noexcept;
+        [[nodiscard]] traits::bool_type is_new_account() const noexcept;
 
         void set_token(traits::param_type::string_type token);
 
         void set_account_id(traits::param_type::int64_type account_id);
 
-        void set_is_new_account(traits::param_type::bool_type is_new_account);
+        void set_new_account(traits::param_type::bool_type new_account);
 
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
@@ -44,13 +44,13 @@ namespace celeritas
 
         static constexpr std::string_view token_describe{ "token" };
         static constexpr std::string_view account_id_describe{ "account_id" };
-        static constexpr std::string_view is_new_account_describe{ "is_new_account" };
+        static constexpr std::string_view new_account_describe{ "new_account" };
 
     private:
         [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::string_type token);
 
         entity<token_describe, database_data_type::string_type, database_index_type::key> token_;
         entity<account_id_describe, database_data_type::int64_type> account_id_;
-        entity<is_new_account_describe, database_data_type::bool_type> is_new_account_;
+        entity<new_account_describe, database_data_type::bool_type> new_account_;
     };
 }

@@ -21,6 +21,11 @@ celeritas::service_registry::service_info_container_type celeritas::service_regi
     return get_service_registry_impl().get_idle_services(service_name);
 }
 
+celeritas::service_registry::optional_service_info celeritas::service_registry::get_idle_services(const std::string& service_name, const std::string& game_server_id)
+{
+    return get_service_registry_impl().get_idle_services(service_name, game_server_id);
+}
+
 void celeritas::service_registry::start_cleanup_timer(io_context_type& io_context)
 {
     return get_service_registry_impl().start_cleanup_timer(io_context);

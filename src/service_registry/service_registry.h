@@ -15,6 +15,7 @@ namespace celeritas
         using io_context_type = boost::asio::io_context;
         using service_info_container_type = std::vector<service_info>;
         using registry_type = std::unordered_map<std::string, service_info>;
+        using optional_service_info = std::optional<service_info>;
 
         static void register_service(const service_info& info);
 
@@ -23,6 +24,8 @@ namespace celeritas
         [[nodiscard]] static service_info_container_type get_services(const std::string& service_name);
 
         [[nodiscard]] static service_info_container_type get_idle_services(const std::string& service_name);
+
+        [[nodiscard]] static optional_service_info get_idle_services(const std::string& service_name, const std::string& game_server_id);
 
         static void start_cleanup_timer(io_context_type& io_context);
 

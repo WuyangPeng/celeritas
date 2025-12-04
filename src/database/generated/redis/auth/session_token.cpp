@@ -11,7 +11,7 @@ celeritas::session_token::session_token(const database_entity_change& entity)
     : base_type{ entity },
       token_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : token_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
-      is_new_account_{ entity.get_value<database_data_type::bool_type>(is_new_account_describe) }
+      new_account_{ entity.get_value<database_data_type::bool_type>(new_account_describe) }
 {
 }
 
@@ -19,7 +19,7 @@ celeritas::session_token::session_token(const database_type database_type, trait
     : base_type{ database_type, database_name, get_key_basis_database_container(database_type, token) },
       token_{ token },
       account_id_{ traits::int64_type{} },
-      is_new_account_{ traits::bool_type{} }
+      new_account_{ traits::bool_type{} }
 {
     add_modify(token_describe, token);
 }
@@ -34,9 +34,9 @@ celeritas::traits::int64_type celeritas::session_token::get_account_id() const n
     return account_id_.get_value();
 }
 
-celeritas::traits::bool_type celeritas::session_token::is_is_new_account() const noexcept
+celeritas::traits::bool_type celeritas::session_token::is_new_account() const noexcept
 {
-    return is_new_account_.get_value();
+    return new_account_.get_value();
 }
 
 void celeritas::session_token::set_token(traits::param_type::string_type token)
@@ -59,13 +59,13 @@ void celeritas::session_token::set_account_id(traits::param_type::int64_type acc
     }
 }
 
-void celeritas::session_token::set_is_new_account(traits::param_type::bool_type is_new_account)
+void celeritas::session_token::set_new_account(traits::param_type::bool_type new_account)
 {
-    if (is_new_account != is_is_new_account())
+    if (new_account != is_new_account())
     {
-        is_new_account_.set_value(is_new_account);
+        new_account_.set_value(new_account);
 
-        add_modify(is_new_account_describe, is_is_new_account());
+        add_modify(new_account_describe, is_new_account());
     }
 }
 
@@ -73,7 +73,7 @@ const celeritas::database_entity::database_field_container& celeritas::session_t
 {
     static const database_field_container field_name_container{ decltype(token_)::get_database_field(),
                                                                 decltype(account_id_)::get_database_field(),
-                                                                decltype(is_new_account_)::get_database_field() };
+                                                                decltype(new_account_)::get_database_field() };
 
     return field_name_container;
 }

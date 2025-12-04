@@ -58,7 +58,7 @@ celeritas::auth_login::session_token_awaitable_type celeritas::auth_login::creat
     session_token session_token{ database_type::redis, token };
     session_token.set_token(token);
     session_token.set_account_id(account.get_account_id());
-    session_token.set_is_new_account(is_new_account);
+    session_token.set_new_account(is_new_account);
 
     // 这里没有删除旧的token，旧的token依赖redis有效时间进行删除。
     if (co_await redis_pool->execute_changes(session_token.get_modify()))

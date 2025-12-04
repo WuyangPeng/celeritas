@@ -20,6 +20,8 @@ namespace celeritas
 
         login_servers_response(game_error_type code, std::string message, container login_server_info);
 
+        login_servers_response(game_error_type code, std::string message, login_server_info login_server_info);
+
         explicit login_servers_response(bass_type http_response);
 
         login_servers_response(bass_type http_response, container login_server_info);

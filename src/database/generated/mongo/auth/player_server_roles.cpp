@@ -9,24 +9,24 @@
 
 celeritas::player_server_roles::player_server_roles(const database_entity_change& entity)
     : base_type{ entity },
-      _id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : _id_describe) },
+      id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : id_describe) },
       servers_{ entity.get_value<database_data_type::document_array_type>(servers_describe) },
       update_time_{ entity.get_value<database_data_type::int64_type>(update_time_describe) }
 {
 }
 
-celeritas::player_server_roles::player_server_roles(const database_type database_type, traits::param_type::int64_type _id)
-    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, _id) },
-      _id_{ _id },
+celeritas::player_server_roles::player_server_roles(const database_type database_type, traits::param_type::int64_type id)
+    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, id) },
+      id_{ id },
       servers_{ traits::document_array_type{} },
       update_time_{ traits::int64_type{} }
 {
-    add_modify(_id_describe, _id);
+    add_modify(id_describe, id);
 }
 
-celeritas::traits::int64_type celeritas::player_server_roles::get__id() const noexcept
+celeritas::traits::int64_type celeritas::player_server_roles::get_id() const noexcept
 {
-    return _id_.get_value();
+    return id_.get_value();
 }
 
 celeritas::traits::document_array_type celeritas::player_server_roles::get_servers() const
@@ -39,13 +39,13 @@ celeritas::traits::int64_type celeritas::player_server_roles::get_update_time() 
     return update_time_.get_value();
 }
 
-void celeritas::player_server_roles::set__id(traits::param_type::int64_type _id)
+void celeritas::player_server_roles::set_id(traits::param_type::int64_type id)
 {
-    if (_id != get__id())
+    if (id != get_id())
     {
-        _id_.set_value(_id);
+        id_.set_value(id);
 
-        add_modify(_id_describe, get__id());
+        add_modify(id_describe, get_id());
     }
 }
 
@@ -71,7 +71,7 @@ void celeritas::player_server_roles::set_update_time(traits::param_type::int64_t
 
 const celeritas::database_entity::database_field_container& celeritas::player_server_roles::get_database_field_container()
 {
-    static const database_field_container field_name_container{ decltype(_id_)::get_database_field(),
+    static const database_field_container field_name_container{ decltype(id_)::get_database_field(),
                                                                 decltype(servers_)::get_database_field(),
                                                                 decltype(update_time_)::get_database_field() };
 
@@ -87,12 +87,12 @@ celeritas::player_server_roles::database_entity_change_const_shared_ptr celerita
     return result;
 }
 
-celeritas::player_server_roles::database_entity_change_const_shared_ptr celeritas::player_server_roles::get_select(const database_type database_type, traits::param_type::int64_type _id)
+celeritas::player_server_roles::database_entity_change_const_shared_ptr celeritas::player_server_roles::get_select(const database_type database_type, traits::param_type::int64_type id)
 {
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(database_type, _id));
+                                                    get_key_basis_database_container(database_type, id));
 }
 
 celeritas::player_server_roles::database_entity_change_const_shared_ptr celeritas::player_server_roles::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
@@ -103,11 +103,11 @@ celeritas::player_server_roles::database_entity_change_const_shared_ptr celerita
                                                     key);
 }
 
-celeritas::player_server_roles::basis_database_container_const_shared_ptr celeritas::player_server_roles::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type _id)
+celeritas::player_server_roles::basis_database_container_const_shared_ptr celeritas::player_server_roles::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type id)
 {
-    const auto field_name = database_type == database_type::mongo ? "_id" : _id_describe;
+    const auto field_name = database_type == database_type::mongo ? "_id" : id_describe;
 
-    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, _id });
+    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, id });
 
     return container;
 }

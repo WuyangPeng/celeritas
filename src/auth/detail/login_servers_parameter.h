@@ -26,7 +26,7 @@ namespace celeritas
 
         [[nodiscard]] bool is_include_details() const;
 
-        [[nodiscard]] bool is_is_websocket() const;
+        [[nodiscard]] bool is_websocket() const;
 
         [[nodiscard]] apps get_apps() const;
 
@@ -43,7 +43,7 @@ namespace celeritas
         optional_string region_;
         bool only_preferred_;
         bool include_details_;
-        bool is_websocket_;
+        bool websocket_;
         optional_apps apps_;
     };
 }

@@ -18,6 +18,7 @@ std::string celeritas::get_game_error_description(const game_error_type game_err
                                                 { game_error_type::token_error, "token error" },
                                                 { game_error_type::password_error, "password error" },
                                                 { game_error_type::sdk_error, "sdk error" },
+                                                { game_error_type::server_error, "server error" },
 
                                                 { game_error_type::account_error, "account error" },
                                                 { game_error_type::no_guest_account, "no guest account" },

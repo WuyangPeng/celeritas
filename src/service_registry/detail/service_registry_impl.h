@@ -17,6 +17,7 @@ namespace celeritas
         using io_context_type = boost::asio::io_context;
         using service_info_container_type = std::vector<service_info>;
         using registry_type = std::unordered_map<std::string, service_info>;
+        using optional_service_info = std::optional<service_info>;
 
         service_registry_impl() noexcept = default;
 
@@ -37,6 +38,8 @@ namespace celeritas
         [[nodiscard]] service_info_container_type get_services(const std::string& service_name);
 
         [[nodiscard]] service_info_container_type get_idle_services(const std::string& service_name);
+
+        [[nodiscard]] optional_service_info get_idle_services(const std::string& service_name, const std::string& game_server_id);
 
         void start_cleanup_timer(io_context_type& io_context);
 
@@ -62,6 +65,8 @@ namespace celeritas
         static void log_server_unresponsive(const registry_type_iterator& iter, int64_t duration, severity_level_type level, const std::string& description);
 
         void remove_server(const service_info& service_info);
+
+        [[nodiscard]] optional_service_info get_idle_services(const service_info_container_type& service_info_container_type);
 
         registry_type registry_;
         server_type server_;
