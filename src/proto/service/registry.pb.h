@@ -982,14 +982,15 @@ class server_info final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kPortFieldNumber = 4,
+    kPortFieldNumber = 5,
     kInstanceIdFieldNumber = 1,
     kGameServerIdFieldNumber = 2,
     kHostFieldNumber = 3,
-    kStartServerTimeFieldNumber = 5,
-    kIsHealthFieldNumber = 6,
+    kExternalHostFieldNumber = 4,
+    kStartServerTimeFieldNumber = 6,
+    kIsHealthFieldNumber = 7,
   };
-  // repeated .celeritas.proto.service.protocol_port port = 4;
+  // repeated .celeritas.proto.service.protocol_port port = 5;
   int port_size() const;
   private:
   int _internal_port_size() const;
@@ -1051,7 +1052,22 @@ class server_info final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_host();
 
   public:
-  // int64 start_server_time = 5;
+  // string external_host = 4;
+  void clear_external_host() ;
+  const ::std::string& external_host() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_external_host(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_external_host();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_external_host();
+  void set_allocated_external_host(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_external_host() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_external_host(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_external_host();
+
+  public:
+  // int64 start_server_time = 6;
   void clear_start_server_time() ;
   ::int64_t start_server_time() const;
   void set_start_server_time(::int64_t value);
@@ -1061,7 +1077,7 @@ class server_info final : public ::google::protobuf::Message
   void _internal_set_start_server_time(::int64_t value);
 
   public:
-  // bool is_health = 6;
+  // bool is_health = 7;
   void clear_is_health() ;
   bool is_health() const;
   void set_is_health(bool value);
@@ -1075,8 +1091,8 @@ class server_info final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 6,
-                                   1, 73,
+  static const ::google::protobuf::internal::TcParseTable<3, 7,
+                                   1, 86,
                                    2>
       _table_;
 
@@ -1101,6 +1117,7 @@ class server_info final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr instance_id_;
     ::google::protobuf::internal::ArenaStringPtr game_server_id_;
     ::google::protobuf::internal::ArenaStringPtr host_;
+    ::google::protobuf::internal::ArenaStringPtr external_host_;
     ::int64_t start_server_time_;
     bool is_health_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -1255,14 +1272,15 @@ class register_request final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kPortFieldNumber = 5,
+    kPortFieldNumber = 6,
     kServiceNameFieldNumber = 1,
     kInstanceIdFieldNumber = 2,
     kGameServerIdFieldNumber = 3,
     kHostFieldNumber = 4,
-    kStartServerTimeFieldNumber = 6,
+    kExternalHostFieldNumber = 5,
+    kStartServerTimeFieldNumber = 7,
   };
-  // repeated .celeritas.proto.service.protocol_port port = 5;
+  // repeated .celeritas.proto.service.protocol_port port = 6;
   int port_size() const;
   private:
   int _internal_port_size() const;
@@ -1339,7 +1357,22 @@ class register_request final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_host();
 
   public:
-  // int64 start_server_time = 6;
+  // string external_host = 5;
+  void clear_external_host() ;
+  const ::std::string& external_host() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_external_host(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_external_host();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_external_host();
+  void set_allocated_external_host(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_external_host() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_external_host(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_external_host();
+
+  public:
+  // int64 start_server_time = 7;
   void clear_start_server_time() ;
   ::int64_t start_server_time() const;
   void set_start_server_time(::int64_t value);
@@ -1353,8 +1386,8 @@ class register_request final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 6,
-                                   1, 90,
+  static const ::google::protobuf::internal::TcParseTable<3, 7,
+                                   1, 103,
                                    2>
       _table_;
 
@@ -1380,6 +1413,7 @@ class register_request final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr instance_id_;
     ::google::protobuf::internal::ArenaStringPtr game_server_id_;
     ::google::protobuf::internal::ArenaStringPtr host_;
+    ::google::protobuf::internal::ArenaStringPtr external_host_;
     ::int64_t start_server_time_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -2427,7 +2461,72 @@ inline void register_request::set_allocated_host(::std::string* PROTOBUF_NULLABL
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.register_request.host)
 }
 
-// repeated .celeritas.proto.service.protocol_port port = 5;
+// string external_host = 5;
+inline void register_request::clear_external_host() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.external_host_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000010U;
+}
+inline const ::std::string& register_request::external_host() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.register_request.external_host)
+  return _internal_external_host();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void register_request::set_external_host(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000010U;
+  _impl_.external_host_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.register_request.external_host)
+}
+inline ::std::string* PROTOBUF_NONNULL register_request::mutable_external_host()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_external_host();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.register_request.external_host)
+  return _s;
+}
+inline const ::std::string& register_request::_internal_external_host() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.external_host_.Get();
+}
+inline void register_request::_internal_set_external_host(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000010U;
+  _impl_.external_host_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL register_request::_internal_mutable_external_host() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000010U;
+  return _impl_.external_host_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE register_request::release_external_host() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.register_request.external_host)
+  if ((_impl_._has_bits_[0] & 0x00000010U) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000010U;
+  auto* released = _impl_.external_host_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.external_host_.Set("", GetArena());
+  }
+  return released;
+}
+inline void register_request::set_allocated_external_host(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000010U;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000010U;
+  }
+  _impl_.external_host_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.external_host_.IsDefault()) {
+    _impl_.external_host_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.register_request.external_host)
+}
+
+// repeated .celeritas.proto.service.protocol_port port = 6;
 inline int register_request::_internal_port_size() const {
   return _internal_port().size();
 }
@@ -2477,11 +2576,11 @@ register_request::_internal_mutable_port() {
   return &_impl_.port_;
 }
 
-// int64 start_server_time = 6;
+// int64 start_server_time = 7;
 inline void register_request::clear_start_server_time() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.start_server_time_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000010U;
+  _impl_._has_bits_[0] &= ~0x00000020U;
 }
 inline ::int64_t register_request::start_server_time() const {
   // @@protoc_insertion_point(field_get:celeritas.proto.service.register_request.start_server_time)
@@ -2489,7 +2588,7 @@ inline ::int64_t register_request::start_server_time() const {
 }
 inline void register_request::set_start_server_time(::int64_t value) {
   _internal_set_start_server_time(value);
-  _impl_._has_bits_[0] |= 0x00000010U;
+  _impl_._has_bits_[0] |= 0x00000020U;
   // @@protoc_insertion_point(field_set:celeritas.proto.service.register_request.start_server_time)
 }
 inline ::int64_t register_request::_internal_start_server_time() const {
@@ -2773,7 +2872,72 @@ inline void server_info::set_allocated_host(::std::string* PROTOBUF_NULLABLE val
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.server_info.host)
 }
 
-// repeated .celeritas.proto.service.protocol_port port = 4;
+// string external_host = 4;
+inline void server_info::clear_external_host() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.external_host_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000008U;
+}
+inline const ::std::string& server_info::external_host() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.server_info.external_host)
+  return _internal_external_host();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void server_info::set_external_host(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000008U;
+  _impl_.external_host_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.server_info.external_host)
+}
+inline ::std::string* PROTOBUF_NONNULL server_info::mutable_external_host()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_external_host();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.server_info.external_host)
+  return _s;
+}
+inline const ::std::string& server_info::_internal_external_host() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.external_host_.Get();
+}
+inline void server_info::_internal_set_external_host(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000008U;
+  _impl_.external_host_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL server_info::_internal_mutable_external_host() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000008U;
+  return _impl_.external_host_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE server_info::release_external_host() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.server_info.external_host)
+  if ((_impl_._has_bits_[0] & 0x00000008U) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000008U;
+  auto* released = _impl_.external_host_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.external_host_.Set("", GetArena());
+  }
+  return released;
+}
+inline void server_info::set_allocated_external_host(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000008U;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000008U;
+  }
+  _impl_.external_host_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.external_host_.IsDefault()) {
+    _impl_.external_host_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.server_info.external_host)
+}
+
+// repeated .celeritas.proto.service.protocol_port port = 5;
 inline int server_info::_internal_port_size() const {
   return _internal_port().size();
 }
@@ -2823,11 +2987,11 @@ server_info::_internal_mutable_port() {
   return &_impl_.port_;
 }
 
-// int64 start_server_time = 5;
+// int64 start_server_time = 6;
 inline void server_info::clear_start_server_time() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.start_server_time_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000008U;
+  _impl_._has_bits_[0] &= ~0x00000010U;
 }
 inline ::int64_t server_info::start_server_time() const {
   // @@protoc_insertion_point(field_get:celeritas.proto.service.server_info.start_server_time)
@@ -2835,7 +2999,7 @@ inline ::int64_t server_info::start_server_time() const {
 }
 inline void server_info::set_start_server_time(::int64_t value) {
   _internal_set_start_server_time(value);
-  _impl_._has_bits_[0] |= 0x00000008U;
+  _impl_._has_bits_[0] |= 0x00000010U;
   // @@protoc_insertion_point(field_set:celeritas.proto.service.server_info.start_server_time)
 }
 inline ::int64_t server_info::_internal_start_server_time() const {
@@ -2847,11 +3011,11 @@ inline void server_info::_internal_set_start_server_time(::int64_t value) {
   _impl_.start_server_time_ = value;
 }
 
-// bool is_health = 6;
+// bool is_health = 7;
 inline void server_info::clear_is_health() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_health_ = false;
-  _impl_._has_bits_[0] &= ~0x00000010U;
+  _impl_._has_bits_[0] &= ~0x00000020U;
 }
 inline bool server_info::is_health() const {
   // @@protoc_insertion_point(field_get:celeritas.proto.service.server_info.is_health)
@@ -2859,7 +3023,7 @@ inline bool server_info::is_health() const {
 }
 inline void server_info::set_is_health(bool value) {
   _internal_set_is_health(value);
-  _impl_._has_bits_[0] |= 0x00000010U;
+  _impl_._has_bits_[0] |= 0x00000020U;
   // @@protoc_insertion_point(field_set:celeritas.proto.service.server_info.is_health)
 }
 inline bool server_info::_internal_is_health() const {

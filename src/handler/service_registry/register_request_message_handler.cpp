@@ -19,6 +19,7 @@ bool celeritas::register_request_message_handler::handle_concrete(const protobuf
     const service_info service_info{ current_message.instance_id(),
                                      current_message.service_name(),
                                      current_message.host(),
+                                     current_message.external_host(),
                                      current_message.game_server_id(),
                                      protocol_port_container,
                                      current_message.start_server_time() };

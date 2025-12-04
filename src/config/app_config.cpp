@@ -3,6 +3,7 @@
 #include "common/logger.h"
 #include "common/time_helper.h"
 #include "detail/database_config_reader.h"
+#include "detail/global_config_reader.h"
 #include "detail/health_check_url_config_reader.h"
 #include "detail/logger_config_reader.h"
 #include "detail/server_config_reader.h"
@@ -73,6 +74,19 @@ void celeritas::app_config::load_loggers_config(const std::string& filename)
     }
 }
 
+void celeritas::app_config::load_global_config(const std::string& filename)
+{
+    try
+    {
+        do_load_global_config(filename);
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(config_channel, error) << "load global config error:" << error.what();
+        throw;
+    }
+}
+
 celeritas::logger_level_config celeritas::app_config::get_logger_level_config() const
 {
     return logger_level_config_;
@@ -121,6 +135,11 @@ int64_t celeritas::app_config::get_expire_milliseconds(const std::string& db_nam
     return time_helper::get_current_milliseconds() + database_config.get_expire_seconds() * milliseconds;
 }
 
+std::string celeritas::app_config::get_external_host() const
+{
+    return global_.get_external_host();
+}
+
 void celeritas::app_config::do_load_databases_config(const std::string& filename)
 {
     for (const auto& result = database_config_reader::load_config(filename);
@@ -160,4 +179,9 @@ void celeritas::app_config::do_load_service_registry_config(const std::string& f
     {
         service_registry_[element.get_name()] = element;
     }
+}
+
+void celeritas::app_config::do_load_global_config(const std::string& filename)
+{
+    global_ = global_config_reader::load_config(filename);
 }

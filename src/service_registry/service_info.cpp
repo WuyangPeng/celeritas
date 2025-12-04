@@ -3,12 +3,14 @@
 celeritas::service_info::service_info(std::string instance_id,
                                       std::string service_name,
                                       std::string host,
+                                      std::string external_host,
                                       std::string game_server_id,
                                       protocol_port_container protocol_port,
                                       const int64_t start_server_time)
     : instance_id_{ std::move(instance_id) },
       service_name_{ std::move(service_name) },
       host_{ std::move(host) },
+      external_host_{ std::move(external_host) },
       game_server_id_{ std::move(game_server_id) },
       last_heartbeat_{ std::chrono::steady_clock::now() },
       protocol_port_{ std::move(protocol_port) },
@@ -79,4 +81,9 @@ void celeritas::service_info::set_health_check_level_type(health_check_level_typ
 int64_t celeritas::service_info::get_start_server_time() const
 {
     return start_server_time_;
+}
+
+std::string celeritas::service_info::get_external_host() const
+{
+    return external_host_;
 }

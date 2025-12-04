@@ -20,6 +20,7 @@ bool celeritas::discover_request_message_handler::handle_concrete(const protobuf
         server_info->set_instance_id(service.get_instance_id());
         server_info->set_game_server_id(service.get_game_server_id());
         server_info->set_host(service.get_host());
+        server_info->set_external_host(service.get_external_host());
 
         for (const auto& network_type : container)
         {

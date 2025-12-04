@@ -20,6 +20,7 @@ namespace celeritas
         service_info(std::string instance_id,
                      std::string service_name,
                      std::string host,
+                     std::string external_host,
                      std::string game_server_id,
                      protocol_port_container protocol_port,
                      int64_t start_server_time);
@@ -44,10 +45,13 @@ namespace celeritas
 
         [[nodiscard]] int64_t get_start_server_time() const;
 
+        [[nodiscard]] std::string get_external_host() const;
+
     private:
         std::string instance_id_;
         std::string service_name_;
         std::string host_;
+        std::string external_host_;
         std::string game_server_id_;
         time_point_type last_heartbeat_;
         protocol_port_container protocol_port_;

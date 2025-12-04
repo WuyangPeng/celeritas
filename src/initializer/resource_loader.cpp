@@ -128,6 +128,7 @@ void celeritas::resource_loader::process_service_registry_by_duration()
     server_register->set_instance_id(server.get_instance_id());
     server_register->set_game_server_id(server.get_game_server_id());
     server_register->set_host(server.get_host());
+    server_register->set_external_host(app_config_->get_external_host());
     server_register->set_start_server_time(start_server_time_);
 
     for (const auto& element : server)
