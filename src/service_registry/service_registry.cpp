@@ -16,6 +16,11 @@ celeritas::service_registry::service_info_container_type celeritas::service_regi
     return get_service_registry_impl().get_services(service_name);
 }
 
+celeritas::service_registry::service_info_container_type celeritas::service_registry::get_idle_services(const std::string& service_name)
+{
+    return get_service_registry_impl().get_idle_services(service_name);
+}
+
 void celeritas::service_registry::start_cleanup_timer(io_context_type& io_context)
 {
     return get_service_registry_impl().start_cleanup_timer(io_context);
@@ -26,7 +31,7 @@ void celeritas::service_registry::remove_instance(const std::string& instance_id
     return get_service_registry_impl().remove_instance(instance_id);
 }
 
-void celeritas::service_registry::set_service_health(const std::string& instance_id,const health_check_level_type health_check_level)
+void celeritas::service_registry::set_service_health(const std::string& instance_id, const health_check_level_type health_check_level)
 {
     return get_service_registry_impl().set_service_health(instance_id, health_check_level);
 }

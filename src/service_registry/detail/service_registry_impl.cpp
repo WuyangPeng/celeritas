@@ -1,6 +1,7 @@
 ﻿#include "cleanup_timer.h"
 #include "service_registry_impl.h"
 #include "service_registry_internal_fwd.h"
+#include "bsoncxx/array/element.hpp"
 #include "common/logger.h"
 
 #include <ranges>
@@ -18,6 +19,8 @@ void celeritas::service_registry_impl::register_service(const service_info& info
     {
         registry_[info.get_instance_id()] = info;
     }
+
+    server_[info.get_service_name()][info.get_game_server_id()].emplace_back(info);
 }
 
 void celeritas::service_registry_impl::clear_services(const std::string& service_name)
@@ -27,6 +30,8 @@ void celeritas::service_registry_impl::clear_services(const std::string& service
     erase_if(registry_, [service_name](const auto& element) {
         return element.second.get_service_name() == service_name;
     });
+
+    server_.erase(service_name);
 }
 
 celeritas::service_registry_impl::service_info_container_type celeritas::service_registry_impl::get_services(const std::string& service_name)
@@ -34,13 +39,67 @@ celeritas::service_registry_impl::service_info_container_type celeritas::service
     std::lock_guard lock{ mutex_ };
 
     service_info_container_type services{};
-    for (const auto& element : registry_ | std::views::values)
+    if (const auto iter = server_.find(service_name);
+        iter != server_.end())
     {
-        if (element.get_service_name() == service_name && element.get_health_check_level_type() != health_check_level_type::crash)
+        for (const auto& container : iter->second | std::views::values)
         {
-            services.emplace_back(element);
+            for (const auto& element : container)
+            {
+                if (element.get_health_check_level_type() != health_check_level_type::crash)
+                {
+                    services.emplace_back(element);
+                }
+            }
         }
     }
+
+    return services;
+}
+
+celeritas::service_registry_impl::service_info_container_type celeritas::service_registry_impl::get_idle_services(const std::string& service_name)
+{
+    std::lock_guard lock{ mutex_ };
+
+    service_info_container_type services{};
+    if (const auto iter = server_.find(service_name);
+        iter != server_.end())
+    {
+        for (const auto& container : iter->second | std::views::values)
+        {
+            if (container.size() == 1)
+            {
+                if (const auto& service_info = container.at(0);
+                    service_info.get_health_check_level_type() == health_check_level_type::health)
+                {
+                    services.emplace_back(service_info);
+                }
+            }
+            else
+            {
+                if (const auto& service_info = container.at(next_index_ % container.size());
+                    service_info.get_health_check_level_type() == health_check_level_type::health)
+                {
+                    services.emplace_back(service_info);
+                }
+                else
+                {
+                    for (auto i = 0; i < container.size(); ++i)
+                    {
+                        if (const auto& element = container.at((next_index_ + i) % container.size());
+                            element.get_health_check_level_type() == health_check_level_type::health)
+                        {
+                            services.emplace_back(element);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ++next_index_;
+
     return services;
 }
 
@@ -63,6 +122,7 @@ void celeritas::service_registry_impl::cleanup_services_by_duration()
     {
         if (cleanup_service_entry(iter, now))
         {
+            remove_server(iter->second);
             iter = registry_.erase(iter);
         }
         else
@@ -76,7 +136,12 @@ void celeritas::service_registry_impl::remove_instance(const std::string& instan
 {
     std::lock_guard lock{ mutex_ };
 
-    registry_.erase(instance_id);
+    if (const auto iter = registry_.find(instance_id);
+        iter != registry_.end())
+    {
+        remove_server(iter->second);
+        registry_.erase(iter);
+    }
 }
 
 celeritas::service_registry_impl::registry_type celeritas::service_registry_impl::get_services()
@@ -146,5 +211,30 @@ void celeritas::service_registry_impl::log_server_unresponsive(const registry_ty
                << " (id: "
                << iter->second.get_instance_id()
                << ")";
+    }
+}
+
+void celeritas::service_registry_impl::remove_server(const service_info& service_info)
+{
+    if (const auto service = server_.find(service_info.get_service_name());
+        service != server_.cend())
+    {
+        if (const auto game_server = service->second.find(service_info.get_game_server_id());
+            game_server != service->second.cend())
+        {
+            erase_if(game_server->second, [instance_id = service_info.get_instance_id()](const auto& element) {
+                return element.get_instance_id() == instance_id;
+            });
+
+            if (game_server->second.empty())
+            {
+                service->second.erase(game_server);
+            }
+
+            if (service->second.empty())
+            {
+                server_.erase(service);
+            }
+        }
     }
 }

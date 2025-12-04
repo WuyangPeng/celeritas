@@ -22,6 +22,8 @@ namespace celeritas
 
         [[nodiscard]] static service_info_container_type get_services(const std::string& service_name);
 
+        [[nodiscard]] static service_info_container_type get_idle_services(const std::string& service_name);
+
         static void start_cleanup_timer(io_context_type& io_context);
 
         static void remove_instance(const std::string& instance_id);

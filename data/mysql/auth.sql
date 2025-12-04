@@ -88,3 +88,10 @@ CREATE TABLE `account_bind` (
   UNIQUE KEY `account_type_process_type_app_id_auth_key_unique` (`account_type`,`process_type`,`app_id`,`auth_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE `account_last_login` (
+  `account_id` BIGINT NOT NULL COMMENT '账号id',
+  `game_server_id` VARCHAR(255) NOT NULL COMMENT '服务器id',
+  `update_time` BIGINT NOT NULL DEFAULT 0 COMMENT '更新时间',
+  PRIMARY KEY (`account_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "common/timer_base.h"
 #include "detail/gateway_check_timer.h"
+#include "detail/auth_health_check_timer.h"
 #include "initializer/resource_loader.h"
 
 namespace celeritas
@@ -16,8 +16,11 @@ namespace celeritas
 
         void send_gateway_check();
 
+        void send_health_check(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
+
     private:
         using gateway_check_timer_shared_ptr = std::shared_ptr<gateway_check_timer>;
+        using health_check_timer_shared_ptr = std::shared_ptr<auth_health_check_timer>;
         using void_waitable_type = boost::asio::awaitable<void>;
         using http_client_shared_ptr = std::shared_ptr<http_client>;
 
@@ -25,8 +28,15 @@ namespace celeritas
 
         static void load_from_db(io_context_type& io_context);
 
+        void start_check_timer(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
+
         void start_gateway_check_timer(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
 
+        void start_health_check_timer(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
+
+        [[nodiscard]] void_waitable_type send_health_check(http_client_shared_ptr http_client);
+
         gateway_check_timer_shared_ptr gateway_check_timer_;
+        health_check_timer_shared_ptr health_check_timer_;
     };
 }
