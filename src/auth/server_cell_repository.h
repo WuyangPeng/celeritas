@@ -15,7 +15,8 @@ namespace celeritas
         using class_type = server_cell_repository;
         using io_context_type = boost::asio::io_context;
         using void_awaitable_type = boost::asio::awaitable<void>;
-        using optional_server_cell = std::optional<server_cell>;
+        using optional_server_cell_type = std::optional<server_cell>;
+        using server_cell_container_type = std::vector<server_cell>;
 
         [[nodiscard]] static server_cell_repository& get_instance();
 
@@ -23,11 +24,16 @@ namespace celeritas
 
         void load_from_db(io_context_type& io_context);
 
-        [[nodiscard]] optional_server_cell get_server_cell(const std::string& game_server_id);
+        [[nodiscard]] optional_server_cell_type get_server_cell(const std::string& game_server_id);
+
+        [[nodiscard]] optional_server_cell_type get_last_server_cell(int64_t app_id);
+
+        [[nodiscard]] server_cell_container_type get_server_cell_by_app_id(int64_t app_id);
 
     private:
         using server_cell_type = std::unordered_map<int64_t, server_cell>;
         using game_server_type = std::unordered_map<std::string, server_cell>;
+        using app_id_server_type = std::unordered_map<int64_t, server_cell_container_type>;
 
         server_cell_repository() noexcept = default;
 
@@ -41,6 +47,7 @@ namespace celeritas
 
         server_cell_type server_cell_;
         game_server_type game_server_;
+        app_id_server_type app_id_server_;
         std::shared_mutex mutex_;
     };
 }

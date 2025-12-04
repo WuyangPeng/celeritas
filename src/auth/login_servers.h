@@ -1,8 +1,10 @@
 ﻿#pragma once
 
 #include "auth_service_base.h"
+#include "server_cell_repository.h"
 #include "database/document/server_role.h"
-#include "database/generated/mongo/auth/player_server_roles.h"
+#include "database/generated/redis/auth/session_token.h"
+#include "detail/login_servers_parameter.h"
 
 #include <map>
 
@@ -20,6 +22,19 @@ namespace celeritas
 
     private:
         using container = std::map<std::string, server_role>;
+        using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
+
+        [[nodiscard]] login_server_info get_login_server_info(const login_servers_parameter& login_servers_parameter,
+                                                              const server_cell& server_cell);
+
+        [[nodiscard]] void_awaitable_type create_server_role(const login_servers_parameter& login_servers_parameter,
+                                                             const session_token& session_token);
+
+        [[nodiscard]] void_awaitable_type response_is_only_preferred(const login_servers_parameter& login_servers_parameter,
+                                                                     const session_token& session_token,
+                                                                     const database_pool_shared_ptr& redis_pool);
+
+        [[nodiscard]] void_awaitable_type response_is_all(const login_servers_parameter& login_servers_parameter);
 
         container server_role_;
     };

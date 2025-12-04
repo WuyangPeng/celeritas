@@ -791,6 +791,32 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **作用**：封装了SDK绑定 `HTTP` 请求的响应数据。
     - **特点**：包含错误码和提示信息，并提供了 `to_json_string()` 方法将其序列化为 `JSON` 格式。
 
+### 服务器列表与角色 (Server List & Roles)
+
+* **🔌 连接信息 (`connection_info`)**
+    - **作用**：持有服务器的网络连接详情，包括 `host`、`port` 和 `server_network_type`。
+    - **用途**：用于告知客户端如何连接到指定的游戏服务器。
+
+
+* **🧑‍🤝‍🧑 玩家角色 (`player_role`)**
+    - **作用**：表示玩家在特定服务器上的角色信息。
+    - **内容**：包含 `role_name` (角色名) 和 `last_login_time` (上次登录时间)。
+
+
+* **ℹ️ 登录服务器信息 (`login_server_info`)**
+    - **作用**：聚合了要发送给客户端的单个游戏服务器的全部信息。
+    - **内容**：包括服务器ID、名称、状态、连接详情 (`connection_info`) 以及玩家在该服务器上的最近角色信息 (`player_role`)。
+
+
+* **📦 登录服务器响应 (`login_servers_response`)**
+    - **作用**：表示客户端请求服务器列表时，服务器返回的完整HTTP响应。
+    - **特点**：继承自 `http_response`，并包含一个 `login_server_info` 对象的列表。
+
+
+* **🖥️ 登录服务器 (`login_servers`)**
+    - **作用**：处理服务器列表请求的核心服务类。
+    - **职责**：负责从 `server_cell_repository` 获取服务器数据，检索玩家角色信息，并最终构建 `login_servers_response`。
+
 ## payment（支付）
 
 支付模块提供了一个基础框架，用于处理游戏内的支付请求。

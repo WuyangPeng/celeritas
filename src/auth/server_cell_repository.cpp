@@ -2,6 +2,8 @@
 #include "common/logger.h"
 #include "database/database_pool_manager.h"
 
+#include <ranges>
+
 celeritas::server_cell_repository& celeritas::server_cell_repository::get_instance()
 {
     static server_cell_repository instance{};
@@ -30,7 +32,7 @@ void celeritas::server_cell_repository::load_from_db(io_context_type& io_context
                           }, boost::asio::detached);
 }
 
-celeritas::server_cell_repository::optional_server_cell celeritas::server_cell_repository::get_server_cell(const std::string& game_server_id)
+celeritas::server_cell_repository::optional_server_cell_type celeritas::server_cell_repository::get_server_cell(const std::string& game_server_id)
 {
     if (const auto iter = game_server_.find(game_server_id);
         iter != game_server_.cend())
@@ -39,6 +41,28 @@ celeritas::server_cell_repository::optional_server_cell celeritas::server_cell_r
     }
 
     return std::nullopt;
+}
+
+celeritas::server_cell_repository::optional_server_cell_type celeritas::server_cell_repository::get_last_server_cell(const int64_t app_id)
+{
+    if (const auto iter = app_id_server_.find(app_id);
+        iter != app_id_server_.cend() && !iter->second.empty())
+    {
+        return iter->second.at(iter->second.size() - 1);
+    }
+
+    return std::nullopt;
+}
+
+celeritas::server_cell_repository::server_cell_container_type celeritas::server_cell_repository::get_server_cell_by_app_id(int64_t app_id)
+{
+    if (const auto iter = app_id_server_.find(app_id);
+        iter != app_id_server_.cend())
+    {
+        return iter->second;
+    }
+
+    return server_cell_container_type();
 }
 
 celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_repository::load_from_db()
@@ -65,16 +89,28 @@ celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_re
 
     server_cell_type server_cell_type{};
     game_server_type game_server_type{};
+    app_id_server_type app_id_server_type{};
     for (const auto& row : apps_result)
     {
         const server_cell server_cell{ row };
         server_cell_type.emplace(server_cell.get_cell_id(), server_cell);
         game_server_type.emplace(server_cell.get_game_server_id(), server_cell);
+
+        const auto app_id = server_cell.get_app_id();
+        app_id_server_type[app_id].emplace_back(server_cell);
+    }
+
+    for (auto& element : app_id_server_type | std::views::values)
+    {
+        std::ranges::sort(element, [](const auto& lhs, const auto& rhs) {
+            return lhs.get_launch_time() < rhs.get_launch_time();
+        });
     }
 
     std::unique_lock lock{ mutex_ };
     server_cell_ = std::move(server_cell_type);
     game_server_ = std::move(game_server_type);
+    app_id_server_ = std::move(app_id_server_type);
 }
 
 celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_repository::load_from_db(const int64_t cell_id)
@@ -106,9 +142,30 @@ celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_re
         if (const auto iter = server_cell_.find(cell_id);
             iter != server_cell_.cend())
         {
+            const auto app_id = iter->second.get_app_id();
+
             game_server_.erase(iter->second.get_game_server_id());
+            server_cell_.erase(iter);
+
+            if (const auto current = app_id_server_.find(app_id);
+                current != app_id_server_.cend())
+            {
+                std::erase_if(current->second, [cell_id](const auto& element) {
+                    return element.get_cell_id() == cell_id;
+                });
+            }
         }
+
         server_cell_.emplace(server_cell.get_cell_id(), server_cell);
         game_server_.emplace(server_cell.get_game_server_id(), server_cell);
+
+        if (const auto current = app_id_server_.find(server_cell.get_app_id());
+            current != app_id_server_.cend())
+        {
+            current->second.emplace_back(server_cell);
+            std::ranges::sort(current->second, [](const auto& lhs, const auto& rhs) {
+                return lhs.get_launch_time() < rhs.get_launch_time();
+            });
+        }
     }
 }

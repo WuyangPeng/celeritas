@@ -2,6 +2,7 @@
 
 #include "common/common_fwd.h"
 #include "service_registry/service_info.h"
+#include "service_registry/service_registry.h"
 
 #include <boost/asio.hpp>
 #include <boost/log/trivial.hpp>
@@ -66,7 +67,7 @@ namespace celeritas
 
         void remove_server(const service_info& service_info);
 
-        [[nodiscard]] optional_service_info get_idle_services(const service_info_container_type& service_info_container_type);
+        [[nodiscard]] optional_service_info get_idle_services(const service_info_container_type& service_info_container_type) const;
 
         registry_type registry_;
         server_type server_;
