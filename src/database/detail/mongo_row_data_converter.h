@@ -23,7 +23,10 @@ namespace celeritas
 
         [[nodiscard]] static document_type get_document(const basis_database_container_const_shared_ptr& container);
 
-        template <typename ArrayType>
-        [[nodiscard]] static basis_database to_numeric_array_basis(const database_field& field, const document_element_type& row_view);
+    private:
+        using array_type = bsoncxx::array::view;
+
+        template <typename T>
+        [[nodiscard]] static std::vector<T> get_numeric_array(const array_type& array_view);
     };
 }

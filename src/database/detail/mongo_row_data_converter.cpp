@@ -7,6 +7,7 @@
 
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <bsoncxx/builder/basic/array.hpp>
 #include <bsoncxx/types.hpp>
 
 using namespace std::literals;
@@ -54,30 +55,26 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
 
         case database_data_type::string_array_type:
         {
-            const std::string column{ row_view.get_string().value };
-
-            basis_database::string_array result{};
-            if (!column.empty())
-            {
-                split(result, column, boost::is_any_of("|"), boost::token_compress_off);
-            }
-
-            return basis_database{ iter->get_field_name(), result };
+            const auto& array_view = row_view.get_array().value;
+            return basis_database{ iter->get_field_name(), get_numeric_array<std::string>(array_view) };
         }
 
         case database_data_type::int32_array_type:
         {
-            return to_numeric_array_basis<basis_database::int32_array>(*iter, row_view);
+            const auto& array_view = row_view.get_array().value;
+            return basis_database{ iter->get_field_name(), get_numeric_array<int32_t>(array_view) };
         }
 
         case database_data_type::int64_array_type:
         {
-            return to_numeric_array_basis<basis_database::int64_array>(*iter, row_view);
+            const auto& array_view = row_view.get_array().value;
+            return basis_database{ iter->get_field_name(), get_numeric_array<int64_t>(array_view) };
         }
 
         case database_data_type::double_array_type:
         {
-            return to_numeric_array_basis<basis_database::double_array>(*iter, row_view);
+            const auto& array_view = row_view.get_array().value;
+            return basis_database{ iter->get_field_name(), get_numeric_array<double>(array_view) };
         }
 
         case database_data_type::byte_array_type:
@@ -138,25 +135,45 @@ celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_con
 
             case database_data_type::string_array_type:
             {
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::string_array_type>()));
+                bsoncxx::builder::basic::array basic{};
+                for (const auto& element : value.get_value<database_data_type::string_array_type>())
+                {
+                    basic.append(element);
+                }
+                document.append(bsoncxx::builder::basic::kvp(fieldName, basic));
                 break;
             }
 
             case database_data_type::int32_array_type:
             {
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::int32_array_type>()));
+                bsoncxx::builder::basic::array basic{};
+                for (const auto& element : value.get_value<database_data_type::int32_array_type>())
+                {
+                    basic.append(element);
+                }
+                document.append(bsoncxx::builder::basic::kvp(fieldName, basic));
                 break;
             }
 
             case database_data_type::int64_array_type:
             {
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::int64_array_type>()));
+                bsoncxx::builder::basic::array basic{};
+                for (const auto& element : value.get_value<database_data_type::int64_array_type>())
+                {
+                    basic.append(element);
+                }
+                document.append(bsoncxx::builder::basic::kvp(fieldName, basic));
                 break;
             }
 
             case database_data_type::double_array_type:
             {
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_array_string_value<database_data_type::double_array_type>()));
+                bsoncxx::builder::basic::array basic{};
+                for (const auto& element : value.get_value<database_data_type::double_array_type>())
+                {
+                    basic.append(element);
+                }
+                document.append(bsoncxx::builder::basic::kvp(fieldName, basic));
                 break;
             }
 
@@ -174,4 +191,3 @@ celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_con
 
     return document;
 }
-

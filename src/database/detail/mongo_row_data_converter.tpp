@@ -2,27 +2,28 @@
 
 #include "mongo_row_data_converter.h"
 
-#include <boost/lexical_cast.hpp>
-
-#include <ranges>
-
-template <typename ArrayType>
-celeritas::basis_database celeritas::mongo_row_data_converter::to_numeric_array_basis(const database_field& field, const document_element_type& row_view)
+template <typename T>
+std::vector<T> celeritas::mongo_row_data_converter::get_numeric_array(const array_type& array_view)
 {
-    const std::string value{ row_view.get_string().value };
-    if (value.empty())
+    std::vector<T> result{};
+    for (const auto& element : array_view)
     {
-        return basis_database{ field.get_field_name(), ArrayType{} };
+        if constexpr (std::is_same_v<T, int32_t>)
+        {
+            result.emplace_back(element.get_int32().value);
+        }
+        else if constexpr (std::is_same_v<T, int64_t>)
+        {
+            result.emplace_back(element.get_int64().value);
+        }
+        else if constexpr (std::is_same_v<T, double>)
+        {
+            result.emplace_back(element.get_double().value);
+        }
+        else if constexpr (std::is_same_v<T, std::string>)
+        {
+            result.emplace_back(element.get_string().value);
+        }
     }
-
-    auto split_view = value | std::views::split('|');
-
-    auto transformed_view = split_view | std::views::transform(
-                                [](const auto& subrange) {
-                                    const std::string result_str{ subrange.begin(), subrange.end() };
-                                    return boost::lexical_cast<typename ArrayType::value_type>(result_str);
-                                });
-
-    const ArrayType result{ transformed_view.begin(), transformed_view.end() };
-    return basis_database{ field.get_field_name(), result };
+    return result;
 }
