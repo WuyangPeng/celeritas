@@ -42,8 +42,8 @@ std::string celeritas::server_role::to_json_string() const
 {
     bsoncxx::builder::basic::document builder{};
     builder.append(bsoncxx::builder::basic::kvp(std::string{ game_server_id_description }, game_server_id_));
-    builder.append(bsoncxx::builder::basic::kvp(role_name_description, role_name_));
-    builder.append(bsoncxx::builder::basic::kvp(last_login_time_description, last_login_time_));
+    builder.append(bsoncxx::builder::basic::kvp(std::string{ role_name_description }, role_name_));
+    builder.append(bsoncxx::builder::basic::kvp(std::string{ last_login_time_description }, last_login_time_));
 
     return bsoncxx::to_json(builder.view());
 }
