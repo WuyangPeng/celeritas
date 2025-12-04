@@ -41,7 +41,7 @@ void celeritas::server_role::set_last_login_time(const int64_t lastLoginTime)
 std::string celeritas::server_role::to_json_string() const
 {
     bsoncxx::builder::basic::document builder{};
-    builder.append(bsoncxx::builder::basic::kvp(game_server_id_description, game_server_id_));
+    builder.append(bsoncxx::builder::basic::kvp(std::string{ game_server_id_description }, game_server_id_));
     builder.append(bsoncxx::builder::basic::kvp(role_name_description, role_name_));
     builder.append(bsoncxx::builder::basic::kvp(last_login_time_description, last_login_time_));
 
