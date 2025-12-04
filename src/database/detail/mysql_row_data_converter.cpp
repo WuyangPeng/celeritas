@@ -40,6 +40,7 @@ celeritas::basis_database celeritas::mysql_row_data_converter::get_basis_databas
         }
 
         case database_data_type::string_array_type:
+        case database_data_type::document_array_type:
         {
             basis_database::string_array result{};
             split(result, row_view.as_string(), boost::is_any_of("|"), boost::token_compress_off);

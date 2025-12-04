@@ -2,8 +2,8 @@
 
 #include "test.h"
 #include "config/database_type.h"
-#include "database/database_entity_change.tpp"
 #include "database/database_change_type.h"
+#include "database/database_entity_change.tpp"
 #include "database/database_entity.tpp"
 #include "database/entity.tpp"
 

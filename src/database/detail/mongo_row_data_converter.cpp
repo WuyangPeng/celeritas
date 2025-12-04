@@ -88,6 +88,17 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
             return basis_database{ iter->get_field_name(), database_data_type::document_type, bsoncxx::to_json(doc_value) };
         }
 
+        case database_data_type::document_array_type:
+        {
+            const bsoncxx::document::value doc_value{ row_view.get_document().value };
+            basis_database::string_array result{};
+            for (const auto& element : doc_value)
+            {
+                result.emplace_back(bsoncxx::to_json(element.get_document().value));
+            }
+
+            return basis_database{ iter->get_field_name(), database_data_type::document_array_type, result };
+        }
         default:
         {
             return basis_database{ iter->get_field_name(), std::string{} };
@@ -195,7 +206,19 @@ celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_con
                 document.append(bsoncxx::builder::basic::kvp(fieldName, doc_value));
                 break;
             }
+            case database_data_type::document_array_type:
+            {
+                const auto document_type = value.get_value<database_data_type::document_array_type>();
+                bsoncxx::builder::basic::array basic{};
+                for (const auto& element : document_type)
+                {
+                    auto doc_value = bsoncxx::from_json(element);
+                    basic.append(doc_value);
+                }
 
+                document.append(bsoncxx::builder::basic::kvp(fieldName, basic));
+                break;
+            }
             default:
                 break;
         }

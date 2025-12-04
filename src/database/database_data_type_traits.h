@@ -94,6 +94,12 @@ namespace celeritas
         using Type = std::string;
     };
 
+    template <>
+    struct database_data_Type_traits<database_data_type::document_array_type>
+    {
+        using Type = std::vector<std::string>;
+    };
+
     namespace traits
     {
         using string_type = database_data_Type_traits<database_data_type::string_type>::Type;
@@ -109,6 +115,7 @@ namespace celeritas
         using bool_type = database_data_Type_traits<database_data_type::bool_type>::Type;
         using byte_array_type = database_data_Type_traits<database_data_type::byte_array_type>::Type;
         using document_type = database_data_Type_traits<database_data_type::document_type>::Type;
+        using document_array_type = database_data_Type_traits<database_data_type::document_array_type>::Type;
 
         namespace param_type
         {
@@ -125,6 +132,7 @@ namespace celeritas
             using bool_type = boost::call_traits<bool_type>::param_type;
             using byte_array_type = boost::call_traits<byte_array_type>::param_type;
             using document_type = boost::call_traits<document_type>::param_type;
+            using document_array_type = boost::call_traits<document_array_type>::param_type;
         }
     }
 }

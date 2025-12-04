@@ -63,6 +63,7 @@ celeritas::basis_database celeritas::redis_key_data_converter::get_basis_databas
         }
 
         case database_data_type::string_array_type:
+        case database_data_type::document_array_type:
         {
             basis_database::string_array result{};
             split(result, value, boost::is_any_of("|"), boost::token_compress_off);
