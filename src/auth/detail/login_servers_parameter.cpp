@@ -4,7 +4,7 @@
 #include "database/generated/redis/auth/session_token.h"
 
 celeritas::login_servers_parameter::login_servers_parameter(const http_handle_parameter& http_handle_parameter)
-    : base_type{ http_handle_parameter }, response_{}, token_{}, region_{}, only_preferred_{}, include_details_{}, apps_{}
+    : base_type{ http_handle_parameter }, response_{}, token_{}, region_{}, only_preferred_{}, include_details_{}, is_websocket_{}, apps_{}
 {
     init();
 }
@@ -39,6 +39,11 @@ bool celeritas::login_servers_parameter::is_include_details() const
     return include_details_;
 }
 
+bool celeritas::login_servers_parameter::is_is_websocket() const
+{
+    return is_websocket_;
+}
+
 celeritas::apps celeritas::login_servers_parameter::get_apps() const
 {
     return *apps_;
@@ -68,12 +73,17 @@ void celeritas::login_servers_parameter::init()
         include_details_ = *optional_include_details_describe == "true";
     }
 
+    if (const auto optional_is_websocket_describe = get_param(is_websocket_describe.data()))
+    {
+        is_websocket_ = *optional_is_websocket_describe == "true";
+    }
+
     if (const auto http_response = get_http_parameter())
     {
         response_ = login_servers_response{ *http_response };
     }
 
-    if (const auto hmac_sha256 = hmac_sha256::calculate_with_args(get_apps().get_app_secret(), get_app_id(), token_, get_actual_region(), only_preferred_, include_details_, get_timestamp());
+    if (const auto hmac_sha256 = hmac_sha256::calculate_with_args(get_apps().get_app_secret(), get_app_id(), token_, get_actual_region(), only_preferred_, include_details_, is_websocket_, get_timestamp());
         hmac_sha256 != get_sign())
     {
         response_ = login_servers_response{ game_error_type::sign_error };

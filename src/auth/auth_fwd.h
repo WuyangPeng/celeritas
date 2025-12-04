@@ -4,6 +4,7 @@ namespace celeritas
 {
     enum class app_status_type;
     enum class sdk_process_type;
+    enum class server_status_type;
 
     class app_secret;
     class app_sms_providers;
@@ -41,6 +42,9 @@ namespace celeritas
     class sdk_bind;
     class sdk_bind_response;
 
+    class connection_info;
+    class player_role;
+    class login_server_info;
     class login_servers_response;
 
     class server_cell_repository;

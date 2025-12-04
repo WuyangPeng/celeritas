@@ -54,4 +54,5 @@ namespace celeritas
     constexpr std::string_view region_describe = "region";
     constexpr std::string_view only_preferred_describe = "only_preferred";
     constexpr std::string_view include_details_describe = "include_details";
+    constexpr std::string_view is_websocket_describe = "is_websocket";
 }
