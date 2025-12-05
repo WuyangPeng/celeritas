@@ -1,10 +1,11 @@
-﻿#include <boost/test/unit_test.hpp>
+﻿#include "common/celeritas_error.h"
 #include "common/noexcept_safe_call_and_log.h"
-#include "common/celeritas_error.h" // 用于测试 std::exception 派生异常
 
+#include <boost/test/unit_test.hpp>
+
+#include <atomic>
+#include <stdexcept>
 #include <string>
-#include <stdexcept> // 用于测试 std::exception
-#include <atomic>    // 用于测试函数是否被调用
 
 BOOST_AUTO_TEST_SUITE(noexcept_safe_call_and_log_suite)
 

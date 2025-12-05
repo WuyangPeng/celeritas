@@ -1,6 +1,6 @@
-﻿#include <boost/test/unit_test.hpp>
+﻿#include "common/celeritas_error.h"
 
-#include "common/celeritas_error.h"
+#include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(celeritas_error_suite)
 
