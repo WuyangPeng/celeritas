@@ -14,9 +14,9 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
         for (auto i = 0; i < 1000; ++i)
         {
             constexpr auto end = 100;
-            const auto random_val = celeritas::random_helper::get_random_int(end);
-            BOOST_CHECK_GE(random_val, 0);
-            BOOST_CHECK_LT(random_val, end);
+            const auto random_value = celeritas::random_helper::get_random_int(end);
+            BOOST_CHECK_GE(random_value, 0);
+            BOOST_CHECK_LT(random_value, end);
         }
     }
 
@@ -34,9 +34,9 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
             constexpr auto begin = -50;
             constexpr auto end = 50;
 
-            const auto random_val = celeritas::random_helper::get_random_int(begin, end);
-            BOOST_CHECK_GE(random_val, begin);
-            BOOST_CHECK_LT(random_val, end);
+            const auto random_value = celeritas::random_helper::get_random_int(begin, end);
+            BOOST_CHECK_GE(random_value, begin);
+            BOOST_CHECK_LT(random_value, end);
         }
     }
 
