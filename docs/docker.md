@@ -85,7 +85,8 @@ docker run -itd --name mongo \
 -v /data/mongodb/mongodump:/data/mongodump \
 --env TZ=:/etc/localtime -v /etc/localtime:/etc/localtime:ro  \
 --restart=always \
---log-driver json-file --log-opt max-size=10m mongo --auth
+--log-driver json-file --log-opt max-size=10m \
+mongo --auth
 
 ## 安装 mysql
 
