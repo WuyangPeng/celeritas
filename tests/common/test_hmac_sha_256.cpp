@@ -4,6 +4,15 @@
 
 BOOST_AUTO_TEST_SUITE(hmac_sha256_suite)
 
+    // 用于诊断的标准测试用例
+    BOOST_AUTO_TEST_CASE(test_with_standard_fox_vector)
+    {
+        const std::string key = "key";
+        const std::string data = "The quick brown fox jumps over the lazy dog";
+        const std::string expected = "f7bc83f430538424b13298e6aa6fb143ef4d59a14946175997479dbc2d1a3cd8";
+        BOOST_CHECK_EQUAL(celeritas::hmac_sha256::calculate(key, data), expected);
+    }
+
     // 使用RFC 2202中的测试向量进行测试
     BOOST_AUTO_TEST_CASE(test_with_rfc_vectors)
     {
