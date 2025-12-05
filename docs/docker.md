@@ -108,8 +108,8 @@ docker run --name nginx \
 -v /data/nginx/html:/usr/local/html:ro \
 -v /data/nginx/download:/usr/local/download:ro \
 -v /data/celeritas/data/nginx/nginx.conf:/etc/nginx/nginx.conf:ro \
--v /data/nginx/Ssl:/usr/local/ssl:ro \
--v /data/nginx/cert:/etc/nginx/cert \
+-v /data/nginx/ssl:/usr/local/ssl:ro \
+-v /data/nginx/certs:/etc/nginx/cert \
 --env TZ=:/etc/localtime -v /etc/localtime:/etc/localtime:ro \
 --restart=always \
 --log-driver json-file --log-opt max-size=10m \
