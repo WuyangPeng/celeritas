@@ -14,9 +14,10 @@ celeritas::snowflake_generator& celeritas::snowflake_generator::get_instance()
 
 int64_t celeritas::snowflake_generator::generate(const int datacenter_id, const int worker_id)
 {
-    auto timestamp = time_helper::get_current_milliseconds();
-
     std::lock_guard lock{ id_mutex_ };
+
+    // 时间获得比须在获得锁之后，不然可能是锁住之前的时间
+    auto timestamp = time_helper::get_current_milliseconds();
 
     if (timestamp < last_timestamp_)
     {
