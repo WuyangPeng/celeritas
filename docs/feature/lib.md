@@ -54,7 +54,7 @@
     - **作用**：提供一个静态工具类，用于计算数据的`HMAC-SHA256`签名。
     - **依赖**：基于`OpenSSL`的`HMAC`函数和`Boost.Algorithm`库。
     - **功能**：
-        - **`calculate(data, secret_key)`**：接收原始数据和密钥，返回一个小写十六进制字符串作为签名结果。
+        - **`calculate(secret_key, data)`**：接收原始数据和密钥，返回一个小写十六进制字符串作为签名结果。
 
 
 * **⚙️ 命令行配置解析（`command_line_config`）**
@@ -171,7 +171,6 @@
 
 * **🌍 全局配置 (`global_config`)**
     - **作用**：`global_config` 类用于存储全局配置选项。
-  
 
 ### local configuration structures（局部配置结构）
 
