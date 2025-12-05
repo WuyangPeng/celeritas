@@ -173,12 +173,14 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
         // 基本检查：平均值应接近均值
         const auto sum = std::accumulate(samples.begin(), samples.end(), 0.0);
         const auto average = sum / num_iterations;
-        BOOST_CHECK_CLOSE(average, mean_value, 10.0); // 允许平均值有 10% 的容差
+        // 允许平均值有 10% 的容差
+        BOOST_CHECK_CLOSE(average, mean_value, 10.0);
 
         // 基本检查：值通常应在均值的几个标准差范围内
         for (auto value : samples)
         {
-            BOOST_CHECK_GE(value, mean_value - 4 * stddev_value); // 大致在 4 个标准差范围内
+            // 大致在 4 个标准差范围内
+            BOOST_CHECK_GE(value, mean_value - 4 * stddev_value);
             BOOST_CHECK_LE(value, mean_value + 4 * stddev_value);
         }
     }
