@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
 
         for (auto i = 0; i < num_iterations; ++i)
         {
-            samples.push_back(celeritas::random_helper::get_random_normal(mean_value, stddev_value));
+            samples.emplace_back(celeritas::random_helper::get_random_normal(mean_value, stddev_value));
         }
 
         // 基本检查：平均值应接近均值
