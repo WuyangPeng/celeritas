@@ -45,31 +45,46 @@
 
 ## 安装 portainer
 
-docker run --name portainer -d -p 35000:9000 -v /var/run/docker.sock:/var/run/docker.sock \
---env TZ=:/etc/localtime -v /etc/localtime:/etc/localtime:ro --restart=always \
---log-driver json-file --log-opt max-size=10m portainer/portainer
+docker run --name portainer -d \
+-p 35000:9000 \
+-v /var/run/docker.sock:/var/run/docker.sock \
+--env TZ=:/etc/localtime \
+-v /etc/localtime:/etc/localtime:ro \
+--restart=always \
+--log-driver json-file --log-opt max-size=10m \
+portainer/portainer
 
 ## 安装 svnadmin
 
-docker run -d --name svnadmin -p 35080:80 -p 33690:3690 \
--v /data/svnadmin/:/home/svnadmin/ -v /data/svnadmin/conf.d/:/etc/httpd/conf.d/ \
+docker run -d --name svnadmin \
+-p 35080:80 -p 33690:3690 \
+-v /data/svnadmin/:/home/svnadmin/ \
+-v /data/svnadmin/conf.d/:/etc/httpd/conf.d/ \
 -v /data/svnadmin/sasl2/:/etc/sasl2/ \
---restart=always --log-driver json-file --log-opt max-size=10m \
+--restart=always \
+--log-driver json-file --log-opt max-size=10m \
 --privileged witersencom/svnadmin
 
 ## 安装 redis
 
-docker run -d --name redis --restart=always --log-driver json-file --log-opt max-size=10m \
---network host --env TZ=:/etc/localtime -v /etc/localtime:/etc/localtime:ro  \
--v /data/redis-data/node:/data -v /data/redis-data/conf/redis.conf:/etc/redis/redis.conf \
+docker run -d --name redis \
+--network host \
+-v /data/redis-data/node:/data \
+-v /data/redis-data/conf/redis.conf:/etc/redis/redis.conf \
 -v /data/redis-data/conf/users.acl:/etc/redis/users.acl \
+--env TZ=:/etc/localtime -v /etc/localtime:/etc/localtime:ro  \
+--restart=always \
+--log-driver json-file --log-opt max-size=10m \
 redis redis-server /etc/redis/redis.conf --aclfile /etc/redis/users.acl --port 7001
 
 ## 安装 mongo
 
-docker run -itd --name mongo -p 27017:27017 -v /data/mongodb/data:/data/db \
--v /data/mongodb/mongodump:/data/mongodump --restart=always \
+docker run -itd --name mongo \
+-p 27017:27017 \
+-v /data/mongodb/data:/data/db \
+-v /data/mongodb/mongodump:/data/mongodump \
 --env TZ=:/etc/localtime -v /etc/localtime:/etc/localtime:ro  \
+--restart=always \
 --log-driver json-file --log-opt max-size=10m mongo --auth
 
 ## 安装 mysql
@@ -81,7 +96,6 @@ docker run -d --name mysql \
 -v /data/mysql/conf:/etc/mysql/conf.d \
 -v /data/mysql/logs:/var/log/mysql \
 --env TZ=:/etc/localtime -v /etc/localtime:/etc/localtime:ro  \
---log-driver json-file --log-opt max-size=10m \
 --restart=always \
+--log-driver json-file --log-opt max-size=10m \
 mysql
-  
