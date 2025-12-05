@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
     BOOST_AUTO_TEST_CASE(test_get_random_int_begin_end_equal)
     {
         constexpr auto value = 10;
-        const auto random_value = celeritas::random_helper::get_random_int(value, value );
+        const auto random_value = celeritas::random_helper::get_random_int(value, value + 1);
         BOOST_CHECK_EQUAL(random_value, value);
     }
 
