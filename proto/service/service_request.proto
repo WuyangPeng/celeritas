@@ -9,7 +9,7 @@ package celeritas.proto.service;
 message service_request {
   oneof payload {
     service_registry_request registry = 1;
-    auth_request auth = 2;
-    payment_request payment = 3;
+    service_auth_request auth = 2;
+    service_payment_request payment = 3;
   }
 }

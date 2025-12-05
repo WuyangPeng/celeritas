@@ -5,6 +5,12 @@
 
 celeritas::response_message_handler::response_message_handler()
 {
+    add_handler_function(proto::response::PayloadCase::kClient,
+                         [](const protobuf_handle_parameter& handle_parameter,
+                            const message_type& current_message,
+                            const message_registry_shared_ptr& message_registry) -> bool {
+                             return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::client);
+                         });
     add_handler_function(proto::response::PayloadCase::kService,
                          [](const protobuf_handle_parameter& handle_parameter,
                             const message_type& current_message,

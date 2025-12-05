@@ -42,7 +42,7 @@ message reload_server_cell_db_request {
 message reload_server_cell_db_response {
 }
 
-message auth_request {
+message service_auth_request {
   oneof payload {
     reload_app_db_request reload_app_db = 1;
     reload_sms_providers_db_request reload_sms_providers_db = 2;
@@ -52,7 +52,7 @@ message auth_request {
   }
 }
 
-message auth_response {
+message service_auth_response {
   oneof payload {
     reload_app_db_response reload_app_db = 1;
     reload_sms_providers_db_response reload_sms_providers_db = 2;

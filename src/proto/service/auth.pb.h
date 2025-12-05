@@ -56,14 +56,6 @@ extern const ::google::protobuf::internal::DescriptorTable descriptor_table_prot
 namespace celeritas {
 namespace proto {
 namespace service {
-class auth_request;
-struct auth_requestDefaultTypeInternal;
-extern auth_requestDefaultTypeInternal _auth_request_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull auth_request_class_data_;
-class auth_response;
-struct auth_responseDefaultTypeInternal;
-extern auth_responseDefaultTypeInternal _auth_response_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull auth_response_class_data_;
 class reload_app_db_request;
 struct reload_app_db_requestDefaultTypeInternal;
 extern reload_app_db_requestDefaultTypeInternal _reload_app_db_request_default_instance_;
@@ -104,6 +96,14 @@ class reload_sms_providers_db_response;
 struct reload_sms_providers_db_responseDefaultTypeInternal;
 extern reload_sms_providers_db_responseDefaultTypeInternal _reload_sms_providers_db_response_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull reload_sms_providers_db_response_class_data_;
+class service_auth_request;
+struct service_auth_requestDefaultTypeInternal;
+extern service_auth_requestDefaultTypeInternal _service_auth_request_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull service_auth_request_class_data_;
+class service_auth_response;
+struct service_auth_responseDefaultTypeInternal;
+extern service_auth_responseDefaultTypeInternal _service_auth_response_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull service_auth_response_class_data_;
 }  // namespace service
 }  // namespace proto
 }  // namespace celeritas
@@ -1751,30 +1751,30 @@ class reload_app_db_request final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull reload_app_db_request_class_data_;
 // -------------------------------------------------------------------
 
-class auth_response final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:celeritas.proto.service.auth_response) */ {
+class service_auth_response final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.service.service_auth_response) */ {
  public:
-  inline auth_response() : auth_response(nullptr) {}
-  ~auth_response() PROTOBUF_FINAL;
+  inline service_auth_response() : service_auth_response(nullptr) {}
+  ~service_auth_response() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(auth_response* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+  void operator delete(service_auth_response* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
     SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(auth_response));
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(service_auth_response));
   }
 #endif
 
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR auth_response(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR service_auth_response(::google::protobuf::internal::ConstantInitialized);
 
-  inline auth_response(const auth_response& from) : auth_response(nullptr, from) {}
-  inline auth_response(auth_response&& from) noexcept
-      : auth_response(nullptr, ::std::move(from)) {}
-  inline auth_response& operator=(const auth_response& from) {
+  inline service_auth_response(const service_auth_response& from) : service_auth_response(nullptr, from) {}
+  inline service_auth_response(service_auth_response&& from) noexcept
+      : service_auth_response(nullptr, ::std::move(from)) {}
+  inline service_auth_response& operator=(const service_auth_response& from) {
     CopyFrom(from);
     return *this;
   }
-  inline auth_response& operator=(auth_response&& from) noexcept {
+  inline service_auth_response& operator=(service_auth_response&& from) noexcept {
     if (this == &from) return *this;
     if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
       InternalSwap(&from);
@@ -1802,9 +1802,9 @@ class auth_response final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const auth_response& default_instance() {
-    return *reinterpret_cast<const auth_response*>(
-        &_auth_response_default_instance_);
+  static const service_auth_response& default_instance() {
+    return *reinterpret_cast<const service_auth_response*>(
+        &_service_auth_response_default_instance_);
   }
   enum PayloadCase {
     kReloadAppDb = 1,
@@ -1815,8 +1815,8 @@ class auth_response final : public ::google::protobuf::Message
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 11;
-  friend void swap(auth_response& a, auth_response& b) { a.Swap(&b); }
-  inline void Swap(auth_response* PROTOBUF_NONNULL other) {
+  friend void swap(service_auth_response& a, service_auth_response& b) { a.Swap(&b); }
+  inline void Swap(service_auth_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
     if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
       InternalSwap(other);
@@ -1824,7 +1824,7 @@ class auth_response final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(auth_response* PROTOBUF_NONNULL other) {
+  void UnsafeArenaSwap(service_auth_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -1832,13 +1832,13 @@ class auth_response final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  auth_response* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<auth_response>(arena);
+  service_auth_response* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<service_auth_response>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const auth_response& from);
+  void CopyFrom(const service_auth_response& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const auth_response& from) { auth_response::MergeImpl(*this, from); }
+  void MergeFrom(const service_auth_response& from) { service_auth_response::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(::google::protobuf::MessageLite& to_msg,
@@ -1874,18 +1874,18 @@ class auth_response final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
   static void SharedDtor(MessageLite& self);
-  void InternalSwap(auth_response* PROTOBUF_NONNULL other);
+  void InternalSwap(service_auth_response* PROTOBUF_NONNULL other);
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "celeritas.proto.service.auth_response"; }
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.service.service_auth_response"; }
 
  protected:
-  explicit auth_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  auth_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const auth_response& from);
-  auth_response(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, auth_response&& from) noexcept
-      : auth_response(arena) {
+  explicit service_auth_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  service_auth_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const service_auth_response& from);
+  service_auth_response(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, service_auth_response&& from) noexcept
+      : service_auth_response(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
@@ -2005,7 +2005,7 @@ class auth_response final : public ::google::protobuf::Message
   public:
   void clear_payload();
   PayloadCase payload_case() const;
-  // @@protoc_insertion_point(class_scope:celeritas.proto.service.auth_response)
+  // @@protoc_insertion_point(class_scope:celeritas.proto.service.service_auth_response)
  private:
   class _Internal;
   void set_has_reload_app_db();
@@ -2035,7 +2035,7 @@ class auth_response final : public ::google::protobuf::Message
     inline explicit Impl_(
         ::google::protobuf::internal::InternalVisibility visibility,
         ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const auth_response& from_msg);
+        const service_auth_response& from_msg);
     union PayloadUnion {
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
@@ -2053,33 +2053,33 @@ class auth_response final : public ::google::protobuf::Message
   friend struct ::TableStruct_proto_2fservice_2fauth_2eproto;
 };
 
-extern const ::google::protobuf::internal::ClassDataFull auth_response_class_data_;
+extern const ::google::protobuf::internal::ClassDataFull service_auth_response_class_data_;
 // -------------------------------------------------------------------
 
-class auth_request final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:celeritas.proto.service.auth_request) */ {
+class service_auth_request final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.service.service_auth_request) */ {
  public:
-  inline auth_request() : auth_request(nullptr) {}
-  ~auth_request() PROTOBUF_FINAL;
+  inline service_auth_request() : service_auth_request(nullptr) {}
+  ~service_auth_request() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(auth_request* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+  void operator delete(service_auth_request* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
     SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(auth_request));
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(service_auth_request));
   }
 #endif
 
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR auth_request(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR service_auth_request(::google::protobuf::internal::ConstantInitialized);
 
-  inline auth_request(const auth_request& from) : auth_request(nullptr, from) {}
-  inline auth_request(auth_request&& from) noexcept
-      : auth_request(nullptr, ::std::move(from)) {}
-  inline auth_request& operator=(const auth_request& from) {
+  inline service_auth_request(const service_auth_request& from) : service_auth_request(nullptr, from) {}
+  inline service_auth_request(service_auth_request&& from) noexcept
+      : service_auth_request(nullptr, ::std::move(from)) {}
+  inline service_auth_request& operator=(const service_auth_request& from) {
     CopyFrom(from);
     return *this;
   }
-  inline auth_request& operator=(auth_request&& from) noexcept {
+  inline service_auth_request& operator=(service_auth_request&& from) noexcept {
     if (this == &from) return *this;
     if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
       InternalSwap(&from);
@@ -2107,9 +2107,9 @@ class auth_request final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const auth_request& default_instance() {
-    return *reinterpret_cast<const auth_request*>(
-        &_auth_request_default_instance_);
+  static const service_auth_request& default_instance() {
+    return *reinterpret_cast<const service_auth_request*>(
+        &_service_auth_request_default_instance_);
   }
   enum PayloadCase {
     kReloadAppDb = 1,
@@ -2120,8 +2120,8 @@ class auth_request final : public ::google::protobuf::Message
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 10;
-  friend void swap(auth_request& a, auth_request& b) { a.Swap(&b); }
-  inline void Swap(auth_request* PROTOBUF_NONNULL other) {
+  friend void swap(service_auth_request& a, service_auth_request& b) { a.Swap(&b); }
+  inline void Swap(service_auth_request* PROTOBUF_NONNULL other) {
     if (other == this) return;
     if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
       InternalSwap(other);
@@ -2129,7 +2129,7 @@ class auth_request final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(auth_request* PROTOBUF_NONNULL other) {
+  void UnsafeArenaSwap(service_auth_request* PROTOBUF_NONNULL other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -2137,13 +2137,13 @@ class auth_request final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  auth_request* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<auth_request>(arena);
+  service_auth_request* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<service_auth_request>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const auth_request& from);
+  void CopyFrom(const service_auth_request& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const auth_request& from) { auth_request::MergeImpl(*this, from); }
+  void MergeFrom(const service_auth_request& from) { service_auth_request::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(::google::protobuf::MessageLite& to_msg,
@@ -2179,18 +2179,18 @@ class auth_request final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
   static void SharedDtor(MessageLite& self);
-  void InternalSwap(auth_request* PROTOBUF_NONNULL other);
+  void InternalSwap(service_auth_request* PROTOBUF_NONNULL other);
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "celeritas.proto.service.auth_request"; }
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.service.service_auth_request"; }
 
  protected:
-  explicit auth_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  auth_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const auth_request& from);
-  auth_request(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, auth_request&& from) noexcept
-      : auth_request(arena) {
+  explicit service_auth_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  service_auth_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const service_auth_request& from);
+  service_auth_request(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, service_auth_request&& from) noexcept
+      : service_auth_request(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
@@ -2310,7 +2310,7 @@ class auth_request final : public ::google::protobuf::Message
   public:
   void clear_payload();
   PayloadCase payload_case() const;
-  // @@protoc_insertion_point(class_scope:celeritas.proto.service.auth_request)
+  // @@protoc_insertion_point(class_scope:celeritas.proto.service.service_auth_request)
  private:
   class _Internal;
   void set_has_reload_app_db();
@@ -2340,7 +2340,7 @@ class auth_request final : public ::google::protobuf::Message
     inline explicit Impl_(
         ::google::protobuf::internal::InternalVisibility visibility,
         ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const auth_request& from_msg);
+        const service_auth_request& from_msg);
     union PayloadUnion {
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
@@ -2358,7 +2358,7 @@ class auth_request final : public ::google::protobuf::Message
   friend struct ::TableStruct_proto_2fservice_2fauth_2eproto;
 };
 
-extern const ::google::protobuf::internal::ClassDataFull auth_request_class_data_;
+extern const ::google::protobuf::internal::ClassDataFull service_auth_request_class_data_;
 
 // ===================================================================
 
@@ -2534,19 +2534,19 @@ inline void reload_server_cell_db_request::_internal_set_cell_id(::int32_t value
 
 // -------------------------------------------------------------------
 
-// auth_request
+// service_auth_request
 
 // .celeritas.proto.service.reload_app_db_request reload_app_db = 1;
-inline bool auth_request::has_reload_app_db() const {
+inline bool service_auth_request::has_reload_app_db() const {
   return payload_case() == kReloadAppDb;
 }
-inline bool auth_request::_internal_has_reload_app_db() const {
+inline bool service_auth_request::_internal_has_reload_app_db() const {
   return payload_case() == kReloadAppDb;
 }
-inline void auth_request::set_has_reload_app_db() {
+inline void service_auth_request::set_has_reload_app_db() {
   _impl_._oneof_case_[0] = kReloadAppDb;
 }
-inline void auth_request::clear_reload_app_db() {
+inline void service_auth_request::clear_reload_app_db() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (payload_case() == kReloadAppDb) {
     if (GetArena() == nullptr) {
@@ -2557,8 +2557,8 @@ inline void auth_request::clear_reload_app_db() {
     clear_has_payload();
   }
 }
-inline ::celeritas::proto::service::reload_app_db_request* PROTOBUF_NULLABLE auth_request::release_reload_app_db() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.auth_request.reload_app_db)
+inline ::celeritas::proto::service::reload_app_db_request* PROTOBUF_NULLABLE service_auth_request::release_reload_app_db() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_auth_request.reload_app_db)
   if (payload_case() == kReloadAppDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_app_db_request*>(_impl_.payload_.reload_app_db_);
@@ -2571,15 +2571,15 @@ inline ::celeritas::proto::service::reload_app_db_request* PROTOBUF_NULLABLE aut
     return nullptr;
   }
 }
-inline const ::celeritas::proto::service::reload_app_db_request& auth_request::_internal_reload_app_db() const {
+inline const ::celeritas::proto::service::reload_app_db_request& service_auth_request::_internal_reload_app_db() const {
   return payload_case() == kReloadAppDb ? *reinterpret_cast<::celeritas::proto::service::reload_app_db_request*>(_impl_.payload_.reload_app_db_) : reinterpret_cast<::celeritas::proto::service::reload_app_db_request&>(::celeritas::proto::service::_reload_app_db_request_default_instance_);
 }
-inline const ::celeritas::proto::service::reload_app_db_request& auth_request::reload_app_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.auth_request.reload_app_db)
+inline const ::celeritas::proto::service::reload_app_db_request& service_auth_request::reload_app_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_auth_request.reload_app_db)
   return _internal_reload_app_db();
 }
-inline ::celeritas::proto::service::reload_app_db_request* PROTOBUF_NULLABLE auth_request::unsafe_arena_release_reload_app_db() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.auth_request.reload_app_db)
+inline ::celeritas::proto::service::reload_app_db_request* PROTOBUF_NULLABLE service_auth_request::unsafe_arena_release_reload_app_db() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_auth_request.reload_app_db)
   if (payload_case() == kReloadAppDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_app_db_request*>(_impl_.payload_.reload_app_db_);
@@ -2589,7 +2589,7 @@ inline ::celeritas::proto::service::reload_app_db_request* PROTOBUF_NULLABLE aut
     return nullptr;
   }
 }
-inline void auth_request::unsafe_arena_set_allocated_reload_app_db(
+inline void service_auth_request::unsafe_arena_set_allocated_reload_app_db(
     ::celeritas::proto::service::reload_app_db_request* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
@@ -2599,9 +2599,9 @@ inline void auth_request::unsafe_arena_set_allocated_reload_app_db(
     set_has_reload_app_db();
     _impl_.payload_.reload_app_db_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.auth_request.reload_app_db)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_auth_request.reload_app_db)
 }
-inline ::celeritas::proto::service::reload_app_db_request* PROTOBUF_NONNULL auth_request::_internal_mutable_reload_app_db() {
+inline ::celeritas::proto::service::reload_app_db_request* PROTOBUF_NONNULL service_auth_request::_internal_mutable_reload_app_db() {
   if (payload_case() != kReloadAppDb) {
     clear_payload();
     set_has_reload_app_db();
@@ -2610,24 +2610,24 @@ inline ::celeritas::proto::service::reload_app_db_request* PROTOBUF_NONNULL auth
   }
   return reinterpret_cast<::celeritas::proto::service::reload_app_db_request*>(_impl_.payload_.reload_app_db_);
 }
-inline ::celeritas::proto::service::reload_app_db_request* PROTOBUF_NONNULL auth_request::mutable_reload_app_db()
+inline ::celeritas::proto::service::reload_app_db_request* PROTOBUF_NONNULL service_auth_request::mutable_reload_app_db()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::reload_app_db_request* _msg = _internal_mutable_reload_app_db();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.auth_request.reload_app_db)
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_auth_request.reload_app_db)
   return _msg;
 }
 
 // .celeritas.proto.service.reload_sms_providers_db_request reload_sms_providers_db = 2;
-inline bool auth_request::has_reload_sms_providers_db() const {
+inline bool service_auth_request::has_reload_sms_providers_db() const {
   return payload_case() == kReloadSmsProvidersDb;
 }
-inline bool auth_request::_internal_has_reload_sms_providers_db() const {
+inline bool service_auth_request::_internal_has_reload_sms_providers_db() const {
   return payload_case() == kReloadSmsProvidersDb;
 }
-inline void auth_request::set_has_reload_sms_providers_db() {
+inline void service_auth_request::set_has_reload_sms_providers_db() {
   _impl_._oneof_case_[0] = kReloadSmsProvidersDb;
 }
-inline void auth_request::clear_reload_sms_providers_db() {
+inline void service_auth_request::clear_reload_sms_providers_db() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (payload_case() == kReloadSmsProvidersDb) {
     if (GetArena() == nullptr) {
@@ -2638,8 +2638,8 @@ inline void auth_request::clear_reload_sms_providers_db() {
     clear_has_payload();
   }
 }
-inline ::celeritas::proto::service::reload_sms_providers_db_request* PROTOBUF_NULLABLE auth_request::release_reload_sms_providers_db() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.auth_request.reload_sms_providers_db)
+inline ::celeritas::proto::service::reload_sms_providers_db_request* PROTOBUF_NULLABLE service_auth_request::release_reload_sms_providers_db() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_auth_request.reload_sms_providers_db)
   if (payload_case() == kReloadSmsProvidersDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_sms_providers_db_request*>(_impl_.payload_.reload_sms_providers_db_);
@@ -2652,15 +2652,15 @@ inline ::celeritas::proto::service::reload_sms_providers_db_request* PROTOBUF_NU
     return nullptr;
   }
 }
-inline const ::celeritas::proto::service::reload_sms_providers_db_request& auth_request::_internal_reload_sms_providers_db() const {
+inline const ::celeritas::proto::service::reload_sms_providers_db_request& service_auth_request::_internal_reload_sms_providers_db() const {
   return payload_case() == kReloadSmsProvidersDb ? *reinterpret_cast<::celeritas::proto::service::reload_sms_providers_db_request*>(_impl_.payload_.reload_sms_providers_db_) : reinterpret_cast<::celeritas::proto::service::reload_sms_providers_db_request&>(::celeritas::proto::service::_reload_sms_providers_db_request_default_instance_);
 }
-inline const ::celeritas::proto::service::reload_sms_providers_db_request& auth_request::reload_sms_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.auth_request.reload_sms_providers_db)
+inline const ::celeritas::proto::service::reload_sms_providers_db_request& service_auth_request::reload_sms_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_auth_request.reload_sms_providers_db)
   return _internal_reload_sms_providers_db();
 }
-inline ::celeritas::proto::service::reload_sms_providers_db_request* PROTOBUF_NULLABLE auth_request::unsafe_arena_release_reload_sms_providers_db() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.auth_request.reload_sms_providers_db)
+inline ::celeritas::proto::service::reload_sms_providers_db_request* PROTOBUF_NULLABLE service_auth_request::unsafe_arena_release_reload_sms_providers_db() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_auth_request.reload_sms_providers_db)
   if (payload_case() == kReloadSmsProvidersDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_sms_providers_db_request*>(_impl_.payload_.reload_sms_providers_db_);
@@ -2670,7 +2670,7 @@ inline ::celeritas::proto::service::reload_sms_providers_db_request* PROTOBUF_NU
     return nullptr;
   }
 }
-inline void auth_request::unsafe_arena_set_allocated_reload_sms_providers_db(
+inline void service_auth_request::unsafe_arena_set_allocated_reload_sms_providers_db(
     ::celeritas::proto::service::reload_sms_providers_db_request* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
@@ -2680,9 +2680,9 @@ inline void auth_request::unsafe_arena_set_allocated_reload_sms_providers_db(
     set_has_reload_sms_providers_db();
     _impl_.payload_.reload_sms_providers_db_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.auth_request.reload_sms_providers_db)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_auth_request.reload_sms_providers_db)
 }
-inline ::celeritas::proto::service::reload_sms_providers_db_request* PROTOBUF_NONNULL auth_request::_internal_mutable_reload_sms_providers_db() {
+inline ::celeritas::proto::service::reload_sms_providers_db_request* PROTOBUF_NONNULL service_auth_request::_internal_mutable_reload_sms_providers_db() {
   if (payload_case() != kReloadSmsProvidersDb) {
     clear_payload();
     set_has_reload_sms_providers_db();
@@ -2691,24 +2691,24 @@ inline ::celeritas::proto::service::reload_sms_providers_db_request* PROTOBUF_NO
   }
   return reinterpret_cast<::celeritas::proto::service::reload_sms_providers_db_request*>(_impl_.payload_.reload_sms_providers_db_);
 }
-inline ::celeritas::proto::service::reload_sms_providers_db_request* PROTOBUF_NONNULL auth_request::mutable_reload_sms_providers_db()
+inline ::celeritas::proto::service::reload_sms_providers_db_request* PROTOBUF_NONNULL service_auth_request::mutable_reload_sms_providers_db()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::reload_sms_providers_db_request* _msg = _internal_mutable_reload_sms_providers_db();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.auth_request.reload_sms_providers_db)
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_auth_request.reload_sms_providers_db)
   return _msg;
 }
 
 // .celeritas.proto.service.reload_email_providers_db_request reload_email_providers_db = 3;
-inline bool auth_request::has_reload_email_providers_db() const {
+inline bool service_auth_request::has_reload_email_providers_db() const {
   return payload_case() == kReloadEmailProvidersDb;
 }
-inline bool auth_request::_internal_has_reload_email_providers_db() const {
+inline bool service_auth_request::_internal_has_reload_email_providers_db() const {
   return payload_case() == kReloadEmailProvidersDb;
 }
-inline void auth_request::set_has_reload_email_providers_db() {
+inline void service_auth_request::set_has_reload_email_providers_db() {
   _impl_._oneof_case_[0] = kReloadEmailProvidersDb;
 }
-inline void auth_request::clear_reload_email_providers_db() {
+inline void service_auth_request::clear_reload_email_providers_db() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (payload_case() == kReloadEmailProvidersDb) {
     if (GetArena() == nullptr) {
@@ -2719,8 +2719,8 @@ inline void auth_request::clear_reload_email_providers_db() {
     clear_has_payload();
   }
 }
-inline ::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_NULLABLE auth_request::release_reload_email_providers_db() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.auth_request.reload_email_providers_db)
+inline ::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_NULLABLE service_auth_request::release_reload_email_providers_db() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_auth_request.reload_email_providers_db)
   if (payload_case() == kReloadEmailProvidersDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_email_providers_db_request*>(_impl_.payload_.reload_email_providers_db_);
@@ -2733,15 +2733,15 @@ inline ::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_
     return nullptr;
   }
 }
-inline const ::celeritas::proto::service::reload_email_providers_db_request& auth_request::_internal_reload_email_providers_db() const {
+inline const ::celeritas::proto::service::reload_email_providers_db_request& service_auth_request::_internal_reload_email_providers_db() const {
   return payload_case() == kReloadEmailProvidersDb ? *reinterpret_cast<::celeritas::proto::service::reload_email_providers_db_request*>(_impl_.payload_.reload_email_providers_db_) : reinterpret_cast<::celeritas::proto::service::reload_email_providers_db_request&>(::celeritas::proto::service::_reload_email_providers_db_request_default_instance_);
 }
-inline const ::celeritas::proto::service::reload_email_providers_db_request& auth_request::reload_email_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.auth_request.reload_email_providers_db)
+inline const ::celeritas::proto::service::reload_email_providers_db_request& service_auth_request::reload_email_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_auth_request.reload_email_providers_db)
   return _internal_reload_email_providers_db();
 }
-inline ::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_NULLABLE auth_request::unsafe_arena_release_reload_email_providers_db() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.auth_request.reload_email_providers_db)
+inline ::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_NULLABLE service_auth_request::unsafe_arena_release_reload_email_providers_db() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_auth_request.reload_email_providers_db)
   if (payload_case() == kReloadEmailProvidersDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_email_providers_db_request*>(_impl_.payload_.reload_email_providers_db_);
@@ -2751,7 +2751,7 @@ inline ::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_
     return nullptr;
   }
 }
-inline void auth_request::unsafe_arena_set_allocated_reload_email_providers_db(
+inline void service_auth_request::unsafe_arena_set_allocated_reload_email_providers_db(
     ::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
@@ -2761,9 +2761,9 @@ inline void auth_request::unsafe_arena_set_allocated_reload_email_providers_db(
     set_has_reload_email_providers_db();
     _impl_.payload_.reload_email_providers_db_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.auth_request.reload_email_providers_db)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_auth_request.reload_email_providers_db)
 }
-inline ::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_NONNULL auth_request::_internal_mutable_reload_email_providers_db() {
+inline ::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_NONNULL service_auth_request::_internal_mutable_reload_email_providers_db() {
   if (payload_case() != kReloadEmailProvidersDb) {
     clear_payload();
     set_has_reload_email_providers_db();
@@ -2772,24 +2772,24 @@ inline ::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_
   }
   return reinterpret_cast<::celeritas::proto::service::reload_email_providers_db_request*>(_impl_.payload_.reload_email_providers_db_);
 }
-inline ::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_NONNULL auth_request::mutable_reload_email_providers_db()
+inline ::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_NONNULL service_auth_request::mutable_reload_email_providers_db()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::reload_email_providers_db_request* _msg = _internal_mutable_reload_email_providers_db();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.auth_request.reload_email_providers_db)
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_auth_request.reload_email_providers_db)
   return _msg;
 }
 
 // .celeritas.proto.service.reload_sdk_providers_db_request reload_sdk_providers_db = 4;
-inline bool auth_request::has_reload_sdk_providers_db() const {
+inline bool service_auth_request::has_reload_sdk_providers_db() const {
   return payload_case() == kReloadSdkProvidersDb;
 }
-inline bool auth_request::_internal_has_reload_sdk_providers_db() const {
+inline bool service_auth_request::_internal_has_reload_sdk_providers_db() const {
   return payload_case() == kReloadSdkProvidersDb;
 }
-inline void auth_request::set_has_reload_sdk_providers_db() {
+inline void service_auth_request::set_has_reload_sdk_providers_db() {
   _impl_._oneof_case_[0] = kReloadSdkProvidersDb;
 }
-inline void auth_request::clear_reload_sdk_providers_db() {
+inline void service_auth_request::clear_reload_sdk_providers_db() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (payload_case() == kReloadSdkProvidersDb) {
     if (GetArena() == nullptr) {
@@ -2800,8 +2800,8 @@ inline void auth_request::clear_reload_sdk_providers_db() {
     clear_has_payload();
   }
 }
-inline ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NULLABLE auth_request::release_reload_sdk_providers_db() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.auth_request.reload_sdk_providers_db)
+inline ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NULLABLE service_auth_request::release_reload_sdk_providers_db() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_auth_request.reload_sdk_providers_db)
   if (payload_case() == kReloadSdkProvidersDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_request*>(_impl_.payload_.reload_sdk_providers_db_);
@@ -2814,15 +2814,15 @@ inline ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NU
     return nullptr;
   }
 }
-inline const ::celeritas::proto::service::reload_sdk_providers_db_request& auth_request::_internal_reload_sdk_providers_db() const {
+inline const ::celeritas::proto::service::reload_sdk_providers_db_request& service_auth_request::_internal_reload_sdk_providers_db() const {
   return payload_case() == kReloadSdkProvidersDb ? *reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_request*>(_impl_.payload_.reload_sdk_providers_db_) : reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_request&>(::celeritas::proto::service::_reload_sdk_providers_db_request_default_instance_);
 }
-inline const ::celeritas::proto::service::reload_sdk_providers_db_request& auth_request::reload_sdk_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.auth_request.reload_sdk_providers_db)
+inline const ::celeritas::proto::service::reload_sdk_providers_db_request& service_auth_request::reload_sdk_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_auth_request.reload_sdk_providers_db)
   return _internal_reload_sdk_providers_db();
 }
-inline ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NULLABLE auth_request::unsafe_arena_release_reload_sdk_providers_db() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.auth_request.reload_sdk_providers_db)
+inline ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NULLABLE service_auth_request::unsafe_arena_release_reload_sdk_providers_db() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_auth_request.reload_sdk_providers_db)
   if (payload_case() == kReloadSdkProvidersDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_request*>(_impl_.payload_.reload_sdk_providers_db_);
@@ -2832,7 +2832,7 @@ inline ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NU
     return nullptr;
   }
 }
-inline void auth_request::unsafe_arena_set_allocated_reload_sdk_providers_db(
+inline void service_auth_request::unsafe_arena_set_allocated_reload_sdk_providers_db(
     ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
@@ -2842,9 +2842,9 @@ inline void auth_request::unsafe_arena_set_allocated_reload_sdk_providers_db(
     set_has_reload_sdk_providers_db();
     _impl_.payload_.reload_sdk_providers_db_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.auth_request.reload_sdk_providers_db)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_auth_request.reload_sdk_providers_db)
 }
-inline ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NONNULL auth_request::_internal_mutable_reload_sdk_providers_db() {
+inline ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NONNULL service_auth_request::_internal_mutable_reload_sdk_providers_db() {
   if (payload_case() != kReloadSdkProvidersDb) {
     clear_payload();
     set_has_reload_sdk_providers_db();
@@ -2853,24 +2853,24 @@ inline ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NO
   }
   return reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_request*>(_impl_.payload_.reload_sdk_providers_db_);
 }
-inline ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NONNULL auth_request::mutable_reload_sdk_providers_db()
+inline ::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NONNULL service_auth_request::mutable_reload_sdk_providers_db()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::reload_sdk_providers_db_request* _msg = _internal_mutable_reload_sdk_providers_db();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.auth_request.reload_sdk_providers_db)
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_auth_request.reload_sdk_providers_db)
   return _msg;
 }
 
 // .celeritas.proto.service.reload_server_cell_db_request reload_server_cell_db = 5;
-inline bool auth_request::has_reload_server_cell_db() const {
+inline bool service_auth_request::has_reload_server_cell_db() const {
   return payload_case() == kReloadServerCellDb;
 }
-inline bool auth_request::_internal_has_reload_server_cell_db() const {
+inline bool service_auth_request::_internal_has_reload_server_cell_db() const {
   return payload_case() == kReloadServerCellDb;
 }
-inline void auth_request::set_has_reload_server_cell_db() {
+inline void service_auth_request::set_has_reload_server_cell_db() {
   _impl_._oneof_case_[0] = kReloadServerCellDb;
 }
-inline void auth_request::clear_reload_server_cell_db() {
+inline void service_auth_request::clear_reload_server_cell_db() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (payload_case() == kReloadServerCellDb) {
     if (GetArena() == nullptr) {
@@ -2881,8 +2881,8 @@ inline void auth_request::clear_reload_server_cell_db() {
     clear_has_payload();
   }
 }
-inline ::celeritas::proto::service::reload_server_cell_db_request* PROTOBUF_NULLABLE auth_request::release_reload_server_cell_db() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.auth_request.reload_server_cell_db)
+inline ::celeritas::proto::service::reload_server_cell_db_request* PROTOBUF_NULLABLE service_auth_request::release_reload_server_cell_db() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_auth_request.reload_server_cell_db)
   if (payload_case() == kReloadServerCellDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_server_cell_db_request*>(_impl_.payload_.reload_server_cell_db_);
@@ -2895,15 +2895,15 @@ inline ::celeritas::proto::service::reload_server_cell_db_request* PROTOBUF_NULL
     return nullptr;
   }
 }
-inline const ::celeritas::proto::service::reload_server_cell_db_request& auth_request::_internal_reload_server_cell_db() const {
+inline const ::celeritas::proto::service::reload_server_cell_db_request& service_auth_request::_internal_reload_server_cell_db() const {
   return payload_case() == kReloadServerCellDb ? *reinterpret_cast<::celeritas::proto::service::reload_server_cell_db_request*>(_impl_.payload_.reload_server_cell_db_) : reinterpret_cast<::celeritas::proto::service::reload_server_cell_db_request&>(::celeritas::proto::service::_reload_server_cell_db_request_default_instance_);
 }
-inline const ::celeritas::proto::service::reload_server_cell_db_request& auth_request::reload_server_cell_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.auth_request.reload_server_cell_db)
+inline const ::celeritas::proto::service::reload_server_cell_db_request& service_auth_request::reload_server_cell_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_auth_request.reload_server_cell_db)
   return _internal_reload_server_cell_db();
 }
-inline ::celeritas::proto::service::reload_server_cell_db_request* PROTOBUF_NULLABLE auth_request::unsafe_arena_release_reload_server_cell_db() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.auth_request.reload_server_cell_db)
+inline ::celeritas::proto::service::reload_server_cell_db_request* PROTOBUF_NULLABLE service_auth_request::unsafe_arena_release_reload_server_cell_db() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_auth_request.reload_server_cell_db)
   if (payload_case() == kReloadServerCellDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_server_cell_db_request*>(_impl_.payload_.reload_server_cell_db_);
@@ -2913,7 +2913,7 @@ inline ::celeritas::proto::service::reload_server_cell_db_request* PROTOBUF_NULL
     return nullptr;
   }
 }
-inline void auth_request::unsafe_arena_set_allocated_reload_server_cell_db(
+inline void service_auth_request::unsafe_arena_set_allocated_reload_server_cell_db(
     ::celeritas::proto::service::reload_server_cell_db_request* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
@@ -2923,9 +2923,9 @@ inline void auth_request::unsafe_arena_set_allocated_reload_server_cell_db(
     set_has_reload_server_cell_db();
     _impl_.payload_.reload_server_cell_db_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.auth_request.reload_server_cell_db)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_auth_request.reload_server_cell_db)
 }
-inline ::celeritas::proto::service::reload_server_cell_db_request* PROTOBUF_NONNULL auth_request::_internal_mutable_reload_server_cell_db() {
+inline ::celeritas::proto::service::reload_server_cell_db_request* PROTOBUF_NONNULL service_auth_request::_internal_mutable_reload_server_cell_db() {
   if (payload_case() != kReloadServerCellDb) {
     clear_payload();
     set_has_reload_server_cell_db();
@@ -2934,37 +2934,37 @@ inline ::celeritas::proto::service::reload_server_cell_db_request* PROTOBUF_NONN
   }
   return reinterpret_cast<::celeritas::proto::service::reload_server_cell_db_request*>(_impl_.payload_.reload_server_cell_db_);
 }
-inline ::celeritas::proto::service::reload_server_cell_db_request* PROTOBUF_NONNULL auth_request::mutable_reload_server_cell_db()
+inline ::celeritas::proto::service::reload_server_cell_db_request* PROTOBUF_NONNULL service_auth_request::mutable_reload_server_cell_db()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::reload_server_cell_db_request* _msg = _internal_mutable_reload_server_cell_db();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.auth_request.reload_server_cell_db)
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_auth_request.reload_server_cell_db)
   return _msg;
 }
 
-inline bool auth_request::has_payload() const {
+inline bool service_auth_request::has_payload() const {
   return payload_case() != PAYLOAD_NOT_SET;
 }
-inline void auth_request::clear_has_payload() {
+inline void service_auth_request::clear_has_payload() {
   _impl_._oneof_case_[0] = PAYLOAD_NOT_SET;
 }
-inline auth_request::PayloadCase auth_request::payload_case() const {
-  return auth_request::PayloadCase(_impl_._oneof_case_[0]);
+inline service_auth_request::PayloadCase service_auth_request::payload_case() const {
+  return service_auth_request::PayloadCase(_impl_._oneof_case_[0]);
 }
 // -------------------------------------------------------------------
 
-// auth_response
+// service_auth_response
 
 // .celeritas.proto.service.reload_app_db_response reload_app_db = 1;
-inline bool auth_response::has_reload_app_db() const {
+inline bool service_auth_response::has_reload_app_db() const {
   return payload_case() == kReloadAppDb;
 }
-inline bool auth_response::_internal_has_reload_app_db() const {
+inline bool service_auth_response::_internal_has_reload_app_db() const {
   return payload_case() == kReloadAppDb;
 }
-inline void auth_response::set_has_reload_app_db() {
+inline void service_auth_response::set_has_reload_app_db() {
   _impl_._oneof_case_[0] = kReloadAppDb;
 }
-inline void auth_response::clear_reload_app_db() {
+inline void service_auth_response::clear_reload_app_db() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (payload_case() == kReloadAppDb) {
     if (GetArena() == nullptr) {
@@ -2975,8 +2975,8 @@ inline void auth_response::clear_reload_app_db() {
     clear_has_payload();
   }
 }
-inline ::celeritas::proto::service::reload_app_db_response* PROTOBUF_NULLABLE auth_response::release_reload_app_db() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.auth_response.reload_app_db)
+inline ::celeritas::proto::service::reload_app_db_response* PROTOBUF_NULLABLE service_auth_response::release_reload_app_db() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_auth_response.reload_app_db)
   if (payload_case() == kReloadAppDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_app_db_response*>(_impl_.payload_.reload_app_db_);
@@ -2989,15 +2989,15 @@ inline ::celeritas::proto::service::reload_app_db_response* PROTOBUF_NULLABLE au
     return nullptr;
   }
 }
-inline const ::celeritas::proto::service::reload_app_db_response& auth_response::_internal_reload_app_db() const {
+inline const ::celeritas::proto::service::reload_app_db_response& service_auth_response::_internal_reload_app_db() const {
   return payload_case() == kReloadAppDb ? *reinterpret_cast<::celeritas::proto::service::reload_app_db_response*>(_impl_.payload_.reload_app_db_) : reinterpret_cast<::celeritas::proto::service::reload_app_db_response&>(::celeritas::proto::service::_reload_app_db_response_default_instance_);
 }
-inline const ::celeritas::proto::service::reload_app_db_response& auth_response::reload_app_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.auth_response.reload_app_db)
+inline const ::celeritas::proto::service::reload_app_db_response& service_auth_response::reload_app_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_auth_response.reload_app_db)
   return _internal_reload_app_db();
 }
-inline ::celeritas::proto::service::reload_app_db_response* PROTOBUF_NULLABLE auth_response::unsafe_arena_release_reload_app_db() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.auth_response.reload_app_db)
+inline ::celeritas::proto::service::reload_app_db_response* PROTOBUF_NULLABLE service_auth_response::unsafe_arena_release_reload_app_db() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_auth_response.reload_app_db)
   if (payload_case() == kReloadAppDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_app_db_response*>(_impl_.payload_.reload_app_db_);
@@ -3007,7 +3007,7 @@ inline ::celeritas::proto::service::reload_app_db_response* PROTOBUF_NULLABLE au
     return nullptr;
   }
 }
-inline void auth_response::unsafe_arena_set_allocated_reload_app_db(
+inline void service_auth_response::unsafe_arena_set_allocated_reload_app_db(
     ::celeritas::proto::service::reload_app_db_response* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
@@ -3017,9 +3017,9 @@ inline void auth_response::unsafe_arena_set_allocated_reload_app_db(
     set_has_reload_app_db();
     _impl_.payload_.reload_app_db_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.auth_response.reload_app_db)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_auth_response.reload_app_db)
 }
-inline ::celeritas::proto::service::reload_app_db_response* PROTOBUF_NONNULL auth_response::_internal_mutable_reload_app_db() {
+inline ::celeritas::proto::service::reload_app_db_response* PROTOBUF_NONNULL service_auth_response::_internal_mutable_reload_app_db() {
   if (payload_case() != kReloadAppDb) {
     clear_payload();
     set_has_reload_app_db();
@@ -3028,24 +3028,24 @@ inline ::celeritas::proto::service::reload_app_db_response* PROTOBUF_NONNULL aut
   }
   return reinterpret_cast<::celeritas::proto::service::reload_app_db_response*>(_impl_.payload_.reload_app_db_);
 }
-inline ::celeritas::proto::service::reload_app_db_response* PROTOBUF_NONNULL auth_response::mutable_reload_app_db()
+inline ::celeritas::proto::service::reload_app_db_response* PROTOBUF_NONNULL service_auth_response::mutable_reload_app_db()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::reload_app_db_response* _msg = _internal_mutable_reload_app_db();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.auth_response.reload_app_db)
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_auth_response.reload_app_db)
   return _msg;
 }
 
 // .celeritas.proto.service.reload_sms_providers_db_response reload_sms_providers_db = 2;
-inline bool auth_response::has_reload_sms_providers_db() const {
+inline bool service_auth_response::has_reload_sms_providers_db() const {
   return payload_case() == kReloadSmsProvidersDb;
 }
-inline bool auth_response::_internal_has_reload_sms_providers_db() const {
+inline bool service_auth_response::_internal_has_reload_sms_providers_db() const {
   return payload_case() == kReloadSmsProvidersDb;
 }
-inline void auth_response::set_has_reload_sms_providers_db() {
+inline void service_auth_response::set_has_reload_sms_providers_db() {
   _impl_._oneof_case_[0] = kReloadSmsProvidersDb;
 }
-inline void auth_response::clear_reload_sms_providers_db() {
+inline void service_auth_response::clear_reload_sms_providers_db() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (payload_case() == kReloadSmsProvidersDb) {
     if (GetArena() == nullptr) {
@@ -3056,8 +3056,8 @@ inline void auth_response::clear_reload_sms_providers_db() {
     clear_has_payload();
   }
 }
-inline ::celeritas::proto::service::reload_sms_providers_db_response* PROTOBUF_NULLABLE auth_response::release_reload_sms_providers_db() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.auth_response.reload_sms_providers_db)
+inline ::celeritas::proto::service::reload_sms_providers_db_response* PROTOBUF_NULLABLE service_auth_response::release_reload_sms_providers_db() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_auth_response.reload_sms_providers_db)
   if (payload_case() == kReloadSmsProvidersDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_sms_providers_db_response*>(_impl_.payload_.reload_sms_providers_db_);
@@ -3070,15 +3070,15 @@ inline ::celeritas::proto::service::reload_sms_providers_db_response* PROTOBUF_N
     return nullptr;
   }
 }
-inline const ::celeritas::proto::service::reload_sms_providers_db_response& auth_response::_internal_reload_sms_providers_db() const {
+inline const ::celeritas::proto::service::reload_sms_providers_db_response& service_auth_response::_internal_reload_sms_providers_db() const {
   return payload_case() == kReloadSmsProvidersDb ? *reinterpret_cast<::celeritas::proto::service::reload_sms_providers_db_response*>(_impl_.payload_.reload_sms_providers_db_) : reinterpret_cast<::celeritas::proto::service::reload_sms_providers_db_response&>(::celeritas::proto::service::_reload_sms_providers_db_response_default_instance_);
 }
-inline const ::celeritas::proto::service::reload_sms_providers_db_response& auth_response::reload_sms_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.auth_response.reload_sms_providers_db)
+inline const ::celeritas::proto::service::reload_sms_providers_db_response& service_auth_response::reload_sms_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_auth_response.reload_sms_providers_db)
   return _internal_reload_sms_providers_db();
 }
-inline ::celeritas::proto::service::reload_sms_providers_db_response* PROTOBUF_NULLABLE auth_response::unsafe_arena_release_reload_sms_providers_db() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.auth_response.reload_sms_providers_db)
+inline ::celeritas::proto::service::reload_sms_providers_db_response* PROTOBUF_NULLABLE service_auth_response::unsafe_arena_release_reload_sms_providers_db() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_auth_response.reload_sms_providers_db)
   if (payload_case() == kReloadSmsProvidersDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_sms_providers_db_response*>(_impl_.payload_.reload_sms_providers_db_);
@@ -3088,7 +3088,7 @@ inline ::celeritas::proto::service::reload_sms_providers_db_response* PROTOBUF_N
     return nullptr;
   }
 }
-inline void auth_response::unsafe_arena_set_allocated_reload_sms_providers_db(
+inline void service_auth_response::unsafe_arena_set_allocated_reload_sms_providers_db(
     ::celeritas::proto::service::reload_sms_providers_db_response* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
@@ -3098,9 +3098,9 @@ inline void auth_response::unsafe_arena_set_allocated_reload_sms_providers_db(
     set_has_reload_sms_providers_db();
     _impl_.payload_.reload_sms_providers_db_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.auth_response.reload_sms_providers_db)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_auth_response.reload_sms_providers_db)
 }
-inline ::celeritas::proto::service::reload_sms_providers_db_response* PROTOBUF_NONNULL auth_response::_internal_mutable_reload_sms_providers_db() {
+inline ::celeritas::proto::service::reload_sms_providers_db_response* PROTOBUF_NONNULL service_auth_response::_internal_mutable_reload_sms_providers_db() {
   if (payload_case() != kReloadSmsProvidersDb) {
     clear_payload();
     set_has_reload_sms_providers_db();
@@ -3109,24 +3109,24 @@ inline ::celeritas::proto::service::reload_sms_providers_db_response* PROTOBUF_N
   }
   return reinterpret_cast<::celeritas::proto::service::reload_sms_providers_db_response*>(_impl_.payload_.reload_sms_providers_db_);
 }
-inline ::celeritas::proto::service::reload_sms_providers_db_response* PROTOBUF_NONNULL auth_response::mutable_reload_sms_providers_db()
+inline ::celeritas::proto::service::reload_sms_providers_db_response* PROTOBUF_NONNULL service_auth_response::mutable_reload_sms_providers_db()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::reload_sms_providers_db_response* _msg = _internal_mutable_reload_sms_providers_db();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.auth_response.reload_sms_providers_db)
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_auth_response.reload_sms_providers_db)
   return _msg;
 }
 
 // .celeritas.proto.service.reload_email_providers_db_response reload_email_providers_db = 3;
-inline bool auth_response::has_reload_email_providers_db() const {
+inline bool service_auth_response::has_reload_email_providers_db() const {
   return payload_case() == kReloadEmailProvidersDb;
 }
-inline bool auth_response::_internal_has_reload_email_providers_db() const {
+inline bool service_auth_response::_internal_has_reload_email_providers_db() const {
   return payload_case() == kReloadEmailProvidersDb;
 }
-inline void auth_response::set_has_reload_email_providers_db() {
+inline void service_auth_response::set_has_reload_email_providers_db() {
   _impl_._oneof_case_[0] = kReloadEmailProvidersDb;
 }
-inline void auth_response::clear_reload_email_providers_db() {
+inline void service_auth_response::clear_reload_email_providers_db() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (payload_case() == kReloadEmailProvidersDb) {
     if (GetArena() == nullptr) {
@@ -3137,8 +3137,8 @@ inline void auth_response::clear_reload_email_providers_db() {
     clear_has_payload();
   }
 }
-inline ::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF_NULLABLE auth_response::release_reload_email_providers_db() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.auth_response.reload_email_providers_db)
+inline ::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF_NULLABLE service_auth_response::release_reload_email_providers_db() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_auth_response.reload_email_providers_db)
   if (payload_case() == kReloadEmailProvidersDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_email_providers_db_response*>(_impl_.payload_.reload_email_providers_db_);
@@ -3151,15 +3151,15 @@ inline ::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF
     return nullptr;
   }
 }
-inline const ::celeritas::proto::service::reload_email_providers_db_response& auth_response::_internal_reload_email_providers_db() const {
+inline const ::celeritas::proto::service::reload_email_providers_db_response& service_auth_response::_internal_reload_email_providers_db() const {
   return payload_case() == kReloadEmailProvidersDb ? *reinterpret_cast<::celeritas::proto::service::reload_email_providers_db_response*>(_impl_.payload_.reload_email_providers_db_) : reinterpret_cast<::celeritas::proto::service::reload_email_providers_db_response&>(::celeritas::proto::service::_reload_email_providers_db_response_default_instance_);
 }
-inline const ::celeritas::proto::service::reload_email_providers_db_response& auth_response::reload_email_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.auth_response.reload_email_providers_db)
+inline const ::celeritas::proto::service::reload_email_providers_db_response& service_auth_response::reload_email_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_auth_response.reload_email_providers_db)
   return _internal_reload_email_providers_db();
 }
-inline ::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF_NULLABLE auth_response::unsafe_arena_release_reload_email_providers_db() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.auth_response.reload_email_providers_db)
+inline ::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF_NULLABLE service_auth_response::unsafe_arena_release_reload_email_providers_db() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_auth_response.reload_email_providers_db)
   if (payload_case() == kReloadEmailProvidersDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_email_providers_db_response*>(_impl_.payload_.reload_email_providers_db_);
@@ -3169,7 +3169,7 @@ inline ::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF
     return nullptr;
   }
 }
-inline void auth_response::unsafe_arena_set_allocated_reload_email_providers_db(
+inline void service_auth_response::unsafe_arena_set_allocated_reload_email_providers_db(
     ::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
@@ -3179,9 +3179,9 @@ inline void auth_response::unsafe_arena_set_allocated_reload_email_providers_db(
     set_has_reload_email_providers_db();
     _impl_.payload_.reload_email_providers_db_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.auth_response.reload_email_providers_db)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_auth_response.reload_email_providers_db)
 }
-inline ::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF_NONNULL auth_response::_internal_mutable_reload_email_providers_db() {
+inline ::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF_NONNULL service_auth_response::_internal_mutable_reload_email_providers_db() {
   if (payload_case() != kReloadEmailProvidersDb) {
     clear_payload();
     set_has_reload_email_providers_db();
@@ -3190,24 +3190,24 @@ inline ::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF
   }
   return reinterpret_cast<::celeritas::proto::service::reload_email_providers_db_response*>(_impl_.payload_.reload_email_providers_db_);
 }
-inline ::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF_NONNULL auth_response::mutable_reload_email_providers_db()
+inline ::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF_NONNULL service_auth_response::mutable_reload_email_providers_db()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::reload_email_providers_db_response* _msg = _internal_mutable_reload_email_providers_db();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.auth_response.reload_email_providers_db)
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_auth_response.reload_email_providers_db)
   return _msg;
 }
 
 // .celeritas.proto.service.reload_sdk_providers_db_response reload_sdk_providers_db = 4;
-inline bool auth_response::has_reload_sdk_providers_db() const {
+inline bool service_auth_response::has_reload_sdk_providers_db() const {
   return payload_case() == kReloadSdkProvidersDb;
 }
-inline bool auth_response::_internal_has_reload_sdk_providers_db() const {
+inline bool service_auth_response::_internal_has_reload_sdk_providers_db() const {
   return payload_case() == kReloadSdkProvidersDb;
 }
-inline void auth_response::set_has_reload_sdk_providers_db() {
+inline void service_auth_response::set_has_reload_sdk_providers_db() {
   _impl_._oneof_case_[0] = kReloadSdkProvidersDb;
 }
-inline void auth_response::clear_reload_sdk_providers_db() {
+inline void service_auth_response::clear_reload_sdk_providers_db() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (payload_case() == kReloadSdkProvidersDb) {
     if (GetArena() == nullptr) {
@@ -3218,8 +3218,8 @@ inline void auth_response::clear_reload_sdk_providers_db() {
     clear_has_payload();
   }
 }
-inline ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NULLABLE auth_response::release_reload_sdk_providers_db() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.auth_response.reload_sdk_providers_db)
+inline ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NULLABLE service_auth_response::release_reload_sdk_providers_db() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_auth_response.reload_sdk_providers_db)
   if (payload_case() == kReloadSdkProvidersDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_response*>(_impl_.payload_.reload_sdk_providers_db_);
@@ -3232,15 +3232,15 @@ inline ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_N
     return nullptr;
   }
 }
-inline const ::celeritas::proto::service::reload_sdk_providers_db_response& auth_response::_internal_reload_sdk_providers_db() const {
+inline const ::celeritas::proto::service::reload_sdk_providers_db_response& service_auth_response::_internal_reload_sdk_providers_db() const {
   return payload_case() == kReloadSdkProvidersDb ? *reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_response*>(_impl_.payload_.reload_sdk_providers_db_) : reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_response&>(::celeritas::proto::service::_reload_sdk_providers_db_response_default_instance_);
 }
-inline const ::celeritas::proto::service::reload_sdk_providers_db_response& auth_response::reload_sdk_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.auth_response.reload_sdk_providers_db)
+inline const ::celeritas::proto::service::reload_sdk_providers_db_response& service_auth_response::reload_sdk_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_auth_response.reload_sdk_providers_db)
   return _internal_reload_sdk_providers_db();
 }
-inline ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NULLABLE auth_response::unsafe_arena_release_reload_sdk_providers_db() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.auth_response.reload_sdk_providers_db)
+inline ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NULLABLE service_auth_response::unsafe_arena_release_reload_sdk_providers_db() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_auth_response.reload_sdk_providers_db)
   if (payload_case() == kReloadSdkProvidersDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_response*>(_impl_.payload_.reload_sdk_providers_db_);
@@ -3250,7 +3250,7 @@ inline ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_N
     return nullptr;
   }
 }
-inline void auth_response::unsafe_arena_set_allocated_reload_sdk_providers_db(
+inline void service_auth_response::unsafe_arena_set_allocated_reload_sdk_providers_db(
     ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
@@ -3260,9 +3260,9 @@ inline void auth_response::unsafe_arena_set_allocated_reload_sdk_providers_db(
     set_has_reload_sdk_providers_db();
     _impl_.payload_.reload_sdk_providers_db_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.auth_response.reload_sdk_providers_db)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_auth_response.reload_sdk_providers_db)
 }
-inline ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NONNULL auth_response::_internal_mutable_reload_sdk_providers_db() {
+inline ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NONNULL service_auth_response::_internal_mutable_reload_sdk_providers_db() {
   if (payload_case() != kReloadSdkProvidersDb) {
     clear_payload();
     set_has_reload_sdk_providers_db();
@@ -3271,24 +3271,24 @@ inline ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_N
   }
   return reinterpret_cast<::celeritas::proto::service::reload_sdk_providers_db_response*>(_impl_.payload_.reload_sdk_providers_db_);
 }
-inline ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NONNULL auth_response::mutable_reload_sdk_providers_db()
+inline ::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NONNULL service_auth_response::mutable_reload_sdk_providers_db()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::reload_sdk_providers_db_response* _msg = _internal_mutable_reload_sdk_providers_db();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.auth_response.reload_sdk_providers_db)
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_auth_response.reload_sdk_providers_db)
   return _msg;
 }
 
 // .celeritas.proto.service.reload_server_cell_db_response reload_server_cell_db = 5;
-inline bool auth_response::has_reload_server_cell_db() const {
+inline bool service_auth_response::has_reload_server_cell_db() const {
   return payload_case() == kReloadServerCellDb;
 }
-inline bool auth_response::_internal_has_reload_server_cell_db() const {
+inline bool service_auth_response::_internal_has_reload_server_cell_db() const {
   return payload_case() == kReloadServerCellDb;
 }
-inline void auth_response::set_has_reload_server_cell_db() {
+inline void service_auth_response::set_has_reload_server_cell_db() {
   _impl_._oneof_case_[0] = kReloadServerCellDb;
 }
-inline void auth_response::clear_reload_server_cell_db() {
+inline void service_auth_response::clear_reload_server_cell_db() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (payload_case() == kReloadServerCellDb) {
     if (GetArena() == nullptr) {
@@ -3299,8 +3299,8 @@ inline void auth_response::clear_reload_server_cell_db() {
     clear_has_payload();
   }
 }
-inline ::celeritas::proto::service::reload_server_cell_db_response* PROTOBUF_NULLABLE auth_response::release_reload_server_cell_db() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.auth_response.reload_server_cell_db)
+inline ::celeritas::proto::service::reload_server_cell_db_response* PROTOBUF_NULLABLE service_auth_response::release_reload_server_cell_db() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_auth_response.reload_server_cell_db)
   if (payload_case() == kReloadServerCellDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_server_cell_db_response*>(_impl_.payload_.reload_server_cell_db_);
@@ -3313,15 +3313,15 @@ inline ::celeritas::proto::service::reload_server_cell_db_response* PROTOBUF_NUL
     return nullptr;
   }
 }
-inline const ::celeritas::proto::service::reload_server_cell_db_response& auth_response::_internal_reload_server_cell_db() const {
+inline const ::celeritas::proto::service::reload_server_cell_db_response& service_auth_response::_internal_reload_server_cell_db() const {
   return payload_case() == kReloadServerCellDb ? *reinterpret_cast<::celeritas::proto::service::reload_server_cell_db_response*>(_impl_.payload_.reload_server_cell_db_) : reinterpret_cast<::celeritas::proto::service::reload_server_cell_db_response&>(::celeritas::proto::service::_reload_server_cell_db_response_default_instance_);
 }
-inline const ::celeritas::proto::service::reload_server_cell_db_response& auth_response::reload_server_cell_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.auth_response.reload_server_cell_db)
+inline const ::celeritas::proto::service::reload_server_cell_db_response& service_auth_response::reload_server_cell_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_auth_response.reload_server_cell_db)
   return _internal_reload_server_cell_db();
 }
-inline ::celeritas::proto::service::reload_server_cell_db_response* PROTOBUF_NULLABLE auth_response::unsafe_arena_release_reload_server_cell_db() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.auth_response.reload_server_cell_db)
+inline ::celeritas::proto::service::reload_server_cell_db_response* PROTOBUF_NULLABLE service_auth_response::unsafe_arena_release_reload_server_cell_db() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_auth_response.reload_server_cell_db)
   if (payload_case() == kReloadServerCellDb) {
     clear_has_payload();
     auto* temp = reinterpret_cast<::celeritas::proto::service::reload_server_cell_db_response*>(_impl_.payload_.reload_server_cell_db_);
@@ -3331,7 +3331,7 @@ inline ::celeritas::proto::service::reload_server_cell_db_response* PROTOBUF_NUL
     return nullptr;
   }
 }
-inline void auth_response::unsafe_arena_set_allocated_reload_server_cell_db(
+inline void service_auth_response::unsafe_arena_set_allocated_reload_server_cell_db(
     ::celeritas::proto::service::reload_server_cell_db_response* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
@@ -3341,9 +3341,9 @@ inline void auth_response::unsafe_arena_set_allocated_reload_server_cell_db(
     set_has_reload_server_cell_db();
     _impl_.payload_.reload_server_cell_db_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.auth_response.reload_server_cell_db)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_auth_response.reload_server_cell_db)
 }
-inline ::celeritas::proto::service::reload_server_cell_db_response* PROTOBUF_NONNULL auth_response::_internal_mutable_reload_server_cell_db() {
+inline ::celeritas::proto::service::reload_server_cell_db_response* PROTOBUF_NONNULL service_auth_response::_internal_mutable_reload_server_cell_db() {
   if (payload_case() != kReloadServerCellDb) {
     clear_payload();
     set_has_reload_server_cell_db();
@@ -3352,21 +3352,21 @@ inline ::celeritas::proto::service::reload_server_cell_db_response* PROTOBUF_NON
   }
   return reinterpret_cast<::celeritas::proto::service::reload_server_cell_db_response*>(_impl_.payload_.reload_server_cell_db_);
 }
-inline ::celeritas::proto::service::reload_server_cell_db_response* PROTOBUF_NONNULL auth_response::mutable_reload_server_cell_db()
+inline ::celeritas::proto::service::reload_server_cell_db_response* PROTOBUF_NONNULL service_auth_response::mutable_reload_server_cell_db()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::reload_server_cell_db_response* _msg = _internal_mutable_reload_server_cell_db();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.auth_response.reload_server_cell_db)
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_auth_response.reload_server_cell_db)
   return _msg;
 }
 
-inline bool auth_response::has_payload() const {
+inline bool service_auth_response::has_payload() const {
   return payload_case() != PAYLOAD_NOT_SET;
 }
-inline void auth_response::clear_has_payload() {
+inline void service_auth_response::clear_has_payload() {
   _impl_._oneof_case_[0] = PAYLOAD_NOT_SET;
 }
-inline auth_response::PayloadCase auth_response::payload_case() const {
-  return auth_response::PayloadCase(_impl_._oneof_case_[0]);
+inline service_auth_response::PayloadCase service_auth_response::payload_case() const {
+  return service_auth_response::PayloadCase(_impl_._oneof_case_[0]);
 }
 #ifdef __GNUC__
 #pragma GCC diagnostic pop

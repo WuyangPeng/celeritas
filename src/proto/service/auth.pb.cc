@@ -243,57 +243,57 @@ struct reload_app_db_requestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 reload_app_db_requestDefaultTypeInternal _reload_app_db_request_default_instance_;
 
-inline constexpr auth_response::Impl_::Impl_(
+inline constexpr service_auth_response::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : payload_{},
         _cached_size_{0},
         _oneof_case_{} {}
 
 template <typename>
-PROTOBUF_CONSTEXPR auth_response::auth_response(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR service_auth_response::service_auth_response(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(auth_response_class_data_.base()),
+    : ::google::protobuf::Message(service_auth_response_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(),
 #endif  // PROTOBUF_CUSTOM_VTABLE
       _impl_(::_pbi::ConstantInitialized()) {
 }
-struct auth_responseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR auth_responseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~auth_responseDefaultTypeInternal() {}
+struct service_auth_responseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR service_auth_responseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~service_auth_responseDefaultTypeInternal() {}
   union {
-    auth_response _instance;
+    service_auth_response _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 auth_responseDefaultTypeInternal _auth_response_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 service_auth_responseDefaultTypeInternal _service_auth_response_default_instance_;
 
-inline constexpr auth_request::Impl_::Impl_(
+inline constexpr service_auth_request::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : payload_{},
         _cached_size_{0},
         _oneof_case_{} {}
 
 template <typename>
-PROTOBUF_CONSTEXPR auth_request::auth_request(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR service_auth_request::service_auth_request(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(auth_request_class_data_.base()),
+    : ::google::protobuf::Message(service_auth_request_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(),
 #endif  // PROTOBUF_CUSTOM_VTABLE
       _impl_(::_pbi::ConstantInitialized()) {
 }
-struct auth_requestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR auth_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~auth_requestDefaultTypeInternal() {}
+struct service_auth_requestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR service_auth_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~service_auth_requestDefaultTypeInternal() {}
   union {
-    auth_request _instance;
+    service_auth_request _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 auth_requestDefaultTypeInternal _auth_request_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 service_auth_requestDefaultTypeInternal _service_auth_request_default_instance_;
 }  // namespace service
 }  // namespace proto
 }  // namespace celeritas
@@ -335,21 +335,21 @@ const ::uint32_t
         0,
         0x000, // bitmap
         0x004, // bitmap
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_request, _impl_._oneof_case_[0]),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_request, _impl_.payload_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_request, _impl_.payload_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_request, _impl_.payload_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_request, _impl_.payload_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_request, _impl_.payload_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_request, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_request, _impl_._oneof_case_[0]),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_request, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_request, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_request, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_request, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_request, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_request, _impl_.payload_),
         0x004, // bitmap
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_response, _impl_._oneof_case_[0]),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_response, _impl_.payload_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_response, _impl_.payload_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_response, _impl_.payload_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_response, _impl_.payload_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_response, _impl_.payload_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_response, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_response, _impl_._oneof_case_[0]),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_response, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_response, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_response, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_response, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_response, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_response, _impl_.payload_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -364,8 +364,8 @@ static const ::_pbi::MigrationSchema
         {23, sizeof(::celeritas::proto::service::reload_sdk_providers_db_response)},
         {24, sizeof(::celeritas::proto::service::reload_server_cell_db_request)},
         {29, sizeof(::celeritas::proto::service::reload_server_cell_db_response)},
-        {30, sizeof(::celeritas::proto::service::auth_request)},
-        {38, sizeof(::celeritas::proto::service::auth_response)},
+        {30, sizeof(::celeritas::proto::service::service_auth_request)},
+        {38, sizeof(::celeritas::proto::service::service_auth_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::service::_reload_app_db_request_default_instance_._instance,
@@ -378,8 +378,8 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::service::_reload_sdk_providers_db_response_default_instance_._instance,
     &::celeritas::proto::service::_reload_server_cell_db_request_default_instance_._instance,
     &::celeritas::proto::service::_reload_server_cell_db_response_default_instance_._instance,
-    &::celeritas::proto::service::_auth_request_default_instance_._instance,
-    &::celeritas::proto::service::_auth_response_default_instance_._instance,
+    &::celeritas::proto::service::_service_auth_request_default_instance_._instance,
+    &::celeritas::proto::service::_service_auth_response_default_instance_._instance,
 };
 const char descriptor_table_protodef_proto_2fservice_2fauth_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
@@ -394,37 +394,38 @@ const char descriptor_table_protodef_proto_2fservice_2fauth_2eproto[] ABSL_ATTRI
     "_providers_db_request\022\016\n\006sdk_id\030\001 \001(\005\"\"\n"
     " reload_sdk_providers_db_response\"0\n\035rel"
     "oad_server_cell_db_request\022\017\n\007cell_id\030\001 "
-    "\001(\005\" \n\036reload_server_cell_db_response\"\326\003"
-    "\n\014auth_request\022G\n\rreload_app_db\030\001 \001(\0132.."
-    "celeritas.proto.service.reload_app_db_re"
-    "questH\000\022[\n\027reload_sms_providers_db\030\002 \001(\013"
-    "28.celeritas.proto.service.reload_sms_pr"
-    "oviders_db_requestH\000\022_\n\031reload_email_pro"
-    "viders_db\030\003 \001(\0132:.celeritas.proto.servic"
-    "e.reload_email_providers_db_requestH\000\022[\n"
-    "\027reload_sdk_providers_db\030\004 \001(\01328.celerit"
-    "as.proto.service.reload_sdk_providers_db"
-    "_requestH\000\022W\n\025reload_server_cell_db\030\005 \001("
-    "\01326.celeritas.proto.service.reload_serve"
-    "r_cell_db_requestH\000B\t\n\007payload\"\334\003\n\rauth_"
-    "response\022H\n\rreload_app_db\030\001 \001(\0132/.celeri"
-    "tas.proto.service.reload_app_db_response"
-    "H\000\022\\\n\027reload_sms_providers_db\030\002 \001(\01329.ce"
-    "leritas.proto.service.reload_sms_provide"
-    "rs_db_responseH\000\022`\n\031reload_email_provide"
-    "rs_db\030\003 \001(\0132;.celeritas.proto.service.re"
-    "load_email_providers_db_responseH\000\022\\\n\027re"
-    "load_sdk_providers_db\030\004 \001(\01329.celeritas."
-    "proto.service.reload_sdk_providers_db_re"
-    "sponseH\000\022X\n\025reload_server_cell_db\030\005 \001(\0132"
-    "7.celeritas.proto.service.reload_server_"
-    "cell_db_responseH\000B\t\n\007payloadb\006proto3"
+    "\001(\005\" \n\036reload_server_cell_db_response\"\336\003"
+    "\n\024service_auth_request\022G\n\rreload_app_db\030"
+    "\001 \001(\0132..celeritas.proto.service.reload_a"
+    "pp_db_requestH\000\022[\n\027reload_sms_providers_"
+    "db\030\002 \001(\01328.celeritas.proto.service.reloa"
+    "d_sms_providers_db_requestH\000\022_\n\031reload_e"
+    "mail_providers_db\030\003 \001(\0132:.celeritas.prot"
+    "o.service.reload_email_providers_db_requ"
+    "estH\000\022[\n\027reload_sdk_providers_db\030\004 \001(\01328"
+    ".celeritas.proto.service.reload_sdk_prov"
+    "iders_db_requestH\000\022W\n\025reload_server_cell"
+    "_db\030\005 \001(\01326.celeritas.proto.service.relo"
+    "ad_server_cell_db_requestH\000B\t\n\007payload\"\344"
+    "\003\n\025service_auth_response\022H\n\rreload_app_d"
+    "b\030\001 \001(\0132/.celeritas.proto.service.reload"
+    "_app_db_responseH\000\022\\\n\027reload_sms_provide"
+    "rs_db\030\002 \001(\01329.celeritas.proto.service.re"
+    "load_sms_providers_db_responseH\000\022`\n\031relo"
+    "ad_email_providers_db\030\003 \001(\0132;.celeritas."
+    "proto.service.reload_email_providers_db_"
+    "responseH\000\022\\\n\027reload_sdk_providers_db\030\004 "
+    "\001(\01329.celeritas.proto.service.reload_sdk"
+    "_providers_db_responseH\000\022X\n\025reload_serve"
+    "r_cell_db\030\005 \001(\01327.celeritas.proto.servic"
+    "e.reload_server_cell_db_responseH\000B\t\n\007pa"
+    "yloadb\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fservice_2fauth_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fauth_2eproto = {
     false,
     false,
-    1437,
+    1453,
     descriptor_table_protodef_proto_2fservice_2fauth_2eproto,
     "proto/service/auth.proto",
     &descriptor_table_proto_2fservice_2fauth_2eproto_once,
@@ -2202,13 +2203,13 @@ reload_server_cell_db_response::_table_ = {
 }
 // ===================================================================
 
-class auth_request::_Internal {
+class service_auth_request::_Internal {
  public:
   static constexpr ::int32_t kOneofCaseOffset =
-      PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_request, _impl_._oneof_case_);
+      PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_request, _impl_._oneof_case_);
 };
 
-void auth_request::set_allocated_reload_app_db(::celeritas::proto::service::reload_app_db_request* PROTOBUF_NULLABLE reload_app_db) {
+void service_auth_request::set_allocated_reload_app_db(::celeritas::proto::service::reload_app_db_request* PROTOBUF_NULLABLE reload_app_db) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
   if (reload_app_db) {
@@ -2219,9 +2220,9 @@ void auth_request::set_allocated_reload_app_db(::celeritas::proto::service::relo
     set_has_reload_app_db();
     _impl_.payload_.reload_app_db_ = reload_app_db;
   }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.auth_request.reload_app_db)
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_auth_request.reload_app_db)
 }
-void auth_request::set_allocated_reload_sms_providers_db(::celeritas::proto::service::reload_sms_providers_db_request* PROTOBUF_NULLABLE reload_sms_providers_db) {
+void service_auth_request::set_allocated_reload_sms_providers_db(::celeritas::proto::service::reload_sms_providers_db_request* PROTOBUF_NULLABLE reload_sms_providers_db) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
   if (reload_sms_providers_db) {
@@ -2232,9 +2233,9 @@ void auth_request::set_allocated_reload_sms_providers_db(::celeritas::proto::ser
     set_has_reload_sms_providers_db();
     _impl_.payload_.reload_sms_providers_db_ = reload_sms_providers_db;
   }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.auth_request.reload_sms_providers_db)
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_auth_request.reload_sms_providers_db)
 }
-void auth_request::set_allocated_reload_email_providers_db(::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_NULLABLE reload_email_providers_db) {
+void service_auth_request::set_allocated_reload_email_providers_db(::celeritas::proto::service::reload_email_providers_db_request* PROTOBUF_NULLABLE reload_email_providers_db) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
   if (reload_email_providers_db) {
@@ -2245,9 +2246,9 @@ void auth_request::set_allocated_reload_email_providers_db(::celeritas::proto::s
     set_has_reload_email_providers_db();
     _impl_.payload_.reload_email_providers_db_ = reload_email_providers_db;
   }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.auth_request.reload_email_providers_db)
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_auth_request.reload_email_providers_db)
 }
-void auth_request::set_allocated_reload_sdk_providers_db(::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NULLABLE reload_sdk_providers_db) {
+void service_auth_request::set_allocated_reload_sdk_providers_db(::celeritas::proto::service::reload_sdk_providers_db_request* PROTOBUF_NULLABLE reload_sdk_providers_db) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
   if (reload_sdk_providers_db) {
@@ -2258,9 +2259,9 @@ void auth_request::set_allocated_reload_sdk_providers_db(::celeritas::proto::ser
     set_has_reload_sdk_providers_db();
     _impl_.payload_.reload_sdk_providers_db_ = reload_sdk_providers_db;
   }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.auth_request.reload_sdk_providers_db)
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_auth_request.reload_sdk_providers_db)
 }
-void auth_request::set_allocated_reload_server_cell_db(::celeritas::proto::service::reload_server_cell_db_request* PROTOBUF_NULLABLE reload_server_cell_db) {
+void service_auth_request::set_allocated_reload_server_cell_db(::celeritas::proto::service::reload_server_cell_db_request* PROTOBUF_NULLABLE reload_server_cell_db) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
   if (reload_server_cell_db) {
@@ -2271,34 +2272,34 @@ void auth_request::set_allocated_reload_server_cell_db(::celeritas::proto::servi
     set_has_reload_server_cell_db();
     _impl_.payload_.reload_server_cell_db_ = reload_server_cell_db;
   }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.auth_request.reload_server_cell_db)
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_auth_request.reload_server_cell_db)
 }
-auth_request::auth_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+service_auth_request::service_auth_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, auth_request_class_data_.base()) {
+    : ::google::protobuf::Message(arena, service_auth_request_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.auth_request)
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.service_auth_request)
 }
-PROTOBUF_NDEBUG_INLINE auth_request::Impl_::Impl_(
+PROTOBUF_NDEBUG_INLINE service_auth_request::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-    [[maybe_unused]] const ::celeritas::proto::service::auth_request& from_msg)
+    [[maybe_unused]] const ::celeritas::proto::service::service_auth_request& from_msg)
       : payload_{},
         _cached_size_{0},
         _oneof_case_{from._oneof_case_[0]} {}
 
-auth_request::auth_request(
+service_auth_request::service_auth_request(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
-    const auth_request& from)
+    const service_auth_request& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, auth_request_class_data_.base()) {
+    : ::google::protobuf::Message(arena, service_auth_request_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  auth_request* const _this = this;
+  service_auth_request* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -2323,24 +2324,24 @@ auth_request::auth_request(
         break;
   }
 
-  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.auth_request)
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.service_auth_request)
 }
-PROTOBUF_NDEBUG_INLINE auth_request::Impl_::Impl_(
+PROTOBUF_NDEBUG_INLINE service_auth_request::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : payload_{},
         _cached_size_{0},
         _oneof_case_{} {}
 
-inline void auth_request::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+inline void service_auth_request::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
 }
-auth_request::~auth_request() {
-  // @@protoc_insertion_point(destructor:celeritas.proto.service.auth_request)
+service_auth_request::~service_auth_request() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.service.service_auth_request)
   SharedDtor(*this);
 }
-inline void auth_request::SharedDtor(MessageLite& self) {
-  auth_request& this_ = static_cast<auth_request&>(self);
+inline void service_auth_request::SharedDtor(MessageLite& self) {
+  service_auth_request& this_ = static_cast<service_auth_request&>(self);
   if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
     this_.VerifyHasBitConsistency();
   }
@@ -2352,8 +2353,8 @@ inline void auth_request::SharedDtor(MessageLite& self) {
   this_._impl_.~Impl_();
 }
 
-void auth_request::clear_payload() {
-// @@protoc_insertion_point(one_of_clear_start:celeritas.proto.service.auth_request)
+void service_auth_request::clear_payload() {
+// @@protoc_insertion_point(one_of_clear_start:celeritas.proto.service.service_auth_request)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   switch (payload_case()) {
     case kReloadAppDb: {
@@ -2404,51 +2405,51 @@ void auth_request::clear_payload() {
 }
 
 
-inline void* PROTOBUF_NONNULL auth_request::PlacementNew_(
+inline void* PROTOBUF_NONNULL service_auth_request::PlacementNew_(
     const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
-  return ::new (mem) auth_request(arena);
+  return ::new (mem) service_auth_request(arena);
 }
-constexpr auto auth_request::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(auth_request),
-                                            alignof(auth_request));
+constexpr auto service_auth_request::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(service_auth_request),
+                                            alignof(service_auth_request));
 }
-constexpr auto auth_request::InternalGenerateClassData_() {
+constexpr auto service_auth_request::InternalGenerateClassData_() {
   return ::google::protobuf::internal::ClassDataFull{
       ::google::protobuf::internal::ClassData{
-          &_auth_request_default_instance_._instance,
+          &_service_auth_request_default_instance_._instance,
           &_table_.header,
           nullptr,  // OnDemandRegisterArenaDtor
           nullptr,  // IsInitialized
-          &auth_request::MergeImpl,
-          ::google::protobuf::Message::GetNewImpl<auth_request>(),
+          &service_auth_request::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<service_auth_request>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-          &auth_request::SharedDtor,
-          ::google::protobuf::Message::GetClearImpl<auth_request>(), &auth_request::ByteSizeLong,
-              &auth_request::_InternalSerialize,
+          &service_auth_request::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<service_auth_request>(), &service_auth_request::ByteSizeLong,
+              &service_auth_request::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          PROTOBUF_FIELD_OFFSET(auth_request, _impl_._cached_size_),
+          PROTOBUF_FIELD_OFFSET(service_auth_request, _impl_._cached_size_),
           false,
       },
-      &auth_request::kDescriptorMethods,
+      &service_auth_request::kDescriptorMethods,
       &descriptor_table_proto_2fservice_2fauth_2eproto,
       nullptr,  // tracker
   };
 }
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
-    ::google::protobuf::internal::ClassDataFull auth_request_class_data_ =
-        auth_request::InternalGenerateClassData_();
+    ::google::protobuf::internal::ClassDataFull service_auth_request_class_data_ =
+        service_auth_request::InternalGenerateClassData_();
 
 PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
-auth_request::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&auth_request_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(auth_request_class_data_.tc_table);
-  return auth_request_class_data_.base();
+service_auth_request::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&service_auth_request_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(service_auth_request_class_data_.tc_table);
+  return service_auth_request_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
 const ::_pbi::TcParseTable<0, 5, 5, 0, 2>
-auth_request::_table_ = {
+service_auth_request::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -2459,11 +2460,11 @@ auth_request::_table_ = {
     5,  // num_field_entries
     5,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
-    auth_request_class_data_.base(),
+    service_auth_request_class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::celeritas::proto::service::auth_request>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::celeritas::proto::service::service_auth_request>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
@@ -2471,15 +2472,15 @@ auth_request::_table_ = {
     65535, 65535
   }}, {{
     // .celeritas.proto.service.reload_app_db_request reload_app_db = 1;
-    {PROTOBUF_FIELD_OFFSET(auth_request, _impl_.payload_.reload_app_db_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    {PROTOBUF_FIELD_OFFSET(service_auth_request, _impl_.payload_.reload_app_db_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.service.reload_sms_providers_db_request reload_sms_providers_db = 2;
-    {PROTOBUF_FIELD_OFFSET(auth_request, _impl_.payload_.reload_sms_providers_db_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    {PROTOBUF_FIELD_OFFSET(service_auth_request, _impl_.payload_.reload_sms_providers_db_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.service.reload_email_providers_db_request reload_email_providers_db = 3;
-    {PROTOBUF_FIELD_OFFSET(auth_request, _impl_.payload_.reload_email_providers_db_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    {PROTOBUF_FIELD_OFFSET(service_auth_request, _impl_.payload_.reload_email_providers_db_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.service.reload_sdk_providers_db_request reload_sdk_providers_db = 4;
-    {PROTOBUF_FIELD_OFFSET(auth_request, _impl_.payload_.reload_sdk_providers_db_), _Internal::kOneofCaseOffset + 0, 3, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    {PROTOBUF_FIELD_OFFSET(service_auth_request, _impl_.payload_.reload_sdk_providers_db_), _Internal::kOneofCaseOffset + 0, 3, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.service.reload_server_cell_db_request reload_server_cell_db = 5;
-    {PROTOBUF_FIELD_OFFSET(auth_request, _impl_.payload_.reload_server_cell_db_), _Internal::kOneofCaseOffset + 0, 4, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    {PROTOBUF_FIELD_OFFSET(service_auth_request, _impl_.payload_.reload_server_cell_db_), _Internal::kOneofCaseOffset + 0, 4, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_app_db_request>()},
@@ -2491,8 +2492,8 @@ auth_request::_table_ = {
   {{
   }},
 };
-PROTOBUF_NOINLINE void auth_request::Clear() {
-// @@protoc_insertion_point(message_clear_start:celeritas.proto.service.auth_request)
+PROTOBUF_NOINLINE void service_auth_request::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.service.service_auth_request)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -2503,20 +2504,20 @@ PROTOBUF_NOINLINE void auth_request::Clear() {
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* PROTOBUF_NONNULL auth_request::_InternalSerialize(
+::uint8_t* PROTOBUF_NONNULL service_auth_request::_InternalSerialize(
     const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
     ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
-  const auth_request& this_ = static_cast<const auth_request&>(base);
+  const service_auth_request& this_ = static_cast<const service_auth_request&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* PROTOBUF_NONNULL auth_request::_InternalSerialize(
+::uint8_t* PROTOBUF_NONNULL service_auth_request::_InternalSerialize(
     ::uint8_t* PROTOBUF_NONNULL target,
     ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-  const auth_request& this_ = *this;
+  const service_auth_request& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
   if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
     this_.VerifyHasBitConsistency();
   }
-  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.service.auth_request)
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.service.service_auth_request)
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
@@ -2559,18 +2560,18 @@ PROTOBUF_NOINLINE void auth_request::Clear() {
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
             this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.service.auth_request)
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.service.service_auth_request)
   return target;
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t auth_request::ByteSizeLong(const MessageLite& base) {
-  const auth_request& this_ = static_cast<const auth_request&>(base);
+::size_t service_auth_request::ByteSizeLong(const MessageLite& base) {
+  const service_auth_request& this_ = static_cast<const service_auth_request&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-::size_t auth_request::ByteSizeLong() const {
-  const auth_request& this_ = *this;
+::size_t service_auth_request::ByteSizeLong() const {
+  const service_auth_request& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.service.auth_request)
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.service.service_auth_request)
   ::size_t total_size = 0;
 
   ::uint32_t cached_has_bits = 0;
@@ -2616,14 +2617,14 @@ PROTOBUF_NOINLINE void auth_request::Clear() {
                                              &this_._impl_._cached_size_);
 }
 
-void auth_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<auth_request*>(&to_msg);
-  auto& from = static_cast<const auth_request&>(from_msg);
+void service_auth_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<service_auth_request*>(&to_msg);
+  auto& from = static_cast<const service_auth_request&>(from_msg);
   if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
     from.VerifyHasBitConsistency();
   }
   ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.service.auth_request)
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.service.service_auth_request)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -2686,33 +2687,33 @@ void auth_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::go
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void auth_request::CopyFrom(const auth_request& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.service.auth_request)
+void service_auth_request::CopyFrom(const service_auth_request& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.service.service_auth_request)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 
-void auth_request::InternalSwap(auth_request* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+void service_auth_request::InternalSwap(service_auth_request* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   using ::std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_.payload_, other->_impl_.payload_);
   swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
-::google::protobuf::Metadata auth_request::GetMetadata() const {
+::google::protobuf::Metadata service_auth_request::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
-class auth_response::_Internal {
+class service_auth_response::_Internal {
  public:
   static constexpr ::int32_t kOneofCaseOffset =
-      PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::auth_response, _impl_._oneof_case_);
+      PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_auth_response, _impl_._oneof_case_);
 };
 
-void auth_response::set_allocated_reload_app_db(::celeritas::proto::service::reload_app_db_response* PROTOBUF_NULLABLE reload_app_db) {
+void service_auth_response::set_allocated_reload_app_db(::celeritas::proto::service::reload_app_db_response* PROTOBUF_NULLABLE reload_app_db) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
   if (reload_app_db) {
@@ -2723,9 +2724,9 @@ void auth_response::set_allocated_reload_app_db(::celeritas::proto::service::rel
     set_has_reload_app_db();
     _impl_.payload_.reload_app_db_ = reload_app_db;
   }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.auth_response.reload_app_db)
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_auth_response.reload_app_db)
 }
-void auth_response::set_allocated_reload_sms_providers_db(::celeritas::proto::service::reload_sms_providers_db_response* PROTOBUF_NULLABLE reload_sms_providers_db) {
+void service_auth_response::set_allocated_reload_sms_providers_db(::celeritas::proto::service::reload_sms_providers_db_response* PROTOBUF_NULLABLE reload_sms_providers_db) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
   if (reload_sms_providers_db) {
@@ -2736,9 +2737,9 @@ void auth_response::set_allocated_reload_sms_providers_db(::celeritas::proto::se
     set_has_reload_sms_providers_db();
     _impl_.payload_.reload_sms_providers_db_ = reload_sms_providers_db;
   }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.auth_response.reload_sms_providers_db)
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_auth_response.reload_sms_providers_db)
 }
-void auth_response::set_allocated_reload_email_providers_db(::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF_NULLABLE reload_email_providers_db) {
+void service_auth_response::set_allocated_reload_email_providers_db(::celeritas::proto::service::reload_email_providers_db_response* PROTOBUF_NULLABLE reload_email_providers_db) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
   if (reload_email_providers_db) {
@@ -2749,9 +2750,9 @@ void auth_response::set_allocated_reload_email_providers_db(::celeritas::proto::
     set_has_reload_email_providers_db();
     _impl_.payload_.reload_email_providers_db_ = reload_email_providers_db;
   }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.auth_response.reload_email_providers_db)
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_auth_response.reload_email_providers_db)
 }
-void auth_response::set_allocated_reload_sdk_providers_db(::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NULLABLE reload_sdk_providers_db) {
+void service_auth_response::set_allocated_reload_sdk_providers_db(::celeritas::proto::service::reload_sdk_providers_db_response* PROTOBUF_NULLABLE reload_sdk_providers_db) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
   if (reload_sdk_providers_db) {
@@ -2762,9 +2763,9 @@ void auth_response::set_allocated_reload_sdk_providers_db(::celeritas::proto::se
     set_has_reload_sdk_providers_db();
     _impl_.payload_.reload_sdk_providers_db_ = reload_sdk_providers_db;
   }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.auth_response.reload_sdk_providers_db)
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_auth_response.reload_sdk_providers_db)
 }
-void auth_response::set_allocated_reload_server_cell_db(::celeritas::proto::service::reload_server_cell_db_response* PROTOBUF_NULLABLE reload_server_cell_db) {
+void service_auth_response::set_allocated_reload_server_cell_db(::celeritas::proto::service::reload_server_cell_db_response* PROTOBUF_NULLABLE reload_server_cell_db) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
   if (reload_server_cell_db) {
@@ -2775,34 +2776,34 @@ void auth_response::set_allocated_reload_server_cell_db(::celeritas::proto::serv
     set_has_reload_server_cell_db();
     _impl_.payload_.reload_server_cell_db_ = reload_server_cell_db;
   }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.auth_response.reload_server_cell_db)
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_auth_response.reload_server_cell_db)
 }
-auth_response::auth_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+service_auth_response::service_auth_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, auth_response_class_data_.base()) {
+    : ::google::protobuf::Message(arena, service_auth_response_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.auth_response)
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.service_auth_response)
 }
-PROTOBUF_NDEBUG_INLINE auth_response::Impl_::Impl_(
+PROTOBUF_NDEBUG_INLINE service_auth_response::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-    [[maybe_unused]] const ::celeritas::proto::service::auth_response& from_msg)
+    [[maybe_unused]] const ::celeritas::proto::service::service_auth_response& from_msg)
       : payload_{},
         _cached_size_{0},
         _oneof_case_{from._oneof_case_[0]} {}
 
-auth_response::auth_response(
+service_auth_response::service_auth_response(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
-    const auth_response& from)
+    const service_auth_response& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, auth_response_class_data_.base()) {
+    : ::google::protobuf::Message(arena, service_auth_response_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  auth_response* const _this = this;
+  service_auth_response* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -2827,24 +2828,24 @@ auth_response::auth_response(
         break;
   }
 
-  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.auth_response)
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.service_auth_response)
 }
-PROTOBUF_NDEBUG_INLINE auth_response::Impl_::Impl_(
+PROTOBUF_NDEBUG_INLINE service_auth_response::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : payload_{},
         _cached_size_{0},
         _oneof_case_{} {}
 
-inline void auth_response::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+inline void service_auth_response::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
 }
-auth_response::~auth_response() {
-  // @@protoc_insertion_point(destructor:celeritas.proto.service.auth_response)
+service_auth_response::~service_auth_response() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.service.service_auth_response)
   SharedDtor(*this);
 }
-inline void auth_response::SharedDtor(MessageLite& self) {
-  auth_response& this_ = static_cast<auth_response&>(self);
+inline void service_auth_response::SharedDtor(MessageLite& self) {
+  service_auth_response& this_ = static_cast<service_auth_response&>(self);
   if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
     this_.VerifyHasBitConsistency();
   }
@@ -2856,8 +2857,8 @@ inline void auth_response::SharedDtor(MessageLite& self) {
   this_._impl_.~Impl_();
 }
 
-void auth_response::clear_payload() {
-// @@protoc_insertion_point(one_of_clear_start:celeritas.proto.service.auth_response)
+void service_auth_response::clear_payload() {
+// @@protoc_insertion_point(one_of_clear_start:celeritas.proto.service.service_auth_response)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   switch (payload_case()) {
     case kReloadAppDb: {
@@ -2908,51 +2909,51 @@ void auth_response::clear_payload() {
 }
 
 
-inline void* PROTOBUF_NONNULL auth_response::PlacementNew_(
+inline void* PROTOBUF_NONNULL service_auth_response::PlacementNew_(
     const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
-  return ::new (mem) auth_response(arena);
+  return ::new (mem) service_auth_response(arena);
 }
-constexpr auto auth_response::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(auth_response),
-                                            alignof(auth_response));
+constexpr auto service_auth_response::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(service_auth_response),
+                                            alignof(service_auth_response));
 }
-constexpr auto auth_response::InternalGenerateClassData_() {
+constexpr auto service_auth_response::InternalGenerateClassData_() {
   return ::google::protobuf::internal::ClassDataFull{
       ::google::protobuf::internal::ClassData{
-          &_auth_response_default_instance_._instance,
+          &_service_auth_response_default_instance_._instance,
           &_table_.header,
           nullptr,  // OnDemandRegisterArenaDtor
           nullptr,  // IsInitialized
-          &auth_response::MergeImpl,
-          ::google::protobuf::Message::GetNewImpl<auth_response>(),
+          &service_auth_response::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<service_auth_response>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-          &auth_response::SharedDtor,
-          ::google::protobuf::Message::GetClearImpl<auth_response>(), &auth_response::ByteSizeLong,
-              &auth_response::_InternalSerialize,
+          &service_auth_response::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<service_auth_response>(), &service_auth_response::ByteSizeLong,
+              &service_auth_response::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          PROTOBUF_FIELD_OFFSET(auth_response, _impl_._cached_size_),
+          PROTOBUF_FIELD_OFFSET(service_auth_response, _impl_._cached_size_),
           false,
       },
-      &auth_response::kDescriptorMethods,
+      &service_auth_response::kDescriptorMethods,
       &descriptor_table_proto_2fservice_2fauth_2eproto,
       nullptr,  // tracker
   };
 }
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
-    ::google::protobuf::internal::ClassDataFull auth_response_class_data_ =
-        auth_response::InternalGenerateClassData_();
+    ::google::protobuf::internal::ClassDataFull service_auth_response_class_data_ =
+        service_auth_response::InternalGenerateClassData_();
 
 PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
-auth_response::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&auth_response_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(auth_response_class_data_.tc_table);
-  return auth_response_class_data_.base();
+service_auth_response::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&service_auth_response_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(service_auth_response_class_data_.tc_table);
+  return service_auth_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
 const ::_pbi::TcParseTable<0, 5, 5, 0, 2>
-auth_response::_table_ = {
+service_auth_response::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -2963,11 +2964,11 @@ auth_response::_table_ = {
     5,  // num_field_entries
     5,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
-    auth_response_class_data_.base(),
+    service_auth_response_class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::celeritas::proto::service::auth_response>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::celeritas::proto::service::service_auth_response>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
@@ -2975,15 +2976,15 @@ auth_response::_table_ = {
     65535, 65535
   }}, {{
     // .celeritas.proto.service.reload_app_db_response reload_app_db = 1;
-    {PROTOBUF_FIELD_OFFSET(auth_response, _impl_.payload_.reload_app_db_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    {PROTOBUF_FIELD_OFFSET(service_auth_response, _impl_.payload_.reload_app_db_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.service.reload_sms_providers_db_response reload_sms_providers_db = 2;
-    {PROTOBUF_FIELD_OFFSET(auth_response, _impl_.payload_.reload_sms_providers_db_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    {PROTOBUF_FIELD_OFFSET(service_auth_response, _impl_.payload_.reload_sms_providers_db_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.service.reload_email_providers_db_response reload_email_providers_db = 3;
-    {PROTOBUF_FIELD_OFFSET(auth_response, _impl_.payload_.reload_email_providers_db_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    {PROTOBUF_FIELD_OFFSET(service_auth_response, _impl_.payload_.reload_email_providers_db_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.service.reload_sdk_providers_db_response reload_sdk_providers_db = 4;
-    {PROTOBUF_FIELD_OFFSET(auth_response, _impl_.payload_.reload_sdk_providers_db_), _Internal::kOneofCaseOffset + 0, 3, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    {PROTOBUF_FIELD_OFFSET(service_auth_response, _impl_.payload_.reload_sdk_providers_db_), _Internal::kOneofCaseOffset + 0, 3, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.service.reload_server_cell_db_response reload_server_cell_db = 5;
-    {PROTOBUF_FIELD_OFFSET(auth_response, _impl_.payload_.reload_server_cell_db_), _Internal::kOneofCaseOffset + 0, 4, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    {PROTOBUF_FIELD_OFFSET(service_auth_response, _impl_.payload_.reload_server_cell_db_), _Internal::kOneofCaseOffset + 0, 4, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_app_db_response>()},
@@ -2995,8 +2996,8 @@ auth_response::_table_ = {
   {{
   }},
 };
-PROTOBUF_NOINLINE void auth_response::Clear() {
-// @@protoc_insertion_point(message_clear_start:celeritas.proto.service.auth_response)
+PROTOBUF_NOINLINE void service_auth_response::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.service.service_auth_response)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -3007,20 +3008,20 @@ PROTOBUF_NOINLINE void auth_response::Clear() {
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* PROTOBUF_NONNULL auth_response::_InternalSerialize(
+::uint8_t* PROTOBUF_NONNULL service_auth_response::_InternalSerialize(
     const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
     ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
-  const auth_response& this_ = static_cast<const auth_response&>(base);
+  const service_auth_response& this_ = static_cast<const service_auth_response&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* PROTOBUF_NONNULL auth_response::_InternalSerialize(
+::uint8_t* PROTOBUF_NONNULL service_auth_response::_InternalSerialize(
     ::uint8_t* PROTOBUF_NONNULL target,
     ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-  const auth_response& this_ = *this;
+  const service_auth_response& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
   if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
     this_.VerifyHasBitConsistency();
   }
-  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.service.auth_response)
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.service.service_auth_response)
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
@@ -3063,18 +3064,18 @@ PROTOBUF_NOINLINE void auth_response::Clear() {
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
             this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.service.auth_response)
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.service.service_auth_response)
   return target;
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t auth_response::ByteSizeLong(const MessageLite& base) {
-  const auth_response& this_ = static_cast<const auth_response&>(base);
+::size_t service_auth_response::ByteSizeLong(const MessageLite& base) {
+  const service_auth_response& this_ = static_cast<const service_auth_response&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-::size_t auth_response::ByteSizeLong() const {
-  const auth_response& this_ = *this;
+::size_t service_auth_response::ByteSizeLong() const {
+  const service_auth_response& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.service.auth_response)
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.service.service_auth_response)
   ::size_t total_size = 0;
 
   ::uint32_t cached_has_bits = 0;
@@ -3120,14 +3121,14 @@ PROTOBUF_NOINLINE void auth_response::Clear() {
                                              &this_._impl_._cached_size_);
 }
 
-void auth_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<auth_response*>(&to_msg);
-  auto& from = static_cast<const auth_response&>(from_msg);
+void service_auth_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<service_auth_response*>(&to_msg);
+  auto& from = static_cast<const service_auth_response&>(from_msg);
   if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
     from.VerifyHasBitConsistency();
   }
   ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.service.auth_response)
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.service.service_auth_response)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -3190,22 +3191,22 @@ void auth_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::g
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void auth_response::CopyFrom(const auth_response& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.service.auth_response)
+void service_auth_response::CopyFrom(const service_auth_response& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.service.service_auth_response)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 
-void auth_response::InternalSwap(auth_response* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+void service_auth_response::InternalSwap(service_auth_response* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   using ::std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_.payload_, other->_impl_.payload_);
   swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
-::google::protobuf::Metadata auth_response::GetMetadata() const {
+::google::protobuf::Metadata service_auth_response::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)

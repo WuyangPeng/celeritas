@@ -251,42 +251,42 @@ class service_request final : public ::google::protobuf::Message
   ::celeritas::proto::service::service_registry_request* PROTOBUF_NONNULL _internal_mutable_registry();
 
   public:
-  // .celeritas.proto.service.auth_request auth = 2;
+  // .celeritas.proto.service.service_auth_request auth = 2;
   bool has_auth() const;
   private:
   bool _internal_has_auth() const;
 
   public:
   void clear_auth() ;
-  const ::celeritas::proto::service::auth_request& auth() const;
-  [[nodiscard]] ::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE release_auth();
-  ::celeritas::proto::service::auth_request* PROTOBUF_NONNULL mutable_auth();
-  void set_allocated_auth(::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_auth(::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE value);
-  ::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE unsafe_arena_release_auth();
+  const ::celeritas::proto::service::service_auth_request& auth() const;
+  [[nodiscard]] ::celeritas::proto::service::service_auth_request* PROTOBUF_NULLABLE release_auth();
+  ::celeritas::proto::service::service_auth_request* PROTOBUF_NONNULL mutable_auth();
+  void set_allocated_auth(::celeritas::proto::service::service_auth_request* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_auth(::celeritas::proto::service::service_auth_request* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::service::service_auth_request* PROTOBUF_NULLABLE unsafe_arena_release_auth();
 
   private:
-  const ::celeritas::proto::service::auth_request& _internal_auth() const;
-  ::celeritas::proto::service::auth_request* PROTOBUF_NONNULL _internal_mutable_auth();
+  const ::celeritas::proto::service::service_auth_request& _internal_auth() const;
+  ::celeritas::proto::service::service_auth_request* PROTOBUF_NONNULL _internal_mutable_auth();
 
   public:
-  // .celeritas.proto.service.payment_request payment = 3;
+  // .celeritas.proto.service.service_payment_request payment = 3;
   bool has_payment() const;
   private:
   bool _internal_has_payment() const;
 
   public:
   void clear_payment() ;
-  const ::celeritas::proto::service::payment_request& payment() const;
-  [[nodiscard]] ::celeritas::proto::service::payment_request* PROTOBUF_NULLABLE release_payment();
-  ::celeritas::proto::service::payment_request* PROTOBUF_NONNULL mutable_payment();
-  void set_allocated_payment(::celeritas::proto::service::payment_request* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_payment(::celeritas::proto::service::payment_request* PROTOBUF_NULLABLE value);
-  ::celeritas::proto::service::payment_request* PROTOBUF_NULLABLE unsafe_arena_release_payment();
+  const ::celeritas::proto::service::service_payment_request& payment() const;
+  [[nodiscard]] ::celeritas::proto::service::service_payment_request* PROTOBUF_NULLABLE release_payment();
+  ::celeritas::proto::service::service_payment_request* PROTOBUF_NONNULL mutable_payment();
+  void set_allocated_payment(::celeritas::proto::service::service_payment_request* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_payment(::celeritas::proto::service::service_payment_request* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::service::service_payment_request* PROTOBUF_NULLABLE unsafe_arena_release_payment();
 
   private:
-  const ::celeritas::proto::service::payment_request& _internal_payment() const;
-  ::celeritas::proto::service::payment_request* PROTOBUF_NONNULL _internal_mutable_payment();
+  const ::celeritas::proto::service::service_payment_request& _internal_payment() const;
+  ::celeritas::proto::service::service_payment_request* PROTOBUF_NONNULL _internal_mutable_payment();
 
   public:
   void clear_payload();
@@ -423,7 +423,7 @@ inline ::celeritas::proto::service::service_registry_request* PROTOBUF_NONNULL s
   return _msg;
 }
 
-// .celeritas.proto.service.auth_request auth = 2;
+// .celeritas.proto.service.service_auth_request auth = 2;
 inline bool service_request::has_auth() const {
   return payload_case() == kAuth;
 }
@@ -433,11 +433,11 @@ inline bool service_request::_internal_has_auth() const {
 inline void service_request::set_has_auth() {
   _impl_._oneof_case_[0] = kAuth;
 }
-inline ::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE service_request::release_auth() {
+inline ::celeritas::proto::service::service_auth_request* PROTOBUF_NULLABLE service_request::release_auth() {
   // @@protoc_insertion_point(field_release:celeritas.proto.service.service_request.auth)
   if (payload_case() == kAuth) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::service::auth_request*>(_impl_.payload_.auth_);
+    auto* temp = reinterpret_cast<::celeritas::proto::service::service_auth_request*>(_impl_.payload_.auth_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -447,18 +447,18 @@ inline ::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE service_requ
     return nullptr;
   }
 }
-inline const ::celeritas::proto::service::auth_request& service_request::_internal_auth() const {
-  return payload_case() == kAuth ? *reinterpret_cast<::celeritas::proto::service::auth_request*>(_impl_.payload_.auth_) : reinterpret_cast<::celeritas::proto::service::auth_request&>(::celeritas::proto::service::_auth_request_default_instance_);
+inline const ::celeritas::proto::service::service_auth_request& service_request::_internal_auth() const {
+  return payload_case() == kAuth ? *reinterpret_cast<::celeritas::proto::service::service_auth_request*>(_impl_.payload_.auth_) : reinterpret_cast<::celeritas::proto::service::service_auth_request&>(::celeritas::proto::service::_service_auth_request_default_instance_);
 }
-inline const ::celeritas::proto::service::auth_request& service_request::auth() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline const ::celeritas::proto::service::service_auth_request& service_request::auth() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:celeritas.proto.service.service_request.auth)
   return _internal_auth();
 }
-inline ::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE service_request::unsafe_arena_release_auth() {
+inline ::celeritas::proto::service::service_auth_request* PROTOBUF_NULLABLE service_request::unsafe_arena_release_auth() {
   // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_request.auth)
   if (payload_case() == kAuth) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::service::auth_request*>(_impl_.payload_.auth_);
+    auto* temp = reinterpret_cast<::celeritas::proto::service::service_auth_request*>(_impl_.payload_.auth_);
     _impl_.payload_.auth_ = nullptr;
     return temp;
   } else {
@@ -466,7 +466,7 @@ inline ::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE service_requ
   }
 }
 inline void service_request::unsafe_arena_set_allocated_auth(
-    ::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE value) {
+    ::celeritas::proto::service::service_auth_request* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
   // set the new value.
@@ -477,23 +477,23 @@ inline void service_request::unsafe_arena_set_allocated_auth(
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_request.auth)
 }
-inline ::celeritas::proto::service::auth_request* PROTOBUF_NONNULL service_request::_internal_mutable_auth() {
+inline ::celeritas::proto::service::service_auth_request* PROTOBUF_NONNULL service_request::_internal_mutable_auth() {
   if (payload_case() != kAuth) {
     clear_payload();
     set_has_auth();
     _impl_.payload_.auth_ = reinterpret_cast<::google::protobuf::Message*>(
-        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::service::auth_request>(GetArena()));
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::service::service_auth_request>(GetArena()));
   }
-  return reinterpret_cast<::celeritas::proto::service::auth_request*>(_impl_.payload_.auth_);
+  return reinterpret_cast<::celeritas::proto::service::service_auth_request*>(_impl_.payload_.auth_);
 }
-inline ::celeritas::proto::service::auth_request* PROTOBUF_NONNULL service_request::mutable_auth()
+inline ::celeritas::proto::service::service_auth_request* PROTOBUF_NONNULL service_request::mutable_auth()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::celeritas::proto::service::auth_request* _msg = _internal_mutable_auth();
+  ::celeritas::proto::service::service_auth_request* _msg = _internal_mutable_auth();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_request.auth)
   return _msg;
 }
 
-// .celeritas.proto.service.payment_request payment = 3;
+// .celeritas.proto.service.service_payment_request payment = 3;
 inline bool service_request::has_payment() const {
   return payload_case() == kPayment;
 }
@@ -503,11 +503,11 @@ inline bool service_request::_internal_has_payment() const {
 inline void service_request::set_has_payment() {
   _impl_._oneof_case_[0] = kPayment;
 }
-inline ::celeritas::proto::service::payment_request* PROTOBUF_NULLABLE service_request::release_payment() {
+inline ::celeritas::proto::service::service_payment_request* PROTOBUF_NULLABLE service_request::release_payment() {
   // @@protoc_insertion_point(field_release:celeritas.proto.service.service_request.payment)
   if (payload_case() == kPayment) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::service::payment_request*>(_impl_.payload_.payment_);
+    auto* temp = reinterpret_cast<::celeritas::proto::service::service_payment_request*>(_impl_.payload_.payment_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -517,18 +517,18 @@ inline ::celeritas::proto::service::payment_request* PROTOBUF_NULLABLE service_r
     return nullptr;
   }
 }
-inline const ::celeritas::proto::service::payment_request& service_request::_internal_payment() const {
-  return payload_case() == kPayment ? *reinterpret_cast<::celeritas::proto::service::payment_request*>(_impl_.payload_.payment_) : reinterpret_cast<::celeritas::proto::service::payment_request&>(::celeritas::proto::service::_payment_request_default_instance_);
+inline const ::celeritas::proto::service::service_payment_request& service_request::_internal_payment() const {
+  return payload_case() == kPayment ? *reinterpret_cast<::celeritas::proto::service::service_payment_request*>(_impl_.payload_.payment_) : reinterpret_cast<::celeritas::proto::service::service_payment_request&>(::celeritas::proto::service::_service_payment_request_default_instance_);
 }
-inline const ::celeritas::proto::service::payment_request& service_request::payment() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline const ::celeritas::proto::service::service_payment_request& service_request::payment() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:celeritas.proto.service.service_request.payment)
   return _internal_payment();
 }
-inline ::celeritas::proto::service::payment_request* PROTOBUF_NULLABLE service_request::unsafe_arena_release_payment() {
+inline ::celeritas::proto::service::service_payment_request* PROTOBUF_NULLABLE service_request::unsafe_arena_release_payment() {
   // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_request.payment)
   if (payload_case() == kPayment) {
     clear_has_payload();
-    auto* temp = reinterpret_cast<::celeritas::proto::service::payment_request*>(_impl_.payload_.payment_);
+    auto* temp = reinterpret_cast<::celeritas::proto::service::service_payment_request*>(_impl_.payload_.payment_);
     _impl_.payload_.payment_ = nullptr;
     return temp;
   } else {
@@ -536,7 +536,7 @@ inline ::celeritas::proto::service::payment_request* PROTOBUF_NULLABLE service_r
   }
 }
 inline void service_request::unsafe_arena_set_allocated_payment(
-    ::celeritas::proto::service::payment_request* PROTOBUF_NULLABLE value) {
+    ::celeritas::proto::service::service_payment_request* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
   // set the new value.
@@ -547,18 +547,18 @@ inline void service_request::unsafe_arena_set_allocated_payment(
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_request.payment)
 }
-inline ::celeritas::proto::service::payment_request* PROTOBUF_NONNULL service_request::_internal_mutable_payment() {
+inline ::celeritas::proto::service::service_payment_request* PROTOBUF_NONNULL service_request::_internal_mutable_payment() {
   if (payload_case() != kPayment) {
     clear_payload();
     set_has_payment();
     _impl_.payload_.payment_ = reinterpret_cast<::google::protobuf::Message*>(
-        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::service::payment_request>(GetArena()));
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::service::service_payment_request>(GetArena()));
   }
-  return reinterpret_cast<::celeritas::proto::service::payment_request*>(_impl_.payload_.payment_);
+  return reinterpret_cast<::celeritas::proto::service::service_payment_request*>(_impl_.payload_.payment_);
 }
-inline ::celeritas::proto::service::payment_request* PROTOBUF_NONNULL service_request::mutable_payment()
+inline ::celeritas::proto::service::service_payment_request* PROTOBUF_NONNULL service_request::mutable_payment()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::celeritas::proto::service::payment_request* _msg = _internal_mutable_payment();
+  ::celeritas::proto::service::service_payment_request* _msg = _internal_mutable_payment();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_request.payment)
   return _msg;
 }

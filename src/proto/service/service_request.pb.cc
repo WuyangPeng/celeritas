@@ -83,13 +83,13 @@ const char descriptor_table_protodef_proto_2fservice_2fservice_5frequest_2eproto
     "\n#proto/service/service_request.proto\022\027c"
     "eleritas.proto.service\032\034proto/service/re"
     "gistry.proto\032\030proto/service/auth.proto\032\033"
-    "proto/service/payment.proto\"\327\001\n\017service_"
+    "proto/service/payment.proto\"\347\001\n\017service_"
     "request\022E\n\010registry\030\001 \001(\01321.celeritas.pr"
-    "oto.service.service_registry_requestH\000\0225"
-    "\n\004auth\030\002 \001(\0132%.celeritas.proto.service.a"
-    "uth_requestH\000\022;\n\007payment\030\003 \001(\0132(.celerit"
-    "as.proto.service.payment_requestH\000B\t\n\007pa"
-    "yloadb\006proto3"
+    "oto.service.service_registry_requestH\000\022="
+    "\n\004auth\030\002 \001(\0132-.celeritas.proto.service.s"
+    "ervice_auth_requestH\000\022C\n\007payment\030\003 \001(\01320"
+    ".celeritas.proto.service.service_payment"
+    "_requestH\000B\t\n\007payloadb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_proto_2fservice_2fservice_5frequest_2eproto_deps[3] = {
@@ -101,7 +101,7 @@ static ::absl::once_flag descriptor_table_proto_2fservice_2fservice_5frequest_2e
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fservice_5frequest_2eproto = {
     false,
     false,
-    373,
+    389,
     descriptor_table_protodef_proto_2fservice_2fservice_5frequest_2eproto,
     "proto/service/service_request.proto",
     &descriptor_table_proto_2fservice_2fservice_5frequest_2eproto_once,
@@ -149,7 +149,7 @@ void service_request::clear_registry() {
     clear_has_payload();
   }
 }
-void service_request::set_allocated_auth(::celeritas::proto::service::auth_request* PROTOBUF_NULLABLE auth) {
+void service_request::set_allocated_auth(::celeritas::proto::service::service_auth_request* PROTOBUF_NULLABLE auth) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
   if (auth) {
@@ -173,7 +173,7 @@ void service_request::clear_auth() {
     clear_has_payload();
   }
 }
-void service_request::set_allocated_payment(::celeritas::proto::service::payment_request* PROTOBUF_NULLABLE payment) {
+void service_request::set_allocated_payment(::celeritas::proto::service::service_payment_request* PROTOBUF_NULLABLE payment) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
   if (payment) {
@@ -374,15 +374,15 @@ service_request::_table_ = {
   }}, {{
     // .celeritas.proto.service.service_registry_request registry = 1;
     {PROTOBUF_FIELD_OFFSET(service_request, _impl_.payload_.registry_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .celeritas.proto.service.auth_request auth = 2;
+    // .celeritas.proto.service.service_auth_request auth = 2;
     {PROTOBUF_FIELD_OFFSET(service_request, _impl_.payload_.auth_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .celeritas.proto.service.payment_request payment = 3;
+    // .celeritas.proto.service.service_payment_request payment = 3;
     {PROTOBUF_FIELD_OFFSET(service_request, _impl_.payload_.payment_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_registry_request>()},
-      {::_pbi::TcParser::GetTable<::celeritas::proto::service::auth_request>()},
-      {::_pbi::TcParser::GetTable<::celeritas::proto::service::payment_request>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_auth_request>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_payment_request>()},
   }},
   {{
   }},
@@ -468,13 +468,13 @@ PROTOBUF_NOINLINE void service_request::Clear() {
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.registry_);
       break;
     }
-    // .celeritas.proto.service.auth_request auth = 2;
+    // .celeritas.proto.service.service_auth_request auth = 2;
     case kAuth: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.auth_);
       break;
     }
-    // .celeritas.proto.service.payment_request payment = 3;
+    // .celeritas.proto.service.service_payment_request payment = 3;
     case kPayment: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.payment_);

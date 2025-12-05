@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package celeritas.proto.client;
+
+import "proto/client/auth.proto";
+
+message client_response {
+  oneof payload {
+    client_auth_response auth = 1;
+  }
+}

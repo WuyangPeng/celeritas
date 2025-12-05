@@ -1,11 +1,11 @@
 ﻿#pragma once
 
 #include "message/concrete_message_handler.h"
-#include "proto/service/service_request.pb.h"
+#include "proto/client/client_request.pb.h"
 
 namespace celeritas
 {
-    class gateway_service_request_message_handler final : public concrete_message_handler<proto::service::service_request>
+    class gateway_service_request_message_handler final : public concrete_message_handler<proto::client::client_request>
     {
     public:
         using class_type = gateway_service_request_message_handler;

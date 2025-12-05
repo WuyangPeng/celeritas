@@ -30,6 +30,7 @@
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/unknown_field_set.h"
 #include "proto/service/service_request.pb.h"
+#include "proto/client/client_request.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -131,6 +132,7 @@ class request final : public ::google::protobuf::Message
   }
   enum PayloadCase {
     kService = 1,
+    kClient = 2,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 0;
@@ -222,6 +224,7 @@ class request final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kServiceFieldNumber = 1,
+    kClientFieldNumber = 2,
   };
   // .celeritas.proto.service.service_request service = 1;
   bool has_service() const;
@@ -242,17 +245,37 @@ class request final : public ::google::protobuf::Message
   ::celeritas::proto::service::service_request* PROTOBUF_NONNULL _internal_mutable_service();
 
   public:
+  // .celeritas.proto.client.client_request client = 2;
+  bool has_client() const;
+  private:
+  bool _internal_has_client() const;
+
+  public:
+  void clear_client() ;
+  const ::celeritas::proto::client::client_request& client() const;
+  [[nodiscard]] ::celeritas::proto::client::client_request* PROTOBUF_NULLABLE release_client();
+  ::celeritas::proto::client::client_request* PROTOBUF_NONNULL mutable_client();
+  void set_allocated_client(::celeritas::proto::client::client_request* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_client(::celeritas::proto::client::client_request* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::client_request* PROTOBUF_NULLABLE unsafe_arena_release_client();
+
+  private:
+  const ::celeritas::proto::client::client_request& _internal_client() const;
+  ::celeritas::proto::client::client_request* PROTOBUF_NONNULL _internal_mutable_client();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.request)
  private:
   class _Internal;
   void set_has_service();
+  void set_has_client();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
-                                   1, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 2,
+                                   2, 0,
                                    2>
       _table_;
 
@@ -275,6 +298,7 @@ class request final : public ::google::protobuf::Message
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
       ::celeritas::proto::service::service_request* PROTOBUF_NULLABLE service_;
+      ::celeritas::proto::client::client_request* PROTOBUF_NULLABLE client_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -369,6 +393,76 @@ inline ::celeritas::proto::service::service_request* PROTOBUF_NONNULL request::m
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::service_request* _msg = _internal_mutable_service();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.request.service)
+  return _msg;
+}
+
+// .celeritas.proto.client.client_request client = 2;
+inline bool request::has_client() const {
+  return payload_case() == kClient;
+}
+inline bool request::_internal_has_client() const {
+  return payload_case() == kClient;
+}
+inline void request::set_has_client() {
+  _impl_._oneof_case_[0] = kClient;
+}
+inline ::celeritas::proto::client::client_request* PROTOBUF_NULLABLE request::release_client() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.request.client)
+  if (payload_case() == kClient) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.client_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.client_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::client_request& request::_internal_client() const {
+  return payload_case() == kClient ? *_impl_.payload_.client_ : reinterpret_cast<::celeritas::proto::client::client_request&>(::celeritas::proto::client::_client_request_default_instance_);
+}
+inline const ::celeritas::proto::client::client_request& request::client() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.request.client)
+  return _internal_client();
+}
+inline ::celeritas::proto::client::client_request* PROTOBUF_NULLABLE request::unsafe_arena_release_client() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.request.client)
+  if (payload_case() == kClient) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.client_;
+    _impl_.payload_.client_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void request::unsafe_arena_set_allocated_client(
+    ::celeritas::proto::client::client_request* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_client();
+    _impl_.payload_.client_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.request.client)
+}
+inline ::celeritas::proto::client::client_request* PROTOBUF_NONNULL request::_internal_mutable_client() {
+  if (payload_case() != kClient) {
+    clear_payload();
+    set_has_client();
+    _impl_.payload_.client_ = 
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_request>(GetArena());
+  }
+  return _impl_.payload_.client_;
+}
+inline ::celeritas::proto::client::client_request* PROTOBUF_NONNULL request::mutable_client()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::client_request* _msg = _internal_mutable_client();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.request.client)
   return _msg;
 }
 

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package celeritas.proto.client;
+
+message login_request {
+}
+
+message login_response {
+}
+
+message client_auth_request {
+  oneof payload {
+    login_request login = 1;
+  }
+}
+
+message client_auth_response {
+  oneof payload {
+    login_response login = 1;
+  }
+}
+
+

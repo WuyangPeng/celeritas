@@ -1,11 +1,13 @@
 ﻿syntax = "proto3";
 
 import "proto/service/service_response.proto";
+import "proto/client/client_response.proto";
 
 package celeritas.proto;
 
 message response {
   oneof payload {
     service.service_response service = 1;
+    client.client_response client = 2;
   }
 }

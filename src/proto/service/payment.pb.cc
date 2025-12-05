@@ -71,57 +71,57 @@ struct reload_sdk_payment_providers_db_requestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 reload_sdk_payment_providers_db_requestDefaultTypeInternal _reload_sdk_payment_providers_db_request_default_instance_;
 
-inline constexpr payment_response::Impl_::Impl_(
+inline constexpr service_payment_response::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : payload_{},
         _cached_size_{0},
         _oneof_case_{} {}
 
 template <typename>
-PROTOBUF_CONSTEXPR payment_response::payment_response(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR service_payment_response::service_payment_response(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(payment_response_class_data_.base()),
+    : ::google::protobuf::Message(service_payment_response_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(),
 #endif  // PROTOBUF_CUSTOM_VTABLE
       _impl_(::_pbi::ConstantInitialized()) {
 }
-struct payment_responseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR payment_responseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~payment_responseDefaultTypeInternal() {}
+struct service_payment_responseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR service_payment_responseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~service_payment_responseDefaultTypeInternal() {}
   union {
-    payment_response _instance;
+    service_payment_response _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 payment_responseDefaultTypeInternal _payment_response_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 service_payment_responseDefaultTypeInternal _service_payment_response_default_instance_;
 
-inline constexpr payment_request::Impl_::Impl_(
+inline constexpr service_payment_request::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : payload_{},
         _cached_size_{0},
         _oneof_case_{} {}
 
 template <typename>
-PROTOBUF_CONSTEXPR payment_request::payment_request(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR service_payment_request::service_payment_request(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(payment_request_class_data_.base()),
+    : ::google::protobuf::Message(service_payment_request_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(),
 #endif  // PROTOBUF_CUSTOM_VTABLE
       _impl_(::_pbi::ConstantInitialized()) {
 }
-struct payment_requestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR payment_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~payment_requestDefaultTypeInternal() {}
+struct service_payment_requestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR service_payment_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~service_payment_requestDefaultTypeInternal() {}
   union {
-    payment_request _instance;
+    service_payment_request _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 payment_requestDefaultTypeInternal _payment_request_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 service_payment_requestDefaultTypeInternal _service_payment_request_default_instance_;
 }  // namespace service
 }  // namespace proto
 }  // namespace celeritas
@@ -139,48 +139,48 @@ const ::uint32_t
         0,
         0x000, // bitmap
         0x004, // bitmap
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::payment_request, _impl_._oneof_case_[0]),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::payment_request, _impl_.payload_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::payment_request, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_payment_request, _impl_._oneof_case_[0]),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_payment_request, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_payment_request, _impl_.payload_),
         0x004, // bitmap
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::payment_response, _impl_._oneof_case_[0]),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::payment_response, _impl_.payload_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::payment_response, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_payment_response, _impl_._oneof_case_[0]),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_payment_response, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_payment_response, _impl_.payload_),
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::celeritas::proto::service::reload_sdk_payment_providers_db_request)},
         {5, sizeof(::celeritas::proto::service::reload_sdk_payment_providers_db_response)},
-        {6, sizeof(::celeritas::proto::service::payment_request)},
-        {10, sizeof(::celeritas::proto::service::payment_response)},
+        {6, sizeof(::celeritas::proto::service::service_payment_request)},
+        {10, sizeof(::celeritas::proto::service::service_payment_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::service::_reload_sdk_payment_providers_db_request_default_instance_._instance,
     &::celeritas::proto::service::_reload_sdk_payment_providers_db_response_default_instance_._instance,
-    &::celeritas::proto::service::_payment_request_default_instance_._instance,
-    &::celeritas::proto::service::_payment_response_default_instance_._instance,
+    &::celeritas::proto::service::_service_payment_request_default_instance_._instance,
+    &::celeritas::proto::service::_service_payment_response_default_instance_._instance,
 };
 const char descriptor_table_protodef_proto_2fservice_2fpayment_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\033proto/service/payment.proto\022\027celeritas"
     ".proto.service\"9\n\'reload_sdk_payment_pro"
     "viders_db_request\022\016\n\006sdk_id\030\001 \001(\005\"*\n(rel"
-    "oad_sdk_payment_providers_db_response\"\211\001"
-    "\n\017payment_request\022k\n\037reload_sdk_payment_"
-    "providers_db\030\001 \001(\0132@.celeritas.proto.ser"
-    "vice.reload_sdk_payment_providers_db_req"
-    "uestH\000B\t\n\007payload\"\213\001\n\020payment_response\022l"
-    "\n\037reload_sdk_payment_providers_db\030\001 \001(\0132"
-    "A.celeritas.proto.service.reload_sdk_pay"
-    "ment_providers_db_responseH\000B\t\n\007payloadb"
-    "\006proto3"
+    "oad_sdk_payment_providers_db_response\"\221\001"
+    "\n\027service_payment_request\022k\n\037reload_sdk_"
+    "payment_providers_db\030\001 \001(\0132@.celeritas.p"
+    "roto.service.reload_sdk_payment_provider"
+    "s_db_requestH\000B\t\n\007payload\"\223\001\n\030service_pa"
+    "yment_response\022l\n\037reload_sdk_payment_pro"
+    "viders_db\030\001 \001(\0132A.celeritas.proto.servic"
+    "e.reload_sdk_payment_providers_db_respon"
+    "seH\000B\t\n\007payloadb\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fservice_2fpayment_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fpayment_2eproto = {
     false,
     false,
-    447,
+    463,
     descriptor_table_protodef_proto_2fservice_2fpayment_2eproto,
     "proto/service/payment.proto",
     &descriptor_table_proto_2fservice_2fpayment_2eproto_once,
@@ -550,13 +550,13 @@ reload_sdk_payment_providers_db_response::_table_ = {
 }
 // ===================================================================
 
-class payment_request::_Internal {
+class service_payment_request::_Internal {
  public:
   static constexpr ::int32_t kOneofCaseOffset =
-      PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::payment_request, _impl_._oneof_case_);
+      PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_payment_request, _impl_._oneof_case_);
 };
 
-void payment_request::set_allocated_reload_sdk_payment_providers_db(::celeritas::proto::service::reload_sdk_payment_providers_db_request* PROTOBUF_NULLABLE reload_sdk_payment_providers_db) {
+void service_payment_request::set_allocated_reload_sdk_payment_providers_db(::celeritas::proto::service::reload_sdk_payment_providers_db_request* PROTOBUF_NULLABLE reload_sdk_payment_providers_db) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
   if (reload_sdk_payment_providers_db) {
@@ -567,34 +567,34 @@ void payment_request::set_allocated_reload_sdk_payment_providers_db(::celeritas:
     set_has_reload_sdk_payment_providers_db();
     _impl_.payload_.reload_sdk_payment_providers_db_ = reload_sdk_payment_providers_db;
   }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.payment_request.reload_sdk_payment_providers_db)
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_payment_request.reload_sdk_payment_providers_db)
 }
-payment_request::payment_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+service_payment_request::service_payment_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, payment_request_class_data_.base()) {
+    : ::google::protobuf::Message(arena, service_payment_request_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.payment_request)
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.service_payment_request)
 }
-PROTOBUF_NDEBUG_INLINE payment_request::Impl_::Impl_(
+PROTOBUF_NDEBUG_INLINE service_payment_request::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-    [[maybe_unused]] const ::celeritas::proto::service::payment_request& from_msg)
+    [[maybe_unused]] const ::celeritas::proto::service::service_payment_request& from_msg)
       : payload_{},
         _cached_size_{0},
         _oneof_case_{from._oneof_case_[0]} {}
 
-payment_request::payment_request(
+service_payment_request::service_payment_request(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
-    const payment_request& from)
+    const service_payment_request& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, payment_request_class_data_.base()) {
+    : ::google::protobuf::Message(arena, service_payment_request_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  payment_request* const _this = this;
+  service_payment_request* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -607,24 +607,24 @@ payment_request::payment_request(
         break;
   }
 
-  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.payment_request)
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.service_payment_request)
 }
-PROTOBUF_NDEBUG_INLINE payment_request::Impl_::Impl_(
+PROTOBUF_NDEBUG_INLINE service_payment_request::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : payload_{},
         _cached_size_{0},
         _oneof_case_{} {}
 
-inline void payment_request::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+inline void service_payment_request::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
 }
-payment_request::~payment_request() {
-  // @@protoc_insertion_point(destructor:celeritas.proto.service.payment_request)
+service_payment_request::~service_payment_request() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.service.service_payment_request)
   SharedDtor(*this);
 }
-inline void payment_request::SharedDtor(MessageLite& self) {
-  payment_request& this_ = static_cast<payment_request&>(self);
+inline void service_payment_request::SharedDtor(MessageLite& self) {
+  service_payment_request& this_ = static_cast<service_payment_request&>(self);
   if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
     this_.VerifyHasBitConsistency();
   }
@@ -636,8 +636,8 @@ inline void payment_request::SharedDtor(MessageLite& self) {
   this_._impl_.~Impl_();
 }
 
-void payment_request::clear_payload() {
-// @@protoc_insertion_point(one_of_clear_start:celeritas.proto.service.payment_request)
+void service_payment_request::clear_payload() {
+// @@protoc_insertion_point(one_of_clear_start:celeritas.proto.service.service_payment_request)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   switch (payload_case()) {
     case kReloadSdkPaymentProvidersDb: {
@@ -656,51 +656,51 @@ void payment_request::clear_payload() {
 }
 
 
-inline void* PROTOBUF_NONNULL payment_request::PlacementNew_(
+inline void* PROTOBUF_NONNULL service_payment_request::PlacementNew_(
     const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
-  return ::new (mem) payment_request(arena);
+  return ::new (mem) service_payment_request(arena);
 }
-constexpr auto payment_request::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(payment_request),
-                                            alignof(payment_request));
+constexpr auto service_payment_request::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(service_payment_request),
+                                            alignof(service_payment_request));
 }
-constexpr auto payment_request::InternalGenerateClassData_() {
+constexpr auto service_payment_request::InternalGenerateClassData_() {
   return ::google::protobuf::internal::ClassDataFull{
       ::google::protobuf::internal::ClassData{
-          &_payment_request_default_instance_._instance,
+          &_service_payment_request_default_instance_._instance,
           &_table_.header,
           nullptr,  // OnDemandRegisterArenaDtor
           nullptr,  // IsInitialized
-          &payment_request::MergeImpl,
-          ::google::protobuf::Message::GetNewImpl<payment_request>(),
+          &service_payment_request::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<service_payment_request>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-          &payment_request::SharedDtor,
-          ::google::protobuf::Message::GetClearImpl<payment_request>(), &payment_request::ByteSizeLong,
-              &payment_request::_InternalSerialize,
+          &service_payment_request::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<service_payment_request>(), &service_payment_request::ByteSizeLong,
+              &service_payment_request::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          PROTOBUF_FIELD_OFFSET(payment_request, _impl_._cached_size_),
+          PROTOBUF_FIELD_OFFSET(service_payment_request, _impl_._cached_size_),
           false,
       },
-      &payment_request::kDescriptorMethods,
+      &service_payment_request::kDescriptorMethods,
       &descriptor_table_proto_2fservice_2fpayment_2eproto,
       nullptr,  // tracker
   };
 }
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
-    ::google::protobuf::internal::ClassDataFull payment_request_class_data_ =
-        payment_request::InternalGenerateClassData_();
+    ::google::protobuf::internal::ClassDataFull service_payment_request_class_data_ =
+        service_payment_request::InternalGenerateClassData_();
 
 PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
-payment_request::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&payment_request_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(payment_request_class_data_.tc_table);
-  return payment_request_class_data_.base();
+service_payment_request::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&service_payment_request_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(service_payment_request_class_data_.tc_table);
+  return service_payment_request_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-payment_request::_table_ = {
+service_payment_request::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -711,11 +711,11 @@ payment_request::_table_ = {
     1,  // num_field_entries
     1,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
-    payment_request_class_data_.base(),
+    service_payment_request_class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::celeritas::proto::service::payment_request>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::celeritas::proto::service::service_payment_request>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
@@ -723,7 +723,7 @@ payment_request::_table_ = {
     65535, 65535
   }}, {{
     // .celeritas.proto.service.reload_sdk_payment_providers_db_request reload_sdk_payment_providers_db = 1;
-    {PROTOBUF_FIELD_OFFSET(payment_request, _impl_.payload_.reload_sdk_payment_providers_db_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    {PROTOBUF_FIELD_OFFSET(service_payment_request, _impl_.payload_.reload_sdk_payment_providers_db_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_sdk_payment_providers_db_request>()},
@@ -731,8 +731,8 @@ payment_request::_table_ = {
   {{
   }},
 };
-PROTOBUF_NOINLINE void payment_request::Clear() {
-// @@protoc_insertion_point(message_clear_start:celeritas.proto.service.payment_request)
+PROTOBUF_NOINLINE void service_payment_request::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.service.service_payment_request)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -743,20 +743,20 @@ PROTOBUF_NOINLINE void payment_request::Clear() {
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* PROTOBUF_NONNULL payment_request::_InternalSerialize(
+::uint8_t* PROTOBUF_NONNULL service_payment_request::_InternalSerialize(
     const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
     ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
-  const payment_request& this_ = static_cast<const payment_request&>(base);
+  const service_payment_request& this_ = static_cast<const service_payment_request&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* PROTOBUF_NONNULL payment_request::_InternalSerialize(
+::uint8_t* PROTOBUF_NONNULL service_payment_request::_InternalSerialize(
     ::uint8_t* PROTOBUF_NONNULL target,
     ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-  const payment_request& this_ = *this;
+  const service_payment_request& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
   if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
     this_.VerifyHasBitConsistency();
   }
-  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.service.payment_request)
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.service.service_payment_request)
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
@@ -772,18 +772,18 @@ PROTOBUF_NOINLINE void payment_request::Clear() {
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
             this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.service.payment_request)
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.service.service_payment_request)
   return target;
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t payment_request::ByteSizeLong(const MessageLite& base) {
-  const payment_request& this_ = static_cast<const payment_request&>(base);
+::size_t service_payment_request::ByteSizeLong(const MessageLite& base) {
+  const service_payment_request& this_ = static_cast<const service_payment_request&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-::size_t payment_request::ByteSizeLong() const {
-  const payment_request& this_ = *this;
+::size_t service_payment_request::ByteSizeLong() const {
+  const service_payment_request& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.service.payment_request)
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.service.service_payment_request)
   ::size_t total_size = 0;
 
   ::uint32_t cached_has_bits = 0;
@@ -805,14 +805,14 @@ PROTOBUF_NOINLINE void payment_request::Clear() {
                                              &this_._impl_._cached_size_);
 }
 
-void payment_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<payment_request*>(&to_msg);
-  auto& from = static_cast<const payment_request&>(from_msg);
+void service_payment_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<service_payment_request*>(&to_msg);
+  auto& from = static_cast<const service_payment_request&>(from_msg);
   if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
     from.VerifyHasBitConsistency();
   }
   ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.service.payment_request)
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.service.service_payment_request)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -843,33 +843,33 @@ void payment_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const :
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void payment_request::CopyFrom(const payment_request& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.service.payment_request)
+void service_payment_request::CopyFrom(const service_payment_request& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.service.service_payment_request)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 
-void payment_request::InternalSwap(payment_request* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+void service_payment_request::InternalSwap(service_payment_request* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   using ::std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_.payload_, other->_impl_.payload_);
   swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
-::google::protobuf::Metadata payment_request::GetMetadata() const {
+::google::protobuf::Metadata service_payment_request::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
-class payment_response::_Internal {
+class service_payment_response::_Internal {
  public:
   static constexpr ::int32_t kOneofCaseOffset =
-      PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::payment_response, _impl_._oneof_case_);
+      PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_payment_response, _impl_._oneof_case_);
 };
 
-void payment_response::set_allocated_reload_sdk_payment_providers_db(::celeritas::proto::service::reload_sdk_payment_providers_db_response* PROTOBUF_NULLABLE reload_sdk_payment_providers_db) {
+void service_payment_response::set_allocated_reload_sdk_payment_providers_db(::celeritas::proto::service::reload_sdk_payment_providers_db_response* PROTOBUF_NULLABLE reload_sdk_payment_providers_db) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
   if (reload_sdk_payment_providers_db) {
@@ -880,34 +880,34 @@ void payment_response::set_allocated_reload_sdk_payment_providers_db(::celeritas
     set_has_reload_sdk_payment_providers_db();
     _impl_.payload_.reload_sdk_payment_providers_db_ = reload_sdk_payment_providers_db;
   }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.payment_response.reload_sdk_payment_providers_db)
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_payment_response.reload_sdk_payment_providers_db)
 }
-payment_response::payment_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+service_payment_response::service_payment_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, payment_response_class_data_.base()) {
+    : ::google::protobuf::Message(arena, service_payment_response_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.payment_response)
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.service_payment_response)
 }
-PROTOBUF_NDEBUG_INLINE payment_response::Impl_::Impl_(
+PROTOBUF_NDEBUG_INLINE service_payment_response::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-    [[maybe_unused]] const ::celeritas::proto::service::payment_response& from_msg)
+    [[maybe_unused]] const ::celeritas::proto::service::service_payment_response& from_msg)
       : payload_{},
         _cached_size_{0},
         _oneof_case_{from._oneof_case_[0]} {}
 
-payment_response::payment_response(
+service_payment_response::service_payment_response(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
-    const payment_response& from)
+    const service_payment_response& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, payment_response_class_data_.base()) {
+    : ::google::protobuf::Message(arena, service_payment_response_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  payment_response* const _this = this;
+  service_payment_response* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -920,24 +920,24 @@ payment_response::payment_response(
         break;
   }
 
-  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.payment_response)
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.service_payment_response)
 }
-PROTOBUF_NDEBUG_INLINE payment_response::Impl_::Impl_(
+PROTOBUF_NDEBUG_INLINE service_payment_response::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : payload_{},
         _cached_size_{0},
         _oneof_case_{} {}
 
-inline void payment_response::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+inline void service_payment_response::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
 }
-payment_response::~payment_response() {
-  // @@protoc_insertion_point(destructor:celeritas.proto.service.payment_response)
+service_payment_response::~service_payment_response() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.service.service_payment_response)
   SharedDtor(*this);
 }
-inline void payment_response::SharedDtor(MessageLite& self) {
-  payment_response& this_ = static_cast<payment_response&>(self);
+inline void service_payment_response::SharedDtor(MessageLite& self) {
+  service_payment_response& this_ = static_cast<service_payment_response&>(self);
   if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
     this_.VerifyHasBitConsistency();
   }
@@ -949,8 +949,8 @@ inline void payment_response::SharedDtor(MessageLite& self) {
   this_._impl_.~Impl_();
 }
 
-void payment_response::clear_payload() {
-// @@protoc_insertion_point(one_of_clear_start:celeritas.proto.service.payment_response)
+void service_payment_response::clear_payload() {
+// @@protoc_insertion_point(one_of_clear_start:celeritas.proto.service.service_payment_response)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   switch (payload_case()) {
     case kReloadSdkPaymentProvidersDb: {
@@ -969,51 +969,51 @@ void payment_response::clear_payload() {
 }
 
 
-inline void* PROTOBUF_NONNULL payment_response::PlacementNew_(
+inline void* PROTOBUF_NONNULL service_payment_response::PlacementNew_(
     const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
-  return ::new (mem) payment_response(arena);
+  return ::new (mem) service_payment_response(arena);
 }
-constexpr auto payment_response::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(payment_response),
-                                            alignof(payment_response));
+constexpr auto service_payment_response::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(service_payment_response),
+                                            alignof(service_payment_response));
 }
-constexpr auto payment_response::InternalGenerateClassData_() {
+constexpr auto service_payment_response::InternalGenerateClassData_() {
   return ::google::protobuf::internal::ClassDataFull{
       ::google::protobuf::internal::ClassData{
-          &_payment_response_default_instance_._instance,
+          &_service_payment_response_default_instance_._instance,
           &_table_.header,
           nullptr,  // OnDemandRegisterArenaDtor
           nullptr,  // IsInitialized
-          &payment_response::MergeImpl,
-          ::google::protobuf::Message::GetNewImpl<payment_response>(),
+          &service_payment_response::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<service_payment_response>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-          &payment_response::SharedDtor,
-          ::google::protobuf::Message::GetClearImpl<payment_response>(), &payment_response::ByteSizeLong,
-              &payment_response::_InternalSerialize,
+          &service_payment_response::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<service_payment_response>(), &service_payment_response::ByteSizeLong,
+              &service_payment_response::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          PROTOBUF_FIELD_OFFSET(payment_response, _impl_._cached_size_),
+          PROTOBUF_FIELD_OFFSET(service_payment_response, _impl_._cached_size_),
           false,
       },
-      &payment_response::kDescriptorMethods,
+      &service_payment_response::kDescriptorMethods,
       &descriptor_table_proto_2fservice_2fpayment_2eproto,
       nullptr,  // tracker
   };
 }
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
-    ::google::protobuf::internal::ClassDataFull payment_response_class_data_ =
-        payment_response::InternalGenerateClassData_();
+    ::google::protobuf::internal::ClassDataFull service_payment_response_class_data_ =
+        service_payment_response::InternalGenerateClassData_();
 
 PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
-payment_response::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&payment_response_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(payment_response_class_data_.tc_table);
-  return payment_response_class_data_.base();
+service_payment_response::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&service_payment_response_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(service_payment_response_class_data_.tc_table);
+  return service_payment_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-payment_response::_table_ = {
+service_payment_response::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -1024,11 +1024,11 @@ payment_response::_table_ = {
     1,  // num_field_entries
     1,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
-    payment_response_class_data_.base(),
+    service_payment_response_class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::celeritas::proto::service::payment_response>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::celeritas::proto::service::service_payment_response>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
@@ -1036,7 +1036,7 @@ payment_response::_table_ = {
     65535, 65535
   }}, {{
     // .celeritas.proto.service.reload_sdk_payment_providers_db_response reload_sdk_payment_providers_db = 1;
-    {PROTOBUF_FIELD_OFFSET(payment_response, _impl_.payload_.reload_sdk_payment_providers_db_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    {PROTOBUF_FIELD_OFFSET(service_payment_response, _impl_.payload_.reload_sdk_payment_providers_db_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_sdk_payment_providers_db_response>()},
@@ -1044,8 +1044,8 @@ payment_response::_table_ = {
   {{
   }},
 };
-PROTOBUF_NOINLINE void payment_response::Clear() {
-// @@protoc_insertion_point(message_clear_start:celeritas.proto.service.payment_response)
+PROTOBUF_NOINLINE void service_payment_response::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.service.service_payment_response)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -1056,20 +1056,20 @@ PROTOBUF_NOINLINE void payment_response::Clear() {
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* PROTOBUF_NONNULL payment_response::_InternalSerialize(
+::uint8_t* PROTOBUF_NONNULL service_payment_response::_InternalSerialize(
     const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
     ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
-  const payment_response& this_ = static_cast<const payment_response&>(base);
+  const service_payment_response& this_ = static_cast<const service_payment_response&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* PROTOBUF_NONNULL payment_response::_InternalSerialize(
+::uint8_t* PROTOBUF_NONNULL service_payment_response::_InternalSerialize(
     ::uint8_t* PROTOBUF_NONNULL target,
     ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-  const payment_response& this_ = *this;
+  const service_payment_response& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
   if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
     this_.VerifyHasBitConsistency();
   }
-  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.service.payment_response)
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.service.service_payment_response)
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
@@ -1085,18 +1085,18 @@ PROTOBUF_NOINLINE void payment_response::Clear() {
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
             this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.service.payment_response)
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.service.service_payment_response)
   return target;
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t payment_response::ByteSizeLong(const MessageLite& base) {
-  const payment_response& this_ = static_cast<const payment_response&>(base);
+::size_t service_payment_response::ByteSizeLong(const MessageLite& base) {
+  const service_payment_response& this_ = static_cast<const service_payment_response&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-::size_t payment_response::ByteSizeLong() const {
-  const payment_response& this_ = *this;
+::size_t service_payment_response::ByteSizeLong() const {
+  const service_payment_response& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.service.payment_response)
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.service.service_payment_response)
   ::size_t total_size = 0;
 
   ::uint32_t cached_has_bits = 0;
@@ -1118,14 +1118,14 @@ PROTOBUF_NOINLINE void payment_response::Clear() {
                                              &this_._impl_._cached_size_);
 }
 
-void payment_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<payment_response*>(&to_msg);
-  auto& from = static_cast<const payment_response&>(from_msg);
+void service_payment_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<service_payment_response*>(&to_msg);
+  auto& from = static_cast<const service_payment_response&>(from_msg);
   if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
     from.VerifyHasBitConsistency();
   }
   ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.service.payment_response)
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.service.service_payment_response)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -1156,22 +1156,22 @@ void payment_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void payment_response::CopyFrom(const payment_response& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.service.payment_response)
+void service_payment_response::CopyFrom(const service_payment_response& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.service.service_payment_response)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 
-void payment_response::InternalSwap(payment_response* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+void service_payment_response::InternalSwap(service_payment_response* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   using ::std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_.payload_, other->_impl_.payload_);
   swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
-::google::protobuf::Metadata payment_response::GetMetadata() const {
+::google::protobuf::Metadata service_payment_response::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)

@@ -65,6 +65,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::response, _impl_._oneof_case_[0]),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::response, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::response, _impl_.payload_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -77,25 +78,28 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_proto_2fresponse_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\024proto/response.proto\022\017celeritas.proto\032"
-    "$proto/service/service_response.proto\"S\n"
-    "\010response\022<\n\007service\030\001 \001(\0132).celeritas.p"
-    "roto.service.service_responseH\000B\t\n\007paylo"
-    "adb\006proto3"
+    "$proto/service/service_response.proto\032\"p"
+    "roto/client/client_response.proto\"\216\001\n\010re"
+    "sponse\022<\n\007service\030\001 \001(\0132).celeritas.prot"
+    "o.service.service_responseH\000\0229\n\006client\030\002"
+    " \001(\0132\'.celeritas.proto.client.client_res"
+    "ponseH\000B\t\n\007payloadb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
-    descriptor_table_proto_2fresponse_2eproto_deps[1] = {
+    descriptor_table_proto_2fresponse_2eproto_deps[2] = {
+        &::descriptor_table_proto_2fclient_2fclient_5fresponse_2eproto,
         &::descriptor_table_proto_2fservice_2fservice_5fresponse_2eproto,
 };
 static ::absl::once_flag descriptor_table_proto_2fresponse_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fresponse_2eproto = {
     false,
     false,
-    170,
+    266,
     descriptor_table_protodef_proto_2fresponse_2eproto,
     "proto/response.proto",
     &descriptor_table_proto_2fresponse_2eproto_once,
     descriptor_table_proto_2fresponse_2eproto_deps,
-    1,
+    2,
     1,
     schemas,
     file_default_instances,
@@ -137,6 +141,30 @@ void response::clear_service() {
     clear_has_payload();
   }
 }
+void response::set_allocated_client(::celeritas::proto::client::client_response* PROTOBUF_NULLABLE client) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (client) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(client)->GetArena();
+    if (message_arena != submessage_arena) {
+      client = ::google::protobuf::internal::GetOwnedMessage(message_arena, client, submessage_arena);
+    }
+    set_has_client();
+    _impl_.payload_.client_ = client;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.response.client)
+}
+void response::clear_client() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kClient) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.client_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.client_);
+    }
+    clear_has_payload();
+  }
+}
 response::response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, response_class_data_.base()) {
@@ -172,6 +200,9 @@ response::response(
       break;
       case kService:
         _impl_.payload_.service_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.service_);
+        break;
+      case kClient:
+        _impl_.payload_.client_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.client_);
         break;
   }
 
@@ -213,6 +244,14 @@ void response::clear_payload() {
         delete _impl_.payload_.service_;
       } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
         ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.service_);
+      }
+      break;
+    }
+    case kClient: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.client_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.client_);
       }
       break;
     }
@@ -267,17 +306,17 @@ response::GetClassData() const {
   return response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
+const ::_pbi::TcParseTable<0, 2, 2, 0, 2>
 response::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    2, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    1,  // num_aux_entries
+    2,  // num_field_entries
+    2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     response_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -292,9 +331,12 @@ response::_table_ = {
   }}, {{
     // .celeritas.proto.service.service_response service = 1;
     {PROTOBUF_FIELD_OFFSET(response, _impl_.payload_.service_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.client.client_response client = 2;
+    {PROTOBUF_FIELD_OFFSET(response, _impl_.payload_.client_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_response>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::client::client_response>()},
   }},
   {{
   }},
@@ -328,13 +370,22 @@ PROTOBUF_NOINLINE void response::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // .celeritas.proto.service.service_response service = 1;
-  if (this_.payload_case() == kService) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, *this_._impl_.payload_.service_, this_._impl_.payload_.service_->GetCachedSize(), target,
-        stream);
+  switch (this_.payload_case()) {
+    case kService: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          1, *this_._impl_.payload_.service_, this_._impl_.payload_.service_->GetCachedSize(), target,
+          stream);
+      break;
+    }
+    case kClient: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          2, *this_._impl_.payload_.client_, this_._impl_.payload_.client_->GetCachedSize(), target,
+          stream);
+      break;
+    }
+    default:
+      break;
   }
-
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -363,6 +414,12 @@ PROTOBUF_NOINLINE void response::Clear() {
     case kService: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.service_);
+      break;
+    }
+    // .celeritas.proto.client.client_response client = 2;
+    case kClient: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.client_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -401,6 +458,14 @@ void response::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google
           _this->_impl_.payload_.service_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.service_);
         } else {
           _this->_impl_.payload_.service_->MergeFrom(*from._impl_.payload_.service_);
+        }
+        break;
+      }
+      case kClient: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.client_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.client_);
+        } else {
+          _this->_impl_.payload_.client_->MergeFrom(*from._impl_.payload_.client_);
         }
         break;
       }

@@ -10,13 +10,13 @@ message reload_sdk_payment_providers_db_request {
 message reload_sdk_payment_providers_db_response {
 }
 
-message payment_request {
+message service_payment_request {
   oneof payload {
     reload_sdk_payment_providers_db_request reload_sdk_payment_providers_db = 1;
   }
 }
 
-message payment_response {
+message service_payment_response {
   oneof payload {
     reload_sdk_payment_providers_db_response reload_sdk_payment_providers_db = 1;
   }

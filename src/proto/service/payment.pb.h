@@ -56,14 +56,6 @@ extern const ::google::protobuf::internal::DescriptorTable descriptor_table_prot
 namespace celeritas {
 namespace proto {
 namespace service {
-class payment_request;
-struct payment_requestDefaultTypeInternal;
-extern payment_requestDefaultTypeInternal _payment_request_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull payment_request_class_data_;
-class payment_response;
-struct payment_responseDefaultTypeInternal;
-extern payment_responseDefaultTypeInternal _payment_response_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull payment_response_class_data_;
 class reload_sdk_payment_providers_db_request;
 struct reload_sdk_payment_providers_db_requestDefaultTypeInternal;
 extern reload_sdk_payment_providers_db_requestDefaultTypeInternal _reload_sdk_payment_providers_db_request_default_instance_;
@@ -72,6 +64,14 @@ class reload_sdk_payment_providers_db_response;
 struct reload_sdk_payment_providers_db_responseDefaultTypeInternal;
 extern reload_sdk_payment_providers_db_responseDefaultTypeInternal _reload_sdk_payment_providers_db_response_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull reload_sdk_payment_providers_db_response_class_data_;
+class service_payment_request;
+struct service_payment_requestDefaultTypeInternal;
+extern service_payment_requestDefaultTypeInternal _service_payment_request_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull service_payment_request_class_data_;
+class service_payment_response;
+struct service_payment_responseDefaultTypeInternal;
+extern service_payment_responseDefaultTypeInternal _service_payment_response_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull service_payment_response_class_data_;
 }  // namespace service
 }  // namespace proto
 }  // namespace celeritas
@@ -415,30 +415,30 @@ class reload_sdk_payment_providers_db_request final : public ::google::protobuf:
 extern const ::google::protobuf::internal::ClassDataFull reload_sdk_payment_providers_db_request_class_data_;
 // -------------------------------------------------------------------
 
-class payment_response final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:celeritas.proto.service.payment_response) */ {
+class service_payment_response final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.service.service_payment_response) */ {
  public:
-  inline payment_response() : payment_response(nullptr) {}
-  ~payment_response() PROTOBUF_FINAL;
+  inline service_payment_response() : service_payment_response(nullptr) {}
+  ~service_payment_response() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(payment_response* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+  void operator delete(service_payment_response* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
     SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(payment_response));
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(service_payment_response));
   }
 #endif
 
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR payment_response(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR service_payment_response(::google::protobuf::internal::ConstantInitialized);
 
-  inline payment_response(const payment_response& from) : payment_response(nullptr, from) {}
-  inline payment_response(payment_response&& from) noexcept
-      : payment_response(nullptr, ::std::move(from)) {}
-  inline payment_response& operator=(const payment_response& from) {
+  inline service_payment_response(const service_payment_response& from) : service_payment_response(nullptr, from) {}
+  inline service_payment_response(service_payment_response&& from) noexcept
+      : service_payment_response(nullptr, ::std::move(from)) {}
+  inline service_payment_response& operator=(const service_payment_response& from) {
     CopyFrom(from);
     return *this;
   }
-  inline payment_response& operator=(payment_response&& from) noexcept {
+  inline service_payment_response& operator=(service_payment_response&& from) noexcept {
     if (this == &from) return *this;
     if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
       InternalSwap(&from);
@@ -466,17 +466,17 @@ class payment_response final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const payment_response& default_instance() {
-    return *reinterpret_cast<const payment_response*>(
-        &_payment_response_default_instance_);
+  static const service_payment_response& default_instance() {
+    return *reinterpret_cast<const service_payment_response*>(
+        &_service_payment_response_default_instance_);
   }
   enum PayloadCase {
     kReloadSdkPaymentProvidersDb = 1,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 3;
-  friend void swap(payment_response& a, payment_response& b) { a.Swap(&b); }
-  inline void Swap(payment_response* PROTOBUF_NONNULL other) {
+  friend void swap(service_payment_response& a, service_payment_response& b) { a.Swap(&b); }
+  inline void Swap(service_payment_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
     if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
       InternalSwap(other);
@@ -484,7 +484,7 @@ class payment_response final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(payment_response* PROTOBUF_NONNULL other) {
+  void UnsafeArenaSwap(service_payment_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -492,13 +492,13 @@ class payment_response final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  payment_response* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<payment_response>(arena);
+  service_payment_response* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<service_payment_response>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const payment_response& from);
+  void CopyFrom(const service_payment_response& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const payment_response& from) { payment_response::MergeImpl(*this, from); }
+  void MergeFrom(const service_payment_response& from) { service_payment_response::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(::google::protobuf::MessageLite& to_msg,
@@ -534,18 +534,18 @@ class payment_response final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
   static void SharedDtor(MessageLite& self);
-  void InternalSwap(payment_response* PROTOBUF_NONNULL other);
+  void InternalSwap(service_payment_response* PROTOBUF_NONNULL other);
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "celeritas.proto.service.payment_response"; }
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.service.service_payment_response"; }
 
  protected:
-  explicit payment_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  payment_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const payment_response& from);
-  payment_response(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, payment_response&& from) noexcept
-      : payment_response(arena) {
+  explicit service_payment_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  service_payment_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const service_payment_response& from);
+  service_payment_response(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, service_payment_response&& from) noexcept
+      : service_payment_response(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
@@ -585,7 +585,7 @@ class payment_response final : public ::google::protobuf::Message
   public:
   void clear_payload();
   PayloadCase payload_case() const;
-  // @@protoc_insertion_point(class_scope:celeritas.proto.service.payment_response)
+  // @@protoc_insertion_point(class_scope:celeritas.proto.service.service_payment_response)
  private:
   class _Internal;
   void set_has_reload_sdk_payment_providers_db();
@@ -611,7 +611,7 @@ class payment_response final : public ::google::protobuf::Message
     inline explicit Impl_(
         ::google::protobuf::internal::InternalVisibility visibility,
         ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const payment_response& from_msg);
+        const service_payment_response& from_msg);
     union PayloadUnion {
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
@@ -625,33 +625,33 @@ class payment_response final : public ::google::protobuf::Message
   friend struct ::TableStruct_proto_2fservice_2fpayment_2eproto;
 };
 
-extern const ::google::protobuf::internal::ClassDataFull payment_response_class_data_;
+extern const ::google::protobuf::internal::ClassDataFull service_payment_response_class_data_;
 // -------------------------------------------------------------------
 
-class payment_request final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:celeritas.proto.service.payment_request) */ {
+class service_payment_request final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.service.service_payment_request) */ {
  public:
-  inline payment_request() : payment_request(nullptr) {}
-  ~payment_request() PROTOBUF_FINAL;
+  inline service_payment_request() : service_payment_request(nullptr) {}
+  ~service_payment_request() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(payment_request* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+  void operator delete(service_payment_request* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
     SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(payment_request));
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(service_payment_request));
   }
 #endif
 
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR payment_request(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR service_payment_request(::google::protobuf::internal::ConstantInitialized);
 
-  inline payment_request(const payment_request& from) : payment_request(nullptr, from) {}
-  inline payment_request(payment_request&& from) noexcept
-      : payment_request(nullptr, ::std::move(from)) {}
-  inline payment_request& operator=(const payment_request& from) {
+  inline service_payment_request(const service_payment_request& from) : service_payment_request(nullptr, from) {}
+  inline service_payment_request(service_payment_request&& from) noexcept
+      : service_payment_request(nullptr, ::std::move(from)) {}
+  inline service_payment_request& operator=(const service_payment_request& from) {
     CopyFrom(from);
     return *this;
   }
-  inline payment_request& operator=(payment_request&& from) noexcept {
+  inline service_payment_request& operator=(service_payment_request&& from) noexcept {
     if (this == &from) return *this;
     if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
       InternalSwap(&from);
@@ -679,17 +679,17 @@ class payment_request final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const payment_request& default_instance() {
-    return *reinterpret_cast<const payment_request*>(
-        &_payment_request_default_instance_);
+  static const service_payment_request& default_instance() {
+    return *reinterpret_cast<const service_payment_request*>(
+        &_service_payment_request_default_instance_);
   }
   enum PayloadCase {
     kReloadSdkPaymentProvidersDb = 1,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 2;
-  friend void swap(payment_request& a, payment_request& b) { a.Swap(&b); }
-  inline void Swap(payment_request* PROTOBUF_NONNULL other) {
+  friend void swap(service_payment_request& a, service_payment_request& b) { a.Swap(&b); }
+  inline void Swap(service_payment_request* PROTOBUF_NONNULL other) {
     if (other == this) return;
     if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
       InternalSwap(other);
@@ -697,7 +697,7 @@ class payment_request final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(payment_request* PROTOBUF_NONNULL other) {
+  void UnsafeArenaSwap(service_payment_request* PROTOBUF_NONNULL other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -705,13 +705,13 @@ class payment_request final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  payment_request* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<payment_request>(arena);
+  service_payment_request* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<service_payment_request>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const payment_request& from);
+  void CopyFrom(const service_payment_request& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const payment_request& from) { payment_request::MergeImpl(*this, from); }
+  void MergeFrom(const service_payment_request& from) { service_payment_request::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(::google::protobuf::MessageLite& to_msg,
@@ -747,18 +747,18 @@ class payment_request final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
   static void SharedDtor(MessageLite& self);
-  void InternalSwap(payment_request* PROTOBUF_NONNULL other);
+  void InternalSwap(service_payment_request* PROTOBUF_NONNULL other);
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "celeritas.proto.service.payment_request"; }
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.service.service_payment_request"; }
 
  protected:
-  explicit payment_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  payment_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const payment_request& from);
-  payment_request(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, payment_request&& from) noexcept
-      : payment_request(arena) {
+  explicit service_payment_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  service_payment_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const service_payment_request& from);
+  service_payment_request(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, service_payment_request&& from) noexcept
+      : service_payment_request(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
@@ -798,7 +798,7 @@ class payment_request final : public ::google::protobuf::Message
   public:
   void clear_payload();
   PayloadCase payload_case() const;
-  // @@protoc_insertion_point(class_scope:celeritas.proto.service.payment_request)
+  // @@protoc_insertion_point(class_scope:celeritas.proto.service.service_payment_request)
  private:
   class _Internal;
   void set_has_reload_sdk_payment_providers_db();
@@ -824,7 +824,7 @@ class payment_request final : public ::google::protobuf::Message
     inline explicit Impl_(
         ::google::protobuf::internal::InternalVisibility visibility,
         ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const payment_request& from_msg);
+        const service_payment_request& from_msg);
     union PayloadUnion {
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
@@ -838,7 +838,7 @@ class payment_request final : public ::google::protobuf::Message
   friend struct ::TableStruct_proto_2fservice_2fpayment_2eproto;
 };
 
-extern const ::google::protobuf::internal::ClassDataFull payment_request_class_data_;
+extern const ::google::protobuf::internal::ClassDataFull service_payment_request_class_data_;
 
 // ===================================================================
 
@@ -886,19 +886,19 @@ inline void reload_sdk_payment_providers_db_request::_internal_set_sdk_id(::int3
 
 // -------------------------------------------------------------------
 
-// payment_request
+// service_payment_request
 
 // .celeritas.proto.service.reload_sdk_payment_providers_db_request reload_sdk_payment_providers_db = 1;
-inline bool payment_request::has_reload_sdk_payment_providers_db() const {
+inline bool service_payment_request::has_reload_sdk_payment_providers_db() const {
   return payload_case() == kReloadSdkPaymentProvidersDb;
 }
-inline bool payment_request::_internal_has_reload_sdk_payment_providers_db() const {
+inline bool service_payment_request::_internal_has_reload_sdk_payment_providers_db() const {
   return payload_case() == kReloadSdkPaymentProvidersDb;
 }
-inline void payment_request::set_has_reload_sdk_payment_providers_db() {
+inline void service_payment_request::set_has_reload_sdk_payment_providers_db() {
   _impl_._oneof_case_[0] = kReloadSdkPaymentProvidersDb;
 }
-inline void payment_request::clear_reload_sdk_payment_providers_db() {
+inline void service_payment_request::clear_reload_sdk_payment_providers_db() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (payload_case() == kReloadSdkPaymentProvidersDb) {
     if (GetArena() == nullptr) {
@@ -909,8 +909,8 @@ inline void payment_request::clear_reload_sdk_payment_providers_db() {
     clear_has_payload();
   }
 }
-inline ::celeritas::proto::service::reload_sdk_payment_providers_db_request* PROTOBUF_NULLABLE payment_request::release_reload_sdk_payment_providers_db() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.payment_request.reload_sdk_payment_providers_db)
+inline ::celeritas::proto::service::reload_sdk_payment_providers_db_request* PROTOBUF_NULLABLE service_payment_request::release_reload_sdk_payment_providers_db() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_payment_request.reload_sdk_payment_providers_db)
   if (payload_case() == kReloadSdkPaymentProvidersDb) {
     clear_has_payload();
     auto* temp = _impl_.payload_.reload_sdk_payment_providers_db_;
@@ -923,15 +923,15 @@ inline ::celeritas::proto::service::reload_sdk_payment_providers_db_request* PRO
     return nullptr;
   }
 }
-inline const ::celeritas::proto::service::reload_sdk_payment_providers_db_request& payment_request::_internal_reload_sdk_payment_providers_db() const {
+inline const ::celeritas::proto::service::reload_sdk_payment_providers_db_request& service_payment_request::_internal_reload_sdk_payment_providers_db() const {
   return payload_case() == kReloadSdkPaymentProvidersDb ? *_impl_.payload_.reload_sdk_payment_providers_db_ : reinterpret_cast<::celeritas::proto::service::reload_sdk_payment_providers_db_request&>(::celeritas::proto::service::_reload_sdk_payment_providers_db_request_default_instance_);
 }
-inline const ::celeritas::proto::service::reload_sdk_payment_providers_db_request& payment_request::reload_sdk_payment_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.payment_request.reload_sdk_payment_providers_db)
+inline const ::celeritas::proto::service::reload_sdk_payment_providers_db_request& service_payment_request::reload_sdk_payment_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_payment_request.reload_sdk_payment_providers_db)
   return _internal_reload_sdk_payment_providers_db();
 }
-inline ::celeritas::proto::service::reload_sdk_payment_providers_db_request* PROTOBUF_NULLABLE payment_request::unsafe_arena_release_reload_sdk_payment_providers_db() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.payment_request.reload_sdk_payment_providers_db)
+inline ::celeritas::proto::service::reload_sdk_payment_providers_db_request* PROTOBUF_NULLABLE service_payment_request::unsafe_arena_release_reload_sdk_payment_providers_db() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_payment_request.reload_sdk_payment_providers_db)
   if (payload_case() == kReloadSdkPaymentProvidersDb) {
     clear_has_payload();
     auto* temp = _impl_.payload_.reload_sdk_payment_providers_db_;
@@ -941,7 +941,7 @@ inline ::celeritas::proto::service::reload_sdk_payment_providers_db_request* PRO
     return nullptr;
   }
 }
-inline void payment_request::unsafe_arena_set_allocated_reload_sdk_payment_providers_db(
+inline void service_payment_request::unsafe_arena_set_allocated_reload_sdk_payment_providers_db(
     ::celeritas::proto::service::reload_sdk_payment_providers_db_request* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
@@ -951,9 +951,9 @@ inline void payment_request::unsafe_arena_set_allocated_reload_sdk_payment_provi
     set_has_reload_sdk_payment_providers_db();
     _impl_.payload_.reload_sdk_payment_providers_db_ = value;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.payment_request.reload_sdk_payment_providers_db)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_payment_request.reload_sdk_payment_providers_db)
 }
-inline ::celeritas::proto::service::reload_sdk_payment_providers_db_request* PROTOBUF_NONNULL payment_request::_internal_mutable_reload_sdk_payment_providers_db() {
+inline ::celeritas::proto::service::reload_sdk_payment_providers_db_request* PROTOBUF_NONNULL service_payment_request::_internal_mutable_reload_sdk_payment_providers_db() {
   if (payload_case() != kReloadSdkPaymentProvidersDb) {
     clear_payload();
     set_has_reload_sdk_payment_providers_db();
@@ -962,37 +962,37 @@ inline ::celeritas::proto::service::reload_sdk_payment_providers_db_request* PRO
   }
   return _impl_.payload_.reload_sdk_payment_providers_db_;
 }
-inline ::celeritas::proto::service::reload_sdk_payment_providers_db_request* PROTOBUF_NONNULL payment_request::mutable_reload_sdk_payment_providers_db()
+inline ::celeritas::proto::service::reload_sdk_payment_providers_db_request* PROTOBUF_NONNULL service_payment_request::mutable_reload_sdk_payment_providers_db()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::reload_sdk_payment_providers_db_request* _msg = _internal_mutable_reload_sdk_payment_providers_db();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.payment_request.reload_sdk_payment_providers_db)
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_payment_request.reload_sdk_payment_providers_db)
   return _msg;
 }
 
-inline bool payment_request::has_payload() const {
+inline bool service_payment_request::has_payload() const {
   return payload_case() != PAYLOAD_NOT_SET;
 }
-inline void payment_request::clear_has_payload() {
+inline void service_payment_request::clear_has_payload() {
   _impl_._oneof_case_[0] = PAYLOAD_NOT_SET;
 }
-inline payment_request::PayloadCase payment_request::payload_case() const {
-  return payment_request::PayloadCase(_impl_._oneof_case_[0]);
+inline service_payment_request::PayloadCase service_payment_request::payload_case() const {
+  return service_payment_request::PayloadCase(_impl_._oneof_case_[0]);
 }
 // -------------------------------------------------------------------
 
-// payment_response
+// service_payment_response
 
 // .celeritas.proto.service.reload_sdk_payment_providers_db_response reload_sdk_payment_providers_db = 1;
-inline bool payment_response::has_reload_sdk_payment_providers_db() const {
+inline bool service_payment_response::has_reload_sdk_payment_providers_db() const {
   return payload_case() == kReloadSdkPaymentProvidersDb;
 }
-inline bool payment_response::_internal_has_reload_sdk_payment_providers_db() const {
+inline bool service_payment_response::_internal_has_reload_sdk_payment_providers_db() const {
   return payload_case() == kReloadSdkPaymentProvidersDb;
 }
-inline void payment_response::set_has_reload_sdk_payment_providers_db() {
+inline void service_payment_response::set_has_reload_sdk_payment_providers_db() {
   _impl_._oneof_case_[0] = kReloadSdkPaymentProvidersDb;
 }
-inline void payment_response::clear_reload_sdk_payment_providers_db() {
+inline void service_payment_response::clear_reload_sdk_payment_providers_db() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (payload_case() == kReloadSdkPaymentProvidersDb) {
     if (GetArena() == nullptr) {
@@ -1003,8 +1003,8 @@ inline void payment_response::clear_reload_sdk_payment_providers_db() {
     clear_has_payload();
   }
 }
-inline ::celeritas::proto::service::reload_sdk_payment_providers_db_response* PROTOBUF_NULLABLE payment_response::release_reload_sdk_payment_providers_db() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.service.payment_response.reload_sdk_payment_providers_db)
+inline ::celeritas::proto::service::reload_sdk_payment_providers_db_response* PROTOBUF_NULLABLE service_payment_response::release_reload_sdk_payment_providers_db() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_payment_response.reload_sdk_payment_providers_db)
   if (payload_case() == kReloadSdkPaymentProvidersDb) {
     clear_has_payload();
     auto* temp = _impl_.payload_.reload_sdk_payment_providers_db_;
@@ -1017,15 +1017,15 @@ inline ::celeritas::proto::service::reload_sdk_payment_providers_db_response* PR
     return nullptr;
   }
 }
-inline const ::celeritas::proto::service::reload_sdk_payment_providers_db_response& payment_response::_internal_reload_sdk_payment_providers_db() const {
+inline const ::celeritas::proto::service::reload_sdk_payment_providers_db_response& service_payment_response::_internal_reload_sdk_payment_providers_db() const {
   return payload_case() == kReloadSdkPaymentProvidersDb ? *_impl_.payload_.reload_sdk_payment_providers_db_ : reinterpret_cast<::celeritas::proto::service::reload_sdk_payment_providers_db_response&>(::celeritas::proto::service::_reload_sdk_payment_providers_db_response_default_instance_);
 }
-inline const ::celeritas::proto::service::reload_sdk_payment_providers_db_response& payment_response::reload_sdk_payment_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.service.payment_response.reload_sdk_payment_providers_db)
+inline const ::celeritas::proto::service::reload_sdk_payment_providers_db_response& service_payment_response::reload_sdk_payment_providers_db() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_payment_response.reload_sdk_payment_providers_db)
   return _internal_reload_sdk_payment_providers_db();
 }
-inline ::celeritas::proto::service::reload_sdk_payment_providers_db_response* PROTOBUF_NULLABLE payment_response::unsafe_arena_release_reload_sdk_payment_providers_db() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.payment_response.reload_sdk_payment_providers_db)
+inline ::celeritas::proto::service::reload_sdk_payment_providers_db_response* PROTOBUF_NULLABLE service_payment_response::unsafe_arena_release_reload_sdk_payment_providers_db() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_payment_response.reload_sdk_payment_providers_db)
   if (payload_case() == kReloadSdkPaymentProvidersDb) {
     clear_has_payload();
     auto* temp = _impl_.payload_.reload_sdk_payment_providers_db_;
@@ -1035,7 +1035,7 @@ inline ::celeritas::proto::service::reload_sdk_payment_providers_db_response* PR
     return nullptr;
   }
 }
-inline void payment_response::unsafe_arena_set_allocated_reload_sdk_payment_providers_db(
+inline void service_payment_response::unsafe_arena_set_allocated_reload_sdk_payment_providers_db(
     ::celeritas::proto::service::reload_sdk_payment_providers_db_response* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
@@ -1045,9 +1045,9 @@ inline void payment_response::unsafe_arena_set_allocated_reload_sdk_payment_prov
     set_has_reload_sdk_payment_providers_db();
     _impl_.payload_.reload_sdk_payment_providers_db_ = value;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.payment_response.reload_sdk_payment_providers_db)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_payment_response.reload_sdk_payment_providers_db)
 }
-inline ::celeritas::proto::service::reload_sdk_payment_providers_db_response* PROTOBUF_NONNULL payment_response::_internal_mutable_reload_sdk_payment_providers_db() {
+inline ::celeritas::proto::service::reload_sdk_payment_providers_db_response* PROTOBUF_NONNULL service_payment_response::_internal_mutable_reload_sdk_payment_providers_db() {
   if (payload_case() != kReloadSdkPaymentProvidersDb) {
     clear_payload();
     set_has_reload_sdk_payment_providers_db();
@@ -1056,21 +1056,21 @@ inline ::celeritas::proto::service::reload_sdk_payment_providers_db_response* PR
   }
   return _impl_.payload_.reload_sdk_payment_providers_db_;
 }
-inline ::celeritas::proto::service::reload_sdk_payment_providers_db_response* PROTOBUF_NONNULL payment_response::mutable_reload_sdk_payment_providers_db()
+inline ::celeritas::proto::service::reload_sdk_payment_providers_db_response* PROTOBUF_NONNULL service_payment_response::mutable_reload_sdk_payment_providers_db()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::reload_sdk_payment_providers_db_response* _msg = _internal_mutable_reload_sdk_payment_providers_db();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.payment_response.reload_sdk_payment_providers_db)
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_payment_response.reload_sdk_payment_providers_db)
   return _msg;
 }
 
-inline bool payment_response::has_payload() const {
+inline bool service_payment_response::has_payload() const {
   return payload_case() != PAYLOAD_NOT_SET;
 }
-inline void payment_response::clear_has_payload() {
+inline void service_payment_response::clear_has_payload() {
   _impl_._oneof_case_[0] = PAYLOAD_NOT_SET;
 }
-inline payment_response::PayloadCase payment_response::payload_case() const {
-  return payment_response::PayloadCase(_impl_._oneof_case_[0]);
+inline service_payment_response::PayloadCase service_payment_response::payload_case() const {
+  return service_payment_response::PayloadCase(_impl_._oneof_case_[0]);
 }
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
