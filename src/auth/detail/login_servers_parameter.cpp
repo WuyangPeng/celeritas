@@ -1,10 +1,10 @@
 ﻿#include "auth_internal_fwd.h"
-#include "login_servers_parameter.h"
 #include "common/hmac_sha_256.h"
 #include "database/generated/redis/auth/session_token.h"
+#include "login_servers_parameter.h"
 
 celeritas::login_servers_parameter::login_servers_parameter(const http_handle_parameter& http_handle_parameter)
-    : base_type{ http_handle_parameter }, response_{}, token_{}, region_{}, only_preferred_{}, include_details_{}, websocket_{}, apps_{}
+    : base_type{ http_handle_parameter }, response_{}, token_{}, zone_{}, only_preferred_{}, include_details_{}, websocket_{}, apps_{}
 {
     init();
 }
@@ -24,9 +24,9 @@ std::string celeritas::login_servers_parameter::get_token() const
     return token_;
 }
 
-celeritas::login_servers_parameter::optional_string celeritas::login_servers_parameter::get_region() const
+celeritas::login_servers_parameter::optional_string celeritas::login_servers_parameter::get_zone() const
 {
-    return region_;
+    return zone_;
 }
 
 bool celeritas::login_servers_parameter::is_only_preferred() const
@@ -61,7 +61,7 @@ void celeritas::login_servers_parameter::init()
 
     token_ = *optional_token;
 
-    region_ = get_param(region_describe.data());
+    zone_ = get_param(zone_describe.data());
 
     if (const auto optional_only_preferred = get_param(only_preferred_describe.data()))
     {
@@ -83,18 +83,18 @@ void celeritas::login_servers_parameter::init()
         response_ = login_servers_response{ *http_response };
     }
 
-    if (const auto hmac_sha256 = hmac_sha256::calculate_with_args(get_apps().get_app_secret(), get_app_id(), token_, get_actual_region(), only_preferred_, include_details_, websocket_, get_timestamp());
+    if (const auto hmac_sha256 = hmac_sha256::calculate_with_args(get_apps().get_app_secret(), get_app_id(), token_, get_actual_zone(), only_preferred_, include_details_, websocket_, get_timestamp());
         hmac_sha256 != get_sign())
     {
         response_ = login_servers_response{ game_error_type::sign_error };
     }
 }
 
-std::string celeritas::login_servers_parameter::get_actual_region() const
+std::string celeritas::login_servers_parameter::get_actual_zone() const
 {
-    if (region_)
+    if (zone_)
     {
-        return *region_;
+        return *zone_;
     }
 
     return "";

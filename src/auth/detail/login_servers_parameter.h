@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "auth_parameter.h"
 #include "auth/login_servers_response.h"
+#include "auth_parameter.h"
 #include "database/generated/mysql/auth/apps.h"
 
 namespace celeritas
@@ -20,7 +20,7 @@ namespace celeritas
 
         [[nodiscard]] std::string get_token() const;
 
-        [[nodiscard]] optional_string get_region() const;
+        [[nodiscard]] optional_string get_zone() const;
 
         [[nodiscard]] bool is_only_preferred() const;
 
@@ -36,11 +36,11 @@ namespace celeritas
 
         void init();
 
-        [[nodiscard]] std::string get_actual_region() const;
+        [[nodiscard]] std::string get_actual_zone() const;
 
         optional_login_servers_response response_;
         std::string token_;
-        optional_string region_;
+        optional_string zone_;
         bool only_preferred_;
         bool include_details_;
         bool websocket_;

@@ -1,15 +1,15 @@
-﻿#include "login_servers.h"
-#include "login_servers_response.h"
-#include "server_cell_repository.h"
-#include "database/database_pool_manager.h"
+﻿#include "database/database_pool_manager.h"
 #include "database/generated/mongo/auth/player_server_roles.h"
 #include "database/generated/mysql/auth/account_last_login.h"
 #include "database/generated/mysql/auth/server_cell.h"
 #include "database/generated/redis/auth/session_token.h"
-#include "detail/login_servers_parameter.h"
 #include "initializer/initializer_fwd.h"
+#include "login_servers.h"
+#include "login_servers_response.h"
+#include "server_cell_repository.h"
 #include "service_registry/service_info.h"
 #include "service_registry/service_registry.h"
+#include "detail/login_servers_parameter.h"
 
 celeritas::login_servers::login_servers(http_handle_parameter handle_parameter)
     : base_type{ std::move(handle_parameter) }, server_role_{}
@@ -167,7 +167,7 @@ celeritas::auth_service_base::void_awaitable_type celeritas::login_servers::resp
 
 celeritas::auth_service_base::void_awaitable_type celeritas::login_servers::response_is_all(const login_servers_parameter& login_servers_parameter)
 {
-    const auto server_cell_container = server_cell_repository::get_instance().get_server_cell_by_app_id(login_servers_parameter.get_app_id());
+    const auto server_cell_container = server_cell_repository::get_instance().get_server_cell_by_app_id(login_servers_parameter.get_app_id(), login_servers_parameter.get_zone());
     login_servers_response::container container{};
     for (const auto& element : server_cell_container)
     {

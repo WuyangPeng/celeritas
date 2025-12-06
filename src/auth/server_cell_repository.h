@@ -17,6 +17,7 @@ namespace celeritas
         using void_awaitable_type = boost::asio::awaitable<void>;
         using optional_server_cell_type = std::optional<server_cell>;
         using server_cell_container_type = std::vector<server_cell>;
+        using optional_string = std::optional<std::string>;
 
         [[nodiscard]] static server_cell_repository& get_instance();
 
@@ -28,7 +29,7 @@ namespace celeritas
 
         [[nodiscard]] optional_server_cell_type get_last_server_cell(int64_t app_id);
 
-        [[nodiscard]] server_cell_container_type get_server_cell_by_app_id(int64_t app_id);
+        [[nodiscard]] server_cell_container_type get_server_cell_by_app_id(int64_t app_id, const optional_string& zone);
 
     private:
         using server_cell_type = std::unordered_map<int64_t, server_cell>;

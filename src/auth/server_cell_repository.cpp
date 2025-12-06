@@ -1,6 +1,6 @@
-﻿#include "server_cell_repository.h"
-#include "common/logger.h"
+﻿#include "common/logger.h"
 #include "database/database_pool_manager.h"
+#include "server_cell_repository.h"
 
 #include <ranges>
 
@@ -18,18 +18,18 @@ void celeritas::server_cell_repository::reload_from_db(io_context_type& io_conte
         load_from_db(io_context);
     }
 
-    boost::asio::co_spawn(io_context,
-                          [cell_id,this] {
-                              return this->load_from_db(cell_id);
-                          }, boost::asio::detached);
+    boost::asio::co_spawn(io_context, [cell_id, this] {
+        return this->load_from_db(cell_id);
+    },
+                          boost::asio::detached);
 }
 
 void celeritas::server_cell_repository::load_from_db(io_context_type& io_context)
 {
-    boost::asio::co_spawn(io_context,
-                          [this] {
-                              return this->load_from_db();
-                          }, boost::asio::detached);
+    boost::asio::co_spawn(io_context, [this] {
+        return this->load_from_db();
+    },
+                          boost::asio::detached);
 }
 
 celeritas::server_cell_repository::optional_server_cell_type celeritas::server_cell_repository::get_server_cell(const std::string& game_server_id)
@@ -54,15 +54,29 @@ celeritas::server_cell_repository::optional_server_cell_type celeritas::server_c
     return std::nullopt;
 }
 
-celeritas::server_cell_repository::server_cell_container_type celeritas::server_cell_repository::get_server_cell_by_app_id(int64_t app_id)
+celeritas::server_cell_repository::server_cell_container_type celeritas::server_cell_repository::get_server_cell_by_app_id(int64_t app_id, const optional_string& zone)
 {
     if (const auto iter = app_id_server_.find(app_id);
         iter != app_id_server_.cend())
     {
-        return iter->second;
+        if (!zone)
+        {
+            return iter->second;
+        }
+
+        server_cell_container_type container{};
+ for (const auto& server_cell : iter->second)
+        {
+            if (server_cell.get_zone() == zone)
+            {
+                container.emplace_back(server_cell);
+            }
+        }
+
+        return container;
     }
 
-    return server_cell_container_type();
+    return {};
 }
 
 celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_repository::load_from_db()
