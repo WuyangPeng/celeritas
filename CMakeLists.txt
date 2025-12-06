@@ -268,103 +268,64 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(DATABASE_GENERATED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/database/generated")
     set(MYSQL_GENERATED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data/mysql")
 
+    # 用于生成所有与handler相关的代码
     add_custom_target(generate_handler_code
 
-            # 添加创建目录的命令
+            # 确保输出目录存在
             COMMAND ${CMAKE_COMMAND} -E make_directory ${HANDLER_GENERATED_DIR}
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${INITIALIZER_GENERATED_DIR}
 
-            # COMMAND $<TARGET_FILE:generate_handler_tools> 会获取编译好的 generate_handler_tools 可执行文件的路径
+            # 生成 handler
             COMMAND $<TARGET_FILE:generate_handler_tools>
-
-            # 将生成目录作为参数传递给 generate_handler_tools
             --process=generate_handler
             --proto_directory=${CMAKE_CURRENT_SOURCE_DIR}/proto
             --output_directory=${HANDLER_GENERATED_DIR}
             --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template/handler
 
-            # 依赖于 generate_handler_tools 目标本身，确保 generate_handler_tools 在执行前已编译完成
-            DEPENDS generate_handler_tools
-
-            COMMENT "Running tools to generate handler source code into: ${HANDLER_GENERATED_DIR}"
-    )
-
-    add_custom_target(generate_handler_header_code
-
-            # 添加创建目录的命令
-            COMMAND ${CMAKE_COMMAND} -E make_directory ${HANDLER_GENERATED_DIR}
-
-            # COMMAND $<TARGET_FILE:generate_handler_tools> 会获取编译好的 generate_handler_tools 可执行文件的路径
+            # 生成 handler 头文件
             COMMAND $<TARGET_FILE:generate_handler_tools>
-
-            # 将生成目录作为参数传递给 generate_handler_tools
             --process=generate_handler_header
             --handler_directory=${CMAKE_CURRENT_SOURCE_DIR}/src/handler
             --output_directory=${HANDLER_GENERATED_DIR}
             --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template/handler
 
-            # 依赖于 generate_handler_tools 目标本身，确保 generate_handler_tools 在执行前已编译完成
-            DEPENDS generate_handler_tools generate_handler_code
-
-            COMMENT "Running tools to generate handler header code into: ${HANDLER_GENERATED_DIR}"
-    )
-
-    add_custom_target(generate_register_handler_helper_code
-
-            # 添加创建目录的命令
-            COMMAND ${CMAKE_COMMAND} -E make_directory ${HANDLER_GENERATED_DIR}
-
-            # COMMAND $<TARGET_FILE:generate_handler_tools> 会获取编译好的 generate_handler_tools 可执行文件的路径
+            # 生成 register handler 辅助代码
             COMMAND $<TARGET_FILE:generate_handler_tools>
-
-            # 将生成目录作为参数传递给 generate_handler_tools
             --process=generate_register_handler_helper
             --handler_directory=${CMAKE_CURRENT_SOURCE_DIR}/src/handler
             --output_directory=${INITIALIZER_GENERATED_DIR}
             --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template/handler
 
-            # 依赖于 generate_handler_tools 目标本身，确保 generate_handler_tools 在执行前已编译完成
-            DEPENDS generate_handler_tools generate_handler_code generate_handler_header_code
-
-            COMMENT "Running tools to generate register handler helper code into: ${INITIALIZER_GENERATED_DIR}"
+            # 依赖于工具目标，确保在执行此目标前已构建好工具
+            DEPENDS generate_handler_tools
+            COMMENT "Generating all handler-related code..."
+            VERBATIM
     )
 
+    # 用于生成所有与database相关的代码
     add_custom_target(generate_database_code
 
-            # 添加创建目录的命令
+            # 确保输出目录存在
             COMMAND ${CMAKE_COMMAND} -E make_directory ${DATABASE_GENERATED_DIR}
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${MYSQL_GENERATED_DIR}
 
-            # COMMAND $<TARGET_FILE:generate_database_tools> 会获取编译好的 generate_database_tools 可执行文件的路径
+            # 生成 database 源文件
             COMMAND $<TARGET_FILE:generate_database_tools>
-
-            # 将生成目录作为参数传递给 generate_database_tools
             --process=generate_database
             --database_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/database
             --output_directory=${DATABASE_GENERATED_DIR}
             --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template/database
 
-            # 依赖于 generate_database_tools 目标本身，确保 generate_database_tools 在执行前已编译完成
-            DEPENDS generate_database_tools
-
-            COMMENT "Running tools to generate database source code into: ${DATABASE_GENERATED_DIR}"
-    )
-
-    add_custom_target(generate_mysql
-
-            # 添加创建目录的命令
-            COMMAND ${CMAKE_COMMAND} -E make_directory ${MYSQL_GENERATED_DIR}
-
-            # COMMAND $<TARGET_FILE:generate_database_tools> 会获取编译好的 generate_database_tools 可执行文件的路径
+            # 生成 mysql 语句
             COMMAND $<TARGET_FILE:generate_database_tools>
-
-            # 将生成目录作为参数传递给 generate_database_tools
             --process=generate_mysql
             --database_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/database/mysql
             --output_directory=${MYSQL_GENERATED_DIR}
 
-            # 依赖于 generate_database_tools 目标本身，确保 generate_database_tools 在执行前已编译完成
+            # 依赖于工具目标，确保在执行此目标前已构建好工具
             DEPENDS generate_database_tools
-
-            COMMENT "Running tools to generate mysql statement into: ${MYSQL_GENERATED_DIR}"
+            COMMENT "Generating all database-related code and SQL..."
+            VERBATIM
     )
 
 endif ()
@@ -474,6 +435,7 @@ else ()
             "${PROTOBUF_DIR}/${LIB_DIRECTORY}/*.so*"
             "${MONGO_DIR}/${LIB_DIRECTORY}/*.so*"
             "${HIREDIS_DIR}/build/${BUILD_TYPE_DIRECTORY}/libhiredis${BUILD_LIB_SUFFIX}.so*")
+
 endif ()
 
 list(APPEND THIRD_PARTY_DLLS ${_dlls})

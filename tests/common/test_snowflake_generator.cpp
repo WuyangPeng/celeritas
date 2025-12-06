@@ -1,5 +1,5 @@
-﻿#include "common/snowflake_generator.h"
-#include "common/common_fwd.h"
+﻿#include "common/common_fwd.h"
+#include "common/snowflake_generator.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -35,9 +35,9 @@ BOOST_AUTO_TEST_SUITE(snowflake_generator_suite)
             threads.emplace_back(generate_ids, i % celeritas::max_datacenter_id, i % celeritas::max_worker_id);
         }
 
-        for (auto& t : threads)
+        for (auto& thread : threads)
         {
-            t.join();
+            thread.join();
         }
 
         BOOST_CHECK_EQUAL(generated_ids.size(), num_threads * ids_per_thread);
@@ -51,9 +51,9 @@ BOOST_AUTO_TEST_SUITE(snowflake_generator_suite)
         const auto id = celeritas::snowflake_generator::get_instance().generate(datacenter_id, worker_id);
 
         // 从ID中提取各个部分
-        const auto timestamp = (id >> celeritas::timestamp_left_shift);
-        const auto extracted_datacenter_id = (id >> celeritas::datacenter_id_shift) & celeritas::max_datacenter_id;
-        const auto extracted_worker_id = (id >> celeritas::worker_id_shift) & celeritas::max_worker_id;
+        const auto timestamp = id >> celeritas::timestamp_left_shift;
+        const auto extracted_datacenter_id = id >> celeritas::datacenter_id_shift & celeritas::max_datacenter_id;
+        const auto extracted_worker_id = id >> celeritas::worker_id_shift & celeritas::max_worker_id;
         const auto sequence = id & celeritas::sequence_mask;
 
         BOOST_CHECK_EQUAL(extracted_datacenter_id, datacenter_id);
@@ -61,9 +61,8 @@ BOOST_AUTO_TEST_SUITE(snowflake_generator_suite)
         BOOST_CHECK_GE(sequence, 0);
 
         // 检查时间戳是否在合理范围内 (允许几秒的误差)
-        const auto current_timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::system_clock::now().time_since_epoch()
-            ).count();
+        const auto current_timestamp =
+            std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
         // 5秒的容差
         constexpr auto tolerance = 5000;

@@ -4,6 +4,6 @@ add_library(database ${SRC_DIR_LIST})
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
-    add_dependencies(database generate_database_code generate_mysql)
+    add_dependencies(database generate_database_code)
 
 endif ()

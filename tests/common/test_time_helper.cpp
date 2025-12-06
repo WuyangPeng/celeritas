@@ -24,7 +24,6 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
         BOOST_CHECK_LE(seconds2, seconds1 + 2);
 
         BOOST_CHECK_GE(milliseconds2, milliseconds1 + 1500);
-        // 允许一些调度延迟
         BOOST_CHECK_LE(milliseconds2, milliseconds1 + 2000);
     }
 
