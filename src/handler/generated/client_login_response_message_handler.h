@@ -3,7 +3,7 @@
 #pragma once
 
 #include "message/concrete_message_handler.h"
-#include "proto/client/login.pb.h"
+#include "proto/client/player/login.pb.h"
 
 namespace celeritas
 {

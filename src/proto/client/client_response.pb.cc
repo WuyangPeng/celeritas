@@ -79,20 +79,20 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_proto_2fclient_2fclient_5fresponse_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\"proto/client/client_response.proto\022\026ce"
-    "leritas.proto.client\032\031proto/client/playe"
-    "r.proto\"^\n\017client_response\022@\n\006player\030\001 \001"
-    "(\0132..celeritas.proto.client.client_playe"
-    "r_responseH\000B\t\n\007payloadb\006proto3"
+    "leritas.proto.client\032 proto/client/playe"
+    "r/player.proto\"^\n\017client_response\022@\n\006pla"
+    "yer\030\001 \001(\0132..celeritas.proto.client.clien"
+    "t_player_responseH\000B\t\n\007payloadb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_proto_2fclient_2fclient_5fresponse_2eproto_deps[1] = {
-        &::descriptor_table_proto_2fclient_2fplayer_2eproto,
+        &::descriptor_table_proto_2fclient_2fplayer_2fplayer_2eproto,
 };
 static ::absl::once_flag descriptor_table_proto_2fclient_2fclient_5fresponse_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fclient_2fclient_5fresponse_2eproto = {
     false,
     false,
-    191,
+    198,
     descriptor_table_protodef_proto_2fclient_2fclient_5fresponse_2eproto,
     "proto/client/client_response.proto",
     &descriptor_table_proto_2fclient_2fclient_5fresponse_2eproto_once,

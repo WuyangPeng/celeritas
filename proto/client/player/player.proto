@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package celeritas.proto.client;
 
-import "proto/client/login.proto";
+import "proto/client/player/login.proto";
 
 message client_player_request {
   oneof payload {
