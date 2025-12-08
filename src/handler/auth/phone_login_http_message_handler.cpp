@@ -27,8 +27,7 @@ bool celeritas::phone_login_http_message_handler::handle(const http_handle_param
     return true;
 }
 
-celeritas::phone_login_http_message_handler::void_awaitable_type celeritas::phone_login_http_message_handler::response(
-    http_handle_parameter handle_parameter)
+celeritas::phone_login_http_message_handler::void_awaitable_type celeritas::phone_login_http_message_handler::response(http_handle_parameter handle_parameter)
 {
     try
     {

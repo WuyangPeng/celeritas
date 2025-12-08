@@ -33,8 +33,7 @@ bool celeritas::guest_login_http_message_handler::handle(const http_handle_param
     return true;
 }
 
-celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::guest_login_http_message_handler::response(
-    http_handle_parameter handle_parameter)
+celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::guest_login_http_message_handler::response(http_handle_parameter handle_parameter)
 {
     try
     {

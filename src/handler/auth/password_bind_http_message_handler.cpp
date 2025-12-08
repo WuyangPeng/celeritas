@@ -28,8 +28,7 @@ bool celeritas::password_bind_http_message_handler::handle(const http_handle_par
     return true;
 }
 
-celeritas::password_bind_http_message_handler::void_awaitable_type
-    celeritas::password_bind_http_message_handler::response(http_handle_parameter handle_parameter)
+celeritas::password_bind_http_message_handler::void_awaitable_type celeritas::password_bind_http_message_handler::response(http_handle_parameter handle_parameter)
 {
     try
     {

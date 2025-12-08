@@ -28,8 +28,7 @@ bool celeritas::send_email_http_message_handler::handle(const http_handle_parame
     return true;
 }
 
-celeritas::send_email_http_message_handler::void_awaitable_type celeritas::send_email_http_message_handler::response(
-    http_handle_parameter handle_parameter)
+celeritas::send_email_http_message_handler::void_awaitable_type celeritas::send_email_http_message_handler::response(http_handle_parameter handle_parameter)
 {
     try
     {

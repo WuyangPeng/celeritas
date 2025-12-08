@@ -27,8 +27,7 @@ bool celeritas::sdk_login_http_message_handler::handle(const http_handle_paramet
     return true;
 }
 
-celeritas::sdk_login_http_message_handler::void_awaitable_type celeritas::sdk_login_http_message_handler::response(
-    http_handle_parameter handle_parameter)
+celeritas::sdk_login_http_message_handler::void_awaitable_type celeritas::sdk_login_http_message_handler::response(http_handle_parameter handle_parameter)
 {
     try
     {

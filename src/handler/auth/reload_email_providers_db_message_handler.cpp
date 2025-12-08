@@ -3,9 +3,9 @@
 #include "message/protobuf_handle_parameter.h"
 #include "proto/celeritas.pb.h"
 
-bool celeritas::reload_email_providers_db_message_handler::handle_concrete(
-    const protobuf_handle_parameter& handle_parameter, const message_type& current_message,
-    const message_registry_weak_ptr& message_registry)
+bool celeritas::reload_email_providers_db_message_handler::handle_concrete(const protobuf_handle_parameter& handle_parameter,
+                                                                           const message_type& current_message,
+                                                                           const message_registry_weak_ptr& message_registry)
 {
     app_email_providers::get_instance().
         reload_from_db(handle_parameter.get_io_context(), current_message.provider_id());

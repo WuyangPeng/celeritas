@@ -27,8 +27,7 @@ bool celeritas::email_bind_http_message_handler::handle(const http_handle_parame
     return true;
 }
 
-celeritas::email_bind_http_message_handler::void_awaitable_type celeritas::email_bind_http_message_handler::response(
-    http_handle_parameter handle_parameter)
+celeritas::email_bind_http_message_handler::void_awaitable_type celeritas::email_bind_http_message_handler::response(http_handle_parameter handle_parameter)
 {
     try
     {
