@@ -2,6 +2,7 @@
 #include "login_servers_response.h"
 #include "auth/data/server_cell_repository.h"
 #include "auth/detail/login_servers/login_servers_parameter.h"
+#include "common/time_helper.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mongo/auth/player_server_roles.h"
 #include "database/generated/mysql/auth/account_last_login.h"
@@ -148,7 +149,14 @@ celeritas::auth_service_base::void_awaitable_type celeritas::login_servers::resp
                 co_return write(login_servers_response{ game_error_type::server_error });
             }
 
-            auto login_server_info = get_login_server_info(login_servers_parameter, *optional_server_cell);
+            const auto& server_cell = *optional_server_cell;
+
+            if (server_cell.get_launch_time() >= time_helper::get_current_milliseconds())
+            {
+                co_return write(login_servers_response{ game_error_type::server_launch_error });
+            }
+
+            auto login_server_info = get_login_server_info(login_servers_parameter, server_cell);
 
             co_return write(login_servers_response{ game_error_type::success, "get login servers success.", std::move(login_server_info) });
         }

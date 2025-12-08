@@ -1,5 +1,6 @@
 ﻿#include "server_cell_repository.h"
 #include "common/logger.h"
+#include "common/time_helper.h"
 #include "database/database_pool_manager.h"
 
 #include <ranges>
@@ -48,7 +49,14 @@ celeritas::server_cell_repository::optional_server_cell_type celeritas::server_c
     if (const auto iter = app_id_server_.find(app_id);
         iter != app_id_server_.cend() && !iter->second.empty())
     {
-        return iter->second.at(iter->second.size() - 1);
+        const auto current_milliseconds = time_helper::get_current_milliseconds();
+        for (auto server_cell = iter->second.cbegin(); server_cell != iter->second.cend(); ++server_cell)
+        {
+            if (current_milliseconds >= server_cell->get_launch_time())
+            {
+                return *server_cell;
+            }
+        }
     }
 
     return std::nullopt;
@@ -59,15 +67,12 @@ celeritas::server_cell_repository::server_cell_container_type celeritas::server_
     if (const auto iter = app_id_server_.find(app_id);
         iter != app_id_server_.cend())
     {
-        if (!zone)
-        {
-            return iter->second;
-        }
+        const auto current_milliseconds = time_helper::get_current_milliseconds();
 
         server_cell_container_type container{};
         for (const auto& server_cell : iter->second)
         {
-            if (server_cell.get_zone() == zone)
+            if ((!zone || server_cell.get_zone() == zone) && current_milliseconds >= server_cell.get_launch_time())
             {
                 container.emplace_back(server_cell);
             }

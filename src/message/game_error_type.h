@@ -20,6 +20,7 @@ namespace celeritas
         password_error = 107,
         sdk_error = 108,
         server_error = 109,
+        server_launch_error = 110,
 
         // auth错误
         account_error = 1000,
