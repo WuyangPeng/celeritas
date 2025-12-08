@@ -81,7 +81,7 @@ celeritas::app_sdk_providers::void_awaitable_type celeritas::app_sdk_providers::
     sdk_providers_ = std::move(sdk_providers_type);
 }
 
-celeritas::app_sdk_providers::void_awaitable_type celeritas::app_sdk_providers::load_from_db(int64_t sdk_id)
+celeritas::app_sdk_providers::void_awaitable_type celeritas::app_sdk_providers::load_from_db(const int64_t sdk_id)
 {
     try
     {

@@ -1,7 +1,9 @@
-﻿#include "auth/data/app_secret.h"
-#include "phone_login.h"
+﻿#include "phone_login.h"
 #include "phone_login_response.h"
 #include "auth/authentication/sdk/sdk_process_type.h"
+#include "auth/data/app_secret.h"
+#include "auth/detail/phone/phone_login_parameter.h"
+#include "auth/detail/phone/phone_operation_parameter.tpp"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "config/app_config.h"
@@ -10,8 +12,6 @@
 #include "database/generated/mysql/auth/account_bind.h"
 #include "database/generated/redis/auth/session_token.h"
 #include "database/generated/redis/auth/sms_code.h"
-#include "../../detail/phone/phone_login_parameter.h"
-#include "../../detail/phone/phone_operation_parameter.tpp"
 #include "initializer/account_type.h"
 #include "message/game_error_type.h"
 
@@ -43,8 +43,7 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::phone) },
                                                                                                             { account_bind::process_type_describe, static_cast<int>(sdk_process_type::null) },
                                                                                                             { account_bind::auth_key_describe, phone },
-                                                                                                            { account_bind::app_id_describe, app_id }
-    });
+                                                                                                            { account_bind::app_id_describe, app_id } });
 
     auto optional_account_bind = co_await mysql_pool->select_one(account_bind::get_select(database_type::mysql, key),
                                                                  account_bind::get_database_field_container());

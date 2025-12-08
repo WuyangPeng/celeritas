@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "auth_bind.h"
-#include "auth/authentication/phone/phone_bind_response.h"
 #include "auth/authentication/sdk/sdk_process_type.h"
 #include "database/database_pool_base.h"
 #include "database/generated/mysql/auth/account_bind.h"

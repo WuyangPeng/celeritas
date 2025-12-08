@@ -27,6 +27,5 @@ namespace celeritas
 
     [[nodiscard]] phone_login_response tag_invoke(phone_login_response_tag, const http_response::json_value& value);
 
-    void tag_invoke(boost::json::value_from_tag tag, phone_login_response::json_value& value,
-                    const phone_login_response& phone_login_response);
+    void tag_invoke(boost::json::value_from_tag tag, phone_login_response::json_value& value, const phone_login_response& phone_login_response);
 }

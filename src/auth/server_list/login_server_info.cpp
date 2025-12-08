@@ -21,7 +21,7 @@ celeritas::login_server_info::login_server_info(std::string game_server_id, std:
 {
 }
 
-celeritas::login_server_info::login_server_info(std::string game_server_id, std::string server_name, server_status_type server_status)
+celeritas::login_server_info::login_server_info(std::string game_server_id, std::string server_name, const server_status_type server_status)
     : game_server_id_{ std::move(game_server_id) },
       server_name_{ std::move(server_name) },
       server_status_{ server_status }

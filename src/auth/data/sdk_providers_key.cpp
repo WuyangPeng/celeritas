@@ -1,7 +1,5 @@
 ﻿#include "sdk_providers_key.h"
 
-#include <functional>
-
 celeritas::sdk_providers_key::sdk_providers_key(const int64_t app_id, sdk_process_type sdk_process_type)
     : app_id_{ app_id }, sdk_process_type_{ sdk_process_type }
 {

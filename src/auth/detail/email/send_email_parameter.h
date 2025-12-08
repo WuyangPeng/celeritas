@@ -3,13 +3,15 @@
 #include "email_parameter.h"
 #include "auth/authentication/email/send_email_response.h"
 
-namespace celeritas {
-    class send_email_parameter final : public email_parameter {
+namespace celeritas
+{
+    class send_email_parameter final : public email_parameter
+    {
     public:
         using class_type = send_email_parameter;
         using base_type = email_parameter;
 
-        explicit send_email_parameter(const http_handle_parameter &http_handle_parameter);
+        explicit send_email_parameter(const http_handle_parameter& http_handle_parameter);
 
         [[nodiscard]] bool is_failure() const override;
 

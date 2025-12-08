@@ -30,8 +30,7 @@ celeritas::send_email::void_awaitable_type celeritas::send_email::response()
 
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
 
-    if (auto sms_limit = co_await redis_pool->select_one(email_limit::get_select(database_type::redis, email),
-                                                         email_limit::get_database_field_container()))
+    if (auto sms_limit = co_await redis_pool->select_one(email_limit::get_select(database_type::redis, email), email_limit::get_database_field_container()))
     {
         co_return write(send_email_response{ game_error_type::sent_too_frequently });
     }
@@ -60,8 +59,7 @@ celeritas::send_email::void_awaitable_type celeritas::send_email::response()
     co_return;
 }
 
-celeritas::auth_service_base::void_awaitable_type celeritas::send_email::send_sdk_sms(
-    const email_code& sms_code, const apps& apps)
+celeritas::auth_service_base::void_awaitable_type celeritas::send_email::send_sdk_sms(const email_code& sms_code, const apps& apps)
 {
     const auto email_providers = app_email_providers::get_instance().get_email_providers(apps.get_sms_provider_id());
 

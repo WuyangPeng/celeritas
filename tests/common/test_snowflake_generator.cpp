@@ -3,6 +3,7 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <chrono>
 #include <mutex>
 #include <thread>
 #include <unordered_set>

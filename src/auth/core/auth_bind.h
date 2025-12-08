@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "auth/auth_fwd.h"
 #include "auth_service_base.h"
+#include "auth/auth_fwd.h"
 #include "database/generated/mysql/auth/account.h"
 #include "initializer/account_type.h"
 

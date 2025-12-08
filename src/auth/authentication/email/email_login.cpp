@@ -1,7 +1,9 @@
-﻿#include "auth/data/app_secret.h"
-#include "email_login.h"
+﻿#include "email_login.h"
 #include "email_login_response.h"
 #include "auth/authentication/sdk/sdk_process_type.h"
+#include "auth/data/app_secret.h"
+#include "auth/detail/email/email_login_parameter.h"
+#include "auth/detail/email/email_operation_parameter.tpp"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "config/app_config.h"
@@ -10,8 +12,6 @@
 #include "database/generated/mysql/auth/account_bind.h"
 #include "database/generated/redis/auth/email_code.h"
 #include "database/generated/redis/auth/session_token.h"
-#include "../../detail/email/email_login_parameter.h"
-#include "../../detail/email/email_operation_parameter.tpp"
 #include "initializer/account_type.h"
 #include "message/game_error_type.h"
 
@@ -43,11 +43,9 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::email) },
                                                                                                             { account_bind::process_type_describe, static_cast<int>(sdk_process_type::null) },
                                                                                                             { account_bind::auth_key_describe, email },
-                                                                                                            { account_bind::app_id_describe, app_id }
-    });
+                                                                                                            { account_bind::app_id_describe, app_id } });
 
-    auto optional_account_bind = co_await mysql_pool->select_one(account_bind::get_select(database_type::mysql, key),
-                                                                 account_bind::get_database_field_container());
+    auto optional_account_bind = co_await mysql_pool->select_one(account_bind::get_select(database_type::mysql, key), account_bind::get_database_field_container());
 
     auto account = co_await get_account(optional_account_bind, redis_pool, mysql_pool, app_id, email, get_app_config());
 
@@ -57,8 +55,7 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
         write(email_login_response{ game_error_type::success,
                                     "login successful",
                                     session_token->get_token(),
-                                    get_app_config()->get_expire_milliseconds(redis_db_name.data())
-        });
+                                    get_app_config()->get_expire_milliseconds(redis_db_name.data()) });
     }
     else
     {

@@ -54,7 +54,7 @@ celeritas::server_cell_repository::optional_server_cell_type celeritas::server_c
     return std::nullopt;
 }
 
-celeritas::server_cell_repository::server_cell_container_type celeritas::server_cell_repository::get_server_cell_by_app_id(int64_t app_id, const optional_string& zone)
+celeritas::server_cell_repository::server_cell_container_type celeritas::server_cell_repository::get_server_cell_by_app_id(const int64_t app_id, const optional_string& zone)
 {
     if (const auto iter = app_id_server_.find(app_id);
         iter != app_id_server_.cend())

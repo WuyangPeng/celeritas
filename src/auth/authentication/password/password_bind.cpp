@@ -3,7 +3,6 @@
 #include "auth/core/auth_bind.tpp"
 #include "auth/data/app_secret.h"
 #include "auth/detail/password/password_bind_parameter.h"
-#include "common/hmac_sha_256.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
 #include "initializer/account_type.h"

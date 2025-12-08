@@ -32,8 +32,7 @@ celeritas::phone_login_response celeritas::phone_login_response::from_json_strin
     return phone_login_response{ std::move(token_http_response) };
 }
 
-celeritas::phone_login_response
-    celeritas::tag_invoke(phone_login_response_tag, const http_response::json_value& value)
+celeritas::phone_login_response celeritas::tag_invoke(phone_login_response_tag, const http_response::json_value& value)
 {
     return phone_login_response{ tag_invoke(token_http_response_tag{}, value) };
 }
