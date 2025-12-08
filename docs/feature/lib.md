@@ -1013,6 +1013,11 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **作用**：处理客户端发起的SDK绑定`HTTP`请求。
     - **功能**：接收并处理`HTTP`请求，根据SDK信息进行绑定。
 
+
+* **🖥️ 登录服务器列表HTTP请求处理器 (`login_servers_message_handler`)**
+    - **作用**：处理客户端获取游戏服务器列表的`HTTP`请求。
+    - **功能**：接收并处理`HTTP`请求，调用`login_servers`服务，并返回包含服务器列表的`login_servers_response`。
+
 ### payment handlers (支付处理器)
 
 * **🔄 重载SDK支付服务商数据库消息处理器 (`reload_sdk_payment_providers_db_message_handler`)**

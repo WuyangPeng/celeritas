@@ -9,7 +9,7 @@ celeritas::database_entity_change::database_entity_change(const database_type da
       database_name_{ database_name },
       change_type_{ change_type },
       key_{ std::move(key) },
-      database_{}
+      database_{ std::make_shared<basis_database_container>() }
 {
 }
 
@@ -20,7 +20,7 @@ celeritas::database_entity_change::database_entity_change(const database_type da
       database_name_{ database_name },
       change_type_{ change_type },
       key_{ std::make_shared<basis_database_container>() },
-      database_{}
+      database_{ std::make_shared<basis_database_container>() }
 {
 }
 
