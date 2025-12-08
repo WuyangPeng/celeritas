@@ -1,12 +1,12 @@
-﻿#include "auth/data/app_sdk_providers.h"
-#include "auth/core/auth_bind.tpp"
-#include "sdk_bind.h"
+﻿#include "sdk_bind.h"
 #include "sdk_bind_response.h"
+#include "auth/core/auth_bind.tpp"
+#include "auth/data/app_sdk_providers.h"
+#include "auth/detail/sdk/sdk_bind_parameter.h"
+#include "auth/detail/sdk/sdk_process.h"
+#include "auth/detail/sdk/sdk_process_parameter.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/auth/account_bind.h"
-#include "auth/detail/sdk_bind_parameter.h"
-#include "auth/detail/sdk_process.h"
-#include "auth/detail/sdk_process_parameter.h"
 #include "initializer/account_type.h"
 #include "message/game_error_type.h"
 
@@ -28,9 +28,7 @@ celeritas::sdk_bind::void_awaitable_type celeritas::sdk_bind::response()
     const auto sdk_token = sdk_bind_parameter.get_sdk_token();
     const auto process_type = sdk_bind_parameter.get_process_type();
 
-    const auto sdk_providers = app_sdk_providers::get_instance().get_sdk_providers(sdk_providers_key{
-        app_id, process_type
-    });
+    const auto sdk_providers = app_sdk_providers::get_instance().get_sdk_providers(sdk_providers_key{ app_id, process_type });
 
     sdk_process_parameter sdk_process_parameter{ sdk_token, sdk_providers };
 
@@ -48,8 +46,7 @@ celeritas::sdk_bind::void_awaitable_type celeritas::sdk_bind::response()
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
 
-    auto optional_account = co_await get_account<sdk_bind_response>(app_id, open_id, token, account_type::sdk,
-                                                                    redis_pool, mysql_pool);
+    auto optional_account = co_await get_account<sdk_bind_response>(app_id, open_id, token, account_type::sdk, redis_pool, mysql_pool);
 
     if (auto account = *optional_account;
         co_await bind(account, app_id, open_id, account_type::sdk, process_type, mysql_pool))

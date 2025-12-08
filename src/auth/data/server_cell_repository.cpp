@@ -1,6 +1,6 @@
-﻿#include "common/logger.h"
+﻿#include "server_cell_repository.h"
+#include "common/logger.h"
 #include "database/database_pool_manager.h"
-#include "server_cell_repository.h"
 
 #include <ranges>
 
@@ -19,16 +19,16 @@ void celeritas::server_cell_repository::reload_from_db(io_context_type& io_conte
     }
 
     boost::asio::co_spawn(io_context, [cell_id, this] {
-        return this->load_from_db(cell_id);
-    },
+                              return this->load_from_db(cell_id);
+                          },
                           boost::asio::detached);
 }
 
 void celeritas::server_cell_repository::load_from_db(io_context_type& io_context)
 {
     boost::asio::co_spawn(io_context, [this] {
-        return this->load_from_db();
-    },
+                              return this->load_from_db();
+                          },
                           boost::asio::detached);
 }
 
@@ -65,7 +65,7 @@ celeritas::server_cell_repository::server_cell_container_type celeritas::server_
         }
 
         server_cell_container_type container{};
- for (const auto& server_cell : iter->second)
+        for (const auto& server_cell : iter->second)
         {
             if (server_cell.get_zone() == zone)
             {

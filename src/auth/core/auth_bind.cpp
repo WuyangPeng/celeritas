@@ -13,8 +13,8 @@ celeritas::auth_bind::auth_bind(http_handle_parameter handle_parameter)
 celeritas::auth_bind::bool_awaitable_type celeritas::auth_bind::bind(account& account,
                                                                      const int64_t app_id,
                                                                      const std::string& auth_key,
-                                                                     account_type account_type,
-                                                                     sdk_process_type sdk_process_type,
+                                                                     const account_type account_type,
+                                                                     const sdk_process_type sdk_process_type,
                                                                      const database_pool_shared_ptr& mysql_pool) const
 {
     co_return co_await bind(account, app_id, auth_key, "", account_type, sdk_process_type, mysql_pool);

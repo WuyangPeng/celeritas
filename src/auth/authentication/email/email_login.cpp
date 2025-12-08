@@ -10,8 +10,8 @@
 #include "database/generated/mysql/auth/account_bind.h"
 #include "database/generated/redis/auth/email_code.h"
 #include "database/generated/redis/auth/session_token.h"
-#include "auth/detail/email_login_parameter.h"
-#include "auth/detail/email_operation_parameter.tpp"
+#include "../../detail/email/email_login_parameter.h"
+#include "../../detail/email/email_operation_parameter.tpp"
 #include "initializer/account_type.h"
 #include "message/game_error_type.h"
 
@@ -40,11 +40,10 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
     const auto app_id = email_login_parameter.get_app_id();
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
-    const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{
-        { account_bind::account_type_describe, static_cast<int>(account_type::email) },
-        { account_bind::process_type_describe, static_cast<int>(sdk_process_type::null) },
-        { account_bind::auth_key_describe, email },
-        { account_bind::app_id_describe, app_id }
+    const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type::email) },
+                                                                                                            { account_bind::process_type_describe, static_cast<int>(sdk_process_type::null) },
+                                                                                                            { account_bind::auth_key_describe, email },
+                                                                                                            { account_bind::app_id_describe, app_id }
     });
 
     auto optional_account_bind = co_await mysql_pool->select_one(account_bind::get_select(database_type::mysql, key),
@@ -55,11 +54,10 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
     // 这里没有删除旧的token，旧的token依赖redis有效时间进行删除。
     if (auto session_token = co_await create_session_token(account, !optional_account_bind, redis_pool))
     {
-        write(email_login_response{
-            game_error_type::success,
-            "login successful",
-            session_token->get_token(),
-            get_app_config()->get_expire_milliseconds(redis_db_name.data())
+        write(email_login_response{ game_error_type::success,
+                                    "login successful",
+                                    session_token->get_token(),
+                                    get_app_config()->get_expire_milliseconds(redis_db_name.data())
         });
     }
     else
@@ -75,21 +73,19 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
     co_return;
 }
 
-celeritas::email_login::account_awaitable_type celeritas::email_login::get_account(
-    const optional_database_entity_change& database_entity_change,
-    const database_pool_shared_ptr& redis_pool,
-    const database_pool_shared_ptr& mysql_pool,
-    const int64_t app_id,
-    const std::string& email,
-    const const_app_config_shared_ptr& app_config)
+celeritas::email_login::account_awaitable_type celeritas::email_login::get_account(const optional_database_entity_change& database_entity_change,
+                                                                                   const database_pool_shared_ptr& redis_pool,
+                                                                                   const database_pool_shared_ptr& mysql_pool,
+                                                                                   const int64_t app_id,
+                                                                                   const std::string& email,
+                                                                                   const const_app_config_shared_ptr& app_config)
 {
     if (database_entity_change)
     {
         const account_bind account_bind{ *database_entity_change };
 
-        if (const auto optional_account = co_await mysql_pool->select_one(
-            account::get_select(database_type::mysql, account_bind.get_account_id()),
-            account::get_database_field_container()))
+        if (const auto optional_account = co_await mysql_pool->select_one(account::get_select(database_type::mysql, account_bind.get_account_id()),
+                                                                          account::get_database_field_container()))
         {
             account account{ *optional_account };
 
@@ -97,6 +93,5 @@ celeritas::email_login::account_awaitable_type celeritas::email_login::get_accou
         }
     }
 
-    co_return co_await create_new_account(app_id, email, account_type::email, sdk_process_type::null, "email",
-                                          redis_pool, app_config);
+    co_return co_await create_new_account(app_id, email, account_type::email, sdk_process_type::null, "email", redis_pool, app_config);
 }

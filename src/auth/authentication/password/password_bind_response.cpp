@@ -22,16 +22,12 @@ celeritas::password_bind_response celeritas::password_bind_response::from_json_s
     return password_bind_response{ std::move(http_response) };
 }
 
-celeritas::password_bind_response celeritas::tag_invoke(password_bind_response_tag,
-                                                        const http_response::json_value& value)
+celeritas::password_bind_response celeritas::tag_invoke(password_bind_response_tag, const http_response::json_value& value)
 {
     return password_bind_response{ tag_invoke(http_response_tag{}, value) };
 }
 
-void celeritas::tag_invoke(const boost::json::value_from_tag tag, password_bind_response::json_value& value,
-                           const password_bind_response& password_bind_response)
+void celeritas::tag_invoke(const boost::json::value_from_tag tag, password_bind_response::json_value& value, const password_bind_response& password_bind_response)
 {
-    tag_invoke(tag, value, password_bind_response::bass_type{
-                   password_bind_response.get_code(), password_bind_response.get_message()
-               });
+    tag_invoke(tag, value, password_bind_response::bass_type{ password_bind_response.get_code(), password_bind_response.get_message() });
 }

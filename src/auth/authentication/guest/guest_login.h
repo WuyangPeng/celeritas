@@ -4,8 +4,10 @@
 #include "database/database_pool_base.h"
 #include "database/generated/mysql/auth/account.h"
 
-namespace celeritas {
-    class guest_login final : public auth_login {
+namespace celeritas
+{
+    class guest_login final : public auth_login
+    {
     public:
         using class_type = guest_login;
         using base_type = auth_login;
@@ -21,10 +23,10 @@ namespace celeritas {
         using optional_database_entity_change = std::optional<database_entity_change>;
 
         [[nodiscard]] static account_awaitable_type get_account(int64_t app_id,
-                                                                const std::string &device_id,
-                                                                const optional_database_entity_change &
+                                                                const std::string& device_id,
+                                                                const optional_database_entity_change&
                                                                 database_entity_change,
-                                                                const database_pool_shared_ptr &redis_pool,
-                                                                const const_app_config_shared_ptr &app_config);
+                                                                const database_pool_shared_ptr& redis_pool,
+                                                                const const_app_config_shared_ptr& app_config);
     };
 }

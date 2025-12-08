@@ -27,10 +27,7 @@ celeritas::email_bind_response celeritas::tag_invoke(email_bind_response_tag, co
     return email_bind_response{ tag_invoke(http_response_tag{}, value) };
 }
 
-void celeritas::tag_invoke(const boost::json::value_from_tag tag, email_bind_response::json_value& value,
-                           const email_bind_response& email_bind_response)
+void celeritas::tag_invoke(const boost::json::value_from_tag tag, email_bind_response::json_value& value, const email_bind_response& email_bind_response)
 {
-    tag_invoke(tag, value, email_bind_response::bass_type{
-                   email_bind_response.get_code(), email_bind_response.get_message()
-               });
+    tag_invoke(tag, value, email_bind_response::bass_type{ email_bind_response.get_code(), email_bind_response.get_message() });
 }

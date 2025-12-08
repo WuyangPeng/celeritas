@@ -5,8 +5,10 @@
 
 #include <boost/asio/awaitable.hpp>
 
-namespace celeritas {
-    class email_bind final : public auth_bind {
+namespace celeritas
+{
+    class email_bind final : public auth_bind
+    {
     public:
         using class_type = email_bind;
         using base_type = auth_bind;

@@ -10,8 +10,7 @@ celeritas::sdk_login_response::sdk_login_response(const game_error_type code, st
 {
 }
 
-celeritas::sdk_login_response::sdk_login_response(const game_error_type code, std::string message, std::string token,
-                                                  const int64_t expire_milliseconds)
+celeritas::sdk_login_response::sdk_login_response(const game_error_type code, std::string message, std::string token, const int64_t expire_milliseconds)
     : bass_type{ code, std::move(message), std::move(token), expire_milliseconds }
 {
 }
@@ -38,11 +37,7 @@ celeritas::sdk_login_response celeritas::tag_invoke(sdk_login_response_tag, cons
     return sdk_login_response{ tag_invoke(token_http_response_tag{}, value) };
 }
 
-void celeritas::tag_invoke(const boost::json::value_from_tag tag, sdk_login_response::json_value& value,
-                           const sdk_login_response& sdk_login_response)
+void celeritas::tag_invoke(const boost::json::value_from_tag tag, sdk_login_response::json_value& value, const sdk_login_response& sdk_login_response)
 {
-    tag_invoke(tag, value, sdk_login_response::bass_type{
-                   sdk_login_response.get_code(), sdk_login_response.get_message(), sdk_login_response.get_token(),
-                   sdk_login_response.get_expire_milliseconds()
-               });
+    tag_invoke(tag, value, sdk_login_response::bass_type{ sdk_login_response.get_code(), sdk_login_response.get_message(), sdk_login_response.get_token(), sdk_login_response.get_expire_milliseconds() });
 }

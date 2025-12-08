@@ -2,8 +2,10 @@
 
 #include "auth/core/token_http_response.h"
 
-namespace celeritas {
-    class guest_login_response final : public token_http_response {
+namespace celeritas
+{
+    class guest_login_response final : public token_http_response
+    {
     public:
         using class_type = guest_login_response;
         using bass_type = token_http_response;
@@ -20,14 +22,12 @@ namespace celeritas {
 
         explicit guest_login_response(http_response http_response);
 
-        [[nodiscard]] static guest_login_response from_json_string(const std::string &json_string);
+        [[nodiscard]] static guest_login_response from_json_string(const std::string& json_string);
     };
 
     using guest_login_response_tag = boost::json::value_to_tag<guest_login_response>;
 
-    [[nodiscard]] guest_login_response tag_invoke(guest_login_response_tag,
-                                                  const guest_login_response::json_value &value);
+    [[nodiscard]] guest_login_response tag_invoke(guest_login_response_tag, const guest_login_response::json_value& value);
 
-    void tag_invoke(boost::json::value_from_tag tag, guest_login_response::json_value &value,
-                    const guest_login_response &guest_login_response);
+    void tag_invoke(boost::json::value_from_tag tag, guest_login_response::json_value& value, const guest_login_response& guest_login_response);
 }

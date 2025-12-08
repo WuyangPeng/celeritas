@@ -10,8 +10,7 @@ celeritas::password_login_response::password_login_response(const game_error_typ
 {
 }
 
-celeritas::password_login_response::password_login_response(const game_error_type code, std::string message,
-                                                            std::string token, const int64_t expire_milliseconds)
+celeritas::password_login_response::password_login_response(const game_error_type code, std::string message, std::string token, const int64_t expire_milliseconds)
     : bass_type{ code, std::move(message), std::move(token), expire_milliseconds }
 {
 }
@@ -34,17 +33,12 @@ celeritas::password_login_response
     return password_login_response{ std::move(token_http_response) };
 }
 
-celeritas::password_login_response celeritas::tag_invoke(password_login_response_tag,
-                                                         const http_response::json_value& value)
+celeritas::password_login_response celeritas::tag_invoke(password_login_response_tag, const http_response::json_value& value)
 {
     return password_login_response{ tag_invoke(token_http_response_tag{}, value) };
 }
 
-void celeritas::tag_invoke(const boost::json::value_from_tag tag, password_login_response::json_value& value,
-                           const password_login_response& password_login_response)
+void celeritas::tag_invoke(const boost::json::value_from_tag tag, password_login_response::json_value& value, const password_login_response& password_login_response)
 {
-    tag_invoke(tag, value, password_login_response::bass_type{
-                   password_login_response.get_code(), password_login_response.get_message(),
-                   password_login_response.get_token(), password_login_response.get_expire_milliseconds()
-               });
+    tag_invoke(tag, value, password_login_response::bass_type{ password_login_response.get_code(), password_login_response.get_message(), password_login_response.get_token(), password_login_response.get_expire_milliseconds() });
 }

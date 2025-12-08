@@ -27,8 +27,7 @@ celeritas::sdk_bind_response celeritas::tag_invoke(sdk_bind_response_tag, const 
     return sdk_bind_response{ tag_invoke(http_response_tag{}, value) };
 }
 
-void celeritas::tag_invoke(const boost::json::value_from_tag tag, sdk_bind_response::json_value& value,
-                           const sdk_bind_response& sdk_bind_response)
+void celeritas::tag_invoke(const boost::json::value_from_tag tag, sdk_bind_response::json_value& value, const sdk_bind_response& sdk_bind_response)
 {
     tag_invoke(tag, value, sdk_bind_response::bass_type{ sdk_bind_response.get_code(), sdk_bind_response.get_message() });
 }

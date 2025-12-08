@@ -1,7 +1,7 @@
 ﻿#include "login_servers.h"
 #include "login_servers_response.h"
 #include "auth/data/server_cell_repository.h"
-#include "auth/detail/login_servers_parameter.h"
+#include "auth/detail/login_servers/login_servers_parameter.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mongo/auth/player_server_roles.h"
 #include "database/generated/mysql/auth/account_last_login.h"

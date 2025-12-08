@@ -5,8 +5,10 @@
 #include <cstdint>
 #include <functional>
 
-namespace celeritas {
-    class sdk_providers_key {
+namespace celeritas
+{
+    class sdk_providers_key
+    {
     public:
         using class_type = sdk_providers_key;
 
@@ -21,10 +23,11 @@ namespace celeritas {
         sdk_process_type sdk_process_type_;
     };
 
-    [[nodiscard]] bool operator==(const sdk_providers_key &lhs, const sdk_providers_key &rhs);
+    [[nodiscard]] bool operator==(const sdk_providers_key& lhs, const sdk_providers_key& rhs);
 }
 
-template<>
-struct std::hash<celeritas::sdk_providers_key> {
-    [[nodiscard]] size_t operator()(const celeritas::sdk_providers_key &key) const noexcept;
+template <>
+struct std::hash<celeritas::sdk_providers_key>
+{
+    [[nodiscard]] size_t operator()(const celeritas::sdk_providers_key& key) const noexcept;
 };

@@ -27,10 +27,7 @@ celeritas::phone_bind_response celeritas::tag_invoke(phone_bind_response_tag, co
     return phone_bind_response{ tag_invoke(http_response_tag{}, value) };
 }
 
-void celeritas::tag_invoke(const boost::json::value_from_tag tag, phone_bind_response::json_value& value,
-                           const phone_bind_response& phone_bind_response)
+void celeritas::tag_invoke(const boost::json::value_from_tag tag, phone_bind_response::json_value& value, const phone_bind_response& phone_bind_response)
 {
-    tag_invoke(tag, value, phone_bind_response::bass_type{
-                   phone_bind_response.get_code(), phone_bind_response.get_message()
-               });
+    tag_invoke(tag, value, phone_bind_response::bass_type{ phone_bind_response.get_code(), phone_bind_response.get_message() });
 }

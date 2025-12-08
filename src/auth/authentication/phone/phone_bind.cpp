@@ -1,14 +1,14 @@
-﻿#include "auth/core/auth_bind.tpp"
-#include "phone_bind.h"
+﻿#include "phone_bind.h"
 #include "phone_bind_response.h"
+#include "auth/core/auth_bind.tpp"
+#include "auth/detail/phone/phone_bind_parameter.h"
+#include "auth/detail/phone/phone_operation_parameter.tpp"
 #include "common/logger.h"
 #include "common/snowflake_generator.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/mysql/auth/account_bind.h"
-#include "auth/detail/phone_bind_parameter.h"
-#include "auth/detail/phone_operation_parameter.tpp"
 #include "initializer/account_type.h"
 #include "message/game_error_type.h"
 
@@ -38,8 +38,7 @@ celeritas::phone_bind::void_awaitable_type celeritas::phone_bind::response()
     const auto token = phone_bind_parameter.get_token();
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
-    auto optional_account = co_await get_account<phone_bind_response>(app_id, phone, token, account_type::phone,
-                                                                      redis_pool, mysql_pool);
+    auto optional_account = co_await get_account<phone_bind_response>(app_id, phone, token, account_type::phone, redis_pool, mysql_pool);
 
     if (auto account = *optional_account;
         co_await bind(account, app_id, phone, account_type::phone, sdk_process_type::null, mysql_pool))

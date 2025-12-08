@@ -1,11 +1,11 @@
-﻿#include "auth/data/app_secret.h"
-#include "auth/core/auth_bind.tpp"
-#include "password_bind.h"
+﻿#include "password_bind.h"
 #include "password_bind_response.h"
+#include "auth/core/auth_bind.tpp"
+#include "auth/data/app_secret.h"
+#include "auth/detail/password/password_bind_parameter.h"
 #include "common/hmac_sha_256.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
-#include "auth/detail/password_bind_parameter.h"
 #include "initializer/account_type.h"
 #include "message/game_error_type.h"
 
@@ -30,12 +30,10 @@ celeritas::password_bind::void_awaitable_type celeritas::password_bind::response
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
-    auto optional_account = co_await get_account<password_bind_response>(
-        app_id, auth_key, token, account_type::password, redis_pool, mysql_pool);
+    auto optional_account = co_await get_account<password_bind_response>(app_id, auth_key, token, account_type::password, redis_pool, mysql_pool);
 
     if (auto account = *optional_account;
-        co_await bind(account, app_id, auth_key, password, account_type::password, sdk_process_type::null,
-                      mysql_pool))
+        co_await bind(account, app_id, auth_key, password, account_type::password, sdk_process_type::null, mysql_pool))
     {
         write(password_bind_response{ game_error_type::success, "password bind success" });
     }

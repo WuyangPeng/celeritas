@@ -3,8 +3,10 @@
 #include "auth/core/auth_bind.h"
 #include "message/http_handle_parameter.h"
 
-namespace celeritas {
-    class sdk_bind final : public auth_bind {
+namespace celeritas
+{
+    class sdk_bind final : public auth_bind
+    {
     public:
         using class_type = sdk_bind;
         using base_type = auth_bind;

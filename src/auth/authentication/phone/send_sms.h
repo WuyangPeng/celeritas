@@ -5,8 +5,10 @@
 #include "database/generated/redis/auth/sms_code.h"
 #include "message/http_handle_parameter.h"
 
-namespace celeritas {
-    class send_sms final : public auth_service_base {
+namespace celeritas
+{
+    class send_sms final : public auth_service_base
+    {
     public:
         using class_type = send_sms;
         using base_type = auth_service_base;
@@ -16,6 +18,6 @@ namespace celeritas {
         [[nodiscard]] void_awaitable_type response() override;
 
     private:
-        [[nodiscard]] static void_awaitable_type send_sdk_sms(const sms_code &sms_code, const apps &apps);
+        [[nodiscard]] static void_awaitable_type send_sdk_sms(const sms_code& sms_code, const apps& apps);
     };
 }

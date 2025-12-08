@@ -1,15 +1,15 @@
-﻿#include "auth/data/app_email_providers.h"
-#include "send_email.h"
-#include "auth/data/app_secret.h"
-#include "auth/auth_fwd.h"
+﻿#include "send_email.h"
 #include "send_email_response.h"
+#include "auth/auth_fwd.h"
+#include "auth/data/app_email_providers.h"
+#include "auth/data/app_secret.h"
+#include "auth/detail/email/send_email_parameter.h"
+#include "auth/detail/email/send_email_to_providers.h"
 #include "common/random_helper.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/redis/auth/email_code.h"
 #include "database/generated/redis/auth/email_limit.h"
-#include "auth/detail/send_email_parameter.h"
 #include "message/game_error_type.h"
-#include "auth/detail/send_email_to_providers.h"
 
 celeritas::send_email::send_email(http_handle_parameter handle_parameter)
     : base_type{ std::move(handle_parameter) }

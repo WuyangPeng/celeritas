@@ -10,8 +10,7 @@ celeritas::phone_login_response::phone_login_response(const game_error_type code
 {
 }
 
-celeritas::phone_login_response::phone_login_response(const game_error_type code, std::string message,
-                                                      std::string token, const int64_t expire_milliseconds)
+celeritas::phone_login_response::phone_login_response(const game_error_type code, std::string message, std::string token, const int64_t expire_milliseconds)
     : bass_type{ code, std::move(message), std::move(token), expire_milliseconds }
 {
 }
@@ -39,11 +38,7 @@ celeritas::phone_login_response
     return phone_login_response{ tag_invoke(token_http_response_tag{}, value) };
 }
 
-void celeritas::tag_invoke(const boost::json::value_from_tag tag, phone_login_response::json_value& value,
-                           const phone_login_response& phone_login_response)
+void celeritas::tag_invoke(const boost::json::value_from_tag tag, phone_login_response::json_value& value, const phone_login_response& phone_login_response)
 {
-    tag_invoke(tag, value, phone_login_response::bass_type{
-                   phone_login_response.get_code(), phone_login_response.get_message(),
-                   phone_login_response.get_token(), phone_login_response.get_expire_milliseconds()
-               });
+    tag_invoke(tag, value, phone_login_response::bass_type{ phone_login_response.get_code(), phone_login_response.get_message(), phone_login_response.get_token(), phone_login_response.get_expire_milliseconds() });
 }
