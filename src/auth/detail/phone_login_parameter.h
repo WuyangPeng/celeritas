@@ -1,17 +1,15 @@
 ﻿#pragma once
 
 #include "phone_operation_parameter.h"
-#include "auth/phone_login_response.h"
+#include "auth/authentication/phone/phone_login_response.h"
 
-namespace celeritas
-{
-    class phone_login_parameter final : public phone_operation_parameter
-    {
+namespace celeritas {
+    class phone_login_parameter final : public phone_operation_parameter {
     public:
         using class_type = phone_login_parameter;
         using base_type = phone_operation_parameter;
 
-        explicit phone_login_parameter(const http_handle_parameter& http_handle_parameter);
+        explicit phone_login_parameter(const http_handle_parameter &http_handle_parameter);
 
         [[nodiscard]] bool is_failure() const override;
 

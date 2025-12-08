@@ -1,17 +1,15 @@
 ﻿#pragma once
 
 #include "sdk_parameter.h"
-#include "auth/sdk_bind_response.h"
+#include "auth/authentication/sdk/sdk_bind_response.h"
 
-namespace celeritas
-{
-    class sdk_bind_parameter final : public sdk_parameter
-    {
+namespace celeritas {
+    class sdk_bind_parameter final : public sdk_parameter {
     public:
         using class_type = sdk_bind_parameter;
         using base_type = sdk_parameter;
 
-        explicit sdk_bind_parameter(const http_handle_parameter& http_handle_parameter);
+        explicit sdk_bind_parameter(const http_handle_parameter &http_handle_parameter);
 
         [[nodiscard]] bool is_failure() const override;
 

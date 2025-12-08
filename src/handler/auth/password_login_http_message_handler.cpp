@@ -1,6 +1,6 @@
 ﻿#include "password_login_http_message_handler.h"
-#include "auth/password_login.h"
-#include "auth/password_login_response.h"
+#include "auth/authentication/password/password_login.h"
+#include "auth/authentication/password/password_login_response.h"
 #include "common/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_fwd.h"
@@ -27,7 +27,8 @@ bool celeritas::password_login_http_message_handler::handle(const http_handle_pa
     return true;
 }
 
-celeritas::password_login_http_message_handler::void_awaitable_type celeritas::password_login_http_message_handler::response(http_handle_parameter handle_parameter)
+celeritas::password_login_http_message_handler::void_awaitable_type
+    celeritas::password_login_http_message_handler::response(http_handle_parameter handle_parameter)
 {
     try
     {

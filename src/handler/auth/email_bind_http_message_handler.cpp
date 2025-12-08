@@ -1,6 +1,6 @@
 ﻿#include "email_bind_http_message_handler.h"
-#include "auth/email_bind_response.h"
-#include "auth/email_bind.h"
+#include "auth/authentication/email/email_bind_response.h"
+#include "auth/authentication/email/email_bind.h"
 #include "common/logger.h"
 #include "handler/handler_fwd.h"
 #include "message/http_handle_parameter.h"
@@ -12,7 +12,8 @@ std::string celeritas::email_bind_http_message_handler::get_supported_type_name(
     return email_bind_path.data();
 }
 
-bool celeritas::email_bind_http_message_handler::handle(const http_handle_parameter& handle_parameter, const http_message_registry_weak_ptr& message_registry)
+bool celeritas::email_bind_http_message_handler::handle(const http_handle_parameter& handle_parameter,
+                                                        const http_message_registry_weak_ptr& message_registry)
 {
     if (handle_parameter.get_server_type() != auth_type)
     {
@@ -26,7 +27,8 @@ bool celeritas::email_bind_http_message_handler::handle(const http_handle_parame
     return true;
 }
 
-celeritas::email_bind_http_message_handler::void_awaitable_type celeritas::email_bind_http_message_handler::response(http_handle_parameter handle_parameter)
+celeritas::email_bind_http_message_handler::void_awaitable_type celeritas::email_bind_http_message_handler::response(
+    http_handle_parameter handle_parameter)
 {
     try
     {

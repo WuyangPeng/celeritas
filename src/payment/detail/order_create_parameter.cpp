@@ -1,12 +1,13 @@
 ﻿#include "order_create_parameter.h"
 #include "payment_internal_fwd.h"
-#include "auth/app_secret.h"
+#include "auth/data/app_secret.h"
 #include "common/hmac_sha_256.h"
 
 #include <boost/lexical_cast.hpp>
 
 celeritas::order_create_parameter::order_create_parameter(const http_handle_parameter& http_handle_parameter)
-    : base_type{ http_handle_parameter }, client_request_id_{}, account_id_{}, game_server_id_{}, role_id_{}, product_id_{}, amount_{}, platform_{}, apps_{}
+    : base_type{ http_handle_parameter }, client_request_id_{}, account_id_{}, game_server_id_{}, role_id_{},
+      product_id_{}, amount_{}, platform_{}, apps_{}
 {
 }
 
@@ -132,7 +133,10 @@ void celeritas::order_create_parameter::init()
         response_ = order_create_http_response{ *http_response };
     }
 
-    if (const auto hmac_sha256 = hmac_sha256::calculate_with_args(apps_->get_app_payment_secret(), client_request_id_, account_id_, game_server_id_, role_id_, product_id_, amount_, static_cast<int>(platform_), get_timestamp());
+    if (const auto hmac_sha256 = hmac_sha256::calculate_with_args(apps_->get_app_payment_secret(), client_request_id_,
+                                                                  account_id_, game_server_id_, role_id_, product_id_,
+                                                                  amount_, static_cast<int>(platform_),
+                                                                  get_timestamp());
         hmac_sha256 != get_sign())
     {
         response_ = order_create_http_response{ game_error_type::sign_error };

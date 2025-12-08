@@ -1,6 +1,6 @@
 ﻿#include "auth_internal_fwd.h"
 #include "email_operation_parameter.h"
-#include "auth/auth_service_base.h"
+#include "auth/core/auth_service_base.h"
 
 #include <boost/lexical_cast.hpp>
 

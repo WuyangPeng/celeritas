@@ -1,6 +1,6 @@
 ﻿#include "sdk_bind_http_message_handler.h"
-#include "auth/sdk_bind.h"
-#include "auth/sdk_bind_response.h"
+#include "auth/authentication/sdk/sdk_bind.h"
+#include "auth/authentication/sdk/sdk_bind_response.h"
 #include "common/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_fwd.h"
@@ -27,7 +27,8 @@ bool celeritas::sdk_bind_http_message_handler::handle(const http_handle_paramete
     return true;
 }
 
-celeritas::sdk_bind_http_message_handler::void_awaitable_type celeritas::sdk_bind_http_message_handler::response(http_handle_parameter handle_parameter)
+celeritas::sdk_bind_http_message_handler::void_awaitable_type celeritas::sdk_bind_http_message_handler::response(
+    http_handle_parameter handle_parameter)
 {
     try
     {

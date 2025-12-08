@@ -1,7 +1,7 @@
 ﻿#include "email_login_http_message_handler.h"
-#include "auth/email_login.h"
-#include "auth/email_login_response.h"
-#include "auth/phone_login.h"
+#include "auth/authentication/email/email_login.h"
+#include "auth/authentication/email/email_login_response.h"
+#include "auth/authentication/phone/phone_login.h"
 #include "common/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_fwd.h"
@@ -28,7 +28,8 @@ bool celeritas::email_login_http_message_handler::handle(const http_handle_param
     return true;
 }
 
-celeritas::email_login_http_message_handler::void_awaitable_type celeritas::email_login_http_message_handler::response(http_handle_parameter handle_parameter)
+celeritas::email_login_http_message_handler::void_awaitable_type celeritas::email_login_http_message_handler::response(
+    http_handle_parameter handle_parameter)
 {
     try
     {

@@ -1,6 +1,6 @@
 ﻿#include "phone_bind_http_message_handler.h"
-#include "auth/phone_bind.h"
-#include "auth/phone_bind_response.h"
+#include "auth/authentication/phone/phone_bind.h"
+#include "auth/authentication/phone/phone_bind_response.h"
 #include "common/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_fwd.h"
@@ -12,7 +12,8 @@ std::string celeritas::phone_bind_http_message_handler::get_supported_type_name(
     return phone_bind_path.data();
 }
 
-bool celeritas::phone_bind_http_message_handler::handle(const http_handle_parameter& handle_parameter, const http_message_registry_weak_ptr& message_registry)
+bool celeritas::phone_bind_http_message_handler::handle(const http_handle_parameter& handle_parameter,
+                                                        const http_message_registry_weak_ptr& message_registry)
 {
     if (handle_parameter.get_server_type() != auth_type)
     {
@@ -26,7 +27,8 @@ bool celeritas::phone_bind_http_message_handler::handle(const http_handle_parame
     return true;
 }
 
-celeritas::phone_bind_http_message_handler::void_awaitable_type celeritas::phone_bind_http_message_handler::response(http_handle_parameter handle_parameter)
+celeritas::phone_bind_http_message_handler::void_awaitable_type celeritas::phone_bind_http_message_handler::response(
+    http_handle_parameter handle_parameter)
 {
     try
     {

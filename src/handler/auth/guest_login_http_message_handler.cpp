@@ -1,7 +1,7 @@
 ﻿#include "guest_login_http_message_handler.h"
-#include "auth/app_secret.h"
-#include "auth/guest_login.h"
-#include "auth/guest_login_response.h"
+#include "auth/data/app_secret.h"
+#include "auth/authentication/guest/guest_login.h"
+#include "auth/authentication/guest/guest_login_response.h"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "config/app_config.h"
@@ -33,7 +33,8 @@ bool celeritas::guest_login_http_message_handler::handle(const http_handle_param
     return true;
 }
 
-celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::guest_login_http_message_handler::response(http_handle_parameter handle_parameter)
+celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::guest_login_http_message_handler::response(
+    http_handle_parameter handle_parameter)
 {
     try
     {

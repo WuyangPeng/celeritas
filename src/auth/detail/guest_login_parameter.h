@@ -1,18 +1,16 @@
 ﻿#pragma once
 
 #include "auth_parameter.h"
-#include "auth/guest_login_response.h"
+#include "auth/authentication/guest/guest_login_response.h"
 #include "message/http_handle_parameter.h"
 
-namespace celeritas
-{
-    class guest_login_parameter final : public auth_parameter
-    {
+namespace celeritas {
+    class guest_login_parameter final : public auth_parameter {
     public:
         using class_type = guest_login_parameter;
         using base_type = auth_parameter;
 
-        explicit guest_login_parameter(const http_handle_parameter& http_handle_parameter);
+        explicit guest_login_parameter(const http_handle_parameter &http_handle_parameter);
 
         [[nodiscard]] std::string get_device_id() const;
 

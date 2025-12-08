@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "email_operation_parameter.h"
-#include "auth/auth_service_base.h"
+#include "auth/core/auth_service_base.h"
 #include "database/database_pool_base.h"
 
 template <typename ResponseType>

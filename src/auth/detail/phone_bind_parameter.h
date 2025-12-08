@@ -1,17 +1,15 @@
 ﻿#pragma once
 
 #include "phone_operation_parameter.h"
-#include "auth/phone_bind_response.h"
+#include "auth/authentication/phone/phone_bind_response.h"
 
-namespace celeritas
-{
-    class phone_bind_parameter final : public phone_operation_parameter
-    {
+namespace celeritas {
+    class phone_bind_parameter final : public phone_operation_parameter {
     public:
         using class_type = phone_bind_parameter;
         using base_type = phone_operation_parameter;
 
-        explicit phone_bind_parameter(const http_handle_parameter& http_handle_parameter);
+        explicit phone_bind_parameter(const http_handle_parameter &http_handle_parameter);
 
         [[nodiscard]] bool is_failure() const override;
 

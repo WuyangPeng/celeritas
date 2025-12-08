@@ -1,6 +1,6 @@
 ﻿#include "send_email_http_message_handler.h"
-#include "auth/send_email.h"
-#include "auth/send_email_response.h"
+#include "auth/authentication/email/send_email.h"
+#include "auth/authentication/email/send_email_response.h"
 #include "boost/asio/co_spawn.hpp"
 #include "common/logger.h"
 #include "handler/handler_fwd.h"
@@ -28,7 +28,8 @@ bool celeritas::send_email_http_message_handler::handle(const http_handle_parame
     return true;
 }
 
-celeritas::send_email_http_message_handler::void_awaitable_type celeritas::send_email_http_message_handler::response(http_handle_parameter handle_parameter)
+celeritas::send_email_http_message_handler::void_awaitable_type celeritas::send_email_http_message_handler::response(
+    http_handle_parameter handle_parameter)
 {
     try
     {

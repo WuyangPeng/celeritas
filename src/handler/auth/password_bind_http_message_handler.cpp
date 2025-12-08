@@ -1,7 +1,7 @@
 ﻿#include "password_bind_http_message_handler.h"
-#include "auth/password_bind.h"
-#include "auth/password_bind_response.h"
-#include "auth/phone_bind.h"
+#include "auth/authentication/password/password_bind.h"
+#include "auth/authentication/password/password_bind_response.h"
+#include "auth/authentication/phone/phone_bind.h"
 #include "common/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_fwd.h"
@@ -28,7 +28,8 @@ bool celeritas::password_bind_http_message_handler::handle(const http_handle_par
     return true;
 }
 
-celeritas::password_bind_http_message_handler::void_awaitable_type celeritas::password_bind_http_message_handler::response(http_handle_parameter handle_parameter)
+celeritas::password_bind_http_message_handler::void_awaitable_type
+    celeritas::password_bind_http_message_handler::response(http_handle_parameter handle_parameter)
 {
     try
     {

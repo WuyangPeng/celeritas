@@ -1,6 +1,6 @@
 ﻿#include "auth_internal_fwd.h"
 #include "email_parameter.h"
-#include "auth/app_secret.h"
+#include "auth/data/app_secret.h"
 
 #include <regex>
 

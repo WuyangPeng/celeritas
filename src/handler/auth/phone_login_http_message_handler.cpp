@@ -1,6 +1,6 @@
 ﻿#include "phone_login_http_message_handler.h"
-#include "auth/phone_login.h"
-#include "auth/phone_login_response.h"
+#include "auth/authentication/phone/phone_login.h"
+#include "auth/authentication/phone/phone_login_response.h"
 #include "common/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_fwd.h"
