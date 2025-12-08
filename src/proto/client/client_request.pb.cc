@@ -79,20 +79,20 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_proto_2fclient_2fclient_5frequest_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n!proto/client/client_request.proto\022\026cel"
-    "eritas.proto.client\032\027proto/client/auth.p"
-    "roto\"X\n\016client_request\022;\n\004auth\030\001 \001(\0132+.c"
-    "eleritas.proto.client.client_auth_reques"
-    "tH\000B\t\n\007payloadb\006proto3"
+    "eritas.proto.client\032\031proto/client/player"
+    ".proto\"\\\n\016client_request\022\?\n\006player\030\001 \001(\013"
+    "2-.celeritas.proto.client.client_player_"
+    "requestH\000B\t\n\007payloadb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_proto_2fclient_2fclient_5frequest_2eproto_deps[1] = {
-        &::descriptor_table_proto_2fclient_2fauth_2eproto,
+        &::descriptor_table_proto_2fclient_2fplayer_2eproto,
 };
 static ::absl::once_flag descriptor_table_proto_2fclient_2fclient_5frequest_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fclient_2fclient_5frequest_2eproto = {
     false,
     false,
-    182,
+    188,
     descriptor_table_protodef_proto_2fclient_2fclient_5frequest_2eproto,
     "proto/client/client_request.proto",
     &descriptor_table_proto_2fclient_2fclient_5frequest_2eproto_once,
@@ -116,26 +116,26 @@ class client_request::_Internal {
       PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_request, _impl_._oneof_case_);
 };
 
-void client_request::set_allocated_auth(::celeritas::proto::client::client_auth_request* PROTOBUF_NULLABLE auth) {
+void client_request::set_allocated_player(::celeritas::proto::client::client_player_request* PROTOBUF_NULLABLE player) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
-  if (auth) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(auth)->GetArena();
+  if (player) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(player)->GetArena();
     if (message_arena != submessage_arena) {
-      auth = ::google::protobuf::internal::GetOwnedMessage(message_arena, auth, submessage_arena);
+      player = ::google::protobuf::internal::GetOwnedMessage(message_arena, player, submessage_arena);
     }
-    set_has_auth();
-    _impl_.payload_.auth_ = auth;
+    set_has_player();
+    _impl_.payload_.player_ = player;
   }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.client_request.auth)
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.client_request.player)
 }
-void client_request::clear_auth() {
+void client_request::clear_player() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kAuth) {
+  if (payload_case() == kPlayer) {
     if (GetArena() == nullptr) {
-      delete _impl_.payload_.auth_;
+      delete _impl_.payload_.player_;
     } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.auth_);
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.player_);
     }
     clear_has_payload();
   }
@@ -173,8 +173,8 @@ client_request::client_request(
   switch (payload_case()) {
     case PAYLOAD_NOT_SET:
       break;
-      case kAuth:
-        _impl_.payload_.auth_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.auth_);
+      case kPlayer:
+        _impl_.payload_.player_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.player_);
         break;
   }
 
@@ -211,11 +211,11 @@ void client_request::clear_payload() {
 // @@protoc_insertion_point(one_of_clear_start:celeritas.proto.client.client_request)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   switch (payload_case()) {
-    case kAuth: {
+    case kPlayer: {
       if (GetArena() == nullptr) {
-        delete _impl_.payload_.auth_;
+        delete _impl_.payload_.player_;
       } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.auth_);
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.player_);
       }
       break;
     }
@@ -293,11 +293,11 @@ client_request::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // .celeritas.proto.client.client_auth_request auth = 1;
-    {PROTOBUF_FIELD_OFFSET(client_request, _impl_.payload_.auth_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.client.client_player_request player = 1;
+    {PROTOBUF_FIELD_OFFSET(client_request, _impl_.payload_.player_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
-      {::_pbi::TcParser::GetTable<::celeritas::proto::client::client_auth_request>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::client::client_player_request>()},
   }},
   {{
   }},
@@ -331,10 +331,10 @@ PROTOBUF_NOINLINE void client_request::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // .celeritas.proto.client.client_auth_request auth = 1;
-  if (this_.payload_case() == kAuth) {
+  // .celeritas.proto.client.client_player_request player = 1;
+  if (this_.payload_case() == kPlayer) {
     target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, *this_._impl_.payload_.auth_, this_._impl_.payload_.auth_->GetCachedSize(), target,
+        1, *this_._impl_.payload_.player_, this_._impl_.payload_.player_->GetCachedSize(), target,
         stream);
   }
 
@@ -362,10 +362,10 @@ PROTOBUF_NOINLINE void client_request::Clear() {
   (void)cached_has_bits;
 
   switch (this_.payload_case()) {
-    // .celeritas.proto.client.client_auth_request auth = 1;
-    case kAuth: {
+    // .celeritas.proto.client.client_player_request player = 1;
+    case kPlayer: {
       total_size += 1 +
-                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.auth_);
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.player_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -399,11 +399,11 @@ void client_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::
     }
 
     switch (oneof_from_case) {
-      case kAuth: {
+      case kPlayer: {
         if (oneof_needs_init) {
-          _this->_impl_.payload_.auth_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.auth_);
+          _this->_impl_.payload_.player_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.player_);
         } else {
-          _this->_impl_.payload_.auth_->MergeFrom(*from._impl_.payload_.auth_);
+          _this->_impl_.payload_.player_->MergeFrom(*from._impl_.payload_.player_);
         }
         break;
       }

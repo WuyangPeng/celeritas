@@ -1,0 +1,30 @@
+﻿syntax = "proto3";
+
+package celeritas.proto.client;
+
+message login_request {
+    string token = 1;
+    string game_server_id = 2;
+    string device_id = 3;
+    string app_version = 4;
+}
+
+message login_response {
+    string session_key = 1;
+    int64 character_id = 2;
+    int64 current_time = 3;
+}
+
+message client_login_request {
+  oneof payload {
+    login_request login = 1;
+  }
+}
+
+message client_login_response {
+  oneof payload {
+    login_response login = 1;
+  }
+}
+
+

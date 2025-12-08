@@ -29,7 +29,7 @@
 #include "google/protobuf/repeated_field.h"  // IWYU pragma: export
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/unknown_field_set.h"
-#include "proto/client/auth.pb.h"
+#include "proto/client/player.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -133,7 +133,7 @@ class client_request final : public ::google::protobuf::Message
         &_client_request_default_instance_);
   }
   enum PayloadCase {
-    kAuth = 1,
+    kPlayer = 1,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 0;
@@ -224,25 +224,25 @@ class client_request final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kAuthFieldNumber = 1,
+    kPlayerFieldNumber = 1,
   };
-  // .celeritas.proto.client.client_auth_request auth = 1;
-  bool has_auth() const;
+  // .celeritas.proto.client.client_player_request player = 1;
+  bool has_player() const;
   private:
-  bool _internal_has_auth() const;
+  bool _internal_has_player() const;
 
   public:
-  void clear_auth() ;
-  const ::celeritas::proto::client::client_auth_request& auth() const;
-  [[nodiscard]] ::celeritas::proto::client::client_auth_request* PROTOBUF_NULLABLE release_auth();
-  ::celeritas::proto::client::client_auth_request* PROTOBUF_NONNULL mutable_auth();
-  void set_allocated_auth(::celeritas::proto::client::client_auth_request* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_auth(::celeritas::proto::client::client_auth_request* PROTOBUF_NULLABLE value);
-  ::celeritas::proto::client::client_auth_request* PROTOBUF_NULLABLE unsafe_arena_release_auth();
+  void clear_player() ;
+  const ::celeritas::proto::client::client_player_request& player() const;
+  [[nodiscard]] ::celeritas::proto::client::client_player_request* PROTOBUF_NULLABLE release_player();
+  ::celeritas::proto::client::client_player_request* PROTOBUF_NONNULL mutable_player();
+  void set_allocated_player(::celeritas::proto::client::client_player_request* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_player(::celeritas::proto::client::client_player_request* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::client_player_request* PROTOBUF_NULLABLE unsafe_arena_release_player();
 
   private:
-  const ::celeritas::proto::client::client_auth_request& _internal_auth() const;
-  ::celeritas::proto::client::client_auth_request* PROTOBUF_NONNULL _internal_mutable_auth();
+  const ::celeritas::proto::client::client_player_request& _internal_player() const;
+  ::celeritas::proto::client::client_player_request* PROTOBUF_NONNULL _internal_mutable_player();
 
   public:
   void clear_payload();
@@ -250,7 +250,7 @@ class client_request final : public ::google::protobuf::Message
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_request)
  private:
   class _Internal;
-  void set_has_auth();
+  void set_has_player();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
@@ -277,7 +277,7 @@ class client_request final : public ::google::protobuf::Message
     union PayloadUnion {
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
-      ::celeritas::proto::client::client_auth_request* PROTOBUF_NULLABLE auth_;
+      ::celeritas::proto::client::client_player_request* PROTOBUF_NULLABLE player_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -305,73 +305,73 @@ extern const ::google::protobuf::internal::ClassDataFull client_request_class_da
 
 // client_request
 
-// .celeritas.proto.client.client_auth_request auth = 1;
-inline bool client_request::has_auth() const {
-  return payload_case() == kAuth;
+// .celeritas.proto.client.client_player_request player = 1;
+inline bool client_request::has_player() const {
+  return payload_case() == kPlayer;
 }
-inline bool client_request::_internal_has_auth() const {
-  return payload_case() == kAuth;
+inline bool client_request::_internal_has_player() const {
+  return payload_case() == kPlayer;
 }
-inline void client_request::set_has_auth() {
-  _impl_._oneof_case_[0] = kAuth;
+inline void client_request::set_has_player() {
+  _impl_._oneof_case_[0] = kPlayer;
 }
-inline ::celeritas::proto::client::client_auth_request* PROTOBUF_NULLABLE client_request::release_auth() {
-  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_request.auth)
-  if (payload_case() == kAuth) {
+inline ::celeritas::proto::client::client_player_request* PROTOBUF_NULLABLE client_request::release_player() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_request.player)
+  if (payload_case() == kPlayer) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.auth_;
+    auto* temp = _impl_.payload_.player_;
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
-    _impl_.payload_.auth_ = nullptr;
+    _impl_.payload_.player_ = nullptr;
     return temp;
   } else {
     return nullptr;
   }
 }
-inline const ::celeritas::proto::client::client_auth_request& client_request::_internal_auth() const {
-  return payload_case() == kAuth ? *_impl_.payload_.auth_ : reinterpret_cast<::celeritas::proto::client::client_auth_request&>(::celeritas::proto::client::_client_auth_request_default_instance_);
+inline const ::celeritas::proto::client::client_player_request& client_request::_internal_player() const {
+  return payload_case() == kPlayer ? *_impl_.payload_.player_ : reinterpret_cast<::celeritas::proto::client::client_player_request&>(::celeritas::proto::client::_client_player_request_default_instance_);
 }
-inline const ::celeritas::proto::client::client_auth_request& client_request::auth() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_request.auth)
-  return _internal_auth();
+inline const ::celeritas::proto::client::client_player_request& client_request::player() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_request.player)
+  return _internal_player();
 }
-inline ::celeritas::proto::client::client_auth_request* PROTOBUF_NULLABLE client_request::unsafe_arena_release_auth() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_request.auth)
-  if (payload_case() == kAuth) {
+inline ::celeritas::proto::client::client_player_request* PROTOBUF_NULLABLE client_request::unsafe_arena_release_player() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_request.player)
+  if (payload_case() == kPlayer) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.auth_;
-    _impl_.payload_.auth_ = nullptr;
+    auto* temp = _impl_.payload_.player_;
+    _impl_.payload_.player_ = nullptr;
     return temp;
   } else {
     return nullptr;
   }
 }
-inline void client_request::unsafe_arena_set_allocated_auth(
-    ::celeritas::proto::client::client_auth_request* PROTOBUF_NULLABLE value) {
+inline void client_request::unsafe_arena_set_allocated_player(
+    ::celeritas::proto::client::client_player_request* PROTOBUF_NULLABLE value) {
   // We rely on the oneof clear method to free the earlier contents
   // of this oneof. We can directly use the pointer we're given to
   // set the new value.
   clear_payload();
   if (value) {
-    set_has_auth();
-    _impl_.payload_.auth_ = value;
+    set_has_player();
+    _impl_.payload_.player_ = value;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_request.auth)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_request.player)
 }
-inline ::celeritas::proto::client::client_auth_request* PROTOBUF_NONNULL client_request::_internal_mutable_auth() {
-  if (payload_case() != kAuth) {
+inline ::celeritas::proto::client::client_player_request* PROTOBUF_NONNULL client_request::_internal_mutable_player() {
+  if (payload_case() != kPlayer) {
     clear_payload();
-    set_has_auth();
-    _impl_.payload_.auth_ = 
-        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_auth_request>(GetArena());
+    set_has_player();
+    _impl_.payload_.player_ = 
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_player_request>(GetArena());
   }
-  return _impl_.payload_.auth_;
+  return _impl_.payload_.player_;
 }
-inline ::celeritas::proto::client::client_auth_request* PROTOBUF_NONNULL client_request::mutable_auth()
+inline ::celeritas::proto::client::client_player_request* PROTOBUF_NONNULL client_request::mutable_player()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::celeritas::proto::client::client_auth_request* _msg = _internal_mutable_auth();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_request.auth)
+  ::celeritas::proto::client::client_player_request* _msg = _internal_mutable_player();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_request.player)
   return _msg;
 }
 

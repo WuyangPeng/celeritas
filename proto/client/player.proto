@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package celeritas.proto.client;
+
+import "proto/client/login.proto";
+
+message client_player_request {
+  oneof payload {
+    client_login_request login = 1;
+  }
+}
+
+message client_player_response {
+  oneof payload {
+    client_login_response login = 1;
+  }
+}
+
+

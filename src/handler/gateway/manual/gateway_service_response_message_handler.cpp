@@ -1,4 +1,6 @@
 ﻿#include "gateway_service_response_message_handler.h"
+#include "common/application_loader_base.h"
+#include "message/protobuf_handle_parameter.h"
 
 celeritas::gateway_service_response_message_handler::gateway_service_response_message_handler()
 {

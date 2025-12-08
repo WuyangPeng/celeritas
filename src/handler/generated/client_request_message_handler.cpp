@@ -5,11 +5,11 @@
 
 celeritas::client_request_message_handler::client_request_message_handler()
 {
-    add_handler_function(proto::client::client_request::PayloadCase::kAuth,
+    add_handler_function(proto::client::client_request::PayloadCase::kPlayer,
                          [](const protobuf_handle_parameter& handle_parameter,
                             const message_type& current_message,
                             const message_registry_shared_ptr& message_registry) -> bool {
-                             return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::auth);
+                             return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::player);
                          });
 
 }
