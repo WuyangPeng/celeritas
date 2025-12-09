@@ -1,4 +1,5 @@
 ﻿#include "gateway_client_login_request_message_handler.h"
+#include "message/concrete_message_handler.tpp"
 
 celeritas::gateway_client_login_request_message_handler::gateway_client_login_request_message_handler()
 {
