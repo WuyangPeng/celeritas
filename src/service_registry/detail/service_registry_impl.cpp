@@ -35,7 +35,7 @@ void celeritas::service_registry_impl::clear_services(const std::string& service
 
 celeritas::service_registry_impl::service_info_container_type celeritas::service_registry_impl::get_services(const std::string& service_name)
 {
-    std::lock_guard lock{ mutex_ };
+    std::shared_lock lock{ mutex_ };
 
     service_info_container_type services{};
     if (const auto iter = server_.find(service_name);
@@ -58,7 +58,7 @@ celeritas::service_registry_impl::service_info_container_type celeritas::service
 
 celeritas::service_registry_impl::service_info_container_type celeritas::service_registry_impl::get_idle_services(const std::string& service_name)
 {
-    std::lock_guard lock{ mutex_ };
+    std::shared_lock lock{ mutex_ };
 
     ++next_index_;
 
@@ -80,7 +80,7 @@ celeritas::service_registry_impl::service_info_container_type celeritas::service
 
 celeritas::service_registry_impl::optional_service_info celeritas::service_registry_impl::get_idle_services(const std::string& service_name, const std::string& game_server_id)
 {
-    std::lock_guard lock{ mutex_ };
+    std::shared_lock lock{ mutex_ };
 
     ++next_index_;
 
@@ -99,7 +99,7 @@ celeritas::service_registry_impl::optional_service_info celeritas::service_regis
 
 celeritas::service_registry_impl::optional_service_info celeritas::service_registry_impl::get_services_by_instance_id(const std::string& instance_id)
 {
-    std::lock_guard lock{ cleanup_timer_mutex_ };
+    std::shared_lock lock{ mutex_ };
 
     if (const auto iter = registry_.find(instance_id);
         iter != registry_.cend())

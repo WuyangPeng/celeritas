@@ -2,7 +2,6 @@
 
 #include "common/common_fwd.h"
 #include "service_registry/service_info.h"
-#include "service_registry/service_registry.h"
 
 #include <boost/asio.hpp>
 #include <boost/log/trivial.hpp>
@@ -76,6 +75,6 @@ namespace celeritas
         std::shared_mutex mutex_;
         std::shared_mutex cleanup_timer_mutex_;
         cleanup_timer_shared_ptr cleanup_timer_;
-        int32_t next_index_ = 0;
+        std::atomic_int next_index_ = 0;
     };
 }
