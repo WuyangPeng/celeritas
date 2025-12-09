@@ -26,6 +26,7 @@ namespace celeritas
         tcp_client(io_context_type& io_context,
                    network_message_callback_weak_ptr callback,
                    std::string game_server_id,
+                   std::string instance_id,
                    std::string host,
                    int port,
                    std::string server_type);
@@ -38,6 +39,10 @@ namespace celeritas
         [[nodiscard]] int get_port() const;
 
         [[nodiscard]] std::string get_server_type() const;
+
+        [[nodiscard]] std::string get_game_server_id() const;
+
+        [[nodiscard]] std::string get_instance_id() const;
 
         [[nodiscard]] network_message_callback_weak_ptr get_network_message_callback();
 
@@ -62,6 +67,7 @@ namespace celeritas
         io_context_type& io_context_;
         network_message_callback_weak_ptr network_message_callback_;
         std::string game_server_id_;
+        std::string instance_id_;
         std::string host_;
         int port_;
         std::string server_type_;

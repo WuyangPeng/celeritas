@@ -42,6 +42,8 @@ namespace celeritas
 
         [[nodiscard]] optional_service_info get_idle_services(const std::string& service_name, const std::string& game_server_id);
 
+        [[nodiscard]] optional_service_info get_services_by_instance_id(const std::string& instance_id);
+
         void start_cleanup_timer(io_context_type& io_context);
 
         void cleanup_services_by_duration();

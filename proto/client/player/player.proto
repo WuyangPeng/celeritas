@@ -3,17 +3,18 @@ syntax = "proto3";
 package celeritas.proto.client;
 
 import "proto/client/player/login.proto";
+import "proto/client/player/heartbeat.proto";
 
 message client_player_request {
   oneof payload {
     client_login_request login = 1;
+    client_heartbeat_request heartbeat = 2;
   }
 }
 
 message client_player_response {
   oneof payload {
     client_login_response login = 1;
+    client_heartbeat_response heartbeat = 2;
   }
 }
-
-

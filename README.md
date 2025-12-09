@@ -31,6 +31,8 @@
 - service_registry 服务注册
 - auth 认证
 - payment 支付
+- gateway 网关
+- player 玩家
 - handler 处理器
 - initializer 初始化
 
@@ -83,6 +85,6 @@
     - HTTP + SSL 6
     - Websocket + SSL 7
 
-## [feature（实现功能）](docs/feature.md) 
+## [feature（实现功能）](docs/feature.md)
 
 ## [docker（安装docker）](docs/docker.md) 

@@ -30,6 +30,7 @@
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/unknown_field_set.h"
 #include "proto/client/player/login.pb.h"
+#include "proto/client/player/heartbeat.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -138,6 +139,7 @@ class client_player_response final : public ::google::protobuf::Message
   }
   enum PayloadCase {
     kLogin = 1,
+    kHeartbeat = 2,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 1;
@@ -229,6 +231,7 @@ class client_player_response final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kLoginFieldNumber = 1,
+    kHeartbeatFieldNumber = 2,
   };
   // .celeritas.proto.client.client_login_response login = 1;
   bool has_login() const;
@@ -249,17 +252,37 @@ class client_player_response final : public ::google::protobuf::Message
   ::celeritas::proto::client::client_login_response* PROTOBUF_NONNULL _internal_mutable_login();
 
   public:
+  // .celeritas.proto.client.client_heartbeat_response heartbeat = 2;
+  bool has_heartbeat() const;
+  private:
+  bool _internal_has_heartbeat() const;
+
+  public:
+  void clear_heartbeat() ;
+  const ::celeritas::proto::client::client_heartbeat_response& heartbeat() const;
+  [[nodiscard]] ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NULLABLE release_heartbeat();
+  ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NONNULL mutable_heartbeat();
+  void set_allocated_heartbeat(::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_heartbeat(::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NULLABLE unsafe_arena_release_heartbeat();
+
+  private:
+  const ::celeritas::proto::client::client_heartbeat_response& _internal_heartbeat() const;
+  ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NONNULL _internal_mutable_heartbeat();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_player_response)
  private:
   class _Internal;
   void set_has_login();
+  void set_has_heartbeat();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
-                                   1, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 2,
+                                   2, 0,
                                    2>
       _table_;
 
@@ -282,6 +305,7 @@ class client_player_response final : public ::google::protobuf::Message
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
       ::celeritas::proto::client::client_login_response* PROTOBUF_NULLABLE login_;
+      ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NULLABLE heartbeat_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -351,6 +375,7 @@ class client_player_request final : public ::google::protobuf::Message
   }
   enum PayloadCase {
     kLogin = 1,
+    kHeartbeat = 2,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 0;
@@ -442,6 +467,7 @@ class client_player_request final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kLoginFieldNumber = 1,
+    kHeartbeatFieldNumber = 2,
   };
   // .celeritas.proto.client.client_login_request login = 1;
   bool has_login() const;
@@ -462,17 +488,37 @@ class client_player_request final : public ::google::protobuf::Message
   ::celeritas::proto::client::client_login_request* PROTOBUF_NONNULL _internal_mutable_login();
 
   public:
+  // .celeritas.proto.client.client_heartbeat_request heartbeat = 2;
+  bool has_heartbeat() const;
+  private:
+  bool _internal_has_heartbeat() const;
+
+  public:
+  void clear_heartbeat() ;
+  const ::celeritas::proto::client::client_heartbeat_request& heartbeat() const;
+  [[nodiscard]] ::celeritas::proto::client::client_heartbeat_request* PROTOBUF_NULLABLE release_heartbeat();
+  ::celeritas::proto::client::client_heartbeat_request* PROTOBUF_NONNULL mutable_heartbeat();
+  void set_allocated_heartbeat(::celeritas::proto::client::client_heartbeat_request* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_heartbeat(::celeritas::proto::client::client_heartbeat_request* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::client_heartbeat_request* PROTOBUF_NULLABLE unsafe_arena_release_heartbeat();
+
+  private:
+  const ::celeritas::proto::client::client_heartbeat_request& _internal_heartbeat() const;
+  ::celeritas::proto::client::client_heartbeat_request* PROTOBUF_NONNULL _internal_mutable_heartbeat();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_player_request)
  private:
   class _Internal;
   void set_has_login();
+  void set_has_heartbeat();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
-                                   1, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 2,
+                                   2, 0,
                                    2>
       _table_;
 
@@ -495,6 +541,7 @@ class client_player_request final : public ::google::protobuf::Message
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
       ::celeritas::proto::client::client_login_request* PROTOBUF_NULLABLE login_;
+      ::celeritas::proto::client::client_heartbeat_request* PROTOBUF_NULLABLE heartbeat_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -592,6 +639,76 @@ inline ::celeritas::proto::client::client_login_request* PROTOBUF_NONNULL client
   return _msg;
 }
 
+// .celeritas.proto.client.client_heartbeat_request heartbeat = 2;
+inline bool client_player_request::has_heartbeat() const {
+  return payload_case() == kHeartbeat;
+}
+inline bool client_player_request::_internal_has_heartbeat() const {
+  return payload_case() == kHeartbeat;
+}
+inline void client_player_request::set_has_heartbeat() {
+  _impl_._oneof_case_[0] = kHeartbeat;
+}
+inline ::celeritas::proto::client::client_heartbeat_request* PROTOBUF_NULLABLE client_player_request::release_heartbeat() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_player_request.heartbeat)
+  if (payload_case() == kHeartbeat) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.heartbeat_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.heartbeat_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::client_heartbeat_request& client_player_request::_internal_heartbeat() const {
+  return payload_case() == kHeartbeat ? *_impl_.payload_.heartbeat_ : reinterpret_cast<::celeritas::proto::client::client_heartbeat_request&>(::celeritas::proto::client::_client_heartbeat_request_default_instance_);
+}
+inline const ::celeritas::proto::client::client_heartbeat_request& client_player_request::heartbeat() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_player_request.heartbeat)
+  return _internal_heartbeat();
+}
+inline ::celeritas::proto::client::client_heartbeat_request* PROTOBUF_NULLABLE client_player_request::unsafe_arena_release_heartbeat() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_player_request.heartbeat)
+  if (payload_case() == kHeartbeat) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.heartbeat_;
+    _impl_.payload_.heartbeat_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_player_request::unsafe_arena_set_allocated_heartbeat(
+    ::celeritas::proto::client::client_heartbeat_request* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_heartbeat();
+    _impl_.payload_.heartbeat_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_player_request.heartbeat)
+}
+inline ::celeritas::proto::client::client_heartbeat_request* PROTOBUF_NONNULL client_player_request::_internal_mutable_heartbeat() {
+  if (payload_case() != kHeartbeat) {
+    clear_payload();
+    set_has_heartbeat();
+    _impl_.payload_.heartbeat_ = 
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_heartbeat_request>(GetArena());
+  }
+  return _impl_.payload_.heartbeat_;
+}
+inline ::celeritas::proto::client::client_heartbeat_request* PROTOBUF_NONNULL client_player_request::mutable_heartbeat()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::client_heartbeat_request* _msg = _internal_mutable_heartbeat();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_player_request.heartbeat)
+  return _msg;
+}
+
 inline bool client_player_request::has_payload() const {
   return payload_case() != PAYLOAD_NOT_SET;
 }
@@ -672,6 +789,76 @@ inline ::celeritas::proto::client::client_login_response* PROTOBUF_NONNULL clien
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::client::client_login_response* _msg = _internal_mutable_login();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_player_response.login)
+  return _msg;
+}
+
+// .celeritas.proto.client.client_heartbeat_response heartbeat = 2;
+inline bool client_player_response::has_heartbeat() const {
+  return payload_case() == kHeartbeat;
+}
+inline bool client_player_response::_internal_has_heartbeat() const {
+  return payload_case() == kHeartbeat;
+}
+inline void client_player_response::set_has_heartbeat() {
+  _impl_._oneof_case_[0] = kHeartbeat;
+}
+inline ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NULLABLE client_player_response::release_heartbeat() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_player_response.heartbeat)
+  if (payload_case() == kHeartbeat) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.heartbeat_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.heartbeat_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::client_heartbeat_response& client_player_response::_internal_heartbeat() const {
+  return payload_case() == kHeartbeat ? *_impl_.payload_.heartbeat_ : reinterpret_cast<::celeritas::proto::client::client_heartbeat_response&>(::celeritas::proto::client::_client_heartbeat_response_default_instance_);
+}
+inline const ::celeritas::proto::client::client_heartbeat_response& client_player_response::heartbeat() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_player_response.heartbeat)
+  return _internal_heartbeat();
+}
+inline ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NULLABLE client_player_response::unsafe_arena_release_heartbeat() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_player_response.heartbeat)
+  if (payload_case() == kHeartbeat) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.heartbeat_;
+    _impl_.payload_.heartbeat_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_player_response::unsafe_arena_set_allocated_heartbeat(
+    ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_heartbeat();
+    _impl_.payload_.heartbeat_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_player_response.heartbeat)
+}
+inline ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NONNULL client_player_response::_internal_mutable_heartbeat() {
+  if (payload_case() != kHeartbeat) {
+    clear_payload();
+    set_has_heartbeat();
+    _impl_.payload_.heartbeat_ = 
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_heartbeat_response>(GetArena());
+  }
+  return _impl_.payload_.heartbeat_;
+}
+inline ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NONNULL client_player_response::mutable_heartbeat()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::client_heartbeat_response* _msg = _internal_mutable_heartbeat();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_player_response.heartbeat)
   return _msg;
 }
 

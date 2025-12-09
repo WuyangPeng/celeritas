@@ -37,12 +37,24 @@ void celeritas::protobuf_handle_parameter::write(const header& header, const pro
     }
 }
 
-void celeritas::protobuf_handle_parameter::write(const std::string& server_type, const protobuf_message& message) const
+void celeritas::protobuf_handle_parameter::write_to_server(const std::string& server_type, const protobuf_message& message) const
 {
     if (const auto resource_loader_shared_ptr = resource_loader_.lock();
         resource_loader_shared_ptr != nullptr)
     {
         if (resource_loader_shared_ptr->write(server_type, header_, message))
+        {
+            LOG_CHANNEL(initializer_channel, trace) << "write message to server_type: " << server_type;
+        }
+    }
+}
+
+void celeritas::protobuf_handle_parameter::write_to_server(const std::string& server_type, const std::string& instance_id, const protobuf_message& message) const
+{
+    if (const auto resource_loader_shared_ptr = resource_loader_.lock();
+        resource_loader_shared_ptr != nullptr)
+    {
+        if (resource_loader_shared_ptr->write(server_type, instance_id, header_, message))
         {
             LOG_CHANNEL(initializer_channel, trace) << "write message to server_type: " << server_type;
         }
@@ -68,4 +80,9 @@ celeritas::protobuf_handle_parameter::application_loader_shared_ptr celeritas::p
     }
 
     throw celeritas_error{ "no application loader exists." };
+}
+
+int32_t celeritas::protobuf_handle_parameter::get_rpc() const
+{
+    return header_.get_rpc();
 }

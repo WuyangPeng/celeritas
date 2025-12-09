@@ -97,6 +97,19 @@ celeritas::service_registry_impl::optional_service_info celeritas::service_regis
     return std::nullopt;
 }
 
+celeritas::service_registry_impl::optional_service_info celeritas::service_registry_impl::get_services_by_instance_id(const std::string& instance_id)
+{
+    std::lock_guard lock{ cleanup_timer_mutex_ };
+
+    if (const auto iter = registry_.find(instance_id);
+        iter != registry_.cend())
+    {
+        return iter->second;
+    }
+
+    return std::nullopt;
+}
+
 void celeritas::service_registry_impl::start_cleanup_timer(io_context_type& io_context)
 {
     std::lock_guard lock{ cleanup_timer_mutex_ };

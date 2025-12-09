@@ -15,6 +15,8 @@ namespace celeritas
         using gateway_message_header_type = proto::common::gateway_message_header;
         using to_gateway_message_header_type = proto::common::to_gateway_message_header;
 
+        header(int32_t rpc, int32_t code);
+
         explicit header(const empty_message_header_type& empty_message_header);
 
         explicit header(const server_message_header_type& server_message_header);
@@ -27,6 +29,8 @@ namespace celeritas
 
         [[nodiscard]] message_shared_ptr get_message() const;
 
+        [[nodiscard]] int32_t get_rpc() const;
+
     private:
         [[nodiscard]] message_shared_ptr get_to_gateway_message() const;
 
@@ -38,8 +42,8 @@ namespace celeritas
 
         [[nodiscard]] message_shared_ptr get_empty_message() const;
 
-        int32_t rpc = 0;
-        int64_t user_id = 0;
-        int32_t code = 0;
+        int32_t rpc_ = 0;
+        int64_t user_id_ = 0;
+        int32_t code_ = 0;
     };
 }

@@ -1,0 +1,10 @@
+﻿syntax = "proto3";
+
+package celeritas.proto.client;
+
+message client_heartbeat_request {
+}
+
+message client_heartbeat_response {
+  int64 server_time = 1;
+}

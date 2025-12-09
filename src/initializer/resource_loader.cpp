@@ -97,6 +97,22 @@ bool celeritas::resource_loader::write(const std::string& server_type, const hea
     return to_write;
 }
 
+bool celeritas::resource_loader::write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request) const
+{
+    auto to_write = false;
+
+    for (const auto& element : tcp_clients_)
+    {
+        if (element->get_server_type() == server_type && element->get_instance_id() == instance_id)
+        {
+            element->write(header, request);
+            to_write = true;
+        }
+    }
+
+    return to_write;
+}
+
 void celeritas::resource_loader::process_check_tcp_clients_by_duration(io_context_type& io_context)
 {
     for (auto index = 0; index < tcp_clients_.size(); ++index)

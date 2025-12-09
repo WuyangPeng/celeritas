@@ -5,6 +5,7 @@
 celeritas::tcp_client::tcp_client(io_context_type& io_context,
                                   network_message_callback_weak_ptr callback,
                                   std::string game_server_id,
+                                  std::string instance_id,
                                   std::string host,
                                   const int port,
                                   std::string server_type)
@@ -12,6 +13,7 @@ celeritas::tcp_client::tcp_client(io_context_type& io_context,
       io_context_{ io_context },
       network_message_callback_{ std::move(callback) },
       game_server_id_{ std::move(game_server_id) },
+      instance_id_{ std::move(instance_id) },
       host_{ std::move(host) },
       port_{ port },
       server_type_{ std::move(server_type) },
@@ -50,6 +52,16 @@ int celeritas::tcp_client::get_port() const
 std::string celeritas::tcp_client::get_server_type() const
 {
     return server_type_;
+}
+
+std::string celeritas::tcp_client::get_game_server_id() const
+{
+    return game_server_id_;
+}
+
+std::string celeritas::tcp_client::get_instance_id() const
+{
+    return instance_id_;
 }
 
 celeritas::listener_sessions::network_message_callback_weak_ptr celeritas::tcp_client::get_network_message_callback()
