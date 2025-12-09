@@ -11,7 +11,7 @@ celeritas::service_login::void_awaitable_type celeritas::service_login::send_mes
     if (login_.new_account())
     {
         const create_account create_account{ protobuf_handle_parameter_, login_ };
-        co_return co_await create_account.send_message();
+        co_await create_account.send_message();
     }
 
     co_return;
