@@ -15,7 +15,7 @@ bool celeritas::gateway_login_request_message_handler::handle_concrete(const pro
     return true;
 }
 
-celeritas::gateway_login_request_message_handler::void_awaitable_type celeritas::gateway_login_request_message_handler::response(protobuf_handle_parameter protobuf_handle_parameter, const message_typet& login)
+celeritas::gateway_login_request_message_handler::void_awaitable_type celeritas::gateway_login_request_message_handler::response(protobuf_handle_parameter protobuf_handle_parameter, const message_type& login)
 {
     const gateway_login gateway_login{ std::move(protobuf_handle_parameter), login };
 
