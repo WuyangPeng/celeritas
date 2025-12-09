@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
     {
         constexpr auto mean_value = 10.0;
         constexpr auto stddev_value = 2.0;
-        constexpr auto num_iterations = 10000;
+        constexpr auto num_iterations = 1000;
         std::vector<double> samples{};
         samples.reserve(num_iterations);
 

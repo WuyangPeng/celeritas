@@ -39,7 +39,7 @@ celeritas::service_registry_impl::service_info_container_type celeritas::service
 
     service_info_container_type services{};
     if (const auto iter = server_.find(service_name);
-        iter != server_.end())
+        iter != server_.cend())
     {
         for (const auto& container : iter->second | std::views::values)
         {
@@ -58,9 +58,9 @@ celeritas::service_registry_impl::service_info_container_type celeritas::service
 
 celeritas::service_registry_impl::service_info_container_type celeritas::service_registry_impl::get_idle_services(const std::string& service_name)
 {
-    std::shared_lock lock{ mutex_ };
+    const auto next_index = ++next_index_;
 
-    ++next_index_;
+    std::shared_lock lock{ mutex_ };
 
     service_info_container_type services{};
     if (const auto iter = server_.find(service_name);
@@ -68,7 +68,7 @@ celeritas::service_registry_impl::service_info_container_type celeritas::service
     {
         for (const auto& container : iter->second | std::views::values)
         {
-            if (const auto service_info = get_idle_services(container))
+            if (const auto service_info = get_idle_services(container, next_index))
             {
                 services.emplace_back(*service_info);
             }
@@ -80,9 +80,9 @@ celeritas::service_registry_impl::service_info_container_type celeritas::service
 
 celeritas::service_registry_impl::optional_service_info celeritas::service_registry_impl::get_idle_services(const std::string& service_name, const std::string& game_server_id)
 {
-    std::shared_lock lock{ mutex_ };
+    const auto next_index = ++next_index_;
 
-    ++next_index_;
+    std::shared_lock lock{ mutex_ };
 
     if (const auto iter = server_.find(service_name);
         iter != server_.cend())
@@ -90,7 +90,7 @@ celeritas::service_registry_impl::optional_service_info celeritas::service_regis
         if (const auto game_server = iter->second.find(game_server_id);
             game_server != iter->second.cend())
         {
-            return get_idle_services(game_server->second);
+            return get_idle_services(game_server->second, next_index);
         }
     }
 
@@ -246,7 +246,7 @@ void celeritas::service_registry_impl::remove_server(const service_info& service
     }
 }
 
-celeritas::service_registry_impl::optional_service_info celeritas::service_registry_impl::get_idle_services(const service_info_container_type& service_info_container_type) const
+celeritas::service_registry_impl::optional_service_info celeritas::service_registry_impl::get_idle_services(const service_info_container_type& service_info_container_type, int next_index) const
 {
     if (service_info_container_type.size() == 1)
     {
@@ -258,7 +258,7 @@ celeritas::service_registry_impl::optional_service_info celeritas::service_regis
     }
     else
     {
-        if (const auto& service_info = service_info_container_type.at(next_index_ % service_info_container_type.size());
+        if (const auto& service_info = service_info_container_type.at(next_index % service_info_container_type.size());
             service_info.get_health_check_level_type() == health_check_level_type::health)
         {
             return service_info;
@@ -267,7 +267,7 @@ celeritas::service_registry_impl::optional_service_info celeritas::service_regis
         {
             for (auto i = 0; i < service_info_container_type.size(); ++i)
             {
-                if (const auto& element = service_info_container_type.at((next_index_ + i) % service_info_container_type.size());
+                if (const auto& element = service_info_container_type.at((next_index + i) % service_info_container_type.size());
                     element.get_health_check_level_type() == health_check_level_type::health)
                 {
                     return service_info;
