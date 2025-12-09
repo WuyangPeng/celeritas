@@ -20,6 +20,8 @@ namespace celeritas
 
         [[nodiscard]] static basis_database get_basis_database(const database_field& field_name, const std::string& value);
 
+        [[nodiscard]] static basis_database get_basis_database(const database_field& field_name);
+
         [[nodiscard]] static basis_database_container_const_shared_ptr get_key(const std::string& key, const database_entity_change_const_shared_ptr& database);
 
     private:

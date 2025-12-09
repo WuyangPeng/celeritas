@@ -100,6 +100,71 @@ celeritas::basis_database celeritas::redis_key_data_converter::get_basis_databas
     }
 }
 
+celeritas::basis_database celeritas::redis_key_data_converter::get_basis_database(const database_field& field_name)
+{
+    switch (field_name.get_data_type())
+    {
+        case database_data_type::string_type:
+        case database_data_type::document_type:
+        {
+            return basis_database{ field_name.get_field_name(), std::string{} };
+        }
+
+        case database_data_type::int32_type:
+        case database_data_type::int32_count_type:
+        {
+            return basis_database{ field_name.get_field_name(), 0 };
+        }
+
+        case database_data_type::int64_type:
+        case database_data_type::int64_count_type:
+        {
+            return basis_database{ field_name.get_field_name(), 0LL };
+        }
+
+        case database_data_type::double_type:
+        {
+            return basis_database{ field_name.get_field_name(), 0.0 };
+        }
+
+        case database_data_type::bool_type:
+        {
+            return basis_database{ field_name.get_field_name(), false };
+        }
+
+        case database_data_type::string_array_type:
+        case database_data_type::document_array_type:
+        {
+            return basis_database{ field_name.get_field_name(), basis_database::string_array{} };
+        }
+
+        case database_data_type::int32_array_type:
+        {
+            return basis_database{ field_name.get_field_name(), basis_database::int32_array{} };
+        }
+
+        case database_data_type::int64_array_type:
+        {
+            return basis_database{ field_name.get_field_name(), basis_database::int64_array{} };
+        }
+
+        case database_data_type::double_array_type:
+        {
+            return basis_database{ field_name.get_field_name(), basis_database::double_array{} };
+        }
+
+        case database_data_type::byte_array_type:
+        {
+            return basis_database{ field_name.get_field_name(), basis_database::byte_array{} };
+        }
+
+        default:
+        {
+            return basis_database{ field_name.get_field_name(), std::string{} };
+        }
+    }
+}
+
 celeritas::redis_key_data_converter::basis_database_container_const_shared_ptr celeritas::redis_key_data_converter::get_key(const std::string& key, const database_entity_change_const_shared_ptr& database)
 {
     const auto extracted_key_values = get_key_value(key);
