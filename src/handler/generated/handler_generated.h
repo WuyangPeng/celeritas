@@ -38,6 +38,7 @@
 #include "handler/generated/service_auth_response_message_handler.h"
 #include "handler/generated/service_payment_request_message_handler.h"
 #include "handler/generated/service_payment_response_message_handler.h"
+#include "handler/generated/service_player_request_message_handler.h"
 #include "handler/generated/service_registry_request_message_handler.h"
 #include "handler/generated/service_registry_response_message_handler.h"
 #include "handler/generated/service_request_message_handler.h"

@@ -24,7 +24,7 @@ void celeritas::gateway_login::send_error_message(game_error_type game_error_typ
 void celeritas::gateway_login::write_to_server(const session_token& session_token, const std::string& instance_id) const
 {
     proto::celeritas request{};
-    auto* gateway_login = request.mutable_celeritas_request()->mutable_client()->mutable_player()->mutable_login()->mutable_gateway_login();
+    auto* gateway_login = request.mutable_celeritas_request()->mutable_service()->mutable_player()->mutable_gateway_login();
     gateway_login->set_account_id(session_token.get_account_id());
     gateway_login->set_game_server_id(login_.game_server_id());
     gateway_login->set_device_id(login_.device_id());

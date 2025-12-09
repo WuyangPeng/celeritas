@@ -15,17 +15,9 @@ message login_response {
     int64 current_time = 3;
 }
 
-message gateway_login_request {
-    int64 account_id = 1;
-    string game_server_id = 2;
-    string device_id = 3;
-    string app_version = 4;
-}
-
 message client_login_request {
   oneof payload {
     login_request login = 1;
-    gateway_login_request gateway_login = 2;
   }
 }
 
