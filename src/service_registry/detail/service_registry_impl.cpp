@@ -121,9 +121,9 @@ void celeritas::service_registry_impl::start_cleanup_timer(io_context_type& io_c
 
 void celeritas::service_registry_impl::cleanup_services_by_duration()
 {
-    const auto now = std::chrono::steady_clock::now();
-
     std::lock_guard lock{ mutex_ };
+
+    const auto now = std::chrono::steady_clock::now();
 
     for (auto iter = registry_.begin(); iter != registry_.end();)
     {
@@ -153,7 +153,7 @@ void celeritas::service_registry_impl::remove_instance(const std::string& instan
 
 celeritas::service_registry_impl::registry_type celeritas::service_registry_impl::get_services()
 {
-    std::lock_guard lock{ mutex_ };
+    std::shared_lock lock{ mutex_ };
 
     return registry_;
 }
