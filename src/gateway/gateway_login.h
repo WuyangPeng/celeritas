@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "database/generated/redis/auth/character_session.h"
 #include "database/generated/redis/auth/session_token.h"
 #include "message/message_fwd.h"
 #include "message/protobuf_handle_parameter.h"
