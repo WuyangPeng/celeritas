@@ -49,7 +49,7 @@ celeritas::password_login::void_awaitable_type celeritas::password_login::login(
                                                                                 const database_pool_shared_ptr& mysql_pool,
                                                                                 int64_t app_id,
                                                                                 const std::string& auth_key,
-                                                                                const std::string& password) const
+                                                                                const std::string& password)
 {
     if (database_entity_change)
     {
@@ -78,7 +78,7 @@ celeritas::password_login::void_awaitable_type celeritas::password_login::login(
     co_return co_await login(redis_pool, account, true);
 }
 
-celeritas::password_login::void_awaitable_type celeritas::password_login::login(const database_pool_shared_ptr& redis_pool, const account& account, const bool is_new_account) const
+celeritas::password_login::void_awaitable_type celeritas::password_login::login(const database_pool_shared_ptr& redis_pool, const account& account, const bool is_new_account)
 {
     if (const auto session_token = co_await create_session_token(account, is_new_account, redis_pool))
     {

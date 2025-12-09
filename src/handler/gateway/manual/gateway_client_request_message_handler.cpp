@@ -1,6 +1,6 @@
 ﻿#include "gateway_client_request_message_handler.h"
-#include "initializer/initializer_fwd.h"
 #include "message/protobuf_handle_parameter.h"
+#include "message/concrete_message_handler.tpp"
 
 celeritas::gateway_client_request_message_handler::gateway_client_request_message_handler()
 {

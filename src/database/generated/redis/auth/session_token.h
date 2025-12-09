@@ -24,11 +24,15 @@ namespace celeritas
 
         [[nodiscard]] traits::int64_type get_account_id() const noexcept;
 
+        [[nodiscard]] traits::int64_type get_account_bind_id() const noexcept;
+
         [[nodiscard]] traits::bool_type is_new_account() const noexcept;
 
         void set_token(traits::param_type::string_type token);
 
         void set_account_id(traits::param_type::int64_type account_id);
+
+        void set_account_bind_id(traits::param_type::int64_type account_bind_id);
 
         void set_new_account(traits::param_type::bool_type new_account);
 
@@ -44,6 +48,7 @@ namespace celeritas
 
         static constexpr std::string_view token_describe{ "token" };
         static constexpr std::string_view account_id_describe{ "account_id" };
+        static constexpr std::string_view account_bind_id_describe{ "account_bind_id" };
         static constexpr std::string_view new_account_describe{ "new_account" };
 
     private:
@@ -51,6 +56,7 @@ namespace celeritas
 
         entity<token_describe, database_data_type::string_type, database_index_type::key> token_;
         entity<account_id_describe, database_data_type::int64_type> account_id_;
+        entity<account_bind_id_describe, database_data_type::int64_type> account_bind_id_;
         entity<new_account_describe, database_data_type::bool_type> new_account_;
     };
 }

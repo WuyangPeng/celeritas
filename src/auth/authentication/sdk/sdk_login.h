@@ -24,12 +24,12 @@ namespace celeritas
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
         using optional_database_entity_change = std::optional<database_entity_change>;
 
-        [[nodiscard]] static account_awaitable_type get_account(const optional_database_entity_change& database_entity_change,
-                                                                const database_pool_shared_ptr& redis_pool,
-                                                                const database_pool_shared_ptr& mysql_pool,
-                                                                int64_t app_id,
-                                                                const std::string& open_id,
-                                                                sdk_process_type sdk_process_type,
-                                                                const const_app_config_shared_ptr& app_config);
+        [[nodiscard]] account_awaitable_type get_account(const optional_database_entity_change& database_entity_change,
+                                                         const database_pool_shared_ptr& redis_pool,
+                                                         const database_pool_shared_ptr& mysql_pool,
+                                                         int64_t app_id,
+                                                         const std::string& open_id,
+                                                         sdk_process_type sdk_process_type,
+                                                         const const_app_config_shared_ptr& app_config);
     };
 }

@@ -27,10 +27,10 @@ namespace celeritas
                                                 const database_pool_shared_ptr& mysql_pool,
                                                 int64_t app_id,
                                                 const std::string& auth_key,
-                                                const std::string& password) const;
+                                                const std::string& password);
 
         [[nodiscard]] void_awaitable_type login(const database_pool_shared_ptr& redis_pool,
                                                 const account& account,
-                                                bool is_new_account) const;
+                                                bool is_new_account);
     };
 }

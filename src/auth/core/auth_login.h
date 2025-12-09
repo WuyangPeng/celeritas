@@ -34,25 +34,28 @@ namespace celeritas
                                                                        const database_pool_shared_ptr& redis_pool,
                                                                        const const_app_config_shared_ptr& app_config);
 
-        [[nodiscard]] static session_token_awaitable_type create_session_token(const account& account,
-                                                                               bool is_new_account,
-                                                                               const database_pool_shared_ptr& redis_pool);
+        [[nodiscard]] session_token_awaitable_type create_session_token(const account& account,
+                                                                        bool is_new_account,
+                                                                        const database_pool_shared_ptr& redis_pool);
 
-        [[nodiscard]] static account_awaitable_type create_new_account(int64_t app_id,
-                                                                       const std::string& auth_key,
-                                                                       account_type account_type,
-                                                                       sdk_process_type sdk_process_type,
-                                                                       const std::string& account_name_prefix,
-                                                                       const database_pool_shared_ptr& redis_pool,
-                                                                       const const_app_config_shared_ptr& app_config);
+        [[nodiscard]] account_awaitable_type create_new_account(int64_t app_id,
+                                                                const std::string& auth_key,
+                                                                account_type account_type,
+                                                                sdk_process_type sdk_process_type,
+                                                                const std::string& account_name_prefix,
+                                                                const database_pool_shared_ptr& redis_pool,
+                                                                const const_app_config_shared_ptr& app_config);
 
-        [[nodiscard]] static account_awaitable_type create_new_account(int64_t app_id,
-                                                                       const std::string& auth_key,
-                                                                       const std::string& password,
-                                                                       account_type account_type,
-                                                                       sdk_process_type sdk_process_type,
-                                                                       const std::string& account_name_prefix,
-                                                                       const database_pool_shared_ptr& redis_pool,
-                                                                       const const_app_config_shared_ptr& app_config);
+        [[nodiscard]] account_awaitable_type create_new_account(int64_t app_id,
+                                                                const std::string& auth_key,
+                                                                const std::string& password,
+                                                                account_type account_type,
+                                                                sdk_process_type sdk_process_type,
+                                                                const std::string& account_name_prefix,
+                                                                const database_pool_shared_ptr& redis_pool,
+                                                                const const_app_config_shared_ptr& app_config);
+
+    private:
+        int64_t account_bind_id_;
     };
 }
