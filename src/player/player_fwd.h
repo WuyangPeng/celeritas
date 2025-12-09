@@ -2,5 +2,7 @@
 
 namespace celeritas
 {
-    class login;
+    class create_account;
+    class create_character;
+    class service_login;
 }
