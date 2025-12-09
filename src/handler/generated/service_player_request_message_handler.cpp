@@ -5,11 +5,11 @@
 
 celeritas::service_player_request_message_handler::service_player_request_message_handler()
 {
-    add_handler_function(proto::service::service_player_request::PayloadCase::kGatewayLogin,
+    add_handler_function(proto::service::service_player_request::PayloadCase::kServiceLogin,
                          [](const protobuf_handle_parameter& handle_parameter,
                             const message_type& current_message,
                             const message_registry_shared_ptr& message_registry) -> bool {
-                             return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::gateway_login);
+                             return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::service_login);
                          });
 
 }

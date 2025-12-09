@@ -2,7 +2,7 @@
 
 package celeritas.proto.service;
 
-message gateway_login_request {
+message service_login_request {
     int64 account_id = 1;
     bool new_account = 2;
     string game_server_id = 3;
@@ -12,7 +12,7 @@ message gateway_login_request {
 
 message service_player_request {
   oneof payload {
-    gateway_login_request gateway_login = 1;
+    service_login_request service_login = 1;
   }
 }
 
