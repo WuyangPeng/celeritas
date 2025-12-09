@@ -6,9 +6,15 @@
 using namespace std::literals;
 
 celeritas::redis_reply::redis_reply(redis_context& redis_context, const std::string& command)
-    : redis_reply_{ static_cast<redisReply*>(redisCommand(redis_context.get_redis_context(), command.c_str())) }
+    : command_{ command }, argv_{}, argv_length_{}, redis_reply_{ static_cast<redisReply*>(redisCommand(redis_context.get_redis_context(), command.c_str())) }
 {
     init(redis_context, command);
+}
+
+celeritas::redis_reply::redis_reply(redis_context& redis_context, const array_type& command)
+    : command_{ command }, argv_{ generate_argv(command) }, argv_length_{ generate_argv_length(command) }, redis_reply_{ static_cast<redisReply*>(redisCommandArgv(redis_context.get_redis_context(), command.size(), argv_.data(), argv_length_.data())) }
+{
+    init(redis_context);
 }
 
 celeritas::redis_reply::~redis_reply() noexcept
@@ -229,6 +235,31 @@ void celeritas::redis_reply::init(redis_context& redis_context, const std::strin
     }
 }
 
+void celeritas::redis_reply::init(redis_context& redis_context) const
+{
+    if (redis_reply_ == nullptr)
+    {
+        throw celeritas_error{ "command failed (NULL reply):  "s + redis_context.get_redis_context()->errstr };
+    }
+
+    std::string result_message{};
+    if (redis_reply_->type == REDIS_REPLY_ERROR || redis_reply_->type == REDIS_REPLY_STATUS)
+    {
+        result_message = std::string{ redis_reply_->str, redis_reply_->len };
+    }
+
+    if (redis_reply_->type == REDIS_REPLY_ERROR)
+    {
+        throw celeritas_error{ "command failed (redis error reply):  " + result_message };
+    }
+
+    // 特殊处理 AUTH 命令，确保它是 OK (如果需要严格检查)
+    if (!command_.empty() && command_.at(0).find("AUTH") == 0 && redis_reply_->type == REDIS_REPLY_STATUS && result_message != redis_ok)
+    {
+        throw celeritas_error{ "command failed (not ok):  " + result_message };
+    }
+}
+
 std::string celeritas::redis_reply::to_string_from_element(const redisReply* element)
 {
     switch (element->type)
@@ -287,4 +318,28 @@ celeritas::redis_reply::array_type celeritas::redis_reply::get_keys() const
         keys.emplace_back(std::move(key));
     }
     return keys;
+}
+
+celeritas::redis_reply::command_array_type celeritas::redis_reply::generate_argv(const array_type& command)
+{
+    command_array_type result{};
+
+    for (const auto& element : command)
+    {
+        result.emplace_back(element.c_str());
+    }
+
+    return result;
+}
+
+celeritas::redis_reply::command_length_array_type celeritas::redis_reply::generate_argv_length(const array_type& command)
+{
+    command_length_array_type result{};
+
+    for (const auto& element : command)
+    {
+        result.emplace_back(element.size());
+    }
+
+    return result;
 }

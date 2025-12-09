@@ -23,6 +23,8 @@ namespace celeritas
 
         explicit redis_reply(redis_context& redis_context, const std::string& command);
 
+        explicit redis_reply(redis_context& redis_context, const array_type& command);
+
         ~redis_reply() noexcept;
 
         redis_reply(const redis_reply& rhs) = delete;
@@ -52,7 +54,12 @@ namespace celeritas
         [[nodiscard]] scan_result to_scan_result() const;
 
     private:
+        using command_array_type = std::vector<const char*>;
+        using command_length_array_type = std::vector<size_t>;
+
         void init(redis_context& redis_context, const std::string& command) const;
+
+        void init(redis_context& redis_context) const;
 
         [[nodiscard]] static std::string to_string_from_element(const redisReply* element);
 
@@ -60,6 +67,13 @@ namespace celeritas
 
         [[nodiscard]] array_type get_keys() const;
 
+        [[nodiscard]] static command_array_type generate_argv(const array_type& command);
+
+        [[nodiscard]] static command_length_array_type generate_argv_length(const array_type& command);
+
+        array_type command_;
+        command_array_type argv_;
+        command_length_array_type argv_length_;
         redisReply* redis_reply_;
     };
 }
