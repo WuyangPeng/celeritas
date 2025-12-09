@@ -27,6 +27,7 @@ void celeritas::gateway_login::write_to_server(const session_token& session_toke
     auto* service_login = request.mutable_celeritas_request()->mutable_service()->mutable_player()->mutable_service_login();
     service_login->set_account_id(session_token.get_account_id());
     service_login->set_new_account(session_token.is_new_account());
+    service_login->set_account_bind_id(session_token.get_account_bind_id());
     service_login->set_game_server_id(login_.game_server_id());
     service_login->set_device_id(login_.device_id());
     service_login->set_app_version(login_.app_version());

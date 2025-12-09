@@ -11,11 +11,11 @@ namespace celeritas
     {
     public:
         using class_type = create_account;
-        using void_awaitable_type = boost::asio::awaitable<void>;
+        using bool_awaitable_type = boost::asio::awaitable<bool>;
 
         create_account(protobuf_handle_parameter protobuf_handle_parameter, const proto::service::service_login_request& login);
 
-        [[nodiscard]] void_awaitable_type send_message() const;
+        [[nodiscard]] bool_awaitable_type send_message() const;
 
     private:
         protobuf_handle_parameter protobuf_handle_parameter_;

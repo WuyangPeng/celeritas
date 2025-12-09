@@ -5,9 +5,10 @@ package celeritas.proto.service;
 message service_login_request {
     int64 account_id = 1;
     bool new_account = 2;
-    string game_server_id = 3;
-    string device_id = 4;
-    string app_version = 5;
+    int64 account_bind_id = 3;
+    string game_server_id = 4;
+    string device_id = 5;
+    string app_version = 6;
 }
 
 message service_player_request {

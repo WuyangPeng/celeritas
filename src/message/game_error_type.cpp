@@ -24,6 +24,7 @@ std::string celeritas::get_game_error_description(const game_error_type game_err
                                                 { game_error_type::account_error, "account error" },
                                                 { game_error_type::no_guest_account, "no guest account" },
                                                 { game_error_type::account_bound, "account bound" },
+                                                { game_error_type::create_account_error, "create account error" },
 
                                                 { game_error_type::redis_error, "redis error" },
                                                 { game_error_type::mysql_error, "mysql error" } };

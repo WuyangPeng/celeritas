@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "message/message_fwd.h"
 #include "message/protobuf_handle_parameter.h"
 #include "proto/service/player.pb.h"
 
@@ -18,6 +19,8 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type send_message() const;
 
     private:
+        void send_error_message(game_error_type game_error_type) const;
+
         protobuf_handle_parameter protobuf_handle_parameter_;
         const proto::service::service_login_request& login_;
     };

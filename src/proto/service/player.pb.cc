@@ -41,6 +41,7 @@ inline constexpr service_login_request::Impl_::Impl_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         account_id_{::int64_t{0}},
+        account_bind_id_{::int64_t{0}},
         new_account_{false} {}
 
 template <typename>
@@ -100,13 +101,15 @@ const ::uint32_t
         protodesc_cold) = {
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_._has_bits_),
-        8, // hasbit index offset
+        9, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_.account_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_.new_account_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_.account_bind_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_.game_server_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_.device_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_.app_version_),
         3,
+        5,
         4,
         0,
         1,
@@ -120,7 +123,7 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::celeritas::proto::service::service_login_request)},
-        {13, sizeof(::celeritas::proto::service::service_player_request)},
+        {15, sizeof(::celeritas::proto::service::service_player_request)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::service::_service_login_request_default_instance_._instance,
@@ -129,19 +132,20 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_proto_2fservice_2fplayer_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\032proto/service/player.proto\022\027celeritas."
-    "proto.service\"\200\001\n\025service_login_request\022"
+    "proto.service\"\231\001\n\025service_login_request\022"
     "\022\n\naccount_id\030\001 \001(\003\022\023\n\013new_account\030\002 \001(\010"
-    "\022\026\n\016game_server_id\030\003 \001(\t\022\021\n\tdevice_id\030\004 "
-    "\001(\t\022\023\n\013app_version\030\005 \001(\t\"l\n\026service_play"
-    "er_request\022G\n\rservice_login\030\001 \001(\0132..cele"
-    "ritas.proto.service.service_login_reques"
-    "tH\000B\t\n\007payloadb\006proto3"
+    "\022\027\n\017account_bind_id\030\003 \001(\003\022\026\n\016game_server"
+    "_id\030\004 \001(\t\022\021\n\tdevice_id\030\005 \001(\t\022\023\n\013app_vers"
+    "ion\030\006 \001(\t\"l\n\026service_player_request\022G\n\rs"
+    "ervice_login\030\001 \001(\0132..celeritas.proto.ser"
+    "vice.service_login_requestH\000B\t\n\007payloadb"
+    "\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fservice_2fplayer_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fplayer_2eproto = {
     false,
     false,
-    302,
+    327,
     descriptor_table_protodef_proto_2fservice_2fplayer_2eproto,
     "proto/service/player.proto",
     &descriptor_table_proto_2fservice_2fplayer_2eproto_once,
@@ -286,16 +290,16 @@ service_login_request::GetClassData() const {
   return service_login_request_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 88, 2>
+const ::_pbi::TcParseTable<3, 6, 0, 88, 2>
 service_login_request::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(service_login_request, _impl_._has_bits_),
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
+    6,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     service_login_request_class_data_.base(),
@@ -310,18 +314,20 @@ service_login_request::_table_ = {
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(service_login_request, _impl_.account_id_), 3>(),
      {8, 3, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.account_id_)}},
     // bool new_account = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(service_login_request, _impl_.new_account_), 4>(),
-     {16, 4, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.new_account_)}},
-    // string game_server_id = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(service_login_request, _impl_.new_account_), 5>(),
+     {16, 5, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.new_account_)}},
+    // int64 account_bind_id = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(service_login_request, _impl_.account_bind_id_), 4>(),
+     {24, 4, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.account_bind_id_)}},
+    // string game_server_id = 4;
     {::_pbi::TcParser::FastUS1,
-     {26, 0, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.game_server_id_)}},
-    // string device_id = 4;
+     {34, 0, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.game_server_id_)}},
+    // string device_id = 5;
     {::_pbi::TcParser::FastUS1,
-     {34, 1, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.device_id_)}},
-    // string app_version = 5;
+     {42, 1, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.device_id_)}},
+    // string app_version = 6;
     {::_pbi::TcParser::FastUS1,
-     {42, 2, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.app_version_)}},
-    {::_pbi::TcParser::MiniParse, {}},
+     {50, 2, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.app_version_)}},
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
@@ -329,17 +335,19 @@ service_login_request::_table_ = {
     // int64 account_id = 1;
     {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.account_id_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
     // bool new_account = 2;
-    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.new_account_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // string game_server_id = 3;
+    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.new_account_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    // int64 account_bind_id = 3;
+    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.account_bind_id_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // string game_server_id = 4;
     {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.game_server_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string device_id = 4;
+    // string device_id = 5;
     {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.device_id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string app_version = 5;
+    // string app_version = 6;
     {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.app_version_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\55\0\0\16\11\13\0\0"
+    "\55\0\0\0\16\11\13\0"
     "celeritas.proto.service.service_login_request"
     "game_server_id"
     "device_id"
@@ -365,7 +373,7 @@ PROTOBUF_NOINLINE void service_login_request::Clear() {
       _impl_.app_version_.ClearNonDefaultToEmpty();
     }
   }
-  if ((cached_has_bits & 0x00000018U) != 0) {
+  if ((cached_has_bits & 0x00000038U) != 0) {
     ::memset(&_impl_.account_id_, 0, static_cast<::size_t>(
         reinterpret_cast<char*>(&_impl_.new_account_) -
         reinterpret_cast<char*>(&_impl_.account_id_)) + sizeof(_impl_.new_account_));
@@ -402,7 +410,7 @@ PROTOBUF_NOINLINE void service_login_request::Clear() {
   }
 
   // bool new_account = 2;
-  if ((this_._impl_._has_bits_[0] & 0x00000010U) != 0) {
+  if ((this_._impl_._has_bits_[0] & 0x00000020U) != 0) {
     if (this_._internal_new_account() != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteBoolToArray(
@@ -410,33 +418,42 @@ PROTOBUF_NOINLINE void service_login_request::Clear() {
     }
   }
 
-  // string game_server_id = 3;
+  // int64 account_bind_id = 3;
+  if ((this_._impl_._has_bits_[0] & 0x00000010U) != 0) {
+    if (this_._internal_account_bind_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<3>(
+              stream, this_._internal_account_bind_id(), target);
+    }
+  }
+
+  // string game_server_id = 4;
   if ((this_._impl_._has_bits_[0] & 0x00000001U) != 0) {
     if (!this_._internal_game_server_id().empty()) {
       const ::std::string& _s = this_._internal_game_server_id();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.service.service_login_request.game_server_id");
-      target = stream->WriteStringMaybeAliased(3, _s, target);
+      target = stream->WriteStringMaybeAliased(4, _s, target);
     }
   }
 
-  // string device_id = 4;
+  // string device_id = 5;
   if ((this_._impl_._has_bits_[0] & 0x00000002U) != 0) {
     if (!this_._internal_device_id().empty()) {
       const ::std::string& _s = this_._internal_device_id();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.service.service_login_request.device_id");
-      target = stream->WriteStringMaybeAliased(4, _s, target);
+      target = stream->WriteStringMaybeAliased(5, _s, target);
     }
   }
 
-  // string app_version = 5;
+  // string app_version = 6;
   if ((this_._impl_._has_bits_[0] & 0x00000004U) != 0) {
     if (!this_._internal_app_version().empty()) {
       const ::std::string& _s = this_._internal_app_version();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.service.service_login_request.app_version");
-      target = stream->WriteStringMaybeAliased(5, _s, target);
+      target = stream->WriteStringMaybeAliased(6, _s, target);
     }
   }
 
@@ -465,22 +482,22 @@ PROTOBUF_NOINLINE void service_login_request::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x0000001fU) != 0) {
-    // string game_server_id = 3;
+  if ((cached_has_bits & 0x0000003fU) != 0) {
+    // string game_server_id = 4;
     if ((cached_has_bits & 0x00000001U) != 0) {
       if (!this_._internal_game_server_id().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_game_server_id());
       }
     }
-    // string device_id = 4;
+    // string device_id = 5;
     if ((cached_has_bits & 0x00000002U) != 0) {
       if (!this_._internal_device_id().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_device_id());
       }
     }
-    // string app_version = 5;
+    // string app_version = 6;
     if ((cached_has_bits & 0x00000004U) != 0) {
       if (!this_._internal_app_version().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -494,8 +511,15 @@ PROTOBUF_NOINLINE void service_login_request::Clear() {
             this_._internal_account_id());
       }
     }
-    // bool new_account = 2;
+    // int64 account_bind_id = 3;
     if ((cached_has_bits & 0x00000010U) != 0) {
+      if (this_._internal_account_bind_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+            this_._internal_account_bind_id());
+      }
+    }
+    // bool new_account = 2;
+    if ((cached_has_bits & 0x00000020U) != 0) {
       if (this_._internal_new_account() != 0) {
         total_size += 2;
       }
@@ -517,7 +541,7 @@ void service_login_request::MergeImpl(::google::protobuf::MessageLite& to_msg, c
   (void) cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x0000001fU) != 0) {
+  if ((cached_has_bits & 0x0000003fU) != 0) {
     if ((cached_has_bits & 0x00000001U) != 0) {
       if (!from._internal_game_server_id().empty()) {
         _this->_internal_set_game_server_id(from._internal_game_server_id());
@@ -551,6 +575,11 @@ void service_login_request::MergeImpl(::google::protobuf::MessageLite& to_msg, c
       }
     }
     if ((cached_has_bits & 0x00000010U) != 0) {
+      if (from._internal_account_bind_id() != 0) {
+        _this->_impl_.account_bind_id_ = from._impl_.account_bind_id_;
+      }
+    }
+    if ((cached_has_bits & 0x00000020U) != 0) {
       if (from._internal_new_account() != 0) {
         _this->_impl_.new_account_ = from._impl_.new_account_;
       }
