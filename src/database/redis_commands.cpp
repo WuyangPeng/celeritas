@@ -6,78 +6,41 @@ celeritas::redis_commands::redis_commands(redis_database_session& session) noexc
 {
 }
 
-std::string celeritas::redis_commands::get_keys_command(const key_container& keys) const
+celeritas::redis_commands::array_type celeritas::redis_commands::get_keys_command(const key_container& keys) const
 {
-    std::string command{};
+    array_type command{};
     for (const auto& key : keys)
     {
-        command += " ";
-        command += session_.get_prefixed_key(key);
+        command.emplace_back(session_.get_prefixed_key(key));
     }
 
     return command;
 }
 
-std::string celeritas::redis_commands::get_fields_command(const key_container& fields)
+celeritas::redis_commands::array_type celeritas::redis_commands::get_keys_value_command(const key_value_container& key_values) const
 {
-    std::string command{};
-    for (const auto& field : fields)
-    {
-        command += " ";
-        command += field;
-    }
-
-    return command;
-}
-
-std::string celeritas::redis_commands::get_values_command(const key_container& values)
-{
-    std::string command{};
-    for (const auto& value : values)
-    {
-        command += " \"";
-        command += value;
-        command += "\"";
-    }
-
-    return command;
-}
-
-std::string celeritas::redis_commands::get_keys_value_command(const key_value_container& key_values) const
-{
-    std::string command{};
+    array_type command{};
     for (const auto& [key, value] : key_values)
     {
         const auto prefixed_key = session_.get_prefixed_key(key);
 
-        command += " ";
-        command += prefixed_key;
-        command += " \"";
-        command += value;
-        command += "\"";
+        command.emplace_back(prefixed_key);
+        command.emplace_back(value);
     }
 
     return command;
 }
 
-std::string celeritas::redis_commands::get_fields_value_command(const key_value_container& field_values)
+celeritas::redis_commands::array_type celeritas::redis_commands::get_fields_value_command(const key_value_container& field_values)
 {
-    std::string command{};
+    array_type command{};
     for (const auto& [field, value] : field_values)
     {
-        command += " ";
-        command += field;
-        command += " \"";
-        command += value;
-        command += "\"";
+        command.emplace_back(field);
+        command.emplace_back(value);
     }
 
     return command;
-}
-
-std::string celeritas::redis_commands::get_quoted_value_command(const std::string& value)
-{
-    return "\"" + value + "\"";
 }
 
 celeritas::redis_database_session& celeritas::redis_commands::get_redis_database_session()
@@ -90,57 +53,57 @@ std::string celeritas::redis_commands::get_prefixed_key(const std::string& key) 
     return session_.get_prefixed_key(key);
 }
 
-std::string celeritas::redis_commands::get_expire_seconds_command(int expire_seconds) const
+celeritas::redis_commands::array_type celeritas::redis_commands::get_expire_seconds_command(const int expire_seconds) const
 {
     return session_.get_expire_seconds_command(expire_seconds);
 }
 
-celeritas::redis_commands::int_awaitable_type celeritas::redis_commands::async_execute_command_return_int(const std::string& command) const
+celeritas::redis_commands::int_awaitable_type celeritas::redis_commands::async_execute_command_return_int(const array_type& command) const
 {
     co_return co_await session_.async_execute_command_return_int(command);
 }
 
-celeritas::redis_commands::void_awaitable_type celeritas::redis_commands::async_execute_command_return_void(const std::string& command) const
+celeritas::redis_commands::void_awaitable_type celeritas::redis_commands::async_execute_command_return_void(const array_type& command) const
 {
     co_return co_await session_.async_execute_command_return_void(command);
 }
 
-celeritas::redis_commands::optional_string_awaitable_type celeritas::redis_commands::async_execute_command_return_optional_string(const std::string& command) const
+celeritas::redis_commands::optional_string_awaitable_type celeritas::redis_commands::async_execute_command_return_optional_string(const array_type& command) const
 {
     co_return co_await session_.async_execute_command_return_optional_string(command);
 }
 
-celeritas::redis_commands::array_awaitable_type celeritas::redis_commands::async_execute_command_return_array_type(const std::string& command) const
+celeritas::redis_commands::array_awaitable_type celeritas::redis_commands::async_execute_command_return_array_type(const array_type& command) const
 {
     co_return co_await session_.async_execute_command_return_array_type(command);
 }
 
-celeritas::redis_commands::map_awaitable_type celeritas::redis_commands::async_execute_command_return_map_type(const std::string& command) const
+celeritas::redis_commands::map_awaitable_type celeritas::redis_commands::async_execute_command_return_map_type(const array_type& command) const
 {
     co_return co_await session_.async_execute_command_return_map_type(command);
 }
 
-celeritas::redis_commands::optional_double_awaitable_type celeritas::redis_commands::async_execute_command_return_optional_double(const std::string& command) const
+celeritas::redis_commands::optional_double_awaitable_type celeritas::redis_commands::async_execute_command_return_optional_double(const array_type& command) const
 {
     co_return co_await session_.async_execute_command_return_optional_double(command);
 }
 
-celeritas::redis_commands::optional_int_awaitable_type celeritas::redis_commands::async_execute_command_return_optional_int(const std::string& command) const
+celeritas::redis_commands::optional_int_awaitable_type celeritas::redis_commands::async_execute_command_return_optional_int(const array_type& command) const
 {
     co_return co_await session_.async_execute_command_return_optional_int(command);
 }
 
-celeritas::redis_commands::optional_map_awaitable_type celeritas::redis_commands::async_execute_command_return_optional_map_type(const std::string& command) const
+celeritas::redis_commands::optional_map_awaitable_type celeritas::redis_commands::async_execute_command_return_optional_map_type(const array_type& command) const
 {
     co_return co_await session_.async_execute_command_return_optional_map_type(command);
 }
 
-celeritas::redis_commands::scan_result_awaitable_type celeritas::redis_commands::async_execute_command_return_scan_result(const std::string& command) const
+celeritas::redis_commands::scan_result_awaitable_type celeritas::redis_commands::async_execute_command_return_scan_result(const array_type& command) const
 {
     co_return co_await session_.async_execute_command_return_scan_result(command);
 }
 
-celeritas::redis_commands::bool_awaitable_type celeritas::redis_commands::async_execute_command_is_ok(const std::string& command) const
+celeritas::redis_commands::bool_awaitable_type celeritas::redis_commands::async_execute_command_is_ok(const array_type& command) const
 {
     if (const auto result = co_await async_execute_command_return_optional_string(command);
         result && *result == redis_ok)

@@ -8,7 +8,9 @@ celeritas::redis_string_commands::redis_string_commands(redis_database_session& 
 
 celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_commands::async_set(const std::string& key, const std::string& value, const int expire_seconds) const
 {
-    const auto set_command = "SET " + get_prefixed_key(key) + " " + get_quoted_value_command(value) + get_expire_seconds_command(expire_seconds);
+    array_type set_command{ "SET", get_prefixed_key(key), value };
+    const auto expire_seconds_command = get_expire_seconds_command(expire_seconds);
+    set_command.insert(set_command.end(), expire_seconds_command.begin(), expire_seconds_command.end());
 
     co_return co_await async_execute_command_is_ok(set_command);
 }
@@ -22,14 +24,20 @@ celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_co
         throw celeritas_error{ "the expiration time is invalid." };
     }
 
-    const auto set_command = "SET " + get_prefixed_key(key) + " " + get_quoted_value_command(value) + expire_seconds_comma + " NX";
+    array_type set_command{ "SET", get_prefixed_key(key), value };
+    set_command.insert(set_command.end(), expire_seconds_comma.begin(), expire_seconds_comma.end());
+    set_command.emplace_back("NX");
 
     co_return co_await async_execute_command_is_ok(set_command);
 }
 
 celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_commands::async_set_exists(const std::string& key, const std::string& value, const int expire_seconds) const
 {
-    const auto set_command = "SET " + get_prefixed_key(key) + " " + get_quoted_value_command(value) + get_expire_seconds_command(expire_seconds) + " XX";
+    const auto expire_seconds_comma = get_expire_seconds_command(expire_seconds);
+
+    array_type set_command{ "SET", get_prefixed_key(key), value };
+    set_command.insert(set_command.end(), expire_seconds_comma.begin(), expire_seconds_comma.end());
+    set_command.emplace_back("XX");
 
     co_return co_await async_execute_command_is_ok(set_command);
 }
@@ -41,51 +49,41 @@ celeritas::redis_string_commands::bool_awaitable_type celeritas::redis_string_co
         co_return false;
     }
 
-    const auto set_command = "MSET" + get_keys_value_command(key_values);
+    array_type set_command{ "MSET" };
+    const auto keys_value_command = get_keys_value_command(key_values);
+    set_command.insert(set_command.end(), keys_value_command.begin(), keys_value_command.end());
 
     co_return co_await async_execute_command_is_ok(set_command);
 }
 
 celeritas::redis_string_commands::int_awaitable_type celeritas::redis_string_commands::async_append(const std::string& key, const std::string& value) const
 {
-    const auto append_command = "APPEND " + get_prefixed_key(key) + " " + get_quoted_value_command(value);
-
-    co_return co_await async_execute_command_return_int(append_command);
+    co_return co_await async_execute_command_return_int({ "APPEND", get_prefixed_key(key), value });
 }
 
 celeritas::redis_string_commands::int_awaitable_type celeritas::redis_string_commands::async_increment_by(const std::string& key, const int increment) const
 {
-    const auto increment_by_command = "INCRBY " + get_prefixed_key(key) + " " + std::to_string(increment);
-
-    co_return co_await async_execute_command_return_int(increment_by_command);
+    co_return co_await async_execute_command_return_int({ "INCRBY", get_prefixed_key(key), std::to_string(increment) });
 }
 
 celeritas::redis_string_commands::int_awaitable_type celeritas::redis_string_commands::async_increment(const std::string& key) const
 {
-    const auto increment_command = "INCR " + get_prefixed_key(key);
-
-    co_return co_await async_execute_command_return_int(increment_command);
+    co_return co_await async_execute_command_return_int({ "INCR", get_prefixed_key(key) });
 }
 
 celeritas::redis_string_commands::int_awaitable_type celeritas::redis_string_commands::async_decrement_by(const std::string& key, const int decrement) const
 {
-    const auto decrement_by_command = std::string("DECRBY ") + get_prefixed_key(key) + " " + std::to_string(decrement);
-
-    co_return co_await async_execute_command_return_int(decrement_by_command);
+    co_return co_await async_execute_command_return_int({ "DECRBY", get_prefixed_key(key), std::to_string(decrement) });
 }
 
 celeritas::redis_string_commands::int_awaitable_type celeritas::redis_string_commands::async_decrement(const std::string& key) const
 {
-    const auto decrement_command = "DECR " + get_prefixed_key(key);
-
-    co_return co_await async_execute_command_return_int(decrement_command);
+    co_return co_await async_execute_command_return_int({ "DECR", get_prefixed_key(key) });
 }
 
 celeritas::redis_string_commands::optional_string_awaitable_type celeritas::redis_string_commands::async_get(const std::string& key) const
 {
-    const auto get_command = std::string("GET ") + get_prefixed_key(key);
-
-    co_return co_await async_execute_command_return_optional_string(get_command);
+    co_return co_await async_execute_command_return_optional_string({ "GET", get_prefixed_key(key) });
 }
 
 celeritas::redis_string_commands::array_awaitable_type celeritas::redis_string_commands::async_get_many(const key_container& keys) const
@@ -95,14 +93,14 @@ celeritas::redis_string_commands::array_awaitable_type celeritas::redis_string_c
         co_return array_type{};
     }
 
-    const auto get_many_command = std::string("MGET") + get_keys_command(keys);
+    array_type get_many_command{ "MGET" };
+    const auto keys_command = get_keys_command(keys);
+    get_many_command.insert(get_many_command.end(), keys_command.begin(), keys_command.end());
 
     co_return co_await async_execute_command_return_array_type(get_many_command);
 }
 
 celeritas::redis_string_commands::optional_string_awaitable_type celeritas::redis_string_commands::async_get_set(const std::string& key, const std::string& value) const
 {
-    const auto get_set_command = std::string("GETSET ") + get_prefixed_key(key) + " " + get_quoted_value_command(value);
-
-    co_return co_await async_execute_command_return_optional_string(get_set_command);
+    co_return co_await async_execute_command_return_optional_string({ "GETSET", get_prefixed_key(key), value });
 }

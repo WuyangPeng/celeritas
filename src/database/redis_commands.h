@@ -50,43 +50,37 @@ namespace celeritas
         using optional_map_awaitable_type = boost::asio::awaitable<optional_map_type>;
         using scan_result_awaitable_type = boost::asio::awaitable<scan_result>;
 
-        [[nodiscard]] std::string get_keys_command(const key_container& keys) const;
+        [[nodiscard]] array_type get_keys_command(const key_container& keys) const;
 
-        [[nodiscard]] static std::string get_fields_command(const key_container& fields);
+        [[nodiscard]] array_type get_keys_value_command(const key_value_container& key_values) const;
 
-        [[nodiscard]] static std::string get_values_command(const key_container& values);
-
-        [[nodiscard]] std::string get_keys_value_command(const key_value_container& key_values) const;
-
-        [[nodiscard]] static std::string get_fields_value_command(const key_value_container& field_values);
-
-        [[nodiscard]] static std::string get_quoted_value_command(const std::string& value);
+        [[nodiscard]] static array_type get_fields_value_command(const key_value_container& field_values);
 
         [[nodiscard]] redis_database_session& get_redis_database_session();
 
         [[nodiscard]] std::string get_prefixed_key(const std::string& key) const;
 
-        [[nodiscard]] std::string get_expire_seconds_command(int expire_seconds) const;
+        [[nodiscard]] array_type get_expire_seconds_command(int expire_seconds) const;
 
-        [[nodiscard]] int_awaitable_type async_execute_command_return_int(const std::string& command) const;
+        [[nodiscard]] int_awaitable_type async_execute_command_return_int(const array_type& command) const;
 
-        [[nodiscard]] void_awaitable_type async_execute_command_return_void(const std::string& command) const;
+        [[nodiscard]] void_awaitable_type async_execute_command_return_void(const array_type& command) const;
 
-        [[nodiscard]] optional_string_awaitable_type async_execute_command_return_optional_string(const std::string& command) const;
+        [[nodiscard]] optional_string_awaitable_type async_execute_command_return_optional_string(const array_type& command) const;
 
-        [[nodiscard]] array_awaitable_type async_execute_command_return_array_type(const std::string& command) const;
+        [[nodiscard]] array_awaitable_type async_execute_command_return_array_type(const array_type& command) const;
 
-        [[nodiscard]] map_awaitable_type async_execute_command_return_map_type(const std::string& command) const;
+        [[nodiscard]] map_awaitable_type async_execute_command_return_map_type(const array_type& command) const;
 
-        [[nodiscard]] optional_double_awaitable_type async_execute_command_return_optional_double(const std::string& command) const;
+        [[nodiscard]] optional_double_awaitable_type async_execute_command_return_optional_double(const array_type& command) const;
 
-        [[nodiscard]] optional_int_awaitable_type async_execute_command_return_optional_int(const std::string& command) const;
+        [[nodiscard]] optional_int_awaitable_type async_execute_command_return_optional_int(const array_type& command) const;
 
-        [[nodiscard]] optional_map_awaitable_type async_execute_command_return_optional_map_type(const std::string& command) const;
+        [[nodiscard]] optional_map_awaitable_type async_execute_command_return_optional_map_type(const array_type& command) const;
 
-        [[nodiscard]] scan_result_awaitable_type async_execute_command_return_scan_result(const std::string& command) const;
+        [[nodiscard]] scan_result_awaitable_type async_execute_command_return_scan_result(const array_type& command) const;
 
-        [[nodiscard]] bool_awaitable_type async_execute_command_is_ok(const std::string& command) const;
+        [[nodiscard]] bool_awaitable_type async_execute_command_is_ok(const array_type& command) const;
 
     private:
         redis_database_session& session_;

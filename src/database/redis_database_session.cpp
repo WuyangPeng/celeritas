@@ -104,68 +104,68 @@ std::string celeritas::redis_database_session::get_prefixed_key(const std::strin
     return redis_parameter_.get_prefixed_key(key);
 }
 
-std::string celeritas::redis_database_session::get_expire_seconds_command(const int expire_seconds) const
+celeritas::redis_database_session::array_type celeritas::redis_database_session::get_expire_seconds_command(const int expire_seconds) const
 {
     return redis_parameter_.get_expire_seconds_command(expire_seconds);
 }
 
-celeritas::redis_database_session::int_awaitable_type celeritas::redis_database_session::async_execute_command_return_int(const std::string& command) const
+celeritas::redis_database_session::int_awaitable_type celeritas::redis_database_session::async_execute_command_return_int(const array_type& command) const
 {
     const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return redis_reply->to_integer();
 }
 
-celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::async_execute_command_return_void(const std::string& command) const
+celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::async_execute_command_return_void(const array_type& command) const
 {
     const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return;
 }
 
-celeritas::redis_database_session::optional_string_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_string(const std::string& command) const
+celeritas::redis_database_session::optional_string_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_string(const array_type& command) const
 {
     const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return redis_reply->to_optional_string();
 }
 
-celeritas::redis_database_session::array_awaitable_type celeritas::redis_database_session::async_execute_command_return_array_type(const std::string& command) const
+celeritas::redis_database_session::array_awaitable_type celeritas::redis_database_session::async_execute_command_return_array_type(const array_type& command) const
 {
     const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return redis_reply->to_array();
 }
 
-celeritas::redis_database_session::map_awaitable_type celeritas::redis_database_session::async_execute_command_return_map_type(const std::string& command) const
+celeritas::redis_database_session::map_awaitable_type celeritas::redis_database_session::async_execute_command_return_map_type(const array_type& command) const
 {
     const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return redis_reply->to_map();
 }
 
-celeritas::redis_database_session::optional_double_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_double(const std::string& command) const
+celeritas::redis_database_session::optional_double_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_double(const array_type& command) const
 {
     const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return redis_reply->to_optional_double();
 }
 
-celeritas::redis_database_session::optional_int_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_int(const std::string& command) const
+celeritas::redis_database_session::optional_int_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_int(const array_type& command) const
 {
     const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return redis_reply->to_optional_int();
 }
 
-celeritas::redis_database_session::optional_map_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_map_type(const std::string& command) const
+celeritas::redis_database_session::optional_map_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_map_type(const array_type& command) const
 {
     const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return redis_reply->to_optional_map();
 }
 
-celeritas::redis_database_session::scan_result_awaitable_type celeritas::redis_database_session::async_execute_command_return_scan_result(const std::string& command) const
+celeritas::redis_database_session::scan_result_awaitable_type celeritas::redis_database_session::async_execute_command_return_scan_result(const array_type& command) const
 {
     const auto redis_reply = co_await async_execute_command_return_reply(command);
 
@@ -251,7 +251,7 @@ void celeritas::redis_database_session::do_is_health() const
     redis_reply redis_reply{ *redis_context_.get(), "PING" };
 }
 
-celeritas::redis_database_session::redis_reply_awaitable_type celeritas::redis_database_session::async_execute_command_return_reply(const std::string& command) const
+celeritas::redis_database_session::redis_reply_awaitable_type celeritas::redis_database_session::async_execute_command_return_reply(const array_type& command) const
 {
     check_initialized();
 

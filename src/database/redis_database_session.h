@@ -76,25 +76,25 @@ namespace celeritas
         // 辅助函数
         [[nodiscard]] std::string get_prefixed_key(const std::string& key) const;
 
-        [[nodiscard]] std::string get_expire_seconds_command(int expire_seconds) const;
+        [[nodiscard]] array_type get_expire_seconds_command(int expire_seconds) const;
 
-        [[nodiscard]] int_awaitable_type async_execute_command_return_int(const std::string& command) const;
+        [[nodiscard]] int_awaitable_type async_execute_command_return_int(const array_type& command) const;
 
-        [[nodiscard]] void_awaitable_type async_execute_command_return_void(const std::string& command) const;
+        [[nodiscard]] void_awaitable_type async_execute_command_return_void(const array_type& command) const;
 
-        [[nodiscard]] optional_string_awaitable_type async_execute_command_return_optional_string(const std::string& command) const;
+        [[nodiscard]] optional_string_awaitable_type async_execute_command_return_optional_string(const array_type& command) const;
 
-        [[nodiscard]] array_awaitable_type async_execute_command_return_array_type(const std::string& command) const;
+        [[nodiscard]] array_awaitable_type async_execute_command_return_array_type(const array_type& command) const;
 
-        [[nodiscard]] map_awaitable_type async_execute_command_return_map_type(const std::string& command) const;
+        [[nodiscard]] map_awaitable_type async_execute_command_return_map_type(const array_type& command) const;
 
-        [[nodiscard]] optional_double_awaitable_type async_execute_command_return_optional_double(const std::string& command) const;
+        [[nodiscard]] optional_double_awaitable_type async_execute_command_return_optional_double(const array_type& command) const;
 
-        [[nodiscard]] optional_int_awaitable_type async_execute_command_return_optional_int(const std::string& command) const;
+        [[nodiscard]] optional_int_awaitable_type async_execute_command_return_optional_int(const array_type& command) const;
 
-        [[nodiscard]] optional_map_awaitable_type async_execute_command_return_optional_map_type(const std::string& command) const;
+        [[nodiscard]] optional_map_awaitable_type async_execute_command_return_optional_map_type(const array_type& command) const;
 
-        [[nodiscard]] scan_result_awaitable_type async_execute_command_return_scan_result(const std::string& command) const;
+        [[nodiscard]] scan_result_awaitable_type async_execute_command_return_scan_result(const array_type& command) const;
 
         [[nodiscard]] void_awaitable_type execute_changes(const database_entity_change_const_shared_ptr& database, int expiration_time) override;
 
@@ -111,7 +111,7 @@ namespace celeritas
 
         void do_is_health() const;
 
-        [[nodiscard]] redis_reply_awaitable_type async_execute_command_return_reply(const std::string& command) const;
+        [[nodiscard]] redis_reply_awaitable_type async_execute_command_return_reply(const array_type& command) const;
 
         [[nodiscard]] void_awaitable_type save_database(const database_entity_change_const_shared_ptr& database, int expiration_time) const;
 

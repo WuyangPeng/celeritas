@@ -10,72 +10,67 @@ redis_set_commands::redis_set_commands(redis_database_session& session) noexcept
 
 redis_set_commands::int_awaitable_type redis_set_commands::async_add(const std::string& key, const std::string& member) const
 {
-    const auto command = "SADD " + get_prefixed_key(key) + " " + get_quoted_value_command(member);
-
-    co_return co_await async_execute_command_return_int(command);
+    co_return co_await async_execute_command_return_int({ "SADD", get_prefixed_key(key), member });
 }
 
 redis_set_commands::int_awaitable_type redis_set_commands::async_add_many(const std::string& key, const array_type& members) const
 {
-    const auto command = "SADD " + get_prefixed_key(key) + get_values_command(members);
+    array_type command{ "SADD", get_prefixed_key(key) };
+    command.insert(command.end(), members.begin(), members.end());
 
     co_return co_await async_execute_command_return_int(command);
 }
 
 redis_set_commands::int_awaitable_type redis_set_commands::async_remove(const std::string& key, const std::string& member) const
 {
-    const auto command = "SREM " + get_prefixed_key(key) + " " + get_quoted_value_command(member);
-
-    co_return co_await async_execute_command_return_int(command);
+    co_return co_await async_execute_command_return_int({ "SREM", get_prefixed_key(key), member });
 }
 
 redis_set_commands::int_awaitable_type redis_set_commands::async_remove_many(const std::string& key, const array_type& members) const
 {
-    const auto command = "SREM " + get_prefixed_key(key) + get_fields_command(members);
+    array_type command{ "SREM", get_prefixed_key(key) };
+    command.insert(command.end(), members.begin(), members.end());
 
     co_return co_await async_execute_command_return_int(command);
 }
 
 redis_set_commands::int_awaitable_type redis_set_commands::async_set_cardinality(const std::string& key) const
 {
-    const auto command = "SCARD " + get_prefixed_key(key);
-
-    co_return co_await async_execute_command_return_int(command);
+    co_return co_await async_execute_command_return_int({ "SCARD", get_prefixed_key(key) });
 }
 
 redis_set_commands::bool_awaitable_type redis_set_commands::async_set_is_member(const std::string& key, const std::string& member) const
 {
-    const auto command = "SISMEMBER " + get_prefixed_key(key) + " " + get_quoted_value_command(member);
-
-    const auto result = co_await async_execute_command_return_int(command);
+    const auto result = co_await async_execute_command_return_int({ "SISMEMBER", get_prefixed_key(key), member });
 
     co_return result == 1;
 }
 
 redis_set_commands::array_awaitable_type redis_set_commands::async_set_members(const std::string& key) const
 {
-    const auto command = std::string("SMEMBERS ") + get_prefixed_key(key);
-
-    co_return co_await async_execute_command_return_array_type(command);
+    co_return co_await async_execute_command_return_array_type({ "SMEMBERS", get_prefixed_key(key) });
 }
 
 redis_set_commands::array_awaitable_type redis_set_commands::async_set_union(const array_type& keys) const
 {
-    const auto command = "SUNION " + get_keys_command(keys);
+    array_type command{ "SUNION" };
+    command.insert(command.end(), keys.begin(), keys.end());
 
     co_return co_await async_execute_command_return_array_type(command);
 }
 
 redis_set_commands::array_awaitable_type redis_set_commands::async_set_inter(const array_type& keys) const
 {
-    const auto command = "SINTER " + get_keys_command(keys);
+    array_type command{ "SINTER" };
+    command.insert(command.end(), keys.begin(), keys.end());
 
     co_return co_await async_execute_command_return_array_type(command);
 }
 
 redis_set_commands::array_awaitable_type redis_set_commands::async_set_diff(const array_type& keys) const
 {
-    const auto command = "SDIFF " + get_keys_command(keys);
+    array_type command{ "SDIFF" };
+    command.insert(command.end(), keys.begin(), keys.end());
 
     co_return co_await async_execute_command_return_array_type(command);
 }

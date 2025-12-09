@@ -35,9 +35,9 @@ int celeritas::redis_parameter::get_expire_seconds() const
     return expire_seconds_;
 }
 
-std::string celeritas::redis_parameter::get_auth_command() const
+celeritas::redis_parameter::array_type celeritas::redis_parameter::get_auth_command() const
 {
-    return user_.empty() ? "AUTH " + password_ : "AUTH " + user_ + " " + password_;
+    return user_.empty() ? array_type{ "AUTH", password_ } : array_type{ "AUTH", user_, password_ };
 }
 
 std::string celeritas::redis_parameter::get_prefixed_key(const std::string& key) const
@@ -50,7 +50,7 @@ std::string celeritas::redis_parameter::get_prefixed_key(const std::string& key)
     return db_name_ + ":" + key;
 }
 
-std::string celeritas::redis_parameter::get_expire_seconds_command(int expire_seconds) const
+celeritas::redis_parameter::array_type celeritas::redis_parameter::get_expire_seconds_command(int expire_seconds) const
 {
     if (expire_seconds == 0)
     {
@@ -59,8 +59,8 @@ std::string celeritas::redis_parameter::get_expire_seconds_command(int expire_se
 
     if (expire_seconds > 0)
     {
-        return " EX " + std::to_string(expire_seconds);
+        return array_type{ "EX", std::to_string(expire_seconds) };
     }
 
-    return "";
+    return array_type{};
 }

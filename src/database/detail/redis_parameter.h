@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <string>
+#include <vector>
 
 namespace celeritas
 {
@@ -8,6 +9,7 @@ namespace celeritas
     {
     public:
         using class_type = redis_parameter;
+        using array_type = std::vector<std::string>;
 
         redis_parameter(std::string_view host,
                         int port,
@@ -28,11 +30,11 @@ namespace celeritas
 
         [[nodiscard]] int get_expire_seconds() const;
 
-        [[nodiscard]] std::string get_auth_command() const;
+        [[nodiscard]] array_type get_auth_command() const;
 
         [[nodiscard]] std::string get_prefixed_key(const std::string& key) const;
 
-        [[nodiscard]] std::string get_expire_seconds_command(int expire_seconds) const;
+        [[nodiscard]] array_type get_expire_seconds_command(int expire_seconds) const;
 
     private:
         std::string host_;
