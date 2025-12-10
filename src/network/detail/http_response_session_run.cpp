@@ -1,6 +1,6 @@
 ﻿#include "http_response_session_run.h"
 
-celeritas::http_response_session_run::http_response_session_run(socket_type& socket, int64_t session_id, session_callback session_callback, std::string path)
+celeritas::http_response_session_run::http_response_session_run(socket_type& socket, const int64_t session_id, session_callback session_callback, std::string path)
     : base_type{ socket, session_id, std::move(session_callback) }, path_{ std::move(path) }
 {
 }
