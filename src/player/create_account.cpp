@@ -27,6 +27,11 @@ celeritas::create_account::bool_awaitable_type celeritas::create_account::send_m
         co_return false;
     }
 
+    if (login_.account_bind_id() <= 0)
+    {
+        co_return true;
+    }
+
     const auto optional_account_bind = co_await redis_pool->select_one(account_bind::get_select(database_type::redis, login_.account_bind_id()), account_bind::get_database_field_container());
     if (!optional_account_bind)
     {
