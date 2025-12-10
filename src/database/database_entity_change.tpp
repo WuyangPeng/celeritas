@@ -23,7 +23,7 @@ celeritas::database_data_Type_traits<Type>::Type celeritas::database_entity_chan
         << ", actual type: "
         << result.type().name()
         << ", expected type: "
-        << typeid(database_data_Type_traits<Type>::Type).name()
+        << typeid(typename database_data_Type_traits<Type>::Type).name()
         << ", what: "
         << error.what();
 
