@@ -24,6 +24,7 @@ namespace celeritas
         using health_check_level_awaitable_type = boost::asio::awaitable<health_check_level_type>;
         using optional_string = std::optional<std::string>;
         using task_type = thread_safe_queue::task_type;
+        using void_waitable_type = boost::asio::awaitable<void>;
 
         http_handle_parameter(io_context_type& io_context,
                               std::string path,
@@ -55,7 +56,7 @@ namespace celeritas
 
         [[nodiscard]] optional_string get_param(const std::string& key) const;
 
-        void write(const std::string& response) const;
+        [[nodiscard]] void_waitable_type write_immediately(const std::string& response) const;
 
         [[nodiscard]] app_config_const_shared_ptr get_app_config() const;
 

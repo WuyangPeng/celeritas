@@ -22,7 +22,7 @@ celeritas::auth_service_base::void_awaitable_type celeritas::login_servers::resp
     login_servers_parameter login_servers_parameter{ get_http_handle_parameter() };
     if (login_servers_parameter.is_failure())
     {
-        co_return write(login_servers_parameter.get_response());
+        co_return co_await write_immediately(login_servers_parameter.get_response());
     }
 
     const auto token = login_servers_parameter.get_token();
@@ -33,7 +33,7 @@ celeritas::auth_service_base::void_awaitable_type celeritas::login_servers::resp
     const auto optional_session_token = co_await redis_pool->select_one(session_token::get_select(database_type::redis, token), session_token::get_database_field_container());
     if (!optional_session_token)
     {
-        co_return write(login_servers_response{ game_error_type::token_error });
+        co_return co_await write_immediately(login_servers_response{ game_error_type::token_error });
     }
 
     session_token session_token{ *optional_session_token };
@@ -146,31 +146,31 @@ celeritas::auth_service_base::void_awaitable_type celeritas::login_servers::resp
             const auto optional_server_cell = server_cell_repository::get_instance().get_server_cell(account_last_login.get_game_server_id());
             if (!optional_server_cell)
             {
-                co_return write(login_servers_response{ game_error_type::server_error });
+                co_return co_await write_immediately(login_servers_response{ game_error_type::server_error });
             }
 
             const auto& server_cell = *optional_server_cell;
 
             if (server_cell.get_launch_time() >= time_helper::get_current_milliseconds())
             {
-                co_return write(login_servers_response{ game_error_type::server_launch_error });
+                co_return co_await write_immediately(login_servers_response{ game_error_type::server_launch_error });
             }
 
             auto login_server_info = get_login_server_info(login_servers_parameter, server_cell);
 
-            co_return write(login_servers_response{ game_error_type::success, "get login servers success.", std::move(login_server_info) });
+            co_return co_await write_immediately(login_servers_response{ game_error_type::success, "get login servers success.", std::move(login_server_info) });
         }
     }
 
     const auto optional_server_cell = server_cell_repository::get_instance().get_last_server_cell(login_servers_parameter.get_app_id());
     if (!optional_server_cell)
     {
-        co_return write(login_servers_response{ game_error_type::server_error });
+        co_return co_await write_immediately(login_servers_response{ game_error_type::server_error });
     }
 
     auto login_server_info = get_login_server_info(login_servers_parameter, *optional_server_cell);
 
-    co_return write(login_servers_response{ game_error_type::success, "get login servers success.", std::move(login_server_info) });
+    co_return co_await write_immediately(login_servers_response{ game_error_type::success, "get login servers success.", std::move(login_server_info) });
 }
 
 celeritas::auth_service_base::void_awaitable_type celeritas::login_servers::response_is_all(const login_servers_parameter& login_servers_parameter)
@@ -182,5 +182,5 @@ celeritas::auth_service_base::void_awaitable_type celeritas::login_servers::resp
         container.emplace_back(get_login_server_info(login_servers_parameter, element));
     }
 
-    co_return write(login_servers_response{ game_error_type::success, "get login servers success.", std::move(container) });
+    co_return co_await write_immediately(login_servers_response{ game_error_type::success, "get login servers success.", std::move(container) });
 }

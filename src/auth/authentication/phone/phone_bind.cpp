@@ -23,7 +23,7 @@ celeritas::phone_bind::void_awaitable_type celeritas::phone_bind::response()
 
     if (phone_bind_parameter.is_failure())
     {
-        co_return write(phone_bind_parameter.get_response());
+        co_return co_await write_immediately(phone_bind_parameter.get_response());
     }
 
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
@@ -43,7 +43,7 @@ celeritas::phone_bind::void_awaitable_type celeritas::phone_bind::response()
     if (auto account = *optional_account;
         co_await bind(account, app_id, phone, account_type::phone, sdk_process_type::null, mysql_pool))
     {
-        write(phone_bind_response{ game_error_type::success, "phone bind success" });
+        co_return co_await write_immediately(phone_bind_response{ game_error_type::success, "phone bind success" });
 
         if (!co_await redis_pool->execute_changes(optional_sms_code->get_delete()))
         {
@@ -52,6 +52,6 @@ celeritas::phone_bind::void_awaitable_type celeritas::phone_bind::response()
     }
     else
     {
-        write(phone_bind_response{ game_error_type::mysql_error });
+        co_return co_await write_immediately(phone_bind_response{ game_error_type::mysql_error });
     }
 }

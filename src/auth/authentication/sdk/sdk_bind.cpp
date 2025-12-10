@@ -21,7 +21,7 @@ celeritas::sdk_bind::void_awaitable_type celeritas::sdk_bind::response()
 
     if (sdk_bind_parameter.is_failure())
     {
-        co_return write(sdk_bind_parameter.get_response());
+        co_return co_await write_immediately(sdk_bind_parameter.get_response());
     }
 
     const auto app_id = sdk_bind_parameter.get_app_id();
@@ -37,7 +37,7 @@ celeritas::sdk_bind::void_awaitable_type celeritas::sdk_bind::response()
     const auto optional_open_id = co_await sdk_process->get_open_id();
     if (!optional_open_id)
     {
-        write(sdk_bind_response{ game_error_type::sdk_error });
+        co_return co_await write_immediately(sdk_bind_response{ game_error_type::sdk_error });
     }
 
     const auto& open_id = *optional_open_id;
@@ -51,10 +51,10 @@ celeritas::sdk_bind::void_awaitable_type celeritas::sdk_bind::response()
     if (auto account = *optional_account;
         co_await bind(account, app_id, open_id, account_type::sdk, process_type, mysql_pool))
     {
-        write(sdk_bind_response{ game_error_type::success, "sdk bind success" });
+        co_return co_await write_immediately(sdk_bind_response{ game_error_type::success, "sdk bind success" });
     }
     else
     {
-        write(sdk_bind_response{ game_error_type::mysql_error });
+        co_return co_await write_immediately(sdk_bind_response{ game_error_type::mysql_error });
     }
 }

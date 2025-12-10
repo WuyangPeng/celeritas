@@ -26,7 +26,7 @@ celeritas::sdk_login::void_awaitable_type celeritas::sdk_login::response()
 
     if (sdk_login_parameter.is_failure())
     {
-        co_return write(sdk_login_parameter.get_response());
+        co_return co_await write_immediately(sdk_login_parameter.get_response());
     }
 
     const auto app_id = sdk_login_parameter.get_app_id();
@@ -42,7 +42,7 @@ celeritas::sdk_login::void_awaitable_type celeritas::sdk_login::response()
     const auto optional_open_id = co_await sdk_process->get_open_id();
     if (!optional_open_id)
     {
-        write(sdk_login_response{ game_error_type::sdk_error });
+        co_return co_await write_immediately(sdk_login_response{ game_error_type::sdk_error });
     }
 
     const auto& open_id = *optional_open_id;
@@ -63,18 +63,15 @@ celeritas::sdk_login::void_awaitable_type celeritas::sdk_login::response()
     // 这里没有删除旧的token，旧的token依赖redis有效时间进行删除。
     if (auto session_token = co_await create_session_token(account, !optional_account_bind, redis_pool))
     {
-        write(sdk_login_response{ game_error_type::success,
-                                  "login successful",
-                                  session_token->get_token(),
-                                  get_app_config()->get_expire_milliseconds(redis_db_name.data())
-        });
+        co_return co_await write_immediately(sdk_login_response{ game_error_type::success,
+                                                                 "login successful",
+                                                                 session_token->get_token(),
+                                                                 get_app_config()->get_expire_milliseconds(redis_db_name.data()) });
     }
     else
     {
-        write(sdk_login_response{ game_error_type::redis_error });
+        co_return co_await write_immediately(sdk_login_response{ game_error_type::redis_error });
     }
-
-    co_return;
 }
 
 celeritas::sdk_login::account_awaitable_type celeritas::sdk_login::get_account(const optional_database_entity_change& database_entity_change,

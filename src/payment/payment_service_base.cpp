@@ -9,9 +9,9 @@ celeritas::payment_service_base::payment_service_base(http_handle_parameter hand
 {
 }
 
-void celeritas::payment_service_base::write(const http_response& response) const
+celeritas::payment_service_base::void_awaitable_type celeritas::payment_service_base::write_immediately(const http_response& response) const
 {
-    handle_parameter_.write(response.to_json_string());
+    co_return co_await handle_parameter_.write_immediately(response.to_json_string());
 }
 
 std::string celeritas::payment_service_base::generate_token()
@@ -36,8 +36,6 @@ const celeritas::http_handle_parameter& celeritas::payment_service_base::get_htt
 {
     return handle_parameter_;
 }
-
-
 
 celeritas::payment_service_base::io_context_type& celeritas::payment_service_base::get_io_context() const
 {

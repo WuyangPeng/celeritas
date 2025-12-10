@@ -19,7 +19,7 @@ celeritas::order_create::void_awaitable_type celeritas::order_create::response()
     const order_create_parameter order_create_parameter{ get_http_handle_parameter() };
     if (order_create_parameter.is_failure())
     {
-        co_return write(order_create_parameter.get_response());
+        co_return co_await write_immediately(order_create_parameter.get_response());
     }
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(payment_db_name.data());
@@ -27,17 +27,17 @@ celeritas::order_create::void_awaitable_type celeritas::order_create::response()
     const auto optional_order = co_await get_orders(mysql_pool, order_create_parameter, get_app_config());
     if (!optional_order)
     {
-        co_return write(order_create_http_response{ game_error_type::mysql_error });
+        co_return co_await write_immediately(order_create_http_response{ game_error_type::mysql_error });
     }
 
     const auto& order = *optional_order;
 
-    co_return write(order_create_http_response{ game_error_type::success,
-                                                "order create success.",
-                                                order.get_order_id(),
-                                                static_cast<payment_platform_type>(order.get_platform()),
-                                                payment_params_json::create(order_create_parameter)->get_payment_params_json(),
-                                                order.get_amount() });
+    co_return co_await write_immediately(order_create_http_response{ game_error_type::success,
+                                                                     "order create success.",
+                                                                     order.get_order_id(),
+                                                                     static_cast<payment_platform_type>(order.get_platform()),
+                                                                     payment_params_json::create(order_create_parameter)->get_payment_params_json(),
+                                                                     order.get_amount() });
 }
 
 celeritas::order_create::optional_orders_awaitable_type celeritas::order_create::get_orders(const database_pool_shared_ptr& mysql_pool,

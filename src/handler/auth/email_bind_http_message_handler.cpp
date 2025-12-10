@@ -44,5 +44,5 @@ celeritas::email_bind_http_message_handler::void_awaitable_type celeritas::email
     }
 
     const email_bind_response response{ game_error_type::unknown, "unknown error" };
-    handle_parameter.write(response.to_json_string());
+    co_return co_await handle_parameter.write_immediately(response.to_json_string());
 }

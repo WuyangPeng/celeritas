@@ -20,8 +20,7 @@ celeritas::guest_login::void_awaitable_type celeritas::guest_login::response()
 
     if (guest_login_parameter.is_failure())
     {
-        write(guest_login_parameter.get_response());
-        co_return;
+        co_return co_await write_immediately(guest_login_parameter.get_response());
     }
 
     const auto app_id = guest_login_parameter.get_app_id();
@@ -35,25 +34,21 @@ celeritas::guest_login::void_awaitable_type celeritas::guest_login::response()
 
     if (!account.get_password_hash().empty())
     {
-        write(guest_login_response{ game_error_type::no_guest_account });
-        co_return;
+        co_return co_await write_immediately(guest_login_response{ game_error_type::no_guest_account });
     }
 
     // 这里没有删除旧的token，旧的token依赖redis有效时间进行删除。
     if (auto session_token = co_await create_session_token(account, !optional_account, redis_pool))
     {
-        write(guest_login_response{ game_error_type::success,
-                                    "login successful",
-                                    session_token.value().get_token(),
-                                    get_app_config()->get_expire_milliseconds(redis_db_name.data())
-        });
+        co_return co_await write_immediately(guest_login_response{ game_error_type::success,
+                                                                   "login successful",
+                                                                   session_token.value().get_token(),
+                                                                   get_app_config()->get_expire_milliseconds(redis_db_name.data()) });
     }
     else
     {
-        write(guest_login_response{ game_error_type::redis_error });
+        co_return co_await write_immediately(guest_login_response{ game_error_type::redis_error });
     }
-
-    co_return;
 }
 
 celeritas::guest_login::account_awaitable_type celeritas::guest_login::get_account(const int64_t app_id,

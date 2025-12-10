@@ -48,7 +48,5 @@ celeritas::health_check_request_http_message_handler::void_awaitable_type celeri
     const auto health_check_level = co_await handle_parameter.get_health_check_level();
 
     const health_check health_check{ instance_id, health_check_level };
-    handle_parameter.write(health_check.to_json_string());
-
-    co_return;
+    co_return co_await handle_parameter.write_immediately(health_check.to_json_string());
 }

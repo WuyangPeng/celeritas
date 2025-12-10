@@ -5,8 +5,6 @@
 #include "common/session.h"
 #include "message/header.h"
 
-#include <boost/asio/awaitable.hpp>
-
 #include <memory>
 
 namespace celeritas
@@ -16,7 +14,6 @@ namespace celeritas
     public:
         using class_type = session_base;
         using base_type = session;
-        using void_awaitable_type = boost::asio::awaitable<void>;
 
         session_base(int64_t session_id, session_callback session_callback);
 

@@ -46,6 +46,5 @@ celeritas::notify_http_message_handler::void_awaitable_type celeritas::notify_ht
         LOG_CHANNEL(handler_channel, fatal) << "notify unknown error.";
     }
 
-    handle_parameter.write(recharge_notify->get_default_message());
-    co_return;
+    co_return co_await handle_parameter.write_immediately(recharge_notify->get_default_message());
 }

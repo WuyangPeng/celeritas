@@ -28,7 +28,7 @@ namespace celeritas
 
         [[nodiscard]] virtual void_awaitable_type response() = 0;
 
-        void write(const http_response& response) const;
+        [[nodiscard]] void_awaitable_type write_immediately(const http_response& response) const;
 
     protected:
         using optional_string = std::optional<std::string>;

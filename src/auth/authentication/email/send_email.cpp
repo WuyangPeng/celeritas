@@ -22,7 +22,7 @@ celeritas::send_email::void_awaitable_type celeritas::send_email::response()
 
     if (send_email_parameter.is_failure())
     {
-        co_return write(send_email_parameter.get_response());
+        co_return co_await write_immediately(send_email_parameter.get_response());
     }
 
     const auto email = send_email_parameter.get_email();
@@ -32,7 +32,7 @@ celeritas::send_email::void_awaitable_type celeritas::send_email::response()
 
     if (auto sms_limit = co_await redis_pool->select_one(email_limit::get_select(database_type::redis, email), email_limit::get_database_field_container()))
     {
-        co_return write(send_email_response{ game_error_type::sent_too_frequently });
+        co_return co_await write_immediately(send_email_response{ game_error_type::sent_too_frequently });
     }
 
     email_code email_code{ database_type::redis, email };
@@ -44,7 +44,7 @@ celeritas::send_email::void_awaitable_type celeritas::send_email::response()
     if (co_await redis_pool->execute_changes(email_code.get_modify(), email_code_expiration_time) &&
         co_await redis_pool->execute_changes(email_limit.get_modify(), email_limit_expiration_time))
     {
-        write(send_email_response{ game_error_type::success, "send email success" });
+        co_return co_await write_immediately(send_email_response{ game_error_type::success, "send email success" });
 
         boost::asio::co_spawn(get_io_context(),
                               [ email_code,app] {
@@ -53,7 +53,7 @@ celeritas::send_email::void_awaitable_type celeritas::send_email::response()
     }
     else
     {
-        write(send_email_response{ game_error_type::redis_error });
+        co_return co_await write_immediately(send_email_response{ game_error_type::redis_error });
     }
 
     co_return;

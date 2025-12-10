@@ -84,12 +84,12 @@ celeritas::http_handle_parameter::optional_string celeritas::http_handle_paramet
     return std::nullopt;
 }
 
-void celeritas::http_handle_parameter::write(const std::string& response) const
+celeritas::http_handle_parameter::void_waitable_type celeritas::http_handle_parameter::write_immediately(const std::string& response) const
 {
     if (const auto session_shared_ptr = session_.lock();
         session_shared_ptr != nullptr)
     {
-        session_shared_ptr->write(response);
+        co_return co_await session_shared_ptr->write_immediately(response);
     }
 }
 

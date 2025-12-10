@@ -22,7 +22,7 @@ celeritas::email_bind::void_awaitable_type celeritas::email_bind::response()
 
     if (email_bind_parameter.is_failure())
     {
-        co_return write(email_bind_parameter.get_response());
+        co_return co_await write_immediately(email_bind_parameter.get_response());
     }
 
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
@@ -42,7 +42,7 @@ celeritas::email_bind::void_awaitable_type celeritas::email_bind::response()
     if (auto account = *optional_account;
         co_await bind(account, app_id, email, account_type::email, sdk_process_type::null, mysql_pool))
     {
-        write(email_bind_response{ game_error_type::success, "email bind success" });
+        co_return co_await write_immediately(email_bind_response{ game_error_type::success, "email bind success" });
 
         if (!co_await redis_pool->execute_changes(optional_email_code->get_delete()))
         {
@@ -51,6 +51,6 @@ celeritas::email_bind::void_awaitable_type celeritas::email_bind::response()
     }
     else
     {
-        write(email_bind_response{ game_error_type::mysql_error });
+        co_return co_await write_immediately(email_bind_response{ game_error_type::mysql_error });
     }
 }

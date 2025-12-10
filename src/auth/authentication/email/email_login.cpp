@@ -26,7 +26,7 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
 
     if (email_login_parameter.is_failure())
     {
-        co_return write(email_login_parameter.get_response());
+        co_return co_await write_immediately(email_login_parameter.get_response());
     }
 
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
@@ -52,14 +52,14 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
     // 这里没有删除旧的token，旧的token依赖redis有效时间进行删除。
     if (auto session_token = co_await create_session_token(account, !optional_account_bind, redis_pool))
     {
-        write(email_login_response{ game_error_type::success,
-                                    "login successful",
-                                    session_token->get_token(),
-                                    get_app_config()->get_expire_milliseconds(redis_db_name.data()) });
+        co_return co_await write_immediately(email_login_response{ game_error_type::success,
+                                                                   "login successful",
+                                                                   session_token->get_token(),
+                                                                   get_app_config()->get_expire_milliseconds(redis_db_name.data()) });
     }
     else
     {
-        write(email_login_response{ game_error_type::redis_error });
+        co_return co_await write_immediately(email_login_response{ game_error_type::redis_error });
     }
 
     if (!co_await redis_pool->execute_changes(optional_email_code->get_delete()))

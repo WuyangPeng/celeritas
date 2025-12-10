@@ -18,7 +18,7 @@ celeritas::password_bind::void_awaitable_type celeritas::password_bind::response
     password_bind_parameter password_bind_parameter{ get_http_handle_parameter() };
     if (password_bind_parameter.is_failure())
     {
-        co_return write(password_bind_parameter.get_response());
+        co_return co_await write_immediately(password_bind_parameter.get_response());
     }
 
     const auto app_id = password_bind_parameter.get_app_id();
@@ -34,10 +34,10 @@ celeritas::password_bind::void_awaitable_type celeritas::password_bind::response
     if (auto account = *optional_account;
         co_await bind(account, app_id, auth_key, password, account_type::password, sdk_process_type::null, mysql_pool))
     {
-        write(password_bind_response{ game_error_type::success, "password bind success" });
+        co_return co_await write_immediately(password_bind_response{ game_error_type::success, "password bind success" });
     }
     else
     {
-        write(password_bind_response{ game_error_type::mysql_error });
+        co_return co_await write_immediately(password_bind_response{ game_error_type::mysql_error });
     }
 }

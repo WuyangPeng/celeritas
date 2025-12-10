@@ -9,9 +9,9 @@ celeritas::auth_service_base::auth_service_base(http_handle_parameter handle_par
 {
 }
 
-void celeritas::auth_service_base::write(const http_response& response) const
+celeritas::auth_service_base::void_awaitable_type celeritas::auth_service_base::write_immediately(const http_response& response) const
 {
-    handle_parameter_.write(response.to_json_string());
+    co_return co_await handle_parameter_.write_immediately(response.to_json_string());
 }
 
 std::string celeritas::auth_service_base::generate_token()
