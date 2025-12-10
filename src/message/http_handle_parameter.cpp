@@ -36,6 +36,11 @@ celeritas::http_handle_parameter::http_handle_parameter(io_context_type& io_cont
       resource_loader_{ resource_loader },
       application_loader_{ application_loader }
 {
+    if (const auto session_shared_ptr = session_.lock();
+        session_shared_ptr == nullptr)
+    {
+        LOG_CHANNEL(message_channel, debug) << "http session is null.";
+    }
 }
 
 celeritas::http_handle_parameter::http_handle_parameter(const http_handle_parameter& rhs)
@@ -47,6 +52,11 @@ celeritas::http_handle_parameter::http_handle_parameter(const http_handle_parame
       resource_loader_{ rhs.resource_loader_ },
       application_loader_{ rhs.application_loader_ }
 {
+    if (const auto session_shared_ptr = session_.lock();
+        session_shared_ptr == nullptr)
+    {
+        LOG_CHANNEL(message_channel, debug) << "http session is null.";
+    }
 }
 
 celeritas::http_handle_parameter::http_handle_parameter(http_handle_parameter&& rhs) noexcept
@@ -58,6 +68,11 @@ celeritas::http_handle_parameter::http_handle_parameter(http_handle_parameter&& 
       resource_loader_{ std::move(rhs.resource_loader_) },
       application_loader_{ std::move(rhs.application_loader_) }
 {
+    if (const auto session_shared_ptr = session_.lock();
+        session_shared_ptr == nullptr)
+    {
+        LOG_CHANNEL(message_channel, debug) << "http session is null.";
+    }
 }
 
 std::string celeritas::http_handle_parameter::get_path() const
