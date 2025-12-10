@@ -21,9 +21,8 @@ celeritas::auth_resource_loader::auth_resource_loader(const std::string_view ser
 void celeritas::auth_resource_loader::send_gateway_check()
 {
     proto::celeritas request{};
-    auto* server_discover = request.mutable_celeritas_request()->mutable_service()->mutable_registry()->
-        mutable_server_discover();
-    server_discover->set_service_name(service_registry_type);
+    auto* server_discover = request.mutable_celeritas_request()->mutable_service()->mutable_registry()->mutable_server_discover();
+    server_discover->set_service_name(gateway_type);
 
     if (!write(service_registry_type.data(), header{ proto::common::empty_message_header{} }, request))
     {

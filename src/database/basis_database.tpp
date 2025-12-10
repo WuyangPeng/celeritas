@@ -8,13 +8,13 @@
 
 template <typename T> requires (std::is_integral_v<T>)
 celeritas::basis_database::basis_database(const std::string_view field_name, T value)
-    : class_type{ field_name, database_data_type::int32_type, value }
+    : class_type{ field_name, database_data_type::int32_type, static_cast<int32_t>(value) }
 {
 }
 
 template <typename T> requires (std::is_floating_point_v<T>)
 celeritas::basis_database::basis_database(const std::string_view field_name, T value)
-    : class_type{ field_name, database_data_type::double_type, value }
+    : class_type{ field_name, database_data_type::double_type, static_cast<double>(value) }
 {
 }
 
