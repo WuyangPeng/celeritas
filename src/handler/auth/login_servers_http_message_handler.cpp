@@ -34,7 +34,7 @@ celeritas::login_servers_http_message_handler::void_awaitable_type celeritas::lo
 {
     try
     {
-        login_servers login_servers{ std::move(handle_parameter) };
+        login_servers login_servers{ handle_parameter };
         co_return co_await login_servers.response();
     }
     catch (const std::exception& error)

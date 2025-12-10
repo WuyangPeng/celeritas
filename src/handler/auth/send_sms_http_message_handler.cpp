@@ -32,8 +32,7 @@ celeritas::send_sms_http_message_handler::void_awaitable_type celeritas::send_sm
 {
     try
     {
-        send_sms send_sms{ std::move(handle_parameter) };
-
+        send_sms send_sms{ handle_parameter };
         co_return co_await send_sms.response();
     }
     catch (const std::exception& error)

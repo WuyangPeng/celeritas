@@ -32,8 +32,7 @@ celeritas::send_email_http_message_handler::void_awaitable_type celeritas::send_
 {
     try
     {
-        send_email send_email{ std::move(handle_parameter) };
-
+        send_email send_email{ handle_parameter };
         co_return co_await send_email.response();
     }
     catch (const std::exception& error)

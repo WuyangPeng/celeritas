@@ -31,7 +31,7 @@ celeritas::sdk_bind_http_message_handler::void_awaitable_type celeritas::sdk_bin
 {
     try
     {
-        sdk_bind sdk_bind{ std::move(handle_parameter) };
+        sdk_bind sdk_bind{ handle_parameter };
         co_return co_await sdk_bind.response();
     }
     catch (const std::exception& error)

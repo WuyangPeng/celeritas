@@ -31,7 +31,7 @@ celeritas::sdk_login_http_message_handler::void_awaitable_type celeritas::sdk_lo
 {
     try
     {
-        sdk_login sdk_login{ std::move(handle_parameter) };
+        sdk_login sdk_login{ handle_parameter };
         co_return co_await sdk_login.response();
     }
     catch (const std::exception& error)

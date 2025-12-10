@@ -32,7 +32,7 @@ celeritas::password_bind_http_message_handler::void_awaitable_type celeritas::pa
 {
     try
     {
-        password_bind password_bind{ std::move(handle_parameter) };
+        password_bind password_bind{ handle_parameter };
         co_return co_await password_bind.response();
     }
     catch (const std::exception& error)

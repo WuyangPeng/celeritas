@@ -31,7 +31,7 @@ celeritas::phone_bind_http_message_handler::void_awaitable_type celeritas::phone
 {
     try
     {
-        phone_bind phone_bind{ std::move(handle_parameter) };
+        phone_bind phone_bind{ handle_parameter };
         co_return co_await phone_bind.response();
     }
     catch (const std::exception& error)

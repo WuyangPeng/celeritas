@@ -30,7 +30,7 @@ celeritas::order_create_http_message_handler::void_awaitable_type celeritas::ord
 {
     try
     {
-        order_create order_create{ std::move(handle_parameter) };
+        order_create order_create{ handle_parameter };
 
         co_return co_await order_create.response();
     }

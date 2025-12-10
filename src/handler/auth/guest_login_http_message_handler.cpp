@@ -37,7 +37,7 @@ celeritas::guest_login_http_message_handler::void_awaitable_type celeritas::gues
 {
     try
     {
-        guest_login guest_login{ std::move(handle_parameter) };
+        guest_login guest_login{ handle_parameter };
         co_return co_await guest_login.response();
     }
     catch (const std::exception& error)

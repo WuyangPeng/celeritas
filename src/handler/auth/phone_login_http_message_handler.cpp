@@ -31,7 +31,7 @@ celeritas::phone_login_http_message_handler::void_awaitable_type celeritas::phon
 {
     try
     {
-        phone_login phone_login{ std::move(handle_parameter) };
+        phone_login phone_login{ handle_parameter };
         co_return co_await phone_login.response();
     }
     catch (const std::exception& error)

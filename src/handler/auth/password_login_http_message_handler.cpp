@@ -31,7 +31,7 @@ celeritas::password_login_http_message_handler::void_awaitable_type celeritas::p
 {
     try
     {
-        password_login password_login{ std::move(handle_parameter) };
+        password_login password_login{ handle_parameter };
         co_return co_await password_login.response();
     }
     catch (const std::exception& error)

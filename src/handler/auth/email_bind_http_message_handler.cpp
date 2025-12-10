@@ -31,7 +31,7 @@ celeritas::email_bind_http_message_handler::void_awaitable_type celeritas::email
 {
     try
     {
-        email_bind email_bind{ std::move(handle_parameter) };
+        email_bind email_bind{ handle_parameter };
         co_return co_await email_bind.response();
     }
     catch (const std::exception& error)

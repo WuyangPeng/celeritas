@@ -32,7 +32,7 @@ celeritas::email_login_http_message_handler::void_awaitable_type celeritas::emai
 {
     try
     {
-        email_login email_login{ std::move(handle_parameter) };
+        email_login email_login{ handle_parameter };
         co_return co_await email_login.response();
     }
     catch (const std::exception& error)

@@ -64,8 +64,6 @@ void celeritas::http_session::stop()
         {
             LOG_CHANNEL(network_channel, info) << "http socket session [" << get_session_id() << "] terminated success.";
         }
-
-        remove_session();
     }
 }
 

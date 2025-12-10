@@ -31,7 +31,7 @@ bool celeritas::notify_http_message_handler::handle(const http_handle_parameter&
 
 celeritas::notify_http_message_handler::void_awaitable_type celeritas::notify_http_message_handler::response(const sdk_payment_providers_key sdk_payment_providers_key, http_handle_parameter handle_parameter)
 {
-    const auto recharge_notify = recharge_notify::create(sdk_payment_providers_key, std::move(handle_parameter));
+    const auto recharge_notify = recharge_notify::create(sdk_payment_providers_key, handle_parameter);
 
     try
     {
