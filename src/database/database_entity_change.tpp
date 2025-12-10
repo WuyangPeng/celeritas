@@ -16,7 +16,7 @@ celeritas::database_data_Type_traits<Type>::Type celeritas::database_entity_chan
     }
     catch (const std::bad_any_cast&)
     {
-        LOG_CHANNEL(database_channel, error) << "database entity change get value error, Type: " << Type << ",field_name: " << field_name;
+        LOG_CHANNEL(database_channel, error) << "database entity change get value error, field_name: " << field_name;
         throw;
     }
 
