@@ -37,5 +37,7 @@ namespace celeritas
         [[nodiscard]] virtual void_awaitable_type write_immediately(const std::string& response) = 0;
 
         [[nodiscard]] virtual int64_t get_session_id() const noexcept = 0;
+
+        virtual void remove_session() = 0;
     };
 }

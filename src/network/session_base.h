@@ -34,11 +34,11 @@ namespace celeritas
 
         [[nodiscard]] virtual bool is_full() const = 0;
 
+        void remove_session() override;
+
     protected:
         using message_shared_ptr = header::message_shared_ptr;
         using network_message_callback_weak_ptr = session_callback::network_message_callback_weak_ptr;
-
-        void remove_session();
 
         [[nodiscard]] network_message_callback_weak_ptr get_network_message_callback();
 
