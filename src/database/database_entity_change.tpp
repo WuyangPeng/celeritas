@@ -3,6 +3,8 @@
 #include "database_entity_change.h"
 #include "common/logger.h"
 
+#include <boost/core/demangle.hpp>
+
 template <celeritas::database_data_type Type>
 celeritas::database_data_Type_traits<Type>::Type celeritas::database_entity_change::get_value(const std::string_view field_name, typename boost::call_traits<typename database_data_Type_traits<Type>::Type>::param_type default_value) const
 {
@@ -21,9 +23,9 @@ celeritas::database_data_Type_traits<Type>::Type celeritas::database_entity_chan
         << "database entity change get value error, field_name: "
         << field_name
         << ", actual type: "
-        << result.type().name()
+        << boost::core::demangle(result.type().name())
         << ", expected type: "
-        << typeid(typename database_data_Type_traits<Type>::Type).name()
+        << boost::core::demangle(typeid(typename database_data_Type_traits<Type>::Type).name())
         << ", what: "
         << error.what();
 
