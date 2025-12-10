@@ -21,7 +21,6 @@ namespace celeritas
         using int64_array = std::vector<int64_t>;
         using double_array = std::vector<double>;
 
-    public:
         explicit basis_database(std::string_view field_name);
 
         basis_database(std::string_view field_name, const std::string& value);

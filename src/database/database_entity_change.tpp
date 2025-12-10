@@ -14,9 +14,14 @@ celeritas::database_data_Type_traits<Type>::Type celeritas::database_entity_chan
             return std::any_cast<typename database_data_Type_traits<Type>::Type>(result);
         }
     }
-    catch (const std::bad_any_cast&)
+    catch (const std::bad_any_cast& e)
     {
-        LOG_CHANNEL(database_channel, error) << "database entity change get value error, field_name: " << field_name;
+        const auto& any_value = get_any_value(field_name);
+
+        LOG_CHANNEL(database_channel, error) << "database entity change get value error, field_name: " << field_name
+            << ", actual type: " << any_value.type().name()
+            << ", expected type: " << typeid(database_data_Type_traits<Type>::Type).name()
+            << ", what: " << e.what();
         throw;
     }
 
