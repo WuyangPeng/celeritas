@@ -223,14 +223,15 @@ class service_login_request final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kGameServerIdFieldNumber = 4,
-    kDeviceIdFieldNumber = 5,
-    kAppVersionFieldNumber = 6,
+    kGameServerIdFieldNumber = 5,
+    kDeviceIdFieldNumber = 6,
+    kAppVersionFieldNumber = 7,
     kAccountIdFieldNumber = 1,
     kAccountBindIdFieldNumber = 3,
     kNewAccountFieldNumber = 2,
+    kNewGameServerIdFieldNumber = 4,
   };
-  // string game_server_id = 4;
+  // string game_server_id = 5;
   void clear_game_server_id() ;
   const ::std::string& game_server_id() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -245,7 +246,7 @@ class service_login_request final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_game_server_id();
 
   public:
-  // string device_id = 5;
+  // string device_id = 6;
   void clear_device_id() ;
   const ::std::string& device_id() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -260,7 +261,7 @@ class service_login_request final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_device_id();
 
   public:
-  // string app_version = 6;
+  // string app_version = 7;
   void clear_app_version() ;
   const ::std::string& app_version() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -305,11 +306,21 @@ class service_login_request final : public ::google::protobuf::Message
   void _internal_set_new_account(bool value);
 
   public:
+  // bool new_game_server_id = 4;
+  void clear_new_game_server_id() ;
+  bool new_game_server_id() const;
+  void set_new_game_server_id(bool value);
+
+  private:
+  bool _internal_new_game_server_id() const;
+  void _internal_set_new_game_server_id(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:celeritas.proto.service.service_login_request)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 6,
+  static const ::google::protobuf::internal::TcParseTable<3, 7,
                                    0, 88,
                                    2>
       _table_;
@@ -337,6 +348,7 @@ class service_login_request final : public ::google::protobuf::Message
     ::int64_t account_id_;
     ::int64_t account_bind_id_;
     bool new_account_;
+    bool new_game_server_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -646,7 +658,31 @@ inline void service_login_request::_internal_set_account_bind_id(::int64_t value
   _impl_.account_bind_id_ = value;
 }
 
-// string game_server_id = 4;
+// bool new_game_server_id = 4;
+inline void service_login_request::clear_new_game_server_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_game_server_id_ = false;
+  _impl_._has_bits_[0] &= ~0x00000040U;
+}
+inline bool service_login_request::new_game_server_id() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_login_request.new_game_server_id)
+  return _internal_new_game_server_id();
+}
+inline void service_login_request::set_new_game_server_id(bool value) {
+  _internal_set_new_game_server_id(value);
+  _impl_._has_bits_[0] |= 0x00000040U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.service_login_request.new_game_server_id)
+}
+inline bool service_login_request::_internal_new_game_server_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.new_game_server_id_;
+}
+inline void service_login_request::_internal_set_new_game_server_id(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_game_server_id_ = value;
+}
+
+// string game_server_id = 5;
 inline void service_login_request::clear_game_server_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.game_server_id_.ClearToEmpty();
@@ -711,7 +747,7 @@ inline void service_login_request::set_allocated_game_server_id(::std::string* P
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_login_request.game_server_id)
 }
 
-// string device_id = 5;
+// string device_id = 6;
 inline void service_login_request::clear_device_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.device_id_.ClearToEmpty();
@@ -776,7 +812,7 @@ inline void service_login_request::set_allocated_device_id(::std::string* PROTOB
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_login_request.device_id)
 }
 
-// string app_version = 6;
+// string app_version = 7;
 inline void service_login_request::clear_app_version() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.app_version_.ClearToEmpty();

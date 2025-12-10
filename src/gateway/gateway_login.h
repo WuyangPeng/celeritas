@@ -22,7 +22,7 @@ namespace celeritas
     private:
         void send_error_message(game_error_type game_error_type) const;
 
-        void write_to_server(const session_token& session_token, const std::string& instance_id) const;
+        void write_to_server(const session_token& session_token, const std::string& instance_id, bool new_game_server_id) const;
 
         protobuf_handle_parameter protobuf_handle_parameter_;
         const proto::client::login_request& login_;

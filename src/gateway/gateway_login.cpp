@@ -21,7 +21,7 @@ void celeritas::gateway_login::send_error_message(game_error_type game_error_typ
     protobuf_handle_parameter_.write(header{ protobuf_handle_parameter_.get_rpc(), static_cast<int>(game_error_type) }, response);
 }
 
-void celeritas::gateway_login::write_to_server(const session_token& session_token, const std::string& instance_id) const
+void celeritas::gateway_login::write_to_server(const session_token& session_token, const std::string& instance_id, bool new_game_server_id) const
 {
     proto::celeritas request{};
     auto* service_login = request.mutable_celeritas_request()->mutable_service()->mutable_player()->mutable_service_login();
@@ -31,6 +31,7 @@ void celeritas::gateway_login::write_to_server(const session_token& session_toke
     service_login->set_game_server_id(login_.game_server_id());
     service_login->set_device_id(login_.device_id());
     service_login->set_app_version(login_.app_version());
+    service_login->set_new_game_server_id(new_game_server_id);
 
     protobuf_handle_parameter_.write_to_server(player_type.data(), instance_id, request);
 }
@@ -53,7 +54,7 @@ celeritas::gateway_login::void_awaitable_type celeritas::gateway_login::send_mes
 
         if (const auto optional_services_info = service_registry::get_services_by_instance_id(character_session.get_player_server_instance_id()))
         {
-            co_return write_to_server(session_token, character_session.get_player_server_instance_id());
+            co_return write_to_server(session_token, character_session.get_player_server_instance_id(), false);
         }
     }
 
@@ -63,5 +64,5 @@ celeritas::gateway_login::void_awaitable_type celeritas::gateway_login::send_mes
         co_return send_error_message(game_error_type::server_error);
     }
 
-    co_return write_to_server(session_token, optional_services_info->get_instance_id());
+    co_return write_to_server(session_token, optional_services_info->get_instance_id(), true);
 }
