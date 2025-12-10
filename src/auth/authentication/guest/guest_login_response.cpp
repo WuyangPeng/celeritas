@@ -1,29 +1,35 @@
 ﻿#include "guest_login_response.h"
 #include "common/celeritas_error.h"
+#include "common/logger.h"
 
 celeritas::guest_login_response::guest_login_response(const game_error_type code)
     : bass_type{ code }
 {
+    LOG_CHANNEL(auth_channel, trace) << "login error code:" << get_game_error_description(code) << ",message:" << get_message();
 }
 
 celeritas::guest_login_response::guest_login_response(const game_error_type code, std::string message)
     : bass_type{ code, std::move(message) }
 {
+    LOG_CHANNEL(auth_channel, trace) << "login error code:" << get_game_error_description(code) << ",message:" << get_message();
 }
 
 celeritas::guest_login_response::guest_login_response(const game_error_type code, std::string message, std::string token, const int64_t expire_milliseconds)
     : bass_type{ code, std::move(message), std::move(token), expire_milliseconds }
 {
+    LOG_CHANNEL(auth_channel, trace) << "login error code:" << get_game_error_description(code) << ",message:" << get_message();
 }
 
 celeritas::guest_login_response::guest_login_response(bass_type token_http_response)
     : bass_type{ std::move(token_http_response) }
 {
+    LOG_CHANNEL(auth_channel, trace) << "login error code:" << get_game_error_description(get_code()) << ",message:" << get_message();
 }
 
 celeritas::guest_login_response::guest_login_response(http_response http_response)
     : bass_type{ std::move(http_response) }
 {
+    LOG_CHANNEL(auth_channel, trace) << "login error code:" << get_game_error_description(get_code()) << ",message:" << get_message();
 }
 
 celeritas::guest_login_response celeritas::guest_login_response::from_json_string(const std::string& json_string)
