@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <server>
     <instance_id>cross_server-1</instance_id>
-    <service_name>cross_server</service_name>
+    <service_name>cross</service_name>
     <game_server_id>cross-1</game_server_id>
     <host>127.0.0.1</host>
     <worker_pool>4</worker_pool>
