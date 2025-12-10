@@ -49,6 +49,8 @@ bool celeritas::http_session::is_open() const
 
 void celeritas::http_session::stop()
 {
+    LOG_CHANNEL(network_channel, trace) << "http socket session [" << session_base::get_session_id() << "] closed.";
+
     if (is_open())
     {
         boost::system::error_code error_code{};
