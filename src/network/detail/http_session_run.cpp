@@ -136,6 +136,7 @@ void celeritas::http_session_run::call_back(const std::string& path, const urls_
     if (const auto callback = session_callback_.get_network_message_callback_shared_ptr();
         callback != nullptr && session != nullptr)
     {
+        LOG_CHANNEL(network_channel, trace) << "session call back session id =" << session->get_session_id();
         callback->call_back(path, params, session);
     }
 }

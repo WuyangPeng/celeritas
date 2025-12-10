@@ -28,7 +28,7 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type write_immediately(const std::string& response) override;
 
-        [[nodiscard]] int64_t get_session_id() const noexcept;
+        [[nodiscard]] int64_t get_session_id() const noexcept override;
 
         [[nodiscard]] virtual bool is_open() const = 0;
 
