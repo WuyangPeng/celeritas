@@ -58,7 +58,7 @@ void celeritas::http_session_run::close_socket()
 {
     session_callback_.remove_session(session_id_);
 
-    LOG_CHANNEL(network_channel, trace) << "http listener close session_id =" << session_id_;
+    LOG_CHANNEL(network_channel, trace) << "http listener close session id =" << session_id_;
 }
 
 celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_one_request_message()

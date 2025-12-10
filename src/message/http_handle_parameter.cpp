@@ -94,6 +94,8 @@ celeritas::http_handle_parameter::void_waitable_type celeritas::http_handle_para
 
         co_return co_await session_shared_ptr->write_immediately(response);
     }
+
+    LOG_CHANNEL(message_channel, debug) << "http session is close.";
 }
 
 celeritas::http_handle_parameter::app_config_const_shared_ptr celeritas::http_handle_parameter::get_app_config() const
