@@ -17,9 +17,9 @@ celeritas::${class_name}::${class_name}(const database_type database_type, const
     : base_type{ database_type, entity },
       ${key_name}_{ entity.get_value<database_data_type::${key_type}>(entity.get_database_type() == database_type::mongo ? "_id" : ${key_name}_describe) },
 ${field_assignment}{
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-
+${add_modify}
     }
 }
 

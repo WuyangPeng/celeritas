@@ -21,9 +21,11 @@ celeritas::player_server_roles::player_server_roles(const database_type database
       servers_{ entity.get_value<database_data_type::document_array_type>(servers_describe) },
       update_time_{ entity.get_value<database_data_type::int64_type>(update_time_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(id_describe, get_id());
+        add_modify(servers_describe, get_servers());
+        add_modify(update_time_describe, get_update_time());
     }
 }
 

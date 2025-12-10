@@ -53,9 +53,27 @@ celeritas::orders::orders(const database_type database_type, const database_enti
       refund_time_{ entity.get_value<database_data_type::int64_type>(refund_time_describe) },
       refund_amount_{ entity.get_value<database_data_type::int32_type>(refund_amount_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(id_describe, get_id());
+        add_modify(order_id_describe, get_order_id());
+        add_modify(account_id_describe, get_account_id());
+        add_modify(game_server_id_describe, get_game_server_id());
+        add_modify(role_id_describe, get_role_id());
+        add_modify(product_id_describe, get_product_id());
+        add_modify(amount_describe, get_amount());
+        add_modify(platform_describe, get_platform());
+        add_modify(transaction_id_describe, get_transaction_id());
+        add_modify(status_describe, get_status());
+        add_modify(delivery_status_describe, get_delivery_status());
+        add_modify(client_request_id_describe, get_client_request_id());
+        add_modify(retry_count_describe, get_retry_count());
+        add_modify(create_time_describe, get_create_time());
+        add_modify(pay_time_describe, get_pay_time());
+        add_modify(expire_time_describe, get_expire_time());
+        add_modify(callback_data_describe, get_callback_data());
+        add_modify(refund_time_describe, get_refund_time());
+        add_modify(refund_amount_describe, get_refund_amount());
     }
 }
 

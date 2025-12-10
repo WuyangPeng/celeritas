@@ -18,7 +18,7 @@ celeritas::create_account::bool_awaitable_type celeritas::create_account::send_m
         co_return false;
     }
 
-    account account{ *optional_account };
+    account account{ database_type::mysql, *optional_account };
 
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
@@ -33,9 +33,8 @@ celeritas::create_account::bool_awaitable_type celeritas::create_account::send_m
         co_return false;
     }
 
-    account_bind account_bind{ *optional_account_bind };
-
-    if (!co_await mysql_pool->execute_changes(account_bind.get_modify()))
+    if (account_bind account_bind{ database_type::mysql, *optional_account_bind };
+        !co_await mysql_pool->execute_changes(account_bind.get_modify()))
     {
         co_return false;
     }

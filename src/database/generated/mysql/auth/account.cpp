@@ -31,9 +31,16 @@ celeritas::account::account(const database_type database_type, const database_en
       create_time_{ entity.get_value<database_data_type::int64_type>(create_time_describe) },
       status_{ entity.get_value<database_data_type::int32_type>(status_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(account_id_describe, get_account_id());
+        add_modify(account_name_describe, get_account_name());
+        add_modify(password_hash_describe, get_password_hash());
+        add_modify(salt_describe, get_salt());
+        add_modify(device_id_describe, get_device_id());
+        add_modify(app_id_describe, get_app_id());
+        add_modify(create_time_describe, get_create_time());
+        add_modify(status_describe, get_status());
     }
 }
 

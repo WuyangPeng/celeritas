@@ -31,9 +31,16 @@ celeritas::sms_providers::sms_providers(const database_type database_type, const
       active_{ entity.get_value<database_data_type::bool_type>(active_describe) },
       process_type_{ entity.get_value<database_data_type::int32_type>(process_type_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(provider_id_describe, get_provider_id());
+        add_modify(provider_name_describe, get_provider_name());
+        add_modify(base_url_describe, get_base_url());
+        add_modify(api_key_describe, get_api_key());
+        add_modify(api_secret_describe, get_api_secret());
+        add_modify(decryption_key_describe, get_decryption_key());
+        add_modify(active_describe, is_active());
+        add_modify(process_type_describe, get_process_type());
     }
 }
 

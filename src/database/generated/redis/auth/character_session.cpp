@@ -19,9 +19,10 @@ celeritas::character_session::character_session(const database_type database_typ
       account_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : account_id_describe) },
       player_server_instance_id_{ entity.get_value<database_data_type::string_type>(player_server_instance_id_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(account_id_describe, get_account_id());
+        add_modify(player_server_instance_id_describe, get_player_server_instance_id());
     }
 }
 

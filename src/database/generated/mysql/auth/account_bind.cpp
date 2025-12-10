@@ -27,9 +27,14 @@ celeritas::account_bind::account_bind(const database_type database_type, const d
       app_id_{ entity.get_value<database_data_type::int64_type>(app_id_describe) },
       auth_key_{ entity.get_value<database_data_type::string_type>(auth_key_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(account_bind_id_describe, get_account_bind_id());
+        add_modify(account_id_describe, get_account_id());
+        add_modify(account_type_describe, get_account_type());
+        add_modify(process_type_describe, get_process_type());
+        add_modify(app_id_describe, get_app_id());
+        add_modify(auth_key_describe, get_auth_key());
     }
 }
 

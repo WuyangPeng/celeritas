@@ -21,9 +21,11 @@ celeritas::account_last_login::account_last_login(const database_type database_t
       game_server_id_{ entity.get_value<database_data_type::string_type>(game_server_id_describe) },
       update_time_{ entity.get_value<database_data_type::int64_type>(update_time_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(account_id_describe, get_account_id());
+        add_modify(game_server_id_describe, get_game_server_id());
+        add_modify(update_time_describe, get_update_time());
     }
 }
 

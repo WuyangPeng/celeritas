@@ -29,9 +29,15 @@ celeritas::apps::apps(const database_type database_type, const database_entity_c
       email_provider_id_{ entity.get_value<database_data_type::int64_type>(email_provider_id_describe) },
       status_{ entity.get_value<database_data_type::int32_type>(status_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(app_id_describe, get_app_id());
+        add_modify(game_name_describe, get_game_name());
+        add_modify(app_secret_describe, get_app_secret());
+        add_modify(app_payment_secret_describe, get_app_payment_secret());
+        add_modify(sms_provider_id_describe, get_sms_provider_id());
+        add_modify(email_provider_id_describe, get_email_provider_id());
+        add_modify(status_describe, get_status());
     }
 }
 

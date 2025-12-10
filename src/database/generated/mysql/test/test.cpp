@@ -29,9 +29,15 @@ celeritas::test::test(const database_type database_type, const database_entity_c
       currency_{ entity.get_value<database_data_type::int64_count_type>(currency_describe) },
       count_{ entity.get_value<database_data_type::int32_count_type>(count_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(user_id_describe, get_user_id());
+        add_modify(chapter_id_describe, get_chapter_id());
+        add_modify(chapter_name_describe, get_chapter_name());
+        add_modify(chance_winning_describe, get_chance_winning());
+        add_modify(winning_describe, is_winning());
+        add_modify(currency_describe, get_currency());
+        add_modify(count_describe, get_count());
     }
 }
 

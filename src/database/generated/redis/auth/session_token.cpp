@@ -23,9 +23,12 @@ celeritas::session_token::session_token(const database_type database_type, const
       account_bind_id_{ entity.get_value<database_data_type::int64_type>(account_bind_id_describe) },
       new_account_{ entity.get_value<database_data_type::bool_type>(new_account_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(token_describe, get_token());
+        add_modify(account_id_describe, get_account_id());
+        add_modify(account_bind_id_describe, get_account_bind_id());
+        add_modify(new_account_describe, is_new_account());
     }
 }
 

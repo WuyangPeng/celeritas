@@ -33,9 +33,17 @@ celeritas::sdk_providers::sdk_providers(const database_type database_type, const
       decryption_key_{ entity.get_value<database_data_type::string_type>(decryption_key_describe) },
       active_{ entity.get_value<database_data_type::bool_type>(active_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(sdk_id_describe, get_sdk_id());
+        add_modify(app_id_describe, get_app_id());
+        add_modify(process_type_describe, get_process_type());
+        add_modify(provider_name_describe, get_provider_name());
+        add_modify(base_url_describe, get_base_url());
+        add_modify(api_key_describe, get_api_key());
+        add_modify(api_secret_describe, get_api_secret());
+        add_modify(decryption_key_describe, get_decryption_key());
+        add_modify(active_describe, is_active());
     }
 }
 

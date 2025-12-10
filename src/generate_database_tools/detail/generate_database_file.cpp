@@ -134,6 +134,7 @@ std::string celeritas::generate_database_file::generate_source_content(const dat
     boost::replace_all(entity_cpp_content, "${field_init}", source.get_field_init());
     boost::replace_all(entity_cpp_content, "${class_name}", attribute.get_class_name());
     boost::replace_all(entity_cpp_content, "${database_field}", source.get_database_field());
+    boost::replace_all(entity_cpp_content, "${add_modify}", source.get_database_add_modify());
 
     return entity_cpp_content;
 }

@@ -33,9 +33,17 @@ celeritas::sdk_payment_providers::sdk_payment_providers(const database_type data
       http_suffix_{ entity.get_value<database_data_type::string_type>(http_suffix_describe) },
       active_{ entity.get_value<database_data_type::bool_type>(active_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(sdk_id_describe, get_sdk_id());
+        add_modify(app_id_describe, get_app_id());
+        add_modify(platform_describe, get_platform());
+        add_modify(provider_name_describe, get_provider_name());
+        add_modify(api_key_describe, get_api_key());
+        add_modify(api_secret_describe, get_api_secret());
+        add_modify(decryption_key_describe, get_decryption_key());
+        add_modify(http_suffix_describe, get_http_suffix());
+        add_modify(active_describe, is_active());
     }
 }
 

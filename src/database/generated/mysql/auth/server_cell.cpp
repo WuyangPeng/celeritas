@@ -31,9 +31,16 @@ celeritas::server_cell::server_cell(const database_type database_type, const dat
       is_close_display_{ entity.get_value<database_data_type::bool_type>(is_close_display_describe) },
       status_{ entity.get_value<database_data_type::int32_type>(status_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(cell_id_describe, get_cell_id());
+        add_modify(game_server_id_describe, get_game_server_id());
+        add_modify(server_name_describe, get_server_name());
+        add_modify(app_id_describe, get_app_id());
+        add_modify(launch_time_describe, get_launch_time());
+        add_modify(zone_describe, get_zone());
+        add_modify(is_close_display_describe, is_is_close_display());
+        add_modify(status_describe, get_status());
     }
 }
 

@@ -25,6 +25,8 @@ namespace celeritas
 
         [[nodiscard]] const std::string& get_database_field() const noexcept;
 
+        [[nodiscard]] const std::string& get_database_add_modify() const noexcept;
+
     private:
         [[nodiscard]] static std::string create_database_get_define_content(const entity_attribute& entity_attribute, const database_template_file& database_template_file);
 
@@ -38,11 +40,14 @@ namespace celeritas
 
         [[nodiscard]] static std::string create_database_field_content(int index, const database_attribute& attribute, const entity_attribute& entity_attribute, const database_template_file& database_template_file);
 
+        [[nodiscard]] static std::string create_database_add_modify_content(int index, const database_attribute& attribute, const entity_attribute& entity_attribute, const database_template_file& database_template_file);
+
         std::string database_get_define_;
         std::string database_set_define_;
         std::string database_modify_define_;
         std::string field_assignment_;
         std::string field_init_;
         std::string database_field_;
+        std::string database_add_modify_;
     };
 }

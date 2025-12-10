@@ -19,9 +19,10 @@ celeritas::email_limit::email_limit(const database_type database_type, const dat
       email_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : email_describe) },
       exist_{ entity.get_value<database_data_type::bool_type>(exist_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(email_describe, get_email());
+        add_modify(exist_describe, is_exist());
     }
 }
 

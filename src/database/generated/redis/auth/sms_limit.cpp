@@ -19,9 +19,10 @@ celeritas::sms_limit::sms_limit(const database_type database_type, const databas
       phone_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : phone_describe) },
       exist_{ entity.get_value<database_data_type::bool_type>(exist_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(phone_describe, get_phone());
+        add_modify(exist_describe, is_exist());
     }
 }
 

@@ -21,9 +21,11 @@ celeritas::sms_code::sms_code(const database_type database_type, const database_
       code_{ entity.get_value<database_data_type::int32_type>(code_describe) },
       retry_count_{ entity.get_value<database_data_type::int32_count_type>(retry_count_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(phone_describe, get_phone());
+        add_modify(code_describe, get_code());
+        add_modify(retry_count_describe, get_retry_count());
     }
 }
 

@@ -21,9 +21,11 @@ celeritas::email_code::email_code(const database_type database_type, const datab
       code_{ entity.get_value<database_data_type::int32_type>(code_describe) },
       retry_count_{ entity.get_value<database_data_type::int32_count_type>(retry_count_describe) }
 {
-    if(database_type != entity.get_database_type())
+    if (database_type != entity.get_database_type())
     {
-        
+        add_modify(email_describe, get_email());
+        add_modify(code_describe, get_code());
+        add_modify(retry_count_describe, get_retry_count());
     }
 }
 
