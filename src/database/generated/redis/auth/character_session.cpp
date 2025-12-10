@@ -14,6 +14,17 @@ celeritas::character_session::character_session(const database_entity_change& en
 {
 }
 
+celeritas::character_session::character_session(const database_type database_type, const database_entity_change& entity)
+    : base_type{ database_type, entity },
+      account_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : account_id_describe) },
+      player_server_instance_id_{ entity.get_value<database_data_type::string_type>(player_server_instance_id_describe) }
+{
+    if(database_type != entity.get_database_type())
+    {
+        
+    }
+}
+
 celeritas::character_session::character_session(const database_type database_type, traits::param_type::int64_type account_id)
     : base_type{ database_type, database_name, get_key_basis_database_container(database_type, account_id) },
       account_id_{ account_id },

@@ -18,6 +18,21 @@ celeritas::account_bind::account_bind(const database_entity_change& entity)
 {
 }
 
+celeritas::account_bind::account_bind(const database_type database_type, const database_entity_change& entity)
+    : base_type{ database_type, entity },
+      account_bind_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : account_bind_id_describe) },
+      account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
+      account_type_{ entity.get_value<database_data_type::int32_type>(account_type_describe) },
+      process_type_{ entity.get_value<database_data_type::int32_type>(process_type_describe) },
+      app_id_{ entity.get_value<database_data_type::int64_type>(app_id_describe) },
+      auth_key_{ entity.get_value<database_data_type::string_type>(auth_key_describe) }
+{
+    if(database_type != entity.get_database_type())
+    {
+        
+    }
+}
+
 celeritas::account_bind::account_bind(const database_type database_type, traits::param_type::int64_type account_bind_id)
     : base_type{ database_type, database_name, get_key_basis_database_container(database_type, account_bind_id) },
       account_bind_id_{ account_bind_id },

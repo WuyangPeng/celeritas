@@ -21,6 +21,24 @@ celeritas::sdk_providers::sdk_providers(const database_entity_change& entity)
 {
 }
 
+celeritas::sdk_providers::sdk_providers(const database_type database_type, const database_entity_change& entity)
+    : base_type{ database_type, entity },
+      sdk_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : sdk_id_describe) },
+      app_id_{ entity.get_value<database_data_type::int64_type>(app_id_describe) },
+      process_type_{ entity.get_value<database_data_type::int32_type>(process_type_describe) },
+      provider_name_{ entity.get_value<database_data_type::string_type>(provider_name_describe) },
+      base_url_{ entity.get_value<database_data_type::string_type>(base_url_describe) },
+      api_key_{ entity.get_value<database_data_type::string_type>(api_key_describe) },
+      api_secret_{ entity.get_value<database_data_type::string_type>(api_secret_describe) },
+      decryption_key_{ entity.get_value<database_data_type::string_type>(decryption_key_describe) },
+      active_{ entity.get_value<database_data_type::bool_type>(active_describe) }
+{
+    if(database_type != entity.get_database_type())
+    {
+        
+    }
+}
+
 celeritas::sdk_providers::sdk_providers(const database_type database_type, traits::param_type::int64_type sdk_id)
     : base_type{ database_type, database_name, get_key_basis_database_container(database_type, sdk_id) },
       sdk_id_{ sdk_id },

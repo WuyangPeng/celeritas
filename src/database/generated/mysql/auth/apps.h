@@ -18,6 +18,8 @@ namespace celeritas
 
         explicit apps(const database_entity_change& entity);
 
+        apps(database_type database_type, const database_entity_change& entity);
+
         apps(database_type database_type, traits::param_type::int64_type app_id);
 
         [[nodiscard]] traits::int64_type get_app_id() const noexcept;

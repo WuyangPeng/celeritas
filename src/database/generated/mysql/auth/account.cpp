@@ -20,6 +20,23 @@ celeritas::account::account(const database_entity_change& entity)
 {
 }
 
+celeritas::account::account(const database_type database_type, const database_entity_change& entity)
+    : base_type{ database_type, entity },
+      account_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : account_id_describe) },
+      account_name_{ entity.get_value<database_data_type::string_type>(account_name_describe) },
+      password_hash_{ entity.get_value<database_data_type::string_type>(password_hash_describe) },
+      salt_{ entity.get_value<database_data_type::string_type>(salt_describe) },
+      device_id_{ entity.get_value<database_data_type::string_type>(device_id_describe) },
+      app_id_{ entity.get_value<database_data_type::int64_type>(app_id_describe) },
+      create_time_{ entity.get_value<database_data_type::int64_type>(create_time_describe) },
+      status_{ entity.get_value<database_data_type::int32_type>(status_describe) }
+{
+    if(database_type != entity.get_database_type())
+    {
+        
+    }
+}
+
 celeritas::account::account(const database_type database_type, traits::param_type::int64_type account_id)
     : base_type{ database_type, database_name, get_key_basis_database_container(database_type, account_id) },
       account_id_{ account_id },

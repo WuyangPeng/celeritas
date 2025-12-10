@@ -31,6 +31,34 @@ celeritas::orders::orders(const database_entity_change& entity)
 {
 }
 
+celeritas::orders::orders(const database_type database_type, const database_entity_change& entity)
+    : base_type{ database_type, entity },
+      id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : id_describe) },
+      order_id_{ entity.get_value<database_data_type::string_type>(order_id_describe) },
+      account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
+      game_server_id_{ entity.get_value<database_data_type::string_type>(game_server_id_describe) },
+      role_id_{ entity.get_value<database_data_type::int64_type>(role_id_describe) },
+      product_id_{ entity.get_value<database_data_type::string_type>(product_id_describe) },
+      amount_{ entity.get_value<database_data_type::int32_type>(amount_describe) },
+      platform_{ entity.get_value<database_data_type::int32_type>(platform_describe) },
+      transaction_id_{ entity.get_value<database_data_type::string_type>(transaction_id_describe) },
+      status_{ entity.get_value<database_data_type::int32_type>(status_describe) },
+      delivery_status_{ entity.get_value<database_data_type::int32_type>(delivery_status_describe) },
+      client_request_id_{ entity.get_value<database_data_type::string_type>(client_request_id_describe) },
+      retry_count_{ entity.get_value<database_data_type::int32_type>(retry_count_describe) },
+      create_time_{ entity.get_value<database_data_type::int64_type>(create_time_describe) },
+      pay_time_{ entity.get_value<database_data_type::int64_type>(pay_time_describe) },
+      expire_time_{ entity.get_value<database_data_type::int64_type>(expire_time_describe) },
+      callback_data_{ entity.get_value<database_data_type::string_type>(callback_data_describe) },
+      refund_time_{ entity.get_value<database_data_type::int64_type>(refund_time_describe) },
+      refund_amount_{ entity.get_value<database_data_type::int32_type>(refund_amount_describe) }
+{
+    if(database_type != entity.get_database_type())
+    {
+        
+    }
+}
+
 celeritas::orders::orders(const database_type database_type, traits::param_type::int64_type id)
     : base_type{ database_type, database_name, get_key_basis_database_container(database_type, id) },
       id_{ id },

@@ -18,6 +18,8 @@ namespace celeritas
 
         explicit player_server_roles(const database_entity_change& entity);
 
+        player_server_roles(database_type database_type, const database_entity_change& entity);
+
         player_server_roles(database_type database_type, traits::param_type::int64_type id);
 
         [[nodiscard]] traits::int64_type get_id() const noexcept;

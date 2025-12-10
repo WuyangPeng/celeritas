@@ -18,6 +18,8 @@ namespace celeritas
 
         explicit sdk_providers(const database_entity_change& entity);
 
+        sdk_providers(database_type database_type, const database_entity_change& entity);
+
         sdk_providers(database_type database_type, traits::param_type::int64_type sdk_id);
 
         [[nodiscard]] traits::int64_type get_sdk_id() const noexcept;

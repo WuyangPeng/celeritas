@@ -18,6 +18,8 @@ namespace celeritas
 
         explicit test(const database_entity_change& entity);
 
+        test(database_type database_type, const database_entity_change& entity);
+
         test(database_type database_type, traits::param_type::int64_type user_id);
 
         [[nodiscard]] traits::int64_type get_user_id() const noexcept;

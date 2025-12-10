@@ -18,6 +18,8 @@ namespace celeritas
 
         explicit ${class_name}(const database_entity_change& entity);
 
+        ${class_name}(database_type database_type, const database_entity_change& entity);
+
         ${class_name}(database_type database_type, traits::param_type::${key_type} ${key_name});
 
 ${database_get_declaration}${database_set_declaration}${database_modify_declaration}        [[nodiscard]] static const database_field_container& get_database_field_container();

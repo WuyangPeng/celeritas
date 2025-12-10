@@ -18,6 +18,8 @@ namespace celeritas
 
         explicit email_providers(const database_entity_change& entity);
 
+        email_providers(database_type database_type, const database_entity_change& entity);
+
         email_providers(database_type database_type, traits::param_type::int64_type provider_id);
 
         [[nodiscard]] traits::int64_type get_provider_id() const noexcept;

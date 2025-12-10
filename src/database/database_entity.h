@@ -18,6 +18,8 @@ namespace celeritas
 
         explicit database_entity(const database_entity_change& entity);
 
+        database_entity(database_type database_type, const database_entity_change& entity);
+
         virtual ~database_entity() noexcept = default;
 
         database_entity(const database_entity& rhs) = default;

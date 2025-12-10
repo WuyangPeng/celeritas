@@ -15,6 +15,18 @@ celeritas::player_server_roles::player_server_roles(const database_entity_change
 {
 }
 
+celeritas::player_server_roles::player_server_roles(const database_type database_type, const database_entity_change& entity)
+    : base_type{ database_type, entity },
+      id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : id_describe) },
+      servers_{ entity.get_value<database_data_type::document_array_type>(servers_describe) },
+      update_time_{ entity.get_value<database_data_type::int64_type>(update_time_describe) }
+{
+    if(database_type != entity.get_database_type())
+    {
+        
+    }
+}
+
 celeritas::player_server_roles::player_server_roles(const database_type database_type, traits::param_type::int64_type id)
     : base_type{ database_type, database_name, get_key_basis_database_container(database_type, id) },
       id_{ id },

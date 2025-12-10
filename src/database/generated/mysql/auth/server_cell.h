@@ -18,6 +18,8 @@ namespace celeritas
 
         explicit server_cell(const database_entity_change& entity);
 
+        server_cell(database_type database_type, const database_entity_change& entity);
+
         server_cell(database_type database_type, traits::param_type::int64_type cell_id);
 
         [[nodiscard]] traits::int64_type get_cell_id() const noexcept;

@@ -18,6 +18,8 @@ namespace celeritas
 
         explicit session_token(const database_entity_change& entity);
 
+        session_token(database_type database_type, const database_entity_change& entity);
+
         session_token(database_type database_type, traits::param_type::string_type token);
 
         [[nodiscard]] traits::string_type get_token() const;

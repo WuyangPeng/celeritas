@@ -19,6 +19,22 @@ celeritas::apps::apps(const database_entity_change& entity)
 {
 }
 
+celeritas::apps::apps(const database_type database_type, const database_entity_change& entity)
+    : base_type{ database_type, entity },
+      app_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : app_id_describe) },
+      game_name_{ entity.get_value<database_data_type::string_type>(game_name_describe) },
+      app_secret_{ entity.get_value<database_data_type::string_type>(app_secret_describe) },
+      app_payment_secret_{ entity.get_value<database_data_type::string_type>(app_payment_secret_describe) },
+      sms_provider_id_{ entity.get_value<database_data_type::int64_type>(sms_provider_id_describe) },
+      email_provider_id_{ entity.get_value<database_data_type::int64_type>(email_provider_id_describe) },
+      status_{ entity.get_value<database_data_type::int32_type>(status_describe) }
+{
+    if(database_type != entity.get_database_type())
+    {
+        
+    }
+}
+
 celeritas::apps::apps(const database_type database_type, traits::param_type::int64_type app_id)
     : base_type{ database_type, database_name, get_key_basis_database_container(database_type, app_id) },
       app_id_{ app_id },

@@ -18,6 +18,8 @@ namespace celeritas
 
         explicit sms_code(const database_entity_change& entity);
 
+        sms_code(database_type database_type, const database_entity_change& entity);
+
         sms_code(database_type database_type, traits::param_type::string_type phone);
 
         [[nodiscard]] traits::string_type get_phone() const;

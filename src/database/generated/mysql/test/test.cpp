@@ -19,6 +19,22 @@ celeritas::test::test(const database_entity_change& entity)
 {
 }
 
+celeritas::test::test(const database_type database_type, const database_entity_change& entity)
+    : base_type{ database_type, entity },
+      user_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : user_id_describe) },
+      chapter_id_{ entity.get_value<database_data_type::int32_type>(chapter_id_describe) },
+      chapter_name_{ entity.get_value<database_data_type::string_type>(chapter_name_describe) },
+      chance_winning_{ entity.get_value<database_data_type::double_type>(chance_winning_describe) },
+      winning_{ entity.get_value<database_data_type::bool_type>(winning_describe) },
+      currency_{ entity.get_value<database_data_type::int64_count_type>(currency_describe) },
+      count_{ entity.get_value<database_data_type::int32_count_type>(count_describe) }
+{
+    if(database_type != entity.get_database_type())
+    {
+        
+    }
+}
+
 celeritas::test::test(const database_type database_type, traits::param_type::int64_type user_id)
     : base_type{ database_type, database_name, get_key_basis_database_container(database_type, user_id) },
       user_id_{ user_id },

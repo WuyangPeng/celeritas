@@ -18,6 +18,8 @@ namespace celeritas
 
         explicit sms_limit(const database_entity_change& entity);
 
+        sms_limit(database_type database_type, const database_entity_change& entity);
+
         sms_limit(database_type database_type, traits::param_type::string_type phone);
 
         [[nodiscard]] traits::string_type get_phone() const;

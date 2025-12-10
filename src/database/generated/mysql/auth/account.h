@@ -18,6 +18,8 @@ namespace celeritas
 
         explicit account(const database_entity_change& entity);
 
+        account(database_type database_type, const database_entity_change& entity);
+
         account(database_type database_type, traits::param_type::int64_type account_id);
 
         [[nodiscard]] traits::int64_type get_account_id() const noexcept;

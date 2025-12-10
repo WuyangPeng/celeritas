@@ -15,6 +15,18 @@ celeritas::email_code::email_code(const database_entity_change& entity)
 {
 }
 
+celeritas::email_code::email_code(const database_type database_type, const database_entity_change& entity)
+    : base_type{ database_type, entity },
+      email_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : email_describe) },
+      code_{ entity.get_value<database_data_type::int32_type>(code_describe) },
+      retry_count_{ entity.get_value<database_data_type::int32_count_type>(retry_count_describe) }
+{
+    if(database_type != entity.get_database_type())
+    {
+        
+    }
+}
+
 celeritas::email_code::email_code(const database_type database_type, traits::param_type::string_type email)
     : base_type{ database_type, database_name, get_key_basis_database_container(database_type, email) },
       email_{ email },

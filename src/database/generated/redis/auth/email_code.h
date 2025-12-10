@@ -18,6 +18,8 @@ namespace celeritas
 
         explicit email_code(const database_entity_change& entity);
 
+        email_code(database_type database_type, const database_entity_change& entity);
+
         email_code(database_type database_type, traits::param_type::string_type email);
 
         [[nodiscard]] traits::string_type get_email() const;

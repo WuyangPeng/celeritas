@@ -12,6 +12,11 @@ celeritas::database_entity::database_entity(const database_entity_change& entity
 {
 }
 
+celeritas::database_entity::database_entity(database_type database_type, const database_entity_change& entity)
+    : modify_{ std::make_shared<database_entity_change>(database_type, entity.get_database_name(), database_type == entity.get_database_type() ? database_change_type::update_type : database_change_type::insert_type, entity.get_key()) }
+{
+}
+
 celeritas::database_entity::database_entity_change_const_shared_ptr celeritas::database_entity::get_modify() const
 {
     return modify_;
