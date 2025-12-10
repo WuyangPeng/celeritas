@@ -19,7 +19,8 @@ celeritas::http_session::http_session(socket_type socket,
       socket_{ std::move(socket) },
       http_run_{ get_session_run(socket_, is_server, session_id, get_session_callback(), path) },
       http_write_{ get_session_write(socket_, is_server, std::move(host), path) },
-      game_server_id_{ std::move(game_server_id) }
+      game_server_id_{ std::move(game_server_id) },
+      is_stop_{ false }
 {
 }
 
@@ -49,10 +50,10 @@ bool celeritas::http_session::is_open() const
 
 void celeritas::http_session::stop()
 {
-    LOG_CHANNEL(network_channel, trace) << "http socket session [" << session_base::get_session_id() << "] closed.";
-
-    if (is_open())
+    if (is_open() && !is_stop_)
     {
+        is_stop_ = true;
+
         boost::system::error_code error_code{};
         socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_send, error_code);
 

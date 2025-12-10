@@ -61,6 +61,7 @@ namespace celeritas
         session_run_shared_ptr http_run_;
         session_write_shared_ptr http_write_;
         std::string game_server_id_;
+        bool is_stop_;
     };
 }
 
