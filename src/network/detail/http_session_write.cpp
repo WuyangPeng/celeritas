@@ -55,6 +55,8 @@ celeritas::session_write::void_awaitable_type celeritas::http_session_write::do_
 
 celeritas::session_write::void_awaitable_type celeritas::http_session_write::write_immediately(buffer_guard data, const session_weak_ptr& session)
 {
+    LOG_CHANNEL(network_channel, debug) << "http start wrote " << data.get_effective_size() << " bytes to client.";
+
     session_ = session;
 
     write_buffer_guard(std::move(data));
