@@ -84,6 +84,8 @@ celeritas::login_servers_response celeritas::tag_invoke(login_servers_response_t
 void celeritas::tag_invoke(boost::json::value_from_tag, login_servers_response::json_value& value, const login_servers_response& login_servers_response)
 {
     value = {
+        { login_servers_response::code_description, static_cast<int>(login_servers_response.get_code()) },
+        { login_servers_response::message_description, login_servers_response.get_message() },
         { login_servers_response::login_server_info_description, boost::json::value_from(login_servers_response.get_login_server_info()) }
     };
 }
