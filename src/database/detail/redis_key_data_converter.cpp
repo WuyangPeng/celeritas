@@ -119,7 +119,7 @@ celeritas::basis_database celeritas::redis_key_data_converter::get_basis_databas
         case database_data_type::int64_type:
         case database_data_type::int64_count_type:
         {
-            return basis_database{ field_name.get_field_name(), 0LL };
+            return basis_database{ field_name.get_field_name(), int64_t{} };
         }
 
         case database_data_type::double_type:
