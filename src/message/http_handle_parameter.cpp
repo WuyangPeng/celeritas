@@ -1,6 +1,7 @@
 ﻿#include "http_handle_parameter.h"
 #include "common/application_loader_base.h"
 #include "common/celeritas_error.h"
+#include "common/logger.h"
 #include "common/resource_loader_base.h"
 #include "common/session.h"
 #include "config/app_config.h"
@@ -89,6 +90,8 @@ celeritas::http_handle_parameter::void_waitable_type celeritas::http_handle_para
     if (const auto session_shared_ptr = session_.lock();
         session_shared_ptr != nullptr)
     {
+        LOG_CHANNEL(message_channel, debug) << "http start response " << response;
+
         co_return co_await session_shared_ptr->write_immediately(response);
     }
 }
