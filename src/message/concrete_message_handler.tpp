@@ -43,7 +43,7 @@ template <typename Message>
 bool celeritas::concrete_message_handler<Message>::handle_forward(const protobuf_handle_parameter& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
 {
     if (const auto message_registry_shared_ptr = message_registry.lock();
-        message_registry_shared_ptr == nullptr)
+        message_registry_shared_ptr != nullptr)
     {
         const auto handler = get_handler_function(current_message.payload_case());
 
