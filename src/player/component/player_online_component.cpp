@@ -26,4 +26,3 @@ celeritas::player_component::void_awaitable_type celeritas::player_online_compon
     account_last_login_->set_game_server_id(player_state->get_game_server_id());
     account_last_login_->set_update_time(time_helper::get_current_milliseconds());
 }
- 
