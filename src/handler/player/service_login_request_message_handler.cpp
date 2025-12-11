@@ -1,7 +1,7 @@
 ﻿#include "service_login_request_message_handler.h"
 #include "message/concrete_message_handler.tpp"
 #include "message/protobuf_handle_parameter.h"
-#include "player/service_login.h"
+#include "player/login/service_login.h"
 
 celeritas::service_login_request_message_handler::service_login_request_message_handler()
 {

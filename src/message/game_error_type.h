@@ -27,6 +27,7 @@ namespace celeritas
         no_guest_account = 1001,
         account_bound = 1002,
         create_account_error = 1003,
+        create_user_error = 1004,
 
         // 数据库错误
         redis_error = 2000,

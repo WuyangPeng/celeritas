@@ -83,7 +83,7 @@ std::string celeritas::generate_mysql_file::get_mysql_default_type(const std::st
 
     if (data_type == "string")
     {
-        return "\"\"";
+        return "''";
     }
 
     if (data_type == "double")
@@ -98,7 +98,7 @@ std::string celeritas::generate_mysql_file::get_mysql_default_type(const std::st
 
     LOG_CHANNEL(celeritas::default_channel, error) << "Unknown data type: " << data_type;
 
-    return "\"\"";
+    return "''";
 }
 
 celeritas::generate_mysql_file::json_value_type celeritas::generate_mysql_file::get_json_value() const
@@ -164,8 +164,13 @@ std::string celeritas::generate_mysql_file::get_mysql_statement(const json_value
         {
             composite_indexes.emplace_back(entity_name);
         }
+        else if (index_type == "composite_unique_key_and_index")
+        {
+            indexes.emplace_back("  KEY `" + entity_name + "_index` (`" + entity_name + "`)");
+            composite_unique_indexes.emplace_back(entity_name);
+        }
 
-        if (data_type != "binary" && data_type != "string" && index_type != "key" && index_type != "unique_index" && index_type != "composite_unique_index")
+        if (data_type != "binary" && index_type != "key" && index_type != "unique_index" && index_type != "composite_unique_index" && index_type != "composite_unique_key_and_index")
         {
             sql_output << " DEFAULT " << get_mysql_default_type(data_type);
         }

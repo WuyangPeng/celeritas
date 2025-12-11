@@ -86,3 +86,19 @@ int32_t celeritas::protobuf_handle_parameter::get_rpc() const
 {
     return header_.get_rpc();
 }
+
+celeritas::protobuf_handle_parameter::app_config_const_shared_ptr celeritas::protobuf_handle_parameter::get_app_config() const
+{
+    return get_resource_loader()->get_app_config();
+}
+
+celeritas::protobuf_handle_parameter::resource_loader_const_shared_ptr celeritas::protobuf_handle_parameter::get_resource_loader() const
+{
+    if (const auto resource_loader_shared_ptr = resource_loader_.lock();
+        resource_loader_shared_ptr != nullptr)
+    {
+        return resource_loader_shared_ptr;
+    }
+
+    throw celeritas_error{ "resource loader is null." };
+}

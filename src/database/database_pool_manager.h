@@ -6,6 +6,7 @@
 #include <mongocxx/instance.hpp>
 
 #include <map>
+#include <shared_mutex>
 
 namespace celeritas
 {
@@ -82,6 +83,6 @@ namespace celeritas
                                                                  int expire_seconds);
 
         database_pool_container pools_;
-        std::mutex mutex_;
+        std::shared_mutex mutex_;
     };
 }

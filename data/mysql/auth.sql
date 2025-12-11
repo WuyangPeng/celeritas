@@ -1,8 +1,8 @@
 CREATE TABLE `apps` (
   `app_id` BIGINT NOT NULL COMMENT '应用id',
-  `game_name` VARCHAR(255) NOT NULL COMMENT '游戏名字',
-  `app_secret` VARCHAR(255) NOT NULL COMMENT '签名',
-  `app_payment_secret` VARCHAR(255) NOT NULL COMMENT '支付签名',
+  `game_name` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '游戏名字',
+  `app_secret` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '签名',
+  `app_payment_secret` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '支付签名',
   `sms_provider_id` BIGINT NOT NULL DEFAULT 0 COMMENT '短信服务商id',
   `email_provider_id` BIGINT NOT NULL DEFAULT 0 COMMENT '邮件服务商id',
   `status` INT NOT NULL DEFAULT 0 COMMENT '游戏状态',
@@ -12,11 +12,11 @@ CREATE TABLE `apps` (
 
 CREATE TABLE `sms_providers` (
   `provider_id` BIGINT NOT NULL COMMENT '服务商id',
-  `provider_name` VARCHAR(255) NOT NULL COMMENT '服务商名称',
-  `base_url` VARCHAR(255) NOT NULL COMMENT '基础 API 地址',
-  `api_key` VARCHAR(255) NOT NULL COMMENT '密钥 ID',
-  `api_secret` VARCHAR(255) NOT NULL COMMENT '密钥 Secret',
-  `decryption_key` VARCHAR(255) NOT NULL COMMENT '解密密钥',
+  `provider_name` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '服务商名称',
+  `base_url` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '基础 API 地址',
+  `api_key` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密钥 ID',
+  `api_secret` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密钥 Secret',
+  `decryption_key` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '解密密钥',
   `active` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否启用',
   `process_type` INT NOT NULL DEFAULT 0 COMMENT '处理类型',
   PRIMARY KEY (`provider_id`)
@@ -24,11 +24,11 @@ CREATE TABLE `sms_providers` (
 
 CREATE TABLE `email_providers` (
   `provider_id` BIGINT NOT NULL COMMENT '服务商id',
-  `provider_name` VARCHAR(255) NOT NULL COMMENT '服务商名称',
-  `base_url` VARCHAR(255) NOT NULL COMMENT '基础 API 地址',
-  `api_key` VARCHAR(255) NOT NULL COMMENT '密钥 ID',
-  `api_secret` VARCHAR(255) NOT NULL COMMENT '密钥 Secret',
-  `decryption_key` VARCHAR(255) NOT NULL COMMENT '解密密钥',
+  `provider_name` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '服务商名称',
+  `base_url` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '基础 API 地址',
+  `api_key` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密钥 ID',
+  `api_secret` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密钥 Secret',
+  `decryption_key` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '解密密钥',
   `active` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否启用',
   `process_type` INT NOT NULL DEFAULT 0 COMMENT '处理类型',
   PRIMARY KEY (`provider_id`)
@@ -38,11 +38,11 @@ CREATE TABLE `sdk_providers` (
   `sdk_id` BIGINT NOT NULL,
   `app_id` BIGINT NOT NULL,
   `process_type` INT NOT NULL COMMENT '处理类型',
-  `provider_name` VARCHAR(255) NOT NULL COMMENT '服务商名称',
-  `base_url` VARCHAR(255) NOT NULL COMMENT '基础 API 地址',
-  `api_key` VARCHAR(255) NOT NULL COMMENT '密钥 ID',
-  `api_secret` VARCHAR(255) NOT NULL COMMENT '密钥 Secret',
-  `decryption_key` VARCHAR(255) NOT NULL COMMENT '解密密钥',
+  `provider_name` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '服务商名称',
+  `base_url` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '基础 API 地址',
+  `api_key` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密钥 ID',
+  `api_secret` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密钥 Secret',
+  `decryption_key` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '解密密钥',
   `active` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否启用',
   PRIMARY KEY (`sdk_id`),
   UNIQUE KEY `app_id_process_type_unique` (`app_id`,`process_type`)
@@ -51,10 +51,10 @@ CREATE TABLE `sdk_providers` (
 CREATE TABLE `server_cell` (
   `cell_id` BIGINT NOT NULL,
   `game_server_id` VARCHAR(255) NOT NULL COMMENT '服务器id',
-  `server_name` VARCHAR(255) NOT NULL COMMENT '服务器名字',
+  `server_name` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '服务器名字',
   `app_id` BIGINT NOT NULL DEFAULT 0 COMMENT '应用id',
   `launch_time` BIGINT NOT NULL DEFAULT 0 COMMENT '开服时间',
-  `zone` VARCHAR(255) NOT NULL COMMENT '区域',
+  `zone` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '区域',
   `is_close_display` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '当服务器不可连时，服务器列表是否显示',
   `status` INT NOT NULL DEFAULT 0 COMMENT '游戏状态',
   PRIMARY KEY (`cell_id`),
@@ -65,8 +65,8 @@ CREATE TABLE `server_cell` (
 CREATE TABLE `account` (
   `account_id` BIGINT NOT NULL COMMENT '账号id，雪花算法生成',
   `account_name` VARCHAR(255) NOT NULL COMMENT '正式账号的用户名',
-  `password_hash` VARCHAR(255) NOT NULL COMMENT '加密后的密码',
-  `salt` VARCHAR(255) NOT NULL COMMENT '密码盐值(视加密算法而定)',
+  `password_hash` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '加密后的密码',
+  `salt` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密码盐值(视加密算法而定)',
   `device_id` VARCHAR(255) NOT NULL COMMENT '游客登录凭证',
   `app_id` BIGINT NOT NULL COMMENT '应用id',
   `create_time` BIGINT NOT NULL DEFAULT 0 COMMENT '创建时间',
@@ -90,7 +90,7 @@ CREATE TABLE `account_bind` (
 
 CREATE TABLE `account_last_login` (
   `account_id` BIGINT NOT NULL COMMENT '账号id',
-  `game_server_id` VARCHAR(255) NOT NULL COMMENT '服务器id',
+  `game_server_id` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '服务器id',
   `update_time` BIGINT NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

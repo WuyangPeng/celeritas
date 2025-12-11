@@ -49,7 +49,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
 
 celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::get_pool(const std::string& name)
 {
-    std::lock_guard lock{ mutex_ };
+    std::shared_lock lock{ mutex_ };
 
     if (const auto pool = pools_.find(name);
         pool != pools_.cend())
@@ -84,7 +84,7 @@ void celeritas::database_pool_manager::release_pool()
 
 celeritas::database_pool_manager::bool_awaitable_type celeritas::database_pool_manager::is_health()
 {
-    std::lock_guard lock{ mutex_ };
+    std::shared_lock lock{ mutex_ };
 
     for (const auto& pool : pools_ | std::views::values)
     {

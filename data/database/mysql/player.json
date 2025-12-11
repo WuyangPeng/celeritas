@@ -1,0 +1,30 @@
+[
+  {
+    "class_name": "user",
+    "database_name": "user",
+    "entity": [
+      {
+        "entity_name": "user_id",
+        "data_type": "int64",
+        "index_type": "key"
+      },
+      {
+        "entity_name": "account_id",
+        "data_type": "int64",
+        "index_type": "composite_unique_key_and_index",
+        "comment": "账号id"
+      },
+      {
+        "entity_name": "game_server_id",
+        "data_type": "string",
+        "index_type": "composite_unique_index",
+        "comment": "服务器id"
+      },
+      {
+        "entity_name": "is_overload_db",
+        "data_type": "bool",
+        "comment": "是否重载数据库"
+      }
+    ]
+  }
+]

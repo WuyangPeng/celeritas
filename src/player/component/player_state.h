@@ -1,0 +1,64 @@
+﻿#pragma once
+
+#include "player_component.h"
+#include "player_component_type.h"
+
+#include <boost/asio/awaitable.hpp>
+
+#include <array>
+#include <memory>
+
+namespace celeritas
+{
+    class player_state
+    {
+    public:
+        using class_type = player_state;
+        using player_component_shared_ptr = std::shared_ptr<player_component>;
+        using void_awaitable_type = boost::asio::awaitable<void>;
+
+        player_state(int64_t user_id, std::string game_server_id);
+
+        void set_dirty();
+
+        void set_player_state_type(player_state_type player_state_type);
+
+        [[nodiscard]] player_state_type get_player_state_type() const;
+
+        template <typename T>
+        [[nodiscard]] std::shared_ptr<T> get_component() const;
+
+        // 数据库数据加载
+        [[nodiscard]] void_awaitable_type on_load_db();
+
+        // 数据库数据解析
+        [[nodiscard]] void_awaitable_type on_db_analysis();
+
+        // 安全地访问其他组件的数据，解决组件间的依赖关系。
+        [[nodiscard]] void_awaitable_type on_dependencies_ready();
+
+        // 执行所有的初始同步消息发送。
+        [[nodiscard]] void_awaitable_type send_initial_sync();
+
+        // 所有数据稳定后，执行最终启动逻辑。
+        [[nodiscard]] void_awaitable_type on_login();
+
+        // 玩家登出
+        [[nodiscard]] void_awaitable_type on_logout();
+
+        [[nodiscard]] int64_t get_user_id() const noexcept;
+
+        [[nodiscard]] std::string get_game_server_id() const;
+
+    private:
+        using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;
+
+        void check();
+
+        int64_t user_id_;
+        std::string game_server_id_;
+        bool dirty_;
+        player_state_type player_state_;
+        component_container_type components_;
+    };
+}

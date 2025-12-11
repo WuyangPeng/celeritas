@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "database/generated/mysql/player/user.h"
 #include "message/message_fwd.h"
 #include "message/protobuf_handle_parameter.h"
 #include "proto/service/player.pb.h"
@@ -19,7 +20,14 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type send_message() const;
 
     private:
+        using optional_user = std::optional<user>;
+        using optional_user_awaitable_type = boost::asio::awaitable<optional_user>;
+
         void send_error_message(game_error_type game_error_type) const;
+
+        void send_success_message() const;
+
+        [[nodiscard]] optional_user_awaitable_type get_user() const;
 
         protobuf_handle_parameter protobuf_handle_parameter_;
         const proto::service::service_login_request& login_;

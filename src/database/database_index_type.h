@@ -10,5 +10,6 @@ namespace celeritas
         index = 3,
         composite_unique_index = 4,
         composite_index = 5,
+        composite_unique_key_and_index = 6,
     };
 }
