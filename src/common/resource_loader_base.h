@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "gateway_mapping.h"
+#include "session_route.h"
 #include "config/config_fwd.h"
 #include "message/message_fwd.h"
 #include "service_registry/service_registry_fwd.h"
@@ -49,6 +49,6 @@ namespace celeritas
 
         [[nodiscard]] virtual bool write_to_client(const header& header, const protobuf_message& response) = 0;
 
-        virtual void add_gateway_mapping(int64_t user_id, gateway_mapping gateway_mapping) = 0;
+        virtual void add_gateway_mapping(int64_t user_id, session_route session_route) = 0;
     };
 }

@@ -25,6 +25,7 @@
 #include "handler/gateway/manual/gateway_client_response_message_handler.h"
 #include "handler/gateway/manual/gateway_login_request_message_handler.h"
 #include "handler/gateway/manual/gateway_request_message_handler.h"
+#include "handler/gateway/manual/gateway_service_login_response_message_handler.h"
 #include "handler/generated/celeritas_message_handler.h"
 #include "handler/generated/client_login_request_message_handler.h"
 #include "handler/generated/client_login_response_message_handler.h"

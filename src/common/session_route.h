@@ -7,12 +7,12 @@
 
 namespace celeritas
 {
-    class gateway_mapping
+    class session_route
     {
     public:
-        using class_type = gateway_mapping;
+        using class_type = session_route;
 
-        gateway_mapping(server_network_type server_network_type, int64_t session_id, std::string instance_id);
+        session_route(server_network_type server_network_type, int64_t session_id, std::string instance_id);
 
         [[nodiscard]] server_network_type get_server_network_type() const;
 

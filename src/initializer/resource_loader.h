@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "common/resource_loader_base.h"
-#include "common/gateway_mapping.h"
+#include "common/session_route.h"
 #include "config/app_config.h"
 #include "detail/initializer_internal_fwd.h"
 #include "message/message_fwd.h"
@@ -41,9 +41,11 @@ namespace celeritas
 
         void release_resource();
 
-        [[nodiscard]] bool write(const std::string& server_type, const header& header, const protobuf_message& request) override;
+        [[nodiscard]] bool write(const std::string& server_type, const header& header,
+                                 const protobuf_message& request) override;
 
-        [[nodiscard]] bool write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request) override;
+        [[nodiscard]] bool write(const std::string& server_type, const std::string& instance_id, const header& header,
+                                 const protobuf_message& request) override;
 
         [[nodiscard]] bool write_to_client(const header& header, const protobuf_message& response) override;
 
@@ -55,7 +57,7 @@ namespace celeritas
 
         [[nodiscard]] health_check_level_awaitable_type get_health_check_level() override;
 
-        void add_gateway_mapping(int64_t user_id, gateway_mapping gateway_mapping);
+        void add_gateway_mapping(int64_t user_id, session_route session_route);
 
     protected:
         using tcp_client_shared_ptr = std::shared_ptr<tcp_client>;
@@ -72,19 +74,24 @@ namespace celeritas
         using service_registry_timer_shared_ptr = std::shared_ptr<service_registry_timer>;
         using buffer_pool_timer_shared_ptr = std::shared_ptr<buffer_pool_timer>;
         using service_registry_config_container = std::map<std::string, service_registry_config>;
-        using gateway_mapping_type = std::map<int64_t, gateway_mapping>;
+        using gateway_mapping_type = std::map<int64_t, session_route>;
 
         void initialize_logger_resource();
 
         void initialize_database_resource(io_context_type& io_context);
 
-        void initialize_server_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
+        void initialize_server_resource(io_context_type& io_context,
+                                        const network_message_callback_weak_ptr& network_message_callback);
 
-        void initialize_service_registry_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
+        void initialize_service_registry_resource(io_context_type& io_context,
+                                                  const network_message_callback_weak_ptr& network_message_callback);
 
-        void modify_service_registry_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback, int index);
+        void modify_service_registry_resource(io_context_type& io_context,
+                                              const network_message_callback_weak_ptr& network_message_callback,
+                                              int index);
 
-        virtual void service_initialize_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback) = 0;
+        virtual void service_initialize_resource(io_context_type& io_context,
+                                                 const network_message_callback_weak_ptr& network_message_callback) = 0;
 
         void start_check_tcp_clients_timer(io_context_type& io_context);
 
@@ -92,7 +99,11 @@ namespace celeritas
 
         void start_buffer_pool_timer(io_context_type& io_context);
 
-        [[nodiscard]] tcp_client_shared_ptr get_random_client(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback, const service_registry_config_container& service_registry) const;
+        [[nodiscard]] tcp_client_shared_ptr get_random_client(io_context_type& io_context,
+                                                              const network_message_callback_weak_ptr&
+                                                              network_message_callback,
+                                                              const service_registry_config_container& service_registry)
+        const;
 
         app_config_shared_ptr app_config_;
         listener_container_type listener_;

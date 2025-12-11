@@ -38,8 +38,6 @@ std::string_view celeritas::resource_loader::get_server_type() const
 
 void celeritas::resource_loader::initialize(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
 {
-    std::lock_guard lock{ mutex_ };
-
     initialize_logger_resource();
     initialize_server_resource(io_context, network_message_callback);
     initialize_database_resource(io_context);
@@ -52,8 +50,6 @@ void celeritas::resource_loader::initialize(io_context_type& io_context, const n
 
 void celeritas::resource_loader::release_resource()
 {
-    std::lock_guard lock{ mutex_ };
-
     for (const auto& element : tcp_clients_)
     {
         if (element->get_server_type() == service_registry_type)
@@ -88,8 +84,6 @@ void celeritas::resource_loader::release_resource()
 
 bool celeritas::resource_loader::write(const std::string& server_type, const header& header, const protobuf_message& request)
 {
-    std::shared_lock lock{ mutex_ };
-
     auto to_write = false;
 
     for (const auto& element : tcp_clients_)
@@ -106,8 +100,6 @@ bool celeritas::resource_loader::write(const std::string& server_type, const hea
 
 bool celeritas::resource_loader::write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request)
 {
-    std::shared_lock lock{ mutex_ };
-
     auto to_write = false;
 
     for (const auto& element : tcp_clients_)
@@ -124,8 +116,6 @@ bool celeritas::resource_loader::write(const std::string& server_type, const std
 
 bool celeritas::resource_loader::write_to_client(const header& header, const protobuf_message& response)
 {
-    std::shared_lock lock{ mutex_ };
-
     auto to_write = false;
 
     if (const auto iter = gateway_mapping_.find(header.get_user_id());
@@ -149,8 +139,6 @@ bool celeritas::resource_loader::write_to_client(const header& header, const pro
 
 void celeritas::resource_loader::process_check_tcp_clients_by_duration(io_context_type& io_context)
 {
-    std::lock_guard lock{ mutex_ };
-
     for (auto index = 0; index < tcp_clients_.size(); ++index)
     {
         if (const auto& tcp_client = tcp_clients_[index];
@@ -209,8 +197,6 @@ celeritas::resource_loader::health_check_level_awaitable_type celeritas::resourc
         co_return health_check_level_type::crash;
     }
 
-    std::shared_lock lock{ mutex_ };
-
     for (const auto& element : tcp_clients_)
     {
         if (element->is_full())
@@ -222,10 +208,8 @@ celeritas::resource_loader::health_check_level_awaitable_type celeritas::resourc
     co_return health_check_level_type::health;
 }
 
-void celeritas::resource_loader::add_gateway_mapping(int64_t user_id, gateway_mapping gateway_mapping)
+void celeritas::resource_loader::add_gateway_mapping(int64_t user_id, session_route gateway_mapping)
 {
-    std::lock_guard lock{ mutex_ };
-
     gateway_mapping_.emplace(user_id, std::move(gateway_mapping));
 }
 
