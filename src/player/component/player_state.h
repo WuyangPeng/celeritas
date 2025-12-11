@@ -2,6 +2,7 @@
 
 #include "player_component.h"
 #include "player_component_type.h"
+#include "common/common_fwd.h"
 
 #include <boost/asio/awaitable.hpp>
 
@@ -16,8 +17,9 @@ namespace celeritas
         using class_type = player_state;
         using player_component_shared_ptr = std::shared_ptr<player_component>;
         using void_awaitable_type = boost::asio::awaitable<void>;
+        using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
 
-        player_state(int64_t user_id, std::string game_server_id);
+        player_state(int64_t user_id, std::string game_server_id, const resource_loader_shared_ptr& resource_loader);
 
         void set_dirty();
 
@@ -50,15 +52,22 @@ namespace celeritas
 
         [[nodiscard]] std::string get_game_server_id() const;
 
+        [[nodiscard]] static std::string generate_token();
+
+        [[nodiscard]] std::string get_session_key();
+
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;
+        using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
 
         void check();
 
         int64_t user_id_;
         std::string game_server_id_;
+        std::string session_key_;
         bool dirty_;
         player_state_type player_state_;
         component_container_type components_;
+        resource_loader_weak_ptr resource_loader_;
     };
 }

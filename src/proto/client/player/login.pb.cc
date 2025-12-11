@@ -34,7 +34,6 @@ inline constexpr login_response::Impl_::Impl_(
         session_key_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        character_id_{::int64_t{0}},
         current_time_{::int64_t{0}} {}
 
 template <typename>
@@ -167,13 +166,11 @@ const ::uint32_t
         3,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::login_response, _impl_._has_bits_),
-        6, // hasbit index offset
+        5, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::login_response, _impl_.session_key_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::login_response, _impl_.character_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::login_response, _impl_.current_time_),
         0,
         1,
-        2,
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_login_request, _impl_._oneof_case_[0]),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_login_request, _impl_.payload_),
@@ -188,8 +185,8 @@ static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::celeritas::proto::client::login_request)},
         {11, sizeof(::celeritas::proto::client::login_response)},
-        {20, sizeof(::celeritas::proto::client::client_login_request)},
-        {24, sizeof(::celeritas::proto::client::client_login_response)},
+        {18, sizeof(::celeritas::proto::client::client_login_request)},
+        {22, sizeof(::celeritas::proto::client::client_login_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::client::_login_request_default_instance_._instance,
@@ -202,20 +199,20 @@ const char descriptor_table_protodef_proto_2fclient_2fplayer_2flogin_2eproto[] A
     "\n\037proto/client/player/login.proto\022\026celer"
     "itas.proto.client\"^\n\rlogin_request\022\r\n\005to"
     "ken\030\001 \001(\t\022\026\n\016game_server_id\030\002 \001(\t\022\021\n\tdev"
-    "ice_id\030\003 \001(\t\022\023\n\013app_version\030\004 \001(\t\"Q\n\016log"
-    "in_response\022\023\n\013session_key\030\001 \001(\t\022\024\n\014char"
-    "acter_id\030\002 \001(\003\022\024\n\014current_time\030\003 \001(\003\"Y\n\024"
-    "client_login_request\0226\n\005login\030\001 \001(\0132%.ce"
-    "leritas.proto.client.login_requestH\000B\t\n\007"
-    "payload\"[\n\025client_login_response\0227\n\005logi"
-    "n\030\001 \001(\0132&.celeritas.proto.client.login_r"
-    "esponseH\000B\t\n\007payloadb\006proto3"
+    "ice_id\030\003 \001(\t\022\023\n\013app_version\030\004 \001(\t\";\n\016log"
+    "in_response\022\023\n\013session_key\030\001 \001(\t\022\024\n\014curr"
+    "ent_time\030\002 \001(\003\"Y\n\024client_login_request\0226"
+    "\n\005login\030\001 \001(\0132%.celeritas.proto.client.l"
+    "ogin_requestH\000B\t\n\007payload\"[\n\025client_logi"
+    "n_response\0227\n\005login\030\001 \001(\0132&.celeritas.pr"
+    "oto.client.login_responseH\000B\t\n\007payloadb\006"
+    "proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fclient_2fplayer_2flogin_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fclient_2fplayer_2flogin_2eproto = {
     false,
     false,
-    428,
+    406,
     descriptor_table_protodef_proto_2fclient_2fplayer_2flogin_2eproto,
     "proto/client/player/login.proto",
     &descriptor_table_proto_2fclient_2fplayer_2flogin_2eproto_once,
@@ -663,13 +660,7 @@ login_response::login_response(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  ::memcpy(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, character_id_),
-           reinterpret_cast<const char *>(&from._impl_) +
-               offsetof(Impl_, character_id_),
-           offsetof(Impl_, current_time_) -
-               offsetof(Impl_, character_id_) +
-               sizeof(Impl_::current_time_));
+  _impl_.current_time_ = from._impl_.current_time_;
 
   // @@protoc_insertion_point(copy_constructor:celeritas.proto.client.login_response)
 }
@@ -681,12 +672,7 @@ PROTOBUF_NDEBUG_INLINE login_response::Impl_::Impl_(
 
 inline void login_response::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, character_id_),
-           0,
-           offsetof(Impl_, current_time_) -
-               offsetof(Impl_, character_id_) +
-               sizeof(Impl_::current_time_));
+  _impl_.current_time_ = {};
 }
 login_response::~login_response() {
   // @@protoc_insertion_point(destructor:celeritas.proto.client.login_response)
@@ -746,16 +732,16 @@ login_response::GetClassData() const {
   return login_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 57, 2>
+const ::_pbi::TcParseTable<1, 2, 0, 57, 2>
 login_response::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(login_response, _impl_._has_bits_),
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    2, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
+    2,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     login_response_class_data_.base(),
@@ -765,25 +751,19 @@ login_response::_table_ = {
     ::_pbi::TcParser::GetTable<::celeritas::proto::client::login_response>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // int64 current_time = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(login_response, _impl_.current_time_), 1>(),
+     {16, 1, 0, PROTOBUF_FIELD_OFFSET(login_response, _impl_.current_time_)}},
     // string session_key = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0, PROTOBUF_FIELD_OFFSET(login_response, _impl_.session_key_)}},
-    // int64 character_id = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(login_response, _impl_.character_id_), 1>(),
-     {16, 1, 0, PROTOBUF_FIELD_OFFSET(login_response, _impl_.character_id_)}},
-    // int64 current_time = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(login_response, _impl_.current_time_), 2>(),
-     {24, 2, 0, PROTOBUF_FIELD_OFFSET(login_response, _impl_.current_time_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string session_key = 1;
     {PROTOBUF_FIELD_OFFSET(login_response, _impl_.session_key_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // int64 character_id = 2;
-    {PROTOBUF_FIELD_OFFSET(login_response, _impl_.character_id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
-    // int64 current_time = 3;
-    {PROTOBUF_FIELD_OFFSET(login_response, _impl_.current_time_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // int64 current_time = 2;
+    {PROTOBUF_FIELD_OFFSET(login_response, _impl_.current_time_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
   }},
   // no aux_entries
   {{
@@ -803,11 +783,7 @@ PROTOBUF_NOINLINE void login_response::Clear() {
   if ((cached_has_bits & 0x00000001U) != 0) {
     _impl_.session_key_.ClearNonDefaultToEmpty();
   }
-  if ((cached_has_bits & 0x00000006U) != 0) {
-    ::memset(&_impl_.character_id_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.current_time_) -
-        reinterpret_cast<char*>(&_impl_.character_id_)) + sizeof(_impl_.current_time_));
-  }
+  _impl_.current_time_ = ::int64_t{0};
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -840,20 +816,11 @@ PROTOBUF_NOINLINE void login_response::Clear() {
     }
   }
 
-  // int64 character_id = 2;
+  // int64 current_time = 2;
   if ((this_._impl_._has_bits_[0] & 0x00000002U) != 0) {
-    if (this_._internal_character_id() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<2>(
-              stream, this_._internal_character_id(), target);
-    }
-  }
-
-  // int64 current_time = 3;
-  if ((this_._impl_._has_bits_[0] & 0x00000004U) != 0) {
     if (this_._internal_current_time() != 0) {
       target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<3>(
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<2>(
               stream, this_._internal_current_time(), target);
     }
   }
@@ -883,7 +850,7 @@ PROTOBUF_NOINLINE void login_response::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000007U) != 0) {
+  if ((cached_has_bits & 0x00000003U) != 0) {
     // string session_key = 1;
     if ((cached_has_bits & 0x00000001U) != 0) {
       if (!this_._internal_session_key().empty()) {
@@ -891,15 +858,8 @@ PROTOBUF_NOINLINE void login_response::Clear() {
                                         this_._internal_session_key());
       }
     }
-    // int64 character_id = 2;
+    // int64 current_time = 2;
     if ((cached_has_bits & 0x00000002U) != 0) {
-      if (this_._internal_character_id() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
-            this_._internal_character_id());
-      }
-    }
-    // int64 current_time = 3;
-    if ((cached_has_bits & 0x00000004U) != 0) {
       if (this_._internal_current_time() != 0) {
         total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
             this_._internal_current_time());
@@ -922,7 +882,7 @@ void login_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::
   (void) cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000007U) != 0) {
+  if ((cached_has_bits & 0x00000003U) != 0) {
     if ((cached_has_bits & 0x00000001U) != 0) {
       if (!from._internal_session_key().empty()) {
         _this->_internal_set_session_key(from._internal_session_key());
@@ -933,11 +893,6 @@ void login_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::
       }
     }
     if ((cached_has_bits & 0x00000002U) != 0) {
-      if (from._internal_character_id() != 0) {
-        _this->_impl_.character_id_ = from._impl_.character_id_;
-      }
-    }
-    if ((cached_has_bits & 0x00000004U) != 0) {
       if (from._internal_current_time() != 0) {
         _this->_impl_.current_time_ = from._impl_.current_time_;
       }
@@ -962,12 +917,7 @@ void login_response::InternalSwap(login_response* PROTOBUF_RESTRICT PROTOBUF_NON
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.session_key_, &other->_impl_.session_key_, arena);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(login_response, _impl_.current_time_)
-      + sizeof(login_response::_impl_.current_time_)
-      - PROTOBUF_FIELD_OFFSET(login_response, _impl_.character_id_)>(
-          reinterpret_cast<char*>(&_impl_.character_id_),
-          reinterpret_cast<char*>(&other->_impl_.character_id_));
+  swap(_impl_.current_time_, other->_impl_.current_time_);
 }
 
 ::google::protobuf::Metadata login_response::GetMetadata() const {

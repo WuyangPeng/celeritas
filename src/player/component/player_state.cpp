@@ -4,13 +4,19 @@
 #include "player_state_type.h"
 #include "common/celeritas_error.h"
 
-celeritas::player_state::player_state(const int64_t user_id, std::string game_server_id)
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
+
+celeritas::player_state::player_state(const int64_t user_id, std::string game_server_id, const resource_loader_shared_ptr& resource_loader)
     : user_id_{ user_id },
       game_server_id_{ std::move(game_server_id) },
+      session_key_{ generate_token() },
       dirty_{ false },
       player_state_{ player_state_type::loading },
       components_{ std::make_shared<player_role_component>(this),
-                   std::make_shared<player_online_component>(this) }
+                   std::make_shared<player_online_component>(this) },
+      resource_loader_{ resource_loader }
 {
     check();
 }
@@ -86,6 +92,19 @@ int64_t celeritas::player_state::get_user_id() const noexcept
 std::string celeritas::player_state::get_game_server_id() const
 {
     return game_server_id_;
+}
+
+std::string celeritas::player_state::generate_token()
+{
+    boost::uuids::random_generator generator{};
+    const auto uuid = generator();
+
+    return boost::uuids::to_string(uuid);
+}
+
+std::string celeritas::player_state::get_session_key()
+{
+    return session_key_;
 }
 
 void celeritas::player_state::check()

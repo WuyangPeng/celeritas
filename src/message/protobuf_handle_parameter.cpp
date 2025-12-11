@@ -92,7 +92,7 @@ celeritas::protobuf_handle_parameter::app_config_const_shared_ptr celeritas::pro
     return get_resource_loader()->get_app_config();
 }
 
-celeritas::protobuf_handle_parameter::resource_loader_const_shared_ptr celeritas::protobuf_handle_parameter::get_resource_loader() const
+celeritas::protobuf_handle_parameter::resource_loader_shared_ptr celeritas::protobuf_handle_parameter::get_resource_loader() const
 {
     if (const auto resource_loader_shared_ptr = resource_loader_.lock();
         resource_loader_shared_ptr != nullptr)

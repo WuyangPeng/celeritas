@@ -10,7 +10,7 @@ celeritas::player_manager& celeritas::player_manager::get_instance()
     return manager;
 }
 
-celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::add_player(const int64_t user_id, const std::string& game_server_id)
+celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::add_player(const int64_t user_id, const std::string& game_server_id, const resource_loader_shared_ptr& resource_loader)
 {
     std::lock_guard lock{ mutex_ };
 
@@ -30,7 +30,7 @@ celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::ad
         }
     }
 
-    return container_.emplace(user_id, std::make_shared<player_state>(user_id, game_server_id)).first->second;
+    return container_.emplace(user_id, std::make_shared<player_state>(user_id, game_server_id, resource_loader)).first->second;
 }
 
 celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::get_player(const int64_t user_id)

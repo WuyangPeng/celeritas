@@ -5,6 +5,11 @@ celeritas::header::header(const int32_t rpc, const int32_t code)
 {
 }
 
+celeritas::header::header(int32_t rpc, int64_t user_id, int32_t code)
+    : rpc_{ rpc }, user_id_{ user_id }, code_{ code }
+{
+}
+
 celeritas::header::header(const empty_message_header_type& empty_message_header)
     : rpc_{}, user_id_{}, code_{}
 {

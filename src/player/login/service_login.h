@@ -25,7 +25,7 @@ namespace celeritas
 
         void send_error_message(game_error_type game_error_type) const;
 
-        void send_success_message() const;
+        void send_success_message(int64_t user_id, const std::string& session_key) const;
 
         [[nodiscard]] optional_user_awaitable_type get_user() const;
 

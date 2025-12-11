@@ -17,6 +17,8 @@ namespace celeritas
 
         header(int32_t rpc, int32_t code);
 
+        header(int32_t rpc, int64_t user_id, int32_t code);
+
         explicit header(const empty_message_header_type& empty_message_header);
 
         explicit header(const server_message_header_type& server_message_header);

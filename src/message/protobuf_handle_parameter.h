@@ -46,13 +46,12 @@ namespace celeritas
 
         [[nodiscard]] app_config_const_shared_ptr get_app_config() const;
 
+        [[nodiscard]] resource_loader_shared_ptr get_resource_loader() const;
+
     private:
         using session_weak_ptr = std::weak_ptr<session>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
         using application_loader_weak_ptr = std::weak_ptr<application_loader_base>;
-        using resource_loader_const_shared_ptr = std::shared_ptr<const resource_loader_base>;
-
-        [[nodiscard]] resource_loader_const_shared_ptr get_resource_loader() const;
 
         io_context_type& io_context_;
         header header_;
