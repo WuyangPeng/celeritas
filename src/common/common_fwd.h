@@ -10,6 +10,7 @@ namespace celeritas
     class snowflake_generator;
     class hmac_sha256;
     class command_line_config;
+    class gateway_mapping;
 
     class logger;
 

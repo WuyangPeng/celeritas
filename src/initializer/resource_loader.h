@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 #include "common/resource_loader_base.h"
+#include "common/gateway_mapping.h"
 #include "config/app_config.h"
-#include "detail/gateway_mapping.h"
 #include "detail/initializer_internal_fwd.h"
 #include "message/message_fwd.h"
 #include "network/listener.h"

@@ -6,7 +6,6 @@
 #include "detail/buffer_pool_timer.h"
 #include "detail/check_tcp_clients_timer.h"
 #include "detail/database_resource_loader.h"
-#include "detail/gateway_mapping.h"
 #include "detail/logger_resource_loader.h"
 #include "detail/server_resource_loader.h"
 #include "detail/service_registry_loader.h"

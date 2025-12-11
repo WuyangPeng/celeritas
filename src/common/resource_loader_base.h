@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "gateway_mapping.h"
 #include "config/config_fwd.h"
 #include "message/message_fwd.h"
 #include "service_registry/service_registry_fwd.h"
@@ -47,5 +48,7 @@ namespace celeritas
         [[nodiscard]] virtual bool write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request) = 0;
 
         [[nodiscard]] virtual bool write_to_client(const header& header, const protobuf_message& response) = 0;
+
+        virtual void add_gateway_mapping(int64_t user_id, gateway_mapping gateway_mapping) = 0;
     };
 }

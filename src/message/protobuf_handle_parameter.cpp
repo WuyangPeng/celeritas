@@ -136,3 +136,9 @@ celeritas::server_network_type celeritas::protobuf_handle_parameter::get_server_
 
     throw celeritas_error{ "session is null." };
 }
+
+int64_t celeritas::protobuf_handle_parameter::get_user_id() const
+{
+    return header_.get_user_id();
+}
+
