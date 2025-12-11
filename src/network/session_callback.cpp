@@ -25,3 +25,4 @@ celeritas::session_callback::network_message_callback_shared_ptr celeritas::sess
     return network_message_callback_.lock();
 }
 
+

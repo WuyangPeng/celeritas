@@ -1,6 +1,7 @@
 ﻿#include "generic_session.tpp"
 #include "tcp_client.h"
 #include "common/logger.h"
+#include "config/server_network_type.h"
 
 celeritas::tcp_client::tcp_client(io_context_type& io_context,
                                   network_message_callback_weak_ptr callback,
@@ -128,6 +129,7 @@ celeritas::tcp_client::void_waitable_type celeritas::tcp_client::do_connect()
 
     // 创建一个新的会话并返回
     session_ = std::make_shared<session_type>(std::move(socket),
+                                              server_network_type::tcp,
                                               session_id_,
                                               game_server_id_,
                                               session_callback{ shared_from_this(), network_message_callback_ });

@@ -15,7 +15,7 @@ namespace celeritas
         using class_type = session_base;
         using base_type = session;
 
-        session_base(int64_t session_id, session_callback session_callback);
+        session_base(server_network_type server_network_type, int64_t session_id, session_callback session_callback);
 
         // 启动会话处理协程
         virtual void start() = 0;
@@ -36,6 +36,8 @@ namespace celeritas
 
         void remove_session() override;
 
+        [[nodiscard]] server_network_type get_server_network_type() const override;
+
     protected:
         using message_shared_ptr = header::message_shared_ptr;
         using network_message_callback_weak_ptr = session_callback::network_message_callback_weak_ptr;
@@ -51,5 +53,6 @@ namespace celeritas
 
         int64_t session_id_;
         session_callback session_callback_;
+        server_network_type server_network_type_;
     };
 }

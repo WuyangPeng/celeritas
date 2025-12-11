@@ -9,13 +9,14 @@
 #include "detail/http_session_write.h"
 
 celeritas::http_session::http_session(socket_type socket,
-                                      int64_t session_id,
+                                      const server_network_type server_network_type,
+                                      const int64_t session_id,
                                       std::string game_server_id,
                                       session_callback session_callback,
                                       const bool is_server,
                                       std::string host,
                                       const std::string& path)
-    : base_type{ session_id, std::move(session_callback) },
+    : base_type{ server_network_type, session_id, std::move(session_callback) },
       socket_{ std::move(socket) },
       http_run_{ get_session_run(socket_, is_server, session_id, get_session_callback(), path) },
       http_write_{ get_session_write(socket_, is_server, std::move(host), path) },

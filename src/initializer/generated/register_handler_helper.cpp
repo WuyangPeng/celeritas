@@ -32,6 +32,7 @@ void celeritas::register_handler_helper::register_handler() const
     message_registry_->register_handler(std::make_shared<service_payment_request_message_handler>());
     message_registry_->register_handler(std::make_shared<service_payment_response_message_handler>());
     message_registry_->register_handler(std::make_shared<service_player_request_message_handler>());
+    message_registry_->register_handler(std::make_shared<service_player_response_message_handler>());
     message_registry_->register_handler(std::make_shared<service_registry_request_message_handler>());
     message_registry_->register_handler(std::make_shared<service_registry_response_message_handler>());
     message_registry_->register_handler(std::make_shared<service_request_message_handler>());

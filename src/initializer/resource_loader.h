@@ -2,11 +2,14 @@
 
 #include "common/resource_loader_base.h"
 #include "config/app_config.h"
+#include "detail/gateway_mapping.h"
 #include "detail/initializer_internal_fwd.h"
 #include "message/message_fwd.h"
 #include "network/listener.h"
 #include "network/network_message_callback.h"
 #include "proto/celeritas.pb.h"
+
+#include <shared_mutex>
 
 namespace celeritas
 {
@@ -38,9 +41,11 @@ namespace celeritas
 
         void release_resource();
 
-        [[nodiscard]] bool write(const std::string& server_type, const header& header, const protobuf_message& request) const override;
+        [[nodiscard]] bool write(const std::string& server_type, const header& header, const protobuf_message& request) override;
 
-        [[nodiscard]] bool write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request) const override;
+        [[nodiscard]] bool write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request) override;
+
+        [[nodiscard]] bool write_to_client(const header& header, const protobuf_message& response) override;
 
         void process_check_tcp_clients_by_duration(io_context_type& io_context) override;
 
@@ -48,7 +53,9 @@ namespace celeritas
 
         [[nodiscard]] app_config_shared_ptr get_app_config() const override;
 
-        [[nodiscard]] health_check_level_awaitable_type get_health_check_level() const override;
+        [[nodiscard]] health_check_level_awaitable_type get_health_check_level() override;
+
+        void add_gateway_mapping(int64_t user_id, gateway_mapping gateway_mapping);
 
     protected:
         using tcp_client_shared_ptr = std::shared_ptr<tcp_client>;
@@ -65,6 +72,7 @@ namespace celeritas
         using service_registry_timer_shared_ptr = std::shared_ptr<service_registry_timer>;
         using buffer_pool_timer_shared_ptr = std::shared_ptr<buffer_pool_timer>;
         using service_registry_config_container = std::map<std::string, service_registry_config>;
+        using gateway_mapping_type = std::map<int64_t, gateway_mapping>;
 
         void initialize_logger_resource();
 
@@ -95,5 +103,7 @@ namespace celeritas
         buffer_pool_timer_shared_ptr buffer_pool_timer_;
         int64_t start_server_time_;
         std::string_view server_type_;
+        gateway_mapping_type gateway_mapping_;
+        std::shared_mutex mutex_;
     };
 }

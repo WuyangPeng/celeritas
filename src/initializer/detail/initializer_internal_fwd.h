@@ -9,4 +9,5 @@ namespace celeritas
     class check_tcp_clients_timer;
     class service_registry_timer;
     class buffer_pool_timer;
+    class gateway_mapping;
 }

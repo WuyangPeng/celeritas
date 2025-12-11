@@ -1,6 +1,7 @@
 ﻿#include "http_client.h"
 #include "http_session.h"
 #include "common/logger.h"
+#include "config/server_network_type.h"
 
 celeritas::http_client::http_client(io_context_type& io_context,
                                     network_message_callback_weak_ptr callback,
@@ -115,6 +116,7 @@ celeritas::http_client::void_waitable_type celeritas::http_client::do_connect()
 
     // 创建一个新的会话并返回
     session_ = std::make_shared<session_type>(std::move(socket),
+                                              server_network_type::http,
                                               session_id_,
                                               game_server_id_,
                                               session_callback{ shared_from_this(), network_message_callback_ },

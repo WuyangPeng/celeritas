@@ -3,6 +3,7 @@
 import "proto/service/registry.proto";
 import "proto/service/auth.proto";
 import "proto/service/payment.proto";
+import "proto/service/player.proto";
 
 package celeritas.proto.service;
 
@@ -11,5 +12,6 @@ message service_response {
     service_registry_response registry = 1;
     service_auth_response auth = 2;
     service_payment_response payment = 3;
+    service_player_response player = 4;
   }
 }

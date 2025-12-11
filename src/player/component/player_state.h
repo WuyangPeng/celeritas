@@ -54,8 +54,6 @@ namespace celeritas
 
         [[nodiscard]] static std::string generate_token();
 
-        [[nodiscard]] std::string get_session_key();
-
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
@@ -64,7 +62,6 @@ namespace celeritas
 
         int64_t user_id_;
         std::string game_server_id_;
-        std::string session_key_;
         bool dirty_;
         player_state_type player_state_;
         component_container_type components_;

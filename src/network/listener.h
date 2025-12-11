@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "network_fwd.h"
+#include "config/config_fwd.h"
 
 #include <boost/asio.hpp>
 #include <memory>
@@ -14,10 +15,12 @@ namespace celeritas
         using io_context_type = boost::asio::io_context;
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
         using void_awaitable_type = boost::asio::awaitable<void>;
+        using session_shared_ptr = std::shared_ptr<session_base>;
 
         listener(io_context_type& io_context,
                  network_message_callback_weak_ptr callback,
-                 std::string game_server_id);
+                 std::string game_server_id,
+                 server_network_type server_network_type);
 
         virtual ~listener() noexcept = default;
 
@@ -37,6 +40,10 @@ namespace celeritas
         // 协程：异步接受新连接
         [[nodiscard]] virtual void_awaitable_type accept_connections() = 0;
 
+        [[nodiscard]] virtual session_shared_ptr get_session(int64_t id) = 0;
+
+        [[nodiscard]] server_network_type get_server_network_type() const noexcept;
+
     protected:
         [[nodiscard]] std::string get_game_server_id() const;
 
@@ -48,6 +55,7 @@ namespace celeritas
         io_context_type& io_context_;
         network_message_callback_weak_ptr network_message_callback_;
         std::string game_server_id_;
+        server_network_type server_network_type_;
     };
 }
 

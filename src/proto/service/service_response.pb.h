@@ -32,6 +32,7 @@
 #include "proto/service/registry.pb.h"
 #include "proto/service/auth.pb.h"
 #include "proto/service/payment.pb.h"
+#include "proto/service/player.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -138,6 +139,7 @@ class service_response final : public ::google::protobuf::Message
     kRegistry = 1,
     kAuth = 2,
     kPayment = 3,
+    kPlayer = 4,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 0;
@@ -231,6 +233,7 @@ class service_response final : public ::google::protobuf::Message
     kRegistryFieldNumber = 1,
     kAuthFieldNumber = 2,
     kPaymentFieldNumber = 3,
+    kPlayerFieldNumber = 4,
   };
   // .celeritas.proto.service.service_registry_response registry = 1;
   bool has_registry() const;
@@ -289,6 +292,25 @@ class service_response final : public ::google::protobuf::Message
   ::celeritas::proto::service::service_payment_response* PROTOBUF_NONNULL _internal_mutable_payment();
 
   public:
+  // .celeritas.proto.service.service_player_response player = 4;
+  bool has_player() const;
+  private:
+  bool _internal_has_player() const;
+
+  public:
+  void clear_player() ;
+  const ::celeritas::proto::service::service_player_response& player() const;
+  [[nodiscard]] ::celeritas::proto::service::service_player_response* PROTOBUF_NULLABLE release_player();
+  ::celeritas::proto::service::service_player_response* PROTOBUF_NONNULL mutable_player();
+  void set_allocated_player(::celeritas::proto::service::service_player_response* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_player(::celeritas::proto::service::service_player_response* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::service::service_player_response* PROTOBUF_NULLABLE unsafe_arena_release_player();
+
+  private:
+  const ::celeritas::proto::service::service_player_response& _internal_player() const;
+  ::celeritas::proto::service::service_player_response* PROTOBUF_NONNULL _internal_mutable_player();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.service.service_response)
@@ -297,11 +319,12 @@ class service_response final : public ::google::protobuf::Message
   void set_has_registry();
   void set_has_auth();
   void set_has_payment();
+  void set_has_player();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 3,
-                                   3, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 4,
+                                   4, 0,
                                    2>
       _table_;
 
@@ -326,6 +349,7 @@ class service_response final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE registry_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE auth_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE payment_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE player_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -560,6 +584,76 @@ inline ::celeritas::proto::service::service_payment_response* PROTOBUF_NONNULL s
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::service_payment_response* _msg = _internal_mutable_payment();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_response.payment)
+  return _msg;
+}
+
+// .celeritas.proto.service.service_player_response player = 4;
+inline bool service_response::has_player() const {
+  return payload_case() == kPlayer;
+}
+inline bool service_response::_internal_has_player() const {
+  return payload_case() == kPlayer;
+}
+inline void service_response::set_has_player() {
+  _impl_._oneof_case_[0] = kPlayer;
+}
+inline ::celeritas::proto::service::service_player_response* PROTOBUF_NULLABLE service_response::release_player() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_response.player)
+  if (payload_case() == kPlayer) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::service::service_player_response*>(_impl_.payload_.player_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.player_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::service::service_player_response& service_response::_internal_player() const {
+  return payload_case() == kPlayer ? *reinterpret_cast<::celeritas::proto::service::service_player_response*>(_impl_.payload_.player_) : reinterpret_cast<::celeritas::proto::service::service_player_response&>(::celeritas::proto::service::_service_player_response_default_instance_);
+}
+inline const ::celeritas::proto::service::service_player_response& service_response::player() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_response.player)
+  return _internal_player();
+}
+inline ::celeritas::proto::service::service_player_response* PROTOBUF_NULLABLE service_response::unsafe_arena_release_player() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_response.player)
+  if (payload_case() == kPlayer) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::service::service_player_response*>(_impl_.payload_.player_);
+    _impl_.payload_.player_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void service_response::unsafe_arena_set_allocated_player(
+    ::celeritas::proto::service::service_player_response* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_player();
+    _impl_.payload_.player_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_response.player)
+}
+inline ::celeritas::proto::service::service_player_response* PROTOBUF_NONNULL service_response::_internal_mutable_player() {
+  if (payload_case() != kPlayer) {
+    clear_payload();
+    set_has_player();
+    _impl_.payload_.player_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::service::service_player_response>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::service::service_player_response*>(_impl_.payload_.player_);
+}
+inline ::celeritas::proto::service::service_player_response* PROTOBUF_NONNULL service_response::mutable_player()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::service::service_player_response* _msg = _internal_mutable_player();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_response.player)
   return _msg;
 }
 

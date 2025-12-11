@@ -14,13 +14,16 @@ namespace celeritas
         websocket_listener(io_context_type& io_context,
                            network_message_callback_weak_ptr callback,
                            std::string game_server_id,
-                           int port);
+                           int port,
+                           server_network_type server_network_type);
 
         // 停止监听器
         void stop() override;
 
         // 协程：异步接受新连接
         [[nodiscard]] void_awaitable_type accept_connections() override;
+
+        [[nodiscard]] session_shared_ptr get_session(int64_t id) override;
 
     private:
         using acceptor_type = boost::asio::ip::tcp::acceptor;

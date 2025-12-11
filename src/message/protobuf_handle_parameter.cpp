@@ -61,6 +61,18 @@ void celeritas::protobuf_handle_parameter::write_to_server(const std::string& se
     }
 }
 
+void celeritas::protobuf_handle_parameter::write_to_client(const protobuf_message& response) const
+{
+    if (const auto resource_loader_shared_ptr = resource_loader_.lock();
+        resource_loader_shared_ptr != nullptr)
+    {
+        if (resource_loader_shared_ptr->write_to_client(header_, response))
+        {
+            LOG_CHANNEL(initializer_channel, trace) << "write message to client,user id = : " << header_.get_user_id();
+        }
+    }
+}
+
 celeritas::protobuf_handle_parameter::protobuf_message_shared_ptr celeritas::protobuf_handle_parameter::get_protobuf_message() const
 {
     return request_message_;
@@ -87,6 +99,17 @@ int32_t celeritas::protobuf_handle_parameter::get_rpc() const
     return header_.get_rpc();
 }
 
+int64_t celeritas::protobuf_handle_parameter::get_session_id() const
+{
+    if (const auto session_shared_ptr = session_.lock();
+        session_shared_ptr != nullptr)
+    {
+        return session_shared_ptr->get_session_id();
+    }
+
+    throw celeritas_error{ "session is null." };
+}
+
 celeritas::protobuf_handle_parameter::app_config_const_shared_ptr celeritas::protobuf_handle_parameter::get_app_config() const
 {
     return get_resource_loader()->get_app_config();
@@ -101,4 +124,15 @@ celeritas::protobuf_handle_parameter::resource_loader_shared_ptr celeritas::prot
     }
 
     throw celeritas_error{ "resource loader is null." };
+}
+
+celeritas::server_network_type celeritas::protobuf_handle_parameter::get_server_network_type() const
+{
+    if (const auto session_shared_ptr = session_.lock();
+        session_shared_ptr != nullptr)
+    {
+        return session_shared_ptr->get_server_network_type();
+    }
+
+    throw celeritas_error{ "session is null." };
 }

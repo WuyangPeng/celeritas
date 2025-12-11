@@ -2,6 +2,7 @@
 #include "create_user.h"
 #include "service_login.h"
 #include "common/time_helper.h"
+#include "config/app_config.h"
 #include "database/database_fwd.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/player/user.h"
@@ -37,7 +38,7 @@ celeritas::service_login::void_awaitable_type celeritas::service_login::send_mes
 
     const auto player = player_manager::get_instance().add_player(user->get_user_id(), user->get_game_server_id(), protobuf_handle_parameter_.get_resource_loader());
 
-    send_success_message(user->get_user_id(), player->get_session_key());
+    send_success_message(user->get_user_id());
 
     if (player->get_player_state_type() != player_state_type::online)
     {
@@ -61,19 +62,21 @@ void celeritas::service_login::send_error_message(game_error_type game_error_typ
     const header header{ protobuf_handle_parameter_.get_rpc(), static_cast<int>(game_error_type) };
 
     proto::celeritas response{};
-    response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_login()->mutable_login();
+    response.mutable_celeritas_response()->mutable_service()->mutable_player()->mutable_service_login();
 
     protobuf_handle_parameter_.write(header, response);
 }
 
-void celeritas::service_login::send_success_message(const int64_t user_id, const std::string& session_key) const
+void celeritas::service_login::send_success_message(const int64_t user_id) const
 {
     const header header{ protobuf_handle_parameter_.get_rpc(), user_id, static_cast<int>(game_error_type::success) };
 
     proto::celeritas response{};
-    auto* login = response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_login()->mutable_login();
+    auto* login = response.mutable_celeritas_response()->mutable_service()->mutable_player()->mutable_service_login();
     login->set_current_time(time_helper::get_current_milliseconds());
-    login->set_session_key(session_key);
+    login->set_session_id(login_.session_id());
+    login->set_protocol(login_.protocol());
+    login->set_instance_id(protobuf_handle_parameter_.get_app_config()->get_server_config().get_instance_id());
 
     protobuf_handle_parameter_.write(header, response);
 }

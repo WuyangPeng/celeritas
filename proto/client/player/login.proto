@@ -10,8 +10,7 @@ message login_request {
 }
 
 message login_response {
-    string session_key = 1;
-    int64 current_time = 2;
+    int64 current_time = 1;
 }
 
 message client_login_request {

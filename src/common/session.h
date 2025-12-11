@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "config/config_fwd.h"
 #include "message/message_fwd.h"
 
 #include <boost/asio/awaitable.hpp>
@@ -39,5 +40,7 @@ namespace celeritas
         [[nodiscard]] virtual int64_t get_session_id() const noexcept = 0;
 
         virtual void remove_session() = 0;
+
+        [[nodiscard]] virtual server_network_type get_server_network_type() const = 0;
     };
 }

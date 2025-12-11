@@ -1,9 +1,10 @@
 ﻿#include "http_listener_accept.h"
 #include "common/logger.h"
+#include "config/server_network_type.h"
 #include "network/http_session.h"
 
-celeritas::http_listener_accept::http_listener_accept(acceptor_type& acceptor, std::string game_server_id, network_message_callback_weak_ptr callback)
-    : base_type{}, acceptor_{ acceptor }, game_server_id_{ std::move(game_server_id) }, callback_{ std::move(callback) }
+celeritas::http_listener_accept::http_listener_accept(acceptor_type& acceptor, const server_network_type server_network_type, std::string game_server_id, network_message_callback_weak_ptr callback)
+    : base_type{ server_network_type }, acceptor_{ acceptor }, game_server_id_{ std::move(game_server_id) }, callback_{ std::move(callback) }
 {
 }
 
@@ -72,7 +73,7 @@ void celeritas::http_listener_accept::start_new_session(socket_type socket)
     const auto current_session_id = get_next_session_id();
 
     LOG_CHANNEL(network_channel, info) << "accepted new http connection [" << current_session_id << "] from: " << socket.remote_endpoint();
-    const auto session = std::make_shared<http_session>(std::move(socket), current_session_id, game_server_id_, session_callback{ shared_from_this(), callback_ }, true, "", "");
+    const auto session = std::make_shared<http_session>(std::move(socket), get_server_network_type(), current_session_id, game_server_id_, session_callback{ shared_from_this(), callback_ }, true, "", "");
 
     add_session(session);
 

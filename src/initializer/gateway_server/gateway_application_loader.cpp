@@ -1,4 +1,5 @@
 ﻿#include "gateway_application_loader.h"
+#include "handler/gateway/manual/gateway_client_login_request_message_handler.h"
 #include "handler/gateway/manual/gateway_login_request_message_handler.h"
 #include "handler/gateway/manual/gateway_client_player_request_message_handler.h"
 #include "handler/gateway/manual/gateway_request_message_handler.h"
@@ -22,5 +23,6 @@ void celeritas::gateway_application_loader::register_message_handler()
     register_handler(std::make_shared<gateway_client_request_message_handler>());
     register_handler(std::make_shared<gateway_client_response_message_handler>());
     register_handler(std::make_shared<gateway_client_player_request_message_handler>());
+    register_handler(std::make_shared<gateway_client_login_request_message_handler>());
     register_handler(std::make_shared<gateway_login_request_message_handler>());
 }

@@ -5,10 +5,11 @@
 #include "detail/websocket_session_write.h"
 
 celeritas::websocket_session::websocket_session(socket_type socket,
+                                                const server_network_type server_network_type,
                                                 const int64_t session_id,
                                                 const std::string& game_server_id,
                                                 session_callback session_callback)
-    : base_type{ session_id, std::move(session_callback) },
+    : base_type{ server_network_type, session_id, std::move(session_callback) },
       websocket_{ std::move(socket) },
       websocket_run_{ std::make_shared<websocket_session_run>(websocket_, session_id, get_session_callback()) },
       websocket_write_{ std::make_shared<websocket_session_write>(websocket_) }

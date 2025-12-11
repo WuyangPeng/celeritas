@@ -231,25 +231,9 @@ class login_response final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kSessionKeyFieldNumber = 1,
-    kCurrentTimeFieldNumber = 2,
+    kCurrentTimeFieldNumber = 1,
   };
-  // string session_key = 1;
-  void clear_session_key() ;
-  const ::std::string& session_key() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_session_key(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_session_key();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_session_key();
-  void set_allocated_session_key(::std::string* PROTOBUF_NULLABLE value);
-
-  private:
-  const ::std::string& _internal_session_key() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_session_key(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_session_key();
-
-  public:
-  // int64 current_time = 2;
+  // int64 current_time = 1;
   void clear_current_time() ;
   ::int64_t current_time() const;
   void set_current_time(::int64_t value);
@@ -263,8 +247,8 @@ class login_response final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
-                                   0, 57,
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   0, 0,
                                    2>
       _table_;
 
@@ -285,7 +269,6 @@ class login_response final : public ::google::protobuf::Message
         const login_response& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr session_key_;
     ::int64_t current_time_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -1248,76 +1231,11 @@ inline void login_request::set_allocated_app_version(::std::string* PROTOBUF_NUL
 
 // login_response
 
-// string session_key = 1;
-inline void login_response::clear_session_key() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.session_key_.ClearToEmpty();
-  _impl_._has_bits_[0] &= ~0x00000001U;
-}
-inline const ::std::string& login_response::session_key() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:celeritas.proto.client.login_response.session_key)
-  return _internal_session_key();
-}
-template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void login_response::set_session_key(Arg_&& arg, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000001U;
-  _impl_.session_key_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:celeritas.proto.client.login_response.session_key)
-}
-inline ::std::string* PROTOBUF_NONNULL login_response::mutable_session_key()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::std::string* _s = _internal_mutable_session_key();
-  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.login_response.session_key)
-  return _s;
-}
-inline const ::std::string& login_response::_internal_session_key() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.session_key_.Get();
-}
-inline void login_response::_internal_set_session_key(const ::std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000001U;
-  _impl_.session_key_.Set(value, GetArena());
-}
-inline ::std::string* PROTOBUF_NONNULL login_response::_internal_mutable_session_key() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000001U;
-  return _impl_.session_key_.Mutable( GetArena());
-}
-inline ::std::string* PROTOBUF_NULLABLE login_response::release_session_key() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:celeritas.proto.client.login_response.session_key)
-  if ((_impl_._has_bits_[0] & 0x00000001U) == 0) {
-    return nullptr;
-  }
-  _impl_._has_bits_[0] &= ~0x00000001U;
-  auto* released = _impl_.session_key_.Release();
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.session_key_.Set("", GetArena());
-  }
-  return released;
-}
-inline void login_response::set_allocated_session_key(::std::string* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001U;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001U;
-  }
-  _impl_.session_key_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.session_key_.IsDefault()) {
-    _impl_.session_key_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.login_response.session_key)
-}
-
-// int64 current_time = 2;
+// int64 current_time = 1;
 inline void login_response::clear_current_time() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.current_time_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000002U;
+  _impl_._has_bits_[0] &= ~0x00000001U;
 }
 inline ::int64_t login_response::current_time() const {
   // @@protoc_insertion_point(field_get:celeritas.proto.client.login_response.current_time)
@@ -1325,7 +1243,7 @@ inline ::int64_t login_response::current_time() const {
 }
 inline void login_response::set_current_time(::int64_t value) {
   _internal_set_current_time(value);
-  _impl_._has_bits_[0] |= 0x00000002U;
+  _impl_._has_bits_[0] |= 0x00000001U;
   // @@protoc_insertion_point(field_set:celeritas.proto.client.login_response.current_time)
 }
 inline ::int64_t login_response::_internal_current_time() const {

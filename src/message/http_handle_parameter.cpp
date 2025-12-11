@@ -105,7 +105,13 @@ celeritas::http_handle_parameter::app_config_const_shared_ptr celeritas::http_ha
 
 celeritas::http_handle_parameter::health_check_level_awaitable_type celeritas::http_handle_parameter::get_health_check_level() const
 {
-    co_return co_await get_resource_loader()->get_health_check_level();
+    if (const auto resource_loader_shared_ptr = resource_loader_.lock();
+        resource_loader_shared_ptr != nullptr)
+    {
+        co_return co_await resource_loader_shared_ptr->get_health_check_level();
+    }
+
+    throw celeritas_error{ "resource loader is null." };
 }
 
 celeritas::http_handle_parameter::io_context_type& celeritas::http_handle_parameter::get_io_context() const

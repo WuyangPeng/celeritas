@@ -1,7 +1,7 @@
 ﻿#include "listener.h"
 
-celeritas::listener::listener(io_context_type& io_context, network_message_callback_weak_ptr callback, std::string game_server_id)
-    : io_context_{ io_context }, network_message_callback_{ std::move(callback) }, game_server_id_{ std::move(game_server_id) }
+celeritas::listener::listener(io_context_type& io_context, network_message_callback_weak_ptr callback, std::string game_server_id, server_network_type server_network_type)
+    : io_context_{ io_context }, network_message_callback_{ std::move(callback) }, game_server_id_{ std::move(game_server_id) }, server_network_type_{ server_network_type }
 {
 }
 
@@ -11,6 +11,11 @@ void celeritas::listener::start()
                           [this] {
                               return this->accept_connections();
                           }, boost::asio::detached);
+}
+
+celeritas::server_network_type celeritas::listener::get_server_network_type() const noexcept
+{
+    return server_network_type_;
 }
 
 std::string celeritas::listener::get_game_server_id() const

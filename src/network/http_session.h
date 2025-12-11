@@ -17,6 +17,7 @@ namespace celeritas
         using socket_type = boost::asio::ip::tcp::socket;
 
         http_session(socket_type socket,
+                     server_network_type server_network_type,
                      int64_t session_id,
                      std::string game_server_id,
                      session_callback session_callback,

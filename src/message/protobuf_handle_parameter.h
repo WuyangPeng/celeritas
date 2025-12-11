@@ -36,6 +36,8 @@ namespace celeritas
 
         void write_to_server(const std::string& server_type, const std::string& instance_id, const protobuf_message& message) const;
 
+        void write_to_client(const protobuf_message& response) const;
+
         [[nodiscard]] protobuf_message_shared_ptr get_protobuf_message() const;
 
         [[nodiscard]] io_context_type& get_io_context() const;
@@ -44,9 +46,13 @@ namespace celeritas
 
         [[nodiscard]] int32_t get_rpc() const;
 
+        [[nodiscard]] int64_t get_session_id() const;
+
         [[nodiscard]] app_config_const_shared_ptr get_app_config() const;
 
         [[nodiscard]] resource_loader_shared_ptr get_resource_loader() const;
+
+        [[nodiscard]] server_network_type get_server_network_type() const;
 
     private:
         using session_weak_ptr = std::weak_ptr<session>;

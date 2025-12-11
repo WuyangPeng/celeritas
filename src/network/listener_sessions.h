@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "listener_sessions_base.h"
+#include "config/config_fwd.h"
 #include "network/network_fwd.h"
 
 #include <boost/asio/awaitable.hpp>
@@ -15,14 +16,17 @@ namespace celeritas
         using class_type = listener_sessions;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
+        using session_shared_ptr = std::shared_ptr<session_base>;
 
-        listener_sessions() noexcept = default;
+        explicit listener_sessions(server_network_type server_network_type) noexcept;
 
         void remove_session(int64_t session_id) override;
 
-    protected:
-        using session_shared_ptr = std::shared_ptr<session_base>;
+        [[nodiscard]] session_shared_ptr get_session(int64_t id);
 
+        [[nodiscard]] server_network_type get_server_network_type() const noexcept;
+
+    protected:
         void set_stop();
 
         [[nodiscard]] bool is_running() const noexcept;
@@ -31,13 +35,12 @@ namespace celeritas
 
         void add_session(const session_shared_ptr& session);
 
-        [[nodiscard]] session_shared_ptr get_session(int64_t id);
-
     private:
         using session_type_container_type = std::map<int64_t, session_shared_ptr>;
 
         std::atomic<bool> is_running_ = true;
         session_type_container_type sessions_;
         int64_t session_id_ = 0;
+        server_network_type server_network_type_;
     };
 }

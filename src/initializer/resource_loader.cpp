@@ -6,6 +6,7 @@
 #include "detail/buffer_pool_timer.h"
 #include "detail/check_tcp_clients_timer.h"
 #include "detail/database_resource_loader.h"
+#include "detail/gateway_mapping.h"
 #include "detail/logger_resource_loader.h"
 #include "detail/server_resource_loader.h"
 #include "detail/service_registry_loader.h"
@@ -26,7 +27,8 @@ celeritas::resource_loader::resource_loader(const std::string_view server_type, 
       service_registry_timer_{},
       buffer_pool_timer_{},
       start_server_time_{ std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count() },
-      server_type_{ server_type }
+      server_type_{ server_type },
+      gateway_mapping_{}
 {
 }
 
@@ -37,6 +39,8 @@ std::string_view celeritas::resource_loader::get_server_type() const
 
 void celeritas::resource_loader::initialize(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
 {
+    std::lock_guard lock{ mutex_ };
+
     initialize_logger_resource();
     initialize_server_resource(io_context, network_message_callback);
     initialize_database_resource(io_context);
@@ -49,6 +53,8 @@ void celeritas::resource_loader::initialize(io_context_type& io_context, const n
 
 void celeritas::resource_loader::release_resource()
 {
+    std::lock_guard lock{ mutex_ };
+
     for (const auto& element : tcp_clients_)
     {
         if (element->get_server_type() == service_registry_type)
@@ -81,8 +87,10 @@ void celeritas::resource_loader::release_resource()
     }
 }
 
-bool celeritas::resource_loader::write(const std::string& server_type, const header& header, const protobuf_message& request) const
+bool celeritas::resource_loader::write(const std::string& server_type, const header& header, const protobuf_message& request)
 {
+    std::shared_lock lock{ mutex_ };
+
     auto to_write = false;
 
     for (const auto& element : tcp_clients_)
@@ -97,8 +105,10 @@ bool celeritas::resource_loader::write(const std::string& server_type, const hea
     return to_write;
 }
 
-bool celeritas::resource_loader::write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request) const
+bool celeritas::resource_loader::write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request)
 {
+    std::shared_lock lock{ mutex_ };
+
     auto to_write = false;
 
     for (const auto& element : tcp_clients_)
@@ -113,8 +123,35 @@ bool celeritas::resource_loader::write(const std::string& server_type, const std
     return to_write;
 }
 
+bool celeritas::resource_loader::write_to_client(const header& header, const protobuf_message& response)
+{
+    std::shared_lock lock{ mutex_ };
+
+    auto to_write = false;
+
+    if (const auto iter = gateway_mapping_.find(header.get_user_id());
+        iter != gateway_mapping_.cend())
+    {
+        for (const auto& element : listener_)
+        {
+            if (element->get_server_network_type() == iter->second.get_server_network_type())
+            {
+                const auto session = element->get_session(iter->second.get_session_id());
+                session->write(header, response);
+                to_write = true;
+
+                break;
+            }
+        }
+    }
+
+    return to_write;
+}
+
 void celeritas::resource_loader::process_check_tcp_clients_by_duration(io_context_type& io_context)
 {
+    std::lock_guard lock{ mutex_ };
+
     for (auto index = 0; index < tcp_clients_.size(); ++index)
     {
         if (const auto& tcp_client = tcp_clients_[index];
@@ -154,7 +191,7 @@ void celeritas::resource_loader::process_service_registry_by_duration()
         port->set_port(element.get_port());
     }
 
-    if (write(service_registry_type.data(), header{ proto::common::empty_message_header{} }, request))
+    if (write(service_registry_type.data(), header{}, request))
     {
         LOG_CHANNEL(initializer_channel, trace) << "service registry registry: " << server.get_instance_id();
     }
@@ -165,13 +202,15 @@ celeritas::resource_loader::app_config_shared_ptr celeritas::resource_loader::ge
     return app_config_;
 }
 
-celeritas::resource_loader::health_check_level_awaitable_type celeritas::resource_loader::get_health_check_level() const
+celeritas::resource_loader::health_check_level_awaitable_type celeritas::resource_loader::get_health_check_level()
 {
     if (const auto is_health = co_await database_pool_manager::get_instance().is_health();
         !is_health)
     {
         co_return health_check_level_type::crash;
     }
+
+    std::shared_lock lock{ mutex_ };
 
     for (const auto& element : tcp_clients_)
     {
@@ -182,6 +221,13 @@ celeritas::resource_loader::health_check_level_awaitable_type celeritas::resourc
     }
 
     co_return health_check_level_type::health;
+}
+
+void celeritas::resource_loader::add_gateway_mapping(int64_t user_id, gateway_mapping gateway_mapping)
+{
+    std::lock_guard lock{ mutex_ };
+
+    gateway_mapping_.emplace(user_id, std::move(gateway_mapping));
 }
 
 void celeritas::resource_loader::initialize_logger_resource()

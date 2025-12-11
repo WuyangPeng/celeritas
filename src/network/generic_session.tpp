@@ -7,10 +7,11 @@
 
 template <typename SocketType>
 celeritas::generic_session<SocketType>::generic_session(socket_type socket,
+                                                        const server_network_type server_network_type,
                                                         const long session_id,
                                                         std::string game_server_id,
                                                         session_callback session_callback)
-    : base_type{ session_id, std::move(session_callback) },
+    : base_type{ server_network_type, session_id, std::move(session_callback) },
       socket_{ std::move(socket) },
       session_write_{ std::make_shared<tcp_session_write<socket_type> >(socket_) },
       session_run_{ std::make_shared<tcp_session_run<socket_type> >(socket_, session_id, get_session_callback()) },

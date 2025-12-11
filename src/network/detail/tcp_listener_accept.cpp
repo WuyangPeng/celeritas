@@ -6,8 +6,8 @@
 #include <boost/asio/as_tuple.hpp>
 #include <boost/asio/use_awaitable.hpp>
 
-celeritas::tcp_listener_accept::tcp_listener_accept(acceptor_type& acceptor, std::string game_server_id, network_message_callback_weak_ptr callback)
-    : base_type{}, acceptor_{ acceptor }, game_server_id_{ std::move(game_server_id) }, callback_{ std::move(callback) }
+celeritas::tcp_listener_accept::tcp_listener_accept(acceptor_type& acceptor, const server_network_type server_network_type, std::string game_server_id, network_message_callback_weak_ptr callback)
+    : base_type{ server_network_type }, acceptor_{ acceptor }, game_server_id_{ std::move(game_server_id) }, callback_{ std::move(callback) }
 {
 }
 
@@ -68,7 +68,7 @@ void celeritas::tcp_listener_accept::start_new_session(socket_type socket)
     LOG_CHANNEL(network_channel, info) << "Accepted new connection from: " << socket.remote_endpoint();
 
     // 为新连接创建一个会话，并启动
-    const auto session = std::make_shared<session_type>(std::move(socket), current_session_id, game_server_id_, session_callback{ shared_from_this(), callback_ });
+    const auto session = std::make_shared<session_type>(std::move(socket), get_server_network_type(), current_session_id, game_server_id_, session_callback{ shared_from_this(), callback_ });
 
     add_session(session);
 

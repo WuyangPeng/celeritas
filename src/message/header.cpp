@@ -5,7 +5,7 @@ celeritas::header::header(const int32_t rpc, const int32_t code)
 {
 }
 
-celeritas::header::header(int32_t rpc, int64_t user_id, int32_t code)
+celeritas::header::header(const int32_t rpc, const int64_t user_id, const int32_t code)
     : rpc_{ rpc }, user_id_{ user_id }, code_{ code }
 {
 }
@@ -63,6 +63,11 @@ celeritas::header::message_shared_ptr celeritas::header::get_message() const
 int32_t celeritas::header::get_rpc() const
 {
     return rpc_;
+}
+
+int64_t celeritas::header::get_user_id() const
+{
+    return user_id_;
 }
 
 celeritas::header::message_shared_ptr celeritas::header::get_to_gateway_message() const

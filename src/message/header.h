@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "boost/log/sources/record_ostream.hpp"
 #include "proto/common/common.pb.h"
 
 namespace celeritas
@@ -14,6 +15,8 @@ namespace celeritas
         using client_message_header_type = proto::common::client_message_header;
         using gateway_message_header_type = proto::common::gateway_message_header;
         using to_gateway_message_header_type = proto::common::to_gateway_message_header;
+
+        header() noexcept = default;
 
         header(int32_t rpc, int32_t code);
 
@@ -32,6 +35,8 @@ namespace celeritas
         [[nodiscard]] message_shared_ptr get_message() const;
 
         [[nodiscard]] int32_t get_rpc() const;
+
+        [[nodiscard]] int64_t get_user_id() const;
 
     private:
         [[nodiscard]] message_shared_ptr get_to_gateway_message() const;

@@ -10,6 +10,8 @@ namespace celeritas
         using class_type = listener_accept;
         using base_type = listener_sessions;
 
+        explicit listener_accept(server_network_type server_network_type);
+
         virtual void stop() = 0;
 
         [[nodiscard]] virtual void_awaitable_type accept_connections() = 0;

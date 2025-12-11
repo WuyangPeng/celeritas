@@ -2,8 +2,8 @@
 #include "common/buffer_pool.h"
 #include "detail/write_protobuf_message.h"
 
-celeritas::session_base::session_base(const int64_t session_id, session_callback session_callback)
-    : session_id_{ session_id }, session_callback_{ std::move(session_callback) }
+celeritas::session_base::session_base(const server_network_type server_network_type, const int64_t session_id, session_callback session_callback)
+    : server_network_type_{ server_network_type }, session_id_{ session_id }, session_callback_{ std::move(session_callback) }
 {
 }
 
@@ -48,6 +48,11 @@ int64_t celeritas::session_base::get_session_id() const noexcept
 void celeritas::session_base::remove_session()
 {
     session_callback_.remove_session(session_id_);
+}
+
+celeritas::server_network_type celeritas::session_base::get_server_network_type() const
+{
+    return server_network_type_;
 }
 
 celeritas::session_base::network_message_callback_weak_ptr celeritas::session_base::get_network_message_callback()

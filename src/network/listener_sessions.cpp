@@ -3,6 +3,11 @@
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 
+celeritas::listener_sessions::listener_sessions(const server_network_type server_network_type) noexcept
+    : server_network_type_{ server_network_type }
+{
+}
+
 void celeritas::listener_sessions::remove_session(const int64_t session_id)
 {
     if (const auto iter = sessions_.find(session_id);
@@ -44,4 +49,9 @@ celeritas::listener_sessions::session_shared_ptr celeritas::listener_sessions::g
     }
 
     return iter->second;
+}
+
+celeritas::server_network_type celeritas::listener_sessions::get_server_network_type() const noexcept
+{
+    return server_network_type_;
 }

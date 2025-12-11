@@ -31,9 +31,6 @@ namespace client {
 inline constexpr login_response::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
-        session_key_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
         current_time_{::int64_t{0}} {}
 
 template <typename>
@@ -166,11 +163,9 @@ const ::uint32_t
         3,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::login_response, _impl_._has_bits_),
-        5, // hasbit index offset
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::login_response, _impl_.session_key_),
+        4, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::login_response, _impl_.current_time_),
         0,
-        1,
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_login_request, _impl_._oneof_case_[0]),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_login_request, _impl_.payload_),
@@ -185,8 +180,8 @@ static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::celeritas::proto::client::login_request)},
         {11, sizeof(::celeritas::proto::client::login_response)},
-        {18, sizeof(::celeritas::proto::client::client_login_request)},
-        {22, sizeof(::celeritas::proto::client::client_login_response)},
+        {16, sizeof(::celeritas::proto::client::client_login_request)},
+        {20, sizeof(::celeritas::proto::client::client_login_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::client::_login_request_default_instance_._instance,
@@ -199,20 +194,19 @@ const char descriptor_table_protodef_proto_2fclient_2fplayer_2flogin_2eproto[] A
     "\n\037proto/client/player/login.proto\022\026celer"
     "itas.proto.client\"^\n\rlogin_request\022\r\n\005to"
     "ken\030\001 \001(\t\022\026\n\016game_server_id\030\002 \001(\t\022\021\n\tdev"
-    "ice_id\030\003 \001(\t\022\023\n\013app_version\030\004 \001(\t\";\n\016log"
-    "in_response\022\023\n\013session_key\030\001 \001(\t\022\024\n\014curr"
-    "ent_time\030\002 \001(\003\"Y\n\024client_login_request\0226"
-    "\n\005login\030\001 \001(\0132%.celeritas.proto.client.l"
-    "ogin_requestH\000B\t\n\007payload\"[\n\025client_logi"
-    "n_response\0227\n\005login\030\001 \001(\0132&.celeritas.pr"
-    "oto.client.login_responseH\000B\t\n\007payloadb\006"
-    "proto3"
+    "ice_id\030\003 \001(\t\022\023\n\013app_version\030\004 \001(\t\"&\n\016log"
+    "in_response\022\024\n\014current_time\030\001 \001(\003\"Y\n\024cli"
+    "ent_login_request\0226\n\005login\030\001 \001(\0132%.celer"
+    "itas.proto.client.login_requestH\000B\t\n\007pay"
+    "load\"[\n\025client_login_response\0227\n\005login\030\001"
+    " \001(\0132&.celeritas.proto.client.login_resp"
+    "onseH\000B\t\n\007payloadb\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fclient_2fplayer_2flogin_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fclient_2fplayer_2flogin_2eproto = {
     false,
     false,
-    406,
+    385,
     descriptor_table_protodef_proto_2fclient_2fplayer_2flogin_2eproto,
     "proto/client/player/login.proto",
     &descriptor_table_proto_2fclient_2fplayer_2flogin_2eproto_once,
@@ -639,36 +633,21 @@ login_response::login_response(::google::protobuf::Arena* PROTOBUF_NULLABLE aren
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:celeritas.proto.client.login_response)
 }
-PROTOBUF_NDEBUG_INLINE login_response::Impl_::Impl_(
-    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
-    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-    [[maybe_unused]] const ::celeritas::proto::client::login_response& from_msg)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0},
-        session_key_(arena, from.session_key_) {}
-
 login_response::login_response(
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
-    const login_response& from)
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const login_response& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, login_response_class_data_.base()) {
+    : ::google::protobuf::Message(arena, login_response_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::Message(arena),
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  login_response* const _this = this;
-  (void)_this;
+      _impl_(from._impl_) {
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  _impl_.current_time_ = from._impl_.current_time_;
-
-  // @@protoc_insertion_point(copy_constructor:celeritas.proto.client.login_response)
 }
 PROTOBUF_NDEBUG_INLINE login_response::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-      : _cached_size_{0},
-        session_key_(arena) {}
+      : _cached_size_{0} {}
 
 inline void login_response::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
@@ -685,7 +664,6 @@ inline void login_response::SharedDtor(MessageLite& self) {
   }
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.session_key_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -695,7 +673,7 @@ inline void* PROTOBUF_NONNULL login_response::PlacementNew_(
   return ::new (mem) login_response(arena);
 }
 constexpr auto login_response::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(login_response),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(login_response),
                                             alignof(login_response));
 }
 constexpr auto login_response::InternalGenerateClassData_() {
@@ -732,16 +710,16 @@ login_response::GetClassData() const {
   return login_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 57, 2>
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
 login_response::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(login_response, _impl_._has_bits_),
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    1, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967294,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    1,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     login_response_class_data_.base(),
@@ -751,25 +729,17 @@ login_response::_table_ = {
     ::_pbi::TcParser::GetTable<::celeritas::proto::client::login_response>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int64 current_time = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(login_response, _impl_.current_time_), 1>(),
-     {16, 1, 0, PROTOBUF_FIELD_OFFSET(login_response, _impl_.current_time_)}},
-    // string session_key = 1;
-    {::_pbi::TcParser::FastUS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(login_response, _impl_.session_key_)}},
+    // int64 current_time = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(login_response, _impl_.current_time_), 0>(),
+     {8, 0, 0, PROTOBUF_FIELD_OFFSET(login_response, _impl_.current_time_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string session_key = 1;
-    {PROTOBUF_FIELD_OFFSET(login_response, _impl_.session_key_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // int64 current_time = 2;
-    {PROTOBUF_FIELD_OFFSET(login_response, _impl_.current_time_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // int64 current_time = 1;
+    {PROTOBUF_FIELD_OFFSET(login_response, _impl_.current_time_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
   }},
   // no aux_entries
   {{
-    "\45\13\0\0\0\0\0\0"
-    "celeritas.proto.client.login_response"
-    "session_key"
   }},
 };
 PROTOBUF_NOINLINE void login_response::Clear() {
@@ -779,10 +749,6 @@ PROTOBUF_NOINLINE void login_response::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  cached_has_bits = _impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000001U) != 0) {
-    _impl_.session_key_.ClearNonDefaultToEmpty();
-  }
   _impl_.current_time_ = ::int64_t{0};
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -806,21 +772,11 @@ PROTOBUF_NOINLINE void login_response::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // string session_key = 1;
+  // int64 current_time = 1;
   if ((this_._impl_._has_bits_[0] & 0x00000001U) != 0) {
-    if (!this_._internal_session_key().empty()) {
-      const ::std::string& _s = this_._internal_session_key();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.client.login_response.session_key");
-      target = stream->WriteStringMaybeAliased(1, _s, target);
-    }
-  }
-
-  // int64 current_time = 2;
-  if ((this_._impl_._has_bits_[0] & 0x00000002U) != 0) {
     if (this_._internal_current_time() != 0) {
       target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<2>(
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<1>(
               stream, this_._internal_current_time(), target);
     }
   }
@@ -848,18 +804,10 @@ PROTOBUF_NOINLINE void login_response::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void)cached_has_bits;
 
-  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-  cached_has_bits = this_._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000003U) != 0) {
-    // string session_key = 1;
+   {
+    // int64 current_time = 1;
+    cached_has_bits = this_._impl_._has_bits_[0];
     if ((cached_has_bits & 0x00000001U) != 0) {
-      if (!this_._internal_session_key().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_session_key());
-      }
-    }
-    // int64 current_time = 2;
-    if ((cached_has_bits & 0x00000002U) != 0) {
       if (this_._internal_current_time() != 0) {
         total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
             this_._internal_current_time());
@@ -882,20 +830,9 @@ void login_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::
   (void) cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000003U) != 0) {
-    if ((cached_has_bits & 0x00000001U) != 0) {
-      if (!from._internal_session_key().empty()) {
-        _this->_internal_set_session_key(from._internal_session_key());
-      } else {
-        if (_this->_impl_.session_key_.IsDefault()) {
-          _this->_internal_set_session_key("");
-        }
-      }
-    }
-    if ((cached_has_bits & 0x00000002U) != 0) {
-      if (from._internal_current_time() != 0) {
-        _this->_impl_.current_time_ = from._impl_.current_time_;
-      }
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    if (from._internal_current_time() != 0) {
+      _this->_impl_.current_time_ = from._impl_.current_time_;
     }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
@@ -912,11 +849,8 @@ void login_response::CopyFrom(const login_response& from) {
 
 void login_response::InternalSwap(login_response* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   using ::std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.session_key_, &other->_impl_.session_key_, arena);
   swap(_impl_.current_time_, other->_impl_.current_time_);
 }
 

@@ -11,7 +11,6 @@
 celeritas::player_state::player_state(const int64_t user_id, std::string game_server_id, const resource_loader_shared_ptr& resource_loader)
     : user_id_{ user_id },
       game_server_id_{ std::move(game_server_id) },
-      session_key_{ generate_token() },
       dirty_{ false },
       player_state_{ player_state_type::loading },
       components_{ std::make_shared<player_role_component>(this),
@@ -100,11 +99,6 @@ std::string celeritas::player_state::generate_token()
     const auto uuid = generator();
 
     return boost::uuids::to_string(uuid);
-}
-
-std::string celeritas::player_state::get_session_key()
-{
-    return session_key_;
 }
 
 void celeritas::player_state::check()

@@ -10,11 +10,26 @@ message service_login_request {
     string game_server_id = 5;
     string device_id = 6;
     string app_version = 7;
+    int64 session_id = 8;
+    int32 protocol = 9;
+}
+
+message service_login_response {
+    int64 current_time = 1;
+    int64 session_id = 2;
+    int32 protocol = 3;
+    string instance_id = 4;
 }
 
 message service_player_request {
   oneof payload {
     service_login_request service_login = 1;
+  }
+}
+
+message service_player_response {
+  oneof payload {
+    service_login_response service_login = 1;
   }
 }
 

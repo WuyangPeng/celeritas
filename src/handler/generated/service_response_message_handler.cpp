@@ -17,6 +17,12 @@ celeritas::service_response_message_handler::service_response_message_handler()
                             const message_registry_shared_ptr& message_registry) -> bool {
                              return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::payment);
                          });
+    add_handler_function(proto::service::service_response::PayloadCase::kPlayer,
+                         [](const protobuf_handle_parameter& handle_parameter,
+                            const message_type& current_message,
+                            const message_registry_shared_ptr& message_registry) -> bool {
+                             return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::player);
+                         });
     add_handler_function(proto::service::service_response::PayloadCase::kRegistry,
                          [](const protobuf_handle_parameter& handle_parameter,
                             const message_type& current_message,

@@ -13,7 +13,7 @@ namespace celeritas
         using base_type = listener_accept;
         using acceptor_type = boost::asio::ip::tcp::acceptor;
 
-        tcp_listener_accept(acceptor_type& acceptor, std::string game_server_id, network_message_callback_weak_ptr callback);
+        tcp_listener_accept(acceptor_type& acceptor, server_network_type server_network_type, std::string game_server_id, network_message_callback_weak_ptr callback);
 
         // 停止监听器
         void stop() override;
