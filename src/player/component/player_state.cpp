@@ -4,7 +4,7 @@
 #include "player_state_type.h"
 #include "player_user_component.h"
 #include "common/celeritas_error.h"
-#include "database/database_pool_manager.h"
+#include "common/resource_loader_base.h"
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
@@ -113,6 +113,17 @@ std::string celeritas::player_state::generate_token()
     const auto uuid = generator();
 
     return boost::uuids::to_string(uuid);
+}
+
+bool celeritas::player_state::write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request)
+{
+    const auto resource_loader_shared_ptr = resource_loader_.lock();
+    if (resource_loader_shared_ptr != nullptr)
+    {
+        return resource_loader_shared_ptr->write(server_type, instance_id, header, request);
+    }
+
+    return false;
 }
 
 void celeritas::player_state::check() const

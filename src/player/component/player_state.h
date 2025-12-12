@@ -4,6 +4,7 @@
 #include "player_component_type.h"
 #include "common/common_fwd.h"
 #include "database/generated/mysql/player/user.h"
+#include "message/header.h"
 
 #include <boost/asio/awaitable.hpp>
 
@@ -19,6 +20,7 @@ namespace celeritas
         using player_component_shared_ptr = std::shared_ptr<player_component>;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
+        using protobuf_message = google::protobuf::Message;
 
         player_state(const user& user, const resource_loader_shared_ptr& resource_loader);
 
@@ -57,6 +59,8 @@ namespace celeritas
         [[nodiscard]] std::string get_game_server_id() const;
 
         [[nodiscard]] static std::string generate_token();
+
+        [[nodiscard]] bool write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request);
 
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;

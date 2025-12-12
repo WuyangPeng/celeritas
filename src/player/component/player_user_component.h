@@ -19,9 +19,11 @@ namespace celeritas
             return player_component_type::user;
         }
 
-        [[nodiscard]] virtual void_awaitable_type on_db_analysis();
+        [[nodiscard]] void_awaitable_type on_db_analysis() override;
 
         [[nodiscard]] void_awaitable_type save_db() override;
+
+        [[nodiscard]] void_awaitable_type on_login() override;
 
         [[nodiscard]] int64_t get_user_id() const noexcept;
 

@@ -13,6 +13,9 @@ message login_response {
     int64 current_time = 1;
 }
 
+message login_finish_response {
+}
+
 message client_login_request {
   oneof payload {
     login_request login = 1;
@@ -22,6 +25,7 @@ message client_login_request {
 message client_login_response {
   oneof payload {
     login_response login = 1;
+    login_finish_response login_finish = 2;
   }
 }
 

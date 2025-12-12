@@ -1,4 +1,5 @@
-﻿#include "header.h"
+﻿#include "game_error_type.h"
+#include "header.h"
 
 celeritas::header::header(const int32_t rpc, const int32_t code)
     : rpc_{ rpc }, user_id_{}, code_{ code }
@@ -7,6 +8,16 @@ celeritas::header::header(const int32_t rpc, const int32_t code)
 
 celeritas::header::header(const int32_t rpc, const int64_t user_id, const int32_t code)
     : rpc_{ rpc }, user_id_{ user_id }, code_{ code }
+{
+}
+
+celeritas::header::header(const int32_t rpc, const int64_t user_id)
+    : rpc_{ rpc }, user_id_{ user_id }, code_{ static_cast<int>(game_error_type::success) }
+{
+}
+
+celeritas::header::header(const int64_t user_id)
+    : rpc_{ 0 }, user_id_{ user_id }, code_{ static_cast<int>(game_error_type::success) }
 {
 }
 
