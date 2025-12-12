@@ -151,7 +151,11 @@ celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connecti
 {
     auto session = co_await async_get_session();
 
-    co_return co_await session->is_health();
+    const auto result = co_await session->is_health();
+
+    release_session(session);
+
+    co_return result;
 }
 
 template <typename SessionType>
@@ -167,6 +171,8 @@ celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connecti
         auto session = co_await async_get_session();
 
         co_await session->execute_changes(database, expiration_time);
+
+        release_session(session);
 
         co_return true;
     }
@@ -187,7 +193,11 @@ celeritas::database_pool_base::database_entity_change_awaitable_type celeritas::
 {
     auto session = co_await async_get_session();
 
-    co_return co_await session->select_one(database, field_name_container);
+    const auto result = co_await session->select_one(database, field_name_container);
+
+    release_session(session);
+
+    co_return result;
 }
 
 template <typename SessionType>
@@ -195,7 +205,11 @@ celeritas::database_pool_base::result_container_awaitable_type celeritas::connec
 {
     auto session = co_await async_get_session();
 
-    co_return co_await session->select_all(database, field_name_container);
+    const auto result = co_await session->select_all(database, field_name_container);
+
+    release_session(session);
+
+    co_return result;
 }
 
 template <typename SessionType>

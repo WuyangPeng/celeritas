@@ -42,6 +42,8 @@ namespace celeritas
 
         void initialize_logger_config();
 
+        void initialize_global_config();
+
         virtual void service_initialize_config() = 0;
 
         std::string config_file_path_;

@@ -37,6 +37,8 @@ bool celeritas::discover_request_message_handler::handle_concrete(const protobuf
         server_info->set_is_health(service.get_health_check_level_type() == health_check_level_type::health);
     }
 
+    discover_response->set_service_name(current_message.service_name());
+
     handle_parameter->write(response);
 
     return true;
