@@ -20,7 +20,6 @@ namespace celeritas
         using base_type = resource_loader_base;
         using app_config_shared_ptr = std::shared_ptr<app_config>;
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
-
         using health_check_level_awaitable_type = boost::asio::awaitable<health_check_level_type>;
 
         explicit resource_loader(std::string_view server_type, app_config_shared_ptr app_config);
@@ -41,10 +40,13 @@ namespace celeritas
 
         void release_resource();
 
-        [[nodiscard]] bool write(const std::string& server_type, const header& header,
+        [[nodiscard]] bool write(const std::string& server_type,
+                                 const header& header,
                                  const protobuf_message& request) override;
 
-        [[nodiscard]] bool write(const std::string& server_type, const std::string& instance_id, const header& header,
+        [[nodiscard]] bool write(const std::string& server_type,
+                                 const std::string& instance_id,
+                                 const header& header,
                                  const protobuf_message& request) override;
 
         [[nodiscard]] bool write_to_client(const header& header, const protobuf_message& response) override;
@@ -57,7 +59,7 @@ namespace celeritas
 
         [[nodiscard]] health_check_level_awaitable_type get_health_check_level() override;
 
-        void add_gateway_mapping(int64_t user_id, session_route session_route);
+        void add_session_route(int64_t user_id, session_route session_route) override;
 
     protected:
         using tcp_client_shared_ptr = std::shared_ptr<tcp_client>;
@@ -114,7 +116,7 @@ namespace celeritas
         buffer_pool_timer_shared_ptr buffer_pool_timer_;
         int64_t start_server_time_;
         std::string_view server_type_;
-        gateway_mapping_type gateway_mapping_;
+        gateway_mapping_type session_route_;
         std::shared_mutex mutex_;
     };
 }

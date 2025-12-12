@@ -27,11 +27,6 @@ celeritas::session_write::void_awaitable_type celeritas::http_session_write::do_
             if (const auto result = co_await do_one_write();
                 !result)
             {
-                if (const auto session_shared_ptr = session_.lock();
-                    session_shared_ptr != nullptr)
-                {
-                    session_shared_ptr->remove_session();
-                }
                 co_return;
             }
         }

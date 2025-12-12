@@ -92,7 +92,9 @@ celeritas::http_handle_parameter::void_waitable_type celeritas::http_handle_para
     {
         LOG_CHANNEL(message_channel, debug) << "http start response " << response;
 
-        co_return co_await session_shared_ptr->write_immediately(response);
+        co_await session_shared_ptr->write_immediately(response);
+
+        co_return session_shared_ptr->remove_session();
     }
 
     LOG_CHANNEL(message_channel, debug) << "http session is close.";

@@ -27,7 +27,7 @@ celeritas::resource_loader::resource_loader(const std::string_view server_type, 
       buffer_pool_timer_{},
       start_server_time_{ std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count() },
       server_type_{ server_type },
-      gateway_mapping_{}
+      session_route_{}
 {
 }
 
@@ -118,8 +118,8 @@ bool celeritas::resource_loader::write_to_client(const header& header, const pro
 {
     auto to_write = false;
 
-    if (const auto iter = gateway_mapping_.find(header.get_user_id());
-        iter != gateway_mapping_.cend())
+    if (const auto iter = session_route_.find(header.get_user_id());
+        iter != session_route_.cend())
     {
         for (const auto& element : listener_)
         {
@@ -208,9 +208,9 @@ celeritas::resource_loader::health_check_level_awaitable_type celeritas::resourc
     co_return health_check_level_type::health;
 }
 
-void celeritas::resource_loader::add_gateway_mapping(int64_t user_id, session_route gateway_mapping)
+void celeritas::resource_loader::add_session_route(int64_t user_id, session_route session_route)
 {
-    gateway_mapping_.emplace(user_id, std::move(gateway_mapping));
+    session_route_.emplace(user_id, std::move(session_route));
 }
 
 void celeritas::resource_loader::initialize_logger_resource()

@@ -49,6 +49,6 @@ namespace celeritas
 
         [[nodiscard]] virtual bool write_to_client(const header& header, const protobuf_message& response) = 0;
 
-        virtual void add_gateway_mapping(int64_t user_id, session_route session_route) = 0;
+        virtual void add_session_route(int64_t user_id, session_route session_route) = 0;
     };
 }

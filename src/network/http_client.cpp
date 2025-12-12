@@ -65,8 +65,16 @@ celeritas::http_client::void_waitable_type celeritas::http_client::write_immedia
     if (is_open())
     {
         co_await session_->write_immediately(response);
+    }
 
+    if (is_open())
+    {
         co_await session_->start_awaitable();
+    }
+
+    if (is_open())
+    {
+        session_->remove_session();
     }
 }
 
