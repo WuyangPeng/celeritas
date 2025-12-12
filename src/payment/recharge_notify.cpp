@@ -8,9 +8,9 @@ celeritas::recharge_notify::recharge_notify(sdk_payment_providers sdk_payment_pr
 {
 }
 
-celeritas::recharge_notify::recharge_notify_unique_ptr celeritas::recharge_notify::create(sdk_payment_providers_key sdk_payment_providers_key, http_handle_parameter_shared_ptr handle_parameter)
+celeritas::recharge_notify::recharge_notify_unique_ptr celeritas::recharge_notify::create(const sdk_payment_providers_key sdk_payment_providers_key, http_handle_parameter_shared_ptr handle_parameter)
 {
-    switch (const auto sdk_payment_providers = app_sdk_payment_providers::get_instance().get_sdk_payment_providers(sdk_payment_providers_key);
+    switch (auto sdk_payment_providers = app_sdk_payment_providers::get_instance().get_sdk_payment_providers(sdk_payment_providers_key);
         static_cast<payment_platform_type>(sdk_payment_providers.get_platform()))
     {
         case payment_platform_type::we_chat:

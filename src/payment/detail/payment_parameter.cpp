@@ -2,6 +2,7 @@
 #include "payment_parameter.h"
 #include "common/time_helper.h"
 #include "database/generated/mysql/auth/account.h"
+#include "message/http_handle_parameter.h"
 
 #include <boost/lexical_cast.hpp>
 

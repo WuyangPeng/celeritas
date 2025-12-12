@@ -1,7 +1,8 @@
 ﻿#pragma once
 
-#include "message/http_handle_parameter.h"
+#include "config/config_fwd.h"
 #include "message/http_response.h"
+#include "message/message_fwd.h"
 
 #include <boost/asio/awaitable.hpp>
 

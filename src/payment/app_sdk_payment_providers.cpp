@@ -100,11 +100,11 @@ celeritas::app_sdk_payment_providers::void_awaitable_type celeritas::app_sdk_pay
         sdk_payment_providers_type.emplace(sdk_payment_providers_key{ sdk_payment_providers.get_app_id(), static_cast<payment_platform_type>(sdk_payment_providers.get_platform()) }, sdk_payment_providers);
     }
 
-    std::unique_lock lock{ mutex_ };
+    std::lock_guard lock{ mutex_ };
     sdk_payment_providers_ = std::move(sdk_payment_providers_type);
 }
 
-celeritas::app_sdk_payment_providers::void_awaitable_type celeritas::app_sdk_payment_providers::load_from_db(int64_t sdk_id)
+celeritas::app_sdk_payment_providers::void_awaitable_type celeritas::app_sdk_payment_providers::load_from_db(const int64_t sdk_id)
 {
     try
     {
@@ -128,7 +128,7 @@ celeritas::app_sdk_payment_providers::void_awaitable_type celeritas::app_sdk_pay
     {
         const sdk_payment_providers sdk_payment_providers{ *optional_sdk_payment_providers };
 
-        std::unique_lock lock{ mutex_ };
+        std::lock_guard lock{ mutex_ };
         erase_if(sdk_payment_providers_, [sdk_id](const auto& element) {
             return element.second.get_sdk_id() == sdk_id;
         });

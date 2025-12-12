@@ -1,4 +1,5 @@
 ﻿#include "payment_service_base.h"
+#include "message/http_handle_parameter.h"
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>

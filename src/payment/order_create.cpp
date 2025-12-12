@@ -46,7 +46,7 @@ celeritas::order_create::optional_orders_awaitable_type celeritas::order_create:
 {
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { orders::client_request_id_describe, order_create_parameter.get_client_request_id() } });
 
-    if (auto optional_order = co_await mysql_pool->select_one(orders::get_select(database_type::mysql, key), orders::get_database_field_container()))
+    if (const auto optional_order = co_await mysql_pool->select_one(orders::get_select(database_type::mysql, key), orders::get_database_field_container()))
     {
         co_return orders{ *optional_order };
     }

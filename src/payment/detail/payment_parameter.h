@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "message/http_handle_parameter.h"
+#include "message/message_fwd.h"
 #include "message/http_response.h"
 
 namespace celeritas
