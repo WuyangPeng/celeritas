@@ -1,7 +1,9 @@
 ﻿#pragma once
 
-#include "message/message_fwd.h"
 #include "message/http_response.h"
+#include "message/message_fwd.h"
+
+#include <memory>
 
 namespace celeritas
 {
