@@ -7,8 +7,8 @@ BOOST_AUTO_TEST_SUITE(session_route_suite)
 
     BOOST_AUTO_TEST_CASE(test_session_route_creation)
     {
-        constexpr celeritas::server_network_type expected_net_type = celeritas::server_network_type::tcp;
-        constexpr int64_t expected_session_id = 12345;
+        constexpr auto expected_net_type = celeritas::server_network_type::tcp;
+        constexpr auto expected_session_id = 12345LL;
         const std::string expected_instance_id{ "player-1" };
 
         const celeritas::session_route route(expected_net_type, expected_session_id, expected_instance_id);

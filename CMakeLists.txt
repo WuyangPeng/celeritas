@@ -282,7 +282,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             --output_directory=${HANDLER_GENERATED_DIR}
             --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template/handler
 
-            # 生成 handler 头文件
+            # 生成包含 handler 的头文件
             COMMAND $<TARGET_FILE:generate_handler_tools>
             --process=generate_handler_header
             --handler_directory=${CMAKE_CURRENT_SOURCE_DIR}/src/handler
