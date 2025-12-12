@@ -22,7 +22,7 @@ namespace celeritas
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
         using protobuf_message = google::protobuf::Message;
 
-        player_state(const user& user, const resource_loader_shared_ptr& resource_loader);
+        player_state(const user& user, const resource_loader_shared_ptr& resource_loader, const std::string& instance_id);
 
         void set_dirty();
 
@@ -62,6 +62,10 @@ namespace celeritas
 
         [[nodiscard]] bool write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request);
 
+        [[nodiscard]] std::string get_instance_id() const;
+
+        void set_instance_id(const std::string& instance_id);
+
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
@@ -72,5 +76,6 @@ namespace celeritas
         player_state_type player_state_;
         component_container_type components_;
         resource_loader_weak_ptr resource_loader_;
+        std::string instance_id_;
     };
 }

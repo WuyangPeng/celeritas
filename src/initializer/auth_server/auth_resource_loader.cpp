@@ -79,9 +79,6 @@ void celeritas::auth_resource_loader::start_check_timer(io_context_type& io_cont
 
 void celeritas::auth_resource_loader::start_gateway_check_timer(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
 {
-    const auto app_config = get_app_config();
-    const auto health_check_url_config = app_config->get_health_check_url_config();
-
     gateway_check_timer_ = std::make_unique<gateway_check_timer>(io_context,
                                                                  gateway_check_time,
                                                                  boost::polymorphic_pointer_downcast<class_type>(shared_from_this()),

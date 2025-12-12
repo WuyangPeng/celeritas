@@ -42,5 +42,9 @@ namespace celeritas
         virtual void remove_session() = 0;
 
         [[nodiscard]] virtual server_network_type get_server_network_type() const = 0;
+
+        virtual void set_instance_id(const std::string& instance_id) = 0;
+
+        [[nodiscard]] virtual std::string get_instance_id() const = 0;
     };
 }

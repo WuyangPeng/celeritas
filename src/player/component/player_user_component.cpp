@@ -38,7 +38,7 @@ celeritas::player_component::void_awaitable_type celeritas::player_user_componen
     proto::celeritas response{};
     response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_login()->mutable_login_finish();
 
-    if (!get_player_state()->write(gateway_type.data(), "", header, response))
+    if (!get_player_state()->write(gateway_type.data(), get_player_state()->get_instance_id(), header, response))
     {
         LOG_CHANNEL(message_channel, error) << "send message error.";
     }

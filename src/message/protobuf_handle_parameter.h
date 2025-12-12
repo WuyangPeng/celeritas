@@ -56,6 +56,10 @@ namespace celeritas
 
         [[nodiscard]] int64_t get_user_id() const;
 
+        void set_instance_id(const std::string& instance_id);
+
+        [[nodiscard]] std::string get_instance_id() const;
+
     private:
         using session_weak_ptr = std::weak_ptr<session>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;

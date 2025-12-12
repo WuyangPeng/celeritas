@@ -10,13 +10,14 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
-celeritas::player_state::player_state(const user& user, const resource_loader_shared_ptr& resource_loader)
+celeritas::player_state::player_state(const user& user, const resource_loader_shared_ptr& resource_loader, const std::string& instance_id)
     : dirty_{ false },
       player_state_{ player_state_type::loading },
       components_{ std::make_shared<player_user_component>(user, this),
                    std::make_shared<player_role_component>(this),
                    std::make_shared<player_online_component>(this) },
-      resource_loader_{ resource_loader }
+      resource_loader_{ resource_loader },
+      instance_id_{ instance_id }
 {
     check();
 }
@@ -124,6 +125,16 @@ bool celeritas::player_state::write(const std::string& server_type, const std::s
     }
 
     return false;
+}
+
+std::string celeritas::player_state::get_instance_id() const
+{
+    return instance_id_;
+}
+
+void celeritas::player_state::set_instance_id(const std::string& instance_id)
+{
+    instance_id_ = instance_id;
 }
 
 void celeritas::player_state::check() const

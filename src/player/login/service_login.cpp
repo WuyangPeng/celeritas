@@ -34,7 +34,7 @@ celeritas::service_login::void_awaitable_type celeritas::service_login::send_mes
         co_return;
     }
 
-    const auto player = player_manager::get_instance().add_player(*user, protobuf_handle_parameter_->get_resource_loader());
+    const auto player = player_manager::get_instance().add_player(*user, protobuf_handle_parameter_->get_resource_loader(), protobuf_handle_parameter_->get_instance_id());
 
     send_success_message(user->get_user_id());
 

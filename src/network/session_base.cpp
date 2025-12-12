@@ -3,7 +3,7 @@
 #include "detail/write_protobuf_message.h"
 
 celeritas::session_base::session_base(const server_network_type server_network_type, const int64_t session_id, session_callback session_callback)
-    : server_network_type_{ server_network_type }, session_id_{ session_id }, session_callback_{ std::move(session_callback) }
+    : server_network_type_{ server_network_type }, session_id_{ session_id }, session_callback_{ std::move(session_callback) }, instance_id_{}
 {
 }
 
@@ -53,6 +53,16 @@ void celeritas::session_base::remove_session()
 celeritas::server_network_type celeritas::session_base::get_server_network_type() const
 {
     return server_network_type_;
+}
+
+void celeritas::session_base::set_instance_id(const std::string& instance_id)
+{
+    instance_id_ = instance_id;
+}
+
+std::string celeritas::session_base::get_instance_id() const
+{
+    return instance_id_;
 }
 
 celeritas::session_base::network_message_callback_weak_ptr celeritas::session_base::get_network_message_callback()

@@ -38,6 +38,10 @@ namespace celeritas
 
         [[nodiscard]] server_network_type get_server_network_type() const override;
 
+        void set_instance_id(const std::string& instance_id) override;
+
+        [[nodiscard]] std::string get_instance_id() const override;
+
     protected:
         using message_shared_ptr = header::message_shared_ptr;
         using network_message_callback_weak_ptr = session_callback::network_message_callback_weak_ptr;
@@ -54,5 +58,6 @@ namespace celeritas
         int64_t session_id_;
         session_callback session_callback_;
         server_network_type server_network_type_;
+        std::string instance_id_;
     };
 }

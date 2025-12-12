@@ -142,3 +142,25 @@ int64_t celeritas::protobuf_handle_parameter::get_user_id() const
     return header_.get_user_id();
 }
 
+void celeritas::protobuf_handle_parameter::set_instance_id(const std::string& instance_id)
+{
+    if (const auto session_shared_ptr = session_.lock();
+        session_shared_ptr != nullptr)
+    {
+        return session_shared_ptr->set_instance_id(instance_id);
+    }
+
+    throw celeritas_error{ "session is null." };
+}
+
+std::string celeritas::protobuf_handle_parameter::get_instance_id() const
+{
+    if (const auto session_shared_ptr = session_.lock();
+        session_shared_ptr != nullptr)
+    {
+        return session_shared_ptr->get_instance_id();
+    }
+
+    throw celeritas_error{ "session is null." };
+}
+

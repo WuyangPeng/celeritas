@@ -26,6 +26,7 @@ bool celeritas::register_request_message_handler::handle_concrete(const protobuf
 
     service_registry::register_service(service_info);
 
+    handle_parameter->set_instance_id(service_info.get_instance_id());
     handle_parameter->write_to_server(service_registry_type.data(), *handle_parameter->get_protobuf_message());
 
     proto::celeritas response{};

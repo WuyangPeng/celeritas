@@ -22,7 +22,7 @@ namespace celeritas
 
         [[nodiscard]] static player_manager& get_instance();
 
-        [[nodiscard]] player_state_shared_ptr add_player(const user& user, const resource_loader_shared_ptr& resource_loader);
+        [[nodiscard]] player_state_shared_ptr add_player(const user& user, const resource_loader_shared_ptr& resource_loader, const std::string& instance_id);
 
         [[nodiscard]] player_state_shared_ptr get_player(int64_t user_id);
 
