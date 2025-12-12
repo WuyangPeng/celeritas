@@ -1,10 +1,10 @@
 ﻿#pragma once
 
 #include "player_component.h"
-#include "player_component_type.h"
 #include "common/common_fwd.h"
 #include "database/generated/mysql/player/user.h"
 #include "message/header.h"
+#include "player/component/player_component_type.h"
 
 #include <boost/asio/awaitable.hpp>
 
@@ -22,13 +22,7 @@ namespace celeritas
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
         using protobuf_message = google::protobuf::Message;
 
-        player_state(const user& user, const resource_loader_shared_ptr& resource_loader, const std::string& instance_id);
-
-        void set_dirty();
-
-        void set_player_state_type(player_state_type player_state_type);
-
-        [[nodiscard]] player_state_type get_player_state_type() const;
+        player_state(const user& user, const resource_loader_shared_ptr& resource_loader, std::string instance_id);
 
         template <typename T>
         [[nodiscard]] std::shared_ptr<T> get_component() const;
@@ -53,6 +47,12 @@ namespace celeritas
 
         // 保存数据库
         [[nodiscard]] void_awaitable_type save_db();
+
+        void set_dirty();
+
+        void set_player_state_type(player_state_type player_state_type);
+
+        [[nodiscard]] player_state_type get_player_state_type() const;
 
         [[nodiscard]] int64_t get_user_id() const noexcept;
 

@@ -23,8 +23,6 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type save_db() override;
 
-        [[nodiscard]] void_awaitable_type on_login() override;
-
         [[nodiscard]] int64_t get_user_id() const noexcept;
 
         [[nodiscard]] std::string get_game_server_id() const;

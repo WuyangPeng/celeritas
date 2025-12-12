@@ -1,10 +1,8 @@
 ﻿#include "player_state.h"
 #include "player_user_component.h"
-#include "common/logger.h"
 #include "database/database_pool_manager.h"
 #include "initializer/initializer_fwd.h"
 #include "message/game_error_type.h"
-#include "message/header.h"
 #include "proto/celeritas.pb.h"
 
 celeritas::player_user_component::player_user_component(user user, player_state* player_state) noexcept
@@ -29,21 +27,6 @@ celeritas::player_user_component::void_awaitable_type celeritas::player_user_com
 
         user_.clear_modify();
     }
-}
-
-celeritas::player_component::void_awaitable_type celeritas::player_user_component::on_login()
-{
-    const header header{ user_.get_user_id() };
-
-    proto::celeritas response{};
-    response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_login()->mutable_login_finish();
-
-    if (!get_player_state()->write(gateway_type.data(), get_player_state()->get_instance_id(), header, response))
-    {
-        LOG_CHANNEL(message_channel, error) << "send message error.";
-    }
-
-    co_return;
 }
 
 int64_t celeritas::player_user_component::get_user_id() const noexcept

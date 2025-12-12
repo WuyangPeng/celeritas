@@ -7,6 +7,7 @@
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/player/user.h"
 #include "message/game_error_type.h"
+#include "message/protobuf_handle_parameter.h"
 #include "player/component/player_manager.h"
 #include "player/component/player_state.h"
 #include "player/component/player_state_type.h"
@@ -38,21 +39,7 @@ celeritas::service_login::void_awaitable_type celeritas::service_login::send_mes
 
     send_success_message(user->get_user_id());
 
-    if (player->get_player_state_type() != player_state_type::online || user->is_overload_db() || login_.new_game_server_id())
-    {
-        co_await player->on_load_db();
-        co_await player->on_db_analysis();
-
-        player->set_player_state_type(player_state_type::online);
-    }
-
-    co_await player->on_dependencies_ready();
-    co_await player->send_initial_sync();
-    co_await player->on_login();
-
-    player->set_dirty();
-
-    co_return;
+    co_return co_await load_player(user, player);
 }
 
 void celeritas::service_login::send_error_message(game_error_type game_error_type) const
@@ -101,4 +88,23 @@ celeritas::service_login::optional_user_awaitable_type celeritas::service_login:
     }
 
     co_return user{ *optional_user };
+}
+
+celeritas::service_login::void_awaitable_type celeritas::service_login::load_player(const optional_user& user, const player_state_shared_ptr& player) const
+{
+    if (player->get_player_state_type() != player_state_type::online || user->is_overload_db() || login_.new_game_server_id())
+    {
+        co_await player->on_load_db();
+        co_await player->on_db_analysis();
+
+        player->set_player_state_type(player_state_type::online);
+    }
+
+    co_await player->on_dependencies_ready();
+    co_await player->send_initial_sync();
+    co_await player->on_login();
+
+    player->set_dirty();
+
+    co_return;
 }

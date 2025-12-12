@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "message/protobuf_handle_parameter.h"
+#include "message/message_fwd.h"
 #include "proto/service/player.pb.h"
 
 #include <boost/asio/awaitable.hpp>

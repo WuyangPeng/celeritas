@@ -4,6 +4,7 @@
 #include "config/database_type.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/player/user.h"
+#include "message/protobuf_handle_parameter.h"
 
 celeritas::create_user::create_user(protobuf_handle_parameter_shared_ptr protobuf_handle_parameter, const proto::service::service_login_request& login)
     : protobuf_handle_parameter_{ std::move(protobuf_handle_parameter) }, login_{ login }

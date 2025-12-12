@@ -1,4 +1,5 @@
-﻿#include "player_online_component.h"
+﻿#include "player_finish_component.h"
+#include "player_online_component.h"
 #include "player_role_component.h"
 #include "player_state.tpp"
 #include "player_state_type.h"
@@ -9,32 +10,19 @@
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
+#include <utility>
 
-celeritas::player_state::player_state(const user& user, const resource_loader_shared_ptr& resource_loader, const std::string& instance_id)
+celeritas::player_state::player_state(const user& user, const resource_loader_shared_ptr& resource_loader, std::string instance_id)
     : dirty_{ false },
       player_state_{ player_state_type::loading },
       components_{ std::make_shared<player_user_component>(user, this),
                    std::make_shared<player_role_component>(this),
-                   std::make_shared<player_online_component>(this) },
+                   std::make_shared<player_online_component>(this),
+                   std::make_shared<player_finish_component>(this) },
       resource_loader_{ resource_loader },
-      instance_id_{ instance_id }
+      instance_id_{ std::move(instance_id) }
 {
     check();
-}
-
-void celeritas::player_state::set_dirty()
-{
-    dirty_ = true;
-}
-
-void celeritas::player_state::set_player_state_type(const player_state_type player_state_type)
-{
-    player_state_ = player_state_type;
-}
-
-celeritas::player_state_type celeritas::player_state::get_player_state_type() const
-{
-    return player_state_;
 }
 
 celeritas::player_state::void_awaitable_type celeritas::player_state::on_load_db()
@@ -96,6 +84,21 @@ celeritas::player_state::void_awaitable_type celeritas::player_state::save_db()
     {
         co_await element->save_db();
     }
+}
+
+void celeritas::player_state::set_dirty()
+{
+    dirty_ = true;
+}
+
+void celeritas::player_state::set_player_state_type(const player_state_type player_state_type)
+{
+    player_state_ = player_state_type;
+}
+
+celeritas::player_state_type celeritas::player_state::get_player_state_type() const
+{
+    return player_state_;
 }
 
 int64_t celeritas::player_state::get_user_id() const noexcept

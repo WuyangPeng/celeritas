@@ -7,6 +7,7 @@ namespace celeritas
         user = 0,
         role = 1,
         online = 2,
-        max_component,
+        finish,
+        max_component = finish + 1,
     };
 }
