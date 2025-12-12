@@ -1,6 +1,6 @@
 ﻿#include "player_online_component.h"
 #include "player_role_component.h"
-#include "player_state.h"
+#include "player_state.tpp"
 #include "player_state_type.h"
 #include "player_user_component.h"
 #include "common/celeritas_error.h"
