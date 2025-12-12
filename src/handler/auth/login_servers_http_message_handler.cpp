@@ -15,22 +15,22 @@ std::string celeritas::login_servers_http_message_handler::get_supported_type_na
     return login_servers_path.data();
 }
 
-bool celeritas::login_servers_http_message_handler::handle(const http_handle_parameter& handle_parameter,
+bool celeritas::login_servers_http_message_handler::handle(const http_handle_parameter_shared_ptr& handle_parameter,
                                                            const http_message_registry_weak_ptr& message_registry)
 {
-    if (handle_parameter.get_server_type() != auth_type)
+    if (handle_parameter->get_server_type() != auth_type)
     {
         return false;
     }
 
-    co_spawn(handle_parameter.get_io_context(),
+    co_spawn(handle_parameter->get_io_context(),
              response(handle_parameter),
              boost::asio::detached);
 
     return true;
 }
 
-celeritas::login_servers_http_message_handler::void_awaitable_type celeritas::login_servers_http_message_handler::response(http_handle_parameter handle_parameter)
+celeritas::login_servers_http_message_handler::void_awaitable_type celeritas::login_servers_http_message_handler::response(http_handle_parameter_shared_ptr handle_parameter)
 {
     try
     {
@@ -47,5 +47,5 @@ celeritas::login_servers_http_message_handler::void_awaitable_type celeritas::lo
     }
 
     const login_servers_response response{ game_error_type::unknown, "unknown error" };
-    co_return co_await handle_parameter.write_immediately(response.to_json_string());
+    co_return co_await handle_parameter->write_immediately(response.to_json_string());
 }

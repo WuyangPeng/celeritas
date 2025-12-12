@@ -12,7 +12,7 @@
 #include "initializer/account_type.h"
 #include "message/game_error_type.h"
 
-celeritas::password_login::password_login(http_handle_parameter handle_parameter)
+celeritas::password_login::password_login(http_handle_parameter_shared_ptr handle_parameter)
     : base_type{ std::move(handle_parameter) }
 {
 }

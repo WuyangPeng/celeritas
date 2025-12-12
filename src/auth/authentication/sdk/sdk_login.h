@@ -14,7 +14,7 @@ namespace celeritas
         using class_type = sdk_login;
         using base_type = auth_login;
 
-        explicit sdk_login(http_handle_parameter handle_parameter);
+        explicit sdk_login(http_handle_parameter_shared_ptr handle_parameter);
 
         [[nodiscard]] void_awaitable_type response() override;
 

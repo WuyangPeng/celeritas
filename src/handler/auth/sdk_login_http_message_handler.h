@@ -16,11 +16,11 @@ namespace celeritas
 
         [[nodiscard]] std::string get_supported_type_name() const override;
 
-        [[nodiscard]] bool handle(const http_handle_parameter& handle_parameter, const http_message_registry_weak_ptr& message_registry) override;
+        [[nodiscard]] bool handle(const http_handle_parameter_shared_ptr& handle_parameter, const http_message_registry_weak_ptr& message_registry) override;
 
     private:
         using void_awaitable_type = boost::asio::awaitable<void>;
 
-        [[nodiscard]] static void_awaitable_type response(http_handle_parameter handle_parameter);
+        [[nodiscard]] static void_awaitable_type response(http_handle_parameter_shared_ptr handle_parameter);
     };
 }

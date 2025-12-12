@@ -6,7 +6,7 @@
 
 #include <boost/lexical_cast.hpp>
 
-celeritas::auth_parameter::auth_parameter(const http_handle_parameter& http_handle_parameter)
+celeritas::auth_parameter::auth_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)
     : http_handle_parameter_{ http_handle_parameter }, app_id_{}, sign_{}, timestamp_{}
 {
 }
@@ -28,19 +28,19 @@ int64_t celeritas::auth_parameter::get_timestamp() const
 
 celeritas::auth_parameter::optional_http_response celeritas::auth_parameter::get_http_parameter()
 {
-    const auto optional_app_id = http_handle_parameter_.get_param(account::app_id_describe.data());
+    const auto optional_app_id = http_handle_parameter_->get_param(account::app_id_describe.data());
     if (!optional_app_id)
     {
         return http_response{ game_error_type::invalid_parameter, "app id is required" };
     }
 
-    const auto optional_timestamp = http_handle_parameter_.get_param(timestamp_describe.data());
+    const auto optional_timestamp = http_handle_parameter_->get_param(timestamp_describe.data());
     if (!optional_timestamp)
     {
         return http_response{ game_error_type::invalid_parameter, "timestamp is required" };
     }
 
-    const auto optional_sign = http_handle_parameter_.get_param(sign_describe.data());
+    const auto optional_sign = http_handle_parameter_->get_param(sign_describe.data());
     if (!optional_sign)
     {
         return http_response{ game_error_type::invalid_parameter, "sign is required" };
@@ -62,5 +62,5 @@ celeritas::auth_parameter::optional_http_response celeritas::auth_parameter::get
 
 celeritas::auth_parameter::optional_string celeritas::auth_parameter::get_param(const std::string& key) const
 {
-    return http_handle_parameter_.get_param(key);
+    return http_handle_parameter_->get_param(key);
 }

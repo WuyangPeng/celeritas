@@ -14,7 +14,7 @@ namespace celeritas
         using class_type = auth_login;
         using base_type = auth_service_base;
 
-        explicit auth_login(http_handle_parameter handle_parameter);
+        explicit auth_login(http_handle_parameter_shared_ptr handle_parameter);
 
     protected:
         using account_awaitable_type = boost::asio::awaitable<account>;

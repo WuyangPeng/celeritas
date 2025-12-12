@@ -13,8 +13,9 @@ namespace celeritas
         using class_type = recharge_notify;
         using recharge_notify_unique_ptr = std::unique_ptr<class_type>;
         using void_awaitable_type = boost::asio::awaitable<void>;
+        using http_handle_parameter_shared_ptr = std::shared_ptr<http_handle_parameter>;
 
-        explicit recharge_notify(sdk_payment_providers sdk_payment_providers, http_handle_parameter handle_parameter);
+        explicit recharge_notify(sdk_payment_providers sdk_payment_providers, http_handle_parameter_shared_ptr handle_parameter);
 
         virtual ~recharge_notify() noexcept = default;
 
@@ -30,10 +31,10 @@ namespace celeritas
 
         [[nodiscard]] virtual std::string get_default_message() const = 0;
 
-        [[nodiscard]] static recharge_notify_unique_ptr create(sdk_payment_providers_key sdk_payment_providers_key, http_handle_parameter handle_parameter);
+        [[nodiscard]] static recharge_notify_unique_ptr create(sdk_payment_providers_key sdk_payment_providers_key, http_handle_parameter_shared_ptr handle_parameter);
 
     private:
         sdk_payment_providers sdk_payment_providers_;
-        http_handle_parameter handle_parameter_;
+        http_handle_parameter_shared_ptr handle_parameter_;
     };
 }

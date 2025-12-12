@@ -11,7 +11,7 @@ namespace celeritas
         using class_type = phone_login_parameter;
         using base_type = phone_operation_parameter;
 
-        explicit phone_login_parameter(const http_handle_parameter& http_handle_parameter);
+        explicit phone_login_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter);
 
         [[nodiscard]] bool is_failure() const override;
 

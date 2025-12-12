@@ -9,8 +9,9 @@ namespace celeritas
     {
     public:
         using class_type = payment_parameter;
+        using http_handle_parameter_shared_ptr = std::shared_ptr<http_handle_parameter>;
 
-        explicit payment_parameter(const http_handle_parameter& http_handle_parameter);
+        explicit payment_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter);
 
         virtual ~payment_parameter() noexcept = default;
 
@@ -39,7 +40,7 @@ namespace celeritas
         [[nodiscard]] optional_string get_param(const std::string& key) const;
 
     private:
-        const http_handle_parameter& http_handle_parameter_;
+        http_handle_parameter_shared_ptr http_handle_parameter_;
         int64_t app_id_;
         std::string sign_;
         int64_t timestamp_;

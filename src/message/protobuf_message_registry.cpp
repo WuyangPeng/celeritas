@@ -12,7 +12,7 @@ void celeritas::protobuf_message_registry::register_handler(const base_message_h
     registry_[typeName] = handler;
 }
 
-bool celeritas::protobuf_message_registry::dispatch(const protobuf_handle_parameter& handle_parameter, const protobuf_message& current_message)
+bool celeritas::protobuf_message_registry::dispatch(const protobuf_handle_parameter_shared_ptr& handle_parameter, const protobuf_message& current_message)
 {
     if (const auto base_message_handler = get_base_message_handler(current_message))
     {

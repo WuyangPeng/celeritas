@@ -8,7 +8,7 @@
 #include "service_registry/service_info.h"
 #include "service_registry/service_registry.h"
 
-celeritas::gateway_login::gateway_login(protobuf_handle_parameter protobuf_handle_parameter, const proto::client::login_request& login)
+celeritas::gateway_login::gateway_login(protobuf_handle_parameter_shared_ptr protobuf_handle_parameter, const proto::client::login_request& login)
     : protobuf_handle_parameter_{ std::move(protobuf_handle_parameter) }, login_{ login }
 {
 }
@@ -18,7 +18,7 @@ void celeritas::gateway_login::send_error_message(game_error_type game_error_typ
     proto::celeritas response{};
     response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_login()->mutable_login();
 
-    protobuf_handle_parameter_.write(header{ protobuf_handle_parameter_.get_rpc(), static_cast<int>(game_error_type) }, response);
+    protobuf_handle_parameter_->write(header{ protobuf_handle_parameter_->get_rpc(), static_cast<int>(game_error_type) }, response);
 }
 
 void celeritas::gateway_login::write_to_server(const session_token& session_token, const std::string& instance_id, const bool new_game_server_id) const
@@ -32,10 +32,10 @@ void celeritas::gateway_login::write_to_server(const session_token& session_toke
     service_login->set_device_id(login_.device_id());
     service_login->set_app_version(login_.app_version());
     service_login->set_new_game_server_id(new_game_server_id);
-    service_login->set_session_id(protobuf_handle_parameter_.get_session_id());
-    service_login->set_protocol(static_cast<int>(protobuf_handle_parameter_.get_server_network_type()));
+    service_login->set_session_id(protobuf_handle_parameter_->get_session_id());
+    service_login->set_protocol(static_cast<int>(protobuf_handle_parameter_->get_server_network_type()));
 
-    protobuf_handle_parameter_.write_to_server(player_type.data(), instance_id, request);
+    protobuf_handle_parameter_->write_to_server(player_type.data(), instance_id, request);
 }
 
 celeritas::gateway_login::void_awaitable_type celeritas::gateway_login::send_message() const

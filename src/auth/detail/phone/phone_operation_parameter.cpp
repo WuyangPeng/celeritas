@@ -4,7 +4,7 @@
 
 #include <boost/lexical_cast.hpp>
 
-celeritas::phone_operation_parameter::phone_operation_parameter(const http_handle_parameter& http_handle_parameter)
+celeritas::phone_operation_parameter::phone_operation_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)
     : base_type{ http_handle_parameter }, code_{}
 {
 }

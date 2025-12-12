@@ -1,6 +1,6 @@
 ﻿#include "we_chat_recharge_notify.h"
 
-celeritas::we_chat_recharge_notify::we_chat_recharge_notify(sdk_payment_providers sdk_payment_providers, http_handle_parameter handle_parameter)
+celeritas::we_chat_recharge_notify::we_chat_recharge_notify(sdk_payment_providers sdk_payment_providers, http_handle_parameter_shared_ptr handle_parameter)
     : bass_type{ std::move(sdk_payment_providers), std::move(handle_parameter) }
 {
 }

@@ -11,7 +11,7 @@ void celeritas::http_message_registry::register_handler(const http_base_message_
     registry_[typeName] = handler;
 }
 
-bool celeritas::http_message_registry::dispatch(const http_handle_parameter& handle_parameter)
+bool celeritas::http_message_registry::dispatch(const http_handle_parameter_shared_ptr& handle_parameter)
 {
     if (const auto http_base_message_handler = get_http_base_message_handler(handle_parameter))
     {
@@ -21,9 +21,9 @@ bool celeritas::http_message_registry::dispatch(const http_handle_parameter& han
     return false;
 }
 
-celeritas::http_message_registry::http_base_message_handler_optional_type celeritas::http_message_registry::get_http_base_message_handler(const http_handle_parameter& handle_parameter)
+celeritas::http_message_registry::http_base_message_handler_optional_type celeritas::http_message_registry::get_http_base_message_handler(const http_handle_parameter_shared_ptr& handle_parameter)
 {
-    const auto typeName = handle_parameter.get_path();
+    const auto typeName = handle_parameter->get_path();
 
     std::shared_lock lock{ mutex_ };
 

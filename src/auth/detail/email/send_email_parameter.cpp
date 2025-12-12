@@ -1,7 +1,7 @@
 ﻿#include "send_email_parameter.h"
 #include "common/hmac_sha_256.h"
 
-celeritas::send_email_parameter::send_email_parameter(const http_handle_parameter& http_handle_parameter)
+celeritas::send_email_parameter::send_email_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)
     : base_type{ http_handle_parameter }, response_{}
 {
     init();

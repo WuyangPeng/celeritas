@@ -14,6 +14,7 @@ namespace celeritas
         using class_type = http_base_message_handler;
         using http_message_registry_weak_ptr = std::weak_ptr<http_message_registry>;
         using session_shared_ptr = std::shared_ptr<session>;
+        using http_handle_parameter_shared_ptr = std::shared_ptr<http_handle_parameter>;
 
         http_base_message_handler() noexcept = default;
 
@@ -29,6 +30,6 @@ namespace celeritas
 
         [[nodiscard]] virtual std::string get_supported_type_name() const = 0;
 
-        [[nodiscard]] virtual bool handle(const http_handle_parameter& handle_parameter, const http_message_registry_weak_ptr& message_registry) = 0;
+        [[nodiscard]] virtual bool handle(const http_handle_parameter_shared_ptr& handle_parameter, const http_message_registry_weak_ptr& message_registry) = 0;
     };
 }

@@ -16,7 +16,7 @@ namespace celeritas
         using class_type = login_servers;
         using base_type = auth_service_base;
 
-        explicit login_servers(http_handle_parameter handle_parameter);
+        explicit login_servers(http_handle_parameter_shared_ptr handle_parameter);
 
         [[nodiscard]] void_awaitable_type response() override;
 

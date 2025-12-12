@@ -11,7 +11,7 @@
 #include "database/generated/redis/auth/email_limit.h"
 #include "message/game_error_type.h"
 
-celeritas::send_email::send_email(http_handle_parameter handle_parameter)
+celeritas::send_email::send_email(http_handle_parameter_shared_ptr handle_parameter)
     : base_type{ std::move(handle_parameter) }
 {
 }

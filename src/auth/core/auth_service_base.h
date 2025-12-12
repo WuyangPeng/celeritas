@@ -13,8 +13,9 @@ namespace celeritas
         using class_type = auth_service_base;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using io_context_type = boost::asio::io_context;
+        using http_handle_parameter_shared_ptr = std::shared_ptr<http_handle_parameter>;
 
-        explicit auth_service_base(http_handle_parameter handle_parameter);
+        explicit auth_service_base(http_handle_parameter_shared_ptr handle_parameter);
 
         virtual ~auth_service_base() noexcept = default;
 
@@ -41,13 +42,13 @@ namespace celeritas
 
         [[nodiscard]] app_config_const_shared_ptr get_app_config() const;
 
-        [[nodiscard]] const http_handle_parameter& get_http_handle_parameter() const;
+        [[nodiscard]] http_handle_parameter_shared_ptr get_http_handle_parameter() const;
 
         void submit_task(task_type task) const;
 
         [[nodiscard]] io_context_type& get_io_context() const;
 
     private:
-        http_handle_parameter handle_parameter_;
+        http_handle_parameter_shared_ptr handle_parameter_;
     };
 }

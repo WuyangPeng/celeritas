@@ -14,8 +14,9 @@ namespace celeritas
     public:
         using class_type = gateway_login;
         using void_awaitable_type = boost::asio::awaitable<void>;
+        using protobuf_handle_parameter_shared_ptr = std::shared_ptr<protobuf_handle_parameter>;
 
-        gateway_login(protobuf_handle_parameter protobuf_handle_parameter, const proto::client::login_request& login);
+        gateway_login(protobuf_handle_parameter_shared_ptr protobuf_handle_parameter, const proto::client::login_request& login);
 
         [[nodiscard]] void_awaitable_type send_message() const;
 
@@ -24,7 +25,7 @@ namespace celeritas
 
         void write_to_server(const session_token& session_token, const std::string& instance_id, bool new_game_server_id) const;
 
-        protobuf_handle_parameter protobuf_handle_parameter_;
+        protobuf_handle_parameter_shared_ptr protobuf_handle_parameter_;
         const proto::client::login_request& login_;
     };
 }

@@ -5,7 +5,7 @@
 
 #include <regex>
 
-celeritas::phone_parameter::phone_parameter(const http_handle_parameter& http_handle_parameter)
+celeritas::phone_parameter::phone_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)
     : base_type{ http_handle_parameter }, phone_{}, apps_{}
 {
 }

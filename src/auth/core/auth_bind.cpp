@@ -5,7 +5,7 @@
 #include "database/database_pool_base.h"
 #include "database/generated/mysql/auth/account_bind.h"
 
-celeritas::auth_bind::auth_bind(http_handle_parameter handle_parameter)
+celeritas::auth_bind::auth_bind(http_handle_parameter_shared_ptr handle_parameter)
     : base_type{ std::move(handle_parameter) }
 {
 }

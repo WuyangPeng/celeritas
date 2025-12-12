@@ -13,7 +13,7 @@ namespace celeritas
         using class_type = order_create_parameter;
         using base_type = payment_parameter;
 
-        explicit order_create_parameter(const http_handle_parameter& http_handle_parameter);
+        explicit order_create_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter);
 
         [[nodiscard]] bool is_failure() const override;
 

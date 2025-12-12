@@ -11,7 +11,7 @@ namespace celeritas
         using class_type = email_bind_parameter;
         using base_type = email_operation_parameter;
 
-        explicit email_bind_parameter(const http_handle_parameter& http_handle_parameter);
+        explicit email_bind_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter);
 
         [[nodiscard]] bool is_failure() const override;
 

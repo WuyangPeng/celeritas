@@ -8,13 +8,13 @@
 
 #include <boost/polymorphic_pointer_cast.hpp>
 
-bool celeritas::reload_sdk_payment_providers_db_message_handler::handle_concrete(const protobuf_handle_parameter& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
+bool celeritas::reload_sdk_payment_providers_db_message_handler::handle_concrete(const protobuf_handle_parameter_shared_ptr& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
 {
-    app_sdk_payment_providers::get_instance().reload_from_db(handle_parameter.get_io_context(), current_message.sdk_id());
+    app_sdk_payment_providers::get_instance().reload_from_db(handle_parameter->get_io_context(), current_message.sdk_id());
 
     const auto sdk_payment_provider = app_sdk_payment_providers::get_instance().get_sdk_payment_providers(current_message.sdk_id());
 
-    const auto application_loader_shared_ptr = boost::polymorphic_pointer_downcast<application_loader>(handle_parameter.get_application_loader());
+    const auto application_loader_shared_ptr = boost::polymorphic_pointer_downcast<application_loader>(handle_parameter->get_application_loader());
 
     const sdk_payment_providers_key sdk_payment_providers_key{ sdk_payment_provider.get_app_id(), static_cast<payment_platform_type>(sdk_payment_provider.get_platform()) };
     application_loader_shared_ptr->register_handler(std::make_shared<notify_http_message_handler>(sdk_payment_providers_key, sdk_payment_provider.get_http_suffix()));
@@ -22,7 +22,7 @@ bool celeritas::reload_sdk_payment_providers_db_message_handler::handle_concrete
 
     proto::celeritas response{};
     response.mutable_celeritas_response()->mutable_service()->mutable_payment()->mutable_reload_sdk_payment_providers_db();
-    handle_parameter.write(response);
+    handle_parameter->write(response);
 
     return true;
 }

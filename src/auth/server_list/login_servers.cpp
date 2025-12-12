@@ -12,7 +12,7 @@
 #include "service_registry/service_info.h"
 #include "service_registry/service_registry.h"
 
-celeritas::login_servers::login_servers(http_handle_parameter handle_parameter)
+celeritas::login_servers::login_servers(http_handle_parameter_shared_ptr handle_parameter)
     : base_type{ std::move(handle_parameter) }, server_role_{}
 {
 }

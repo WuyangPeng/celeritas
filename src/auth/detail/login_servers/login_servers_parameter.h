@@ -12,7 +12,7 @@ namespace celeritas
         using class_type = login_servers_parameter;
         using base_type = auth_parameter;
 
-        explicit login_servers_parameter(const http_handle_parameter& http_handle_parameter);
+        explicit login_servers_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter);
 
         [[nodiscard]] bool is_failure() const override;
 

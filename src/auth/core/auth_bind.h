@@ -13,7 +13,7 @@ namespace celeritas
         using class_type = auth_bind;
         using base_type = auth_service_base;
 
-        explicit auth_bind(http_handle_parameter handle_parameter);
+        explicit auth_bind(http_handle_parameter_shared_ptr handle_parameter);
 
     protected:
         using optional_account = std::optional<account>;

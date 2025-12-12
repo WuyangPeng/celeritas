@@ -12,7 +12,7 @@ namespace celeritas
         using class_type = guest_login_parameter;
         using base_type = auth_parameter;
 
-        explicit guest_login_parameter(const http_handle_parameter& http_handle_parameter);
+        explicit guest_login_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter);
 
         [[nodiscard]] std::string get_device_id() const;
 

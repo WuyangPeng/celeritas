@@ -11,7 +11,7 @@ namespace celeritas
         using class_type = password_parameter;
         using base_type = auth_parameter;
 
-        explicit password_parameter(const http_handle_parameter& http_handle_parameter);
+        explicit password_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter);
 
         [[nodiscard]] std::string get_account() const;
 

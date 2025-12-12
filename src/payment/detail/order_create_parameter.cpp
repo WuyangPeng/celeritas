@@ -5,9 +5,16 @@
 
 #include <boost/lexical_cast.hpp>
 
-celeritas::order_create_parameter::order_create_parameter(const http_handle_parameter& http_handle_parameter)
-    : base_type{ http_handle_parameter }, client_request_id_{}, account_id_{}, game_server_id_{}, role_id_{},
-      product_id_{}, amount_{}, platform_{}, apps_{}
+celeritas::order_create_parameter::order_create_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)
+    : base_type{ http_handle_parameter },
+      client_request_id_{},
+      account_id_{},
+      game_server_id_{},
+      role_id_{},
+      product_id_{},
+      amount_{},
+      platform_{},
+      apps_{}
 {
 }
 

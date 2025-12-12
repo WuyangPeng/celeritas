@@ -6,7 +6,7 @@
 #include "service_registry/service_info.h"
 #include "service_registry/service_registry.h"
 
-bool celeritas::discover_request_message_handler::handle_concrete(const protobuf_handle_parameter& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
+bool celeritas::discover_request_message_handler::handle_concrete(const protobuf_handle_parameter_shared_ptr& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
 {
     const auto services = service_registry::get_services(current_message.service_name());
 
@@ -37,7 +37,7 @@ bool celeritas::discover_request_message_handler::handle_concrete(const protobuf
         server_info->set_is_health(service.get_health_check_level_type() == health_check_level_type::health);
     }
 
-    handle_parameter.write(response);
+    handle_parameter->write(response);
 
     return true;
 }

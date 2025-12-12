@@ -4,7 +4,7 @@
 
 #include <regex>
 
-celeritas::email_parameter::email_parameter(const http_handle_parameter& http_handle_parameter)
+celeritas::email_parameter::email_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)
     : base_type{ http_handle_parameter }
 {
 }

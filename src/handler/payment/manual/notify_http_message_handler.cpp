@@ -15,21 +15,21 @@ std::string celeritas::notify_http_message_handler::get_supported_type_name() co
     return notify_path.data() + path_suffix_;
 }
 
-bool celeritas::notify_http_message_handler::handle(const http_handle_parameter& handle_parameter, const http_message_registry_weak_ptr& message_registry)
+bool celeritas::notify_http_message_handler::handle(const http_handle_parameter_shared_ptr& handle_parameter, const http_message_registry_weak_ptr& message_registry)
 {
-    if (handle_parameter.get_server_type() != payment_type)
+    if (handle_parameter->get_server_type() != payment_type)
     {
         return false;
     }
 
-    boost::asio::co_spawn(handle_parameter.get_io_context(),
+    boost::asio::co_spawn(handle_parameter->get_io_context(),
                           response(sdk_payment_providers_key_, handle_parameter),
                           boost::asio::detached);
 
     return true;
 }
 
-celeritas::notify_http_message_handler::void_awaitable_type celeritas::notify_http_message_handler::response(const sdk_payment_providers_key sdk_payment_providers_key, http_handle_parameter handle_parameter)
+celeritas::notify_http_message_handler::void_awaitable_type celeritas::notify_http_message_handler::response(const sdk_payment_providers_key sdk_payment_providers_key, http_handle_parameter_shared_ptr handle_parameter)
 {
     const auto recharge_notify = recharge_notify::create(sdk_payment_providers_key, handle_parameter);
 
@@ -46,5 +46,5 @@ celeritas::notify_http_message_handler::void_awaitable_type celeritas::notify_ht
         LOG_CHANNEL(handler_channel, fatal) << "notify unknown error.";
     }
 
-    co_return co_await handle_parameter.write_immediately(recharge_notify->get_default_message());
+    co_return co_await handle_parameter->write_immediately(recharge_notify->get_default_message());
 }

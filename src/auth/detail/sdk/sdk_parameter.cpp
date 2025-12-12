@@ -4,7 +4,7 @@
 
 #include <boost/lexical_cast.hpp>
 
-celeritas::sdk_parameter::sdk_parameter(const http_handle_parameter& http_handle_parameter)
+celeritas::sdk_parameter::sdk_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)
     : base_type{ http_handle_parameter }, sdk_token_{}, process_type_{}, apps_{}
 {
 }

@@ -11,22 +11,22 @@ std::string celeritas::order_create_http_message_handler::get_supported_type_nam
     return order_create_path.data();
 }
 
-bool celeritas::order_create_http_message_handler::handle(const http_handle_parameter& handle_parameter,
+bool celeritas::order_create_http_message_handler::handle(const http_handle_parameter_shared_ptr& handle_parameter,
                                                           const http_message_registry_weak_ptr& message_registry)
 {
-    if (handle_parameter.get_server_type() != payment_type)
+    if (handle_parameter->get_server_type() != payment_type)
     {
         return false;
     }
 
-    boost::asio::co_spawn(handle_parameter.get_io_context(),
+    boost::asio::co_spawn(handle_parameter->get_io_context(),
                           response(handle_parameter),
                           boost::asio::detached);
 
     return true;
 }
 
-celeritas::order_create_http_message_handler::void_awaitable_type celeritas::order_create_http_message_handler::response(http_handle_parameter handle_parameter)
+celeritas::order_create_http_message_handler::void_awaitable_type celeritas::order_create_http_message_handler::response(http_handle_parameter_shared_ptr handle_parameter)
 {
     try
     {
@@ -44,5 +44,5 @@ celeritas::order_create_http_message_handler::void_awaitable_type celeritas::ord
     }
 
     const order_create_http_response response{ game_error_type::unknown, "unknown error" };
-    co_return co_await handle_parameter.write_immediately(response.to_json_string());
+    co_return co_await handle_parameter->write_immediately(response.to_json_string());
 }

@@ -4,7 +4,7 @@
 #include "common/hmac_sha_256.h"
 #include "database/generated/redis/auth/session_token.h"
 
-celeritas::login_servers_parameter::login_servers_parameter(const http_handle_parameter& http_handle_parameter)
+celeritas::login_servers_parameter::login_servers_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)
     : base_type{ http_handle_parameter }, response_{}, token_{}, zone_{}, only_preferred_{}, include_details_{}, websocket_{}, apps_{}
 {
     init();

@@ -3,7 +3,7 @@
 #include "common/hmac_sha_256.h"
 #include "database/generated/mysql/auth/account.h"
 
-celeritas::guest_login_parameter::guest_login_parameter(const http_handle_parameter& http_handle_parameter)
+celeritas::guest_login_parameter::guest_login_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)
     : base_type{ http_handle_parameter }, response_{}, device_id_{}
 {
     init();

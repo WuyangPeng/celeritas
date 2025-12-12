@@ -9,7 +9,7 @@
 #include "database/generated/mysql/payment/orders.h"
 #include "detail/payment_params_json.h"
 
-celeritas::order_create::order_create(http_handle_parameter handle_parameter)
+celeritas::order_create::order_create(http_handle_parameter_shared_ptr handle_parameter)
     : base_type{ std::move(handle_parameter) }
 {
 }

@@ -13,7 +13,7 @@ namespace celeritas
         using class_type = email_login;
         using base_type = auth_login;
 
-        explicit email_login(http_handle_parameter handle_parameter);
+        explicit email_login(http_handle_parameter_shared_ptr handle_parameter);
 
         [[nodiscard]] void_awaitable_type response() override;
 

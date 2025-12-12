@@ -11,7 +11,7 @@ namespace celeritas
         using class_type = send_email_parameter;
         using base_type = email_parameter;
 
-        explicit send_email_parameter(const http_handle_parameter& http_handle_parameter);
+        explicit send_email_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter);
 
         [[nodiscard]] bool is_failure() const override;
 

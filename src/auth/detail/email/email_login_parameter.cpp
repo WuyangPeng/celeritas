@@ -1,7 +1,7 @@
 ﻿#include "email_login_parameter.h"
 #include "common/hmac_sha_256.h"
 
-celeritas::email_login_parameter::email_login_parameter(const http_handle_parameter& http_handle_parameter)
+celeritas::email_login_parameter::email_login_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)
     : base_type{ http_handle_parameter }, response_{}
 {
     init();

@@ -6,7 +6,7 @@
 #include "service_registry/service_info.h"
 #include "service_registry/service_registry.h"
 
-bool celeritas::register_request_message_handler::handle_concrete(const protobuf_handle_parameter& handle_parameter,
+bool celeritas::register_request_message_handler::handle_concrete(const protobuf_handle_parameter_shared_ptr& handle_parameter,
                                                                   const message_type& current_message,
                                                                   const message_registry_weak_ptr& message_registry)
 {
@@ -26,12 +26,12 @@ bool celeritas::register_request_message_handler::handle_concrete(const protobuf
 
     service_registry::register_service(service_info);
 
-    handle_parameter.write_to_server(service_registry_type.data(), *handle_parameter.get_protobuf_message());
+    handle_parameter->write_to_server(service_registry_type.data(), *handle_parameter->get_protobuf_message());
 
     proto::celeritas response{};
     response.mutable_celeritas_response()->mutable_service()->mutable_registry()->mutable_server_register();
 
-    handle_parameter.write(response);
+    handle_parameter->write(response);
 
     return true;
 }

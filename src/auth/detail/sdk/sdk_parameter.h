@@ -12,7 +12,7 @@ namespace celeritas
         using class_type = sdk_parameter;
         using base_type = auth_parameter;
 
-        explicit sdk_parameter(const http_handle_parameter& http_handle_parameter);
+        explicit sdk_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter);
 
         [[nodiscard]] std::string get_sdk_token() const;
 

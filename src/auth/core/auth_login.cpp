@@ -9,7 +9,7 @@
 #include "database/generated/mysql/auth/account_bind.h"
 #include "initializer/account_status_type.h"
 
-celeritas::auth_login::auth_login(http_handle_parameter handle_parameter)
+celeritas::auth_login::auth_login(http_handle_parameter_shared_ptr handle_parameter)
     : base_type{ std::move(handle_parameter) }, account_bind_id_{}
 {
 }

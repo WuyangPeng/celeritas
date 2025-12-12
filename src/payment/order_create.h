@@ -12,7 +12,7 @@ namespace celeritas
         using class_type = order_create;
         using base_type = payment_service_base;
 
-        explicit order_create(http_handle_parameter handle_parameter);
+        explicit order_create(http_handle_parameter_shared_ptr handle_parameter);
 
         [[nodiscard]] void_awaitable_type response() override;
 

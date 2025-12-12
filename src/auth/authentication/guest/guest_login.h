@@ -12,7 +12,7 @@ namespace celeritas
         using class_type = guest_login;
         using base_type = auth_login;
 
-        explicit guest_login(http_handle_parameter handle_parameter);
+        explicit guest_login(http_handle_parameter_shared_ptr handle_parameter);
 
         [[nodiscard]] void_awaitable_type response() override;
 

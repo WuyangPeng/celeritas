@@ -3,12 +3,12 @@
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/mysql/auth/account_bind.h"
 
-celeritas::create_account::create_account(protobuf_handle_parameter protobuf_handle_parameter, const proto::service::service_login_request& login)
+celeritas::create_account::create_account(protobuf_handle_parameter_shared_ptr protobuf_handle_parameter, const proto::service::service_login_request& login)
     : protobuf_handle_parameter_{ std::move(protobuf_handle_parameter) }, login_{ login }
 {
 }
 
-celeritas::create_account::bool_awaitable_type celeritas::create_account::send_message() const
+celeritas::create_account::bool_awaitable_type celeritas::create_account::save_database() const
 {
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
 

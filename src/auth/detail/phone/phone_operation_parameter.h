@@ -15,7 +15,7 @@ namespace celeritas
         using optional_sms_code_awaitable_type = boost::asio::awaitable<optional_sms_code>;
         using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
 
-        explicit phone_operation_parameter(const http_handle_parameter& http_handle_parameter);
+        explicit phone_operation_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter);
 
         [[nodiscard]] int get_code() const;
 

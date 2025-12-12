@@ -11,7 +11,7 @@ namespace celeritas
         using class_type = password_bind;
         using base_type = auth_bind;
 
-        explicit password_bind(http_handle_parameter handle_parameter);
+        explicit password_bind(http_handle_parameter_shared_ptr handle_parameter);
 
         [[nodiscard]] void_awaitable_type response() override;
     };

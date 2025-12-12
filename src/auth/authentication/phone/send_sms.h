@@ -13,7 +13,7 @@ namespace celeritas
         using class_type = send_sms;
         using base_type = auth_service_base;
 
-        explicit send_sms(http_handle_parameter handle_parameter);
+        explicit send_sms(http_handle_parameter_shared_ptr handle_parameter);
 
         [[nodiscard]] void_awaitable_type response() override;
 

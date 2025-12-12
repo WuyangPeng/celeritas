@@ -16,6 +16,7 @@ namespace celeritas
         using protobuf_message_shared_ptr = std::shared_ptr<protobuf_message>;
         using message_registry_weak_ptr = std::weak_ptr<protobuf_message_registry>;
         using session_shared_ptr = std::shared_ptr<session>;
+        using protobuf_handle_parameter_shared_ptr = std::shared_ptr<protobuf_handle_parameter>;
 
         protobuf_base_message_handler() noexcept = default;
 
@@ -31,6 +32,6 @@ namespace celeritas
 
         [[nodiscard]] virtual std::string get_supported_type_name() const = 0;
 
-        [[nodiscard]] virtual bool handle(const protobuf_handle_parameter& handle_parameter, const protobuf_message& current_message, const message_registry_weak_ptr& message_registry) = 0;
+        [[nodiscard]] virtual bool handle(const protobuf_handle_parameter_shared_ptr& handle_parameter, const protobuf_message& current_message, const message_registry_weak_ptr& message_registry) = 0;
     };
 }
