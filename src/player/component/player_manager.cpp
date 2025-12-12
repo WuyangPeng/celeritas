@@ -3,6 +3,8 @@
 #include "player_state_type.h"
 #include "common/celeritas_error.h"
 
+#include <ranges>
+
 celeritas::player_manager& celeritas::player_manager::get_instance()
 {
     static player_manager manager;
@@ -10,18 +12,18 @@ celeritas::player_manager& celeritas::player_manager::get_instance()
     return manager;
 }
 
-celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::add_player(const int64_t user_id, const std::string& game_server_id, const resource_loader_shared_ptr& resource_loader)
+celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::add_player(const user& user, const resource_loader_shared_ptr& resource_loader)
 {
     std::lock_guard lock{ mutex_ };
 
-    if (const auto iter = container_.find(user_id);
+    if (const auto iter = container_.find(user.get_user_id());
         iter != container_.cend())
     {
         if (const auto player_state_type = iter->second->get_player_state_type();
             player_state_type == player_state_type::loading ||
             player_state_type == player_state_type::logout_pending)
         {
-            container_.erase(user_id);
+            container_.erase(user.get_user_id());
         }
         else
         {
@@ -30,7 +32,7 @@ celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::ad
         }
     }
 
-    return container_.emplace(user_id, std::make_shared<player_state>(user_id, game_server_id, resource_loader)).first->second;
+    return container_.emplace(user.get_user_id(), std::make_shared<player_state>(user, resource_loader)).first->second;
 }
 
 celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::get_player(const int64_t user_id)
@@ -44,6 +46,16 @@ celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::ge
     }
 
     throw celeritas_error{ "player is no exist,user id = {}", user_id };
+}
+
+celeritas::player_manager::void_awaitable_type celeritas::player_manager::save_db()
+{
+    std::shared_lock lock{ mutex_ };
+
+    for (const auto& element : container_ | std::views::values)
+    {
+        co_await element->save_db();
+    }
 }
 
 celeritas::player_manager::player_manager()

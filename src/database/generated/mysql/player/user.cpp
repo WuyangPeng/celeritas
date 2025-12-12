@@ -12,7 +12,7 @@ celeritas::user::user(const database_entity_change& entity)
       user_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : user_id_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       game_server_id_{ entity.get_value<database_data_type::string_type>(game_server_id_describe) },
-      is_overload_db_{ entity.get_value<database_data_type::bool_type>(is_overload_db_describe) }
+      overload_db_{ entity.get_value<database_data_type::bool_type>(overload_db_describe) }
 {
 }
 
@@ -21,14 +21,14 @@ celeritas::user::user(const database_type database_type, const database_entity_c
       user_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : user_id_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       game_server_id_{ entity.get_value<database_data_type::string_type>(game_server_id_describe) },
-      is_overload_db_{ entity.get_value<database_data_type::bool_type>(is_overload_db_describe) }
+      overload_db_{ entity.get_value<database_data_type::bool_type>(overload_db_describe) }
 {
     if (database_type != entity.get_database_type())
     {
         add_modify(user_id_describe, get_user_id());
         add_modify(account_id_describe, get_account_id());
         add_modify(game_server_id_describe, get_game_server_id());
-        add_modify(is_overload_db_describe, is_is_overload_db());
+        add_modify(overload_db_describe, is_overload_db());
     }
 }
 
@@ -37,7 +37,7 @@ celeritas::user::user(const database_type database_type, traits::param_type::int
       user_id_{ user_id },
       account_id_{ traits::int64_type{} },
       game_server_id_{ traits::string_type{} },
-      is_overload_db_{ traits::bool_type{} }
+      overload_db_{ traits::bool_type{} }
 {
     add_modify(user_id_describe, user_id);
 }
@@ -57,9 +57,9 @@ celeritas::traits::string_type celeritas::user::get_game_server_id() const
     return game_server_id_.get_value();
 }
 
-celeritas::traits::bool_type celeritas::user::is_is_overload_db() const noexcept
+celeritas::traits::bool_type celeritas::user::is_overload_db() const noexcept
 {
-    return is_overload_db_.get_value();
+    return overload_db_.get_value();
 }
 
 void celeritas::user::set_user_id(traits::param_type::int64_type user_id)
@@ -92,13 +92,13 @@ void celeritas::user::set_game_server_id(traits::param_type::string_type game_se
     }
 }
 
-void celeritas::user::set_is_overload_db(traits::param_type::bool_type is_overload_db)
+void celeritas::user::set_overload_db(traits::param_type::bool_type overload_db)
 {
-    if (is_overload_db != is_is_overload_db())
+    if (overload_db != is_overload_db())
     {
-        is_overload_db_.set_value(is_overload_db);
+        overload_db_.set_value(overload_db);
 
-        add_modify(is_overload_db_describe, is_is_overload_db());
+        add_modify(overload_db_describe, is_overload_db());
     }
 }
 
@@ -107,7 +107,7 @@ const celeritas::database_entity::database_field_container& celeritas::user::get
     static const database_field_container field_name_container{ decltype(user_id_)::get_database_field(),
                                                                 decltype(account_id_)::get_database_field(),
                                                                 decltype(game_server_id_)::get_database_field(),
-                                                                decltype(is_overload_db_)::get_database_field() };
+                                                                decltype(overload_db_)::get_database_field() };
 
     return field_name_container;
 }

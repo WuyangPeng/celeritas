@@ -44,6 +44,9 @@ namespace celeritas
         // 玩家登出
         [[nodiscard]] virtual void_awaitable_type on_logout();
 
+        // 保存数据库
+        [[nodiscard]] virtual void_awaitable_type save_db();
+
         [[nodiscard]] player_state* get_player_state();
 
     private:

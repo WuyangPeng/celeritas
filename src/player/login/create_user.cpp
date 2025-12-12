@@ -18,7 +18,7 @@ celeritas::create_user::optional_user_awaitable_type celeritas::create_user::sen
     user user{ database_type::mysql, user_id };
     user.set_account_id(login_.account_id());
     user.set_game_server_id(login_.game_server_id());
-    user.set_is_overload_db(true);
+    user.set_overload_db(true);
 
     if (const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_player_db_name.data());
         !co_await mysql_pool->execute_changes(user.get_modify()))

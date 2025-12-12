@@ -1,7 +1,10 @@
 ﻿#pragma once
 
 #include "common/common_fwd.h"
+#include "database/generated/mysql/player/user.h"
 #include "player/player_fwd.h"
+
+#include <boost/asio/awaitable.hpp>
 
 #include <memory>
 #include <shared_mutex>
@@ -15,12 +18,15 @@ namespace celeritas
         using class_type = player_manager;
         using player_state_shared_ptr = std::shared_ptr<player_state>;
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
+        using void_awaitable_type = boost::asio::awaitable<void>;
 
         [[nodiscard]] static player_manager& get_instance();
 
-        [[nodiscard]] player_state_shared_ptr add_player(int64_t user_id, const std::string& game_server_id, const resource_loader_shared_ptr& resource_loader);
+        [[nodiscard]] player_state_shared_ptr add_player(const user& user, const resource_loader_shared_ptr& resource_loader);
 
         [[nodiscard]] player_state_shared_ptr get_player(int64_t user_id);
+
+        [[nodiscard]] void_awaitable_type save_db();
 
     private:
         using container_type = std::unordered_map<int64_t, player_state_shared_ptr>;

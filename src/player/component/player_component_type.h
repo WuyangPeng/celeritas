@@ -4,8 +4,9 @@ namespace celeritas
 {
     enum class player_component_type
     {
-        role = 0,
-        online = 1,
+        user = 0,
+        role = 1,
+        online = 2,
         max_component,
     };
 }

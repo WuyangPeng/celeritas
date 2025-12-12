@@ -21,7 +21,7 @@
         "comment": "服务器id"
       },
       {
-        "entity_name": "is_overload_db",
+        "entity_name": "overload_db",
         "data_type": "bool",
         "comment": "是否重载数据库"
       }

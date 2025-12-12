@@ -24,23 +24,21 @@ celeritas::service_login::void_awaitable_type celeritas::service_login::send_mes
         if (const create_account create_account{ protobuf_handle_parameter_, login_ };
             !co_await create_account.send_message())
         {
-            send_error_message(game_error_type::create_account_error);
-
-            co_return;
+            co_return send_error_message(game_error_type::create_account_error);
         }
     }
 
-    const auto user = co_await get_user();
+    auto user = co_await get_user();
     if (!user)
     {
         co_return;
     }
 
-    const auto player = player_manager::get_instance().add_player(user->get_user_id(), user->get_game_server_id(), protobuf_handle_parameter_.get_resource_loader());
+    const auto player = player_manager::get_instance().add_player(*user, protobuf_handle_parameter_.get_resource_loader());
 
     send_success_message(user->get_user_id());
 
-    if (player->get_player_state_type() != player_state_type::online)
+    if (player->get_player_state_type() != player_state_type::online || user->is_overload_db() || login_.new_game_server_id())
     {
         co_await player->on_load_db();
         co_await player->on_db_analysis();

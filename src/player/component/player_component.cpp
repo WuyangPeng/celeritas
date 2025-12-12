@@ -40,6 +40,11 @@ celeritas::player_component::void_awaitable_type celeritas::player_component::on
     co_return;
 }
 
+celeritas::player_component::void_awaitable_type celeritas::player_component::save_db()
+{
+    co_return;
+}
+
 celeritas::player_state* celeritas::player_component::get_player_state()
 {
     return player_state_;

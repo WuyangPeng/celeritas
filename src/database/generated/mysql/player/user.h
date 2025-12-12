@@ -28,7 +28,7 @@ namespace celeritas
 
         [[nodiscard]] traits::string_type get_game_server_id() const;
 
-        [[nodiscard]] traits::bool_type is_is_overload_db() const noexcept;
+        [[nodiscard]] traits::bool_type is_overload_db() const noexcept;
 
         void set_user_id(traits::param_type::int64_type user_id);
 
@@ -36,7 +36,7 @@ namespace celeritas
 
         void set_game_server_id(traits::param_type::string_type game_server_id);
 
-        void set_is_overload_db(traits::param_type::bool_type is_overload_db);
+        void set_overload_db(traits::param_type::bool_type overload_db);
 
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
@@ -51,7 +51,7 @@ namespace celeritas
         static constexpr std::string_view user_id_describe{ "user_id" };
         static constexpr std::string_view account_id_describe{ "account_id" };
         static constexpr std::string_view game_server_id_describe{ "game_server_id" };
-        static constexpr std::string_view is_overload_db_describe{ "is_overload_db" };
+        static constexpr std::string_view overload_db_describe{ "overload_db" };
 
     private:
         [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::int64_type user_id);
@@ -59,6 +59,6 @@ namespace celeritas
         entity<user_id_describe, database_data_type::int64_type, database_index_type::key> user_id_;
         entity<account_id_describe, database_data_type::int64_type, database_index_type::composite_unique_key_and_index> account_id_;
         entity<game_server_id_describe, database_data_type::string_type, database_index_type::composite_unique_index> game_server_id_;
-        entity<is_overload_db_describe, database_data_type::bool_type> is_overload_db_;
+        entity<overload_db_describe, database_data_type::bool_type> overload_db_;
     };
 }

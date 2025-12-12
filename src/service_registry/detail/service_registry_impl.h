@@ -68,7 +68,7 @@ namespace celeritas
 
         void remove_server(const service_info& service_info);
 
-        [[nodiscard]] optional_service_info get_idle_services(const service_info_container_type& service_info_container_type, int next_index) const;
+        [[nodiscard]] static optional_service_info get_idle_services(const service_info_container_type& service_info_container_type, int next_index);
 
         registry_type registry_;
         server_type server_;

@@ -2,18 +2,19 @@
 #include "player_role_component.h"
 #include "player_state.h"
 #include "player_state_type.h"
+#include "player_user_component.h"
 #include "common/celeritas_error.h"
+#include "database/database_pool_manager.h"
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
-celeritas::player_state::player_state(const int64_t user_id, std::string game_server_id, const resource_loader_shared_ptr& resource_loader)
-    : user_id_{ user_id },
-      game_server_id_{ std::move(game_server_id) },
-      dirty_{ false },
+celeritas::player_state::player_state(const user& user, const resource_loader_shared_ptr& resource_loader)
+    : dirty_{ false },
       player_state_{ player_state_type::loading },
-      components_{ std::make_shared<player_role_component>(this),
+      components_{ std::make_shared<player_user_component>(user, this),
+                   std::make_shared<player_role_component>(this),
                    std::make_shared<player_online_component>(this) },
       resource_loader_{ resource_loader }
 {
@@ -25,7 +26,7 @@ void celeritas::player_state::set_dirty()
     dirty_ = true;
 }
 
-void celeritas::player_state::set_player_state_type(player_state_type player_state_type)
+void celeritas::player_state::set_player_state_type(const player_state_type player_state_type)
 {
     player_state_ = player_state_type;
 }
@@ -83,14 +84,27 @@ celeritas::player_state::void_awaitable_type celeritas::player_state::on_logout(
     }
 }
 
+celeritas::player_state::void_awaitable_type celeritas::player_state::save_db()
+{
+    if (!dirty_)
+    {
+        co_return;
+    }
+
+    for (const auto& element : components_)
+    {
+        co_await element->save_db();
+    }
+}
+
 int64_t celeritas::player_state::get_user_id() const noexcept
 {
-    return user_id_;
+    return get_component<player_user_component>()->get_user_id();
 }
 
 std::string celeritas::player_state::get_game_server_id() const
 {
-    return game_server_id_;
+    return get_component<player_user_component>()->get_game_server_id();
 }
 
 std::string celeritas::player_state::generate_token()
@@ -101,13 +115,13 @@ std::string celeritas::player_state::generate_token()
     return boost::uuids::to_string(uuid);
 }
 
-void celeritas::player_state::check()
+void celeritas::player_state::check() const
 {
     for (auto index = 0; index < static_cast<int>(player_component_type::max_component); ++index)
     {
         if (static_cast<int>(components_.at(index)->get_player_component_type()) != index)
         {
-            throw celeritas_error{ "component type error,i = {}", index };
+            throw celeritas_error{ "component type error,index = {}", index };
         }
     }
 }

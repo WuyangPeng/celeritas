@@ -26,3 +26,15 @@ celeritas::player_component::void_awaitable_type celeritas::player_online_compon
     account_last_login_->set_game_server_id(player_state->get_game_server_id());
     account_last_login_->set_update_time(time_helper::get_current_milliseconds());
 }
+
+celeritas::player_component::void_awaitable_type celeritas::player_online_component::save_db()
+{
+    if (account_last_login_->is_modify())
+    {
+        const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
+
+        co_await mysql_pool->execute_changes(account_last_login_->get_modify());
+
+        account_last_login_->clear_modify();
+    }
+}

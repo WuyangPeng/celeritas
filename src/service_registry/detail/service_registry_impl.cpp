@@ -246,7 +246,7 @@ void celeritas::service_registry_impl::remove_server(const service_info& service
     }
 }
 
-celeritas::service_registry_impl::optional_service_info celeritas::service_registry_impl::get_idle_services(const service_info_container_type& service_info_container_type, int next_index) const
+celeritas::service_registry_impl::optional_service_info celeritas::service_registry_impl::get_idle_services(const service_info_container_type& service_info_container_type, int next_index)
 {
     if (service_info_container_type.size() == 1)
     {
