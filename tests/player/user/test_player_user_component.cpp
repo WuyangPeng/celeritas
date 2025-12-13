@@ -37,10 +37,14 @@ BOOST_FIXTURE_TEST_SUITE(player_user_component_suite, player_user_component_fixt
     {
         // 修改 user 对象以触发保存
         test_user_.set_game_server_id("new_server");
+        test_user_.set_user_id(10000);
         BOOST_CHECK(test_user_.is_modify());
 
         celeritas::player_user_component component{ test_user_, &mock_player_state_ };
         component.set_mock_database_pool(mock_pool_);
+
+        BOOST_CHECK_EQUAL(component.get_game_server_id(), test_user_.get_game_server_id());
+        BOOST_CHECK_EQUAL(component.get_user_id(), test_user_.get_user_id());
 
         // 调用并执行协程
         boost::asio::co_spawn(io_context_, component.save_db(), boost::asio::detached);

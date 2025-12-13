@@ -4,6 +4,8 @@ namespace celeritas
 {
     enum class time_refresh_type
     {
+        null,
+
         // 每日重置：根据服务器的每日刷新锚点（如 05:00:00）进行判断和重置。
         daily,
 

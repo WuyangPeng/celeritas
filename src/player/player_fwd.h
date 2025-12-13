@@ -27,4 +27,6 @@ namespace celeritas
     class player_instance_component;
 
     class player_finish_component;
+
+    enum class time_refresh_type;
 }
