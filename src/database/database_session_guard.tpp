@@ -13,11 +13,14 @@ celeritas::database_session_guard<SessionType>::database_session_guard(const ses
 template <typename SessionType>
 celeritas::database_session_guard<SessionType>::~database_session_guard() noexcept
 {
-    noexcept_safe_call_and_log([this] {
-                                   pool_->release_session(session_);
-                               },
-                               database_channel,
-                               "error release session: ");
+    if (pool_ != nullptr && session_ != nullptr)
+    {
+        noexcept_safe_call_and_log([this] {
+                                       pool_->release_session(session_);
+                                   },
+                                   database_channel,
+                                   "error release session: ");
+    }
 }
 
 template <typename SessionType>
