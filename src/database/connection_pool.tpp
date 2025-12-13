@@ -2,7 +2,10 @@
 
 #include "connection_pool.h"
 #include "database_entity_change.h"
+#include "database_session_guard.tpp"
 #include "common/logger.h"
+
+#include <boost/polymorphic_pointer_cast.hpp>
 
 template <typename SessionType>
 celeritas::connection_pool<SessionType>::connection_pool(io_context_type& io_context,
@@ -81,12 +84,12 @@ celeritas::connection_pool<SessionType>::void_awaitable_type celeritas::connecti
 }
 
 template <typename SessionType>
-celeritas::connection_pool<SessionType>::session_awaitable_type celeritas::connection_pool<SessionType>::async_get_session()
+celeritas::connection_pool<SessionType>::database_session_guard_awaitable_type celeritas::connection_pool<SessionType>::async_get_session()
 {
     auto session = try_get_existing_session();
     if (session != nullptr)
     {
-        co_return session;
+        co_return database_session_guard_type{ session, boost::polymorphic_pointer_cast<class_type>(this->shared_from_this()) };
     }
 
     if (connections_ < max_connections_)
@@ -96,11 +99,13 @@ celeritas::connection_pool<SessionType>::session_awaitable_type celeritas::conne
         session = try_get_existing_session();
         if (session != nullptr)
         {
-            co_return session;
+            co_return database_session_guard_type{ session, boost::polymorphic_pointer_cast<class_type>(this->shared_from_this()) };
         }
     }
 
-    co_return co_await async_initiate_session();
+    session = co_await async_initiate_session();
+
+    co_return database_session_guard_type{ session, boost::polymorphic_pointer_cast<class_type>(this->shared_from_this()) };
 }
 
 template <typename SessionType>
@@ -151,9 +156,7 @@ celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connecti
 {
     auto session = co_await async_get_session();
 
-    const auto result = co_await session->is_health();
-
-    release_session(session);
+    const auto result = co_await session.get_session()->is_health();
 
     co_return result;
 }
@@ -170,9 +173,7 @@ celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connecti
 
         auto session = co_await async_get_session();
 
-        co_await session->execute_changes(database, expiration_time);
-
-        release_session(session);
+        co_await session.get_session()->execute_changes(database, expiration_time);
 
         co_return true;
     }
@@ -193,11 +194,7 @@ celeritas::database_pool_base::database_entity_change_awaitable_type celeritas::
 {
     auto session = co_await async_get_session();
 
-    const auto result = co_await session->select_one(database, field_name_container);
-
-    release_session(session);
-
-    co_return result;
+    co_return co_await session.get_session()->select_one(database, field_name_container);
 }
 
 template <typename SessionType>
@@ -205,11 +202,7 @@ celeritas::database_pool_base::result_container_awaitable_type celeritas::connec
 {
     auto session = co_await async_get_session();
 
-    const auto result = co_await session->select_all(database, field_name_container);
-
-    release_session(session);
-
-    co_return result;
+    co_return co_await session.get_session()->select_all(database, field_name_container);
 }
 
 template <typename SessionType>

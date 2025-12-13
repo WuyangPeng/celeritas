@@ -31,6 +31,9 @@ namespace celeritas
     template <typename SessionType>
     class connection_pool;
 
+    template <typename SessionType>
+    class database_session_guard;
+
     class database_pool_manager;
 
     class redis_commands;

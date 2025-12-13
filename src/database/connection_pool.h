@@ -19,6 +19,8 @@ namespace celeritas
         using void_awaitable_type = boost::asio::awaitable<void>;
         using session_shared_ptr = std::shared_ptr<SessionType>;
         using session_awaitable_type = boost::asio::awaitable<session_shared_ptr>;
+        using database_session_guard_type = database_session_guard<SessionType>;
+        using database_session_guard_awaitable_type = boost::asio::awaitable<database_session_guard_type>;
 
         connection_pool(io_context_type& io_context,
                         std::string host,
@@ -49,7 +51,7 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type async_initialize() override;
 
         // 异步获取一个数据库会话
-        [[nodiscard]] session_awaitable_type async_get_session();
+        [[nodiscard]] database_session_guard_awaitable_type async_get_session();
 
         // 释放一个数据库会话
         void release_session(const session_shared_ptr& session);

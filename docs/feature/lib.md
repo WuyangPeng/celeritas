@@ -411,6 +411,12 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
         - 在服务器启动时，根据配置初始化所有需要的数据库连接池。
         - 提供 `get_session<SessionType>()` 接口，允许业务代码方便地从指定的连接池中获取一个数据库会话。
 
+
+* **🔒 数据库会话 RAII 守卫 (`database_session_guard<SessionType>`)**
+    - **作用**：遵循 RAII 原则，用于**安全管理**从`connection_pool`中获取的数据库会话。
+    - **安全**：在析构时**自动**将其归还 (`release_session`) 到 `connection_pool`，其析构函数标记为`noexcept`，并依赖 `noexcept_safe_call_and_log`确保归还操作的安全性。
+    - **用法**：通过 `database_pool_manager::get_session<SessionType>()` 获取会话时，返回的即是 `database_session_guard` 实例。
+
 ### redis command wrappers（redis命令封装）
 
 * **📜 Redis命令基类 (`redis_commands`)**
