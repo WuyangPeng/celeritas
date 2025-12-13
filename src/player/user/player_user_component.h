@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "player_component.h"
-#include "player_component_type.h"
 #include "database/generated/mysql/player/user.h"
+#include "player/component/player_component.h"
+#include "player/component/player_component_type.h"
 
 namespace celeritas
 {

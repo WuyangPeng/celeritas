@@ -1,7 +1,8 @@
 ﻿#include "player_finish_component.h"
-#include "player_state.h"
 #include "common/logger.h"
 #include "initializer/initializer_fwd.h"
+#include "player/component/player_component.h"
+#include "player/component/player_state.h"
 #include "proto/celeritas.pb.h"
 
 celeritas::player_finish_component::player_finish_component(player_state* player_state) noexcept

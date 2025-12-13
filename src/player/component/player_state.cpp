@@ -1,24 +1,23 @@
-﻿#include "player_activity_component.h"
-#include "player_attribute_component.h"
-#include "player_develop_component.h"
-#include "player_finish_component.h"
-#include "player_instance_component.h"
-#include "player_item_component.h"
-#include "player_mail_component.h"
-#include "player_online_component.h"
-#include "player_role_component.h"
-#include "player_state.tpp"
+﻿#include "player_state.tpp"
 #include "player_state_type.h"
-#include "player_task_component.h"
-#include "player_time_component.h"
-#include "player_user_component.h"
 #include "common/celeritas_error.h"
 #include "common/resource_loader_base.h"
+#include "player/activity/player_activity_component.h"
+#include "player/attribute/player_attribute_component.h"
+#include "player/develop/player_develop_component.h"
+#include "player/finish/player_finish_component.h"
+#include "player/instance/player_instance_component.h"
+#include "player/item/player_item_component.h"
+#include "player/mail/player_mail_component.h"
+#include "player/online/player_online_component.h"
+#include "player/role/player_role_component.h"
+#include "player/task/player_task_component.h"
+#include "player/time/player_time_component.h"
+#include "player/user/player_user_component.h"
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
-#include <utility>
 
 celeritas::player_state::player_state(const user& user, const resource_loader_shared_ptr& resource_loader, std::string instance_id)
     : dirty_{ false },

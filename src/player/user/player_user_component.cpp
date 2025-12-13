@@ -1,8 +1,8 @@
-﻿#include "player_state.h"
-#include "player_user_component.h"
+﻿#include "player_user_component.h"
 #include "database/database_pool_manager.h"
 #include "initializer/initializer_fwd.h"
 #include "message/game_error_type.h"
+#include "player/component/player_state.h"
 #include "proto/celeritas.pb.h"
 
 celeritas::player_user_component::player_user_component(user user, player_state* player_state) noexcept

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "player_component.h"
-#include "player_component_type.h"
+#include "player/component/player_component.h"
+#include "player/component/player_component_type.h"
 #include "database/generated/mysql/auth/account_last_login.h"
 
 #include <optional>

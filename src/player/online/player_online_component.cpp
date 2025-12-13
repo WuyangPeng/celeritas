@@ -1,7 +1,7 @@
 ﻿#include "player_online_component.h"
-#include "player_state.h"
 #include "common/time_helper.h"
 #include "database/database_pool_manager.h"
+#include "player/component/player_state.h"
 
 celeritas::player_online_component::player_online_component(player_state* player_state) noexcept
     : base_type{ get_player_component_type(), player_state }, account_last_login_{}
