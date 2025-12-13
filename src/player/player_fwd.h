@@ -17,6 +17,7 @@ namespace celeritas
     class player_role_component;
     class player_online_component;
     class player_time_component;
+    class player_red_component;
     class player_item_component;
     class player_activity_component;
     class player_develop_component;

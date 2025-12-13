@@ -10,6 +10,7 @@
 #include "player/item/player_item_component.h"
 #include "player/mail/player_mail_component.h"
 #include "player/online/player_online_component.h"
+#include "player/red/player_red_component.h"
 #include "player/role/player_role_component.h"
 #include "player/task/player_task_component.h"
 #include "player/time/player_time_component.h"
@@ -26,6 +27,7 @@ celeritas::player_state::player_state(const user& user, const resource_loader_sh
                    std::make_shared<player_role_component>(this),
                    std::make_shared<player_online_component>(this),
                    std::make_shared<player_time_component>(this),
+                   std::make_shared<player_red_component>(this),
                    std::make_shared<player_item_component>(this),
                    std::make_shared<player_activity_component>(this),
                    std::make_shared<player_develop_component>(this),
