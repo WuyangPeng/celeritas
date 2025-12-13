@@ -9,17 +9,19 @@ void celeritas::service_registry_impl::register_service(const service_info& info
 {
     std::lock_guard lock{ mutex_ };
 
+    server_[info.get_service_name()][info.get_game_server_id()].emplace_back(info);
+
     if (const auto iter = registry_.find(info.get_instance_id());
         iter != registry_.end())
     {
-        iter->second.set_last_heartbeat(info.get_start_server_time());
-    }
-    else
-    {
-        registry_[info.get_instance_id()] = info;
+        if (iter->second.get_start_server_time() == info.get_start_server_time())
+        {
+            iter->second.set_last_heartbeat();
+            return;
+        }
     }
 
-    server_[info.get_service_name()][info.get_game_server_id()].emplace_back(info);
+    registry_[info.get_instance_id()] = info;
 }
 
 void celeritas::service_registry_impl::clear_services(const std::string& service_name)

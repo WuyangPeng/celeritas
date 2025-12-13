@@ -38,13 +38,10 @@ BOOST_AUTO_TEST_SUITE(service_info_suite)
         info.set_health_check_level_type(celeritas::health_check_level_type::health);
         BOOST_CHECK(info.get_health_check_level_type() == celeritas::health_check_level_type::health);
 
-        const auto start_server_time = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-        info.set_last_heartbeat(start_server_time);
+        info.set_last_heartbeat();
 
         const auto last_heartbeat = std::chrono::duration_cast<std::chrono::seconds>(info.get_last_heartbeat().time_since_epoch()).count();
         BOOST_CHECK_GE(last_heartbeat, 0);
-
-        BOOST_CHECK_EQUAL(info.get_start_server_time(), start_server_time);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

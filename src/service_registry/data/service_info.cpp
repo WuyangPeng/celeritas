@@ -44,15 +44,9 @@ celeritas::service_info::time_point_type celeritas::service_info::get_last_heart
     return last_heartbeat_;
 }
 
-void celeritas::service_info::set_last_heartbeat(const int64_t start_server_time)
+void celeritas::service_info::set_last_heartbeat()
 {
     last_heartbeat_ = std::chrono::steady_clock::now();
-
-    if (start_server_time != start_server_time_)
-    {
-        start_server_time_ = start_server_time;
-        health_check_level_ = health_check_level_type::health;
-    }
 }
 
 int celeritas::service_info::get_port(const server_network_type server_network_type) const
@@ -73,7 +67,7 @@ celeritas::health_check_level_type celeritas::service_info::get_health_check_lev
     return health_check_level_;
 }
 
-void celeritas::service_info::set_health_check_level_type(health_check_level_type health_check_level)
+void celeritas::service_info::set_health_check_level_type(const health_check_level_type health_check_level)
 {
     health_check_level_ = health_check_level;
 }

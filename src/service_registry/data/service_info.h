@@ -35,7 +35,7 @@ namespace celeritas
 
         [[nodiscard]] time_point_type get_last_heartbeat() const;
 
-        void set_last_heartbeat(int64_t start_server_time);
+        void set_last_heartbeat();
 
         [[nodiscard]] int get_port(server_network_type server_network_type) const;
 
