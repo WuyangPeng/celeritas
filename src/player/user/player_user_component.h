@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "database/database_fwd.h"
 #include "database/generated/mysql/player/user.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
@@ -12,7 +13,7 @@ namespace celeritas
         using class_type = player_user_component;
         using base_type = player_component;
 
-        explicit player_user_component(user user, player_state* player_state) noexcept;
+        player_user_component(user user, player_state* player_state) noexcept;
 
         [[nodiscard]] static constexpr player_component_type get_player_component_type()
         {
@@ -26,6 +27,10 @@ namespace celeritas
         [[nodiscard]] int64_t get_user_id() const noexcept;
 
         [[nodiscard]] std::string get_game_server_id() const;
+
+        [[nodiscard]] bool is_modify() const override;
+
+        [[nodiscard]] bool is_overload_db() const;
 
     private:
         user user_;

@@ -15,7 +15,7 @@ namespace celeritas
 
         [[nodiscard]] static constexpr player_component_type get_player_component_type()
         {
-            return player_component_type::activity;
+            return player_component_type::attribute;
         }
     };
 }

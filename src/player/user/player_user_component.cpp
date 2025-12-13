@@ -1,6 +1,5 @@
 ﻿#include "player_user_component.h"
 #include "database/database_pool_manager.h"
-#include "initializer/initializer_fwd.h"
 #include "message/game_error_type.h"
 #include "player/component/player_state.h"
 #include "proto/celeritas.pb.h"
@@ -21,7 +20,7 @@ celeritas::player_user_component::void_awaitable_type celeritas::player_user_com
 {
     if (user_.is_modify())
     {
-        const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_player_db_name.data());
+        const auto mysql_pool = get_mysql_player_db_name();
 
         co_await mysql_pool->execute_changes(user_.get_modify());
 
@@ -38,3 +37,14 @@ std::string celeritas::player_user_component::get_game_server_id() const
 {
     return user_.get_game_server_id();
 }
+
+bool celeritas::player_user_component::is_modify() const
+{
+    return user_.is_modify();
+}
+
+bool celeritas::player_user_component::is_overload_db() const
+{
+    return user_.is_overload_db();
+}
+

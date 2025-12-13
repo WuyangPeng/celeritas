@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "database/database_fwd.h"
 #include "player/player_fwd.h"
 
 #include <boost/asio/awaitable.hpp>
@@ -11,8 +12,9 @@ namespace celeritas
     public:
         using class_type = player_component;
         using void_awaitable_type = boost::asio::awaitable<void>;
+        using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
 
-        explicit player_component(player_component_type player_component_type, player_state* player_state) noexcept;
+        player_component(player_component_type player_component_type, player_state* player_state) noexcept;
 
         virtual ~player_component() noexcept = default;
 
@@ -49,8 +51,18 @@ namespace celeritas
 
         [[nodiscard]] player_state* get_player_state();
 
+        [[nodiscard]] database_pool_shared_ptr get_mysql_player_db_name();
+
+        [[nodiscard]] virtual bool is_modify() const;
+
+        // 测试所需接口
+        void set_mock_database_pool(const database_pool_shared_ptr& database_pool);
+
     private:
+        using optional_database_pool_shared_ptr = std::optional<database_pool_shared_ptr>;
+
         player_component_type player_component_;
         player_state* player_state_;
+        optional_database_pool_shared_ptr mock_database_pool_;
     };
 }

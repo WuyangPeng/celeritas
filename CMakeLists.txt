@@ -64,6 +64,7 @@ set(OPENSSL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl")
 # 包含路径
 include_directories(
         "${CMAKE_CURRENT_SOURCE_DIR}/src"
+        "${CMAKE_CURRENT_SOURCE_DIR}/tests"
         "${CMAKE_CURRENT_SOURCE_DIR}/proto"
         "${BOOST_DIR}"
         "${PROTOBUF_DIR}/include"

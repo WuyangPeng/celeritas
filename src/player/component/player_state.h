@@ -24,6 +24,16 @@ namespace celeritas
 
         player_state(const user& user, const resource_loader_shared_ptr& resource_loader, std::string instance_id);
 
+        virtual ~player_state() noexcept = default;
+
+        player_state(const player_state& rhs) = default;
+
+        player_state& operator=(const player_state& rhs) = default;
+
+        player_state(player_state&& rhs) noexcept = default;
+
+        player_state& operator=(player_state&& rhs) noexcept = default;
+
         template <typename T>
         [[nodiscard]] std::shared_ptr<T> get_component() const;
 
