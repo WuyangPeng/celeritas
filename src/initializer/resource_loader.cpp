@@ -12,7 +12,7 @@
 #include "detail/service_registry_timer.h"
 #include "network/tcp_client.h"
 #include "proto/celeritas.pb.h"
-#include "service_registry/health_check_level_type.h"
+#include "service_registry/data/health_check_level_type.h"
 #include "service_registry/detail/service_registry_internal_fwd.h"
 
 #include <ranges>

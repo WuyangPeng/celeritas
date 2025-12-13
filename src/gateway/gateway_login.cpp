@@ -5,8 +5,8 @@
 #include "initializer/initializer_fwd.h"
 #include "message/game_error_type.h"
 #include "proto/celeritas.pb.h"
-#include "service_registry/service_info.h"
-#include "service_registry/service_registry.h"
+#include "service_registry/core/service_registry.h"
+#include "service_registry/data/service_info.h"
 
 celeritas::gateway_login::gateway_login(protobuf_handle_parameter_shared_ptr protobuf_handle_parameter, const proto::client::login_request& login)
     : protobuf_handle_parameter_{ std::move(protobuf_handle_parameter) }, login_{ login }

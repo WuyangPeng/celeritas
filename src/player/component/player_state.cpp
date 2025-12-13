@@ -1,8 +1,16 @@
-﻿#include "player_finish_component.h"
+﻿#include "player_activity_component.h"
+#include "player_attribute_component.h"
+#include "player_develop_component.h"
+#include "player_finish_component.h"
+#include "player_instance_component.h"
+#include "player_item_component.h"
+#include "player_mail_component.h"
 #include "player_online_component.h"
 #include "player_role_component.h"
 #include "player_state.tpp"
 #include "player_state_type.h"
+#include "player_task_component.h"
+#include "player_time_component.h"
 #include "player_user_component.h"
 #include "common/celeritas_error.h"
 #include "common/resource_loader_base.h"
@@ -18,6 +26,15 @@ celeritas::player_state::player_state(const user& user, const resource_loader_sh
       components_{ std::make_shared<player_user_component>(user, this),
                    std::make_shared<player_role_component>(this),
                    std::make_shared<player_online_component>(this),
+                   std::make_shared<player_time_component>(this),
+                   std::make_shared<player_item_component>(this),
+                   std::make_shared<player_activity_component>(this),
+                   std::make_shared<player_develop_component>(this),
+                   std::make_shared<player_mail_component>(this),
+                   std::make_shared<player_task_component>(this),
+                   std::make_shared<player_attribute_component>(this),
+                   std::make_shared<player_instance_component>(this),
+
                    std::make_shared<player_finish_component>(this) },
       resource_loader_{ resource_loader },
       instance_id_{ std::move(instance_id) }

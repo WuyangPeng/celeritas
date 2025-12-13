@@ -2,7 +2,7 @@
 #include "common/logger.h"
 #include "config/app_config.h"
 #include "message/http_handle_parameter.h"
-#include "service_registry/health_check.h"
+#include "service_registry/data/health_check.h"
 
 celeritas::health_check_request_http_message_handler::health_check_request_http_message_handler(std::string path)
     : path_{ std::move(path) }

@@ -7,8 +7,8 @@
 #include "common/logger.h"
 #include "detail/auth_server_fwd.h"
 #include "network/http_client.h"
-#include "service_registry/service_info.h"
-#include "service_registry/service_registry.h"
+#include "service_registry/core/service_registry.h"
+#include "service_registry/data/service_info.h"
 
 #include <boost/polymorphic_pointer_cast.hpp>
 

@@ -1,8 +1,8 @@
 ﻿#include "health_check_response_http_message_handler.h"
 #include "message/http_handle_parameter.h"
 #include "network/detail/network_internal_fwd.h"
-#include "service_registry/health_check.h"
-#include "service_registry/service_registry.h"
+#include "service_registry/core/service_registry.h"
+#include "service_registry/data/health_check.h"
 
 celeritas::health_check_response_http_message_handler::health_check_response_http_message_handler(std::string path)
     : path_{ std::move(path) }

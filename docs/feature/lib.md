@@ -414,8 +414,10 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 
 * **🔒 数据库会话 RAII 守卫 (`database_session_guard<SessionType>`)**
     - **作用**：遵循 RAII 原则，用于**安全管理**从`connection_pool`中获取的数据库会话。
-    - **安全**：在析构时**自动**将其归还 (`release_session`) 到 `connection_pool`，其析构函数标记为`noexcept`，并依赖 `noexcept_safe_call_and_log`确保归还操作的安全性。
-    - **用法**：通过 `database_pool_manager::get_session<SessionType>()` 获取会话时，返回的即是 `database_session_guard` 实例。
+    - **安全**：在析构时**自动**将其归还 (`release_session`) 到 `connection_pool`，其析构函数标记为`noexcept`，并依赖
+      `noexcept_safe_call_and_log`确保归还操作的安全性。
+    - **用法**：通过 `database_pool_manager::get_session<SessionType>()` 获取会话时，返回的即是 `database_session_guard`
+      实例。
 
 ### redis command wrappers（redis命令封装）
 
@@ -946,12 +948,52 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **作用**：所有玩家组件的抽象基类，定义了组件的生命周期钩子函数，如 `on_load_db`, `on_login`, `on_logout` 等。
 
 
+* **👤 玩家用户组件 (`player_user_component`)**
+    - **作用**：一个具体的玩家组件，负责管理玩家的用户基础信息。
+
+
 * **🎭 玩家角色组件 (`player_role_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的角色信息。
 
 
 * **📶 玩家在线组件 (`player_online_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的在线状态和相关数据。
+
+
+* **⏳ 玩家时间组件 (`player_time_component`)**
+    - **作用**：一个具体的玩家组件，负责管理玩家的各种时间信息，如冷却时间、持续时间等。
+
+
+* **🎒 玩家道具组件 (`player_item_component`)**
+    - **作用**：一个具体的玩家组件，负责管理玩家的道具数据。
+
+
+* **🎉 玩家活动组件 (`player_activity_component`)**
+    - **作用**：一个具体的玩家组件，负责管理玩家参与的活动信息。
+
+
+* **🛠️ 玩家养成组件 (`player_develop_component`)**
+    - **作用**：一个具体的玩家组件，负责管理玩家的成长和发展相关数据。
+
+
+* **📧 玩家邮件组件 (`player_mail_component`)**
+    - **作用**：一个具体的玩家组件，负责管理玩家的邮件信息。
+
+
+* **🎯 玩家任务组件 (`player_task_component`)**
+    - **作用**：一个具体的玩家组件，负责管理玩家的任务进度和状态。
+
+
+* **💪 玩家属性组件 (`player_attribute_component`)**
+    - **作用**：一个具体的玩家组件，负责管理玩家的动态属性。
+
+
+* **🗺️ 玩家副本组件 (`player_instance_component`)**
+    - **作用**：一个具体的玩家组件，负责管理玩家的副本进度和状态。
+
+
+* **🏁 玩家完成组件 (`player_finish_component`)**
+    - **作用**：一个具体的玩家组件，负责管理玩家的成就或完成度相关数据。
 
 ## handler（处理器）
 

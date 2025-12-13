@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "service_registry/health_check_level_type.h"
+#include "service_registry/data/health_check_level_type.h"
 
 #include <boost/json.hpp>
 

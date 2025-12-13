@@ -1,8 +1,8 @@
 ﻿#include "service_registry_resource_loader.h"
 #include "network/http_client.h"
 #include "network/tcp_client.h"
-#include "service_registry/service_info.h"
-#include "service_registry/service_registry.h"
+#include "service_registry/core/service_registry.h"
+#include "service_registry/data/service_info.h"
 
 #include <boost/polymorphic_pointer_cast.hpp>
 

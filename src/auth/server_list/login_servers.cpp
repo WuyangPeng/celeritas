@@ -9,8 +9,8 @@
 #include "database/generated/mysql/auth/server_cell.h"
 #include "database/generated/redis/auth/session_token.h"
 #include "initializer/initializer_fwd.h"
-#include "service_registry/service_info.h"
-#include "service_registry/service_registry.h"
+#include "service_registry/core/service_registry.h"
+#include "service_registry/data/service_info.h"
 
 celeritas::login_servers::login_servers(http_handle_parameter_shared_ptr handle_parameter)
     : base_type{ std::move(handle_parameter) }, server_role_{}

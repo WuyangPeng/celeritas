@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "common/common_fwd.h"
-#include "service_registry/service_info.h"
+#include "service_registry/data/service_info.h"
 
 #include <boost/asio.hpp>
 #include <boost/log/trivial.hpp>
