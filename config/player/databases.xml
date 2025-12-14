@@ -22,4 +22,26 @@
         <max_connections>10</max_connections>
         <timeout_seconds>10</timeout_seconds>
     </database>
+    <database name="mongo_auth_db">
+        <database_type>mongo</database_type>
+        <host>127.0.0.1</host>
+        <port>27017</port>
+        <user>celeritas_user</user>
+        <password>celeritas_pass</password>
+        <db_name>auth</db_name>
+        <min_connections>4</min_connections>
+        <max_connections>10</max_connections>
+        <timeout_seconds>5</timeout_seconds>
+    </database>
+    <database name="mongo_player_db">
+        <database_type>mongo</database_type>
+        <host>127.0.0.1</host>
+        <port>27017</port>
+        <user>celeritas_user</user>
+        <password>celeritas_pass</password>
+        <db_name>player</db_name>
+        <min_connections>4</min_connections>
+        <max_connections>10</max_connections>
+        <timeout_seconds>5</timeout_seconds>
+    </database>
 </databases>

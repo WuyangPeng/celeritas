@@ -4,7 +4,7 @@
 #include "auth/detail/login_servers/login_servers_parameter.h"
 #include "common/time_helper.h"
 #include "database/database_pool_manager.h"
-#include "database/generated/mongo/auth/player_server_roles.h"
+#include "database/generated/mongo/auth/user_server_roles.h"
 #include "database/generated/mysql/auth/account_last_login.h"
 #include "database/generated/mysql/auth/server_cell.h"
 #include "database/generated/redis/auth/session_token.h"
@@ -113,10 +113,10 @@ celeritas::login_servers::void_awaitable_type celeritas::login_servers::create_s
     {
         const auto mongo_pool = database_pool_manager::get_instance().get_pool(mongo_auth_db_name.data());
 
-        if (const auto database_entity_change = co_await mongo_pool->select_one(player_server_roles::get_select(database_type::mongo, session_token.get_account_id()), player_server_roles::get_database_field_container()))
+        if (const auto database_entity_change = co_await mongo_pool->select_one(user_server_roles::get_select(database_type::mongo, session_token.get_account_id()), user_server_roles::get_database_field_container()))
         {
-            const player_server_roles player_server_roles{ *database_entity_change };
-            for (const auto servers = player_server_roles.get_servers();
+            const user_server_roles user_server_roles{ *database_entity_change };
+            for (const auto servers = user_server_roles.get_servers();
                  const auto& element : servers)
             {
                 auto server_role = server_role::from_json_string(element);

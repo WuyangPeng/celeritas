@@ -1,0 +1,19 @@
+[
+  {
+    "class_name": "user_time_refresh",
+    "database_name": "user_time_refresh",
+    "entity": [
+      {
+        "entity_name": "user_id",
+        "data_type": "int64",
+        "index_type": "key"
+      },
+      {
+        "entity_name": "player_time_refresh",
+        "data_type": "document_array",
+        "document_type": "player_time_refresh",
+        "comment": "时间刷新信息"
+      }
+    ]
+  }
+]

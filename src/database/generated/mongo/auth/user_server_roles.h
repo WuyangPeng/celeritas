@@ -10,17 +10,17 @@
 
 namespace celeritas
 {
-    class player_server_roles final : public database_entity
+    class user_server_roles final : public database_entity
     {
     public:
-        using class_type = player_server_roles;
+        using class_type = user_server_roles;
         using base_type = database_entity;
 
-        explicit player_server_roles(const database_entity_change& entity);
+        explicit user_server_roles(const database_entity_change& entity);
 
-        player_server_roles(database_type database_type, const database_entity_change& entity);
+        user_server_roles(database_type database_type, const database_entity_change& entity);
 
-        player_server_roles(database_type database_type, traits::param_type::int64_type id);
+        user_server_roles(database_type database_type, traits::param_type::int64_type id);
 
         [[nodiscard]] traits::int64_type get_id() const noexcept;
 
@@ -42,7 +42,7 @@ namespace celeritas
 
         [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, const basis_database_container_const_shared_ptr& key);
 
-        static constexpr std::string_view database_name{ "player_server_roles" };
+        static constexpr std::string_view database_name{ "user_server_roles" };
 
         static constexpr std::string_view id_describe{ "id" };
         static constexpr std::string_view servers_describe{ "servers" };
