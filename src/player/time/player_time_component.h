@@ -1,6 +1,8 @@
 ﻿#pragma once
 
+#include "database/document/player_time_refresh.h"
 #include "database/generated/mongo/auth/user_server_roles.h"
+#include "database/generated/mongo/player/user_time_refresh.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
 
@@ -26,8 +28,10 @@ namespace celeritas
         [[nodiscard]] bool is_modify() const override;
 
     private:
-        using optional_user_server_roles = std::optional<user_server_roles>;
+        using optional_user_time_refresh = std::optional<user_time_refresh>;
+        using player_time_refresh_container = std::vector<player_time_refresh>;
 
-        optional_user_server_roles user_server_roles_;
+        optional_user_time_refresh user_time_refresh_;
+        player_time_refresh_container player_time_refresh_;
     };
 }

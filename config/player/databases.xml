@@ -22,6 +22,17 @@
         <max_connections>10</max_connections>
         <timeout_seconds>10</timeout_seconds>
     </database>
+    <database name="mysql_config_db">
+        <database_type>mysql</database_type>
+        <host>127.0.0.1</host>
+        <port>3306</port>
+        <user>celeritas_user</user>
+        <password>celeritas_pass</password>
+        <db_name>config</db_name>
+        <min_connections>4</min_connections>
+        <max_connections>10</max_connections>
+        <timeout_seconds>10</timeout_seconds>
+    </database>
     <database name="mongo_auth_db">
         <database_type>mongo</database_type>
         <host>127.0.0.1</host>

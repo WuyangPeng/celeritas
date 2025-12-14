@@ -14,15 +14,11 @@ namespace celeritas
 
         player_time_refresh() noexcept;
 
-        [[nodiscard]] time_refresh_type get_time_refresh() const;
+        [[nodiscard]] int64_t get_time_refresh_id() const;
 
-        [[nodiscard]] int get_parameter() const;
+        void set_time_refresh_id(int64_t timeRefreshId);
 
         [[nodiscard]] int64_t get_last_refresh_time() const;
-
-        void set_time_refresh(time_refresh_type timeRefresh);
-
-        void set_parameter(int parameter);
 
         void set_last_refresh_time(int64_t lastRefreshTime);
 
@@ -30,13 +26,11 @@ namespace celeritas
 
         [[nodiscard]] static player_time_refresh from_json_string(const std::string& json_string);
 
-        static constexpr std::string_view time_refresh_description = "time_refresh";
-        static constexpr std::string_view parameter_description = "parameter";
+        static constexpr std::string_view time_refresh_id_description = "time_refresh_id";
         static constexpr std::string_view last_refresh_time_description = "last_refresh_time";
 
     private:
-        time_refresh_type time_refresh_;
-        int parameter_;
+        int64_t time_refresh_id_;
         int64_t last_refresh_time_;
     };
 }

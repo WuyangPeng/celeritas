@@ -1,0 +1,23 @@
+[
+  {
+    "class_name": "time_refresh",
+    "database_name": "time_refresh",
+    "entity": [
+      {
+        "entity_name": "id",
+        "data_type": "int64",
+        "index_type": "key"
+      },
+      {
+        "entity_name": "time_refresh_type",
+        "data_type": "int32",
+        "comment": "时间刷新类型"
+      },
+      {
+        "entity_name": "parameter",
+        "data_type": "int32",
+        "comment": "时间刷新参数"
+      }
+    ]
+  }
+]
