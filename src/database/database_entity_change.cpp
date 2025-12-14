@@ -78,6 +78,21 @@ bool celeritas::database_entity_change::is_modify() const
     return 0 < database_->get_size() || change_type_ == database_change_type::delete_type;
 }
 
+bool celeritas::database_entity_change::is_must_save() const
+{
+    if (!is_modify())
+    {
+        return false;
+    }
+
+    if (change_type_ == database_change_type::insert_type && database_->get_size() == 1)
+    {
+        return false;
+    }
+
+    return true;
+}
+
 std::any celeritas::database_entity_change::get_any_value(const std::string_view field_name) const
 {
     return database_->get_any_value(field_name);

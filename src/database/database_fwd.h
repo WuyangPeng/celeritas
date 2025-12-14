@@ -54,6 +54,7 @@ namespace celeritas
     constexpr std::string_view mysql_auth_db_name = "mysql_auth_db";
     constexpr std::string_view mongo_auth_db_name = "mongo_auth_db";
     constexpr std::string_view mysql_player_db_name = "mysql_player_db";
+    constexpr std::string_view mongo_player_db_name = "mongo_player_db";
     constexpr std::string_view payment_db_name = "payment_db";
     constexpr std::string_view redis_db_name = "redis_db";
 

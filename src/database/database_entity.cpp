@@ -37,6 +37,11 @@ bool celeritas::database_entity::is_modify() const
     return modify_->is_modify();
 }
 
+bool celeritas::database_entity::is_must_save() const
+{
+    return modify_->is_must_save();
+}
+
 void celeritas::database_entity::add_modify(const basis_database& basis_database)
 {
     modify_->modify(basis_database);

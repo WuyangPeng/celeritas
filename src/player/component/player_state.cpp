@@ -100,7 +100,10 @@ celeritas::player_state::void_awaitable_type celeritas::player_state::save_db()
 
     for (const auto& element : components_)
     {
-        co_await element->save_db();
+        if (element->is_modify())
+        {
+            co_await element->save_db();
+        }
     }
 }
 

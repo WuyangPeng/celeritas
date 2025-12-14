@@ -45,6 +45,8 @@ namespace celeritas
 
         [[nodiscard]] bool is_modify() const;
 
+        [[nodiscard]] bool is_must_save() const;
+
     private:
         using basis_database_container_shared_ptr = std::shared_ptr<basis_database_container>;
 

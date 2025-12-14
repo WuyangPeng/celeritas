@@ -38,6 +38,8 @@ namespace celeritas
 
         [[nodiscard]] bool is_modify() const;
 
+        [[nodiscard]] bool is_must_save() const;
+
     protected:
         using database_entity_change_shared_ptr = std::shared_ptr<database_entity_change>;
 
