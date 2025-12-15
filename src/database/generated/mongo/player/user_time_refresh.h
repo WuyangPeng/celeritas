@@ -30,6 +30,12 @@ namespace celeritas
 
         void set_player_time_refresh(traits::param_type::document_array_type player_time_refresh);
 
+        void set_player_time_refresh(int index, traits::param_type::document_array_element_type player_time_refresh);
+
+        void add_player_time_refresh(traits::param_type::document_array_element_type player_time_refresh);
+
+        void remove_player_time_refresh(int index);
+
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
         [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type);

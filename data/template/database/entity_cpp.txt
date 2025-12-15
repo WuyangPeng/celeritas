@@ -30,7 +30,7 @@ ${field_init}{
     add_modify(${key_name}_describe, ${key_name});
 }
 
-${database_get_define}${database_set_define}${database_modify_define}const celeritas::database_entity::database_field_container& celeritas::${class_name}::get_database_field_container()
+${database_get_define}${database_set_define}${database_modify_define}${database_array_modify_define}const celeritas::database_entity::database_field_container& celeritas::${class_name}::get_database_field_container()
 {
     static const database_field_container field_name_container{ ${database_field} };
 

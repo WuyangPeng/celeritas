@@ -83,6 +83,28 @@ void celeritas::user_server_roles::set_update_time(traits::param_type::int64_typ
     }
 }
 
+void celeritas::user_server_roles::set_servers(const int index, traits::param_type::document_array_element_type servers)
+{
+    if (servers_.set_value(index, servers))
+    {
+        add_modify(servers_describe, get_servers());
+    }
+}
+
+void celeritas::user_server_roles::add_servers(traits::param_type::document_array_element_type servers)
+{
+    servers_.add_value(servers);
+
+    add_modify(servers_describe, get_servers());
+}
+
+void celeritas::user_server_roles::remove_servers(const int index)
+{
+    servers_.remove_value(index);
+
+    add_modify(servers_describe, get_servers());
+}
+
 const celeritas::database_entity::database_field_container& celeritas::user_server_roles::get_database_field_container()
 {
     static const database_field_container field_name_container{ decltype(id_)::get_database_field(),

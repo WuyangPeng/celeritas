@@ -14,8 +14,8 @@ namespace celeritas
     {
     public:
         using class_type = entity;
-
         using entity_type = database_data_Type_traits<Type>::type;
+        using element_type = database_data_Type_traits<Type>::element_type;
 
         explicit entity(boost::call_traits<entity_type>::param_type entity) noexcept(std::is_arithmetic_v<entity_type>);
 
@@ -41,6 +41,12 @@ namespace celeritas
         void set_value(boost::call_traits<entity_type>::param_type entity) noexcept(std::is_arithmetic_v<entity_type>);
 
         void modify_value(boost::call_traits<entity_type>::param_type entity) noexcept(std::is_arithmetic_v<entity_type>);
+
+        [[nodiscard]] bool set_value(int index, boost::call_traits<element_type>::param_type entity);
+
+        void add_value(boost::call_traits<element_type>::param_type entity);
+
+        void remove_value(int index);
 
     private:
         entity_type entity_;

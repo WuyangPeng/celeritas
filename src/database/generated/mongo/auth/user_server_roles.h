@@ -34,6 +34,12 @@ namespace celeritas
 
         void set_update_time(traits::param_type::int64_type update_time);
 
+        void set_servers(int index, traits::param_type::document_array_element_type servers);
+
+        void add_servers(traits::param_type::document_array_element_type servers);
+
+        void remove_servers(int index);
+
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
         [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type);

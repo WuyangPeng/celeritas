@@ -1,0 +1,22 @@
+void celeritas::${class_name}::set_${entity}(const int index, traits::param_type::${entity_element_type} ${entity})
+{
+    if (${entity}_.set_value(index, ${entity}))
+    {
+        add_modify(${entity}_describe, get_${entity}());
+    }
+}
+
+void celeritas::${class_name}::add_${entity}(traits::param_type::${entity_element_type} ${entity})
+{
+    ${entity}_.add_value(${entity});
+
+    add_modify(${entity}_describe, get_${entity}());
+}
+
+void celeritas::${class_name}::remove_${entity}(const int index)
+{
+    ${entity}_.remove_value(index);
+
+    add_modify(${entity}_describe, get_${entity}());
+}
+

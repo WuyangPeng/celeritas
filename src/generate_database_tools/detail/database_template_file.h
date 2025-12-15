@@ -23,11 +23,15 @@ namespace celeritas
 
         [[nodiscard]] std::string get_database_modify_declaration_content() const;
 
+        [[nodiscard]] std::string get_database_array_modify_declaration_content() const;
+
         [[nodiscard]] std::string get_database_get_define_content() const;
 
         [[nodiscard]] std::string get_database_set_define_content() const;
 
         [[nodiscard]] std::string get_database_modify_define_content() const;
+
+        [[nodiscard]] std::string get_database_array_modify_define_content() const;
 
         [[nodiscard]] std::string get_field_content() const;
 
@@ -51,9 +55,11 @@ namespace celeritas
         std::string database_get_declaration_content_;
         std::string database_set_declaration_content_;
         std::string database_modify_declaration_content_;
+        std::string database_array_modify_declaration_content_;
         std::string database_get_define_content_;
         std::string database_set_define_content_;
         std::string database_modify_define_content_;
+        std::string database_array_modify_define_content_;
         std::string field_content_;
         std::string field_assignment_content_;
         std::string field_init_content_;

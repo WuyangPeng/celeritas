@@ -1,0 +1,6 @@
+        void set_${entity}(int index, traits::param_type::${entity_element_type} ${entity});
+
+        void add_${entity}(traits::param_type::${entity_element_type} ${entity});
+
+        void remove_${entity}(int index);
+

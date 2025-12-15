@@ -14,6 +14,11 @@ void celeritas::database_source::generate(const database_attribute& attribute, c
             database_modify_define_ += create_database_modify_define_content(element, database_template_file);
         }
 
+        if (element.is_array_type())
+        {
+            database_array_modify_define_ += create_database_array_modify_define_content(element, database_template_file);
+        }
+
         if (!element.is_key_type())
         {
             field_init_ += create_field_init_content(index, attribute, element, database_template_file);
@@ -42,6 +47,11 @@ const std::string& celeritas::database_source::get_database_set_define() const n
 const std::string& celeritas::database_source::get_database_modify_define() const noexcept
 {
     return database_modify_define_;
+}
+
+const std::string& celeritas::database_source::get_database_array_modify_define() const noexcept
+{
+    return database_array_modify_define_;
 }
 
 const std::string& celeritas::database_source::get_field_assignment() const noexcept
@@ -119,6 +129,16 @@ std::string celeritas::database_source::create_database_modify_define_content(co
     boost::replace_all(database_modify_define_content, "${entity}", entity_attribute.get_entity_name());
 
     return database_modify_define_content;
+}
+
+std::string celeritas::database_source::create_database_array_modify_define_content(const entity_attribute& entity_attribute, const database_template_file& database_template_file)
+{
+    auto database_array_modify_define_content = database_template_file.get_database_array_modify_define_content();
+
+    boost::replace_all(database_array_modify_define_content, "${entity_element_type}", entity_attribute.get_element_type());
+    boost::replace_all(database_array_modify_define_content, "${entity}", entity_attribute.get_entity_name());
+
+    return database_array_modify_define_content;
 }
 
 std::string celeritas::database_source::create_field_assignment_content(const int index, const database_attribute& attribute, const entity_attribute& entity_attribute, const database_template_file& database_template_file)

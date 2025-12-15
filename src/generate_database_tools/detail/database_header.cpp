@@ -13,6 +13,11 @@ void celeritas::database_header::generate(const database_attribute& attribute, c
             database_modify_declaration_ += create_database_modify_declaration_content(element, database_template_file);
         }
 
+        if (element.is_array_type())
+        {
+            database_array_modify_declaration_ += create_database_array_modify_declaration_content(element, database_template_file);
+        }
+
         database_get_declaration_ += create_database_get_declaration_content(element, database_template_file);
         database_set_declaration_ += create_database_set_declaration_content(element, database_template_file);
         database_describe_ += create_database_describe_content(element, database_template_file);
@@ -33,6 +38,11 @@ const std::string& celeritas::database_header::get_database_set_declaration() co
 const std::string& celeritas::database_header::get_database_modify_declaration() const noexcept
 {
     return database_modify_declaration_;
+}
+
+const std::string& celeritas::database_header::get_database_array_modify_declaration() const
+{
+    return database_array_modify_declaration_;
 }
 
 const std::string& celeritas::database_header::get_database_describe() const noexcept
@@ -91,6 +101,16 @@ std::string celeritas::database_header::create_database_modify_declaration_conte
     boost::replace_all(database_modify_declaration_content, "${entity}", entity_attribute.get_entity_name());
 
     return database_modify_declaration_content;
+}
+
+std::string celeritas::database_header::create_database_array_modify_declaration_content(const entity_attribute& entity_attribute, const database_template_file& database_template_file)
+{
+    auto database_array_modify_declaration_content = database_template_file.get_database_array_modify_declaration_content();
+
+    boost::replace_all(database_array_modify_declaration_content, "${entity_element_type}", entity_attribute.get_element_type());
+    boost::replace_all(database_array_modify_declaration_content, "${entity}", entity_attribute.get_entity_name());
+
+    return database_array_modify_declaration_content;
 }
 
 std::string celeritas::database_header::create_database_describe_content(const entity_attribute& entity_attribute, const database_template_file& database_template_file)

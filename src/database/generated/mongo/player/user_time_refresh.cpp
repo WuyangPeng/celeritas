@@ -64,6 +64,28 @@ void celeritas::user_time_refresh::set_player_time_refresh(traits::param_type::d
     }
 }
 
+void celeritas::user_time_refresh::set_player_time_refresh(const int index, traits::param_type::document_array_element_type player_time_refresh)
+{
+    if (player_time_refresh_.set_value(index, player_time_refresh))
+    {
+        add_modify(player_time_refresh_describe, get_player_time_refresh());
+    }
+}
+
+void celeritas::user_time_refresh::add_player_time_refresh(traits::param_type::document_array_element_type player_time_refresh)
+{
+    player_time_refresh_.add_value(player_time_refresh);
+
+    add_modify(player_time_refresh_describe, get_player_time_refresh());
+}
+
+void celeritas::user_time_refresh::remove_player_time_refresh(const int index)
+{
+    player_time_refresh_.remove_value(index);
+
+    add_modify(player_time_refresh_describe, get_player_time_refresh());
+}
+
 const celeritas::database_entity::database_field_container& celeritas::user_time_refresh::get_database_field_container()
 {
     static const database_field_container field_name_container{ decltype(user_id_)::get_database_field(),

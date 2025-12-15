@@ -32,3 +32,31 @@ void celeritas::entity<FieldName, Type, Index>::modify_value(typename boost::cal
 {
     entity_ += entity;
 }
+
+template <const std::string_view& FieldName, celeritas::database_data_type Type, celeritas::database_index_type Index>
+bool celeritas::entity<FieldName, Type, Index>::set_value(int index, typename boost::call_traits<element_type>::param_type entity)
+{
+    auto& element = entity_.at(index);
+    if (element != entity)
+    {
+        element = entity;
+        return true;
+    }
+
+    return false;
+}
+
+template <const std::string_view& FieldName, celeritas::database_data_type Type, celeritas::database_index_type Index>
+void celeritas::entity<FieldName, Type, Index>::add_value(typename boost::call_traits<element_type>::param_type entity)
+{
+    entity_.emplace_back(entity);
+}
+
+template <const std::string_view& FieldName, celeritas::database_data_type Type, celeritas::database_index_type Index>
+void celeritas::entity<FieldName, Type, Index>::remove_value(int index)
+{
+    if (0 <= index && index < entity_.size())
+    {
+        entity_.erase(entity_.begin() + index);
+    }
+}

@@ -16,9 +16,11 @@ celeritas::database_template_file::database_template_file(std::string template_d
       database_get_declaration_content_{},
       database_set_declaration_content_{},
       database_modify_declaration_content_{},
+      database_array_modify_declaration_content_{},
       database_get_define_content_{},
       database_set_define_content_{},
       database_modify_define_content_{},
+      database_array_modify_define_content_{},
       field_content_{},
       field_assignment_content_{},
       field_init_content_{},
@@ -58,6 +60,11 @@ std::string celeritas::database_template_file::get_database_modify_declaration_c
     return database_modify_declaration_content_;
 }
 
+std::string celeritas::database_template_file::get_database_array_modify_declaration_content() const
+{
+    return database_array_modify_declaration_content_;
+}
+
 std::string celeritas::database_template_file::get_database_get_define_content() const
 {
     return database_get_define_content_;
@@ -71,6 +78,11 @@ std::string celeritas::database_template_file::get_database_set_define_content()
 std::string celeritas::database_template_file::get_database_modify_define_content() const
 {
     return database_modify_define_content_;
+}
+
+std::string celeritas::database_template_file::get_database_array_modify_define_content() const
+{
+    return database_array_modify_define_content_;
 }
 
 std::string celeritas::database_template_file::get_field_content() const
@@ -106,9 +118,11 @@ void celeritas::database_template_file::load_template()
     load_template(database_get_declaration_template_name, database_get_declaration_content_);
     load_template(database_set_declaration_template_name, database_set_declaration_content_);
     load_template(database_modify_declaration_template_name, database_modify_declaration_content_);
+    load_template(database_array_modify_declaration_template_name, database_array_modify_declaration_content_);
     load_template(database_get_define_template_name, database_get_define_content_);
     load_template(database_set_define_template_name, database_set_define_content_);
     load_template(database_modify_define_template_name, database_modify_define_content_);
+    load_template(database_array_modify_define_template_name, database_array_modify_define_content_);
     load_template(field_template_name, field_content_);
     load_template(field_assignment_template_name, field_assignment_content_);
     load_template(field_init_template_name, field_init_content_);

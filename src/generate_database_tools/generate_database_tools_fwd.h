@@ -26,9 +26,11 @@ namespace celeritas
     constexpr std::string_view database_get_declaration_template_name{ "database_get_declaration.txt" };
     constexpr std::string_view database_set_declaration_template_name{ "database_set_declaration.txt" };
     constexpr std::string_view database_modify_declaration_template_name{ "database_modify_declaration.txt" };
+    constexpr std::string_view database_array_modify_declaration_template_name{ "database_array_modify_declaration.txt" };
     constexpr std::string_view database_get_define_template_name{ "database_get_define.txt" };
     constexpr std::string_view database_set_define_template_name{ "database_set_define.txt" };
     constexpr std::string_view database_modify_define_template_name{ "database_modify_define.txt" };
+    constexpr std::string_view database_array_modify_define_template_name{ "database_array_modify_define.txt" };
     constexpr std::string_view field_template_name{ "field.txt" };
     constexpr std::string_view field_assignment_template_name{ "field_assignment.txt" };
     constexpr std::string_view field_init_template_name{ "field_init.txt" };
