@@ -8,6 +8,8 @@ namespace celeritas
     {
     public:
         using class_type = time_helper;
+        using local_time_type = std::chrono::local_time<std::chrono::system_clock::duration>;
+        using time_point_type = std::chrono::system_clock::time_point;
 
         [[nodiscard]] static int64_t get_current_milliseconds();
 
@@ -25,6 +27,8 @@ namespace celeritas
 
         [[nodiscard]] static int64_t get_start_of_month_milliseconds_with_offset(int64_t milliseconds_offset);
 
-        [[nodiscard]] static int64_t to_milliseconds(const std::chrono::system_clock::time_point& time_point);
+        [[nodiscard]] static int64_t to_milliseconds(const time_point_type& time_point);
+
+        [[nodiscard]] static local_time_type to_local_time(const time_point_type& time_point);
     };
 }

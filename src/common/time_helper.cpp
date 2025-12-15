@@ -21,10 +21,9 @@ int64_t celeritas::time_helper::get_milliseconds_with_offset(const int64_t milli
 {
     const auto* current_zone = std::chrono::current_zone();
     const auto now = std::chrono::system_clock::now();
-    const std::chrono::zoned_time local_now{ current_zone, now };
 
     // 计算本地时间的今天零点
-    const auto today_midnight_local = std::chrono::floor<std::chrono::days>(local_now.get_local_time());
+    const auto today_midnight_local = std::chrono::floor<std::chrono::days>(to_local_time(now));
 
     // 将本地时间的零点转换回 system_clock::time_point
     const auto today_midnight = current_zone->to_sys(today_midnight_local);
@@ -62,10 +61,9 @@ int64_t celeritas::time_helper::get_start_of_week_milliseconds_with_offset(const
     // 获取当前时区和时间点
     const auto* current_zone = std::chrono::current_zone();
     const auto now = std::chrono::system_clock::now();
-    const std::chrono::zoned_time local_now{ current_zone, now };
 
     // 获取本地时间的今天日期
-    const auto today_local = std::chrono::floor<std::chrono::days>(local_now.get_local_time());
+    const auto today_local = std::chrono::floor<std::chrono::days>(to_local_time(now));
 
     // 计算今天是星期几
     const std::chrono::weekday today_weekday{ today_local };
@@ -113,10 +111,9 @@ int64_t celeritas::time_helper::get_start_of_month_milliseconds_with_offset(cons
     // 获取当前时区和时间点
     const auto* current_zone = std::chrono::current_zone();
     const auto now = std::chrono::system_clock::now();
-    const std::chrono::zoned_time local_now{ current_zone, now };
 
     // 获取本地时间的今天日期
-    const auto today_local = std::chrono::floor<std::chrono::days>(local_now.get_local_time());
+    const auto today_local = std::chrono::floor<std::chrono::days>(to_local_time(now));
 
     // 将日期转换为 year_month_day 格式
     const std::chrono::year_month_day year_month_day_local{ today_local };
@@ -152,7 +149,14 @@ int64_t celeritas::time_helper::get_start_of_month_milliseconds_with_offset(cons
     return to_milliseconds(cycle_target_time);
 }
 
-int64_t celeritas::time_helper::to_milliseconds(const std::chrono::system_clock::time_point& time_point)
+int64_t celeritas::time_helper::to_milliseconds(const time_point_type& time_point)
 {
     return std::chrono::time_point_cast<std::chrono::milliseconds>(time_point).time_since_epoch().count();
+}
+
+celeritas::time_helper::local_time_type celeritas::time_helper::to_local_time(const time_point_type& time_point)
+{
+    const auto* current_zone = std::chrono::current_zone();
+    const std::chrono::zoned_time local_time{ current_zone, time_point };
+    return local_time.get_local_time();
 }

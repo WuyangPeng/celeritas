@@ -14,7 +14,15 @@ namespace celeritas
         explicit player_default_timer(io_context_type& io_context, duration_type interval, default_time_type default_time_type);
 
     private:
+        using time_point_type = std::chrono::time_point<std::chrono::local_t, std::chrono::days>;
+
         void execute_timer_task() override;
+
+        void execute_zero_timer_task();
+
+        void execute_week_timer_task(const time_point_type& today_local);
+
+        void execute_month_timer_task(const time_point_type& today_local);
 
         io_context_type& io_context_;
         default_time_type default_time_type_;
