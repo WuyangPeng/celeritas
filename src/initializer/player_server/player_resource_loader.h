@@ -20,6 +20,8 @@ namespace celeritas
 
         void start_health_check_timer(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
 
+        void load_database_config(io_context_type& io_context);
+
         player_state_check_timer_shared_ptr player_state_check_timer_;
     };
 }
