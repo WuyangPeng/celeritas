@@ -31,6 +31,11 @@ void celeritas::timer_base::stop()
     timer_.cancel();
 }
 
+void celeritas::timer_base::set_duration_type(duration_type interval)
+{
+    interval_ = interval;
+}
+
 void celeritas::timer_base::on_timer_elapsed()
 {
     try

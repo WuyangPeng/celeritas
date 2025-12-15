@@ -49,6 +49,9 @@ namespace celeritas
         // 保存数据库
         [[nodiscard]] virtual void_awaitable_type save_db();
 
+        // 默认定时器回调
+        [[nodiscard]] void_awaitable_type time_callback(default_time_type default_time_type);
+
         [[nodiscard]] player_state* get_player_state();
 
         [[nodiscard]] database_pool_shared_ptr get_mysql_player_db_name();

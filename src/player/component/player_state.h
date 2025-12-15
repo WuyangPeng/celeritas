@@ -76,6 +76,8 @@ namespace celeritas
 
         void set_instance_id(const std::string& instance_id);
 
+        [[nodiscard]] void_awaitable_type time_callback(default_time_type default_time_type);
+
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;

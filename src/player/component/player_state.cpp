@@ -161,6 +161,14 @@ void celeritas::player_state::set_instance_id(const std::string& instance_id)
     instance_id_ = instance_id;
 }
 
+celeritas::player_state::void_awaitable_type celeritas::player_state::time_callback(const default_time_type default_time_type)
+{
+    for (const auto& element : components_)
+    {
+        co_await element->time_callback(default_time_type);
+    }
+}
+
 void celeritas::player_state::check() const
 {
     for (auto index = 0; index < static_cast<int>(player_component_type::max_component); ++index)

@@ -46,6 +46,11 @@ celeritas::player_component::void_awaitable_type celeritas::player_component::sa
     co_return;
 }
 
+celeritas::player_component::void_awaitable_type celeritas::player_component::time_callback(default_time_type default_time_type)
+{
+    co_return;
+}
+
 celeritas::player_state* celeritas::player_component::get_player_state()
 {
     return player_state_;

@@ -21,5 +21,5 @@ namespace celeritas
     class refund_notify;
     class we_chat_refund_notify;
 
-    constexpr auto default_order_timeout = minute * 30;
+    constexpr auto default_order_timeout = minute_milliseconds * 30;
 }

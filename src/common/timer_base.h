@@ -31,6 +31,9 @@ namespace celeritas
 
         void stop();
 
+    protected:
+        void set_duration_type(duration_type interval);
+
     private:
         using timer_type = boost::asio::steady_timer;
         using error_code_type = boost::system::error_code;

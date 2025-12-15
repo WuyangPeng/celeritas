@@ -64,12 +64,19 @@ namespace celeritas
 
     constexpr auto max_clock_skew_ms = 5;
 
-    constexpr auto milliseconds = 1000;
-    constexpr auto minute = 60 * milliseconds;
-    constexpr auto http_request_timestamp_expired = minute * 5;
-
-    constexpr auto minute_seconds = 60;
+    constexpr auto milliseconds = 1000LL;
+    constexpr auto minute_seconds = 60LL;
+    constexpr auto minute_milliseconds = minute_seconds * milliseconds;
     constexpr auto hour_seconds = minute_seconds * minute_seconds;
-    constexpr auto day_hour = 24;
+    constexpr auto day_hour = 24LL;
     constexpr auto day_seconds = hour_seconds * day_hour;
+    constexpr auto hour_milliseconds = hour_seconds * milliseconds;
+    constexpr auto day_milliseconds = day_seconds * milliseconds;
+    constexpr auto week = 7LL;
+    constexpr auto week_milliseconds = day_milliseconds * week;
+    constexpr auto min_month = 28LL;
+    constexpr auto max_month = 31LL;
+    constexpr auto max_month_milliseconds = day_milliseconds * max_month;
+
+    constexpr auto http_request_timestamp_expired = minute_seconds * 5;
 }

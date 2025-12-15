@@ -59,6 +59,16 @@ celeritas::player_manager::void_awaitable_type celeritas::player_manager::save_d
     }
 }
 
+celeritas::player_manager::void_awaitable_type celeritas::player_manager::time_callback(default_time_type default_time_type)
+{
+    std::shared_lock lock{ mutex_ };
+
+    for (const auto& element : container_ | std::views::values)
+    {
+        co_await element->time_callback(default_time_type);
+    }
+}
+
 celeritas::player_manager::player_manager()
     : container_{}, mutex_{}
 {
