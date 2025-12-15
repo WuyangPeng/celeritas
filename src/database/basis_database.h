@@ -54,7 +54,7 @@ namespace celeritas
         [[nodiscard]] database_data_type get_data_type() const noexcept;
 
         template <database_data_type Type>
-        [[nodiscard]] database_data_Type_traits<Type>::Type get_value() const;
+        [[nodiscard]] database_data_Type_traits<Type>::type get_value() const;
 
         template <database_data_type Type>
         [[nodiscard]] std::string get_array_string_value() const;

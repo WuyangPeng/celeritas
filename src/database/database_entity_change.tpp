@@ -6,7 +6,7 @@
 #include <boost/core/demangle.hpp>
 
 template <celeritas::database_data_type Type>
-celeritas::database_data_Type_traits<Type>::Type celeritas::database_entity_change::get_value(const std::string_view field_name, typename boost::call_traits<typename database_data_Type_traits<Type>::Type>::param_type default_value) const
+celeritas::database_data_Type_traits<Type>::type celeritas::database_entity_change::get_value(const std::string_view field_name, typename boost::call_traits<typename database_data_Type_traits<Type>::type>::param_type default_value) const
 {
     const auto& result = get_any_value(field_name);
 
@@ -14,7 +14,7 @@ celeritas::database_data_Type_traits<Type>::Type celeritas::database_entity_chan
     {
         if (result.has_value())
         {
-            return std::any_cast<typename database_data_Type_traits<Type>::Type>(result);
+            return std::any_cast<typename database_data_Type_traits<Type>::type>(result);
         }
     }
     catch (const std::bad_any_cast& error)
@@ -25,7 +25,7 @@ celeritas::database_data_Type_traits<Type>::Type celeritas::database_entity_chan
         << ", actual type: "
         << boost::core::demangle(result.type().name())
         << ", expected type: "
-        << boost::core::demangle(typeid(typename database_data_Type_traits<Type>::Type).name())
+        << boost::core::demangle(typeid(typename database_data_Type_traits<Type>::type).name())
         << ", what: "
         << error.what();
 

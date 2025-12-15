@@ -19,15 +19,15 @@ celeritas::basis_database::basis_database(const std::string_view field_name, T v
 }
 
 template <celeritas::database_data_type Type>
-celeritas::database_data_Type_traits<Type>::Type celeritas::basis_database::get_value() const
+celeritas::database_data_Type_traits<Type>::type celeritas::basis_database::get_value() const
 {
     if (const auto value = get_any_value();
         value.has_value())
     {
-        return std::any_cast<typename database_data_Type_traits<Type>::Type>(value);
+        return std::any_cast<typename database_data_Type_traits<Type>::type>(value);
     }
 
-    return typename database_data_Type_traits<Type>::Type{};
+    return typename database_data_Type_traits<Type>::type{};
 }
 
 template <celeritas::database_data_type Type>
