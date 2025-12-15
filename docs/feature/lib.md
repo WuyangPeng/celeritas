@@ -419,6 +419,15 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **用法**：通过 `database_pool_manager::get_session<SessionType>()` 获取会话时，返回的即是 `database_session_guard`
       实例。
 
+### 配置管理 (Configuration Management)
+
+* **⚙️ 配置管理器 (`config_manager`)**
+    - **作用**：作为单例类，负责从数据库中异步加载和缓存所有配置信息（如`time_refresh`）。
+    - **特点**：
+        - **配置加载与缓存**：在服务启动时加载所有配置，并缓存在内存中。
+        - **线程安全访问**：提供线程安全的方法来获取指定配置信息。
+        - **热重载**：支持通过 `reload_from_db` 方法按需重新加载配置，无需重启服务。
+
 ### redis command wrappers（redis命令封装）
 
 * **📜 Redis命令基类 (`redis_commands`)**
@@ -1135,6 +1144,11 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
 * **➡️ 登录请求消息处理器 (`service_login_request_message_handler`)**
     - **作用**：处理客户端发起的登录请求。`
     - **功能**：接收并处理`login_request`消息，验证玩家身份并返回登录结果。
+
+
+* **🔄 重载配置数据库消息处理器 (`reload_config_db_message_handler`)**
+    - **作用**：处理重新加载配置数据库的请求。
+    - **功能**：接收并处理 `reload_config_db` 消息，触发 `config_manager` 单例从数据库中重新加载指定 `db_name` 和 `id` 的配置信息。
 
 ### http handlers（HTTP 处理器）
 

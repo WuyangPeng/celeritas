@@ -2,6 +2,15 @@
 
 package celeritas.proto.service;
 
+// 重载配置数据库
+message reload_config_db_request {
+  string db_name = 1;
+  int64 id = 2;
+}
+
+message reload_config_db_response {
+}
+
 message service_login_request {
     int64 account_id = 1;
     bool new_account = 2;
@@ -23,13 +32,15 @@ message service_login_response {
 
 message service_player_request {
   oneof payload {
-    service_login_request service_login = 1;
+    reload_config_db_request reload_config_db = 1;
+    service_login_request service_login = 2;
   }
 }
 
 message service_player_response {
   oneof payload {
-    service_login_response service_login = 1;
+    reload_config_db_response reload_config_db = 1;
+    service_login_response service_login = 2;
   }
 }
 

@@ -5,6 +5,12 @@
 
 celeritas::service_player_response_message_handler::service_player_response_message_handler()
 {
+    add_handler_function(proto::service::service_player_response::PayloadCase::kReloadConfigDb,
+                         [](const protobuf_handle_parameter_shared_ptr& handle_parameter,
+                            const message_type& current_message,
+                            const message_registry_shared_ptr& message_registry) -> bool {
+                             return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::reload_config_db);
+                         });
     add_handler_function(proto::service::service_player_response::PayloadCase::kServiceLogin,
                          [](const protobuf_handle_parameter_shared_ptr& handle_parameter,
                             const message_type& current_message,

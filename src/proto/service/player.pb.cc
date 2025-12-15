@@ -96,6 +96,52 @@ struct service_login_requestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 service_login_requestDefaultTypeInternal _service_login_request_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR reload_config_db_response::reload_config_db_response(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(reload_config_db_response_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct reload_config_db_responseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR reload_config_db_responseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~reload_config_db_responseDefaultTypeInternal() {}
+  union {
+    reload_config_db_response _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 reload_config_db_responseDefaultTypeInternal _reload_config_db_response_default_instance_;
+
+inline constexpr reload_config_db_request::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        db_name_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        id_{::int64_t{0}} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR reload_config_db_request::reload_config_db_request(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(reload_config_db_request_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct reload_config_db_requestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR reload_config_db_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~reload_config_db_requestDefaultTypeInternal() {}
+  union {
+    reload_config_db_request _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 reload_config_db_requestDefaultTypeInternal _reload_config_db_request_default_instance_;
 
 inline constexpr service_player_response::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -159,6 +205,14 @@ const ::uint32_t
     TableStruct_proto_2fservice_2fplayer_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
         0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::reload_config_db_request, _impl_._has_bits_),
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::reload_config_db_request, _impl_.db_name_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::reload_config_db_request, _impl_.id_),
+        0,
+        1,
+        0x000, // bitmap
+        0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_._has_bits_),
         12, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_.account_id_),
@@ -194,20 +248,26 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_._oneof_case_[0]),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_response, _impl_._oneof_case_[0]),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_response, _impl_.payload_),
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, sizeof(::celeritas::proto::service::service_login_request)},
-        {21, sizeof(::celeritas::proto::service::service_login_response)},
-        {32, sizeof(::celeritas::proto::service::service_player_request)},
-        {36, sizeof(::celeritas::proto::service::service_player_response)},
+        {0, sizeof(::celeritas::proto::service::reload_config_db_request)},
+        {7, sizeof(::celeritas::proto::service::reload_config_db_response)},
+        {8, sizeof(::celeritas::proto::service::service_login_request)},
+        {29, sizeof(::celeritas::proto::service::service_login_response)},
+        {40, sizeof(::celeritas::proto::service::service_player_request)},
+        {45, sizeof(::celeritas::proto::service::service_player_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
+    &::celeritas::proto::service::_reload_config_db_request_default_instance_._instance,
+    &::celeritas::proto::service::_reload_config_db_response_default_instance_._instance,
     &::celeritas::proto::service::_service_login_request_default_instance_._instance,
     &::celeritas::proto::service::_service_login_response_default_instance_._instance,
     &::celeritas::proto::service::_service_player_request_default_instance_._instance,
@@ -216,33 +276,39 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_proto_2fservice_2fplayer_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\032proto/service/player.proto\022\027celeritas."
-    "proto.service\"\333\001\n\025service_login_request\022"
-    "\022\n\naccount_id\030\001 \001(\003\022\023\n\013new_account\030\002 \001(\010"
-    "\022\027\n\017account_bind_id\030\003 \001(\003\022\032\n\022new_game_se"
-    "rver_id\030\004 \001(\010\022\026\n\016game_server_id\030\005 \001(\t\022\021\n"
-    "\tdevice_id\030\006 \001(\t\022\023\n\013app_version\030\007 \001(\t\022\022\n"
-    "\nsession_id\030\010 \001(\003\022\020\n\010protocol\030\t \001(\005\"i\n\026s"
-    "ervice_login_response\022\024\n\014current_time\030\001 "
-    "\001(\003\022\022\n\nsession_id\030\002 \001(\003\022\020\n\010protocol\030\003 \001("
-    "\005\022\023\n\013instance_id\030\004 \001(\t\"l\n\026service_player"
-    "_request\022G\n\rservice_login\030\001 \001(\0132..celeri"
-    "tas.proto.service.service_login_requestH"
-    "\000B\t\n\007payload\"n\n\027service_player_response\022"
-    "H\n\rservice_login\030\001 \001(\0132/.celeritas.proto"
-    ".service.service_login_responseH\000B\t\n\007pay"
-    "loadb\006proto3"
+    "proto.service\"7\n\030reload_config_db_reques"
+    "t\022\017\n\007db_name\030\001 \001(\t\022\n\n\002id\030\002 \001(\003\"\033\n\031reload"
+    "_config_db_response\"\333\001\n\025service_login_re"
+    "quest\022\022\n\naccount_id\030\001 \001(\003\022\023\n\013new_account"
+    "\030\002 \001(\010\022\027\n\017account_bind_id\030\003 \001(\003\022\032\n\022new_g"
+    "ame_server_id\030\004 \001(\010\022\026\n\016game_server_id\030\005 "
+    "\001(\t\022\021\n\tdevice_id\030\006 \001(\t\022\023\n\013app_version\030\007 "
+    "\001(\t\022\022\n\nsession_id\030\010 \001(\003\022\020\n\010protocol\030\t \001("
+    "\005\"i\n\026service_login_response\022\024\n\014current_t"
+    "ime\030\001 \001(\003\022\022\n\nsession_id\030\002 \001(\003\022\020\n\010protoco"
+    "l\030\003 \001(\005\022\023\n\013instance_id\030\004 \001(\t\"\273\001\n\026service"
+    "_player_request\022M\n\020reload_config_db\030\001 \001("
+    "\01321.celeritas.proto.service.reload_confi"
+    "g_db_requestH\000\022G\n\rservice_login\030\002 \001(\0132.."
+    "celeritas.proto.service.service_login_re"
+    "questH\000B\t\n\007payload\"\276\001\n\027service_player_re"
+    "sponse\022N\n\020reload_config_db\030\001 \001(\01322.celer"
+    "itas.proto.service.reload_config_db_resp"
+    "onseH\000\022H\n\rservice_login\030\002 \001(\0132/.celerita"
+    "s.proto.service.service_login_responseH\000"
+    "B\t\n\007payloadb\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fservice_2fplayer_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fplayer_2eproto = {
     false,
     false,
-    612,
+    859,
     descriptor_table_protodef_proto_2fservice_2fplayer_2eproto,
     "proto/service/player.proto",
     &descriptor_table_proto_2fservice_2fplayer_2eproto_once,
     nullptr,
     0,
-    4,
+    6,
     schemas,
     file_default_instances,
     TableStruct_proto_2fservice_2fplayer_2eproto::offsets,
@@ -252,6 +318,418 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservic
 namespace celeritas {
 namespace proto {
 namespace service {
+// ===================================================================
+
+class reload_config_db_request::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<reload_config_db_request>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(reload_config_db_request, _impl_._has_bits_);
+};
+
+reload_config_db_request::reload_config_db_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, reload_config_db_request_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.reload_config_db_request)
+}
+PROTOBUF_NDEBUG_INLINE reload_config_db_request::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::celeritas::proto::service::reload_config_db_request& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        db_name_(arena, from.db_name_) {}
+
+reload_config_db_request::reload_config_db_request(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const reload_config_db_request& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, reload_config_db_request_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  reload_config_db_request* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.id_ = from._impl_.id_;
+
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.reload_config_db_request)
+}
+PROTOBUF_NDEBUG_INLINE reload_config_db_request::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        db_name_(arena) {}
+
+inline void reload_config_db_request::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.id_ = {};
+}
+reload_config_db_request::~reload_config_db_request() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.service.reload_config_db_request)
+  SharedDtor(*this);
+}
+inline void reload_config_db_request::SharedDtor(MessageLite& self) {
+  reload_config_db_request& this_ = static_cast<reload_config_db_request&>(self);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.db_name_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL reload_config_db_request::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) reload_config_db_request(arena);
+}
+constexpr auto reload_config_db_request::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(reload_config_db_request),
+                                            alignof(reload_config_db_request));
+}
+constexpr auto reload_config_db_request::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_reload_config_db_request_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &reload_config_db_request::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<reload_config_db_request>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &reload_config_db_request::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<reload_config_db_request>(), &reload_config_db_request::ByteSizeLong,
+              &reload_config_db_request::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(reload_config_db_request, _impl_._cached_size_),
+          false,
+      },
+      &reload_config_db_request::kDescriptorMethods,
+      &descriptor_table_proto_2fservice_2fplayer_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull reload_config_db_request_class_data_ =
+        reload_config_db_request::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+reload_config_db_request::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&reload_config_db_request_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(reload_config_db_request_class_data_.tc_table);
+  return reload_config_db_request_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 64, 2>
+reload_config_db_request::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(reload_config_db_request, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    reload_config_db_request_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_config_db_request>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int64 id = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(reload_config_db_request, _impl_.id_), 1>(),
+     {16, 1, 0, PROTOBUF_FIELD_OFFSET(reload_config_db_request, _impl_.id_)}},
+    // string db_name = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(reload_config_db_request, _impl_.db_name_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string db_name = 1;
+    {PROTOBUF_FIELD_OFFSET(reload_config_db_request, _impl_.db_name_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int64 id = 2;
+    {PROTOBUF_FIELD_OFFSET(reload_config_db_request, _impl_.id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+  }},
+  // no aux_entries
+  {{
+    "\60\7\0\0\0\0\0\0"
+    "celeritas.proto.service.reload_config_db_request"
+    "db_name"
+  }},
+};
+PROTOBUF_NOINLINE void reload_config_db_request::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.service.reload_config_db_request)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    _impl_.db_name_.ClearNonDefaultToEmpty();
+  }
+  _impl_.id_ = ::int64_t{0};
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL reload_config_db_request::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const reload_config_db_request& this_ = static_cast<const reload_config_db_request&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL reload_config_db_request::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const reload_config_db_request& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.service.reload_config_db_request)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // string db_name = 1;
+  if ((this_._impl_._has_bits_[0] & 0x00000001U) != 0) {
+    if (!this_._internal_db_name().empty()) {
+      const ::std::string& _s = this_._internal_db_name();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.service.reload_config_db_request.db_name");
+      target = stream->WriteStringMaybeAliased(1, _s, target);
+    }
+  }
+
+  // int64 id = 2;
+  if ((this_._impl_._has_bits_[0] & 0x00000002U) != 0) {
+    if (this_._internal_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<2>(
+              stream, this_._internal_id(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.service.reload_config_db_request)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t reload_config_db_request::ByteSizeLong(const MessageLite& base) {
+  const reload_config_db_request& this_ = static_cast<const reload_config_db_request&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t reload_config_db_request::ByteSizeLong() const {
+  const reload_config_db_request& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.service.reload_config_db_request)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003U) != 0) {
+    // string db_name = 1;
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      if (!this_._internal_db_name().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_db_name());
+      }
+    }
+    // int64 id = 2;
+    if ((cached_has_bits & 0x00000002U) != 0) {
+      if (this_._internal_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+            this_._internal_id());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void reload_config_db_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<reload_config_db_request*>(&to_msg);
+  auto& from = static_cast<const reload_config_db_request&>(from_msg);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    from.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.service.reload_config_db_request)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003U) != 0) {
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      if (!from._internal_db_name().empty()) {
+        _this->_internal_set_db_name(from._internal_db_name());
+      } else {
+        if (_this->_impl_.db_name_.IsDefault()) {
+          _this->_internal_set_db_name("");
+        }
+      }
+    }
+    if ((cached_has_bits & 0x00000002U) != 0) {
+      if (from._internal_id() != 0) {
+        _this->_impl_.id_ = from._impl_.id_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void reload_config_db_request::CopyFrom(const reload_config_db_request& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.service.reload_config_db_request)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void reload_config_db_request::InternalSwap(reload_config_db_request* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.db_name_, &other->_impl_.db_name_, arena);
+  swap(_impl_.id_, other->_impl_.id_);
+}
+
+::google::protobuf::Metadata reload_config_db_request::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class reload_config_db_response::_Internal {
+ public:
+};
+
+reload_config_db_response::reload_config_db_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, reload_config_db_response_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.reload_config_db_response)
+}
+reload_config_db_response::reload_config_db_response(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const reload_config_db_response& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, reload_config_db_response_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  reload_config_db_response* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.reload_config_db_response)
+}
+
+inline void* PROTOBUF_NONNULL reload_config_db_response::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) reload_config_db_response(arena);
+}
+constexpr auto reload_config_db_response::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(reload_config_db_response),
+                                            alignof(reload_config_db_response));
+}
+constexpr auto reload_config_db_response::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_reload_config_db_response_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &reload_config_db_response::MergeImpl,
+          ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<reload_config_db_response>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &reload_config_db_response::SharedDtor,
+          ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<reload_config_db_response>(), &reload_config_db_response::ByteSizeLong,
+              &reload_config_db_response::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(reload_config_db_response, _impl_._cached_size_),
+          false,
+      },
+      &reload_config_db_response::kDescriptorMethods,
+      &descriptor_table_proto_2fservice_2fplayer_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull reload_config_db_response_class_data_ =
+        reload_config_db_response::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+reload_config_db_response::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&reload_config_db_response_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(reload_config_db_response_class_data_.tc_table);
+  return reload_config_db_response_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
+reload_config_db_response::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    reload_config_db_response_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_config_db_response>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+::google::protobuf::Metadata reload_config_db_response::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
 // ===================================================================
 
 class service_login_request::_Internal {
@@ -1176,6 +1654,19 @@ class service_player_request::_Internal {
       PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_._oneof_case_);
 };
 
+void service_player_request::set_allocated_reload_config_db(::celeritas::proto::service::reload_config_db_request* PROTOBUF_NULLABLE reload_config_db) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (reload_config_db) {
+    ::google::protobuf::Arena* submessage_arena = reload_config_db->GetArena();
+    if (message_arena != submessage_arena) {
+      reload_config_db = ::google::protobuf::internal::GetOwnedMessage(message_arena, reload_config_db, submessage_arena);
+    }
+    set_has_reload_config_db();
+    _impl_.payload_.reload_config_db_ = reload_config_db;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_player_request.reload_config_db)
+}
 void service_player_request::set_allocated_service_login(::celeritas::proto::service::service_login_request* PROTOBUF_NULLABLE service_login) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
@@ -1222,6 +1713,9 @@ service_player_request::service_player_request(
   switch (payload_case()) {
     case PAYLOAD_NOT_SET:
       break;
+      case kReloadConfigDb:
+        _impl_.payload_.reload_config_db_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.reload_config_db_);
+        break;
       case kServiceLogin:
         _impl_.payload_.service_login_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.service_login_);
         break;
@@ -1260,6 +1754,14 @@ void service_player_request::clear_payload() {
 // @@protoc_insertion_point(one_of_clear_start:celeritas.proto.service.service_player_request)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   switch (payload_case()) {
+    case kReloadConfigDb: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.reload_config_db_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.reload_config_db_);
+      }
+      break;
+    }
     case kServiceLogin: {
       if (GetArena() == nullptr) {
         delete _impl_.payload_.service_login_;
@@ -1319,17 +1821,17 @@ service_player_request::GetClassData() const {
   return service_player_request_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
+const ::_pbi::TcParseTable<0, 2, 2, 0, 2>
 service_player_request::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    2, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    1,  // num_aux_entries
+    2,  // num_field_entries
+    2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     service_player_request_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -1342,10 +1844,13 @@ service_player_request::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // .celeritas.proto.service.service_login_request service_login = 1;
-    {PROTOBUF_FIELD_OFFSET(service_player_request, _impl_.payload_.service_login_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.service.reload_config_db_request reload_config_db = 1;
+    {PROTOBUF_FIELD_OFFSET(service_player_request, _impl_.payload_.reload_config_db_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.service.service_login_request service_login = 2;
+    {PROTOBUF_FIELD_OFFSET(service_player_request, _impl_.payload_.service_login_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
+      {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_config_db_request>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_login_request>()},
   }},
   {{
@@ -1380,13 +1885,22 @@ PROTOBUF_NOINLINE void service_player_request::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // .celeritas.proto.service.service_login_request service_login = 1;
-  if (this_.payload_case() == kServiceLogin) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, *this_._impl_.payload_.service_login_, this_._impl_.payload_.service_login_->GetCachedSize(), target,
-        stream);
+  switch (this_.payload_case()) {
+    case kReloadConfigDb: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          1, *this_._impl_.payload_.reload_config_db_, this_._impl_.payload_.reload_config_db_->GetCachedSize(), target,
+          stream);
+      break;
+    }
+    case kServiceLogin: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          2, *this_._impl_.payload_.service_login_, this_._impl_.payload_.service_login_->GetCachedSize(), target,
+          stream);
+      break;
+    }
+    default:
+      break;
   }
-
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -1411,7 +1925,13 @@ PROTOBUF_NOINLINE void service_player_request::Clear() {
   (void)cached_has_bits;
 
   switch (this_.payload_case()) {
-    // .celeritas.proto.service.service_login_request service_login = 1;
+    // .celeritas.proto.service.reload_config_db_request reload_config_db = 1;
+    case kReloadConfigDb: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.reload_config_db_);
+      break;
+    }
+    // .celeritas.proto.service.service_login_request service_login = 2;
     case kServiceLogin: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.service_login_);
@@ -1448,6 +1968,14 @@ void service_player_request::MergeImpl(::google::protobuf::MessageLite& to_msg, 
     }
 
     switch (oneof_from_case) {
+      case kReloadConfigDb: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.reload_config_db_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.reload_config_db_);
+        } else {
+          _this->_impl_.payload_.reload_config_db_->MergeFrom(*from._impl_.payload_.reload_config_db_);
+        }
+        break;
+      }
       case kServiceLogin: {
         if (oneof_needs_init) {
           _this->_impl_.payload_.service_login_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.service_login_);
@@ -1489,6 +2017,19 @@ class service_player_response::_Internal {
       PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_response, _impl_._oneof_case_);
 };
 
+void service_player_response::set_allocated_reload_config_db(::celeritas::proto::service::reload_config_db_response* PROTOBUF_NULLABLE reload_config_db) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (reload_config_db) {
+    ::google::protobuf::Arena* submessage_arena = reload_config_db->GetArena();
+    if (message_arena != submessage_arena) {
+      reload_config_db = ::google::protobuf::internal::GetOwnedMessage(message_arena, reload_config_db, submessage_arena);
+    }
+    set_has_reload_config_db();
+    _impl_.payload_.reload_config_db_ = reload_config_db;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_player_response.reload_config_db)
+}
 void service_player_response::set_allocated_service_login(::celeritas::proto::service::service_login_response* PROTOBUF_NULLABLE service_login) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
@@ -1535,6 +2076,9 @@ service_player_response::service_player_response(
   switch (payload_case()) {
     case PAYLOAD_NOT_SET:
       break;
+      case kReloadConfigDb:
+        _impl_.payload_.reload_config_db_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.reload_config_db_);
+        break;
       case kServiceLogin:
         _impl_.payload_.service_login_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.service_login_);
         break;
@@ -1573,6 +2117,14 @@ void service_player_response::clear_payload() {
 // @@protoc_insertion_point(one_of_clear_start:celeritas.proto.service.service_player_response)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   switch (payload_case()) {
+    case kReloadConfigDb: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.reload_config_db_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.reload_config_db_);
+      }
+      break;
+    }
     case kServiceLogin: {
       if (GetArena() == nullptr) {
         delete _impl_.payload_.service_login_;
@@ -1632,17 +2184,17 @@ service_player_response::GetClassData() const {
   return service_player_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
+const ::_pbi::TcParseTable<0, 2, 2, 0, 2>
 service_player_response::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    2, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    1,  // num_aux_entries
+    2,  // num_field_entries
+    2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     service_player_response_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -1655,10 +2207,13 @@ service_player_response::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // .celeritas.proto.service.service_login_response service_login = 1;
-    {PROTOBUF_FIELD_OFFSET(service_player_response, _impl_.payload_.service_login_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.service.reload_config_db_response reload_config_db = 1;
+    {PROTOBUF_FIELD_OFFSET(service_player_response, _impl_.payload_.reload_config_db_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.service.service_login_response service_login = 2;
+    {PROTOBUF_FIELD_OFFSET(service_player_response, _impl_.payload_.service_login_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
+      {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_config_db_response>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_login_response>()},
   }},
   {{
@@ -1693,13 +2248,22 @@ PROTOBUF_NOINLINE void service_player_response::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // .celeritas.proto.service.service_login_response service_login = 1;
-  if (this_.payload_case() == kServiceLogin) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, *this_._impl_.payload_.service_login_, this_._impl_.payload_.service_login_->GetCachedSize(), target,
-        stream);
+  switch (this_.payload_case()) {
+    case kReloadConfigDb: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          1, *this_._impl_.payload_.reload_config_db_, this_._impl_.payload_.reload_config_db_->GetCachedSize(), target,
+          stream);
+      break;
+    }
+    case kServiceLogin: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          2, *this_._impl_.payload_.service_login_, this_._impl_.payload_.service_login_->GetCachedSize(), target,
+          stream);
+      break;
+    }
+    default:
+      break;
   }
-
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -1724,7 +2288,13 @@ PROTOBUF_NOINLINE void service_player_response::Clear() {
   (void)cached_has_bits;
 
   switch (this_.payload_case()) {
-    // .celeritas.proto.service.service_login_response service_login = 1;
+    // .celeritas.proto.service.reload_config_db_response reload_config_db = 1;
+    case kReloadConfigDb: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.reload_config_db_);
+      break;
+    }
+    // .celeritas.proto.service.service_login_response service_login = 2;
     case kServiceLogin: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.service_login_);
@@ -1761,6 +2331,14 @@ void service_player_response::MergeImpl(::google::protobuf::MessageLite& to_msg,
     }
 
     switch (oneof_from_case) {
+      case kReloadConfigDb: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.reload_config_db_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.reload_config_db_);
+        } else {
+          _this->_impl_.payload_.reload_config_db_->MergeFrom(*from._impl_.payload_.reload_config_db_);
+        }
+        break;
+      }
       case kServiceLogin: {
         if (oneof_needs_init) {
           _this->_impl_.payload_.service_login_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.service_login_);
