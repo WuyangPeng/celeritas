@@ -1,4 +1,6 @@
-﻿#include "time_helper.h"
+﻿#include "common_fwd.h"
+#include "logger.h"
+#include "time_helper.h"
 
 int64_t celeritas::time_helper::get_current_milliseconds()
 {
@@ -17,12 +19,10 @@ int64_t celeritas::time_helper::get_start_of_day_milliseconds()
     return get_milliseconds_with_offset(0);
 }
 
-#include <iostream>
-
 int64_t celeritas::time_helper::get_milliseconds_with_offset(const int64_t milliseconds_offset)
 {
-    const auto* current_zone = std::chrono::get_tzdb().current_zone();
-    std::cout << current_zone->name() << std::endl;
+    const auto* current_zone = get_local_zone();
+
     const auto now = std::chrono::system_clock::now();
 
     // 计算本地时间的今天零点
@@ -62,7 +62,7 @@ int64_t celeritas::time_helper::get_start_of_week_milliseconds()
 int64_t celeritas::time_helper::get_start_of_week_milliseconds_with_offset(const int64_t milliseconds_offset)
 {
     // 获取当前时区和时间点
-    const auto* current_zone = std::chrono::current_zone();
+    const auto* current_zone = get_local_zone();
     const auto now = std::chrono::system_clock::now();
 
     // 获取本地时间的今天日期
@@ -112,7 +112,7 @@ int64_t celeritas::time_helper::get_start_of_month_milliseconds()
 int64_t celeritas::time_helper::get_start_of_month_milliseconds_with_offset(const int64_t milliseconds_offset)
 {
     // 获取当前时区和时间点
-    const auto* current_zone = std::chrono::current_zone();
+    const auto* current_zone = get_local_zone();
     const auto now = std::chrono::system_clock::now();
 
     // 获取本地时间的今天日期
@@ -159,7 +159,38 @@ int64_t celeritas::time_helper::to_milliseconds(const time_point_type& time_poin
 
 celeritas::time_helper::local_time_type celeritas::time_helper::to_local_time(const time_point_type& time_point)
 {
-    const auto* current_zone = std::chrono::current_zone();
+    const auto* current_zone = get_local_zone();
     const std::chrono::zoned_time local_time{ current_zone, time_point };
     return local_time.get_local_time();
+}
+
+celeritas::time_helper::const_time_zone_ptr_type celeritas::time_helper::get_local_zone()
+{
+    static const auto cached_zone = do_get_local_zone();
+
+    return cached_zone;
+}
+
+celeritas::time_helper::const_time_zone_ptr_type celeritas::time_helper::do_get_local_zone()
+{
+    const auto* current_zone = std::chrono::get_tzdb().current_zone();
+
+    if (current_zone->name() == "Etc/UTC")
+    {
+        try
+        {
+            current_zone = std::chrono::get_tzdb().locate_zone("Asia/Shanghai");
+            LOG_CHANNEL(celeritas::common_channel, warning) << "读不到系统本地时区，使用Asia/Shanghai。";
+        }
+        catch (const std::runtime_error& error)
+        {
+            LOG_CHANNEL(celeritas::common_channel, error) << "读不到Asia/Shanghai，使用Etc/UTC:" << error.what();
+        }
+    }
+    else
+    {
+        LOG_CHANNEL(celeritas::common_channel, info) << "当前时区:" << current_zone->name();
+    }
+
+    return current_zone;
 }

@@ -10,15 +10,16 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
 
     struct time_components
     {
-        std::chrono::sys_days date;
+        std::chrono::local_days date;
         std::chrono::milliseconds time_since_midnight;
     };
 
     [[nodiscard]] time_components get_time_components(const int64_t milliseconds)
     {
         const auto time_point = std::chrono::system_clock::time_point(std::chrono::milliseconds(milliseconds));
-        const auto date = std::chrono::floor<std::chrono::days>(time_point);
-        const auto time_since_midnight_raw = time_point - date;
+        const auto local_time = celeritas::time_helper::to_local_time(time_point);
+        const auto date = std::chrono::floor<std::chrono::days>(local_time);
+        const auto time_since_midnight_raw = local_time - date;
         const auto time_since_midnight_milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(time_since_midnight_raw);
 
         return { date, time_since_midnight_milliseconds };
