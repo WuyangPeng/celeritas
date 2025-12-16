@@ -30,7 +30,7 @@ celeritas::player_component::void_awaitable_type celeritas::player_time_componen
     for (const auto& element : user_time_refresh_->get_player_time_refresh())
     {
         auto player_time = player_time_refresh::from_json_string(element);
-        player_time_refresh_.emplace(std::make_pair(player_time.get_time_refresh_type(), player_time.get_parameter()), std::move(player_time));
+        player_time_refresh_.emplace(player_time_refresh_key{ player_time.get_time_refresh_type(), player_time.get_parameter() }, std::move(player_time));
     }
 }
 
@@ -126,7 +126,7 @@ celeritas::player_component::void_awaitable_type celeritas::player_time_componen
 celeritas::player_component::void_awaitable_type celeritas::player_time_component::time_callback(const time_refresh_type time_refresh_type, const int64_t parameter, const bool is_login)
 {
     const auto current_milliseconds = time_helper::get_current_milliseconds();
-    if (const auto iter = player_time_refresh_.find({ time_refresh_type, parameter });
+    if (const auto iter = player_time_refresh_.find(player_time_refresh_key{ time_refresh_type, parameter });
         iter != player_time_refresh_.end())
     {
         if (auto& element = iter->second;
@@ -147,7 +147,7 @@ celeritas::player_component::void_awaitable_type celeritas::player_time_componen
 
 void celeritas::player_time_component::register_timer(const player_component_type player_component, const time_refresh_type time_refresh_type, const int64_t parameter)
 {
-    if (const auto player_time_refresh = player_time_refresh_.find({ time_refresh_type, parameter });
+    if (const auto player_time_refresh = player_time_refresh_.find(player_time_refresh_key{ time_refresh_type, parameter });
         player_time_refresh != player_time_refresh_.end())
     {
         auto& element = player_time_refresh->second;
@@ -187,7 +187,7 @@ void celeritas::player_time_component::register_timer(const player_component_typ
 
 void celeritas::player_time_component::remove_timer(const player_component_type player_component, const time_refresh_type time_refresh_type, const int64_t parameter)
 {
-    if (const auto iter = player_time_refresh_.find({ time_refresh_type, parameter });
+    if (const auto iter = player_time_refresh_.find(player_time_refresh_key{ time_refresh_type, parameter });
         iter != player_time_refresh_.end())
     {
         auto& element = iter->second;

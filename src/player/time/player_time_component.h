@@ -1,14 +1,13 @@
 ﻿#pragma once
 
 #include "database/document/player_time_refresh.h"
-#include "database/generated/mongo/auth/user_server_roles.h"
 #include "database/generated/mongo/player/user_time_refresh.h"
 #include "detail/player_time_internal_fwd.h"
+#include "detail/player_time_refresh_key.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
 
 #include <map>
-#include <utility>
 
 namespace celeritas
 {
@@ -45,7 +44,6 @@ namespace celeritas
 
     private:
         using optional_user_time_refresh = std::optional<user_time_refresh>;
-        using player_time_refresh_key = std::pair<time_refresh_type, int64_t>;
         using player_time_refresh_container = std::map<player_time_refresh_key, player_time_refresh>;
         using player_timer_shared_ptr = std::shared_ptr<player_timer>;
 
