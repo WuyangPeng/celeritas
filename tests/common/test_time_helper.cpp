@@ -155,7 +155,8 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
 
         const auto prev_month_year_month_day = year_month_day - std::chrono::months(1);
         const auto expected_prev_month_start_tp = std::chrono::sys_days(prev_month_year_month_day);
-        const auto expected_prev_month_start_milliseconds = std::chrono::time_point_cast<std::chrono::milliseconds>(expected_prev_month_start_tp).time_since_epoch().count();
+        const auto local_time = celeritas::time_helper::to_local_time(expected_prev_month_start_tp);
+        const auto expected_prev_month_start_milliseconds = std::chrono::time_point_cast<std::chrono::milliseconds>(local_time).time_since_epoch().count();
         const auto current_milliseconds = celeritas::time_helper::get_current_milliseconds();
 
         for (auto i = 0; i < celeritas::min_month; ++i)
