@@ -29,7 +29,8 @@ celeritas::player_component::void_awaitable_type celeritas::player_time_componen
 
     for (const auto& element : user_time_refresh_->get_player_time_refresh())
     {
-        player_time_refresh_.emplace_back(player_time_refresh::from_json_string(element));
+        auto player_time = player_time_refresh::from_json_string(element);
+        player_time_refresh_.emplace(std::make_pair(player_time.get_time_refresh_type(), player_time.get_parameter()), std::move(player_time));
     }
 }
 
@@ -44,10 +45,22 @@ void celeritas::player_time_component::init_player_timer(const int64_t current_m
     }
 }
 
+void celeritas::player_time_component::set_user_time_refresh()
+{
+    traits::document_array_type documents{};
+    for (auto& element : player_time_refresh_ | std::views::values)
+    {
+        documents.emplace_back(element.to_json_string());
+    }
+
+    user_time_refresh_->set_player_time_refresh(documents);
+}
+
 celeritas::player_component::void_awaitable_type celeritas::player_time_component::on_dependencies_ready()
 {
     const auto current_milliseconds = time_helper::get_current_milliseconds();
-    for (auto& element : player_time_refresh_)
+    auto change = false;
+    for (auto& element : player_time_refresh_ | std::views::values)
     {
         if (element.is_can_refresh())
         {
@@ -57,7 +70,13 @@ celeritas::player_component::void_awaitable_type celeritas::player_time_componen
             }
 
             element.set_last_refresh_time(current_milliseconds);
+            change = true;
         }
+    }
+
+    if (change)
+    {
+        set_user_time_refresh();
     }
 
     calculate_next_refresh_time();
@@ -107,10 +126,10 @@ celeritas::player_component::void_awaitable_type celeritas::player_time_componen
 celeritas::player_component::void_awaitable_type celeritas::player_time_component::time_callback(const time_refresh_type time_refresh_type, const int64_t parameter, const bool is_login)
 {
     const auto current_milliseconds = time_helper::get_current_milliseconds();
-    for (auto& element : player_time_refresh_)
+    if (const auto iter = player_time_refresh_.find({ time_refresh_type, parameter });
+        iter != player_time_refresh_.end())
     {
-        if (element.get_time_refresh_type() == time_refresh_type &&
-            element.get_parameter() == parameter &&
+        if (auto& element = iter->second;
             element.is_can_refresh())
         {
             for (const auto& component : element.get_component())
@@ -128,24 +147,27 @@ celeritas::player_component::void_awaitable_type celeritas::player_time_componen
 
 void celeritas::player_time_component::register_timer(const player_component_type player_component, const time_refresh_type time_refresh_type, const int64_t parameter)
 {
-    for (auto& element : player_time_refresh_)
+    if (const auto player_time_refresh = player_time_refresh_.find({ time_refresh_type, parameter });
+        player_time_refresh != player_time_refresh_.end())
     {
-        if (element.get_time_refresh_type() == time_refresh_type &&
-            element.get_parameter() == parameter)
+        auto& element = player_time_refresh->second;
+        const auto component = element.get_component();
+        if (const auto iter = std::ranges::find(component, player_component);
+            iter != component.end())
         {
-            const auto component = element.get_component();
-            if (const auto iter = std::ranges::find(component, player_component);
-                iter != component.end())
-            {
-                return;
-            }
-
-            element.add_component(player_component);
             return;
         }
+
+        element.add_component(player_component);
+        set_user_time_refresh();
+        return;
     }
 
-    player_time_refresh_.emplace_back(time_refresh_type, parameter, player_component);
+    player_time_refresh_.emplace(std::piecewise_construct,
+                                 std::forward_as_tuple(time_refresh_type, parameter),
+                                 std::forward_as_tuple(time_refresh_type, parameter, player_component));
+
+    set_user_time_refresh();
 
     const auto old_next_refresh_time = get_next_refresh_time();
     calculate_next_refresh_time();
@@ -163,33 +185,33 @@ void celeritas::player_time_component::register_timer(const player_component_typ
     }
 }
 
-void celeritas::player_time_component::remove_timer(player_component_type player_component, time_refresh_type time_refresh_type, int64_t parameter)
+void celeritas::player_time_component::remove_timer(const player_component_type player_component, const time_refresh_type time_refresh_type, const int64_t parameter)
 {
-    if (std::erase_if(player_time_refresh_,
-                      [&](auto& element) {
-                          if (element.get_time_refresh_type() == time_refresh_type &&
-                              element.get_parameter() == parameter)
-                          {
-                              element.remove_component(player_component);
-                              return element.get_component().empty();
-                          }
-                          return false;
-                      }) > 0)
+    if (const auto iter = player_time_refresh_.find({ time_refresh_type, parameter });
+        iter != player_time_refresh_.end())
     {
-        const auto old_next_refresh_time = get_next_refresh_time();
-        calculate_next_refresh_time();
-        if (old_next_refresh_time != get_next_refresh_time())
+        auto& element = iter->second;
+        element.remove_component(player_component);
+        if (element.get_component().empty())
         {
-            if (player_timer_ != nullptr)
+            player_time_refresh_.erase(iter);
+            const auto old_next_refresh_time = get_next_refresh_time();
+            calculate_next_refresh_time();
+            if (old_next_refresh_time != get_next_refresh_time())
             {
-                player_timer_->stop();
-                player_timer_->wait_for_next_tick();
-            }
-            else
-            {
-                init_player_timer(time_helper::get_current_milliseconds());
+                if (player_timer_ != nullptr)
+                {
+                    player_timer_->stop();
+                    player_timer_->wait_for_next_tick();
+                }
+                else
+                {
+                    init_player_timer(time_helper::get_current_milliseconds());
+                }
             }
         }
+
+        set_user_time_refresh();
     }
 }
 
@@ -202,7 +224,7 @@ void celeritas::player_time_component::calculate_next_refresh_time()
 {
     next_refresh_time_ = 0LL;
     const auto current_milliseconds = time_helper::get_current_milliseconds();
-    for (auto& element : player_time_refresh_)
+    for (auto& element : player_time_refresh_ | std::views::values)
     {
         if (element.is_default())
         {
@@ -220,7 +242,8 @@ void celeritas::player_time_component::calculate_next_refresh_time()
 celeritas::player_component::void_awaitable_type celeritas::player_time_component::do_time_callback()
 {
     const auto current_milliseconds = time_helper::get_current_milliseconds();
-    for (auto& element : player_time_refresh_)
+    auto change = false;
+    for (auto& element : player_time_refresh_ | std::views::values)
     {
         if (element.is_default())
         {
@@ -235,7 +258,14 @@ celeritas::player_component::void_awaitable_type celeritas::player_time_componen
             }
 
             element.set_last_refresh_time(current_milliseconds);
+
+            change = true;
         }
+    }
+
+    if (change)
+    {
+        set_user_time_refresh();
     }
     co_return;
 }

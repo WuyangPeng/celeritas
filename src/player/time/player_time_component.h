@@ -7,6 +7,9 @@
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
 
+#include <map>
+#include <utility>
+
 namespace celeritas
 {
     class player_time_component final : public player_component
@@ -42,7 +45,8 @@ namespace celeritas
 
     private:
         using optional_user_time_refresh = std::optional<user_time_refresh>;
-        using player_time_refresh_container = std::vector<player_time_refresh>;
+        using player_time_refresh_key = std::pair<time_refresh_type, int64_t>;
+        using player_time_refresh_container = std::map<player_time_refresh_key, player_time_refresh>;
         using player_timer_shared_ptr = std::shared_ptr<player_timer>;
 
         void calculate_next_refresh_time();
@@ -52,6 +56,8 @@ namespace celeritas
         void wait_for_next_tick();
 
         void init_player_timer(int64_t current_milliseconds);
+
+        void set_user_time_refresh();
 
         optional_user_time_refresh user_time_refresh_;
         player_time_refresh_container player_time_refresh_;
