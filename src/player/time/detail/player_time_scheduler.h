@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "database/document/player_time_refresh.h"
 #include "player_time_internal_fwd.h"
 #include "player_time_refresh_key.h"
+#include "database/document/player_time_refresh.h"
 
 #include <boost/asio/awaitable.hpp>
 
@@ -21,13 +21,13 @@ namespace celeritas
 
         player_time_scheduler(player_state* player_state, player_time_component* time_component, player_time_document* player_time_document);
 
-        void register_timer(player_component_type component_type, time_refresh_type refresh_type, int64_t parameter, const function_type& on_change);
+        void register_timer(player_component_type component_type, time_refresh_type refresh_type, int64_t parameter1, int64_t parameter2, const function_type& on_change);
 
-        void remove_timer(player_component_type component_type, time_refresh_type refresh_type, int64_t parameter, const function_type& on_change);
+        void remove_timer(player_component_type component_type, time_refresh_type refresh_type, int64_t parameter1, int64_t parameter2, const function_type& on_change);
 
         [[nodiscard]] void_awaitable_type on_time_callback(const function_type& on_change);
 
-        [[nodiscard]] void_awaitable_type on_time_callback(time_refresh_type refresh_type, int64_t parameter, bool is_login, const function_type& on_change);
+        [[nodiscard]] void_awaitable_type on_time_callback(time_refresh_type refresh_type, int64_t parameter1, int64_t parameter2, bool is_login, const function_type& on_change);
 
         void wait_for_next_tick();
 
@@ -41,6 +41,8 @@ namespace celeritas
         using player_timer_shared_ptr = std::shared_ptr<player_timer>;
 
         [[nodiscard]] void_awaitable_type do_time_callback(const function_type& on_change);
+
+        void change_player_timer();
 
         player_state* player_state_;
         player_time_component* time_component_;

@@ -65,7 +65,7 @@ celeritas::player_manager::void_awaitable_type celeritas::player_manager::time_c
 
     for (const auto& element : container_ | std::views::values)
     {
-        co_await element->time_callback(time_refresh_type, parameter, false);
+        co_await element->time_callback(time_refresh_type, parameter, 0, false);
     }
 }
 

@@ -20,7 +20,7 @@ namespace celeritas
         using player_time_refresh_container = std::map<player_time_refresh_key, player_time_refresh>;
         using player_time_refresh_container_awaitable_type = boost::asio::awaitable<player_time_refresh_container>;
 
-        explicit player_time_database(player_state* player_state, player_time_component* player_time_component, player_time_document* player_time_document);
+        explicit player_time_database(int64_t user_id, player_time_component* player_time_component, player_time_document* player_time_document);
 
         [[nodiscard]] player_time_refresh_container_awaitable_type load();
 
@@ -33,7 +33,7 @@ namespace celeritas
     private:
         using optional_user_time_refresh = std::optional<user_time_refresh>;
 
-        player_state* player_state_;
+        int64_t user_id_;
         player_time_component* player_time_component_;
         player_time_document* player_time_document_;
         optional_user_time_refresh user_time_refresh_;

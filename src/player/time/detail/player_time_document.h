@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "player_time_refresh_key.h"
+#include "player/time/detail/player_time_internal_fwd.h"
 #include "database/document/player_time_refresh.h"
 
 #include <boost/asio/awaitable.hpp>
@@ -16,6 +17,9 @@ namespace celeritas
         using void_awaitable_type = boost::asio::awaitable<void>;
         using player_time_refresh_container = std::map<player_time_refresh_key, player_time_refresh>;
         using function_type = std::function<void()>;
+        using change_timer_result_awaitable_type = boost::asio::awaitable<change_timer_result>;
+
+        explicit player_time_document(player_state* player_state);
 
         [[nodiscard]] const player_time_refresh_container& get_player_time_refresh_container() const;
 
@@ -25,9 +29,16 @@ namespace celeritas
 
         [[nodiscard]] int64_t calculate_next_refresh_time() const;
 
-        [[nodiscard]] bool register_timer(player_component_type component_type, time_refresh_type refresh_type, int64_t parameter);
+        [[nodiscard]] change_timer_result register_timer(player_component_type component_type, time_refresh_type refresh_type, int64_t parameter1, int64_t parameter2);
+
+        [[nodiscard]] change_timer_result remove_timer(player_component_type component_type, time_refresh_type refresh_type, int64_t parameter1, int64_t parameter2);
+
+        [[nodiscard]] change_timer_result_awaitable_type on_time_callback(bool is_login, bool is_including_default);
+
+        [[nodiscard]] change_timer_result_awaitable_type on_time_callback(time_refresh_type refresh_type, int64_t parameter1, int64_t parameter2, bool is_login);
 
     private:
+        player_state* player_state_;
         player_time_refresh_container player_time_refresh_;
     };
 }

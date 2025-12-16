@@ -7,4 +7,6 @@ namespace celeritas
     class player_time_database;
     class player_time_scheduler;
     class player_time_document;
+
+    enum class change_timer_result;
 }

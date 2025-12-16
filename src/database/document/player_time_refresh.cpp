@@ -8,12 +8,12 @@
 #include <bsoncxx/builder/basic/document.hpp>
 
 celeritas::player_time_refresh::player_time_refresh() noexcept
-    : time_refresh_type_{}, parameter_{}, component_{}, last_refresh_time_{}
+    : time_refresh_type_{}, parameter1_{}, parameter2_{}, component_{}, last_refresh_time_{}
 {
 }
 
-celeritas::player_time_refresh::player_time_refresh(const time_refresh_type time_refresh_type, const int64_t parameter, const player_component_type player_component_type)
-    : time_refresh_type_{ time_refresh_type }, parameter_{ parameter }, component_{ player_component_type }, last_refresh_time_{ time_helper::get_current_milliseconds() }
+celeritas::player_time_refresh::player_time_refresh(const time_refresh_type time_refresh_type, int64_t parameter1, int64_t parameter2, const player_component_type player_component_type)
+    : time_refresh_type_{ time_refresh_type }, parameter1_{ parameter1 }, parameter2_{ parameter2 }, component_{ player_component_type }, last_refresh_time_{ time_helper::get_current_milliseconds() }
 {
 }
 
@@ -27,14 +27,14 @@ void celeritas::player_time_refresh::set_time_refresh_type(const time_refresh_ty
     time_refresh_type_ = timeRefreshType;
 }
 
-int64_t celeritas::player_time_refresh::get_parameter() const
+int64_t celeritas::player_time_refresh::get_parameter1() const
 {
-    return parameter_;
+    return parameter1_;
 }
 
-void celeritas::player_time_refresh::set_parameter(const int64_t parameter)
+void celeritas::player_time_refresh::set_parameter1(const int64_t parameter)
 {
-    parameter_ = parameter;
+    parameter1_ = parameter;
 }
 
 celeritas::player_time_refresh::component_container celeritas::player_time_refresh::get_component() const
@@ -78,23 +78,23 @@ int64_t celeritas::player_time_refresh::get_next_refresh_time() const
     {
         case time_refresh_type::daily:
         {
-            return time_helper::get_current_milliseconds() >= time_helper::get_end_of_day_milliseconds_with_offset(parameter_);
+            return time_helper::get_current_milliseconds() >= time_helper::get_end_of_day_milliseconds_with_offset(parameter1_);
         }
         case time_refresh_type::weekly:
         {
-            return time_helper::get_current_milliseconds() >= time_helper::get_end_of_week_milliseconds_with_offset(parameter_);
+            return time_helper::get_current_milliseconds() >= time_helper::get_end_of_week_milliseconds_with_offset(parameter1_);
         }
         case time_refresh_type::monthly:
         {
-            return time_helper::get_current_milliseconds() >= time_helper::get_end_of_month_milliseconds_with_offset(parameter_);
+            return time_helper::get_current_milliseconds() >= time_helper::get_end_of_month_milliseconds_with_offset(parameter1_);
         }
         case time_refresh_type::interval_duration:
         {
-            return time_helper::get_current_milliseconds() >= last_refresh_time_ + parameter_;
+            return time_helper::get_current_milliseconds() >= last_refresh_time_ + parameter1_;
         }
         case time_refresh_type::absolute_point:
         {
-            return time_helper::get_current_milliseconds() >= parameter_;
+            return time_helper::get_current_milliseconds() >= parameter1_;
         }
         default:
         {
@@ -109,15 +109,15 @@ bool celeritas::player_time_refresh::is_default() const
     {
         case time_refresh_type::daily:
         {
-            return parameter_ % (hour_seconds * milliseconds) == 0;
+            return parameter1_ % (hour_seconds * milliseconds) == 0;
         }
         case time_refresh_type::weekly:
         {
-            return parameter_ == 0 || parameter_ == (day_seconds * 1 + hour_seconds * 0) * milliseconds;
+            return parameter1_ == 0 || parameter1_ == (day_seconds * 1 + hour_seconds * 0) * milliseconds;
         }
         case time_refresh_type::monthly:
         {
-            return parameter_ == 0;
+            return parameter1_ == 0;
         }
         default:
         {
@@ -130,7 +130,8 @@ std::string celeritas::player_time_refresh::to_json_string() const
 {
     bsoncxx::builder::basic::document builder{};
     builder.append(bsoncxx::builder::basic::kvp(std::string{ time_refresh_type_description }, static_cast<int32_t>(time_refresh_type_)));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ parameter_description }, parameter_));
+    builder.append(bsoncxx::builder::basic::kvp(std::string{ parameter1_description }, parameter1_));
+    builder.append(bsoncxx::builder::basic::kvp(std::string{ parameter2_description }, parameter2_));
     bsoncxx::builder::basic::array basic{};
     for (const auto& element : component_)
     {
@@ -148,12 +149,23 @@ celeritas::player_time_refresh celeritas::player_time_refresh::from_json_string(
 
     player_time_refresh player_time_refresh{};
     player_time_refresh.set_time_refresh_type(static_cast<time_refresh_type>(parsed_view[time_refresh_type_description].get_int32().value));
-    player_time_refresh.set_parameter(parsed_view[parameter_description].get_int64());
-    for (const auto& element : parsed_view[parameter_description].get_array().value)
+    player_time_refresh.set_parameter1(parsed_view[parameter1_description].get_int64());
+    player_time_refresh.set_parameter2(parsed_view[parameter2_description].get_int64());
+    for (const auto& element : parsed_view[parameter1_description].get_array().value)
     {
         player_time_refresh.add_component(static_cast<player_component_type>(element.get_int32().value));
     }
     player_time_refresh.set_last_refresh_time(parsed_view[last_refresh_time_description].get_int64());
 
     return player_time_refresh;
+}
+
+void celeritas::player_time_refresh::set_parameter2(const int64_t parameter2)
+{
+    parameter2_ = parameter2;
+}
+
+int64_t celeritas::player_time_refresh::get_parameter2() const
+{
+    return parameter2_;
 }

@@ -31,11 +31,11 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type time_callback();
 
-        [[nodiscard]] void_awaitable_type time_callback(time_refresh_type time_refresh_type, int64_t parameter, bool is_login) override;
+        [[nodiscard]] void_awaitable_type time_callback(time_refresh_type time_refresh_type, int64_t parameter1, int64_t parameter2, bool is_login) override;
 
-        void register_timer(player_component_type player_component, time_refresh_type time_refresh_type, int64_t parameter);
+        void register_timer(player_component_type player_component, time_refresh_type time_refresh_type, int64_t parameter1, int64_t parameter2 = 0);
 
-        void remove_timer(player_component_type player_component, time_refresh_type time_refresh_type, int64_t parameter);
+        void remove_timer(player_component_type player_component, time_refresh_type time_refresh_type, int64_t parameter1, int64_t parameter2 = 0);
 
     private:
         void on_data_change();
