@@ -28,7 +28,7 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type save_db();
 
-        [[nodiscard]] void_awaitable_type time_callback(default_time_type default_time_type);
+        [[nodiscard]] void_awaitable_type time_callback(time_refresh_type time_refresh_type, int64_t parameter);
 
     private:
         using container_type = std::unordered_map<int64_t, player_state_shared_ptr>;

@@ -37,6 +37,8 @@ namespace celeritas
         template <typename T>
         [[nodiscard]] std::shared_ptr<T> get_component() const;
 
+        [[nodiscard]] player_component_shared_ptr get_component(player_component_type player_component_type) const;
+
         // 数据库数据加载
         [[nodiscard]] void_awaitable_type on_load_db();
 
@@ -76,7 +78,7 @@ namespace celeritas
 
         void set_instance_id(const std::string& instance_id);
 
-        [[nodiscard]] void_awaitable_type time_callback(default_time_type default_time_type);
+        [[nodiscard]] void_awaitable_type time_callback(time_refresh_type time_refresh_type, int64_t parameter, bool is_login);
 
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;

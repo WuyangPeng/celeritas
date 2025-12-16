@@ -23,9 +23,17 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type on_load_db() override;
 
+        [[nodiscard]] void_awaitable_type on_dependencies_ready() override;
+
         [[nodiscard]] void_awaitable_type save_db() override;
 
         [[nodiscard]] bool is_modify() const override;
+
+        [[nodiscard]] void_awaitable_type time_callback(time_refresh_type time_refresh_type, int64_t parameter, bool is_login) override;
+
+        void register_timer(player_component_type player_component, time_refresh_type time_refresh_type, int64_t parameter);
+
+        void remove_timer(player_component_type player_component, time_refresh_type time_refresh_type, int64_t parameter);
 
     private:
         using optional_user_time_refresh = std::optional<user_time_refresh>;

@@ -1,20 +1,20 @@
 ﻿#include "player_default_timer.h"
 #include "player_server_fwd.h"
 #include "player/component/player_manager.h"
-#include "player/time/default_time_type.h"
+#include "player/time/time_refresh_type.h"
 
-celeritas::player_default_timer::player_default_timer(io_context_type& io_context, const duration_type interval, const default_time_type default_time_type)
-    : base_type{ io_context, interval }, io_context_{ io_context }, default_time_type_{ default_time_type }
+celeritas::player_default_timer::player_default_timer(io_context_type& io_context, const duration_type interval, const int local_hours)
+    : base_type{ io_context, interval }, io_context_{ io_context }, local_hours_{ local_hours }
 {
 }
 
 void celeritas::player_default_timer::execute_timer_task()
 {
     boost::asio::co_spawn(io_context_,
-                          player_manager::get_instance().time_callback(default_time_type_),
+                          player_manager::get_instance().time_callback(time_refresh_type::daily, (hour_seconds * local_hours_) * milliseconds),
                           boost::asio::detached);
 
-    if (default_time_type_ == default_time_type::daily_0)
+    if (local_hours_ == 0)
     {
         execute_zero_timer_task();
     }
@@ -46,14 +46,14 @@ void celeritas::player_default_timer::execute_week_timer_task(const time_point_t
         case 0:
         {
             boost::asio::co_spawn(io_context_,
-                                  player_manager::get_instance().time_callback(default_time_type::weekly_7_0),
+                                  player_manager::get_instance().time_callback(time_refresh_type::weekly, ((day_seconds * 0) + (hour_seconds * 0)) * milliseconds),
                                   boost::asio::detached);
             break;
         }
         case 1:
         {
             boost::asio::co_spawn(io_context_,
-                                  player_manager::get_instance().time_callback(default_time_type::weekly_1_0),
+                                  player_manager::get_instance().time_callback(time_refresh_type::weekly, ((day_seconds * 1) + (hour_seconds * 0)) * milliseconds),
                                   boost::asio::detached);
             break;
         }
@@ -72,7 +72,7 @@ void celeritas::player_default_timer::execute_month_timer_task(const time_point_
         case 1:
         {
             boost::asio::co_spawn(io_context_,
-                                  player_manager::get_instance().time_callback(default_time_type::monthly_1_0),
+                                  player_manager::get_instance().time_callback(time_refresh_type::monthly, ((day_seconds * 0) + (hour_seconds * 0)) * milliseconds),
                                   boost::asio::detached);
             break;
         }

@@ -1,7 +1,7 @@
 ﻿#include "player_resource_loader.h"
+#include "common/time_helper.h"
 #include "database/config/config_manager.h"
 #include "detail/player_server_fwd.h"
-#include "player/time/default_time_type.h"
 
 #include <chrono>
 
@@ -36,7 +36,7 @@ void celeritas::player_resource_loader::start_player_default_timer(io_context_ty
 
     const auto milliseconds_to_next_hour = duration_cast<std::chrono::milliseconds>(duration_to_next_hour);
 
-    const auto current_zone = std::chrono::current_zone();
+    const auto current_zone = time_helper::get_local_zone();
 
     const auto zone_time = std::chrono::zoned_time{ current_zone, next_hour_time_point };
 
@@ -48,9 +48,7 @@ void celeritas::player_resource_loader::start_player_default_timer(io_context_ty
 
     const auto local_hours = duration_cast<std::chrono::hours>(time_of_day_duration).count();
 
-    const auto default_time = (hour_seconds * local_hours) * 10 + 1;
-
-    player_default_timer_ = std::make_unique<player_default_timer>(io_context, milliseconds_to_next_hour, static_cast<default_time_type>(default_time));
+    player_default_timer_ = std::make_unique<player_default_timer>(io_context, milliseconds_to_next_hour, local_hours);
 
     player_default_timer_->start();
 }

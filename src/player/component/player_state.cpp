@@ -43,6 +43,11 @@ celeritas::player_state::player_state(const user& user, const resource_loader_sh
     check();
 }
 
+celeritas::player_state::player_component_shared_ptr celeritas::player_state::get_component(player_component_type player_component_type) const
+{
+    return components_.at(static_cast<int>(player_component_type));
+}
+
 celeritas::player_state::void_awaitable_type celeritas::player_state::on_load_db()
 {
     for (const auto& element : components_)
@@ -161,12 +166,9 @@ void celeritas::player_state::set_instance_id(const std::string& instance_id)
     instance_id_ = instance_id;
 }
 
-celeritas::player_state::void_awaitable_type celeritas::player_state::time_callback(const default_time_type default_time_type)
+celeritas::player_state::void_awaitable_type celeritas::player_state::time_callback(const time_refresh_type time_refresh_type, const int64_t parameter, const bool is_login)
 {
-    for (const auto& element : components_)
-    {
-        co_await element->time_callback(default_time_type);
-    }
+    co_await get_component<player_time_component>()->time_callback(time_refresh_type, parameter, is_login);
 }
 
 void celeritas::player_state::check() const

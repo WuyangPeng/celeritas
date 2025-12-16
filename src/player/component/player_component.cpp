@@ -46,7 +46,7 @@ celeritas::player_component::void_awaitable_type celeritas::player_component::sa
     co_return;
 }
 
-celeritas::player_component::void_awaitable_type celeritas::player_component::time_callback(default_time_type default_time_type)
+celeritas::player_component::void_awaitable_type celeritas::player_component::time_callback(time_refresh_type time_refresh_type, int64_t parameter, bool is_login)
 {
     co_return;
 }
