@@ -1,9 +1,9 @@
 ﻿#pragma once
 
 #include "database/document/player_time_refresh.h"
-#include "database/generated/mongo/player/user_time_refresh.h"
-#include "detail/player_time_internal_fwd.h"
+#include "detail/player_time_database.h"
 #include "detail/player_time_refresh_key.h"
+#include "detail/player_time_scheduler.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
 
@@ -42,24 +42,17 @@ namespace celeritas
 
         [[nodiscard]] int64_t get_next_refresh_time() const;
 
+        [[nodiscard]] int64_t calculate_next_refresh_time() const;
+
     private:
-        using optional_user_time_refresh = std::optional<user_time_refresh>;
         using player_time_refresh_container = std::map<player_time_refresh_key, player_time_refresh>;
-        using player_timer_shared_ptr = std::shared_ptr<player_timer>;
 
-        void calculate_next_refresh_time();
+        void on_data_change();
 
-        [[nodiscard]] void_awaitable_type do_time_callback();
+        [[nodiscard]] void_awaitable_type on_all_time_callback(bool is_login);
 
-        void wait_for_next_tick();
-
-        void init_player_timer(int64_t current_milliseconds);
-
-        void set_user_time_refresh();
-
-        optional_user_time_refresh user_time_refresh_;
         player_time_refresh_container player_time_refresh_;
-        int64_t next_refresh_time_;
-        player_timer_shared_ptr player_timer_;
+        player_time_database database_;
+        player_time_scheduler scheduler_;
     };
 }

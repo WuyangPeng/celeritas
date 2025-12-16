@@ -1,0 +1,48 @@
+﻿#pragma once
+
+#include "database/document/player_time_refresh.h"
+#include "player_time_internal_fwd.h"
+#include "player_time_refresh_key.h"
+
+#include <boost/asio/awaitable.hpp>
+
+#include <map>
+#include <memory>
+
+namespace celeritas
+{
+    class player_time_scheduler
+    {
+    public:
+        using class_type = player_time_scheduler;
+        using void_awaitable_type = boost::asio::awaitable<void>;
+        using player_time_refresh_container = std::map<player_time_refresh_key, player_time_refresh>;
+        using function_type = std::function<void()>;
+
+        player_time_scheduler(player_state* player_state, player_time_component* time_component);
+
+        void register_timer(player_time_refresh_container& container, player_component_type component_type, time_refresh_type refresh_type, int64_t parameter, const function_type& on_change);
+
+        void remove_timer(player_time_refresh_container& container, player_component_type component_type, time_refresh_type refresh_type, int64_t parameter, const function_type& on_change);
+
+        [[nodiscard]] void_awaitable_type on_time_callback(player_time_refresh_container& container, const function_type& on_change);
+
+        [[nodiscard]] void_awaitable_type on_time_callback(player_time_refresh_container& container, time_refresh_type refresh_type, int64_t parameter, bool is_login, const function_type& on_change);
+
+        void wait_for_next_tick();
+
+        void init_player_timer();
+
+        [[nodiscard]] int64_t get_next_refresh_time() const;
+
+    private:
+        using player_timer_shared_ptr = std::shared_ptr<player_timer>;
+
+        [[nodiscard]] void_awaitable_type do_time_callback(player_time_refresh_container& container, const function_type& on_change);
+
+        player_state* player_state_;
+        player_time_component* time_component_;
+        int64_t next_refresh_time_;
+        player_timer_shared_ptr player_timer_;
+    };
+}
