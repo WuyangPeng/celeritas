@@ -7,53 +7,37 @@
 
 #include <boost/polymorphic_pointer_cast.hpp>
 
-celeritas::player_time_scheduler::player_time_scheduler(player_state* player_state, player_time_component* time_component)
-    : player_state_{ player_state }, time_component_{ time_component }, next_refresh_time_{}, player_timer_{}
+celeritas::player_time_scheduler::player_time_scheduler(player_state* player_state, player_time_component* time_component, player_time_document* player_time_document)
+    : player_state_{ player_state }, time_component_{ time_component }, player_time_document_{ player_time_document }, next_refresh_time_{}, player_timer_{}
 {
 }
 
-void celeritas::player_time_scheduler::register_timer(player_time_refresh_container& container, const player_component_type component_type, const time_refresh_type refresh_type, const int64_t parameter, const function_type& on_change)
+void celeritas::player_time_scheduler::register_timer(const player_component_type component_type, const time_refresh_type refresh_type, const int64_t parameter, const function_type& on_change)
 {
-    if (const auto iter = container.find(player_time_refresh_key{ refresh_type, parameter });
-        iter != container.end())
+    if (player_time_document_->register_timer(component_type, refresh_type, parameter))
     {
-        auto& element = iter->second;
-        const auto component = element.get_component();
-        if (const auto component_iter = std::ranges::find(component, component_type);
-            component_iter != component.cend())
-        {
-            return;
-        }
-
-        element.add_component(component_type);
         on_change();
-        return;
-    }
 
-    container.emplace(std::piecewise_construct,
-                      std::forward_as_tuple(refresh_type, parameter),
-                      std::forward_as_tuple(refresh_type, parameter, component_type));
-
-    on_change();
-
-    const auto old_next_refresh_time = get_next_refresh_time();
-    next_refresh_time_ = time_component_->calculate_next_refresh_time();
-    if (old_next_refresh_time != get_next_refresh_time())
-    {
-        if (player_timer_ != nullptr)
+        const auto old_next_refresh_time = next_refresh_time_;
+        next_refresh_time_ = player_time_document_->calculate_next_refresh_time();
+        if (old_next_refresh_time != next_refresh_time_)
         {
-            player_timer_->stop();
-            player_timer_->wait_for_next_tick();
-        }
-        else
-        {
-            init_player_timer();
+            if (player_timer_ != nullptr)
+            {
+                player_timer_->stop();
+                player_timer_->wait_for_next_tick();
+            }
+            else
+            {
+                init_player_timer();
+            }
         }
     }
 }
 
-void celeritas::player_time_scheduler::remove_timer(player_time_refresh_container& container, const player_component_type component_type, const time_refresh_type refresh_type, const int64_t parameter, const function_type& on_change)
+void celeritas::player_time_scheduler::remove_timer(const player_component_type component_type, const time_refresh_type refresh_type, const int64_t parameter, const function_type& on_change)
 {
+    auto& container = player_time_document_->get_player_time_refresh_container();
     if (const auto iter = container.find(player_time_refresh_key{ refresh_type, parameter });
         iter != container.end())
     {
@@ -64,7 +48,7 @@ void celeritas::player_time_scheduler::remove_timer(player_time_refresh_containe
             container.erase(iter);
             const auto old_next_refresh_time = get_next_refresh_time();
 
-            next_refresh_time_ = time_component_->calculate_next_refresh_time();
+            next_refresh_time_ = player_time_document_->calculate_next_refresh_time();
             if (old_next_refresh_time != get_next_refresh_time())
             {
                 if (player_timer_ != nullptr)
@@ -83,13 +67,13 @@ void celeritas::player_time_scheduler::remove_timer(player_time_refresh_containe
     }
 }
 
-celeritas::player_time_scheduler::void_awaitable_type celeritas::player_time_scheduler::on_time_callback(player_time_refresh_container& container, const function_type& on_change)
+celeritas::player_time_scheduler::void_awaitable_type celeritas::player_time_scheduler::on_time_callback(const function_type& on_change)
 {
     try
     {
-        co_await do_time_callback(container, on_change);
+        co_await do_time_callback(on_change);
 
-        next_refresh_time_ = time_component_->calculate_next_refresh_time();
+        next_refresh_time_ = player_time_document_->calculate_next_refresh_time();
         wait_for_next_tick();
     }
     catch (const std::exception& error)
@@ -102,8 +86,9 @@ celeritas::player_time_scheduler::void_awaitable_type celeritas::player_time_sch
     }
 }
 
-celeritas::player_time_scheduler::void_awaitable_type celeritas::player_time_scheduler::on_time_callback(player_time_refresh_container& container, const time_refresh_type refresh_type, const int64_t parameter, const bool is_login, const function_type& on_change)
+celeritas::player_time_scheduler::void_awaitable_type celeritas::player_time_scheduler::on_time_callback(const time_refresh_type refresh_type, const int64_t parameter, const bool is_login, const function_type& on_change)
 {
+    auto& container = player_time_document_->get_player_time_refresh_container();
     const auto current_milliseconds = time_helper::get_current_milliseconds();
     if (const auto iter = container.find(player_time_refresh_key{ refresh_type, parameter });
         iter != container.end())
@@ -122,11 +107,12 @@ celeritas::player_time_scheduler::void_awaitable_type celeritas::player_time_sch
         on_change();
     }
 
-    next_refresh_time_ = time_component_->calculate_next_refresh_time();
+    next_refresh_time_ = player_time_document_->calculate_next_refresh_time();
 }
 
-celeritas::player_time_scheduler::void_awaitable_type celeritas::player_time_scheduler::do_time_callback(player_time_refresh_container& container, const function_type& on_change)
+celeritas::player_time_scheduler::void_awaitable_type celeritas::player_time_scheduler::do_time_callback(const function_type& on_change)
 {
+    auto& container = player_time_document_->get_player_time_refresh_container();
     const auto current_milliseconds = time_helper::get_current_milliseconds();
     auto change = false;
     for (auto& element : container | std::views::values)
@@ -192,5 +178,5 @@ int64_t celeritas::player_time_scheduler::get_next_refresh_time() const
 
 void celeritas::player_time_scheduler::calculate_next_refresh_time()
 {
-    next_refresh_time_ = time_component_->calculate_next_refresh_time();
+    next_refresh_time_ = player_time_document_->calculate_next_refresh_time();
 }

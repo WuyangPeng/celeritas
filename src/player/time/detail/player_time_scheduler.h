@@ -19,15 +19,15 @@ namespace celeritas
         using player_time_refresh_container = std::map<player_time_refresh_key, player_time_refresh>;
         using function_type = std::function<void()>;
 
-        player_time_scheduler(player_state* player_state, player_time_component* time_component);
+        player_time_scheduler(player_state* player_state, player_time_component* time_component, player_time_document* player_time_document);
 
-        void register_timer(player_time_refresh_container& container, player_component_type component_type, time_refresh_type refresh_type, int64_t parameter, const function_type& on_change);
+        void register_timer(player_component_type component_type, time_refresh_type refresh_type, int64_t parameter, const function_type& on_change);
 
-        void remove_timer(player_time_refresh_container& container, player_component_type component_type, time_refresh_type refresh_type, int64_t parameter, const function_type& on_change);
+        void remove_timer(player_component_type component_type, time_refresh_type refresh_type, int64_t parameter, const function_type& on_change);
 
-        [[nodiscard]] void_awaitable_type on_time_callback(player_time_refresh_container& container, const function_type& on_change);
+        [[nodiscard]] void_awaitable_type on_time_callback(const function_type& on_change);
 
-        [[nodiscard]] void_awaitable_type on_time_callback(player_time_refresh_container& container, time_refresh_type refresh_type, int64_t parameter, bool is_login, const function_type& on_change);
+        [[nodiscard]] void_awaitable_type on_time_callback(time_refresh_type refresh_type, int64_t parameter, bool is_login, const function_type& on_change);
 
         void wait_for_next_tick();
 
@@ -40,10 +40,11 @@ namespace celeritas
     private:
         using player_timer_shared_ptr = std::shared_ptr<player_timer>;
 
-        [[nodiscard]] void_awaitable_type do_time_callback(player_time_refresh_container& container, const function_type& on_change);
+        [[nodiscard]] void_awaitable_type do_time_callback(const function_type& on_change);
 
         player_state* player_state_;
         player_time_component* time_component_;
+        player_time_document* player_time_document_;
         int64_t next_refresh_time_;
         player_timer_shared_ptr player_timer_;
     };

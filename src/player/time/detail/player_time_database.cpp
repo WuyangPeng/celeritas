@@ -4,8 +4,8 @@
 #include "player/component/player_state.h"
 #include "player/time/player_time_component.h"
 
-celeritas::player_time_database::player_time_database(player_state* player_state, player_time_component* player_time_component)
-    : player_state_{ player_state }, player_time_component_{ player_time_component }, user_time_refresh_{}
+celeritas::player_time_database::player_time_database(player_state* player_state, player_time_component* player_time_component, player_time_document* player_time_document)
+    : player_state_{ player_state }, player_time_component_{ player_time_component }, player_time_document_{ player_time_document }, user_time_refresh_{}
 {
 }
 
@@ -33,8 +33,9 @@ celeritas::player_time_database::player_time_refresh_container_awaitable_type ce
     co_return container;
 }
 
-void celeritas::player_time_database::update_document(const player_time_refresh_container& container)
+void celeritas::player_time_database::update_document()
 {
+    const auto& container = player_time_document_->get_player_time_refresh_container();
     traits::document_array_type documents{};
     for (auto& element : container | std::views::values)
     {

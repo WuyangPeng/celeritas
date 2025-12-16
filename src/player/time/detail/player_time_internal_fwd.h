@@ -6,4 +6,5 @@ namespace celeritas
     class player_time_refresh_key;
     class player_time_database;
     class player_time_scheduler;
+    class player_time_document;
 }

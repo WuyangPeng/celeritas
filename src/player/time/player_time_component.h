@@ -1,13 +1,10 @@
 ﻿#pragma once
 
-#include "database/document/player_time_refresh.h"
 #include "detail/player_time_database.h"
-#include "detail/player_time_refresh_key.h"
+#include "detail/player_time_document.h"
 #include "detail/player_time_scheduler.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
-
-#include <map>
 
 namespace celeritas
 {
@@ -40,18 +37,12 @@ namespace celeritas
 
         void remove_timer(player_component_type player_component, time_refresh_type time_refresh_type, int64_t parameter);
 
-        [[nodiscard]] int64_t get_next_refresh_time() const;
-
-        [[nodiscard]] int64_t calculate_next_refresh_time() const;
-
     private:
-        using player_time_refresh_container = std::map<player_time_refresh_key, player_time_refresh>;
-
         void on_data_change();
 
         [[nodiscard]] void_awaitable_type on_all_time_callback(bool is_login);
 
-        player_time_refresh_container player_time_refresh_;
+        player_time_document document_;
         player_time_database database_;
         player_time_scheduler scheduler_;
     };

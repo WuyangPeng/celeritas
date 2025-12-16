@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "player_time_document.h"
 #include "player_time_refresh_key.h"
 #include "database/document/player_time_refresh.h"
 #include "database/generated/mongo/player/user_time_refresh.h"
@@ -19,11 +20,11 @@ namespace celeritas
         using player_time_refresh_container = std::map<player_time_refresh_key, player_time_refresh>;
         using player_time_refresh_container_awaitable_type = boost::asio::awaitable<player_time_refresh_container>;
 
-        explicit player_time_database(player_state* player_state, player_time_component* player_time_component);
+        explicit player_time_database(player_state* player_state, player_time_component* player_time_component, player_time_document* player_time_document);
 
         [[nodiscard]] player_time_refresh_container_awaitable_type load();
 
-        void update_document(const player_time_refresh_container& player_time_refresh);
+        void update_document();
 
         [[nodiscard]] void_awaitable_type save();
 
@@ -34,6 +35,7 @@ namespace celeritas
 
         player_state* player_state_;
         player_time_component* player_time_component_;
+        player_time_document* player_time_document_;
         optional_user_time_refresh user_time_refresh_;
     };
 }
