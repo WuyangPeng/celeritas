@@ -17,9 +17,12 @@ int64_t celeritas::time_helper::get_start_of_day_milliseconds()
     return get_milliseconds_with_offset(0);
 }
 
+#include <iostream>
+
 int64_t celeritas::time_helper::get_milliseconds_with_offset(const int64_t milliseconds_offset)
 {
-    const auto* current_zone = std::chrono::current_zone();
+    const auto* current_zone = std::chrono::get_tzdb().current_zone();
+    std::cout << current_zone->name() << std::endl;
     const auto now = std::chrono::system_clock::now();
 
     // 计算本地时间的今天零点
