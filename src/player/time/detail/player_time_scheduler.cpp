@@ -13,9 +13,9 @@ celeritas::player_time_scheduler::player_time_scheduler(player_state* player_sta
 {
 }
 
-void celeritas::player_time_scheduler::register_timer(const player_component_type component_type, const time_refresh_type refresh_type, const int64_t parameter1, const int64_t parameter2, const function_type& on_change)
+void celeritas::player_time_scheduler::register_timer(const player_component_type component_type, const time_refresh_type refresh_type, const int64_t parameter, const int64_t time_id, const function_type& on_change)
 {
-    const auto result = player_time_document_->register_timer(component_type, refresh_type, parameter1, parameter2);
+    const auto result = player_time_document_->register_timer(component_type, refresh_type, parameter, time_id);
 
     if (result != change_timer_result::no_change)
     {
@@ -28,9 +28,9 @@ void celeritas::player_time_scheduler::register_timer(const player_component_typ
     }
 }
 
-void celeritas::player_time_scheduler::remove_timer(const player_component_type component_type, const time_refresh_type refresh_type, const int64_t parameter1, const int64_t parameter2, const function_type& on_change)
+void celeritas::player_time_scheduler::remove_timer(const player_component_type component_type, const time_refresh_type refresh_type, const int64_t parameter, const int64_t time_id, const function_type& on_change)
 {
-    const auto result = player_time_document_->remove_timer(component_type, refresh_type, parameter1, parameter2);
+    const auto result = player_time_document_->remove_timer(component_type, refresh_type, parameter, time_id);
     if (result != change_timer_result::no_change)
     {
         on_change();
@@ -61,9 +61,9 @@ celeritas::player_time_scheduler::void_awaitable_type celeritas::player_time_sch
     }
 }
 
-celeritas::player_time_scheduler::void_awaitable_type celeritas::player_time_scheduler::on_time_callback(const time_refresh_type refresh_type, const int64_t parameter1, const int64_t parameter2, const bool is_login, const function_type& on_change)
+celeritas::player_time_scheduler::void_awaitable_type celeritas::player_time_scheduler::on_time_callback(const time_refresh_type refresh_type, const int64_t parameter, const int64_t time_id, const bool is_login, const function_type& on_change)
 {
-    if (const auto result = co_await player_time_document_->on_time_callback(refresh_type, parameter1, parameter2, is_login);
+    if (const auto result = co_await player_time_document_->on_time_callback(refresh_type, parameter, time_id, is_login);
         result != change_timer_result::no_change)
     {
         on_change();

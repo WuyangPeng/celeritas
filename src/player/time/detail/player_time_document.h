@@ -29,13 +29,13 @@ namespace celeritas
 
         [[nodiscard]] int64_t calculate_next_refresh_time() const;
 
-        [[nodiscard]] change_timer_result register_timer(player_component_type component_type, time_refresh_type refresh_type, int64_t parameter1, int64_t parameter2);
+        [[nodiscard]] change_timer_result register_timer(player_component_type component_type, time_refresh_type refresh_type, int64_t parameter, int64_t time_id);
 
-        [[nodiscard]] change_timer_result remove_timer(player_component_type component_type, time_refresh_type refresh_type, int64_t parameter1, int64_t parameter2);
+        [[nodiscard]] change_timer_result remove_timer(player_component_type component_type, time_refresh_type refresh_type, int64_t parameter, int64_t time_id);
 
         [[nodiscard]] change_timer_result_awaitable_type on_time_callback(bool is_login, bool is_including_default);
 
-        [[nodiscard]] change_timer_result_awaitable_type on_time_callback(time_refresh_type refresh_type, int64_t parameter1, int64_t parameter2, bool is_login);
+        [[nodiscard]] change_timer_result_awaitable_type on_time_callback(time_refresh_type refresh_type, int64_t parameter, int64_t time_id, bool is_login);
 
     private:
         player_state* player_state_;

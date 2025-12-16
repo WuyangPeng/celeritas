@@ -16,19 +16,19 @@ namespace celeritas
 
         player_time_refresh() noexcept;
 
-        player_time_refresh(time_refresh_type time_refresh_type, int64_t parameter1, int64_t parameter2, player_component_type player_component_type);
+        player_time_refresh(time_refresh_type time_refresh_type, int64_t parameter, int64_t time_id, player_component_type player_component_type);
 
         [[nodiscard]] time_refresh_type get_time_refresh_type() const;
 
         void set_time_refresh_type(time_refresh_type timeRefreshType);
 
-        [[nodiscard]] int64_t get_parameter1() const;
+        [[nodiscard]] int64_t get_parameter() const;
 
-        void set_parameter1(int64_t parameter);
+        void set_parameter(int64_t parameter);
 
-        [[nodiscard]] int64_t get_parameter2() const;
+        [[nodiscard]] int64_t get_time_id() const;
 
-        void set_parameter2(int64_t parameter2);
+        void set_time_id(int64_t time_id);
 
         [[nodiscard]] component_container get_component() const;
 
@@ -53,15 +53,15 @@ namespace celeritas
         [[nodiscard]] static player_time_refresh from_json_string(const std::string& json_string);
 
         static constexpr std::string_view time_refresh_type_description = "time_refresh_type";
-        static constexpr std::string_view parameter1_description = "parameter1";
-        static constexpr std::string_view parameter2_description = "parameter2";
+        static constexpr std::string_view parameter_description = "parameter";
+        static constexpr std::string_view time_id_description = "time_id";
         static constexpr std::string_view component_description = "component";
         static constexpr std::string_view last_refresh_time_description = "last_refresh_time";
 
     private:
         time_refresh_type time_refresh_type_;
-        int64_t parameter1_;
-        int64_t parameter2_;
+        int64_t parameter_;
+        int64_t time_id_;
         component_container component_;
         int64_t last_refresh_time_;
     };

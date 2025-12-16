@@ -79,7 +79,7 @@ namespace celeritas
 
         void set_instance_id(const std::string& instance_id);
 
-        [[nodiscard]] void_awaitable_type time_callback(time_refresh_type time_refresh_type, int64_t parameter1, int64_t parameter2, bool is_login) const;
+        [[nodiscard]] void_awaitable_type time_callback(time_refresh_type time_refresh_type, int64_t parameter, int64_t time_id, bool is_login) const;
 
         [[nodiscard]] io_context_type& get_io_context();
 

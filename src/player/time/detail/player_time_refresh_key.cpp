@@ -6,7 +6,7 @@ celeritas::player_time_refresh_key::player_time_refresh_key(const time_refresh_t
 }
 
 celeritas::player_time_refresh_key::player_time_refresh_key(const player_time_refresh& player_time_refresh)
-    : time_refresh_type_{ player_time_refresh.get_time_refresh_type() }, parameter1_{ player_time_refresh.get_parameter1() }, parameter2_{ player_time_refresh.get_parameter2() }
+    : time_refresh_type_{ player_time_refresh.get_time_refresh_type() }, parameter1_{ player_time_refresh.get_parameter() }, parameter2_{ player_time_refresh.get_time_id() }
 {
 }
 
