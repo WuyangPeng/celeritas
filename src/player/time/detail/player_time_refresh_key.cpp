@@ -1,6 +1,6 @@
 ﻿#include "player_time_refresh_key.h"
 
-celeritas::player_time_refresh_key::player_time_refresh_key(time_refresh_type time_refresh_type, int64_t parameter)
+celeritas::player_time_refresh_key::player_time_refresh_key(const time_refresh_type time_refresh_type, const int64_t parameter)
     : time_refresh_type_{ time_refresh_type }, parameter_{ parameter }
 {
 }

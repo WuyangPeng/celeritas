@@ -34,28 +34,6 @@ celeritas::player_component::void_awaitable_type celeritas::player_time_componen
     }
 }
 
-void celeritas::player_time_component::init_player_timer(const int64_t current_milliseconds)
-{
-    if (next_refresh_time_ > 0)
-    {
-        std::chrono::milliseconds duration{ next_refresh_time_ - current_milliseconds };
-        player_timer_ = std::make_unique<player_timer>(get_player_state()->get_io_context(), duration, boost::polymorphic_pointer_cast<class_type>(shared_from_this()));
-
-        player_timer_->start();
-    }
-}
-
-void celeritas::player_time_component::set_user_time_refresh()
-{
-    traits::document_array_type documents{};
-    for (auto& element : player_time_refresh_ | std::views::values)
-    {
-        documents.emplace_back(element.to_json_string());
-    }
-
-    user_time_refresh_->set_player_time_refresh(documents);
-}
-
 celeritas::player_component::void_awaitable_type celeritas::player_time_component::on_dependencies_ready()
 {
     const auto current_milliseconds = time_helper::get_current_milliseconds();
@@ -139,6 +117,8 @@ celeritas::player_component::void_awaitable_type celeritas::player_time_componen
 
             element.set_last_refresh_time(current_milliseconds);
         }
+
+        set_user_time_refresh();
     }
     calculate_next_refresh_time();
 
@@ -153,7 +133,7 @@ void celeritas::player_time_component::register_timer(const player_component_typ
         auto& element = player_time_refresh->second;
         const auto component = element.get_component();
         if (const auto iter = std::ranges::find(component, player_component);
-            iter != component.end())
+            iter != component.cend())
         {
             return;
         }
@@ -286,4 +266,26 @@ void celeritas::player_time_component::wait_for_next_tick()
             player_timer_->wait_for_next_tick();
         }
     }
+}
+
+void celeritas::player_time_component::init_player_timer(const int64_t current_milliseconds)
+{
+    if (next_refresh_time_ > 0)
+    {
+        std::chrono::milliseconds duration{ next_refresh_time_ - current_milliseconds };
+        player_timer_ = std::make_unique<player_timer>(get_player_state()->get_io_context(), duration, boost::polymorphic_pointer_cast<class_type>(shared_from_this()));
+
+        player_timer_->start();
+    }
+}
+
+void celeritas::player_time_component::set_user_time_refresh()
+{
+    traits::document_array_type documents{};
+    for (auto& element : player_time_refresh_ | std::views::values)
+    {
+        documents.emplace_back(element.to_json_string());
+    }
+
+    user_time_refresh_->set_player_time_refresh(documents);
 }
