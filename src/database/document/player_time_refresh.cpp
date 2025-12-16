@@ -77,15 +77,15 @@ int64_t celeritas::player_time_refresh::get_next_refresh_time() const
     {
         case time_refresh_type::daily:
         {
-            break;
+            return time_helper::get_current_milliseconds() >= time_helper::get_end_of_day_milliseconds_with_offset(parameter_);
         }
         case time_refresh_type::weekly:
         {
-            break;
+            return time_helper::get_current_milliseconds() >= time_helper::get_end_of_week_milliseconds_with_offset(parameter_);
         }
         case time_refresh_type::monthly:
         {
-            break;
+            return time_helper::get_current_milliseconds() >= time_helper::get_end_of_month_milliseconds_with_offset(parameter_);
         }
         case time_refresh_type::interval_duration:
         {
@@ -100,7 +100,6 @@ int64_t celeritas::player_time_refresh::get_next_refresh_time() const
             return 0;
         }
     }
-    return 0;
 }
 
 std::string celeritas::player_time_refresh::to_json_string() const
