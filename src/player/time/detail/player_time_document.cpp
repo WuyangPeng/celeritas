@@ -20,9 +20,9 @@ celeritas::player_time_document::player_time_refresh_container& celeritas::playe
     return player_time_refresh_;
 }
 
-void celeritas::player_time_document::set_document(const player_time_refresh_container& player_time_refresh)
+void celeritas::player_time_document::set_document(player_time_refresh_container player_time_refresh)
 {
-    player_time_refresh_ = player_time_refresh;
+    player_time_refresh_ = std::move(player_time_refresh);
 }
 
 int64_t celeritas::player_time_document::calculate_next_refresh_time() const
@@ -81,8 +81,10 @@ celeritas::change_timer_result celeritas::player_time_document::remove_timer(con
         if (element.get_component().empty())
         {
             player_time_refresh_.erase(iter);
+
             return change_timer_result::change_document;
         }
+
         return change_timer_result::change_component;
     }
 
@@ -108,6 +110,7 @@ celeritas::player_time_document::change_timer_result_awaitable_type celeritas::p
             }
 
             element.set_last_refresh_time(current_milliseconds);
+
             change_timer_result = change_timer_result::change_document;
         }
     }

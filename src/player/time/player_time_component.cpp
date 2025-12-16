@@ -12,7 +12,7 @@ celeritas::player_time_component::player_time_component(player_state* player_sta
 
 celeritas::player_component::void_awaitable_type celeritas::player_time_component::on_load_db()
 {
-    document_.set_document(co_await database_.load());
+    document_.set_document(std::move(co_await database_.load()));
 }
 
 celeritas::player_component::void_awaitable_type celeritas::player_time_component::on_dependencies_ready()

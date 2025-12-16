@@ -25,7 +25,7 @@ namespace celeritas
 
         [[nodiscard]] player_time_refresh_container& get_player_time_refresh_container();
 
-        void set_document(const player_time_refresh_container& player_time_refresh);
+        void set_document(player_time_refresh_container player_time_refresh);
 
         [[nodiscard]] int64_t calculate_next_refresh_time() const;
 

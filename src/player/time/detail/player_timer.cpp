@@ -1,5 +1,4 @@
 ﻿#include "player_timer.h"
-#include "common/time_helper.h"
 #include "player/time/player_time_component.h"
 
 celeritas::player_timer::player_timer(io_context_type& io_context, const duration_type interval, const player_timer_component_shared_ptr& player_timer_component)

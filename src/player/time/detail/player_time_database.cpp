@@ -1,4 +1,5 @@
 ﻿#include "player_time_database.h"
+#include "player_time_document.h"
 #include "config/database_type.h"
 #include "database/database_pool_base.h"
 #include "player/component/player_state.h"
@@ -11,26 +12,9 @@ celeritas::player_time_database::player_time_database(int64_t user_id, player_ti
 
 celeritas::player_time_database::player_time_refresh_container_awaitable_type celeritas::player_time_database::load()
 {
-    player_time_refresh_container container{};
-    const auto mongo_pool = player_time_component_->get_mongo_player_db_name();
+    co_await load_user_time_refresh();
 
-    if (const auto optional_user_time_refresh = co_await mongo_pool->select_one(user_time_refresh::get_select(database_type::mongo, user_id_), user_time_refresh::get_database_field_container()))
-    {
-        user_time_refresh_ = user_time_refresh{ *optional_user_time_refresh };
-    }
-    else
-    {
-        user_time_refresh_ = user_time_refresh{ database_type::mongo, user_id_ };
-    }
-
-    for (const auto& element : user_time_refresh_->get_player_time_refresh())
-    {
-        auto player_time = player_time_refresh::from_json_string(element);
-        player_time_refresh_key player_time_refresh_key{ player_time };
-        container.emplace(player_time_refresh_key, std::move(player_time));
-    }
-
-    co_return container;
+    co_return load_player_time_refresh();
 }
 
 void celeritas::player_time_database::update_document()
@@ -58,4 +42,31 @@ celeritas::player_time_database::void_awaitable_type celeritas::player_time_data
 bool celeritas::player_time_database::is_must_save() const
 {
     return user_time_refresh_->is_must_save();
+}
+
+celeritas::player_time_database::void_awaitable_type celeritas::player_time_database::load_user_time_refresh()
+{
+    const auto mongo_pool = player_time_component_->get_mongo_player_db_name();
+
+    if (const auto optional_user_time_refresh = co_await mongo_pool->select_one(user_time_refresh::get_select(database_type::mongo, user_id_), user_time_refresh::get_database_field_container()))
+    {
+        user_time_refresh_ = user_time_refresh{ *optional_user_time_refresh };
+    }
+    else
+    {
+        user_time_refresh_ = user_time_refresh{ database_type::mongo, user_id_ };
+    }
+}
+
+celeritas::player_time_database::player_time_refresh_container celeritas::player_time_database::load_player_time_refresh()
+{
+    player_time_refresh_container container{};
+    for (const auto& element : user_time_refresh_->get_player_time_refresh())
+    {
+        auto player_time = player_time_refresh::from_json_string(element);
+        player_time_refresh_key player_time_refresh_key{ player_time };
+        container.emplace(player_time_refresh_key, std::move(player_time));
+    }
+
+    return container;
 }
