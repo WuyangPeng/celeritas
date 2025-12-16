@@ -16,10 +16,10 @@ int64_t celeritas::time_helper::get_current_seconds()
 
 int64_t celeritas::time_helper::get_start_of_day_milliseconds()
 {
-    return get_milliseconds_with_offset(0);
+    return get_start_of_day_milliseconds_with_offset(0);
 }
 
-int64_t celeritas::time_helper::get_milliseconds_with_offset(const int64_t milliseconds_offset)
+int64_t celeritas::time_helper::get_start_of_day_milliseconds_with_offset(const int64_t milliseconds_offset)
 {
     const auto now = std::chrono::system_clock::now();
 

@@ -40,6 +40,8 @@ namespace celeritas
 
         [[nodiscard]] bool is_can_refresh() const;
 
+        [[nodiscard]] int64_t get_next_refresh_time() const;
+
         [[nodiscard]] std::string to_json_string() const;
 
         [[nodiscard]] static player_time_refresh from_json_string(const std::string& json_string);

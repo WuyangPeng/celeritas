@@ -68,7 +68,39 @@ void celeritas::player_time_refresh::set_last_refresh_time(const int64_t last_re
 
 bool celeritas::player_time_refresh::is_can_refresh() const
 {
-    return false;
+    return get_next_refresh_time() >= time_helper::get_current_milliseconds();
+}
+
+int64_t celeritas::player_time_refresh::get_next_refresh_time() const
+{
+    switch (time_refresh_type_)
+    {
+        case time_refresh_type::daily:
+        {
+            break;
+        }
+        case time_refresh_type::weekly:
+        {
+            break;
+        }
+        case time_refresh_type::monthly:
+        {
+            break;
+        }
+        case time_refresh_type::interval_duration:
+        {
+            return time_helper::get_current_milliseconds() >= last_refresh_time_ + parameter_;
+        }
+        case time_refresh_type::absolute_point:
+        {
+            return time_helper::get_current_milliseconds() >= parameter_;
+        }
+        default:
+        {
+            return 0;
+        }
+    }
+    return 0;
 }
 
 std::string celeritas::player_time_refresh::to_json_string() const

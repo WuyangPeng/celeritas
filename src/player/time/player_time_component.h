@@ -35,6 +35,8 @@ namespace celeritas
 
         void remove_timer(player_component_type player_component, time_refresh_type time_refresh_type, int64_t parameter);
 
+        [[nodiscard]] int64_t get_next_refresh_time() const;
+
     private:
         using optional_user_time_refresh = std::optional<user_time_refresh>;
         using player_time_refresh_container = std::vector<player_time_refresh>;

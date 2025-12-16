@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
         for (auto i = 0; i < celeritas::day_hour; ++i)
         {
             const auto offset = i * celeritas::hour_milliseconds;
-            const auto result = celeritas::time_helper::get_milliseconds_with_offset(offset);
+            const auto result = celeritas::time_helper::get_start_of_day_milliseconds_with_offset(offset);
 
             if (start_of_day_milliseconds + offset < current_milliseconds)
             {

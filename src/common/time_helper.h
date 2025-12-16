@@ -19,7 +19,7 @@ namespace celeritas
 
         [[nodiscard]] static int64_t get_start_of_day_milliseconds();
 
-        [[nodiscard]] static int64_t get_milliseconds_with_offset(int64_t milliseconds_offset);
+        [[nodiscard]] static int64_t get_start_of_day_milliseconds_with_offset(int64_t milliseconds_offset);
 
         [[nodiscard]] static int64_t get_start_of_week_milliseconds();
 

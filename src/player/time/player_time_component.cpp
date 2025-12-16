@@ -119,3 +119,19 @@ void celeritas::player_time_component::remove_timer(player_component_type player
                       return false;
                   });
 }
+
+int64_t celeritas::player_time_component::get_next_refresh_time() const
+{
+    auto result = 0LL;
+    const auto current_milliseconds = time_helper::get_current_milliseconds();
+    for (auto& element : player_time_refresh_)
+    {
+        if (const auto next_refresh_time = element.get_next_refresh_time();
+            next_refresh_time > current_milliseconds &&
+            (result == 0 || result > next_refresh_time))
+        {
+            result = next_refresh_time;
+        }
+    }
+    return result;
+}
