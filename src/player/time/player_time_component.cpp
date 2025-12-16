@@ -92,7 +92,7 @@ void celeritas::player_time_component::on_data_change()
     database_.update_document(player_time_refresh_);
 }
 
-celeritas::player_time_component::void_awaitable_type celeritas::player_time_component::on_all_time_callback(bool is_login)
+celeritas::player_time_component::void_awaitable_type celeritas::player_time_component::on_all_time_callback(const bool is_login)
 {
     const auto current_milliseconds = time_helper::get_current_milliseconds();
     auto change = false;
