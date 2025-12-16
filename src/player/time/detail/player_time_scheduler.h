@@ -3,6 +3,7 @@
 #include "database/document/player_time_refresh.h"
 #include "player_time_internal_fwd.h"
 #include "player_time_refresh_key.h"
+#include "player/time/player_time_component.h"
 
 #include <boost/asio/awaitable.hpp>
 
@@ -34,6 +35,8 @@ namespace celeritas
         void init_player_timer();
 
         [[nodiscard]] int64_t get_next_refresh_time() const;
+
+        void calculate_next_refresh_time();
 
     private:
         using player_timer_shared_ptr = std::shared_ptr<player_timer>;

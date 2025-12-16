@@ -19,7 +19,7 @@ celeritas::player_component::void_awaitable_type celeritas::player_time_componen
 {
     co_await on_all_time_callback(true);
 
-    scheduler_.calculate_next_refresh_time(player_time_refresh_);
+    scheduler_.calculate_next_refresh_time();
     scheduler_.init_player_timer();
 }
 

@@ -189,3 +189,8 @@ int64_t celeritas::player_time_scheduler::get_next_refresh_time() const
 {
     return next_refresh_time_;
 }
+
+void celeritas::player_time_scheduler::calculate_next_refresh_time()
+{
+    next_refresh_time_ = time_component_->calculate_next_refresh_time();
+}
