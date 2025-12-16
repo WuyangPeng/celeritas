@@ -11,6 +11,7 @@ namespace celeritas
         using local_time_type = std::chrono::local_time<std::chrono::system_clock::duration>;
         using time_point_type = std::chrono::system_clock::time_point;
         using const_time_zone_ptr_type = const std::chrono::time_zone*;
+        using local_days_type = std::chrono::local_days;
 
         [[nodiscard]] static int64_t get_current_milliseconds();
 
@@ -36,5 +37,7 @@ namespace celeritas
 
     private:
         [[nodiscard]] static const_time_zone_ptr_type do_get_local_zone();
+
+        [[nodiscard]] static local_days_type get_current_day_local(const time_point_type& time_point);
     };
 }
