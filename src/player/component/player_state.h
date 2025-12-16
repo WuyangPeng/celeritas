@@ -21,18 +21,19 @@ namespace celeritas
         using void_awaitable_type = boost::asio::awaitable<void>;
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
         using protobuf_message = google::protobuf::Message;
+        using io_context_type = boost::asio::io_context;
 
-        player_state(const user& user, const resource_loader_shared_ptr& resource_loader, std::string instance_id);
+        player_state(const user& user, const resource_loader_shared_ptr& resource_loader, io_context_type& io_context, std::string instance_id);
 
         virtual ~player_state() noexcept = default;
 
         player_state(const player_state& rhs) = default;
 
-        player_state& operator=(const player_state& rhs) = default;
+        player_state& operator=(const player_state& rhs) = delete;
 
         player_state(player_state&& rhs) noexcept = default;
 
-        player_state& operator=(player_state&& rhs) noexcept = default;
+        player_state& operator=(player_state&& rhs) noexcept = delete;
 
         template <typename T>
         [[nodiscard]] std::shared_ptr<T> get_component() const;
@@ -80,6 +81,8 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type time_callback(time_refresh_type time_refresh_type, int64_t parameter, bool is_login);
 
+        [[nodiscard]] io_context_type& get_io_context();
+
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
@@ -90,6 +93,7 @@ namespace celeritas
         player_state_type player_state_;
         component_container_type components_;
         resource_loader_weak_ptr resource_loader_;
+        io_context_type& io_context_;
         std::string instance_id_;
     };
 }

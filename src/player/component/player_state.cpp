@@ -20,7 +20,7 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
-celeritas::player_state::player_state(const user& user, const resource_loader_shared_ptr& resource_loader, std::string instance_id)
+celeritas::player_state::player_state(const user& user, const resource_loader_shared_ptr& resource_loader, io_context_type& io_context, std::string instance_id)
     : dirty_{ false },
       player_state_{ player_state_type::loading },
       components_{ std::make_shared<player_user_component>(user, this),
@@ -38,6 +38,7 @@ celeritas::player_state::player_state(const user& user, const resource_loader_sh
 
                    std::make_shared<player_finish_component>(this) },
       resource_loader_{ resource_loader },
+      io_context_{ io_context },
       instance_id_{ std::move(instance_id) }
 {
     check();
@@ -169,6 +170,11 @@ void celeritas::player_state::set_instance_id(const std::string& instance_id)
 celeritas::player_state::void_awaitable_type celeritas::player_state::time_callback(const time_refresh_type time_refresh_type, const int64_t parameter, const bool is_login)
 {
     co_await get_component<player_time_component>()->time_callback(time_refresh_type, parameter, is_login);
+}
+
+celeritas::player_state::io_context_type& celeritas::player_state::get_io_context()
+{
+    return io_context_;
 }
 
 void celeritas::player_state::check() const

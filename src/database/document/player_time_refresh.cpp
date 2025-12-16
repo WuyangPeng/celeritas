@@ -1,4 +1,5 @@
 ﻿#include "player_time_refresh.h"
+#include "common/common_fwd.h"
 #include "common/time_helper.h"
 #include "player/time/time_refresh_type.h"
 
@@ -98,6 +99,29 @@ int64_t celeritas::player_time_refresh::get_next_refresh_time() const
         default:
         {
             return 0;
+        }
+    }
+}
+
+bool celeritas::player_time_refresh::is_default() const
+{
+    switch (time_refresh_type_)
+    {
+        case time_refresh_type::daily:
+        {
+            return parameter_ % (hour_seconds * milliseconds) == 0;
+        }
+        case time_refresh_type::weekly:
+        {
+            return parameter_ == 0 || parameter_ == (day_seconds * 1 + hour_seconds * 0) * milliseconds;
+        }
+        case time_refresh_type::monthly:
+        {
+            return parameter_ == 0;
+        }
+        default:
+        {
+            return false;
         }
     }
 }

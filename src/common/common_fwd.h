@@ -38,6 +38,7 @@ namespace celeritas
     constexpr std::string_view service_registry_channel{ "service_registry" };
     constexpr std::string_view auth_channel{ "auth" };
     constexpr std::string_view payment_channel{ "payment" };
+    constexpr std::string_view player_channel{ "player" };
     constexpr std::string_view handler_channel{ "handler" };
     constexpr std::string_view initializer_channel{ "initializer" };
     constexpr std::string_view server_channel{ "server" };

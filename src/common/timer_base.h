@@ -15,7 +15,7 @@ namespace celeritas
         using io_context_type = boost::asio::io_context;
         using duration_type = std::chrono::milliseconds;
 
-        timer_base(io_context_type& io_context, duration_type interval);
+        timer_base(io_context_type& io_context, duration_type interval, bool disposable = false);
 
         virtual ~timer_base() noexcept;
 
@@ -31,7 +31,8 @@ namespace celeritas
 
         void stop();
 
-    protected:
+        void wait_for_next_tick();
+
         void set_duration_type(duration_type interval);
 
     private:
@@ -40,13 +41,12 @@ namespace celeritas
 
         void on_timer_elapsed();
 
-        void wait_for_next_tick();
-
         void next_tick(const error_code_type& error_code);
 
         virtual void execute_timer_task() = 0;
 
         timer_type timer_;
         duration_type interval_;
+        bool disposable_;
     };
 }

@@ -7,7 +7,7 @@
 
 namespace celeritas
 {
-    class player_component
+    class player_component : public std::enable_shared_from_this<player_component>
     {
     public:
         using class_type = player_component;

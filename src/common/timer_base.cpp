@@ -2,8 +2,8 @@
 #include "noexcept_safe_call_and_log.h"
 #include "timer_base.h"
 
-celeritas::timer_base::timer_base(io_context_type& io_context, const duration_type interval)
-    : timer_{ io_context }, interval_{ interval }
+celeritas::timer_base::timer_base(io_context_type& io_context, const duration_type interval, bool disposable)
+    : timer_{ io_context }, interval_{ interval }, disposable_{ disposable }
 {
 }
 
@@ -71,6 +71,8 @@ void celeritas::timer_base::next_tick(const error_code_type& error_code)
     }
 
     this->on_timer_elapsed();
-
-    wait_for_next_tick();
+    if (!disposable_)
+    {
+        wait_for_next_tick();
+    }
 }
