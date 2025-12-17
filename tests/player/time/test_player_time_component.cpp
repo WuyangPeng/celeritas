@@ -194,7 +194,7 @@ BOOST_FIXTURE_TEST_SUITE(player_time_component_suite, player_time_component_fixt
         BOOST_CHECK_EQUAL(mock_player_component_->get_time_callback_is_not_login(), 0);
 
         boost::asio::co_spawn(io_context_, component_->time_callback(), boost::asio::detached);
-        run_io_context();
+        run_io_context_two_times();
 
         BOOST_CHECK_EQUAL(mock_player_component_->get_time_callback_is_login(), 0);
         BOOST_CHECK_EQUAL(mock_player_component_->get_time_callback_is_not_login(), 1);
