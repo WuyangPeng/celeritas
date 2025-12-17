@@ -14,6 +14,8 @@ namespace celeritas
 
         player_time_refresh_key(time_refresh_type time_refresh_type, int64_t parameter, int64_t time_id);
 
+        player_time_refresh_key(time_refresh_type time_refresh_type, int64_t parameter);
+
         explicit player_time_refresh_key(const player_time_refresh& player_time_refresh);
 
         [[nodiscard]] time_refresh_type get_time_refresh_type() const;

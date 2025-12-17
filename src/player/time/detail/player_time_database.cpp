@@ -4,6 +4,7 @@
 #include "database/database_pool_base.h"
 #include "player/component/player_state.h"
 #include "player/time/player_time_component.h"
+#include "player/time/player_time_refresh_key.h"
 
 celeritas::player_time_database::player_time_database(int64_t user_id, player_time_component* player_time_component, player_time_document* player_time_document)
     : user_id_{ user_id }, player_time_component_{ player_time_component }, player_time_document_{ player_time_document }, user_time_refresh_{}

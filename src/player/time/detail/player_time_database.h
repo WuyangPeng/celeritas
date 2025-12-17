@@ -1,9 +1,9 @@
 ﻿#pragma once
 
 #include "player_time_internal_fwd.h"
-#include "player_time_refresh_key.h"
 #include "database/document/player_time_refresh.h"
 #include "database/generated/mongo/player/user_time_refresh.h"
+#include "player/player_fwd.h"
 
 #include <boost/asio/awaitable.hpp>
 

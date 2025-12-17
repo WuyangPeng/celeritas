@@ -1,7 +1,8 @@
-﻿#include "player_time_document.h"
-#include "change_timer_result.h"
+﻿#include "change_timer_result.h"
+#include "player_time_document.h"
 #include "common/time_helper.h"
 #include "player/component/player_state.h"
+#include "player/time/player_time_refresh_key.h"
 
 #include <ranges>
 
@@ -35,6 +36,7 @@ int64_t celeritas::player_time_document::calculate_next_refresh_time() const
         {
             continue;
         }
+
         if (const auto next_refresh_time = element.get_next_refresh_time();
             next_refresh_time > current_milliseconds &&
             (result == 0 || result > next_refresh_time))
@@ -46,9 +48,9 @@ int64_t celeritas::player_time_document::calculate_next_refresh_time() const
     return result;
 }
 
-celeritas::change_timer_result celeritas::player_time_document::register_timer(const player_component_type component_type, const time_refresh_type refresh_type, const int64_t parameter, const int64_t time_id)
+celeritas::change_timer_result celeritas::player_time_document::register_timer(const player_component_type component_type, const player_time_refresh_key& player_time_refresh_key)
 {
-    if (const auto iter = player_time_refresh_.find(player_time_refresh_key{ refresh_type, parameter, time_id });
+    if (const auto iter = player_time_refresh_.find(player_time_refresh_key);
         iter != player_time_refresh_.end())
     {
         auto& element = iter->second;
@@ -64,16 +66,18 @@ celeritas::change_timer_result celeritas::player_time_document::register_timer(c
         return change_timer_result::change_component;
     }
 
-    player_time_refresh_.emplace(std::piecewise_construct,
-                                 std::forward_as_tuple(refresh_type, parameter, time_id),
-                                 std::forward_as_tuple(refresh_type, parameter, time_id, component_type));
+    player_time_refresh_.emplace(player_time_refresh_key,
+                                 player_time_refresh{ player_time_refresh_key.get_time_refresh_type(),
+                                                      player_time_refresh_key.get_parameter(),
+                                                      player_time_refresh_key.get_time_id(),
+                                                      component_type });
 
     return change_timer_result::change_document;
 }
 
-celeritas::change_timer_result celeritas::player_time_document::remove_timer(const player_component_type component_type, const time_refresh_type refresh_type, const int64_t parameter, const int64_t time_id)
+celeritas::change_timer_result celeritas::player_time_document::remove_timer(const player_component_type component_type, const player_time_refresh_key& player_time_refresh_key)
 {
-    if (const auto iter = player_time_refresh_.find(player_time_refresh_key{ refresh_type, parameter, time_id });
+    if (const auto iter = player_time_refresh_.find(player_time_refresh_key);
         iter != player_time_refresh_.end())
     {
         auto& element = iter->second;
@@ -106,7 +110,7 @@ celeritas::player_time_document::change_timer_result_awaitable_type celeritas::p
         {
             for (const auto& component : element.get_component())
             {
-                co_await player_state_->get_component(component)->time_callback(element.get_time_refresh_type(), element.get_parameter(), element.get_time_id(), is_login);
+                co_await player_state_->get_component(component)->time_callback(player_time_refresh_key{ element.get_time_refresh_type(), element.get_parameter(), element.get_time_id() }, is_login);
             }
 
             element.set_last_refresh_time(current_milliseconds);
@@ -118,11 +122,11 @@ celeritas::player_time_document::change_timer_result_awaitable_type celeritas::p
     co_return change_timer_result;
 }
 
-celeritas::player_time_document::change_timer_result_awaitable_type celeritas::player_time_document::on_time_callback(time_refresh_type refresh_type, int64_t parameter, int64_t time_id, bool is_login)
+celeritas::player_time_document::change_timer_result_awaitable_type celeritas::player_time_document::on_time_callback(const player_time_refresh_key& player_time_refresh_key, bool is_login)
 {
     auto change_timer_result = change_timer_result::no_change;
     const auto current_milliseconds = time_helper::get_current_milliseconds();
-    if (const auto iter = player_time_refresh_.find(player_time_refresh_key{ refresh_type, parameter, time_id });
+    if (const auto iter = player_time_refresh_.find(player_time_refresh_key);
         iter != player_time_refresh_.end())
     {
         if (auto& element = iter->second;
@@ -130,7 +134,7 @@ celeritas::player_time_document::change_timer_result_awaitable_type celeritas::p
         {
             for (const auto& component : element.get_component())
             {
-                co_await player_state_->get_component(component)->time_callback(element.get_time_refresh_type(), element.get_parameter(), element.get_time_id(), is_login);
+                co_await player_state_->get_component(component)->time_callback(player_time_refresh_key, is_login);
             }
 
             element.set_last_refresh_time(current_milliseconds);

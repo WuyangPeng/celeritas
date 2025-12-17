@@ -167,9 +167,9 @@ void celeritas::player_state::set_instance_id(const std::string& instance_id)
     instance_id_ = instance_id;
 }
 
-celeritas::player_state::void_awaitable_type celeritas::player_state::time_callback(const time_refresh_type time_refresh_type, const int64_t parameter, const int64_t time_id, const bool is_login) const
+celeritas::player_state::void_awaitable_type celeritas::player_state::time_callback(const player_time_refresh_key& player_time_refresh_key, const bool is_login) const
 {
-    co_await get_component<player_time_component>()->time_callback(time_refresh_type, parameter, time_id, is_login);
+    co_await get_component<player_time_component>()->time_callback(player_time_refresh_key, is_login);
 }
 
 celeritas::player_state::io_context_type& celeritas::player_state::get_io_context()

@@ -5,6 +5,7 @@
 #include "database/generated/mysql/player/user.h"
 #include "message/header.h"
 #include "player/component/player_component_type.h"
+#include "player/time/detail/player_time_internal_fwd.h"
 
 #include <boost/asio/awaitable.hpp>
 
@@ -79,7 +80,7 @@ namespace celeritas
 
         void set_instance_id(const std::string& instance_id);
 
-        [[nodiscard]] void_awaitable_type time_callback(time_refresh_type time_refresh_type, int64_t parameter, int64_t time_id, bool is_login) const;
+        [[nodiscard]] void_awaitable_type time_callback(const player_time_refresh_key& player_time_refresh_key, bool is_login) const;
 
         [[nodiscard]] io_context_type& get_io_context();
 

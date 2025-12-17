@@ -50,7 +50,7 @@ namespace celeritas
         [[nodiscard]] virtual void_awaitable_type save_db();
 
         // 默认定时器回调
-        [[nodiscard]] virtual void_awaitable_type time_callback(time_refresh_type time_refresh_type, int64_t parameter, int64_t time_id, bool is_login);
+        [[nodiscard]] virtual void_awaitable_type time_callback(const player_time_refresh_key& player_time_refresh_key, bool is_login);
 
         [[nodiscard]] player_state* get_player_state();
 

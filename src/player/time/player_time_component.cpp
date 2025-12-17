@@ -40,34 +40,28 @@ celeritas::player_component::void_awaitable_type celeritas::player_time_componen
     });
 }
 
-celeritas::player_component::void_awaitable_type celeritas::player_time_component::time_callback(const time_refresh_type time_refresh_type, const int64_t parameter, const int64_t time_id, const bool is_login)
+celeritas::player_component::void_awaitable_type celeritas::player_time_component::time_callback(const player_time_refresh_key& player_time_refresh_key, const bool is_login)
 {
-    co_await scheduler_.on_time_callback(time_refresh_type,
-                                         parameter,
-                                         time_id,
+    co_await scheduler_.on_time_callback(player_time_refresh_key,
                                          is_login,
                                          [this] {
                                              on_data_change();
                                          });
 }
 
-void celeritas::player_time_component::register_timer(const player_component_type player_component, const time_refresh_type time_refresh_type, const int64_t parameter, const int64_t time_id)
+void celeritas::player_time_component::register_timer(const player_component_type player_component, const player_time_refresh_key& player_time_refresh_key)
 {
     scheduler_.register_timer(player_component,
-                              time_refresh_type,
-                              parameter,
-                              time_id,
+                              player_time_refresh_key,
                               [this] {
                                   on_data_change();
                               });
 }
 
-void celeritas::player_time_component::remove_timer(const player_component_type player_component, const time_refresh_type time_refresh_type, const int64_t parameter, const int64_t time_id)
+void celeritas::player_time_component::remove_timer(const player_component_type player_component, const player_time_refresh_key& player_time_refresh_key)
 {
     scheduler_.remove_timer(player_component,
-                            time_refresh_type,
-                            parameter,
-                            time_id,
+                            player_time_refresh_key,
                             [this] {
                                 on_data_change();
                             });

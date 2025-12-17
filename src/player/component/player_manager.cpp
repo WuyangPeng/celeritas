@@ -2,6 +2,7 @@
 #include "player_state.h"
 #include "player_state_type.h"
 #include "common/celeritas_error.h"
+#include "../time/player_time_refresh_key.h"
 
 #include <ranges>
 
@@ -65,7 +66,7 @@ celeritas::player_manager::void_awaitable_type celeritas::player_manager::time_c
 
     for (const auto& element : container_ | std::views::values)
     {
-        co_await element->time_callback(time_refresh_type, parameter, 0, false);
+        co_await element->time_callback(player_time_refresh_key{ time_refresh_type, parameter }, false);
     }
 }
 
