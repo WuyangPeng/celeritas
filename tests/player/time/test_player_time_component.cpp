@@ -1,6 +1,7 @@
 ﻿#include "common/time_helper.h"
 #include "database/document/player_time_refresh.h"
 #include "player/mock_database_pool.h"
+#include "player/mock_player_component.h"
 #include "player/mock_player_state.h"
 #include "player/time/player_time_component.h"
 #include "player/time/time_refresh_type.h"
@@ -20,6 +21,8 @@ namespace
               component_{ &mock_player_state_ }
         {
             component_.set_mock_database_pool(mock_pool_);
+
+            mock_player_state_.set_mock_player_component(std::make_shared<celeritas::mock_player_component>(&mock_player_state_));
         }
 
         void run_io_context()
@@ -98,14 +101,18 @@ BOOST_FIXTURE_TEST_SUITE(player_time_component_suite, player_time_component_fixt
 
     BOOST_AUTO_TEST_CASE(test_on_load_db)
     {
-        celeritas::player_time_refresh refresh_data{};
-        refresh_data.set_time_refresh_type(celeritas::time_refresh_type::weekly);
-        refresh_data.set_parameter(123);
-        refresh_data.set_time_id(456);
-        refresh_data.set_last_refresh_time(celeritas::time_helper::get_current_milliseconds());
+        const celeritas::player_time_refresh_key key{ celeritas::time_refresh_type::weekly, 123, 456 };
 
         boost::asio::co_spawn(io_context_, component_.on_load_db(), boost::asio::detached);
         run_io_context();
+
+        const auto player_time_refresh = component_.get_player_time_refresh(key);
+
+        BOOST_CHECK(player_time_refresh.get_time_refresh_type() == key.get_time_refresh_type());
+        BOOST_CHECK_EQUAL(player_time_refresh.get_parameter(), key.get_parameter());
+        BOOST_CHECK_EQUAL(player_time_refresh.get_time_id(), key.get_time_id());
+        BOOST_CHECK(player_time_refresh.get_component() == celeritas::player_time_refresh::component_container{celeritas::player_component_type::mock});
+        BOOST_CHECK_GE(celeritas::time_helper::get_current_milliseconds(), player_time_refresh.get_last_refresh_time());
     }
 
 BOOST_AUTO_TEST_SUITE_END()

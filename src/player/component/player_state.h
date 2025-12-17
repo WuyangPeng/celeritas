@@ -84,6 +84,8 @@ namespace celeritas
 
         [[nodiscard]] io_context_type& get_io_context();
 
+        void set_mock_player_component(const player_component_shared_ptr& mock);
+
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;

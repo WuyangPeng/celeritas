@@ -1,5 +1,6 @@
 ﻿#include "change_timer_result.h"
 #include "player_time_document.h"
+#include "common/celeritas_error.h"
 #include "common/time_helper.h"
 #include "player/component/player_state.h"
 #include "player/time/player_time_refresh_key.h"
@@ -127,7 +128,7 @@ celeritas::player_time_document::change_timer_result_awaitable_type celeritas::p
     auto change_timer_result = change_timer_result::no_change;
     const auto current_milliseconds = time_helper::get_current_milliseconds();
     if (const auto iter = player_time_refresh_.find(player_time_refresh_key);
-        iter != player_time_refresh_.end())
+        iter != player_time_refresh_.cend())
     {
         if (auto& element = iter->second;
             element.is_can_refresh())
@@ -144,4 +145,15 @@ celeritas::player_time_document::change_timer_result_awaitable_type celeritas::p
     }
 
     co_return change_timer_result;
+}
+
+celeritas::player_time_refresh celeritas::player_time_document::get_player_time_refresh(const player_time_refresh_key& player_time_refresh_key) const
+{
+    if (const auto iter = player_time_refresh_.find(player_time_refresh_key);
+        iter != player_time_refresh_.cend())
+    {
+        return iter->second;
+    }
+
+    throw celeritas_error{ "player time refresh not found" };
 }

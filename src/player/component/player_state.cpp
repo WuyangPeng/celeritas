@@ -1,4 +1,5 @@
-﻿#include "player_state.tpp"
+﻿#include "player_null_component.h"
+#include "player_state.tpp"
 #include "player_state_type.h"
 #include "common/celeritas_error.h"
 #include "common/resource_loader_base.h"
@@ -36,7 +37,8 @@ celeritas::player_state::player_state(const user& user, const resource_loader_sh
                    std::make_shared<player_attribute_component>(this),
                    std::make_shared<player_instance_component>(this),
 
-                   std::make_shared<player_finish_component>(this) },
+                   std::make_shared<player_finish_component>(this),
+                   std::make_shared<player_null_component>(this) },
       resource_loader_{ resource_loader },
       io_context_{ io_context },
       instance_id_{ std::move(instance_id) }
@@ -175,6 +177,11 @@ celeritas::player_state::void_awaitable_type celeritas::player_state::time_callb
 celeritas::player_state::io_context_type& celeritas::player_state::get_io_context()
 {
     return io_context_;
+}
+
+void celeritas::player_state::set_mock_player_component(const player_component_shared_ptr& mock)
+{
+    components_.at(static_cast<int>(player_component_type::mock)) = mock;
 }
 
 void celeritas::player_state::check() const

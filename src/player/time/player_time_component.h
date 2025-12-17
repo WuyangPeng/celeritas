@@ -37,6 +37,8 @@ namespace celeritas
 
         void remove_timer(player_component_type player_component, const player_time_refresh_key& player_time_refresh_key);
 
+        [[nodiscard]] player_time_refresh get_player_time_refresh(const player_time_refresh_key& player_time_refresh_key) const;
+
     private:
         void on_data_change();
 

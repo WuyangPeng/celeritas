@@ -17,6 +17,7 @@ namespace celeritas
         attribute = 10,
         instance = 11,
         finish,
-        max_component = finish + 1,
+        mock, // 测试使用
+        max_component = finish + 2,
     };
 }

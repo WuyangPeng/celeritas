@@ -37,6 +37,8 @@ namespace celeritas
 
         [[nodiscard]] change_timer_result_awaitable_type on_time_callback(const player_time_refresh_key& player_time_refresh_key, bool is_login);
 
+        [[nodiscard]] player_time_refresh get_player_time_refresh(const player_time_refresh_key& player_time_refresh_key) const;
+
     private:
         player_state* player_state_;
         player_time_refresh_container player_time_refresh_;

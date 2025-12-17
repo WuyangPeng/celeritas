@@ -67,6 +67,11 @@ void celeritas::player_time_component::remove_timer(const player_component_type 
                             });
 }
 
+celeritas::player_time_refresh celeritas::player_time_component::get_player_time_refresh(const player_time_refresh_key& player_time_refresh_key) const
+{
+    return document_.get_player_time_refresh(player_time_refresh_key);
+}
+
 void celeritas::player_time_component::on_data_change()
 {
     database_.update_document();
