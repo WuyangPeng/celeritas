@@ -24,6 +24,12 @@ namespace
         {
         }
 
+        void run_io_context()
+        {
+            io_context_.restart();
+            io_context_.run();
+        }
+
         boost::asio::io_context io_context_;
         std::shared_ptr<celeritas::mock_database_pool> mock_pool_;
         celeritas::user test_user_;
@@ -48,7 +54,7 @@ BOOST_FIXTURE_TEST_SUITE(player_user_component_suite, player_user_component_fixt
 
         // 调用并执行协程
         boost::asio::co_spawn(io_context_, component.save_db(), boost::asio::detached);
-        io_context_.run();
+        run_io_context();
 
         // 验证 execute_changes 方法是否被调用了一次
         BOOST_CHECK_EQUAL(mock_pool_->get_execute_changes_call_count(), 1);
@@ -66,7 +72,7 @@ BOOST_FIXTURE_TEST_SUITE(player_user_component_suite, player_user_component_fixt
 
         // 调用并执行协程
         boost::asio::co_spawn(io_context_, component.save_db(), boost::asio::detached);
-        io_context_.run();
+        run_io_context();
 
         // 验证 execute_changes 方法完全没有被调用
         BOOST_CHECK_EQUAL(mock_pool_->get_execute_changes_call_count(), 0);
@@ -83,7 +89,7 @@ BOOST_FIXTURE_TEST_SUITE(player_user_component_suite, player_user_component_fixt
 
         // 调用并执行协程
         boost::asio::co_spawn(io_context_, component.on_db_analysis(), boost::asio::detached);
-        io_context_.run();
+        run_io_context();
 
         // 验证 overload_db 已被设为 false
         BOOST_CHECK(!component.is_overload_db());

@@ -41,6 +41,10 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
         case database_data_type::int64_type:
         case database_data_type::int64_count_type:
         {
+            if (row_view.type() == bsoncxx::type::k_int32)
+            {
+                return basis_database{ iter->get_field_name(), row_view.get_int32() };
+            }
             return basis_database{ iter->get_field_name(), row_view.get_int64() };
         }
 

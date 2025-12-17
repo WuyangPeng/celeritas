@@ -149,13 +149,13 @@ celeritas::player_time_refresh celeritas::player_time_refresh::from_json_string(
 
     player_time_refresh player_time_refresh{};
     player_time_refresh.set_time_refresh_type(static_cast<time_refresh_type>(parsed_view[time_refresh_type_description].get_int32().value));
-    player_time_refresh.set_parameter(parsed_view[parameter_description].get_int64());
-    player_time_refresh.set_time_id(parsed_view[time_id_description].get_int64());
-    for (const auto& element : parsed_view[parameter_description].get_array().value)
+    player_time_refresh.set_parameter(parsed_view[parameter_description].type() == bsoncxx::type::k_int32 ? parsed_view[parameter_description].get_int32().value : parsed_view[parameter_description].get_int64().value);
+    player_time_refresh.set_time_id(parsed_view[time_id_description].type() == bsoncxx::type::k_int32 ? parsed_view[time_id_description].get_int32().value : parsed_view[time_id_description].get_int64().value);
+    for (const auto& element : parsed_view[component_description].get_array().value)
     {
         player_time_refresh.add_component(static_cast<player_component_type>(element.get_int32().value));
     }
-    player_time_refresh.set_last_refresh_time(parsed_view[last_refresh_time_description].get_int64());
+    player_time_refresh.set_last_refresh_time(parsed_view[last_refresh_time_description].type() == bsoncxx::type::k_int32 ? parsed_view[last_refresh_time_description].get_int32().value : parsed_view[last_refresh_time_description].get_int64().value);
 
     return player_time_refresh;
 }

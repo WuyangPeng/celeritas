@@ -14,7 +14,14 @@ std::vector<T> celeritas::mongo_row_data_converter::get_numeric_array(const arra
         }
         else if constexpr (std::is_same_v<T, int64_t>)
         {
-            result.emplace_back(element.get_int64().value);
+            if (element.type() == bsoncxx::type::k_int32)
+            {
+                result.emplace_back(element.get_int32().value);
+            }
+            else
+            {
+                result.emplace_back(element.get_int64().value);
+            }
         }
         else if constexpr (std::is_same_v<T, double>)
         {

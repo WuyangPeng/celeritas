@@ -55,7 +55,16 @@ celeritas::server_role celeritas::server_role::from_json_string(const std::strin
     server_role role{};
     role.set_game_server_id(std::string{ parsed_view[game_server_id_description].get_string().value });
     role.set_role_name(std::string{ parsed_view[role_name_description].get_string().value });
-    role.set_last_login_time(parsed_view[last_login_time_description].get_int64());
+
+    if (const auto& last_login_time_element = parsed_view[last_login_time_description];
+        last_login_time_element.type() == bsoncxx::type::k_int32)
+    {
+        role.set_last_login_time(last_login_time_element.get_int32());
+    }
+    else
+    {
+        role.set_last_login_time(last_login_time_element.get_int64());
+    }
 
     return role;
 }
