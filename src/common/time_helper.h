@@ -33,13 +33,19 @@ namespace celeritas
 
         [[nodiscard]] static int64_t get_end_of_day_milliseconds_with_offset(int64_t milliseconds_offset);
 
+        [[nodiscard]] static int64_t get_end_of_day_milliseconds_with_offset(int64_t check_time, int64_t milliseconds_offset);
+
         [[nodiscard]] static int64_t get_end_of_week_milliseconds();
 
         [[nodiscard]] static int64_t get_end_of_week_milliseconds_with_offset(int64_t milliseconds_offset);
 
+        [[nodiscard]] static int64_t get_end_of_week_milliseconds_with_offset(int64_t check_time, int64_t milliseconds_offset);
+
         [[nodiscard]] static int64_t get_end_of_month_milliseconds();
 
         [[nodiscard]] static int64_t get_end_of_month_milliseconds_with_offset(int64_t milliseconds_offset);
+
+        [[nodiscard]] static int64_t get_end_of_month_milliseconds_with_offset(int64_t check_time, int64_t milliseconds_offset);
 
         [[nodiscard]] static int64_t to_milliseconds(const time_point_type& time_point);
 
@@ -51,5 +57,11 @@ namespace celeritas
         [[nodiscard]] static const_time_zone_ptr_type do_get_local_zone();
 
         [[nodiscard]] static local_days_type get_current_day_local(const time_point_type& time_point);
+
+        [[nodiscard]] static int64_t get_end_of_day_milliseconds_with_offset(const time_point_type& check_time, int64_t milliseconds_offset);
+
+        [[nodiscard]] static int64_t get_end_of_week_milliseconds_with_offset(const time_point_type& check_time, int64_t milliseconds_offset);
+
+        [[nodiscard]] static int64_t get_end_of_month_milliseconds_with_offset(const time_point_type& check_time, int64_t milliseconds_offset);
     };
 }

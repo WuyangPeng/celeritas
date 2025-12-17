@@ -157,18 +157,15 @@ int64_t celeritas::time_helper::get_end_of_day_milliseconds()
 int64_t celeritas::time_helper::get_end_of_day_milliseconds_with_offset(const int64_t milliseconds_offset)
 {
     const auto now = std::chrono::system_clock::now();
-    const auto* current_zone = get_local_zone();
-    const auto today_midnight_local = get_current_day_local(now);
-    const auto today_midnight = current_zone->to_sys(today_midnight_local);
-    const auto target_time_today = today_midnight + std::chrono::milliseconds(milliseconds_offset);
 
-    auto end_of_cycle_time = target_time_today;
-    if (now >= target_time_today)
-    {
-        end_of_cycle_time = target_time_today + std::chrono::days(1);
-    }
+    return get_end_of_day_milliseconds_with_offset(now, milliseconds_offset);
+}
 
-    return to_milliseconds(end_of_cycle_time);
+int64_t celeritas::time_helper::get_end_of_day_milliseconds_with_offset(const int64_t check_time, const int64_t milliseconds_offset)
+{
+    const auto now = std::chrono::system_clock::time_point{ std::chrono::milliseconds{ check_time } };
+
+    return get_end_of_day_milliseconds_with_offset(now, milliseconds_offset);
 }
 
 int64_t celeritas::time_helper::get_end_of_week_milliseconds()
@@ -179,21 +176,15 @@ int64_t celeritas::time_helper::get_end_of_week_milliseconds()
 int64_t celeritas::time_helper::get_end_of_week_milliseconds_with_offset(const int64_t milliseconds_offset)
 {
     const auto now = std::chrono::system_clock::now();
-    const auto today_local = get_current_day_local(now);
-    const std::chrono::weekday today_weekday{ today_local };
-    const auto days_to_subtract = std::chrono::days{ (today_weekday.c_encoding() + 6) % 7 };
-    const auto this_week_monday_local = today_local - days_to_subtract;
-    const auto* current_zone = get_local_zone();
-    const auto this_week_monday = current_zone->to_sys(this_week_monday_local);
-    const auto target_time_this_week = this_week_monday + std::chrono::milliseconds(milliseconds_offset);
 
-    auto end_of_cycle_time = target_time_this_week;
-    if (now >= target_time_this_week)
-    {
-        end_of_cycle_time = target_time_this_week + std::chrono::days(7);
-    }
+    return get_end_of_week_milliseconds_with_offset(now, milliseconds_offset);
+}
 
-    return to_milliseconds(end_of_cycle_time);
+int64_t celeritas::time_helper::get_end_of_week_milliseconds_with_offset(const int64_t check_time, const int64_t milliseconds_offset)
+{
+    const auto now = std::chrono::system_clock::time_point{ std::chrono::milliseconds{ check_time } };
+
+    return get_end_of_week_milliseconds_with_offset(now, milliseconds_offset);
 }
 
 int64_t celeritas::time_helper::get_end_of_month_milliseconds()
@@ -204,21 +195,15 @@ int64_t celeritas::time_helper::get_end_of_month_milliseconds()
 int64_t celeritas::time_helper::get_end_of_month_milliseconds_with_offset(const int64_t milliseconds_offset)
 {
     const auto now = std::chrono::system_clock::now();
-    const auto today_local = get_current_day_local(now);
-    const std::chrono::year_month_day year_month_day_local{ today_local };
-    const auto this_month_first_day_local = std::chrono::year_month_day{ year_month_day_local.year(), year_month_day_local.month(), std::chrono::day{ 1 } };
-    const auto* current_zone = get_local_zone();
-    const auto this_month_first_day = current_zone->to_sys(std::chrono::local_days{ this_month_first_day_local });
-    const auto target_time_this_month = this_month_first_day + std::chrono::milliseconds(milliseconds_offset);
 
-    auto end_of_cycle_time = target_time_this_month;
-    if (now >= target_time_this_month)
-    {
-        const auto next_month_first_day_local = this_month_first_day_local + std::chrono::months(1);
-        end_of_cycle_time = current_zone->to_sys(std::chrono::local_days{ next_month_first_day_local }) + std::chrono::milliseconds(milliseconds_offset);
-    }
+    return get_end_of_month_milliseconds_with_offset(now, milliseconds_offset);
+}
 
-    return to_milliseconds(end_of_cycle_time);
+int64_t celeritas::time_helper::get_end_of_month_milliseconds_with_offset(const int64_t check_time, const int64_t milliseconds_offset)
+{
+    const auto now = std::chrono::system_clock::time_point{ std::chrono::milliseconds{ check_time } };
+
+    return get_end_of_month_milliseconds_with_offset(now, milliseconds_offset);
 }
 
 int64_t celeritas::time_helper::to_milliseconds(const time_point_type& time_point)
@@ -267,3 +252,59 @@ celeritas::time_helper::local_days_type celeritas::time_helper::get_current_day_
 {
     return std::chrono::floor<std::chrono::days>(to_local_time(time_point));
 }
+
+int64_t celeritas::time_helper::get_end_of_day_milliseconds_with_offset(const time_point_type& check_time, const int64_t milliseconds_offset)
+{
+    const auto* current_zone = get_local_zone();
+    const auto today_midnight_local = get_current_day_local(check_time);
+    const auto today_midnight = current_zone->to_sys(today_midnight_local);
+    const auto target_time_today = today_midnight + std::chrono::milliseconds(milliseconds_offset);
+
+    auto end_of_cycle_time = target_time_today;
+    if (check_time >= target_time_today)
+    {
+        end_of_cycle_time = target_time_today + std::chrono::days(1);
+    }
+
+    return to_milliseconds(end_of_cycle_time);
+}
+
+int64_t celeritas::time_helper::get_end_of_week_milliseconds_with_offset(const time_point_type& check_time, const int64_t milliseconds_offset)
+{
+    const auto today_local = get_current_day_local(check_time);
+    const std::chrono::weekday today_weekday{ today_local };
+    const auto days_to_subtract = std::chrono::days{ (today_weekday.c_encoding() + 6) % 7 };
+    const auto this_week_monday_local = today_local - days_to_subtract;
+    const auto* current_zone = get_local_zone();
+    const auto this_week_monday = current_zone->to_sys(this_week_monday_local);
+    const auto target_time_this_week = this_week_monday + std::chrono::milliseconds(milliseconds_offset);
+
+    auto end_of_cycle_time = target_time_this_week;
+    if (check_time >= target_time_this_week)
+    {
+        end_of_cycle_time = target_time_this_week + std::chrono::days(7);
+    }
+
+    return to_milliseconds(end_of_cycle_time);
+}
+
+int64_t celeritas::time_helper::get_end_of_month_milliseconds_with_offset(const time_point_type& check_time, const int64_t milliseconds_offset)
+{
+    const auto today_local = get_current_day_local(check_time);
+    const std::chrono::year_month_day year_month_day_local{ today_local };
+    const auto this_month_first_day_local = std::chrono::year_month_day{ year_month_day_local.year(), year_month_day_local.month(), std::chrono::day{ 1 } };
+    const auto* current_zone = get_local_zone();
+    const auto this_month_first_day = current_zone->to_sys(std::chrono::local_days{ this_month_first_day_local });
+    const auto target_time_this_month = this_month_first_day + std::chrono::milliseconds(milliseconds_offset);
+
+    auto end_of_cycle_time = target_time_this_month;
+    if (check_time >= target_time_this_month)
+    {
+        const auto next_month_first_day_local = this_month_first_day_local + std::chrono::months(1);
+        end_of_cycle_time = current_zone->to_sys(std::chrono::local_days{ next_month_first_day_local }) + std::chrono::milliseconds(milliseconds_offset);
+    }
+
+    return to_milliseconds(end_of_cycle_time);
+}
+
+

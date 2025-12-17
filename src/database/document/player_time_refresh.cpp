@@ -69,7 +69,7 @@ void celeritas::player_time_refresh::set_last_refresh_time(const int64_t last_re
 
 bool celeritas::player_time_refresh::is_can_refresh() const
 {
-    return get_next_refresh_time() >= time_helper::get_current_milliseconds();
+    return get_next_refresh_time() <= time_helper::get_current_milliseconds();
 }
 
 int64_t celeritas::player_time_refresh::get_next_refresh_time() const
@@ -78,23 +78,23 @@ int64_t celeritas::player_time_refresh::get_next_refresh_time() const
     {
         case time_refresh_type::daily:
         {
-            return time_helper::get_current_milliseconds() >= time_helper::get_end_of_day_milliseconds_with_offset(parameter_);
+            return time_helper::get_end_of_day_milliseconds_with_offset(last_refresh_time_, parameter_);
         }
         case time_refresh_type::weekly:
         {
-            return time_helper::get_current_milliseconds() >= time_helper::get_end_of_week_milliseconds_with_offset(parameter_);
+            return time_helper::get_end_of_week_milliseconds_with_offset(last_refresh_time_, parameter_);
         }
         case time_refresh_type::monthly:
         {
-            return time_helper::get_current_milliseconds() >= time_helper::get_end_of_month_milliseconds_with_offset(parameter_);
+            return time_helper::get_end_of_month_milliseconds_with_offset(last_refresh_time_, parameter_);
         }
         case time_refresh_type::interval_duration:
         {
-            return time_helper::get_current_milliseconds() >= last_refresh_time_ + parameter_;
+            return last_refresh_time_ + parameter_;
         }
         case time_refresh_type::absolute_point:
         {
-            return time_helper::get_current_milliseconds() >= parameter_;
+            return parameter_;
         }
         default:
         {

@@ -37,6 +37,8 @@ namespace celeritas
 
         void calculate_next_refresh_time();
 
+        void stop_timer();
+
     private:
         using player_timer_shared_ptr = std::shared_ptr<player_timer>;
 

@@ -72,6 +72,11 @@ celeritas::player_time_refresh celeritas::player_time_component::get_player_time
     return document_.get_player_time_refresh(player_time_refresh_key);
 }
 
+void celeritas::player_time_component::stop_timer()
+{
+    scheduler_.stop_timer();
+}
+
 void celeritas::player_time_component::on_data_change()
 {
     database_.update_document();

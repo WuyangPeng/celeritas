@@ -38,7 +38,7 @@ celeritas::database_pool_base::database_entity_change_awaitable_type celeritas::
         refresh_data.set_time_refresh_type(time_refresh_type::weekly);
         refresh_data.set_parameter(123);
         refresh_data.set_time_id(456);
-        refresh_data.add_component(player_component_type::mock);
+        refresh_data.add_component(player_component_type::finish);
         refresh_data.set_last_refresh_time(time_helper::get_current_milliseconds());
         basis_database::string_array result{ refresh_data.to_json_string() };
         const basis_database player_time{ user_time_refresh::player_time_refresh_describe, database_data_type::document_array_type, result };

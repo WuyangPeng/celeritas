@@ -39,6 +39,8 @@ namespace celeritas
 
         [[nodiscard]] player_time_refresh get_player_time_refresh(const player_time_refresh_key& player_time_refresh_key) const;
 
+        void stop_timer();
+
     private:
         void on_data_change();
 

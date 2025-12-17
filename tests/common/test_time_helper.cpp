@@ -212,6 +212,28 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
         }
     }
 
+    BOOST_AUTO_TEST_CASE(test_get_end_of_day_milliseconds_with_check_time)
+    {
+        const auto current_milliseconds = celeritas::time_helper::get_current_milliseconds();
+        const auto start_of_day_milliseconds = celeritas::time_helper::get_start_of_day_milliseconds();
+        const auto next_day_milliseconds = start_of_day_milliseconds + celeritas::day_milliseconds;
+
+        for (auto i = 0; i < celeritas::day_hour; ++i)
+        {
+            const auto offset = i * celeritas::hour_milliseconds;
+            const auto result = celeritas::time_helper::get_end_of_day_milliseconds_with_offset(current_milliseconds, offset);
+
+            if (current_milliseconds < start_of_day_milliseconds + offset)
+            {
+                BOOST_CHECK_EQUAL(result, start_of_day_milliseconds + offset);
+            }
+            else
+            {
+                BOOST_CHECK_EQUAL(result, next_day_milliseconds + offset);
+            }
+        }
+    }
+
     BOOST_AUTO_TEST_CASE(test_get_end_of_week_milliseconds)
     {
         const auto current_milliseconds = celeritas::time_helper::get_current_milliseconds();
@@ -238,6 +260,28 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
         {
             const auto offset = i * celeritas::day_milliseconds;
             const auto result = celeritas::time_helper::get_end_of_week_milliseconds_with_offset(offset);
+
+            if (current_milliseconds < start_of_week_milliseconds + offset)
+            {
+                BOOST_CHECK_EQUAL(result, start_of_week_milliseconds + offset);
+            }
+            else
+            {
+                BOOST_CHECK_EQUAL(result, next_week_milliseconds + offset);
+            }
+        }
+    }
+
+    BOOST_AUTO_TEST_CASE(test_get_end_of_week_milliseconds_with_check_time)
+    {
+        const auto current_milliseconds = celeritas::time_helper::get_current_milliseconds();
+        const auto start_of_week_milliseconds = celeritas::time_helper::get_start_of_week_milliseconds();
+        const auto next_week_milliseconds = start_of_week_milliseconds + celeritas::week_milliseconds;
+
+        for (auto i = 0; i < celeritas::week; ++i)
+        {
+            const auto offset = i * celeritas::day_milliseconds;
+            const auto result = celeritas::time_helper::get_end_of_week_milliseconds_with_offset(current_milliseconds, offset);
 
             if (current_milliseconds < start_of_week_milliseconds + offset)
             {
@@ -291,6 +335,35 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
         {
             const auto offset = i * celeritas::day_milliseconds;
             const auto result = celeritas::time_helper::get_end_of_month_milliseconds_with_offset(offset);
+
+            if (current_milliseconds < start_of_month_milliseconds + offset)
+            {
+                BOOST_CHECK_EQUAL(result, start_of_month_milliseconds + offset);
+            }
+            else
+            {
+                BOOST_CHECK_EQUAL(result, next_month_milliseconds + offset);
+            }
+        }
+    }
+
+    BOOST_AUTO_TEST_CASE(test_get_end_of_month_milliseconds_with_check_time)
+    {
+        const auto current_milliseconds = celeritas::time_helper::get_current_milliseconds();
+        const auto start_of_month_milliseconds = celeritas::time_helper::get_start_of_month_milliseconds();
+
+        const auto [start_date, start_time] = get_time_components(start_of_month_milliseconds);
+        const std::chrono::year_month_day year_month_day{ start_date };
+        const auto next_month_year_month_day = year_month_day + std::chrono::months(1);
+        const auto next_month_year_month_day_time_point = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::sys_days(next_month_year_month_day));
+        const auto next_month_year_month_day_local = std::chrono::floor<std::chrono::days>(celeritas::time_helper::to_local_time(next_month_year_month_day_time_point));
+        const auto next_month_sys_days = celeritas::time_helper::get_local_zone()->to_sys(std::chrono::local_days{ next_month_year_month_day_local });
+        const auto next_month_milliseconds = celeritas::time_helper::to_milliseconds(next_month_sys_days);
+
+        for (auto i = 0; i < celeritas::min_month; ++i)
+        {
+            const auto offset = i * celeritas::day_milliseconds;
+            const auto result = celeritas::time_helper::get_end_of_month_milliseconds_with_offset(current_milliseconds, offset);
 
             if (current_milliseconds < start_of_month_milliseconds + offset)
             {

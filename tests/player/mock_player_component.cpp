@@ -5,7 +5,7 @@ celeritas::mock_player_component::mock_player_component(player_state* player_sta
 {
 }
 
-celeritas::player_component::void_awaitable_type celeritas::mock_player_component::time_callback(const player_time_refresh_key& player_time_refresh_key, bool is_login)
+celeritas::player_component::void_awaitable_type celeritas::mock_player_component::time_callback(const player_time_refresh_key& player_time_refresh_key, const bool is_login)
 {
     if (is_login)
     {
