@@ -1,10 +1,17 @@
 ﻿#include "server_role.h"
+#include "common/time_helper.h"
 
 #include <bsoncxx/json.hpp>
 #include <bsoncxx/builder/basic/document.hpp>
+#include <utility>
 
 celeritas::server_role::server_role()
     : game_server_id_{}, role_name_{}, last_login_time_{}
+{
+}
+
+celeritas::server_role::server_role(std::string game_server_id, std::string role_name)
+    : game_server_id_{ std::move(game_server_id) }, role_name_{ std::move(role_name) }, last_login_time_{ time_helper::get_current_milliseconds() }
 {
 }
 

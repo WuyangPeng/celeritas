@@ -38,3 +38,8 @@ celeritas::player_component::void_awaitable_type celeritas::player_online_compon
         account_last_login_->clear_modify();
     }
 }
+
+bool celeritas::player_online_component::is_modify() const
+{
+    return account_last_login_->is_modify();
+}

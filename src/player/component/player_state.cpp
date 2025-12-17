@@ -21,11 +21,15 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
-celeritas::player_state::player_state(const user& user, const resource_loader_shared_ptr& resource_loader, io_context_type& io_context, std::string instance_id)
+celeritas::player_state::player_state(const user& user,
+                                      const resource_loader_shared_ptr& resource_loader,
+                                      io_context_type& io_context,
+                                      std::string instance_id,
+                                      const service_login_request_type& login)
     : dirty_{ false },
       player_state_{ player_state_type::loading },
       components_{ std::make_shared<player_user_component>(user, this),
-                   std::make_shared<player_role_component>(this),
+                   std::make_shared<player_role_component>(this, login),
                    std::make_shared<player_online_component>(this),
                    std::make_shared<player_time_component>(this),
                    std::make_shared<player_red_component>(this),
@@ -96,12 +100,16 @@ celeritas::player_state::void_awaitable_type celeritas::player_state::on_logout(
     for (const auto& element : components_)
     {
         co_await element->on_logout();
+
+        co_await element->save_db();
     }
+
+    dirty_ = false;
 }
 
 celeritas::player_state::void_awaitable_type celeritas::player_state::save_db()
 {
-    if (!dirty_)
+    if (!dirty_ || player_state_ != player_state_type::online)
     {
         co_return;
     }
@@ -113,6 +121,8 @@ celeritas::player_state::void_awaitable_type celeritas::player_state::save_db()
             co_await element->save_db();
         }
     }
+
+    dirty_ = false;
 }
 
 void celeritas::player_state::set_dirty()
@@ -182,6 +192,11 @@ celeritas::player_state::io_context_type& celeritas::player_state::get_io_contex
 void celeritas::player_state::set_mock_player_component(const player_component_shared_ptr& mock)
 {
     components_.at(static_cast<int>(player_component_type::mock)) = mock;
+}
+
+void celeritas::player_state::set_login(const service_login_request_type& login)
+{
+    get_component<player_role_component>()->set_login(login);
 }
 
 void celeritas::player_state::check() const

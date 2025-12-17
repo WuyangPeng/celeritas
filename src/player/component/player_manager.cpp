@@ -13,7 +13,11 @@ celeritas::player_manager& celeritas::player_manager::get_instance()
     return manager;
 }
 
-celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::add_player(const user& user, const resource_loader_shared_ptr& resource_loader, io_context_type& io_context, const std::string& instance_id)
+celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::add_player(const user& user,
+                                                                                         const resource_loader_shared_ptr& resource_loader,
+                                                                                         io_context_type& io_context,
+                                                                                         const std::string& instance_id,
+                                                                                         const service_login_request_type& login)
 {
     std::lock_guard lock{ mutex_ };
 
@@ -30,11 +34,12 @@ celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::ad
         {
             iter->second->set_player_state_type(player_state_type::online);
             iter->second->set_instance_id(instance_id);
+            iter->second->set_login(login);
             return iter->second;
         }
     }
 
-    return container_.emplace(user.get_user_id(), std::make_shared<player_state>(user, resource_loader, io_context, instance_id)).first->second;
+    return container_.emplace(user.get_user_id(), std::make_shared<player_state>(user, resource_loader, io_context, instance_id, login)).first->second;
 }
 
 celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::get_player(const int64_t user_id)

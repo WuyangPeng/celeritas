@@ -1,11 +1,12 @@
 ﻿#pragma once
 
 #include "player_component.h"
+#include "player_manager.h"
 #include "common/common_fwd.h"
 #include "database/generated/mysql/player/user.h"
 #include "message/header.h"
 #include "player/component/player_component_type.h"
-#include "player/time/detail/player_time_internal_fwd.h"
+#include "proto/service/player.pb.h"
 
 #include <boost/asio/awaitable.hpp>
 
@@ -23,8 +24,13 @@ namespace celeritas
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
         using protobuf_message = google::protobuf::Message;
         using io_context_type = boost::asio::io_context;
+        using service_login_request_type = proto::service::service_login_request;
 
-        player_state(const user& user, const resource_loader_shared_ptr& resource_loader, io_context_type& io_context, std::string instance_id);
+        player_state(const user& user,
+                     const resource_loader_shared_ptr& resource_loader,
+                     io_context_type& io_context,
+                     std::string instance_id,
+                     const service_login_request_type& login);
 
         virtual ~player_state() noexcept = default;
 
@@ -85,6 +91,8 @@ namespace celeritas
         [[nodiscard]] io_context_type& get_io_context();
 
         void set_mock_player_component(const player_component_shared_ptr& mock);
+
+        void set_login(const service_login_request_type& login);
 
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;

@@ -32,6 +32,8 @@ namespace celeritas
 
         [[nodiscard]] bool is_overload_db() const;
 
+        [[nodiscard]] int64_t get_account_id() const noexcept;
+
     private:
         user user_;
     };

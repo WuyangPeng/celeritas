@@ -12,6 +12,8 @@ namespace celeritas
 
         server_role();
 
+        server_role(std::string game_server_id, std::string role_name);
+
         [[nodiscard]] std::string get_game_server_id() const;
 
         void set_game_server_id(const std::string& gameServerId);

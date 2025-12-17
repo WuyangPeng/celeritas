@@ -25,6 +25,8 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type save_db() override;
 
+        [[nodiscard]] bool is_modify() const override;
+
     private:
         using optional_account_last_login = std::optional<account_last_login>;
 

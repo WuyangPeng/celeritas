@@ -80,6 +80,7 @@ void celeritas::player_time_component::stop_timer()
 void celeritas::player_time_component::on_data_change()
 {
     database_.update_document();
+    get_player_state()->set_dirty();
 }
 
 celeritas::player_time_component::void_awaitable_type celeritas::player_time_component::on_all_time_callback(const bool is_login)

@@ -34,7 +34,7 @@ celeritas::player_time_database::void_awaitable_type celeritas::player_time_data
 {
     if (user_time_refresh_->is_must_save())
     {
-        const auto mongo_pool = player_time_component_->get_mongo_player_db_name();
+        const auto mongo_pool = player_time_component_->get_mongo_player_database_pool();
         co_await mongo_pool->execute_changes(user_time_refresh_->get_modify());
         user_time_refresh_->clear_modify();
     }
@@ -47,7 +47,7 @@ bool celeritas::player_time_database::is_must_save() const
 
 celeritas::player_time_database::void_awaitable_type celeritas::player_time_database::load_user_time_refresh()
 {
-    const auto mongo_pool = player_time_component_->get_mongo_player_db_name();
+    const auto mongo_pool = player_time_component_->get_mongo_player_database_pool();
 
     if (const auto optional_user_time_refresh = co_await mongo_pool->select_one(user_time_refresh::get_select(database_type::mongo, user_id_), user_time_refresh::get_database_field_container()))
     {

@@ -3,6 +3,7 @@
 #include "common/common_fwd.h"
 #include "database/generated/mysql/player/user.h"
 #include "player/player_fwd.h"
+#include "proto/service/player.pb.h"
 
 #include <boost/asio/awaitable.hpp>
 
@@ -20,10 +21,15 @@ namespace celeritas
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using io_context_type = boost::asio::io_context;
+        using service_login_request_type = proto::service::service_login_request;
 
         [[nodiscard]] static player_manager& get_instance();
 
-        [[nodiscard]] player_state_shared_ptr add_player(const user& user, const resource_loader_shared_ptr& resource_loader, io_context_type& io_context, const std::string& instance_id);
+        [[nodiscard]] player_state_shared_ptr add_player(const user& user,
+                                                         const resource_loader_shared_ptr& resource_loader,
+                                                         io_context_type& io_context,
+                                                         const std::string& instance_id,
+                                                         const service_login_request_type& login);
 
         [[nodiscard]] player_state_shared_ptr get_player(int64_t user_id);
 

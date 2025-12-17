@@ -1,7 +1,11 @@
 ﻿#pragma once
 
+#include "database/document/server_role.h"
+#include "database/generated/mongo/auth/user_server_roles.h"
+#include "database/generated/mongo/player/user_role.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
+#include "proto/service/player.pb.h"
 
 namespace celeritas
 {
@@ -10,12 +14,35 @@ namespace celeritas
     public:
         using class_type = player_role_component;
         using base_type = player_component;
+        using service_login_request_type = proto::service::service_login_request;
 
-        explicit player_role_component(player_state* player_state) noexcept;
+        explicit player_role_component(player_state* player_state, const service_login_request_type& login) noexcept;
 
         [[nodiscard]] static constexpr player_component_type get_player_component_type()
         {
             return player_component_type::role;
         }
+
+        [[nodiscard]] void_awaitable_type on_load_db() override;
+
+        [[nodiscard]] void_awaitable_type save_db() override;
+
+        [[nodiscard]] bool is_modify() const override;
+
+        void change_name(const std::string& name);
+
+        void set_login(const service_login_request_type& login);
+
+    private:
+        using optional_user_role = std::optional<user_role>;
+        using optional_user_server_roles = std::optional<user_server_roles>;
+        using optional_server_role = std::optional<server_role>;
+
+        optional_user_role user_role_;
+        optional_user_server_roles user_server_roles_;
+        int server_role_index_;
+        optional_server_role server_role_;
+        std::string device_id_;
+        std::string app_version_;
     };
 }

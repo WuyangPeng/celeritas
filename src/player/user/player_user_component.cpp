@@ -20,7 +20,7 @@ celeritas::player_user_component::void_awaitable_type celeritas::player_user_com
 {
     if (user_.is_modify())
     {
-        const auto mysql_pool = get_mysql_player_db_name();
+        const auto mysql_pool = get_mysql_player_database_pool();
 
         co_await mysql_pool->execute_changes(user_.get_modify());
 
@@ -46,5 +46,10 @@ bool celeritas::player_user_component::is_modify() const
 bool celeritas::player_user_component::is_overload_db() const
 {
     return user_.is_overload_db();
+}
+
+int64_t celeritas::player_user_component::get_account_id() const noexcept
+{
+    return user_.get_account_id();
 }
 

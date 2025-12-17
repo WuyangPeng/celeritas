@@ -1,5 +1,31 @@
 [
   {
+    "class_name": "user_role",
+    "database_name": "user_role",
+    "entity": [
+      {
+        "entity_name": "user_id",
+        "data_type": "int64",
+        "index_type": "key"
+      },
+      {
+        "entity_name": "name",
+        "data_type": "string",
+        "comment": "名字"
+      },
+      {
+        "entity_name": "device_id",
+        "data_type": "string",
+        "comment": "设备id"
+      },
+      {
+        "entity_name": "app_version",
+        "data_type": "string",
+        "comment": "客户端版本"
+      }
+    ]
+  },
+  {
     "class_name": "user_time_refresh",
     "database_name": "user_time_refresh",
     "entity": [
