@@ -1,5 +1,5 @@
-﻿#include "game_tables.h"
-#include "container_config.tpp"
+﻿#include "container_config.tpp"
+#include "game_tables.h"
 #include "name_config.h"
 #include "sex_type.h"
 #include "surname_config.h"
@@ -7,9 +7,10 @@
 
 celeritas::game_tables::game_tables()
     : surname_config_{ std::make_shared<surname_container_config>() },
-      name_config_{ std::make_shared<name_config_config>() },
       surname_weight_{},
-      name_weight_{}
+      name_config_{ std::make_shared<name_container_config>() },
+      name_weight_{},
+      red_container_{ std::make_shared<red_container_config>() }
 {
 }
 
@@ -30,12 +31,12 @@ void celeritas::game_tables::set_surname_config(const const_surname_container_co
     }
 }
 
-celeritas::game_tables::const_name_config_shared_ptr celeritas::game_tables::get_name_config() const
+celeritas::game_tables::const_name_container_shared_ptr celeritas::game_tables::get_name_config() const
 {
     return name_config_;
 }
 
-void celeritas::game_tables::set_name_config(const const_name_config_shared_ptr& name_config)
+void celeritas::game_tables::set_name_config(const const_name_container_shared_ptr& name_config)
 {
     name_config_ = name_config;
 
@@ -85,4 +86,14 @@ std::string celeritas::game_tables::get_name(const sex_type sex_type) const
     const auto name = name_config_->get(id);
 
     return (*name)->get_name();
+}
+
+celeritas::game_tables::const_red_container_shared_ptr celeritas::game_tables::get_red_container() const
+{
+    return red_container_;
+}
+
+void celeritas::game_tables::set_red_container(const const_red_container_shared_ptr& redContainer)
+{
+    red_container_ = redContainer;
 }

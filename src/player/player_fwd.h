@@ -32,4 +32,5 @@ namespace celeritas
 
     enum class time_refresh_type;
     class player_time_refresh_key;
+    class red_dot_node;
 }

@@ -41,5 +41,26 @@
         "comment": "时间刷新信息"
       }
     ]
+  },
+  {
+    "class_name": "user_red_dots",
+    "database_name": "user_red_dots",
+    "entity": [
+      {
+        "entity_name": "user_id",
+        "data_type": "int64",
+        "index_type": "key"
+      },
+      {
+        "entity_name": "red_dots",
+        "data_type": "document_array",
+        "document_type": "red_dots"
+      },
+      {
+        "entity_name": "last_check_time",
+        "data_type": "int64",
+        "comment": "最后检查时间"
+      }
+    ]
   }
 ]
