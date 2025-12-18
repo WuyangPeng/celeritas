@@ -17,6 +17,17 @@ namespace celeritas
     class server_config;
     class app_config;
 
+    class game_config;
+    class game_tables;
+
+    template <typename Element>
+    class container_config;
+
+    class surname_config;
+    class name_config;
+
+    enum class sex_type;
+
     constexpr std::string_view default_service_registry_host = "127.0.0.1";
     constexpr auto default_service_registry_port = 35000;
     constexpr auto default_health_check_interval = 30;

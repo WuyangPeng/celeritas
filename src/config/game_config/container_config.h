@@ -1,0 +1,26 @@
+﻿#pragma once
+
+#include <map>
+#include <memory>
+#include <optional>
+
+namespace celeritas
+{
+    template <typename Element>
+    class container_config
+    {
+    public:
+        using class_type = container_config;
+        using const_config_shared_ptr = std::shared_ptr<const Element>;
+        using optional_config = std::optional<const_config_shared_ptr>;
+
+        [[nodiscard]] optional_config get(int id) const;
+
+        void add_config(const const_config_shared_ptr& config);
+
+    private:
+        using container = std::map<int, const_config_shared_ptr>;
+
+        container container_;
+    };
+}
