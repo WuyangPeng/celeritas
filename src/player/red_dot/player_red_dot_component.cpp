@@ -2,7 +2,7 @@
 #include "red_dot_node.h"
 #include "common/celeritas_error.h"
 #include "config/database_type.h"
-#include "config/game_config/container_config.h"
+#include "config/game_config/container_config.tpp"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
 #include "config/game_config/red_config.h"
@@ -97,11 +97,11 @@ void celeritas::player_red_dot_component::set_red_dot_node()
 
 void celeritas::player_red_dot_component::calculate_red_dot_by_database()
 {
-    for (const auto& [red_type, red_dots] : red_dots_)
+    for (const auto& [red_dot_type, red_dots] : red_dots_)
     {
         if (red_dots.is_state())
         {
-            if (auto iter = red_dot_node_.find(red_type);
+            if (auto iter = red_dot_node_.find(red_dot_type);
                 iter != red_dot_node_.cend())
             {
                 iter->second->set_value(0);
@@ -112,11 +112,11 @@ void celeritas::player_red_dot_component::calculate_red_dot_by_database()
 
 void celeritas::player_red_dot_component::calculate_children_red_dot()
 {
-    for (const auto& [red_type, red_dot_node] : red_dot_node_)
+    for (const auto& [red_dot_type, red_dot_node] : red_dot_node_)
     {
         if (red_dot_node->is_child())
         {
-            const auto calculate_red_dot = calculate_red_dot::create(red_type, get_player_state());
+            const auto calculate_red_dot = calculate_red_dot::create(red_dot_type, get_player_state());
 
             red_dot_node->set_value(calculate_red_dot->get_red_dot_value());
         }
