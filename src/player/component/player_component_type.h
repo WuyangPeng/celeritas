@@ -8,7 +8,7 @@ namespace celeritas
         role = 1,
         online = 2,
         time = 3,
-        red = 4,
+        red_dot = 4,
         item = 5,
         activity = 6,
         develop = 7,

@@ -5,8 +5,8 @@
 
 #include <boost/core/demangle.hpp>
 
-template <typename Element>
-celeritas::container_config<Element>::optional_config celeritas::container_config<Element>::get(int id) const
+template <typename Element, typename IndexType>
+celeritas::container_config<Element, IndexType>::optional_config celeritas::container_config<Element, IndexType>::get(IndexType id) const
 {
     if (const auto iter = container_.find(id);
         iter != container_.cend())
@@ -17,8 +17,8 @@ celeritas::container_config<Element>::optional_config celeritas::container_confi
     return std::nullopt;
 }
 
-template <typename Element>
-void celeritas::container_config<Element>::add_config(const const_config_shared_ptr& config)
+template <typename Element, typename IndexType>
+void celeritas::container_config<Element, IndexType>::add_config(const const_config_shared_ptr& config)
 {
     if (const auto result = container_.emplace(config.get_id(), config);
         !result.second)
@@ -27,8 +27,8 @@ void celeritas::container_config<Element>::add_config(const const_config_shared_
     }
 }
 
-template <typename Element>
-const celeritas::container_config<Element>::container& celeritas::container_config<Element>::get_container() const
+template <typename Element, typename IndexType>
+const celeritas::container_config<Element, IndexType>::container& celeritas::container_config<Element, IndexType>::get_container() const
 {
     return container_;
 }

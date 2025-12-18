@@ -11,8 +11,17 @@ namespace celeritas
     {
     public:
         using class_type = red_dot_node;
+        using red_dot_node_shared_ptr = std::shared_ptr<red_dot_node>;
 
         explicit red_dot_node(red_type type);
+
+        void set_value(int value);
+
+        void set_parent_node(const red_dot_node_shared_ptr& parent_node);
+
+        void add_child(const red_dot_node_shared_ptr& child);
+
+        [[nodiscard]] bool is_child() const;
 
     private:
         using red_dot_node_weak_ptr = std::weak_ptr<red_dot_node>;

@@ -4,6 +4,8 @@ namespace celeritas
 {
     enum class red_type
     {
+        null = 0,
+
         // 角色功能类
         role = 10000,
 

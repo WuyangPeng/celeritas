@@ -20,7 +20,7 @@ namespace celeritas
     class game_config;
     class game_tables;
 
-    template <typename Element>
+    template <typename Element, typename IndexType>
     class container_config;
 
     class surname_config;

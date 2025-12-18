@@ -6,7 +6,7 @@
 
 namespace celeritas
 {
-    template <typename Element>
+    template <typename Element, typename IndexType = int>
     class container_config
     {
     public:
@@ -15,7 +15,7 @@ namespace celeritas
         using optional_config = std::optional<const_config_shared_ptr>;
         using container = std::map<int, const_config_shared_ptr>;
 
-        [[nodiscard]] optional_config get(int id) const;
+        [[nodiscard]] optional_config get(IndexType id) const;
 
         void add_config(const const_config_shared_ptr& config);
 
