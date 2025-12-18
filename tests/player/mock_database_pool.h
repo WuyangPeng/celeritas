@@ -27,6 +27,14 @@ namespace celeritas
         [[nodiscard]] int get_execute_changes_call_count() const;
 
     private:
+        [[nodiscard]] optional_database_entity_change select_user_time_refresh();
+
+        [[nodiscard]] optional_database_entity_change select_user_role();
+
+        [[nodiscard]] optional_database_entity_change select_user_server_roles();
+
+        [[nodiscard]] optional_database_entity_change select_account_last_login();
+
         int execute_changes_call_count_ = 0;
     };
 }
