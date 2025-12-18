@@ -104,7 +104,10 @@ void celeritas::player_red_dot_component::calculate_red_dot_by_database()
             if (auto iter = red_dot_node_.find(red_dot_type);
                 iter != red_dot_node_.cend())
             {
-                iter->second->set_value(0);
+                if (iter->second->is_child())
+                {
+                    iter->second->set_value(0);
+                }
             }
         }
     }
