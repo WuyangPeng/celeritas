@@ -14,6 +14,8 @@ namespace celeritas
 
         red_dots();
 
+        red_dots(red_dot_type node_id, bool state);
+
         [[nodiscard]] red_dot_type get_node_id() const;
 
         void set_node_id(red_dot_type nodeId);

@@ -26,6 +26,16 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type on_dependencies_ready() override;
 
+        void add_red_dot(red_dot_type red_dot_type);
+
+        void add_red_dot(red_dot_type red_dot_type, int value);
+
+        void reduce_red_dot(red_dot_type red_dot_type);
+
+        void reduce_red_dot(red_dot_type red_dot_type, int value);
+
+        void change_red_dot(red_dot_type red_dot_type);
+
     private:
         using optional_user_red_dots = std::optional<user_red_dots>;
         using red_dots_container = std::map<red_dot_type, red_dots>;
@@ -38,11 +48,9 @@ namespace celeritas
 
         void set_red_dot_node();
 
-        void calculate_red_dot_by_database();
+        void calculate_red_dot();
 
-        void calculate_children_red_dot();
-
-        void calculate_parent_red_dot();
+        void update_document();
 
         optional_user_red_dots user_red_dots_;
         red_dots_container red_dots_;

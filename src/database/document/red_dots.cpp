@@ -1,10 +1,16 @@
 ﻿#include "red_dots.h"
+#include "common/time_helper.h"
 
 #include <bsoncxx/json.hpp>
 #include <bsoncxx/builder/basic/document.hpp>
 
 celeritas::red_dots::red_dots()
     : node_id_{}, state_{}, last_value_{}, update_time_{}
+{
+}
+
+celeritas::red_dots::red_dots(const red_dot_type node_id, const bool state)
+    : node_id_{ node_id }, state_{ state }, last_value_{}, update_time_{ time_helper::get_current_milliseconds() }
 {
 }
 

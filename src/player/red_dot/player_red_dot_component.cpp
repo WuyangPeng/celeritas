@@ -1,6 +1,7 @@
 ﻿#include "player_red_dot_component.h"
 #include "red_dot_node.h"
 #include "common/celeritas_error.h"
+#include "common/time_helper.h"
 #include "config/database_type.h"
 #include "config/game_config/container_config.tpp"
 #include "config/game_config/game_config.h"
@@ -28,13 +29,153 @@ celeritas::player_component::void_awaitable_type celeritas::player_red_dot_compo
 
 celeritas::player_component::void_awaitable_type celeritas::player_red_dot_component::on_dependencies_ready()
 {
-    calculate_red_dot_by_database();
-
-    calculate_children_red_dot();
-
-    calculate_parent_red_dot();
+    calculate_red_dot();
 
     co_return;
+}
+
+void celeritas::player_red_dot_component::add_red_dot(red_dot_type red_dot_type)
+{
+    add_red_dot(red_dot_type, 1);
+}
+
+void celeritas::player_red_dot_component::add_red_dot(red_dot_type red_dot_type, int value)
+{
+    const auto iter = red_dot_node_.find(red_dot_type);
+    if (iter == red_dot_node_.end())
+    {
+        throw celeritas_error{ "red_dot_type not found,red dot type = {}", static_cast<int>(red_dot_type) };
+    }
+
+    if (!iter->second->is_child())
+    {
+        throw celeritas_error{ "red_dot_type is not child,red dot type = {}", static_cast<int>(red_dot_type) };
+    }
+
+    iter->second->add_value(value);
+
+    auto change = false;
+    if (iter->second->is_save_database())
+    {
+        if (const auto red_dots_iter = red_dots_.find(red_dot_type);
+            red_dots_iter == red_dots_.cend())
+        {
+            red_dots_.emplace(red_dot_type, red_dots{ red_dot_type, false });
+            change = true;
+        }
+    }
+
+    auto parent = iter->second->get_parent();
+    while (parent != nullptr)
+    {
+        (*parent)->add_value(value);
+        parent = (*parent)->get_parent();
+    }
+
+    if (change)
+    {
+        update_document();
+    }
+}
+
+void celeritas::player_red_dot_component::reduce_red_dot(red_dot_type red_dot_type)
+{
+    reduce_red_dot(red_dot_type, 1);
+}
+
+void celeritas::player_red_dot_component::reduce_red_dot(red_dot_type red_dot_type, int value)
+{
+    const auto iter = red_dot_node_.find(red_dot_type);
+    if (iter == red_dot_node_.end())
+    {
+        throw celeritas_error{ "red_dot_type not found,red dot type = {}", static_cast<int>(red_dot_type) };
+    }
+
+    if (!iter->second->is_child())
+    {
+        throw celeritas_error{ "red_dot_type is not child,red dot type = {}", static_cast<int>(red_dot_type) };
+    }
+
+    iter->second->reduce_value(value);
+
+    const auto finish = iter->second->get_value() <= 0;
+
+    auto change = false;
+    if (iter->second->is_save_database())
+    {
+        const auto red_dots_iter = red_dots_.find(red_dot_type);
+        if (red_dots_iter == red_dots_.cend())
+        {
+            red_dots_.emplace(red_dot_type, red_dots{ red_dot_type, finish });
+            change = true;
+        }
+        else if (finish)
+        {
+            red_dots_iter->second.set_state(true);
+            change = true;
+        }
+    }
+
+    auto parent = iter->second->get_parent();
+    while (parent != nullptr)
+    {
+        (*parent)->reduce_value(value);
+        parent = (*parent)->get_parent();
+    }
+
+    if (change)
+    {
+        update_document();
+    }
+}
+
+void celeritas::player_red_dot_component::change_red_dot(red_dot_type red_dot_type)
+{
+    const auto iter = red_dot_node_.find(red_dot_type);
+    if (iter == red_dot_node_.end())
+    {
+        throw celeritas_error{ "red_dot_type not found,red dot type = {}", static_cast<int>(red_dot_type) };
+    }
+
+    if (!iter->second->is_child())
+    {
+        throw celeritas_error{ "red_dot_type is not child,red dot type = {}", static_cast<int>(red_dot_type) };
+    }
+
+    const auto calculate_red_dot = calculate_red_dot::create(red_dot_type, get_player_state());
+    const auto value = calculate_red_dot->get_red_dot_value();
+    const auto old_value = iter->second->get_value();
+    iter->second->set_value(value);
+    const auto difference = value - old_value;
+    const auto finish = iter->second->get_value() <= 0;
+
+    auto change = false;
+    if (iter->second->is_save_database())
+    {
+        const auto red_dots_iter = red_dots_.find(red_dot_type);
+        if (red_dots_iter == red_dots_.cend())
+        {
+            red_dots_.emplace(red_dot_type, red_dots{ red_dot_type, finish });
+            change = true;
+        }
+        else if (finish)
+        {
+            red_dots_iter->second.set_state(true);
+            change = true;
+        }
+    }
+
+    auto parent = iter->second->get_parent();
+    while (parent != nullptr)
+    {
+        (*parent)->add_value(difference);
+        parent = (*parent)->get_parent();
+    }
+
+    if (change)
+    {
+        update_document();
+    }
 }
 
 celeritas::player_component::void_awaitable_type celeritas::player_red_dot_component::load_user_red_dots()
@@ -66,9 +207,9 @@ void celeritas::player_red_dot_component::set_red_dot_node()
 {
     const auto& game_tables = game_config::get_instance().get_game_tables();
     const auto& container = game_tables->get_red_container()->get_container();
-    for (const auto& type : container | std::views::keys)
+    for (const auto& element : container)
     {
-        red_dot_node_.emplace(type, std::make_shared<red_dot_node>(type));
+        red_dot_node_.emplace(element.first, std::make_shared<red_dot_node>(element.first, element.second->is_save_database()));
     }
 
     for (const auto& [red_dot_type, element] : container)
@@ -95,44 +236,65 @@ void celeritas::player_red_dot_component::set_red_dot_node()
     }
 }
 
-void celeritas::player_red_dot_component::calculate_red_dot_by_database()
+void celeritas::player_red_dot_component::calculate_red_dot()
 {
-    for (const auto& [red_dot_type, red_dots] : red_dots_)
-    {
-        if (red_dots.is_state())
-        {
-            if (auto iter = red_dot_node_.find(red_dot_type);
-                iter != red_dot_node_.cend())
-            {
-                if (iter->second->is_child())
-                {
-                    iter->second->set_value(0);
-                }
-            }
-        }
-    }
-}
-
-void celeritas::player_red_dot_component::calculate_children_red_dot()
-{
+    auto change = false;
     for (const auto& [red_dot_type, red_dot_node] : red_dot_node_)
     {
         if (red_dot_node->is_child())
         {
-            const auto calculate_red_dot = calculate_red_dot::create(red_dot_type, get_player_state());
+            if (red_dot_node->is_save_database())
+            {
+                const auto iter = red_dots_.find(red_dot_type);
+                if (iter == red_dots_.cend())
+                {
+                    const auto calculate_red_dot = calculate_red_dot::create(red_dot_type, get_player_state());
+                    const auto value = calculate_red_dot->get_red_dot_value();
 
-            red_dot_node->set_value(calculate_red_dot->get_red_dot_value());
+                    if (value <= 0)
+                    {
+                        red_dots_.emplace(red_dot_type, red_dots{ red_dot_type, value <= 0 });
+                        change = true;
+                    }
+                }
+
+                if (iter->second.is_state())
+                {
+                    red_dot_node->set_value(0);
+                    continue;
+                }
+            }
+
+            const auto calculate_red_dot = calculate_red_dot::create(red_dot_type, get_player_state());
+            const auto value = calculate_red_dot->get_red_dot_value();
+            red_dot_node->set_value(value);
+
+            auto parent = red_dot_node->get_parent();
+            while (parent != nullptr)
+            {
+                (*parent)->add_value(red_dot_node->get_value());
+                parent = (*parent)->get_parent();
+            }
         }
+    }
+
+    if (change)
+    {
+        update_document();
     }
 }
 
-void celeritas::player_red_dot_component::calculate_parent_red_dot()
+void celeritas::player_red_dot_component::update_document()
 {
-    for (const auto& element : red_dot_node_)
+    traits::document_array_type documents{};
+    for (auto& element : red_dots_ | std::views::values)
     {
-        if (!element.second->is_child())
-        {
-        }
+        documents.emplace_back(element.to_json_string());
     }
+
+    user_red_dots_->set_red_dots(documents);
+    user_red_dots_->set_last_check_time(time_helper::get_current_milliseconds());
+
+    get_player_state()->set_dirty();
 }
 
