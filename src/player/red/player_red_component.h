@@ -17,5 +17,7 @@ namespace celeritas
         {
             return player_component_type::red;
         }
+
+        [[nodiscard]] void_awaitable_type on_load_db() override;
     };
 }

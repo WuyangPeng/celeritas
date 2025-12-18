@@ -1,10 +1,10 @@
 ﻿#include "config/database_type.h"
-#include "player/user/player_user_component.h"
 #include "database/database_pool_base.h"
 #include "database/generated/mysql/player/user.h"
-#include "player/component/player_state.h"
 #include "player/mock_database_pool.h"
 #include "player/mock_player_state.h"
+#include "player/component/player_state.h"
+#include "player/user/player_user_component.h"
 
 #include <boost/asio/co_spawn.hpp>
 #include <boost/asio/io_context.hpp>

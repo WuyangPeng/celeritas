@@ -32,7 +32,7 @@ celeritas::database_pool_base::bool_awaitable_type celeritas::mock_database_pool
     co_return true;
 }
 
-celeritas::database_pool_base::database_entity_change_awaitable_type celeritas::mock_database_pool::select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container)
+celeritas::database_pool_base::optional_database_entity_change_awaitable_type celeritas::mock_database_pool::select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container)
 {
     if (database->get_database_name() == user_time_refresh::database_name)
     {
@@ -67,7 +67,7 @@ int celeritas::mock_database_pool::get_execute_changes_call_count() const
     return execute_changes_call_count_;
 }
 
-celeritas::database_pool_base::optional_database_entity_change celeritas::mock_database_pool::select_user_time_refresh()
+celeritas::database_entity_change celeritas::mock_database_pool::select_user_time_refresh()
 {
     const basis_database user_id{ "_id", int64_t{ 11111 } };
 
@@ -90,7 +90,7 @@ celeritas::database_pool_base::optional_database_entity_change celeritas::mock_d
     return database_entity_change;
 }
 
-celeritas::database_pool_base::optional_database_entity_change celeritas::mock_database_pool::select_user_role()
+celeritas::database_entity_change celeritas::mock_database_pool::select_user_role()
 {
     const basis_database user_id{ "_id", int64_t{ 11111 } };
     const basis_database name{ user_role::name_describe, std::string{ "test_name" } };
@@ -109,7 +109,7 @@ celeritas::database_pool_base::optional_database_entity_change celeritas::mock_d
     return database_entity_change;
 }
 
-celeritas::database_pool_base::optional_database_entity_change celeritas::mock_database_pool::select_user_server_roles()
+celeritas::database_entity_change celeritas::mock_database_pool::select_user_server_roles()
 {
     const basis_database user_id{ "_id", int64_t{ 11111 } };
     const basis_database update_time{ user_server_roles::update_time_describe, time_helper::get_current_milliseconds() };
@@ -132,7 +132,7 @@ celeritas::database_pool_base::optional_database_entity_change celeritas::mock_d
     return database_entity_change;
 }
 
-celeritas::database_pool_base::optional_database_entity_change celeritas::mock_database_pool::select_account_last_login()
+celeritas::database_entity_change celeritas::mock_database_pool::select_account_last_login()
 {
     const basis_database account_id{ account_last_login::account_id_describe, int64_t{ 11111 } };
     const basis_database game_server_id{ account_last_login::game_server_id_describe, std::string{ "test_name" } };

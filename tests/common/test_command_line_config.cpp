@@ -63,7 +63,6 @@ BOOST_AUTO_TEST_SUITE(command_line_config_suite)
 
         const celeritas::command_line_config config{ argc, const_cast<char**>(argv), "test_server" };
 
-        // Boost.program_options 会在尝试获取不存在的键时抛出异常
         BOOST_CHECK_THROW([config] { std::ignore = config.get<std::string>("non_existent_param"); }(), celeritas::celeritas_error);
     }
 

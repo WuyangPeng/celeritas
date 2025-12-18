@@ -20,20 +20,20 @@ namespace celeritas
 
         [[nodiscard]] bool_awaitable_type is_health() override;
 
-        [[nodiscard]] database_entity_change_awaitable_type select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) override;
+        [[nodiscard]] optional_database_entity_change_awaitable_type select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) override;
 
         [[nodiscard]] result_container_awaitable_type select_all(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) override;
 
         [[nodiscard]] int get_execute_changes_call_count() const;
 
     private:
-        [[nodiscard]] optional_database_entity_change select_user_time_refresh();
+        [[nodiscard]] static database_entity_change select_user_time_refresh();
 
-        [[nodiscard]] optional_database_entity_change select_user_role();
+        [[nodiscard]] static database_entity_change select_user_role();
 
-        [[nodiscard]] optional_database_entity_change select_user_server_roles();
+        [[nodiscard]] static database_entity_change select_user_server_roles();
 
-        [[nodiscard]] optional_database_entity_change select_account_last_login();
+        [[nodiscard]] static database_entity_change select_account_last_login();
 
         int execute_changes_call_count_ = 0;
     };

@@ -48,11 +48,11 @@ BOOST_AUTO_TEST_SUITE(player_time_refresh_key_suite)
 
     BOOST_AUTO_TEST_CASE(test_comparison_operator)
     {
-        const celeritas::player_time_refresh_key key1(celeritas::time_refresh_type::daily, 100, 10);
-        const celeritas::player_time_refresh_key key2(celeritas::time_refresh_type::daily, 100, 10);
-        const celeritas::player_time_refresh_key key3(celeritas::time_refresh_type::daily, 100, 20);
-        const celeritas::player_time_refresh_key key4(celeritas::time_refresh_type::daily, 200, 10);
-        const celeritas::player_time_refresh_key key5(celeritas::time_refresh_type::weekly, 100, 10);
+        const celeritas::player_time_refresh_key key1{ celeritas::time_refresh_type::daily, 100, 10 };
+        const celeritas::player_time_refresh_key key2{ celeritas::time_refresh_type::daily, 100, 10 };
+        const celeritas::player_time_refresh_key key3{ celeritas::time_refresh_type::daily, 100, 20 };
+        const celeritas::player_time_refresh_key key4{ celeritas::time_refresh_type::daily, 200, 10 };
+        const celeritas::player_time_refresh_key key5{ celeritas::time_refresh_type::weekly, 100, 10 };
 
         BOOST_CHECK(!(key1 < key2) && !(key2 < key1));
 

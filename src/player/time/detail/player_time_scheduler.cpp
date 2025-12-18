@@ -112,7 +112,7 @@ void celeritas::player_time_scheduler::calculate_next_refresh_time()
     next_refresh_time_ = player_time_document_->calculate_next_refresh_time();
 }
 
-void celeritas::player_time_scheduler::stop_timer()
+void celeritas::player_time_scheduler::stop_timer() const
 {
     if (player_timer_ != nullptr)
     {

@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "database/database_fwd.h"
 #include "database/generated/mysql/player/user.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
