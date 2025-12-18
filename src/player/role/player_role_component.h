@@ -35,6 +35,10 @@ namespace celeritas
 
         [[nodiscard]] std::string get_name() const;
 
+        [[nodiscard]] std::string get_device_id() const;
+
+        [[nodiscard]] std::string get_app_version() const;
+
     private:
         using optional_user_role = std::optional<user_role>;
         using optional_user_server_roles = std::optional<user_server_roles>;

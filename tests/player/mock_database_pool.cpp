@@ -60,8 +60,8 @@ celeritas::database_pool_base::database_entity_change_awaitable_type celeritas::
     {
         const basis_database user_id{ "_id", int64_t{ 11111 } };
         const basis_database name{ user_role::name_describe, std::string{ "test_name" } };
-        const basis_database device_id{ user_role::device_id_describe, std::string{ "test_device_id" } };
-        const basis_database app_version{ user_role::app_version_describe, std::string{ "test_app_version" } };
+        const basis_database device_id{ user_role::device_id_describe, std::string{ "test_device" } };
+        const basis_database app_version{ user_role::app_version_describe, std::string{ "1.0.0" } };
 
         database_entity_change database_entity_change{ database_type::mongo,
                                                        user_role::database_name,

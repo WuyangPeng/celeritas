@@ -69,6 +69,16 @@ std::string celeritas::player_role_component::get_name() const
     return user_role_->get_name();
 }
 
+std::string celeritas::player_role_component::get_device_id() const
+{
+    return user_role_->get_device_id();
+}
+
+std::string celeritas::player_role_component::get_app_version() const
+{
+    return user_role_->get_app_version();
+}
+
 celeritas::player_role_component::void_awaitable_type celeritas::player_role_component::load_user_role_db()
 {
     const auto mongo_player_pool = get_mongo_player_database_pool();

@@ -191,7 +191,7 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
     {
         const celeritas::random_helper::weights_type weights{ 10.0, 20.0, 70.0 };
         constexpr auto num_iterations = 20000;
-        std::map<size_t, int> counts;
+        std::map<size_t, int> counts{};
 
         for (auto i = 0; i < num_iterations; ++i)
         {
@@ -246,15 +246,12 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
     // 测试 get_random_index_by_weight 负权重抛出异常
     BOOST_AUTO_TEST_CASE(test_get_random_index_by_weight_negative_weights_throws)
     {
-
         const celeritas::random_helper::weights_type weights1{ 10.0, -20.0, 5.0 };
         BOOST_CHECK_THROW([&] { std::ignore = celeritas::random_helper::get_random_index_by_weight(weights1); }(), celeritas::celeritas_error);
-
 
         const celeritas::random_helper::weights_type weights2{ 10.0, -10.0 };
         BOOST_CHECK_THROW([&] { std::ignore = celeritas::random_helper::get_random_index_by_weight(weights2); }(), celeritas::celeritas_error);
 
-     
         const celeritas::random_helper::weights_type weights3{ 20.0, -5.0, 10.0 };
         BOOST_CHECK_THROW([&] { std::ignore = celeritas::random_helper::get_random_index_by_weight(weights3); }(), celeritas::celeritas_error);
     }
