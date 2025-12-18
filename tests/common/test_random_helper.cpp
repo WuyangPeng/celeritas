@@ -3,6 +3,7 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <map>
 #include <numeric>
 #include <vector>
 
@@ -173,8 +174,8 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
         // 基本检查：平均值应接近均值
         const auto sum = std::accumulate(samples.begin(), samples.end(), 0.0);
         const auto average = sum / num_iterations;
-        // 允许平均值有 15% 的容差
-        BOOST_CHECK_CLOSE(average, mean_value, 15.0);
+        // 允许平均值有 10% 的容差
+        BOOST_CHECK_CLOSE(average, mean_value, 10.0);
 
         // 基本检查：值通常应在均值的几个标准差范围内
         for (auto value : samples)
@@ -183,6 +184,79 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
             BOOST_CHECK_GE(value, mean_value - 4 * stddev_value);
             BOOST_CHECK_LE(value, mean_value + 4 * stddev_value);
         }
+    }
+
+    // 测试 get_random_index_by_weight 的分布
+    BOOST_AUTO_TEST_CASE(test_get_random_index_by_weight_distribution)
+    {
+        const celeritas::random_helper::weights_type weights{ 10.0, 20.0, 70.0 };
+        constexpr auto num_iterations = 20000;
+        std::map<size_t, int> counts;
+
+        for (auto i = 0; i < num_iterations; ++i)
+        {
+            const auto index = celeritas::random_helper::get_random_index_by_weight(weights);
+            BOOST_CHECK_LT(index, weights.size());
+            counts[index]++;
+        }
+
+        // 检查分布是否大致正确
+        // 10% 容差
+        BOOST_CHECK_CLOSE(static_cast<double>(counts[0]) / num_iterations, 0.1, 10.0);
+        BOOST_CHECK_CLOSE(static_cast<double>(counts[1]) / num_iterations, 0.2, 10.0);
+        BOOST_CHECK_CLOSE(static_cast<double>(counts[2]) / num_iterations, 0.7, 10.0);
+    }
+
+    // 测试 get_random_index_by_weight 的单个元素
+    BOOST_AUTO_TEST_CASE(test_get_random_index_by_weight_single_element)
+    {
+        const celeritas::random_helper::weights_type weights{ 100.0 };
+        for (auto i = 0; i < 100; ++i)
+        {
+            const auto index = celeritas::random_helper::get_random_index_by_weight(weights);
+            BOOST_CHECK_EQUAL(index, 0);
+        }
+    }
+
+    // 测试 get_random_index_by_weight 包含零权重
+    BOOST_AUTO_TEST_CASE(test_get_random_index_by_weight_with_zero_weight)
+    {
+        const celeritas::random_helper::weights_type weights{ 1.0, 0.0, 1.0 };
+        for (auto i = 0; i < 1000; ++i)
+        {
+            const auto index = celeritas::random_helper::get_random_index_by_weight(weights);
+            BOOST_CHECK_NE(index, 1);
+        }
+    }
+
+    // 测试 get_random_index_by_weight 空向量抛出异常
+    BOOST_AUTO_TEST_CASE(test_get_random_index_by_weight_empty_vector_throws)
+    {
+        constexpr celeritas::random_helper::weights_type weights{};
+        BOOST_CHECK_THROW([&] { std::ignore = celeritas::random_helper::get_random_index_by_weight(weights); }(), celeritas::celeritas_error);
+    }
+
+    // 测试 get_random_index_by_weight 全零权重抛出异常
+    BOOST_AUTO_TEST_CASE(test_get_random_index_by_weight_all_zeros_throws)
+    {
+        const celeritas::random_helper::weights_type weights{ 0.0, 0.0, 0.0 };
+        BOOST_CHECK_THROW([&] { std::ignore = celeritas::random_helper::get_random_index_by_weight(weights); }(), celeritas::celeritas_error);
+    }
+
+    // 测试 get_random_index_by_weight 负权重抛出异常
+    BOOST_AUTO_TEST_CASE(test_get_random_index_by_weight_negative_weights_throws)
+    {
+
+        const celeritas::random_helper::weights_type weights1{ 10.0, -20.0, 5.0 };
+        BOOST_CHECK_THROW([&] { std::ignore = celeritas::random_helper::get_random_index_by_weight(weights1); }(), celeritas::celeritas_error);
+
+
+        const celeritas::random_helper::weights_type weights2{ 10.0, -10.0 };
+        BOOST_CHECK_THROW([&] { std::ignore = celeritas::random_helper::get_random_index_by_weight(weights2); }(), celeritas::celeritas_error);
+
+     
+        const celeritas::random_helper::weights_type weights3{ 20.0, -5.0, 10.0 };
+        BOOST_CHECK_THROW([&] { std::ignore = celeritas::random_helper::get_random_index_by_weight(weights3); }(), celeritas::celeritas_error);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

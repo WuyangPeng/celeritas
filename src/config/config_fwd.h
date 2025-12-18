@@ -26,6 +26,8 @@ namespace celeritas
     class surname_config;
     class name_config;
 
+    class weight;
+
     enum class sex_type;
 
     constexpr std::string_view default_service_registry_host = "127.0.0.1";

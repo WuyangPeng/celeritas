@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <random>
+#include <vector>
 
 namespace celeritas
 {
@@ -8,6 +9,7 @@ namespace celeritas
     {
     public:
         using class_type = random_helper;
+        using weights_type = std::vector<double>;
 
         // 生成 [0, end) 范围内的 int
         [[nodiscard]] static int get_random_int(int end);
@@ -34,6 +36,9 @@ namespace celeritas
         // mean: 均值 (默认为 0.0)
         // stddev: 标准差 (默认为 1.0)
         [[nodiscard]] static double get_random_normal(double mean = 0.0, double stddev = 1.0);
+
+        // 根据权重向量进行加权随机选择，返回选中的索引
+        [[nodiscard]] static int get_random_index_by_weight(const weights_type& weights);
 
     private:
         [[nodiscard]] static std::mt19937& get_engine();

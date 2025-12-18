@@ -1,6 +1,9 @@
 ﻿#include "celeritas_error.h"
 #include "random_helper.h"
 
+#include <algorithm>
+#include <numeric>
+
 int celeritas::random_helper::get_random_int(const int end)
 {
     return get_random_int(0, end);
@@ -64,6 +67,46 @@ double celeritas::random_helper::get_random_normal(const double mean, const doub
     std::normal_distribution distribution{ mean, stddev };
 
     return distribution(get_engine());
+}
+
+int celeritas::random_helper::get_random_index_by_weight(const weights_type& weights)
+{
+    if (weights.empty())
+    {
+        throw celeritas_error{ "Weights vector cannot be empty." };
+    }
+
+    if (weights.size() == 1)
+    {
+        return 0;
+    }
+
+    if (std::ranges::any_of(weights, [](const double weight) {
+        return weight < 0.0;
+    }))
+    {
+        throw celeritas_error{ "Weights cannot be negative." };
+    }
+
+    const auto total_weight = std::accumulate(weights.begin(), weights.end(), 0.0);
+    if (total_weight <= 0.0)
+    {
+        throw celeritas_error{ "Total weight must be positive." };
+    }
+
+    const auto random_value = get_random_double(0.0, total_weight);
+    auto cumulative_weight = 0.0;
+
+    for (auto index = 0u; index < weights.size(); ++index)
+    {
+        cumulative_weight += weights[index];
+        if (random_value < cumulative_weight)
+        {
+            return index;
+        }
+    }
+
+    return weights.size() - 1;
 }
 
 std::mt19937& celeritas::random_helper::get_engine()

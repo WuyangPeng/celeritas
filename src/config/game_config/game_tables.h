@@ -1,7 +1,9 @@
 ﻿#pragma once
 
+#include "weight.h"
 #include "config/config_fwd.h"
 
+#include <map>
 #include <memory>
 
 namespace celeritas
@@ -25,8 +27,16 @@ namespace celeritas
 
         void set_name_config(const const_name_config_shared_ptr& name_config);
 
+        [[nodiscard]] std::string get_surname() const;
+
+        [[nodiscard]] std::string get_name(sex_type sex_type) const;
+
     private:
+        using name_weight_type = std::map<sex_type, weight>;
+
         const_surname_container_config_shared_ptr surname_config_;
         const_name_config_shared_ptr name_config_;
+        weight surname_weight_;
+        name_weight_type name_weight_;
     };
 }

@@ -26,3 +26,9 @@ void celeritas::container_config<Element>::add_config(const const_config_shared_
         throw celeritas_error{ "config {} key is repeat,id = {}", boost::core::demangle(typeid(Element).name()), config.get_id() };
     }
 }
+
+template <typename Element>
+const celeritas::container_config<Element>::container& celeritas::container_config<Element>::get_container() const
+{
+    return container_;
+}
