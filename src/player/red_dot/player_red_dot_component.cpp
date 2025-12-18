@@ -14,7 +14,10 @@
 #include "player/user/player_user_component.h"
 
 celeritas::player_red_dot_component::player_red_dot_component(player_state* player_state) noexcept
-    : base_type{ get_player_component_type(), player_state }, user_red_dots_{}, red_dots_{}, red_dot_node_{}
+    : base_type{ get_player_component_type(), player_state },
+      database_{ player_state, this },
+      red_dots_{},
+      red_dot_node_{}
 {
 }
 
@@ -180,23 +183,12 @@ void celeritas::player_red_dot_component::change_red_dot(red_dot_type red_dot_ty
 
 celeritas::player_component::void_awaitable_type celeritas::player_red_dot_component::load_user_red_dots()
 {
-    const auto mongo_player_pool = get_mongo_player_database_pool();
-    const auto player_user = get_player_state()->get_component<player_user_component>();
-    const auto user_id = player_user->get_user_id();
-
-    if (const auto database_entity_change = co_await mongo_player_pool->select_one(user_red_dots::get_select(database_type::mongo, user_id), user_red_dots::get_database_field_container()))
-    {
-        user_red_dots_ = user_red_dots{ *database_entity_change };
-    }
-    else
-    {
-        user_red_dots_ = user_red_dots{ database_type::mongo, user_id };
-    }
+    co_return co_await database_.load_user_red_dots();
 }
 
 void celeritas::player_red_dot_component::set_red_dots()
 {
-    for (const auto& element : user_red_dots_->get_red_dots())
+    for (const auto& element : database_.get_red_dots())
     {
         auto red_dots = red_dots::from_json_string(element);
         red_dots_.emplace(red_dots.get_node_id(), red_dots);
@@ -292,9 +284,6 @@ void celeritas::player_red_dot_component::update_document()
         documents.emplace_back(element.to_json_string());
     }
 
-    user_red_dots_->set_red_dots(documents);
-    user_red_dots_->set_last_check_time(time_helper::get_current_milliseconds());
-
-    get_player_state()->set_dirty();
+    database_.set_red_dots(documents);
 }
 

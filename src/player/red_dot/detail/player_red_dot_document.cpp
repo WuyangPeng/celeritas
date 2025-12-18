@@ -1,0 +1,1 @@
+﻿#include "player_red_dot_document.h"

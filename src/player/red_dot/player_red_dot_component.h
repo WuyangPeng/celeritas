@@ -2,6 +2,7 @@
 
 #include "database/document/red_dots.h"
 #include "database/generated/mongo/player/user_red_dots.h"
+#include "detail/player_red_dot_database.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
 
@@ -37,7 +38,6 @@ namespace celeritas
         void change_red_dot(red_dot_type red_dot_type);
 
     private:
-        using optional_user_red_dots = std::optional<user_red_dots>;
         using red_dots_container = std::map<red_dot_type, red_dots>;
         using red_dot_node_shared_ptr = std::shared_ptr<red_dot_node>;
         using red_dot_node_container = std::map<red_dot_type, red_dot_node_shared_ptr>;
@@ -52,7 +52,7 @@ namespace celeritas
 
         void update_document();
 
-        optional_user_red_dots user_red_dots_;
+        player_red_dot_database database_;
         red_dots_container red_dots_;
         red_dot_node_container red_dot_node_;
     };
