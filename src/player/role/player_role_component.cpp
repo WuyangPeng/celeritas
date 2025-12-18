@@ -2,7 +2,7 @@
 #include "config/database_type.h"
 #include "database/database_pool_base.h"
 #include "database/generated/mongo/auth/user_server_roles.h"
-#include "player/component/player_state.h"
+#include "player/component/player_state.tpp"
 #include "player/user/player_user_component.h"
 
 celeritas::player_role_component::player_role_component(player_state* player_state, const service_login_request_type& login) noexcept
