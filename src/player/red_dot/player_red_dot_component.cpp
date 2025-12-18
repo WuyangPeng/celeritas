@@ -5,6 +5,7 @@
 #include "config/game_config/container_config.h"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
+#include "config/game_config/red_config.h"
 #include "config/game_config/red_dot_type.h"
 #include "database/database_pool_base.h"
 #include "detail/calculate_red_dot.h"
@@ -65,17 +66,17 @@ void celeritas::player_red_dot_component::set_red_dot_node()
 {
     const auto& game_tables = game_config::get_instance().get_game_tables();
     const auto& container = game_tables->get_red_container()->get_container();
-    for (const auto& element : container)
+    for (const auto& type : container | std::views::keys)
     {
-        red_dot_node_.emplace(element.first, std::make_shared<red_dot_node>(element.first));
+        red_dot_node_.emplace(type, std::make_shared<red_dot_node>(type));
     }
 
-    for (const auto& element : container)
+    for (const auto& [red_dot_type, element] : container)
     {
-        auto self_iter = red_dot_node_.find(element->get_id());
+        auto self_iter = red_dot_node_.find(red_dot_type);
         if (self_iter == red_dot_node_.cend())
         {
-            throw celeritas_error{ "set red dot node error,id = {}", element->get_id() };
+            throw celeritas_error{ "set red dot node error,id = {}", static_cast<int>(red_dot_type) };
         }
 
         if (const auto parent_node_id = element->get_parent_node_id();
@@ -84,7 +85,7 @@ void celeritas::player_red_dot_component::set_red_dot_node()
             auto parent_iter = red_dot_node_.find(parent_node_id);
             if (parent_iter == red_dot_node_.cend())
             {
-                throw celeritas_error{ "set red dot node error,parent id = {}", parent_node_id };
+                throw celeritas_error{ "set red dot node error,parent id = {}", static_cast<int>(parent_node_id) };
                 continue;
             }
 

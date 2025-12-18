@@ -13,7 +13,7 @@ namespace celeritas
         using class_type = container_config;
         using const_config_shared_ptr = std::shared_ptr<const Element>;
         using optional_config = std::optional<const_config_shared_ptr>;
-        using container = std::map<int, const_config_shared_ptr>;
+        using container = std::map<IndexType, const_config_shared_ptr>;
 
         [[nodiscard]] optional_config get(IndexType id) const;
 
