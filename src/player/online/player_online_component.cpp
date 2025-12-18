@@ -10,7 +10,7 @@ celeritas::player_online_component::player_online_component(player_state* player
 
 celeritas::player_component::void_awaitable_type celeritas::player_online_component::on_load_db()
 {
-    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
+    const auto mysql_pool = get_mysql_auth_database_pool();
 
     const auto* player_state = get_player_state();
 
@@ -31,7 +31,7 @@ celeritas::player_component::void_awaitable_type celeritas::player_online_compon
 {
     if (account_last_login_->is_modify())
     {
-        const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
+        const auto mysql_pool = get_mysql_auth_database_pool();
 
         co_await mysql_pool->execute_changes(account_last_login_->get_modify());
 

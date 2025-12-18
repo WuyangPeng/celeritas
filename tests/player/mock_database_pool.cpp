@@ -8,6 +8,7 @@
 #include "database/generated/mongo/auth/user_server_roles.h"
 #include "database/generated/mongo/player/user_role.h"
 #include "database/generated/mongo/player/user_time_refresh.h"
+#include "database/generated/mysql/auth/account_last_login.h"
 #include "player/component/player_component_type.h"
 #include "player/time/time_refresh_type.h"
 
@@ -94,6 +95,23 @@ celeritas::database_pool_base::database_entity_change_awaitable_type celeritas::
         database_entity_change.modify(user_id);
         database_entity_change.modify(update_time);
         database_entity_change.modify(servers);
+
+        co_return database_entity_change;
+    }
+
+    if (database->get_database_name() == account_last_login::database_name)
+    {
+        const basis_database account_id{ account_last_login::account_id_describe, int64_t{ 11111 } };
+        const basis_database game_server_id{ account_last_login::game_server_id_describe, std::string{ "test_name" } };
+        const basis_database update_time{ account_last_login::update_time_describe, time_helper::get_current_milliseconds() };
+
+        database_entity_change database_entity_change{ database_type::mysql,
+                                                       account_last_login::database_name,
+                                                       database_change_type::update_type,
+                                                       std::make_shared<basis_database_container>(basis_database_container::object_container{ account_id }) };
+        database_entity_change.modify(account_id);
+        database_entity_change.modify(game_server_id);
+        database_entity_change.modify(update_time);
 
         co_return database_entity_change;
     }

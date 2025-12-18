@@ -61,6 +61,11 @@ celeritas::player_component::database_pool_shared_ptr celeritas::player_componen
     return mock_database_pool_ ? *mock_database_pool_ : database_pool_manager::get_instance().get_pool(mysql_player_db_name.data());
 }
 
+celeritas::player_component::database_pool_shared_ptr celeritas::player_component::get_mysql_auth_database_pool()
+{
+    return mock_database_pool_ ? *mock_database_pool_ : database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
+}
+
 celeritas::player_component::database_pool_shared_ptr celeritas::player_component::get_mongo_player_database_pool()
 {
     return mock_database_pool_ ? *mock_database_pool_ : database_pool_manager::get_instance().get_pool(mongo_player_db_name.data());
