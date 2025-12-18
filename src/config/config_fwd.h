@@ -30,8 +30,8 @@ namespace celeritas
     class weight;
 
     enum class sex_type;
-    enum class red_type;
-    enum class red_status_type;
+    enum class red_dot_type;
+    enum class red_dot_status_type;
 
     constexpr std::string_view default_service_registry_host = "127.0.0.1";
     constexpr auto default_service_registry_port = 35000;

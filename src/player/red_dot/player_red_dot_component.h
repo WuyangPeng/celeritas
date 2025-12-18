@@ -28,9 +28,9 @@ namespace celeritas
 
     private:
         using optional_user_red_dots = std::optional<user_red_dots>;
-        using red_dots_container = std::map<red_type, red_dots>;
+        using red_dots_container = std::map<red_dot_type, red_dots>;
         using red_dot_node_shared_ptr = std::shared_ptr<red_dot_node>;
-        using red_dot_node_container = std::map<red_type, red_dot_node_shared_ptr>;
+        using red_dot_node_container = std::map<red_dot_type, red_dot_node_shared_ptr>;
 
         [[nodiscard]] void_awaitable_type load_user_red_dots();
 

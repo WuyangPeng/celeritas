@@ -27,7 +27,7 @@ namespace celeritas
 
         [[nodiscard]] virtual int get_red_dot_value() const = 0;
 
-        [[nodiscard]] static calculate_red_dot_shared_ptr create(red_type red_type, player_state* player_state);
+        [[nodiscard]] static calculate_red_dot_shared_ptr create(red_dot_type red_type, player_state* player_state);
 
     private:
         player_state* player_state_;

@@ -13,7 +13,7 @@ namespace celeritas
         using class_type = red_dot_node;
         using red_dot_node_shared_ptr = std::shared_ptr<red_dot_node>;
 
-        explicit red_dot_node(red_type type);
+        explicit red_dot_node(red_dot_type type);
 
         void set_value(int value);
 
@@ -27,7 +27,7 @@ namespace celeritas
         using red_dot_node_weak_ptr = std::weak_ptr<red_dot_node>;
         using container = std::vector<red_dot_node_weak_ptr>;
 
-        red_type type_;
+        red_dot_type type_;
         int value_ = 0;
         red_dot_node_weak_ptr parent_;
         container children_;

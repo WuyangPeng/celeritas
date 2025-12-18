@@ -2,7 +2,7 @@
 
 namespace celeritas
 {
-    enum class red_type
+    enum class red_dot_type
     {
         null = 0,
 

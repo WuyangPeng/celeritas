@@ -14,9 +14,9 @@ namespace celeritas
 
         red_dots();
 
-        [[nodiscard]] red_type get_node_id() const;
+        [[nodiscard]] red_dot_type get_node_id() const;
 
-        void set_node_id(red_type nodeId);
+        void set_node_id(red_dot_type nodeId);
 
         [[nodiscard]] bool is_state() const;
 
@@ -40,7 +40,7 @@ namespace celeritas
         static constexpr std::string_view update_time_description = "update_time";
 
     private:
-        red_type node_id_;
+        red_dot_type node_id_;
         bool state_;
         int64_t last_value_;
         int64_t update_time_;

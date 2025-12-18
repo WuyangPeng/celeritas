@@ -17,7 +17,7 @@ namespace celeritas
         using const_surname_container_config_shared_ptr = std::shared_ptr<const surname_container_config>;
         using name_container_config = container_config<name_config>;
         using const_name_container_shared_ptr = std::shared_ptr<const name_container_config>;
-        using red_container_config = container_config<red_config, red_type>;
+        using red_container_config = container_config<red_config, red_dot_type>;
         using const_red_container_shared_ptr = std::shared_ptr<const red_container_config>;
 
         game_tables();

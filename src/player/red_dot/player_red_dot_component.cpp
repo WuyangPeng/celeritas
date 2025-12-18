@@ -5,7 +5,7 @@
 #include "config/game_config/container_config.h"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
-#include "config/game_config/red_type.h"
+#include "config/game_config/red_dot_type.h"
 #include "database/database_pool_base.h"
 #include "detail/calculate_red_dot.h"
 #include "player/component/player_state.h"
@@ -79,7 +79,7 @@ void celeritas::player_red_dot_component::set_red_dot_node()
         }
 
         if (const auto parent_node_id = element->get_parent_node_id();
-            parent_node_id != red_type::null)
+            parent_node_id != red_dot_type::null)
         {
             auto parent_iter = red_dot_node_.find(parent_node_id);
             if (parent_iter == red_dot_node_.cend())

@@ -8,12 +8,12 @@ celeritas::red_dots::red_dots()
 {
 }
 
-celeritas::red_type celeritas::red_dots::get_node_id() const
+celeritas::red_dot_type celeritas::red_dots::get_node_id() const
 {
     return node_id_;
 }
 
-void celeritas::red_dots::set_node_id(const red_type nodeId)
+void celeritas::red_dots::set_node_id(const red_dot_type nodeId)
 {
     node_id_ = nodeId;
 }
@@ -64,7 +64,7 @@ celeritas::red_dots celeritas::red_dots::from_json_string(const std::string& jso
     const auto parsed_view = bsoncxx::from_json(json_string);
 
     red_dots red_dots{};
-    red_dots.set_node_id(static_cast<red_type>(parsed_view[node_id_description].get_int32().value));
+    red_dots.set_node_id(static_cast<red_dot_type>(parsed_view[node_id_description].get_int32().value));
     red_dots.set_state(parsed_view[state_description].get_bool());
     red_dots.set_last_value(parsed_view[last_value_description].type() == bsoncxx::type::k_int32 ? parsed_view[last_value_description].get_int32().value : parsed_view[last_value_description].get_int64().value);
     red_dots.set_last_value(parsed_view[update_time_description].type() == bsoncxx::type::k_int32 ? parsed_view[update_time_description].get_int32().value : parsed_view[update_time_description].get_int64().value);
