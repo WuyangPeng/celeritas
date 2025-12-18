@@ -4,6 +4,9 @@
 #include "database/database_change_type.h"
 #include "database/database_entity_change.h"
 #include "database/document/player_time_refresh.h"
+#include "database/document/server_role.h"
+#include "database/generated/mongo/auth/user_server_roles.h"
+#include "database/generated/mongo/player/user_role.h"
 #include "database/generated/mongo/player/user_time_refresh.h"
 #include "player/component/player_component_type.h"
 #include "player/time/time_refresh_type.h"
@@ -49,6 +52,48 @@ celeritas::database_pool_base::database_entity_change_awaitable_type celeritas::
                                                        std::make_shared<basis_database_container>(basis_database_container::object_container{ user_id }) };
         database_entity_change.modify(user_id);
         database_entity_change.modify(player_time);
+
+        co_return database_entity_change;
+    }
+
+    if (database->get_database_name() == user_role::database_name)
+    {
+        const basis_database user_id{ "_id", int64_t{ 11111 } };
+        const basis_database name{ user_role::name_describe, std::string{ "test_name" } };
+        const basis_database device_id{ user_role::device_id_describe, std::string{ "test_device_id" } };
+        const basis_database app_version{ user_role::app_version_describe, std::string{ "test_app_version" } };
+
+        database_entity_change database_entity_change{ database_type::mongo,
+                                                       user_role::database_name,
+                                                       database_change_type::update_type,
+                                                       std::make_shared<basis_database_container>(basis_database_container::object_container{ user_id }) };
+        database_entity_change.modify(user_id);
+        database_entity_change.modify(name);
+        database_entity_change.modify(device_id);
+        database_entity_change.modify(app_version);
+
+        co_return database_entity_change;
+    }
+
+    if (database->get_database_name() == user_server_roles::database_name)
+    {
+        const basis_database user_id{ "_id", int64_t{ 11111 } };
+        const basis_database update_time{ user_server_roles::update_time_describe, time_helper::get_current_milliseconds() };
+
+        server_role server_role{};
+        server_role.set_role_name("test_name");
+        server_role.set_game_server_id("test_game_server_id");
+        server_role.set_last_login_time(time_helper::get_current_milliseconds());
+        basis_database::string_array result{ server_role.to_json_string() };
+        const basis_database servers{ user_server_roles::servers_describe, database_data_type::document_array_type, result };
+
+        database_entity_change database_entity_change{ database_type::mongo,
+                                                       user_server_roles::database_name,
+                                                       database_change_type::update_type,
+                                                       std::make_shared<basis_database_container>(basis_database_container::object_container{ user_id }) };
+        database_entity_change.modify(user_id);
+        database_entity_change.modify(update_time);
+        database_entity_change.modify(servers);
 
         co_return database_entity_change;
     }

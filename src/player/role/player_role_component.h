@@ -33,10 +33,18 @@ namespace celeritas
 
         void set_login(const service_login_request_type& login);
 
+        [[nodiscard]] std::string get_name() const;
+
     private:
         using optional_user_role = std::optional<user_role>;
         using optional_user_server_roles = std::optional<user_server_roles>;
         using optional_server_role = std::optional<server_role>;
+
+        [[nodiscard]] void_awaitable_type load_user_role_db();
+
+        [[nodiscard]] void_awaitable_type load_user_server_roles_db();
+
+        void set_server_role();
 
         optional_user_role user_role_;
         optional_user_server_roles user_server_roles_;

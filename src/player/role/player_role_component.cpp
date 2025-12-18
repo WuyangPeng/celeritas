@@ -4,7 +4,6 @@
 #include "config/game_config/game_tables.h"
 #include "config/game_config/sex_type.h"
 #include "database/database_pool_base.h"
-#include "database/config/config_manager.h"
 #include "database/generated/mongo/auth/user_server_roles.h"
 #include "player/component/player_state.tpp"
 #include "player/user/player_user_component.h"
@@ -22,58 +21,10 @@ celeritas::player_role_component::player_role_component(player_state* player_sta
 
 celeritas::player_component::void_awaitable_type celeritas::player_role_component::on_load_db()
 {
-    const auto mongo_player_pool = get_mongo_player_database_pool();
-    const auto player_user = get_player_state()->get_component<player_user_component>();
-    const auto user_id = player_user->get_user_id();
+    co_await load_user_role_db();
+    co_await load_user_server_roles_db();
 
-    if (const auto database_entity_change = co_await mongo_player_pool->select_one(user_role::get_select(database_type::mongo, user_id), user_role::get_database_field_container()))
-    {
-        user_role_ = user_role{ *database_entity_change };
-    }
-    else
-    {
-        user_role_ = user_role{ database_type::mongo, user_id };
-        const auto game_tables = game_config::get_instance().get_game_tables();
-
-        user_role_->set_name(game_tables->get_surname() + game_tables->get_name(sex_type::null));
-    }
-
-    user_role_->set_device_id(device_id_);
-    user_role_->set_app_version(app_version_);
-
-    const auto mongo_auth_pool = get_mongo_auth_database_pool();
-
-    const auto account_id = player_user->get_account_id();
-
-    if (const auto database_entity_change = co_await mongo_auth_pool->select_one(user_server_roles::get_select(database_type::mongo, account_id), user_server_roles::get_database_field_container()))
-    {
-        user_server_roles_ = user_server_roles{ *database_entity_change };
-    }
-    else
-    {
-        user_server_roles_ = user_server_roles{ database_type::mongo, account_id };
-    }
-
-    for (const auto servers = user_server_roles_->get_servers();
-         const auto& element : servers)
-    {
-        if (auto server_role = server_role::from_json_string(element);
-            server_role.get_game_server_id() == player_user->get_game_server_id())
-        {
-            server_role_ = server_role;
-
-            break;
-        }
-
-        ++server_role_index_;
-    }
-
-    if (!server_role_)
-    {
-        server_role_ = server_role{ player_user->get_game_server_id(), user_role_->get_name() };
-
-        user_server_roles_->add_servers(server_role_->to_json_string());
-    }
+    set_server_role();
 }
 
 celeritas::player_component::void_awaitable_type celeritas::player_role_component::save_db()
@@ -111,4 +62,73 @@ void celeritas::player_role_component::set_login(const service_login_request_typ
 {
     user_role_->set_device_id(login.device_id());
     user_role_->set_app_version(login.app_version());
+}
+
+std::string celeritas::player_role_component::get_name() const
+{
+    return user_role_->get_name();
+}
+
+celeritas::player_role_component::void_awaitable_type celeritas::player_role_component::load_user_role_db()
+{
+    const auto mongo_player_pool = get_mongo_player_database_pool();
+    const auto player_user = get_player_state()->get_component<player_user_component>();
+    const auto user_id = player_user->get_user_id();
+
+    if (const auto database_entity_change = co_await mongo_player_pool->select_one(user_role::get_select(database_type::mongo, user_id), user_role::get_database_field_container()))
+    {
+        user_role_ = user_role{ *database_entity_change };
+    }
+    else
+    {
+        user_role_ = user_role{ database_type::mongo, user_id };
+        const auto game_tables = game_config::get_instance().get_game_tables();
+
+        user_role_->set_name(game_tables->get_surname() + game_tables->get_name(sex_type::null));
+    }
+
+    user_role_->set_device_id(device_id_);
+    user_role_->set_app_version(app_version_);
+}
+
+celeritas::player_role_component::void_awaitable_type celeritas::player_role_component::load_user_server_roles_db()
+{
+    const auto mongo_auth_pool = get_mongo_auth_database_pool();
+
+    const auto player_user = get_player_state()->get_component<player_user_component>();
+    const auto account_id = player_user->get_account_id();
+
+    if (const auto database_entity_change = co_await mongo_auth_pool->select_one(user_server_roles::get_select(database_type::mongo, account_id), user_server_roles::get_database_field_container()))
+    {
+        user_server_roles_ = user_server_roles{ *database_entity_change };
+    }
+    else
+    {
+        user_server_roles_ = user_server_roles{ database_type::mongo, account_id };
+    }
+}
+
+void celeritas::player_role_component::set_server_role()
+{
+    const auto player_user = get_player_state()->get_component<player_user_component>();
+    for (const auto servers = user_server_roles_->get_servers();
+         const auto& element : servers)
+    {
+        if (auto server_role = server_role::from_json_string(element);
+            server_role.get_game_server_id() == player_user->get_game_server_id())
+        {
+            server_role_ = server_role;
+
+            break;
+        }
+
+        ++server_role_index_;
+    }
+
+    if (!server_role_)
+    {
+        server_role_ = server_role{ player_user->get_game_server_id(), user_role_->get_name() };
+
+        user_server_roles_->add_servers(server_role_->to_json_string());
+    }
 }
