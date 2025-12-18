@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
     // 测试 get_random_index_by_weight 空向量抛出异常
     BOOST_AUTO_TEST_CASE(test_get_random_index_by_weight_empty_vector_throws)
     {
-        constexpr celeritas::random_helper::weights_type weights{};
+        const celeritas::random_helper::weights_type weights{};
         BOOST_CHECK_THROW([&] { std::ignore = celeritas::random_helper::get_random_index_by_weight(weights); }(), celeritas::celeritas_error);
     }
 
