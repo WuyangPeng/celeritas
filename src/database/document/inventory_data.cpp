@@ -59,6 +59,21 @@ void celeritas::inventory_data::set_custom_data(const document_view_type& docume
     custom_data_.set_document(document);
 }
 
+void celeritas::inventory_data::add_count(const int count)
+{
+    count_ += count;
+}
+
+void celeritas::inventory_data::reduce_count(const int count)
+{
+    count_ -= count;
+}
+
+void celeritas::inventory_data::set_count(int count)
+{
+    count_ = count;
+}
+
 std::string celeritas::inventory_data::to_json_string() const
 {
     bsoncxx::builder::basic::document builder{};

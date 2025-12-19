@@ -37,6 +37,12 @@ namespace celeritas
 
         void set_custom_data(const document_view_type& document);
 
+        void add_count(int count);
+
+        void reduce_count(int count);
+
+        void set_count(int count);
+
         [[nodiscard]] std::string to_json_string() const;
 
         [[nodiscard]] static inventory_data from_json_string(const std::string& json_string);
