@@ -54,7 +54,7 @@ bool celeritas::red_dot_node::is_save_database() const
 
 celeritas::red_dot_node::red_dot_node_optional celeritas::red_dot_node::get_parent() const
 {
-    if (const auto result = parent_.lock();
+    if (auto result = parent_.lock();
         result != nullptr)
     {
         return result;
