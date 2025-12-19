@@ -1,8 +1,6 @@
 ﻿#include "player_red_dot_component.h"
 #include "red_dot_node.h"
 #include "common/celeritas_error.h"
-#include "common/time_helper.h"
-#include "config/database_type.h"
 #include "config/game_config/container_config.tpp"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
@@ -11,12 +9,11 @@
 #include "database/database_pool_base.h"
 #include "detail/calculate_red_dot.h"
 #include "player/component/player_state.h"
-#include "player/user/player_user_component.h"
 
 celeritas::player_red_dot_component::player_red_dot_component(player_state* player_state) noexcept
     : base_type{ get_player_component_type(), player_state },
       database_{ player_state, this },
-      red_dots_{},
+      document_{},
       red_dot_node_{}
 {
 }
@@ -42,7 +39,7 @@ void celeritas::player_red_dot_component::add_red_dot(red_dot_type red_dot_type)
     add_red_dot(red_dot_type, 1);
 }
 
-void celeritas::player_red_dot_component::add_red_dot(red_dot_type red_dot_type, int value)
+void celeritas::player_red_dot_component::add_red_dot(red_dot_type red_dot_type, const int value)
 {
     const auto iter = red_dot_node_.find(red_dot_type);
     if (iter == red_dot_node_.end())
@@ -56,14 +53,12 @@ void celeritas::player_red_dot_component::add_red_dot(red_dot_type red_dot_type,
     }
 
     iter->second->add_value(value);
-
+    const auto finish = iter->second->get_value() <= 0;
     auto change = false;
     if (iter->second->is_save_database())
     {
-        if (const auto red_dots_iter = red_dots_.find(red_dot_type);
-            red_dots_iter == red_dots_.cend())
+        if (document_.insert_red_dot(red_dot_type, finish))
         {
-            red_dots_.emplace(red_dot_type, red_dots{ red_dot_type, false });
             change = true;
         }
     }
@@ -81,12 +76,12 @@ void celeritas::player_red_dot_component::add_red_dot(red_dot_type red_dot_type,
     }
 }
 
-void celeritas::player_red_dot_component::reduce_red_dot(red_dot_type red_dot_type)
+void celeritas::player_red_dot_component::reduce_red_dot(const red_dot_type red_dot_type)
 {
     reduce_red_dot(red_dot_type, 1);
 }
 
-void celeritas::player_red_dot_component::reduce_red_dot(red_dot_type red_dot_type, int value)
+void celeritas::player_red_dot_component::reduce_red_dot(red_dot_type red_dot_type, const int value)
 {
     const auto iter = red_dot_node_.find(red_dot_type);
     if (iter == red_dot_node_.end())
@@ -106,15 +101,8 @@ void celeritas::player_red_dot_component::reduce_red_dot(red_dot_type red_dot_ty
     auto change = false;
     if (iter->second->is_save_database())
     {
-        const auto red_dots_iter = red_dots_.find(red_dot_type);
-        if (red_dots_iter == red_dots_.cend())
+        if (document_.set_red_dot(red_dot_type, finish))
         {
-            red_dots_.emplace(red_dot_type, red_dots{ red_dot_type, finish });
-            change = true;
-        }
-        else if (finish)
-        {
-            red_dots_iter->second.set_state(true);
             change = true;
         }
     }
@@ -155,15 +143,8 @@ void celeritas::player_red_dot_component::change_red_dot(red_dot_type red_dot_ty
     auto change = false;
     if (iter->second->is_save_database())
     {
-        const auto red_dots_iter = red_dots_.find(red_dot_type);
-        if (red_dots_iter == red_dots_.cend())
+        if (document_.set_red_dot(red_dot_type, finish))
         {
-            red_dots_.emplace(red_dot_type, red_dots{ red_dot_type, finish });
-            change = true;
-        }
-        else if (finish)
-        {
-            red_dots_iter->second.set_state(true);
             change = true;
         }
     }
@@ -188,11 +169,7 @@ celeritas::player_component::void_awaitable_type celeritas::player_red_dot_compo
 
 void celeritas::player_red_dot_component::set_red_dots()
 {
-    for (const auto& element : database_.get_red_dots())
-    {
-        auto red_dots = red_dots::from_json_string(element);
-        red_dots_.emplace(red_dots.get_node_id(), red_dots);
-    }
+    document_.set_red_dots(database_.get_red_dots());
 }
 
 void celeritas::player_red_dot_component::set_red_dot_node()
@@ -237,20 +214,21 @@ void celeritas::player_red_dot_component::calculate_red_dot()
         {
             if (red_dot_node->is_save_database())
             {
-                const auto iter = red_dots_.find(red_dot_type);
-                if (iter == red_dots_.cend())
+                if (!document_.is_exist(red_dot_type))
                 {
                     const auto calculate_red_dot = calculate_red_dot::create(red_dot_type, get_player_state());
                     const auto value = calculate_red_dot->get_red_dot_value();
 
                     if (value <= 0)
                     {
-                        red_dots_.emplace(red_dot_type, red_dots{ red_dot_type, value <= 0 });
-                        change = true;
+                        if (document_.insert_red_dot(red_dot_type, true))
+                        {
+                            change = true;
+                        }
                     }
                 }
 
-                if (iter->second.is_state())
+                if (document_.is_state(red_dot_type))
                 {
                     red_dot_node->set_value(0);
                     continue;
@@ -278,12 +256,6 @@ void celeritas::player_red_dot_component::calculate_red_dot()
 
 void celeritas::player_red_dot_component::update_document()
 {
-    traits::document_array_type documents{};
-    for (auto& element : red_dots_ | std::views::values)
-    {
-        documents.emplace_back(element.to_json_string());
-    }
-
-    database_.set_red_dots(documents);
+    database_.set_red_dots(document_.get_red_dots());
 }
 
