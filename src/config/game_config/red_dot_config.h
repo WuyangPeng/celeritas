@@ -6,12 +6,12 @@
 
 namespace celeritas
 {
-    class red_config
+    class red_dot_config
     {
     public:
-        using class_type = red_config;
+        using class_type = red_dot_config;
 
-        red_config(red_dot_type id, std::string name, red_dot_type parent_node_id, red_dot_status_type red_dot_status_type, bool save_database);
+        red_dot_config(red_dot_type id, std::string name, red_dot_type parent_node_id, red_dot_status_type red_dot_status_type, bool save_database);
 
         [[nodiscard]] red_dot_type get_id() const;
 

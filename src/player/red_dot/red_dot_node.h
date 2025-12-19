@@ -35,9 +35,13 @@ namespace celeritas
 
         [[nodiscard]] red_dot_node_optional get_parent() const;
 
+        [[nodiscard]] red_dot_type get_red_dot_type() const;
+
     private:
         using red_dot_node_weak_ptr = std::weak_ptr<red_dot_node>;
         using container = std::vector<red_dot_node_weak_ptr>;
+
+        void check_value();
 
         red_dot_type type_;
         int value_ = 0;

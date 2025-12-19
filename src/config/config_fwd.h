@@ -25,7 +25,7 @@ namespace celeritas
 
     class surname_config;
     class name_config;
-    class red_config;
+    class red_dot_config;
 
     class weight;
 

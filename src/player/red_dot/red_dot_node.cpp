@@ -1,6 +1,7 @@
-﻿#include "player/red_dot/red_dot_node.h"
+﻿#include "common/logger.h"
+#include "player/red_dot/red_dot_node.h"
 
-celeritas::red_dot_node::red_dot_node(const red_dot_type type, bool save_database)
+celeritas::red_dot_node::red_dot_node(const red_dot_type type, const bool save_database)
     : type_{ type }, value_{ 0 }, parent_{}, children_{}, save_database_{ save_database }
 {
 }
@@ -8,16 +9,22 @@ celeritas::red_dot_node::red_dot_node(const red_dot_type type, bool save_databas
 void celeritas::red_dot_node::set_value(const int value)
 {
     value_ = value;
+
+    check_value();
 }
 
 void celeritas::red_dot_node::add_value(const int value)
 {
     value_ += value;
+
+    check_value();
 }
 
 void celeritas::red_dot_node::reduce_value(int value)
 {
     value_ -= value;
+
+    check_value();
 }
 
 int celeritas::red_dot_node::get_value() const
@@ -54,4 +61,18 @@ celeritas::red_dot_node::red_dot_node_optional celeritas::red_dot_node::get_pare
     }
 
     return std::nullopt;
+}
+
+celeritas::red_dot_type celeritas::red_dot_node::get_red_dot_type() const
+{
+    return type_;
+}
+
+void celeritas::red_dot_node::check_value()
+{
+    if (value_ < 0)
+    {
+        value_ = 0;
+        LOG_CHANNEL(player_channel, warning) << "value is negative!";
+    }
 }
