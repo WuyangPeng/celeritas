@@ -26,6 +26,8 @@ namespace celeritas
 
         [[nodiscard]] bool calculate_red_dot();
 
+        [[nodiscard]] int get_red_dot_value(red_dot_type red_dot_type) const;
+
     private:
         using red_dot_node_shared_ptr = std::shared_ptr<red_dot_node>;
         using red_dot_node_container = std::map<red_dot_type, red_dot_node_shared_ptr>;

@@ -60,7 +60,7 @@ bool celeritas::player_red_dot_node::change_red_dot(const red_dot_type red_dot_t
 void celeritas::player_red_dot_node::set_red_dot_node()
 {
     const auto& game_tables = game_config::get_instance().get_game_tables();
-    const auto& container = game_tables->get_red_container()->get_container();
+    const auto& container = game_tables->get_red_dot_config()->get_container();
 
     init_red_dot_node(container);
     set_red_dot_node_association(container);
@@ -81,6 +81,17 @@ bool celeritas::player_red_dot_node::calculate_red_dot()
     }
 
     return change;
+}
+
+int celeritas::player_red_dot_node::get_red_dot_value(const red_dot_type red_dot_type) const
+{
+    const auto iter = red_dot_node_.find(red_dot_type);
+    if (iter == red_dot_node_.end())
+    {
+        return 0;
+    }
+
+    return iter->second->get_value();
 }
 
 celeritas::player_red_dot_node::red_dot_node_shared_ptr celeritas::player_red_dot_node::get_child_red_dot(red_dot_type red_dot_type) const
@@ -132,7 +143,7 @@ bool celeritas::player_red_dot_node::set_document(const red_dot_node_shared_ptr&
 void celeritas::player_red_dot_node::add_parent_value(const red_dot_node_shared_ptr& red_dot_node, const int value)
 {
     auto parent = red_dot_node->get_parent();
-    while (parent != nullptr)
+    while (parent)
     {
         (*parent)->add_value(value);
         parent = (*parent)->get_parent();

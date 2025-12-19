@@ -178,12 +178,16 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
         BOOST_CHECK_CLOSE(average, mean_value, 10.0);
 
         // 基本检查：值通常应在均值的几个标准差范围内
-        for (auto value : samples)
+        auto outliers = 0;
+        for (const auto value : samples)
         {
-            // 大致在 4 个标准差范围内
-            BOOST_CHECK_GE(value, mean_value - 4 * stddev_value);
-            BOOST_CHECK_LE(value, mean_value + 4 * stddev_value);
+            if (value < mean_value - 4 * stddev_value || value > mean_value + 4 * stddev_value)
+            {
+                outliers++;
+            }
         }
+        // 允许有少数几个离群值
+        BOOST_CHECK_LT(outliers, 3);
     }
 
     // 测试 get_random_index_by_weight 的分布

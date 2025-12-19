@@ -20,10 +20,10 @@ celeritas::container_config<Element, IndexType>::optional_config celeritas::cont
 template <typename Element, typename IndexType>
 void celeritas::container_config<Element, IndexType>::add_config(const const_config_shared_ptr& config)
 {
-    if (const auto result = container_.emplace(config.get_id(), config);
+    if (const auto result = container_.emplace(config->get_id(), config);
         !result.second)
     {
-        throw celeritas_error{ "config {} key is repeat,id = {}", boost::core::demangle(typeid(Element).name()), config.get_id() };
+        throw celeritas_error{ "config {} key is repeat,id = {}", boost::core::demangle(typeid(Element).name()), static_cast<int>(config->get_id()) };
     }
 }
 

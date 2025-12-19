@@ -37,6 +37,12 @@ namespace celeritas
 
         void change_red_dot(red_dot_type red_dot_type);
 
+        [[nodiscard]] int get_red_dot_value(red_dot_type red_dot_type) const;
+
+        [[nodiscard]] void_awaitable_type save_db() override;
+
+        [[nodiscard]] bool is_modify() const override;
+
     private:
         [[nodiscard]] void_awaitable_type load_user_red_dots();
 

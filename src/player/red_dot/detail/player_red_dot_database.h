@@ -21,6 +21,10 @@ namespace celeritas
 
         void set_red_dots(traits::param_type::document_array_type red_dots);
 
+        [[nodiscard]] void_awaitable_type save_db();
+
+        [[nodiscard]] bool is_modify() const;
+
     private:
         using optional_user_red_dots = std::optional<user_red_dots>;
 

@@ -63,6 +63,21 @@ void celeritas::player_red_dot_component::change_red_dot(const red_dot_type red_
     }
 }
 
+int celeritas::player_red_dot_component::get_red_dot_value(red_dot_type red_dot_type) const
+{
+    return node_.get_red_dot_value(red_dot_type);
+}
+
+celeritas::player_component::void_awaitable_type celeritas::player_red_dot_component::save_db()
+{
+    co_return co_await database_.save_db();
+}
+
+bool celeritas::player_red_dot_component::is_modify() const
+{
+    return database_.is_modify();
+}
+
 celeritas::player_component::void_awaitable_type celeritas::player_red_dot_component::load_user_red_dots()
 {
     co_return co_await database_.load_user_red_dots();
