@@ -35,6 +35,8 @@ namespace celeritas
 
         [[nodiscard]] static database_entity_change select_account_last_login();
 
+        [[nodiscard]] static database_entity_change select_user_red_dots();
+
         int execute_changes_call_count_ = 0;
     };
 }

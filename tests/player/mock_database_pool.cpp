@@ -1,11 +1,14 @@
 ﻿#include "mock_database_pool.h"
 #include "common/time_helper.h"
 #include "config/database_type.h"
+#include "config/game_config/red_dot_type.h"
 #include "database/database_change_type.h"
 #include "database/database_entity_change.h"
 #include "database/document/player_time_refresh.h"
+#include "database/document/red_dots.h"
 #include "database/document/server_role.h"
 #include "database/generated/mongo/auth/user_server_roles.h"
+#include "database/generated/mongo/player/user_red_dots.h"
 #include "database/generated/mongo/player/user_role.h"
 #include "database/generated/mongo/player/user_time_refresh.h"
 #include "database/generated/mysql/auth/account_last_login.h"
@@ -145,6 +148,30 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_account_
     database_entity_change.modify(account_id);
     database_entity_change.modify(game_server_id);
     database_entity_change.modify(update_time);
+
+    return database_entity_change;
+}
+
+celeritas::database_entity_change celeritas::mock_database_pool::select_user_red_dots()
+{
+    const basis_database user_id{ "_id", int64_t{ 11111 } };
+    const basis_database last_check_time{ user_red_dots::last_check_time_describe, time_helper::get_current_milliseconds() };
+
+    red_dots red_dot{};
+    red_dot.set_node_id(red_dot_type::null);
+    red_dot.set_state(false);
+    red_dot.set_last_value(0);
+    red_dot.set_update_time(time_helper::get_current_milliseconds());
+    basis_database::string_array result{ red_dot.to_json_string() };
+    const basis_database red_dots{ user_red_dots::red_dots_describe, database_data_type::document_array_type, result };
+
+    database_entity_change database_entity_change{ database_type::mongo,
+                                                   user_red_dots::database_name,
+                                                   database_change_type::update_type,
+                                                   std::make_shared<basis_database_container>(basis_database_container::object_container{ user_id }) };
+    database_entity_change.modify(user_id);
+    database_entity_change.modify(last_check_time);
+    database_entity_change.modify(red_dots);
 
     return database_entity_change;
 }
