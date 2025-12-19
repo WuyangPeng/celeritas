@@ -62,5 +62,31 @@
         "comment": "最后检查时间"
       }
     ]
+  },
+  {
+    "class_name": "user_item",
+    "database_name": "user_item",
+    "entity": [
+      {
+        "entity_name": "user_id",
+        "data_type": "int64",
+        "index_type": "key"
+      },
+      {
+        "entity_name": "inventory_data",
+        "data_type": "document_array",
+        "document_type": "inventory_data"
+      },
+      {
+        "entity_name": "data_version",
+        "data_type": "int32",
+        "comment": "版本控制"
+      },
+      {
+        "entity_name": "last_save_time",
+        "data_type": "int64",
+        "comment": "最后保存时间"
+      }
+    ]
   }
 ]
