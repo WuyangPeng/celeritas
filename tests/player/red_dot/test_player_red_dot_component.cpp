@@ -36,7 +36,7 @@ namespace
         {
             const auto red_dot = std::make_shared<celeritas::container_config<celeritas::red_dot_config, celeritas::red_dot_type> >();
 
-            const auto red_dot_config = std::make_shared<celeritas::red_dot_config>(celeritas::red_dot_type::role, "test", celeritas::red_dot_type::null, celeritas::red_dot_status_type::sum, false);
+            const auto red_dot_config = std::make_shared<celeritas::red_dot_config>(celeritas::red_dot_type::role, "test", celeritas::red_dot_type::null, celeritas::red_dot_status_type::sum, true);
 
             red_dot->add_config(red_dot_config);
 
@@ -67,6 +67,32 @@ BOOST_FIXTURE_TEST_SUITE(player_red_dot_component_suite, player_red_dot_componen
         run_io_context();
 
         BOOST_CHECK(!component_->is_modify());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_on_save_db)
+    {
+        boost::asio::co_spawn(io_context_, component_->on_load_db(), boost::asio::detached);
+        run_io_context();
+
+        component_->add_red_dot(celeritas::red_dot_type::role);
+
+        BOOST_CHECK(component_->is_modify());
+
+        boost::asio::co_spawn(io_context_, component_->save_db(), boost::asio::detached);
+        run_io_context();
+
+        BOOST_CHECK(!component_->is_modify());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_on_dependencies_ready)
+    {
+        boost::asio::co_spawn(io_context_, component_->on_load_db(), boost::asio::detached);
+        run_io_context();
+
+        boost::asio::co_spawn(io_context_, component_->on_dependencies_ready(), boost::asio::detached);
+        run_io_context();
+
+        BOOST_CHECK(component_->is_modify());
     }
 
     BOOST_AUTO_TEST_CASE(test_add_red_dot)
