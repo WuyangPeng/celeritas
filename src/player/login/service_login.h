@@ -13,11 +13,12 @@ namespace celeritas
     public:
         using class_type = service_login;
         using void_awaitable_type = boost::asio::awaitable<void>;
+        using int64_awaitable_type = boost::asio::awaitable<int64_t>;
         using protobuf_handle_parameter_shared_ptr = std::shared_ptr<protobuf_handle_parameter>;
 
         service_login(protobuf_handle_parameter_shared_ptr protobuf_handle_parameter, const proto::service::service_login_request& login);
 
-        [[nodiscard]] void_awaitable_type send_message() const;
+        [[nodiscard]] int64_awaitable_type send_message() const;
 
     private:
         using optional_user = std::optional<user>;

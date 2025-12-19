@@ -81,6 +81,11 @@ int64_t celeritas::header::get_user_id() const
     return user_id_;
 }
 
+int32_t celeritas::header::get_code() const
+{
+    return code_;
+}
+
 celeritas::header::message_shared_ptr celeritas::header::get_to_gateway_message() const
 {
     auto header = std::make_shared<proto::common::header>();

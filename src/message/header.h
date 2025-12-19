@@ -42,6 +42,8 @@ namespace celeritas
 
         [[nodiscard]] int64_t get_user_id() const;
 
+        [[nodiscard]] int32_t get_code() const;
+
     private:
         [[nodiscard]] message_shared_ptr get_to_gateway_message() const;
 

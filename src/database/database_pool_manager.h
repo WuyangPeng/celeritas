@@ -46,6 +46,8 @@ namespace celeritas
 
         [[nodiscard]] bool_awaitable_type is_health();
 
+        void set_mock_pool(const database_pool_shared_ptr& mock_pool);
+
     private:
         using database_pool_container = std::map<std::string, database_pool_shared_ptr>;
 
@@ -84,5 +86,6 @@ namespace celeritas
 
         database_pool_container pools_;
         std::shared_mutex mutex_;
+        database_pool_shared_ptr mock_pool_;
     };
 }

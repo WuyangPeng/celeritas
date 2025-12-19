@@ -18,28 +18,31 @@ celeritas::service_login::service_login(protobuf_handle_parameter_shared_ptr pro
 {
 }
 
-celeritas::service_login::void_awaitable_type celeritas::service_login::send_message() const
+celeritas::service_login::int64_awaitable_type celeritas::service_login::send_message() const
 {
     if (login_.new_account())
     {
         if (const create_account create_account{ protobuf_handle_parameter_, login_ };
             !co_await create_account.save_database())
         {
-            co_return send_error_message(game_error_type::create_account_error);
+            send_error_message(game_error_type::create_account_error);
+            co_return 0;
         }
     }
 
     const auto user = co_await get_user();
     if (!user)
     {
-        co_return;
+        co_return 0;
     }
 
     const auto player = player_manager::get_instance().add_player(*user, protobuf_handle_parameter_->get_resource_loader(), protobuf_handle_parameter_->get_io_context(), protobuf_handle_parameter_->get_instance_id(), login_);
 
     send_success_message(user->get_user_id());
 
-    co_return co_await load_player(user, player);
+    co_await load_player(user, player);
+
+    co_return user->get_user_id();
 }
 
 void celeritas::service_login::send_error_message(game_error_type game_error_type) const

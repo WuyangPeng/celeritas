@@ -26,6 +26,12 @@ namespace celeritas
 
         [[nodiscard]] int get_execute_changes_call_count() const;
 
+        [[nodiscard]] int get_select_one_call_count() const;
+
+        void set_execute_changes_result(bool result);
+
+        void set_select_one_result(bool result);
+
     private:
         [[nodiscard]] static database_entity_change select_user_time_refresh();
 
@@ -37,6 +43,15 @@ namespace celeritas
 
         [[nodiscard]] static database_entity_change select_user_red_dots();
 
+        [[nodiscard]] static database_entity_change select_mock_user();
+
+        [[nodiscard]] static database_entity_change select_mock_account();
+
+        [[nodiscard]] static database_entity_change select_mock_account_bind();
+
         int execute_changes_call_count_ = 0;
+        int select_one_call_count_ = 0;
+        bool execute_changes_result_ = true;
+        bool select_one_result_ = true;
     };
 }

@@ -12,13 +12,16 @@
 #include "database/generated/mongo/player/user_role.h"
 #include "database/generated/mongo/player/user_time_refresh.h"
 #include "database/generated/mysql/auth/account_last_login.h"
+#include "database/generated/mysql/player/user.h"
+#include "database/generated/mysql/auth/account.h"
+#include "database/generated/mysql/auth/account_bind.h"
 #include "player/component/player_component_type.h"
 #include "player/time/time_refresh_type.h"
 
 celeritas::database_pool_base::bool_awaitable_type celeritas::mock_database_pool::execute_changes(const database_entity_change_const_shared_ptr& database, int expiration_time)
 {
     ++execute_changes_call_count_;
-    co_return true;
+    co_return execute_changes_result_;
 }
 
 celeritas::database_pool_base::void_awaitable_type celeritas::mock_database_pool::async_initialize()
@@ -37,6 +40,12 @@ celeritas::database_pool_base::bool_awaitable_type celeritas::mock_database_pool
 
 celeritas::database_pool_base::optional_database_entity_change_awaitable_type celeritas::mock_database_pool::select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container)
 {
+    ++select_one_call_count_;
+    if (!select_one_result_)
+    {
+        co_return std::nullopt;
+    }
+
     if (database->get_database_name() == user_time_refresh::database_name)
     {
         co_return select_user_time_refresh();
@@ -57,6 +66,21 @@ celeritas::database_pool_base::optional_database_entity_change_awaitable_type ce
         co_return select_account_last_login();
     }
 
+    if (database->get_database_name() == user::database_name)
+    {
+        co_return select_mock_user();
+    }
+
+    if (database->get_database_name() == account::database_name)
+    {
+        co_return select_mock_account();
+    }
+
+    if (database->get_database_name() == account_bind::database_name)
+    {
+        co_return select_mock_account_bind();
+    }
+
     co_return std::nullopt;
 }
 
@@ -68,6 +92,21 @@ celeritas::database_pool_base::result_container_awaitable_type celeritas::mock_d
 int celeritas::mock_database_pool::get_execute_changes_call_count() const
 {
     return execute_changes_call_count_;
+}
+
+int celeritas::mock_database_pool::get_select_one_call_count() const
+{
+    return select_one_call_count_;
+}
+
+void celeritas::mock_database_pool::set_execute_changes_result(const bool result)
+{
+    execute_changes_result_ = result;
+}
+
+void celeritas::mock_database_pool::set_select_one_result(const bool result)
+{
+    select_one_result_ = result;
 }
 
 celeritas::database_entity_change celeritas::mock_database_pool::select_user_time_refresh()
@@ -172,6 +211,75 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_red
     database_entity_change.modify(user_id);
     database_entity_change.modify(last_check_time);
     database_entity_change.modify(red_dots);
+
+    return database_entity_change;
+}
+
+celeritas::database_entity_change celeritas::mock_database_pool::select_mock_user()
+{
+    const basis_database user_id{ user::user_id_describe, int64_t{ 12345 } };
+    const basis_database account_id{ user::account_id_describe, int64_t{ 111 } };
+    const basis_database game_server_id{ user::game_server_id_describe, std::string{ "test_server" } };
+    const basis_database overload_db{ user::overload_db_describe, false };
+
+    database_entity_change database_entity_change{ database_type::mysql,
+                                                   user::database_name,
+                                                   database_change_type::update_type,
+                                                   std::make_shared<basis_database_container>(basis_database_container::object_container{ user_id }) };
+    database_entity_change.modify(user_id);
+    database_entity_change.modify(account_id);
+    database_entity_change.modify(game_server_id);
+    database_entity_change.modify(overload_db);
+
+    return database_entity_change;
+}
+
+celeritas::database_entity_change celeritas::mock_database_pool::select_mock_account()
+{
+    const basis_database account_id{ account::account_id_describe, int64_t{ 111 } };
+    const basis_database account_name{ account::account_name_describe, std::string{ "account_name" } };
+    const basis_database password{ account::password_hash_describe, std::string{ "password" } };
+    const basis_database salt{ account::salt_describe, std::string{ "salt" } };
+    const basis_database device_id{ account::device_id_describe, std::string{ "device_id" } };
+    const basis_database app_id{ account::app_id_describe, int64_t{ 123 } };
+    const basis_database create_time{ account::create_time_describe, time_helper::get_current_milliseconds() };
+    const basis_database status{ account::status_describe, 0 };
+
+    database_entity_change database_entity_change{ database_type::mysql,
+                                                   account::database_name,
+                                                   database_change_type::update_type,
+                                                   std::make_shared<basis_database_container>(basis_database_container::object_container{ account_id }) };
+    database_entity_change.modify(account_id);
+    database_entity_change.modify(account_name);
+    database_entity_change.modify(password);
+    database_entity_change.modify(salt);
+    database_entity_change.modify(device_id);
+    database_entity_change.modify(app_id);
+    database_entity_change.modify(create_time);
+    database_entity_change.modify(status);
+
+    return database_entity_change;
+}
+
+celeritas::database_entity_change celeritas::mock_database_pool::select_mock_account_bind()
+{
+    const basis_database account_bind_id{ account_bind::account_bind_id_describe, int64_t{ 123 } };
+    const basis_database account_id{ account_bind::account_id_describe, int64_t{ 111 } };
+    const basis_database account_type{ account_bind::account_type_describe, 1 };
+    const basis_database process_type{ account_bind::process_type_describe, 1 };
+    const basis_database app_id{ account_bind::app_id_describe, int64_t{ 111 } };
+    const basis_database auth_key{ account_bind::auth_key_describe, std::string{ "auth_key" } };
+
+    database_entity_change database_entity_change{ database_type::mysql,
+                                                   account_bind::database_name,
+                                                   database_change_type::update_type,
+                                                   std::make_shared<basis_database_container>(basis_database_container::object_container{ account_bind_id }) };
+    database_entity_change.modify(account_bind_id);
+    database_entity_change.modify(account_id);
+    database_entity_change.modify(account_type);
+    database_entity_change.modify(process_type);
+    database_entity_change.modify(app_id);
+    database_entity_change.modify(auth_key);
 
     return database_entity_change;
 }

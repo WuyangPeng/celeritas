@@ -1,8 +1,9 @@
 ﻿#include "common/time_helper.h"
+#include "database/database_pool_manager.h"
 #include "database/document/player_time_refresh.h"
-#include "player/mock_database_pool.h"
-#include "player/mock_player_component.h"
-#include "player/mock_player_state.h"
+#include "player/mock/mock_database_pool.h"
+#include "player/mock/mock_player_component.h"
+#include "player/mock/mock_player_state.h"
 #include "player/time/player_time_component.h"
 #include "player/time/time_refresh_type.h"
 
@@ -21,7 +22,7 @@ namespace
               component_{ std::make_shared<celeritas::player_time_component>(&mock_player_state_) },
               mock_player_component_{ std::make_shared<celeritas::mock_player_component>(&mock_player_state_) }
         {
-            component_->set_mock_database_pool(mock_pool_);
+            celeritas::database_pool_manager::get_instance().set_mock_pool(mock_pool_);
 
             mock_player_state_.set_mock_player_component(mock_player_component_);
         }

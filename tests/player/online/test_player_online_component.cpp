@@ -1,5 +1,6 @@
-﻿#include "player/mock_database_pool.h"
-#include "player/mock_player_state.h"
+﻿#include "database/database_pool_manager.h"
+#include "player/mock/mock_database_pool.h"
+#include "player/mock/mock_player_state.h"
 #include "player/online/player_online_component.h"
 
 #include <boost/asio/co_spawn.hpp>
@@ -17,7 +18,7 @@ BOOST_AUTO_TEST_SUITE(player_online_component_suite)
               mock_pool_{ std::make_shared<celeritas::mock_database_pool>() },
               online_component_{ &player_state_ }
         {
-            online_component_.set_mock_database_pool(mock_pool_);
+            celeritas::database_pool_manager::get_instance().set_mock_pool(mock_pool_);
         }
 
         void run_io_context()

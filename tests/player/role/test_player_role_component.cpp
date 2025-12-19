@@ -1,5 +1,6 @@
-﻿#include "player/mock_database_pool.h"
-#include "player/mock_player_state.h"
+﻿#include "database/database_pool_manager.h"
+#include "player/mock/mock_database_pool.h"
+#include "player/mock/mock_player_state.h"
 #include "player/role/player_role_component.h"
 #include "proto/service/player.pb.h"
 
@@ -20,6 +21,8 @@ BOOST_AUTO_TEST_SUITE(player_role_component_suite)
         {
             login_request_.set_device_id("test_device");
             login_request_.set_app_version("1.0.0");
+
+            celeritas::database_pool_manager::get_instance().set_mock_pool(mock_pool_);
         }
 
         void run_io_context()
@@ -37,7 +40,6 @@ BOOST_AUTO_TEST_SUITE(player_role_component_suite)
     BOOST_FIXTURE_TEST_CASE(test_change_name, test_fixture)
     {
         celeritas::player_role_component role_component{ &player_state_, login_request_ };
-        role_component.set_mock_database_pool(mock_pool_);
 
         boost::asio::co_spawn(io_context_, role_component.on_load_db(), boost::asio::detached);
         run_io_context();
@@ -51,7 +53,6 @@ BOOST_AUTO_TEST_SUITE(player_role_component_suite)
     BOOST_FIXTURE_TEST_CASE(test_is_modify, test_fixture)
     {
         celeritas::player_role_component role_component{ &player_state_, login_request_ };
-        role_component.set_mock_database_pool(mock_pool_);
 
         boost::asio::co_spawn(io_context_, role_component.on_load_db(), boost::asio::detached);
         run_io_context();
@@ -69,7 +70,6 @@ BOOST_AUTO_TEST_SUITE(player_role_component_suite)
     BOOST_FIXTURE_TEST_CASE(test_save_db_resets_modify_flag, test_fixture)
     {
         celeritas::player_role_component role_component{ &player_state_, login_request_ };
-        role_component.set_mock_database_pool(mock_pool_);
 
         boost::asio::co_spawn(io_context_, role_component.on_load_db(), boost::asio::detached);
         run_io_context();
@@ -92,8 +92,6 @@ BOOST_AUTO_TEST_SUITE(player_role_component_suite)
     BOOST_FIXTURE_TEST_CASE(test_load_db, test_fixture)
     {
         celeritas::player_role_component role_component{ &player_state_, login_request_ };
-        role_component.set_mock_database_pool(mock_pool_);
-
         boost::asio::co_spawn(io_context_, role_component.on_load_db(), boost::asio::detached);
         run_io_context();
 
@@ -103,7 +101,6 @@ BOOST_AUTO_TEST_SUITE(player_role_component_suite)
     BOOST_FIXTURE_TEST_CASE(test_set_login, test_fixture)
     {
         celeritas::player_role_component role_component{ &player_state_, login_request_ };
-        role_component.set_mock_database_pool(mock_pool_);
 
         boost::asio::co_spawn(io_context_, role_component.on_load_db(), boost::asio::detached);
         run_io_context();

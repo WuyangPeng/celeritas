@@ -19,5 +19,7 @@ celeritas::service_login_request_message_handler::void_awaitable_type celeritas:
 {
     const service_login service_login{ std::move(protobuf_handle_parameter), login };
 
-    co_return co_await service_login.send_message();
+    co_await service_login.send_message();
+
+    co_return;
 }

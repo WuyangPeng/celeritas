@@ -1,8 +1,9 @@
 ﻿#include "config/database_type.h"
 #include "database/database_pool_base.h"
+#include "database/database_pool_manager.h"
 #include "database/generated/mysql/player/user.h"
-#include "player/mock_database_pool.h"
-#include "player/mock_player_state.h"
+#include "player/mock/mock_database_pool.h"
+#include "player/mock/mock_player_state.h"
 #include "player/component/player_state.h"
 #include "player/user/player_user_component.h"
 
@@ -22,6 +23,7 @@ namespace
               test_user_{ celeritas::database_type::mysql, 12345 },
               mock_player_state_{ io_context_ }
         {
+            celeritas::database_pool_manager::get_instance().set_mock_pool(mock_pool_);
         }
 
         void run_io_context()
@@ -47,7 +49,6 @@ BOOST_FIXTURE_TEST_SUITE(player_user_component_suite, player_user_component_fixt
         BOOST_CHECK(test_user_.is_modify());
 
         celeritas::player_user_component component{ test_user_, &mock_player_state_ };
-        component.set_mock_database_pool(mock_pool_);
 
         BOOST_CHECK_EQUAL(component.get_game_server_id(), test_user_.get_game_server_id());
         BOOST_CHECK_EQUAL(component.get_user_id(), test_user_.get_user_id());
@@ -68,7 +69,6 @@ BOOST_FIXTURE_TEST_SUITE(player_user_component_suite, player_user_component_fixt
         BOOST_CHECK(!test_user_.is_modify());
 
         celeritas::player_user_component component{ test_user_, &mock_player_state_ };
-        component.set_mock_database_pool(mock_pool_);
 
         // 调用并执行协程
         boost::asio::co_spawn(io_context_, component.save_db(), boost::asio::detached);
@@ -85,7 +85,6 @@ BOOST_FIXTURE_TEST_SUITE(player_user_component_suite, player_user_component_fixt
         BOOST_CHECK(test_user_.is_overload_db());
 
         celeritas::player_user_component component{ test_user_, &mock_player_state_ };
-        component.set_mock_database_pool(mock_pool_);
 
         // 调用并执行协程
         boost::asio::co_spawn(io_context_, component.on_db_analysis(), boost::asio::detached);

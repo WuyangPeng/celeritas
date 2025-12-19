@@ -4,8 +4,9 @@
 #include "config/game_config/red_dot_config.h"
 #include "config/game_config/red_dot_status_type.h"
 #include "config/game_config/red_dot_type.h"
-#include "player/mock_database_pool.h"
-#include "player/mock_player_state.h"
+#include "database/database_pool_manager.h"
+#include "player/mock/mock_database_pool.h"
+#include "player/mock/mock_player_state.h"
 #include "player/red_dot/player_red_dot_component.h"
 
 #include <boost/asio/io_context.hpp>
@@ -21,7 +22,7 @@ namespace
               mock_pool_{ std::make_shared<celeritas::mock_database_pool>() },
               component_{ std::make_shared<celeritas::player_red_dot_component>(&mock_player_state_) }
         {
-            component_->set_mock_database_pool(mock_pool_);
+            celeritas::database_pool_manager::get_instance().set_mock_pool(mock_pool_);
 
             init_game_config();
         }

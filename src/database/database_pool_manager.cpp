@@ -51,6 +51,11 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
 {
     std::shared_lock lock{ mutex_ };
 
+    if (mock_pool_ != nullptr)
+    {
+        return mock_pool_;
+    }
+
     if (const auto pool = pools_.find(name);
         pool != pools_.cend())
     {
@@ -96,6 +101,12 @@ celeritas::database_pool_manager::bool_awaitable_type celeritas::database_pool_m
     }
 
     co_return true;
+}
+
+void celeritas::database_pool_manager::set_mock_pool(const database_pool_shared_ptr& mock_pool)
+{
+    std::lock_guard lock{ mutex_ };
+     mock_pool_ = mock_pool;
 }
 
 celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mysql_pool(const std::string& name,
