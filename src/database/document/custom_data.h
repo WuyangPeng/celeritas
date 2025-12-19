@@ -21,6 +21,11 @@ namespace celeritas
 
         void set_document(const document_view_type& document_view);
 
+        static constexpr std::string_view type_description = "type";
+        static constexpr std::string_view data_description = "data";
+        static constexpr std::string_view equipment_description = "equipment";
+        static constexpr std::string_view consumable_description = "consumable";
+
     private:
         using variant_type = std::variant<std::monostate, equipment_data, consumable_data>;
 
