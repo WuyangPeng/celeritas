@@ -1,9 +1,8 @@
 ﻿#pragma once
 
-#include "database/document/red_dots.h"
-#include "database/generated/mongo/player/user_red_dots.h"
 #include "detail/player_red_dot_database.h"
 #include "detail/player_red_dot_document.h"
+#include "detail/player_red_dot_node.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
 
@@ -39,14 +38,9 @@ namespace celeritas
         void change_red_dot(red_dot_type red_dot_type);
 
     private:
-        using red_dot_node_shared_ptr = std::shared_ptr<red_dot_node>;
-        using red_dot_node_container = std::map<red_dot_type, red_dot_node_shared_ptr>;
-
         [[nodiscard]] void_awaitable_type load_user_red_dots();
 
         void set_red_dots();
-
-        void set_red_dot_node();
 
         void calculate_red_dot();
 
@@ -54,6 +48,6 @@ namespace celeritas
 
         player_red_dot_database database_;
         player_red_dot_document document_;
-        red_dot_node_container red_dot_node_;
+        player_red_dot_node node_;
     };
 }
