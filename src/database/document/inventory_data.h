@@ -15,13 +15,15 @@ namespace celeritas
 
         inventory_data() noexcept = default;
 
+        inventory_data(int64_t item_id, int template_id, int64_t count, int position);
+
         [[nodiscard]] int64_t get_item_id() const;
 
-        void set_item_id(int64_t itemId);
+        void set_item_id(int64_t item_id);
 
         [[nodiscard]] int get_template_id() const;
 
-        void set_template_id(int templateId);
+        void set_template_id(int template_id);
 
         [[nodiscard]] int64_t get_count() const;
 
@@ -33,15 +35,13 @@ namespace celeritas
 
         [[nodiscard]] custom_data get_custom_data() const;
 
-        void set_custom_data(const custom_data& customData);
+        void set_custom_data(const custom_data& custom_data);
 
         void set_custom_data(const document_view_type& document);
 
-        void add_count(int count);
+        void add_count(int64_t count);
 
-        void reduce_count(int count);
-
-        void set_count(int count);
+        void reduce_count(int64_t count);
 
         [[nodiscard]] std::string to_json_string() const;
 

@@ -4,14 +4,19 @@
 #include <bsoncxx/builder/basic/array.hpp>
 #include <bsoncxx/builder/basic/document.hpp>
 
+celeritas::inventory_data::inventory_data(const int64_t item_id, const int template_id, const int64_t count, const int position)
+    : item_id_{ item_id }, template_id_{ template_id }, count_{ count }, position_{ position }
+{
+}
+
 int64_t celeritas::inventory_data::get_item_id() const
 {
     return item_id_;
 }
 
-void celeritas::inventory_data::set_item_id(const int64_t itemId)
+void celeritas::inventory_data::set_item_id(const int64_t item_id)
 {
-    item_id_ = itemId;
+    item_id_ = item_id;
 }
 
 int celeritas::inventory_data::get_template_id() const
@@ -19,9 +24,9 @@ int celeritas::inventory_data::get_template_id() const
     return template_id_;
 }
 
-void celeritas::inventory_data::set_template_id(const int templateId)
+void celeritas::inventory_data::set_template_id(const int template_id)
 {
-    template_id_ = templateId;
+    template_id_ = template_id;
 }
 
 int64_t celeritas::inventory_data::get_count() const
@@ -49,9 +54,9 @@ celeritas::custom_data celeritas::inventory_data::get_custom_data() const
     return custom_data_;
 }
 
-void celeritas::inventory_data::set_custom_data(const custom_data& customData)
+void celeritas::inventory_data::set_custom_data(const custom_data& custom_data)
 {
-    custom_data_ = customData;
+    custom_data_ = custom_data;
 }
 
 void celeritas::inventory_data::set_custom_data(const document_view_type& document)
@@ -59,19 +64,14 @@ void celeritas::inventory_data::set_custom_data(const document_view_type& docume
     custom_data_.set_document(document);
 }
 
-void celeritas::inventory_data::add_count(const int count)
+void celeritas::inventory_data::add_count(const int64_t count)
 {
     count_ += count;
 }
 
-void celeritas::inventory_data::reduce_count(const int count)
+void celeritas::inventory_data::reduce_count(const int64_t count)
 {
     count_ -= count;
-}
-
-void celeritas::inventory_data::set_count(int count)
-{
-    count_ = count;
 }
 
 std::string celeritas::inventory_data::to_json_string() const

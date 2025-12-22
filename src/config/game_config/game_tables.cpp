@@ -10,7 +10,8 @@ celeritas::game_tables::game_tables()
       surname_weight_{},
       name_config_{ std::make_shared<name_container_config>() },
       name_weight_{},
-      red_dot_{ std::make_shared<red_dot_container_config>() }
+      red_dot_{ std::make_shared<red_dot_container_config>() },
+      item_{ std::make_shared<item_container_config>() }
 {
 }
 
@@ -96,4 +97,14 @@ celeritas::game_tables::const_red_dot_container_shared_ptr celeritas::game_table
 void celeritas::game_tables::set_red_dot_config(const const_red_dot_container_shared_ptr& red_dot)
 {
     red_dot_ = red_dot;
+}
+
+celeritas::game_tables::const_item_container_shared_ptr celeritas::game_tables::get_item_config() const
+{
+    return item_;
+}
+
+void celeritas::game_tables::set_item_config(const const_item_container_shared_ptr& item)
+{
+    item_ = item;
 }

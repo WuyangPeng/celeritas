@@ -26,6 +26,7 @@ namespace celeritas
 
     private:
         using red_dots_container = std::map<red_dot_type, red_dots>;
+
         red_dots_container red_dots_;
     };
 }

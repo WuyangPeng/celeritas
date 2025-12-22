@@ -13,6 +13,7 @@ namespace celeritas
         using class_type = player_component;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
+        using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
 
         player_component(player_component_type player_component_type, player_state* player_state) noexcept;
 

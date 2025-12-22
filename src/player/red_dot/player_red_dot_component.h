@@ -6,8 +6,6 @@
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
 
-#include <map>
-
 namespace celeritas
 {
     class player_red_dot_component final : public player_component
