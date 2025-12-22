@@ -1,4 +1,5 @@
 ﻿#include "player_item_document.h"
+#include "boost/numeric/conversion/cast.hpp"
 #include "common/celeritas_error.h"
 #include "common/logger.h"
 #include "common/snowflake_generator.h"
@@ -106,12 +107,12 @@ bool celeritas::player_item_document::can_consume_item(const int template_id, co
 int64_t celeritas::player_item_document::get_count(const int template_id) const
 {
     auto result = 0LL;
-    if (const auto template_iter = template_data_.find(template_id);
-        template_iter != template_data_.cend())
+    if (const auto iter = template_data_.find(template_id);
+        iter != template_data_.cend())
     {
-        for (const auto id_iter = template_iter->second.rbegin(); id_iter != template_iter->second.rend();)
+        for (const auto& element : iter->second)
         {
-            if (auto inventory_iter = inventory_data_.find(*id_iter);
+            if (auto inventory_iter = inventory_data_.find(element);
                 inventory_iter != inventory_data_.cend())
             {
                 result += inventory_iter->second.get_count();
@@ -124,14 +125,9 @@ int64_t celeritas::player_item_document::get_count(const int template_id) const
 
 bool celeritas::player_item_document::can_consume_item(const item_container& item) const
 {
-    for (const auto& element : item)
-    {
-        if (!can_consume_item(element.get_template_id(), element.get_count()))
-        {
-            return false;
-        }
-    }
-    return true;
+    return std::ranges::all_of(item, [this](const auto& element) {
+        return can_consume_item(element.get_template_id(), element.get_count());
+    });
 }
 
 bool celeritas::player_item_document::change_item(const const_app_config_shared_ptr& app_config, const item_container& item)
@@ -162,7 +158,7 @@ int celeritas::player_item_document::get_next_position(const bool is_squares) co
             ++position;
         }
 
-        return position_data_.size();
+        return boost::numeric_cast<int>(position_data_.size());
     }
 
     return -1;
