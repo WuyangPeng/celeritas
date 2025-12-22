@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "config/config_fwd.h"
+#include "config/game_config/container_config.h"
 #include "database/database_data_type_traits.h"
 #include "database/document/inventory_data.h"
 #include "player/item/item_container.h"
@@ -37,10 +38,19 @@ namespace celeritas
         using id_container = std::vector<int64_t>;
         using template_container = std::map<int, id_container>;
         using position_container = std::vector<int64_t>;
+        using const_item_config_shared_ptr = std::shared_ptr<const item_config>;
 
         [[nodiscard]] int get_next_position(bool is_squares) const;
 
         void add_inventory_data(const inventory_data& inventory_data);
+
+        [[nodiscard]] int64_t add_new_item(int template_id,
+                                           int64_t count,
+                                           int stacked,
+                                           bool squares,
+                                           const server_config& server_config);
+
+        [[nodiscard]] static const_item_config_shared_ptr get_item_config(int template_id);
 
         inventory_data_container inventory_data_;
         template_container template_data_;

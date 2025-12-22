@@ -3,6 +3,7 @@
 #include "common/logger.h"
 #include "common/snowflake_generator.h"
 #include "config/app_config.h"
+#include "config/game_config/container_config.tpp"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
 #include "config/game_config/item_config.h"
@@ -36,14 +37,9 @@ bool celeritas::player_item_document::change_item(const const_app_config_shared_
         return false;
     }
 
-    const auto game_tables = game_config::get_instance().get_game_tables();
-    const auto item = game_tables->get_item_config()->get(template_id);
-    if (!item)
-    {
-        throw celeritas_error{ "item not found,template id = {}", template_id };
-    }
+    const auto item = get_item_config(template_id);
 
-    const auto stacked = (*item)->get_stacked();
+    const auto stacked = item->get_stacked();
 
     if (const auto template_iter = template_data_.find(template_id);
         template_iter != template_data_.cend())
@@ -96,12 +92,7 @@ bool celeritas::player_item_document::change_item(const const_app_config_shared_
 
     while (0 < count)
     {
-        const auto item_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
-        const auto current_count = 0 < stacked && stacked < count ? stacked : count;
-        count -= current_count;
-
-        inventory_data inventory_data{ item_id, template_id, current_count, get_next_position((*item)->is_squares()) };
-        add_inventory_data(inventory_data);
+        count = add_new_item(template_id, count, stacked, item->is_squares(), server_config);
     }
 
     return true;
@@ -194,5 +185,28 @@ void celeritas::player_item_document::add_inventory_data(const inventory_data& i
     }
 
     position_data_.at(inventory_data.get_position()) = inventory_data.get_item_id();
-    return;
+}
+
+int64_t celeritas::player_item_document::add_new_item(const int template_id, int64_t count, const int stacked, const bool squares, const server_config& server_config)
+{
+    const auto item_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
+    const auto current_count = 0 < stacked && stacked < count ? stacked : count;
+    count -= current_count;
+
+    const inventory_data inventory_data{ item_id, template_id, current_count, get_next_position(squares) };
+    add_inventory_data(inventory_data);
+
+    return count;
+}
+
+celeritas::player_item_document::const_item_config_shared_ptr celeritas::player_item_document::get_item_config(int template_id)
+{
+    const auto game_tables = game_config::get_instance().get_game_tables();
+    const auto item = game_tables->get_item_config()->get(template_id);
+    if (!item)
+    {
+        throw celeritas_error{ "item not found,template id = {}", template_id };
+    }
+
+    return *item;
 }
