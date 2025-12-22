@@ -14,21 +14,7 @@ void celeritas::player_item_document::set_item(traits::param_type::document_arra
     for (const auto& element : item_document)
     {
         auto inventory_data = inventory_data::from_json_string(element);
-        inventory_data_.emplace(inventory_data.get_item_id(), inventory_data);
-
-        template_data_[inventory_data.get_template_id()].emplace_back(inventory_data.get_item_id());
-
-        if (inventory_data.get_position() < 0)
-        {
-            continue;
-        }
-
-        if (position_data_.size() <= inventory_data.get_position())
-        {
-            position_data_.resize(inventory_data.get_position() + 1);
-        }
-
-        position_data_.at(inventory_data.get_position()) = inventory_data.get_item_id();
+        add_inventory_data(inventory_data);
     }
 }
 
@@ -113,23 +99,9 @@ bool celeritas::player_item_document::change_item(const const_app_config_shared_
         const auto item_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
         const auto current_count = 0 < stacked && stacked < count ? stacked : count;
         count -= current_count;
+
         inventory_data inventory_data{ item_id, template_id, current_count, get_next_position((*item)->is_squares()) };
-
-        inventory_data_.emplace(inventory_data.get_item_id(), inventory_data);
-
-        template_data_[inventory_data.get_template_id()].emplace_back(inventory_data.get_item_id());
-
-        if (inventory_data.get_position() < 0)
-        {
-            continue;
-        }
-
-        if (position_data_.size() <= inventory_data.get_position())
-        {
-            position_data_.resize(inventory_data.get_position() + 1);
-        }
-
-        position_data_.at(inventory_data.get_position()) = inventory_data.get_item_id();
+        add_inventory_data(inventory_data);
     }
 
     return true;
@@ -203,4 +175,24 @@ int celeritas::player_item_document::get_next_position(const bool is_squares) co
     }
 
     return -1;
+}
+
+void celeritas::player_item_document::add_inventory_data(const inventory_data& inventory_data)
+{
+    inventory_data_.emplace(inventory_data.get_item_id(), inventory_data);
+
+    template_data_[inventory_data.get_template_id()].emplace_back(inventory_data.get_item_id());
+
+    if (inventory_data.get_position() < 0)
+    {
+        return;
+    }
+
+    if (position_data_.size() <= inventory_data.get_position())
+    {
+        position_data_.resize(inventory_data.get_position() + 1);
+    }
+
+    position_data_.at(inventory_data.get_position()) = inventory_data.get_item_id();
+    return;
 }

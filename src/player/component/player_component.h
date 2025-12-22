@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "config/config_fwd.h"
 #include "database/database_fwd.h"
 #include "player/player_fwd.h"
 

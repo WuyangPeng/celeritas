@@ -40,6 +40,8 @@ namespace celeritas
 
         [[nodiscard]] int get_next_position(bool is_squares) const;
 
+        void add_inventory_data(const inventory_data& inventory_data);
+
         inventory_data_container inventory_data_;
         template_container template_data_;
         position_container position_data_;
