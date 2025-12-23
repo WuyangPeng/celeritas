@@ -1,4 +1,5 @@
 ﻿#include "player_develop_document.h"
+#include "config/game_config/container_config.tpp"
 #include "config/game_config/develop_config.h"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
