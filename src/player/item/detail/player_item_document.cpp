@@ -39,48 +39,15 @@ bool celeritas::player_item_document::change_item(const const_app_config_shared_
     }
 
     const auto item = get_item_config(template_id);
-
     const auto stacked = item->get_stacked();
 
-    if (const auto template_iter = template_data_.find(template_id);
-        template_iter != template_data_.cend())
+    if (count > 0)
     {
-        for (auto id_iter = template_iter->second.rbegin(); id_iter != template_iter->second.rend();)
-        {
-            if (auto inventory_iter = inventory_data_.find(*id_iter);
-                inventory_iter != inventory_data_.cend())
-            {
-                if (0 < count)
-                {
-                    inventory_iter->second.add_count(count);
-                    if (stacked > 0 && inventory_iter->second.get_count() > stacked)
-                    {
-                        count = inventory_iter->second.get_count() - stacked;
-                        inventory_iter->second.set_count(stacked);
-                    }
-                    else
-                    {
-                        count = 0;
-                        break;
-                    }
-                }
-                else
-                {
-                    if (inventory_iter->second.get_count() >= -count)
-                    {
-                        inventory_iter->second.add_count(count);
-                        count = 0;
-                        break;
-                    }
-
-                    inventory_data_.erase(inventory_iter->second.get_item_id());
-                    id_iter = std::make_reverse_iterator(template_iter->second.erase(std::next(id_iter).base()));
-                    continue;
-                }
-
-                ++id_iter;
-            }
-        }
+        count = add_to_existing_stacks(template_id, count, stacked);
+    }
+    else
+    {
+        count = remove_from_existing_stacks(template_id, count);
     }
 
     if (count < 0)
@@ -107,10 +74,9 @@ bool celeritas::player_item_document::can_consume_item(const int template_id, co
 int64_t celeritas::player_item_document::get_count(const int template_id) const
 {
     auto result = 0LL;
-    if (const auto iter = template_data_.find(template_id);
-        iter != template_data_.cend())
+    if (const auto* id_container = get_id_container(template_id))
     {
-        for (const auto& element : iter->second)
+        for (const auto& element : *id_container)
         {
             if (auto inventory_iter = inventory_data_.find(element);
                 inventory_iter != inventory_data_.cend())
@@ -183,6 +149,57 @@ void celeritas::player_item_document::add_inventory_data(const inventory_data& i
     position_data_.at(inventory_data.get_position()) = inventory_data.get_item_id();
 }
 
+int64_t celeritas::player_item_document::add_to_existing_stacks(const int template_id, int64_t count, const int stacked)
+{
+    if (const auto* id_container = get_id_container(template_id))
+    {
+        for (auto& element : std::ranges::reverse_view(*id_container))
+        {
+            if (auto inventory_iter = inventory_data_.find(element);
+                inventory_iter != inventory_data_.cend())
+            {
+                inventory_iter->second.add_count(count);
+                if (stacked > 0 && inventory_iter->second.get_count() > stacked)
+                {
+                    count = inventory_iter->second.get_count() - stacked;
+                    inventory_iter->second.set_count(stacked);
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+    }
+    return count;
+}
+
+int64_t celeritas::player_item_document::remove_from_existing_stacks(const int template_id, int64_t count)
+{
+    if (auto* id_container = get_id_container(template_id))
+    {
+        for (auto id_iter = id_container->rbegin(); id_iter != id_container->rend();)
+        {
+            if (auto inventory_iter = inventory_data_.find(*id_iter);
+                inventory_iter != inventory_data_.cend())
+            {
+                if (inventory_iter->second.get_count() >= -count)
+                {
+                    inventory_iter->second.add_count(count);
+                    return 0;
+                }
+
+                count += inventory_iter->second.get_count();
+                inventory_data_.erase(inventory_iter->second.get_item_id());
+                id_iter = std::make_reverse_iterator(id_container->erase(std::next(id_iter).base()));
+                continue;
+            }
+            ++id_iter;
+        }
+    }
+    return count;
+}
+
 int64_t celeritas::player_item_document::add_new_item(const int template_id, int64_t count, const int stacked, const bool squares, const server_config& server_config)
 {
     const auto item_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
@@ -205,4 +222,20 @@ celeritas::player_item_document::const_item_config_shared_ptr celeritas::player_
     }
 
     return *item;
+}
+
+celeritas::player_item_document::id_container* celeritas::player_item_document::get_id_container(const int template_id)
+{
+    return const_cast<id_container*>(static_cast<const class_type*>(this)->get_id_container(template_id));
+}
+
+const celeritas::player_item_document::id_container* celeritas::player_item_document::get_id_container(const int template_id) const
+{
+    if (const auto template_iter = template_data_.find(template_id);
+        template_iter != template_data_.cend())
+    {
+        return &template_iter->second;
+    }
+
+    return nullptr;
 }

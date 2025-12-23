@@ -44,6 +44,10 @@ namespace celeritas
 
         void add_inventory_data(const inventory_data& inventory_data);
 
+        [[nodiscard]] int64_t add_to_existing_stacks(int template_id, int64_t count, int stacked);
+
+        [[nodiscard]] int64_t remove_from_existing_stacks(int template_id, int64_t count);
+
         [[nodiscard]] int64_t add_new_item(int template_id,
                                            int64_t count,
                                            int stacked,
@@ -51,6 +55,10 @@ namespace celeritas
                                            const server_config& server_config);
 
         [[nodiscard]] static const_item_config_shared_ptr get_item_config(int template_id);
+
+        [[nodiscard]] id_container* get_id_container(int template_id);
+
+        [[nodiscard]] const id_container* get_id_container(int template_id) const;
 
         inventory_data_container inventory_data_;
         template_container template_data_;
