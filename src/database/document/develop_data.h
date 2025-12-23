@@ -10,6 +10,8 @@ namespace celeritas
     public:
         using class_type = develop_data;
 
+        develop_data() noexcept = default;
+
         develop_data(int system_id, int64_t instance_id);
 
         [[nodiscard]] int get_system_id() const;
