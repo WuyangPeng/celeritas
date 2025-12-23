@@ -1,9 +1,9 @@
 ﻿#pragma once
 
-#include "develop_data_key.h"
 #include "config/config_fwd.h"
 #include "database/database_data_type_traits.h"
 #include "database/document/develop_data.h"
+#include "player/develop/develop_data_key.h"
 
 #include <boost/asio/awaitable.hpp>
 
