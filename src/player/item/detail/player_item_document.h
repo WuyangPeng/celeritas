@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "config/config_fwd.h"
-#include "config/game_config/container_config.h"
 #include "database/database_data_type_traits.h"
 #include "database/document/inventory_data.h"
 #include "player/item/item_container.h"

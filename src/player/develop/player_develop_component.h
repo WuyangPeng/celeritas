@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "detail/player_develop_database.h"
+#include "detail/player_develop_document.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
 
@@ -17,6 +19,16 @@ namespace celeritas
         {
             return player_component_type::develop;
         }
+
+        [[nodiscard]] void_awaitable_type on_load_db() override;
+
+        [[nodiscard]] void_awaitable_type save_db() override;
+
+        [[nodiscard]] bool is_modify() const override;
+
+    private:
+        player_develop_database database_;
+        player_develop_document document_;
     };
 }
 

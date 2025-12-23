@@ -11,7 +11,8 @@ celeritas::game_tables::game_tables()
       name_config_{ std::make_shared<name_container_config>() },
       name_weight_{},
       red_dot_{ std::make_shared<red_dot_container_config>() },
-      item_{ std::make_shared<item_container_config>() }
+      item_{ std::make_shared<item_container_config>() },
+      develop_{ std::make_shared<develop_container_config>() }
 {
 }
 
@@ -107,4 +108,14 @@ celeritas::game_tables::const_item_container_shared_ptr celeritas::game_tables::
 void celeritas::game_tables::set_item_config(const const_item_container_shared_ptr& item)
 {
     item_ = item;
+}
+
+celeritas::game_tables::const_develop_container_shared_ptr celeritas::game_tables::get_develop_config() const
+{
+    return develop_;
+}
+
+void celeritas::game_tables::set_develop_config(const const_develop_container_shared_ptr& develop)
+{
+    develop_ = develop;
 }

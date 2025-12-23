@@ -21,6 +21,8 @@ namespace celeritas
         using const_red_dot_container_shared_ptr = std::shared_ptr<const red_dot_container_config>;
         using item_container_config = container_config<item_config>;
         using const_item_container_shared_ptr = std::shared_ptr<const item_container_config>;
+        using develop_container_config = container_config<develop_config>;
+        using const_develop_container_shared_ptr = std::shared_ptr<const develop_container_config>;
 
         game_tables();
 
@@ -44,6 +46,10 @@ namespace celeritas
 
         void set_item_config(const const_item_container_shared_ptr& item);
 
+        [[nodiscard]] const_develop_container_shared_ptr get_develop_config() const;
+
+        void set_develop_config(const const_develop_container_shared_ptr& develop);
+
     private:
         using name_weight_type = std::map<sex_type, weight>;
 
@@ -56,5 +62,7 @@ namespace celeritas
         const_red_dot_container_shared_ptr red_dot_;
 
         const_item_container_shared_ptr item_;
+
+        const_develop_container_shared_ptr develop_;
     };
 }
