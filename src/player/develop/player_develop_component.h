@@ -2,6 +2,7 @@
 
 #include "detail/player_develop_database.h"
 #include "detail/player_develop_document.h"
+#include "message/message_fwd.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
 
@@ -26,7 +27,13 @@ namespace celeritas
 
         [[nodiscard]] bool is_modify() const override;
 
+        [[nodiscard]] game_error_type develop_level(const develop_data_key& key);
+
+        [[nodiscard]] game_error_type develop_reset(const develop_data_key& key);
+
     private:
+        void update_document();
+
         player_develop_database database_;
         player_develop_document document_;
     };

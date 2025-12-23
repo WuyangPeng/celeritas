@@ -10,6 +10,8 @@ namespace celeritas
     public:
         using class_type = develop_data;
 
+        develop_data(int system_id, int64_t instance_id);
+
         [[nodiscard]] int get_system_id() const;
 
         void set_system_id(int systemId);
@@ -22,13 +24,17 @@ namespace celeritas
 
         void set_level(int level);
 
+        void add_level();
+
         [[nodiscard]] int64_t get_exp() const;
 
         void set_exp(int64_t exp);
 
         [[nodiscard]] int64_t get_updated_time() const;
 
-        void set_updated_time(int64_t updatedTime);
+        void set_updated_time(int64_t updated_time);
+
+        void clear();
 
         [[nodiscard]] std::string to_json_string() const;
 

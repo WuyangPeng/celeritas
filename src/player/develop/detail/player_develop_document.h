@@ -3,6 +3,7 @@
 #include "config/config_fwd.h"
 #include "database/database_data_type_traits.h"
 #include "database/document/develop_data.h"
+#include "message/message_fwd.h"
 #include "player/develop/develop_data_key.h"
 
 #include <boost/asio/awaitable.hpp>
@@ -21,6 +22,10 @@ namespace celeritas
         void set_develop(traits::param_type::document_array_type develop_document);
 
         [[nodiscard]] traits::document_array_type get_develop() const;
+
+        [[nodiscard]] game_error_type develop_level(const develop_data_key& key);
+
+        [[nodiscard]] game_error_type develop_reset(develop_data_key key);
 
     private:
         using develop_data_container = std::map<develop_data_key, develop_data>;

@@ -22,16 +22,23 @@ namespace celeritas
         server_error = 109,
         server_launch_error = 110,
 
-        // auth错误
-        account_error = 1000,
-        no_guest_account = 1001,
-        account_bound = 1002,
-        create_account_error = 1003,
-        create_user_error = 1004,
-
         // 数据库错误
-        redis_error = 2000,
-        mysql_error = 2001,
+        redis_error = 1000,
+        mysql_error = 1001,
+
+        // 认证服务器错误 10000 - 19999
+
+        // auth错误
+        account_error = 10000,
+        no_guest_account = 10001,
+        account_bound = 10002,
+        create_account_error = 10003,
+        create_user_error = 10004,
+
+        // 玩家服务器错误 60000 - 69999
+        max_develop = 60000,
+        non_resettable = 60001,
+        develop_not_exist = 60002,
     };
 
     [[nodiscard]] std::string get_game_error_description(game_error_type game_error);

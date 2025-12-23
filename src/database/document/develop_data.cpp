@@ -1,8 +1,14 @@
 ﻿#include "develop_data.h"
+#include "common/time_helper.h"
 
 #include <bsoncxx/json.hpp>
 #include <bsoncxx/builder/basic/array.hpp>
 #include <bsoncxx/builder/basic/document.hpp>
+
+celeritas::develop_data::develop_data(const int system_id, const int64_t instance_id)
+    : system_id_{ system_id }, instance_id_{ instance_id }, level_{ 1 }, exp_{ 0 }, updated_time_{ time_helper::get_current_milliseconds() }
+{
+}
 
 int celeritas::develop_data::get_system_id() const
 {
@@ -34,6 +40,12 @@ void celeritas::develop_data::set_level(const int level)
     level_ = level;
 }
 
+void celeritas::develop_data::add_level()
+{
+    ++level_;
+    updated_time_ = time_helper::get_current_milliseconds();
+}
+
 int64_t celeritas::develop_data::get_exp() const
 {
     return exp_;
@@ -49,9 +61,16 @@ int64_t celeritas::develop_data::get_updated_time() const
     return updated_time_;
 }
 
-void celeritas::develop_data::set_updated_time(const int64_t updatedTime)
+void celeritas::develop_data::set_updated_time(const int64_t updated_time)
 {
-    updated_time_ = updatedTime;
+    updated_time_ = updated_time;
+}
+
+void celeritas::develop_data::clear()
+{
+    level_ = 0;
+    exp_ = 0;
+    updated_time_ = time_helper::get_current_milliseconds();
 }
 
 std::string celeritas::develop_data::to_json_string() const
