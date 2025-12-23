@@ -35,4 +35,5 @@ namespace celeritas
     class red_dot_node;
     class item_info;
     class item_container;
+    class develop_data_key;
 }
