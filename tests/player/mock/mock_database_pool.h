@@ -49,6 +49,8 @@ namespace celeritas
 
         [[nodiscard]] static database_entity_change select_mock_account_bind();
 
+        [[nodiscard]] static database_entity_change select_mock_user_item();
+
         int execute_changes_call_count_ = 0;
         int select_one_call_count_ = 0;
         bool execute_changes_result_ = true;

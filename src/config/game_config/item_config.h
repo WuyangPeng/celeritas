@@ -11,6 +11,8 @@ namespace celeritas
 
         item_config(int item_template_id, item_type item_type, int stacked, bool squares);
 
+        [[nodiscard]] int get_id() const;
+
         [[nodiscard]] int get_item_template_id() const;
 
         [[nodiscard]] item_type get_item_type() const;

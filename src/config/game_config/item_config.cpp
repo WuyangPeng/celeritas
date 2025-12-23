@@ -5,6 +5,11 @@ celeritas::item_config::item_config(const int item_template_id, const item_type 
 {
 }
 
+int celeritas::item_config::get_id() const
+{
+    return item_template_id_;
+}
+
 int celeritas::item_config::get_item_template_id() const
 {
     return item_template_id_;

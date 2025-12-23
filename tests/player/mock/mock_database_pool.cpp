@@ -4,10 +4,12 @@
 #include "config/game_config/red_dot_type.h"
 #include "database/database_change_type.h"
 #include "database/database_entity_change.h"
+#include "database/document/inventory_data.h"
 #include "database/document/player_time_refresh.h"
 #include "database/document/red_dots.h"
 #include "database/document/server_role.h"
 #include "database/generated/mongo/auth/user_server_roles.h"
+#include "database/generated/mongo/player/user_item.h"
 #include "database/generated/mongo/player/user_red_dots.h"
 #include "database/generated/mongo/player/user_role.h"
 #include "database/generated/mongo/player/user_time_refresh.h"
@@ -79,6 +81,11 @@ celeritas::database_pool_base::optional_database_entity_change_awaitable_type ce
     if (database->get_database_name() == account_bind::database_name)
     {
         co_return select_mock_account_bind();
+    }
+
+    if (database->get_database_name() == user_item::database_name)
+    {
+        co_return select_mock_user_item();
     }
 
     co_return std::nullopt;
@@ -280,6 +287,32 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_mock_acc
     database_entity_change.modify(process_type);
     database_entity_change.modify(app_id);
     database_entity_change.modify(auth_key);
+
+    return database_entity_change;
+}
+
+celeritas::database_entity_change celeritas::mock_database_pool::select_mock_user_item()
+{
+    const basis_database user_id{ "_id", int64_t{ 11111 } };
+    const basis_database last_save_time{ user_item::last_save_time_describe, time_helper::get_current_milliseconds() };
+    const basis_database data_version{ user_item::data_version_describe, 1 };
+
+    inventory_data data{};
+    data.set_item_id(111);
+    data.set_template_id(1003);
+    data.set_count(111);
+    data.set_position(0);
+    basis_database::string_array result{ data.to_json_string() };
+    const basis_database inventory_data{ user_item::inventory_data_describe, database_data_type::document_array_type, result };
+
+    database_entity_change database_entity_change{ database_type::mongo,
+                                                   user_item::database_name,
+                                                   database_change_type::update_type,
+                                                   std::make_shared<basis_database_container>(basis_database_container::object_container{ user_id }) };
+    database_entity_change.modify(user_id);
+    database_entity_change.modify(last_save_time);
+    database_entity_change.modify(data_version);
+    database_entity_change.modify(inventory_data);
 
     return database_entity_change;
 }
