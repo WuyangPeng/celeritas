@@ -20,6 +20,16 @@ endif ()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
+    file(GLOB BIN_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../config/bin/*.bytes")
+
+    foreach (bin_file IN LISTS BIN_FILES)
+        add_custom_command(TARGET ${SERVER_NAME}_server POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E echo "--- Copying config file: ${bin_file} to $<TARGET_FILE_DIR:${SERVER_NAME}_server>/config/bin"
+                COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${SERVER_NAME}_server>/config/bin"
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different "${bin_file}" "$<TARGET_FILE_DIR:${SERVER_NAME}_server>/config/bin"
+                COMMENT "Copying config files for ${bin_file}")
+    endforeach ()
+
     file(GLOB CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../config/*.xml")
 
     foreach (config_file IN LISTS CONFIG_FILES)

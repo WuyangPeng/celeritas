@@ -8,7 +8,8 @@ celeritas::server_config::server_config(std::string instance_id,
                                         std::string host,
                                         const int worker_pool_size,
                                         const int datacenter_id,
-                                        const int worker_id) noexcept
+                                        const int worker_id,
+                                        const bool load_game_config) noexcept
     : instance_id_{ std::move(instance_id) },
       service_name_{ std::move(service_name) },
       server_network_config_{ std::move(server_network_config) },
@@ -16,7 +17,8 @@ celeritas::server_config::server_config(std::string instance_id,
       host_{ std::move(host) },
       worker_pool_size_{ worker_pool_size },
       datacenter_id_{ datacenter_id },
-      worker_id_{ worker_id }
+      worker_id_{ worker_id },
+      load_game_config_{ load_game_config }
 {
 }
 
@@ -68,4 +70,9 @@ int celeritas::server_config::get_datacenter_id() const
 int celeritas::server_config::get_worker_id() const
 {
     return worker_id_;
+}
+
+bool celeritas::server_config::is_load_game_config() const
+{
+    return load_game_config_;
 }

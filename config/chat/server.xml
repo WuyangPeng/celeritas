@@ -5,6 +5,7 @@
     <game_server_id></game_server_id>
     <host>127.0.0.1</host>
     <worker_pool>4</worker_pool>
+    <load_game_config>false</load_game_config>
     <network>
         <network_type>tcp</network_type>
         <port>30400</port>

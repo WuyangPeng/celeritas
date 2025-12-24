@@ -7,6 +7,7 @@
     <worker_pool>4</worker_pool>
     <datacenter_id>1</datacenter_id>
     <worker_id>1</worker_id>
+    <load_game_config>false</load_game_config>
     <network>
         <network_type>tcp</network_type>
         <port>30100</port>

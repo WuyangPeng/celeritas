@@ -333,12 +333,18 @@ celeritas::resource_loader::tcp_client_shared_ptr celeritas::resource_loader::ge
 
 void celeritas::resource_loader::initialize_game_config()
 {
+    if (const auto server_config = app_config_->get_server_config();
+        !server_config.is_load_game_config())
+    {
+        return;
+    }
+
     const auto tables = std::make_unique<config::Tables>();
     const auto current_path = std::filesystem::current_path();
     const auto bin_directory = current_path / config_path / bin_path;
 
     auto loader = [&](luban::ByteBuf& buffer, const std::string& bin_file_name) -> bool {
-        const auto full_path = bin_directory.string() + "/" + bin_file_name + ".bin";
+        const auto full_path = bin_directory.string() + "/" + bin_file_name + ".bytes";
 
         std::ifstream ifs{ full_path, std::ios::binary | std::ios::ate };
         if (!ifs.is_open())
@@ -359,5 +365,12 @@ void celeritas::resource_loader::initialize_game_config()
         return false;
     };
 
-    tables->load(loader);
+    try
+    {
+        tables->load(loader);
+    }
+    catch (std::exception& e)
+    {
+        LOG_CHANNEL(initializer_channel, error) << "initialize game config error:" << e.what();
+    }
 }

@@ -963,4 +963,7 @@ namespace luban
             return num < 10 ? '0' + num : 'A' + num - 10;
         }
     };
+
+    constexpr int ByteBuf::INIT_CAPACITY = 16;
+    constexpr byte ByteBuf::EMPTY_BYTES[1] = { '\0' };
 }
