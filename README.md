@@ -20,6 +20,7 @@
 - openssl 3.5.1
 - mongo v4.1
 - hiredis v1.3.0
+- luban v4.5.0
 
 ## lib（静态库）
 
