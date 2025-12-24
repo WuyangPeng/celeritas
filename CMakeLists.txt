@@ -269,7 +269,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             COMMENT "Running Luban generator..."
     )
 
-    add_custom_target(RunLuban ALL DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/config/luban/generated/schema.h")
+    add_custom_target(run_luban ALL DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/config/luban/generated/schema.h")
 
 endif ()
 
