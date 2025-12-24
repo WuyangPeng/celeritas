@@ -2,7 +2,6 @@
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
 #include "config/game_config/red_dot_config.h"
-#include "config/game_config/red_dot_status_type.h"
 #include "database/database_pool_manager.h"
 #include "player/mock/mock_database_pool.h"
 #include "player/mock/mock_player_state.h"
@@ -36,7 +35,7 @@ namespace
         {
             const auto red_dot = std::make_shared<celeritas::container_config<celeritas::red_dot_config, celeritas::config::red_dot_type> >();
 
-            const auto red_dot_config = std::make_shared<celeritas::red_dot_config>(celeritas::config::red_dot_type::role, "test", celeritas::config::red_dot_type::none, celeritas::red_dot_status_type::sum, true);
+            const auto red_dot_config = std::make_shared<celeritas::red_dot_config>(celeritas::config::red_dot_type::role, "test", celeritas::config::red_dot_type::none, celeritas::config::red_dot_status_type::sum, true);
 
             red_dot->add_config(red_dot_config);
 

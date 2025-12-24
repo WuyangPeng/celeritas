@@ -32,9 +32,9 @@ namespace
             const auto game_tables = std::make_shared<celeritas::game_tables>();
             const auto item_config_container = std::make_shared<celeritas::game_tables::item_container_config>();
 
-            item_config_container->add_config(std::make_shared<celeritas::item_config>(1001, celeritas::item_type::custom, 100, false));
-            item_config_container->add_config(std::make_shared<celeritas::item_config>(1002, celeritas::item_type::equipment, 1, false));
-            item_config_container->add_config(std::make_shared<celeritas::item_config>(1003, celeritas::item_type::equipment, 1, false));
+            item_config_container->add_config(std::make_shared<celeritas::item_config>(1001, celeritas::config::item_type::custom, 100, false));
+            item_config_container->add_config(std::make_shared<celeritas::item_config>(1002, celeritas::config::item_type::equipment, 1, false));
+            item_config_container->add_config(std::make_shared<celeritas::item_config>(1003, celeritas::config::item_type::equipment, 1, false));
 
             game_tables->set_item_config(item_config_container);
             celeritas::game_config::get_instance().set_game_tables(game_tables);
