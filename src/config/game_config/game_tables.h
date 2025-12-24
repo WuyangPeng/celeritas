@@ -17,24 +17,12 @@ namespace celeritas
         using const_tables_shared_ptr = std::shared_ptr<const config::Tables>;
         using sex_type = config::sex_type;
         using red_dot_type = config::red_dot_type;
-        using surname_container_config = container_config<surname_config>;
-        using const_surname_container_config_shared_ptr = std::shared_ptr<const surname_container_config>;
-        using name_container_config = container_config<name_config>;
-        using const_name_container_shared_ptr = std::shared_ptr<const name_container_config>;
         using red_dot_container_config = container_config<red_dot_config, red_dot_type>;
         using const_red_dot_container_shared_ptr = std::shared_ptr<const red_dot_container_config>;
         using develop_container_config = container_config<develop_config>;
         using const_develop_container_shared_ptr = std::shared_ptr<const develop_container_config>;
 
         explicit game_tables(const_tables_shared_ptr tables);
-
-        [[nodiscard]] const_surname_container_config_shared_ptr get_surname_config() const;
-
-        void set_surname_config(const const_surname_container_config_shared_ptr& surname_config);
-
-        [[nodiscard]] const_name_container_shared_ptr get_name_config() const;
-
-        void set_name_config(const const_name_container_shared_ptr& name_config);
 
         [[nodiscard]] std::string get_surname() const;
 
@@ -53,12 +41,13 @@ namespace celeritas
     private:
         using name_weight_type = std::map<sex_type, weight>;
 
+        void init_surname_config();
+
+        void init_name_config();
+
         const_tables_shared_ptr tables_;
 
-        const_surname_container_config_shared_ptr surname_config_;
         weight surname_weight_;
-
-        const_name_container_shared_ptr name_config_;
         name_weight_type name_weight_;
 
         const_red_dot_container_shared_ptr red_dot_;

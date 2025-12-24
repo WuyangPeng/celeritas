@@ -1,64 +1,16 @@
 ﻿#include "container_config.tpp"
 #include "game_tables.h"
-#include "name_config.h"
-#include "surname_config.h"
 #include "common/random_helper.h"
 
 celeritas::game_tables::game_tables(const_tables_shared_ptr tables)
     : tables_{ std::move(tables) },
-      surname_config_{ std::make_shared<surname_container_config>() },
       surname_weight_{},
-      name_config_{ std::make_shared<name_container_config>() },
       name_weight_{},
       red_dot_{ std::make_shared<red_dot_container_config>() },
       develop_{ std::make_shared<develop_container_config>() }
 {
-}
-
-celeritas::game_tables::const_surname_container_config_shared_ptr celeritas::game_tables::get_surname_config() const
-{
-    return surname_config_;
-}
-
-void celeritas::game_tables::set_surname_config(const const_surname_container_config_shared_ptr& surname_config)
-{
-    surname_config_ = surname_config;
-
-    surname_weight_.clear();
-
-    for (const auto& [id, surname] : surname_config_->get_container())
-    {
-        surname_weight_.add_element(id, surname->get_weight());
-    }
-}
-
-celeritas::game_tables::const_name_container_shared_ptr celeritas::game_tables::get_name_config() const
-{
-    return name_config_;
-}
-
-void celeritas::game_tables::set_name_config(const const_name_container_shared_ptr& name_config)
-{
-    name_config_ = name_config;
-
-    name_weight_.clear();
-
-    auto& null_name_weight_ = name_weight_[sex_type::none];
-    auto& male_name_weight = name_weight_[sex_type::male];
-    auto& female_name_weight = name_weight_[sex_type::female];
-
-    for (const auto& [id, name] : name_config_->get_container())
-    {
-        null_name_weight_.add_element(id, name->get_weight());
-        if (name->get_sex_type() != sex_type::female)
-        {
-            male_name_weight.add_element(id, name->get_weight());
-        }
-        if (name->get_sex_type() != sex_type::male)
-        {
-            female_name_weight.add_element(id, name->get_weight());
-        }
-    }
+    init_surname_config();
+    init_name_config();
 }
 
 std::string celeritas::game_tables::get_surname() const
@@ -67,9 +19,9 @@ std::string celeritas::game_tables::get_surname() const
 
     const auto id = surname_weight_.get_id(index);
 
-    const auto surname = surname_config_->get(id);
+    const auto surname = tables_->surname_config_container.get(id);
 
-    return (*surname)->get_name();
+    return (*surname)->name;
 }
 
 std::string celeritas::game_tables::get_name(const sex_type sex_type) const
@@ -84,9 +36,9 @@ std::string celeritas::game_tables::get_name(const sex_type sex_type) const
 
     const auto id = iter->second.get_id(index);
 
-    const auto name = name_config_->get(id);
+    const auto name = tables_->name_config_container.get(id);
 
-    return (*name)->get_name();
+    return (*name)->name;
 }
 
 celeritas::game_tables::const_red_dot_container_shared_ptr celeritas::game_tables::get_red_dot_config() const
@@ -112,5 +64,37 @@ void celeritas::game_tables::set_develop_config(const const_develop_container_sh
 celeritas::game_tables::const_tables_shared_ptr celeritas::game_tables::get_tables() const
 {
     return tables_;
+}
+
+void celeritas::game_tables::init_surname_config()
+{
+    surname_weight_.clear();
+
+    for (const auto& [id, surname] : tables_->surname_config_container.getDataMap())
+    {
+        surname_weight_.add_element(id, surname->weight);
+    }
+}
+
+void celeritas::game_tables::init_name_config()
+{
+    name_weight_.clear();
+
+    auto& null_name_weight_ = name_weight_[sex_type::none];
+    auto& male_name_weight = name_weight_[sex_type::male];
+    auto& female_name_weight = name_weight_[sex_type::female];
+
+    for (const auto& [id, name] : tables_->name_config_container.getDataMap())
+    {
+        null_name_weight_.add_element(id, name->weight);
+        if (name->sexType != sex_type::female)
+        {
+            male_name_weight.add_element(id, name->weight);
+        }
+        if (name->sexType != sex_type::male)
+        {
+            female_name_weight.add_element(id, name->weight);
+        }
+    }
 }
 

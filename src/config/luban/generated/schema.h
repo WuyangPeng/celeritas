@@ -243,15 +243,21 @@ struct name_config : public luban::CfgBean
     bool deserialize(::luban::ByteBuf& _buf);
 
     /**
-     * 物品编号
+     * id
      */
-    ::luban::int32 itemTemplateId;
+    ::luban::int32 id;
     /**
-     * 物品类型
+     * 名字
      */
-    ::luban::int32 itemType;
-    ::luban::int32 stacked;
-    bool squares;
+    ::luban::String name;
+    /**
+     * 性别
+     */
+    sex_type sexType;
+    /**
+     * 权重
+     */
+    ::luban::int32 weight;
 
     static constexpr int __ID__ = -138271882;
 
@@ -299,15 +305,17 @@ struct surname_config : public luban::CfgBean
     bool deserialize(::luban::ByteBuf& _buf);
 
     /**
-     * 物品编号
+     * id
      */
-    ::luban::int32 itemTemplateId;
+    ::luban::int32 id;
     /**
-     * 物品类型
+     * 名字
      */
-    ::luban::int32 itemType;
-    ::luban::int32 stacked;
-    bool squares;
+    ::luban::String name;
+    /**
+     * 权重
+     */
+    ::luban::int32 weight;
 
     static constexpr int __ID__ = -580824282;
 
@@ -372,7 +380,7 @@ class surname_config_container
             ::luban::SharedPtr<surname_config> _v;
             if(!surname_config::deserializesurname_config(_buf, _v)) return false;
             _dataList.push_back(_v);
-            _dataMap[_v->itemTemplateId] = _v;
+            _dataMap[_v->id] = _v;
         }
         return true;
     }
@@ -429,7 +437,7 @@ class name_config_container
             ::luban::SharedPtr<name_config> _v;
             if(!name_config::deserializename_config(_buf, _v)) return false;
             _dataList.push_back(_v);
-            _dataMap[_v->itemTemplateId] = _v;
+            _dataMap[_v->id] = _v;
         }
         return true;
     }
