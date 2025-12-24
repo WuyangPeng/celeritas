@@ -1,6 +1,5 @@
 ﻿#include "player_develop_document.h"
 #include "config/game_config/container_config.tpp"
-#include "config/game_config/develop_config.h"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
 #include "database/config/config_manager.h"
@@ -30,7 +29,7 @@ celeritas::traits::document_array_type celeritas::player_develop_document::get_d
 
 celeritas::game_error_type celeritas::player_develop_document::develop_level(const develop_data_key& key)
 {
-    const auto develop_config = game_config::get_instance().get_game_tables()->get_develop_config()->get(key.get_system_id());
+    const auto develop_config = game_config::get_instance().get_game_tables()->get_tables()->develop_config_container.get(key.get_system_id());
     if (!develop_config)
     {
         throw celeritas_error{ "develop config not found,id = {}", key.get_system_id() };
@@ -38,7 +37,7 @@ celeritas::game_error_type celeritas::player_develop_document::develop_level(con
 
     if (const auto iter = develop_data_.find(key); iter != develop_data_.cend())
     {
-        if (iter->second.get_level() == (*develop_config)->get_max_level())
+        if (iter->second.get_level() >= (*develop_config)->maxLevel)
         {
             return game_error_type::max_develop;
         }
@@ -53,15 +52,15 @@ celeritas::game_error_type celeritas::player_develop_document::develop_level(con
     return game_error_type::success;
 }
 
-celeritas::game_error_type celeritas::player_develop_document::develop_reset(develop_data_key key)
+celeritas::game_error_type celeritas::player_develop_document::develop_reset(const develop_data_key& key)
 {
-    const auto develop_config = game_config::get_instance().get_game_tables()->get_develop_config()->get(key.get_system_id());
+    const auto develop_config = game_config::get_instance().get_game_tables()->get_tables()->develop_config_container.get(key.get_system_id());
     if (!develop_config)
     {
         throw celeritas_error{ "develop config not found,id = {}", key.get_system_id() };
     }
 
-    if ((*develop_config)->get_develop_reset_type() == config::develop_reset_type::non_resettable)
+    if ((*develop_config)->developResetType == config::develop_reset_type::non_resettable)
     {
         return game_error_type::non_resettable;
     }

@@ -181,15 +181,13 @@ struct develop_config : public luban::CfgBean
     bool deserialize(::luban::ByteBuf& _buf);
 
     /**
-     * 物品编号
+     * id
      */
-    ::luban::int32 itemTemplateId;
-    /**
-     * 物品类型
-     */
-    ::luban::int32 itemType;
-    ::luban::int32 stacked;
-    bool squares;
+    ::luban::int32 id;
+    develop_system_type developSystemType;
+    develop_sub_type developSubType;
+    ::luban::int32 maxLevel;
+    develop_reset_type developResetType;
 
     static constexpr int __ID__ = -1169420444;
 
@@ -618,7 +616,7 @@ class develop_config_container
             ::luban::SharedPtr<develop_config> _v;
             if(!develop_config::deserializedevelop_config(_buf, _v)) return false;
             _dataList.push_back(_v);
-            _dataMap[_v->itemTemplateId] = _v;
+            _dataMap[_v->id] = _v;
         }
         return true;
     }

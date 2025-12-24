@@ -2,6 +2,7 @@
 #include "resource_loader.h"
 #include "common/logger.h"
 #include "common/random_helper.h"
+#include "config/luban/generated/schema.h"
 #include "database/database_pool_manager.h"
 #include "detail/buffer_pool_timer.h"
 #include "detail/check_tcp_clients_timer.h"
@@ -45,6 +46,7 @@ void celeritas::resource_loader::initialize(io_context_type& io_context, const n
     start_check_tcp_clients_timer(io_context);
     start_service_registry_timer(io_context);
     start_buffer_pool_timer(io_context);
+    initialize_game_config();
     service_initialize_resource(io_context, network_message_callback);
 }
 
@@ -327,4 +329,35 @@ celeritas::resource_loader::tcp_client_shared_ptr celeritas::resource_loader::ge
 
     const auto server = app_config_->get_server_config();
     return service_registry_loader::loader_service_registry(io_context, iter->second, network_message_callback, server.get_game_server_id(), service_registry_type.data());
+}
+
+void celeritas::resource_loader::initialize_game_config()
+{
+    const auto tables = std::make_unique<config::Tables>();
+    const auto current_path = std::filesystem::current_path();
+    const auto bin_directory = current_path / config_path / bin_path;
+
+    auto loader = [&](luban::ByteBuf& buffer, const std::string& bin_file_name) -> bool {
+        const auto full_path = bin_directory.string() + "/" + bin_file_name + ".bin";
+
+        std::ifstream ifs{ full_path, std::ios::binary | std::ios::ate };
+        if (!ifs.is_open())
+        {
+            throw std::runtime_error("Cannot open config file: " + full_path);
+        }
+
+        const auto size = ifs.tellg();
+        ifs.seekg(0, std::ios::beg);
+
+        std::vector<char> data(size);
+        if (ifs.read(data.data(), size))
+        {
+            buffer.appendBuffer(data.data(), size);
+            return true;
+        }
+
+        return false;
+    };
+
+    tables->load(loader);
 }

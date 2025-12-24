@@ -23,8 +23,6 @@ namespace celeritas
     template <typename Element, typename IndexType>
     class container_config;
 
-    class develop_config;
-
     class weight;
 
     constexpr std::string_view default_service_registry_host = "127.0.0.1";
@@ -42,6 +40,7 @@ namespace celeritas
     constexpr auto default_worker_id = 0;
 
     constexpr std::string_view config_path = "config";
+    constexpr std::string_view bin_path = "bin";
     constexpr std::string_view logger_path = "log";
     constexpr std::string_view service_registry_xml = "service_registry.xml";
     constexpr std::string_view server_xml = "server.xml";

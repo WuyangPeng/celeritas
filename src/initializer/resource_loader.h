@@ -104,8 +104,9 @@ namespace celeritas
         [[nodiscard]] tcp_client_shared_ptr get_random_client(io_context_type& io_context,
                                                               const network_message_callback_weak_ptr&
                                                               network_message_callback,
-                                                              const service_registry_config_container& service_registry)
-        const;
+                                                              const service_registry_config_container& service_registry) const;
+
+        void initialize_game_config();
 
         app_config_shared_ptr app_config_;
         listener_container_type listener_;

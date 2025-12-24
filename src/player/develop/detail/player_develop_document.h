@@ -25,7 +25,7 @@ namespace celeritas
 
         [[nodiscard]] game_error_type develop_level(const develop_data_key& key);
 
-        [[nodiscard]] game_error_type develop_reset(develop_data_key key);
+        [[nodiscard]] game_error_type develop_reset(const develop_data_key& key);
 
     private:
         using develop_data_container = std::map<develop_data_key, develop_data>;

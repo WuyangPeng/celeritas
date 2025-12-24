@@ -1,7 +1,6 @@
 ﻿#include "config/game_config/container_config.tpp"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
-#include "config/game_config/red_dot_config.h"
 #include "database/database_pool_manager.h"
 #include "player/mock/mock_database_pool.h"
 #include "player/mock/mock_player_state.h"
@@ -33,14 +32,18 @@ namespace
 
         static void init_game_config()
         {
-            const auto red_dot = std::make_shared<celeritas::container_config<celeritas::red_dot_config, celeritas::config::red_dot_type> >();
+            const auto tables = std::make_shared<celeritas::config::Tables>();
+            const auto dataMap = const_cast<::luban::HashMap<celeritas::config::red_dot_type, ::luban::SharedPtr<celeritas::config::red_dot_config> >*>(&tables->red_dot_config_container.getDataMap());
 
-            const auto red_dot_config = std::make_shared<celeritas::red_dot_config>(celeritas::config::red_dot_type::role, "test", celeritas::config::red_dot_type::none, celeritas::config::red_dot_status_type::sum, true);
+            auto red_dot_config = std::make_shared<celeritas::config::red_dot_config>();
+            red_dot_config->id = celeritas::config::red_dot_type::role;
+            red_dot_config->name = "test";
+            red_dot_config->parentNodeId = celeritas::config::red_dot_type::none;
+            red_dot_config->redDotStatusType = celeritas::config::red_dot_status_type::sum;
+            red_dot_config->saveDatabase = true;
+            dataMap->emplace(red_dot_config->id, red_dot_config);
 
-            red_dot->add_config(red_dot_config);
-
-            const auto game_tables = std::make_shared<celeritas::game_tables>(std::make_shared<celeritas::config::Tables>());
-            game_tables->set_red_dot_config(red_dot);
+            const auto game_tables = std::make_shared<celeritas::game_tables>(tables);
 
             celeritas::game_config::get_instance().set_game_tables(game_tables);
         }

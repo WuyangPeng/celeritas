@@ -5,8 +5,7 @@
 celeritas::game_tables::game_tables(const_tables_shared_ptr tables)
     : tables_{ std::move(tables) },
       surname_weight_{},
-      name_weight_{},
-      develop_{ std::make_shared<develop_container_config>() }
+      name_weight_{}
 {
     init_surname_config();
     init_name_config();
@@ -38,16 +37,6 @@ std::string celeritas::game_tables::get_name(const sex_type sex_type) const
     const auto name = tables_->name_config_container.get(id);
 
     return (*name)->name;
-}
-
-celeritas::game_tables::const_develop_container_shared_ptr celeritas::game_tables::get_develop_config() const
-{
-    return develop_;
-}
-
-void celeritas::game_tables::set_develop_config(const const_develop_container_shared_ptr& develop)
-{
-    develop_ = develop;
 }
 
 celeritas::game_tables::const_tables_shared_ptr celeritas::game_tables::get_tables() const

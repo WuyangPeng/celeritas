@@ -15,10 +15,11 @@ namespace celeritas {namespace config {
 bool develop_config::deserialize(::luban::ByteBuf& _buf)
 {
 
-    if(!_buf.readInt(itemTemplateId)) return false;
-    if(!_buf.readInt(itemType)) return false;
-    if(!_buf.readInt(stacked)) return false;
-    if (!_buf.readBool(squares)) return false;
+    if(!_buf.readInt(id)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; developSystemType = develop_system_type(__enum_temp__); }
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; developSubType = develop_sub_type(__enum_temp__); }
+    if(!_buf.readInt(maxLevel)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; developResetType = develop_reset_type(__enum_temp__); }
 
     return true;
 }
