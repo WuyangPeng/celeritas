@@ -10,12 +10,12 @@ int celeritas::develop_config::get_id() const
     return id_;
 }
 
-celeritas::develop_system_type celeritas::develop_config::get_develop_system_type() const
+celeritas::config::develop_system_type celeritas::develop_config::get_develop_system_type() const
 {
     return develop_system_type_;
 }
 
-celeritas::develop_sub_type celeritas::develop_config::get_develop_sub_type() const
+celeritas::config::develop_sub_type celeritas::develop_config::get_develop_sub_type() const
 {
     return develop_sub_type_;
 }
@@ -25,7 +25,7 @@ int celeritas::develop_config::get_max_level() const
     return max_level_;
 }
 
-celeritas::develop_reset_type celeritas::develop_config::get_develop_reset_type() const
+celeritas::config::develop_reset_type celeritas::develop_config::get_develop_reset_type() const
 {
     return develop_reset_type_;
 }

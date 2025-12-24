@@ -16,6 +16,50 @@
 namespace celeritas {namespace config {
 
  
+    enum class develop_reset_type
+    {
+        /// <summary>
+        /// 不可重置
+        /// </summary>
+        non_resettable = 0,
+        /// <summary>
+        /// 返还
+        /// </summary>
+        refund = 1,
+        /// <summary>
+        /// 部分返还
+        /// </summary>
+        partial_refund = 2,
+    };
+
+ 
+
+
+ 
+    enum class develop_sub_type
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        none = 0,
+    };
+
+ 
+
+
+ 
+    enum class develop_system_type
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        none = 0,
+    };
+
+ 
+
+
+ 
     enum class item_type
     {
         /// <summary>
@@ -172,7 +216,13 @@ struct item_config : public luban::CfgBean
      * 物品类型
      */
     ::luban::int32 itemType;
+    /**
+     * 堆叠数
+     */
     ::luban::int32 stacked;
+    /**
+     * 格子
+     */
     bool squares;
 
     static constexpr int __ID__ = -844891666;
@@ -330,7 +380,7 @@ class surname_config_container
     const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<surname_config>>& getDataMap() const { return _dataMap; }
     const ::luban::Vector<::luban::SharedPtr<surname_config>>& getDataList() const { return _dataList; }
 
-    std::optional<surname_config*> getRaw(::luban::int32 key)
+    std::optional<surname_config*> getRaw(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -343,7 +393,7 @@ class surname_config_container
         }
     }
 
-    std::optional<::luban::SharedPtr<surname_config>> get(::luban::int32 key)
+    std::optional<::luban::SharedPtr<surname_config>> get(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -387,7 +437,7 @@ class name_config_container
     const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<name_config>>& getDataMap() const { return _dataMap; }
     const ::luban::Vector<::luban::SharedPtr<name_config>>& getDataList() const { return _dataList; }
 
-    std::optional<name_config*> getRaw(::luban::int32 key)
+    std::optional<name_config*> getRaw(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -400,7 +450,7 @@ class name_config_container
         }
     }
 
-    std::optional<::luban::SharedPtr<name_config>> get(::luban::int32 key)
+    std::optional<::luban::SharedPtr<name_config>> get(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -444,7 +494,7 @@ class red_dot_config_container
     const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<red_dot_config>>& getDataMap() const { return _dataMap; }
     const ::luban::Vector<::luban::SharedPtr<red_dot_config>>& getDataList() const { return _dataList; }
 
-    std::optional<red_dot_config*> getRaw(::luban::int32 key)
+    std::optional<red_dot_config*> getRaw(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -457,7 +507,7 @@ class red_dot_config_container
         }
     }
 
-    std::optional<::luban::SharedPtr<red_dot_config>> get(::luban::int32 key)
+    std::optional<::luban::SharedPtr<red_dot_config>> get(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -501,7 +551,7 @@ class item_config_container
     const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<item_config>>& getDataMap() const { return _dataMap; }
     const ::luban::Vector<::luban::SharedPtr<item_config>>& getDataList() const { return _dataList; }
 
-    std::optional<item_config*> getRaw(::luban::int32 key)
+    std::optional<item_config*> getRaw(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -514,7 +564,7 @@ class item_config_container
         }
     }
 
-    std::optional<::luban::SharedPtr<item_config>> get(::luban::int32 key)
+    std::optional<::luban::SharedPtr<item_config>> get(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -558,7 +608,7 @@ class develop_config_container
     const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<develop_config>>& getDataMap() const { return _dataMap; }
     const ::luban::Vector<::luban::SharedPtr<develop_config>>& getDataList() const { return _dataList; }
 
-    std::optional<develop_config*> getRaw(::luban::int32 key)
+    std::optional<develop_config*> getRaw(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -571,7 +621,7 @@ class develop_config_container
         }
     }
 
-    std::optional<::luban::SharedPtr<develop_config>> get(::luban::int32 key)
+    std::optional<::luban::SharedPtr<develop_config>> get(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())

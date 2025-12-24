@@ -22,22 +22,7 @@ void celeritas::game_config::set_game_tables(const const_game_tables_shared_ptr&
     game_tables_ = game_tables;
 }
 
-celeritas::game_config::const_tables_shared_ptr celeritas::game_config::get_tables()
-{
-    std::shared_lock lock{ shared_mutex_ };
-
-    return tables_;
-}
-
-void celeritas::game_config::set_tables(const const_tables_shared_ptr& tables)
-{
-    std::lock_guard lock{ shared_mutex_ };
-
-    tables_ = tables;
-}
-
 celeritas::game_config::game_config()
-    : game_tables_{ std::make_shared<game_tables>() },
-      tables_{ std::make_shared<config::Tables>() }
+    : game_tables_{ std::make_shared<game_tables>(std::make_shared<config::Tables>()) }
 {
 }

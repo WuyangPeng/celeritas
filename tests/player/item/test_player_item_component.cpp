@@ -2,7 +2,6 @@
 #include "config/game_config/container_config.tpp"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
-#include "config/game_config/item_config.h"
 #include "database/database_pool_manager.h"
 #include "player/item/player_item_component.h"
 #include "player/mock/mock_database_pool.h"
@@ -29,14 +28,32 @@ namespace
 
         static void init_item_config()
         {
-            const auto game_tables = std::make_shared<celeritas::game_tables>();
-            const auto item_config_container = std::make_shared<celeritas::game_tables::item_container_config>();
+            const auto tables = std::make_shared<celeritas::config::Tables>();
+            const auto dataMap = const_cast<::luban::HashMap<::luban::int32, ::luban::SharedPtr<celeritas::config::item_config> >*>(&tables->item_config_container.getDataMap());
 
-            item_config_container->add_config(std::make_shared<celeritas::item_config>(1001, celeritas::config::item_type::custom, 100, false));
-            item_config_container->add_config(std::make_shared<celeritas::item_config>(1002, celeritas::config::item_type::equipment, 1, false));
-            item_config_container->add_config(std::make_shared<celeritas::item_config>(1003, celeritas::config::item_type::equipment, 1, false));
+            auto item_config1 = std::make_shared<celeritas::config::item_config>();
+            item_config1->itemTemplateId = 1001;
+            item_config1->itemType = static_cast<int>(celeritas::config::item_type::custom);
+            item_config1->stacked = 100;
+            item_config1->squares = false;
+            dataMap->emplace(item_config1->itemTemplateId, item_config1);
 
-            game_tables->set_item_config(item_config_container);
+            auto item_config2 = std::make_shared<celeritas::config::item_config>();
+            item_config2->itemTemplateId = 1002;
+            item_config2->itemType = static_cast<int>(celeritas::config::item_type::equipment);
+            item_config2->stacked = 1;
+            item_config2->squares = false;
+            dataMap->emplace(item_config2->itemTemplateId, item_config2);
+
+            auto item_config3 = std::make_shared<celeritas::config::item_config>();
+            item_config3->itemTemplateId = 1003;
+            item_config3->itemType = static_cast<int>(celeritas::config::item_type::equipment);
+            item_config3->stacked = 1;
+            item_config3->squares = false;
+            dataMap->emplace(item_config3->itemTemplateId, item_config3);
+
+            const auto game_tables = std::make_shared<celeritas::game_tables>(tables);
+
             celeritas::game_config::get_instance().set_game_tables(game_tables);
         }
 

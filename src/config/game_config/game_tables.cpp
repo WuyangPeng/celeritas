@@ -4,13 +4,13 @@
 #include "surname_config.h"
 #include "common/random_helper.h"
 
-celeritas::game_tables::game_tables()
-    : surname_config_{ std::make_shared<surname_container_config>() },
+celeritas::game_tables::game_tables(const_tables_shared_ptr tables)
+    : tables_{ std::move(tables) },
+      surname_config_{ std::make_shared<surname_container_config>() },
       surname_weight_{},
       name_config_{ std::make_shared<name_container_config>() },
       name_weight_{},
       red_dot_{ std::make_shared<red_dot_container_config>() },
-      item_{ std::make_shared<item_container_config>() },
       develop_{ std::make_shared<develop_container_config>() }
 {
 }
@@ -99,16 +99,6 @@ void celeritas::game_tables::set_red_dot_config(const const_red_dot_container_sh
     red_dot_ = red_dot;
 }
 
-celeritas::game_tables::const_item_container_shared_ptr celeritas::game_tables::get_item_config() const
-{
-    return item_;
-}
-
-void celeritas::game_tables::set_item_config(const const_item_container_shared_ptr& item)
-{
-    item_ = item;
-}
-
 celeritas::game_tables::const_develop_container_shared_ptr celeritas::game_tables::get_develop_config() const
 {
     return develop_;
@@ -118,3 +108,9 @@ void celeritas::game_tables::set_develop_config(const const_develop_container_sh
 {
     develop_ = develop;
 }
+
+celeritas::game_tables::const_tables_shared_ptr celeritas::game_tables::get_tables() const
+{
+    return tables_;
+}
+

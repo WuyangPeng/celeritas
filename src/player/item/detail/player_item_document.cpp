@@ -7,7 +7,6 @@
 #include "config/game_config/container_config.tpp"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
-#include "config/game_config/item_config.h"
 
 #include <ranges>
 
@@ -39,7 +38,7 @@ bool celeritas::player_item_document::change_item(const const_app_config_shared_
     }
 
     const auto item = get_item_config(template_id);
-    const auto stacked = item->get_stacked();
+    const auto stacked = item->stacked;
 
     if (count > 0)
     {
@@ -60,7 +59,7 @@ bool celeritas::player_item_document::change_item(const const_app_config_shared_
 
     while (0 < count)
     {
-        count = add_new_item(template_id, count, stacked, item->is_squares(), server_config);
+        count = add_new_item(template_id, count, stacked, item->squares, server_config);
     }
 
     return true;
@@ -215,7 +214,7 @@ int64_t celeritas::player_item_document::add_new_item(const int template_id, int
 celeritas::player_item_document::const_item_config_shared_ptr celeritas::player_item_document::get_item_config(int template_id)
 {
     const auto game_tables = game_config::get_instance().get_game_tables();
-    const auto item = game_tables->get_item_config()->get(template_id);
+    const auto item = game_tables->get_tables()->item_config_container.get(template_id);
     if (!item)
     {
         throw celeritas_error{ "item not found,template id = {}", template_id };

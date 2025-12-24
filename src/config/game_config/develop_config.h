@@ -1,8 +1,6 @@
 ﻿#pragma once
 
-#include "develop_reset_type.h"
-#include "develop_sub_type.h"
-#include "develop_system_type.h"
+#include "config/luban/generated/schema.h"
 
 namespace celeritas
 {
@@ -10,6 +8,9 @@ namespace celeritas
     {
     public:
         using class_type = develop_config;
+        using develop_system_type = config::develop_system_type;
+        using develop_sub_type = config::develop_sub_type;
+        using develop_reset_type = config::develop_reset_type;
 
         develop_config(int id, develop_system_type develop_system_type, develop_sub_type develop_sub_type, int max_level, develop_reset_type develop_reset_type);
 
@@ -25,8 +26,8 @@ namespace celeritas
 
     private:
         int id_ = 0;
-        develop_system_type develop_system_type_ = develop_system_type::null;
-        develop_sub_type develop_sub_type_ = develop_sub_type::null;
+        develop_system_type develop_system_type_ = develop_system_type::none;
+        develop_sub_type develop_sub_type_ = develop_sub_type::none;
         int max_level_ = 0;
         develop_reset_type develop_reset_type_ = develop_reset_type::non_resettable;
     };

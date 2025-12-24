@@ -61,7 +61,7 @@ celeritas::game_error_type celeritas::player_develop_document::develop_reset(dev
         throw celeritas_error{ "develop config not found,id = {}", key.get_system_id() };
     }
 
-    if ((*develop_config)->get_develop_reset_type() == develop_reset_type::non_resettable)
+    if ((*develop_config)->get_develop_reset_type() == config::develop_reset_type::non_resettable)
     {
         return game_error_type::non_resettable;
     }

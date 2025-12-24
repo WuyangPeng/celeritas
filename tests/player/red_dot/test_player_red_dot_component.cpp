@@ -39,7 +39,7 @@ namespace
 
             red_dot->add_config(red_dot_config);
 
-            const auto game_tables = std::make_shared<celeritas::game_tables>();
+            const auto game_tables = std::make_shared<celeritas::game_tables>(std::make_shared<celeritas::config::Tables>());
             game_tables->set_red_dot_config(red_dot);
 
             celeritas::game_config::get_instance().set_game_tables(game_tables);

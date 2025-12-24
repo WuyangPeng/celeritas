@@ -14,6 +14,7 @@ namespace celeritas
     {
     public:
         using class_type = game_tables;
+        using const_tables_shared_ptr = std::shared_ptr<const config::Tables>;
         using sex_type = config::sex_type;
         using red_dot_type = config::red_dot_type;
         using surname_container_config = container_config<surname_config>;
@@ -22,12 +23,10 @@ namespace celeritas
         using const_name_container_shared_ptr = std::shared_ptr<const name_container_config>;
         using red_dot_container_config = container_config<red_dot_config, red_dot_type>;
         using const_red_dot_container_shared_ptr = std::shared_ptr<const red_dot_container_config>;
-        using item_container_config = container_config<item_config>;
-        using const_item_container_shared_ptr = std::shared_ptr<const item_container_config>;
         using develop_container_config = container_config<develop_config>;
         using const_develop_container_shared_ptr = std::shared_ptr<const develop_container_config>;
 
-        game_tables();
+        explicit game_tables(const_tables_shared_ptr tables);
 
         [[nodiscard]] const_surname_container_config_shared_ptr get_surname_config() const;
 
@@ -45,16 +44,16 @@ namespace celeritas
 
         void set_red_dot_config(const const_red_dot_container_shared_ptr& red_dot);
 
-        [[nodiscard]] const_item_container_shared_ptr get_item_config() const;
-
-        void set_item_config(const const_item_container_shared_ptr& item);
-
         [[nodiscard]] const_develop_container_shared_ptr get_develop_config() const;
 
         void set_develop_config(const const_develop_container_shared_ptr& develop);
 
+        [[nodiscard]] const_tables_shared_ptr get_tables() const;
+
     private:
         using name_weight_type = std::map<sex_type, weight>;
+
+        const_tables_shared_ptr tables_;
 
         const_surname_container_config_shared_ptr surname_config_;
         weight surname_weight_;
@@ -63,8 +62,6 @@ namespace celeritas
         name_weight_type name_weight_;
 
         const_red_dot_container_shared_ptr red_dot_;
-
-        const_item_container_shared_ptr item_;
 
         const_develop_container_shared_ptr develop_;
     };

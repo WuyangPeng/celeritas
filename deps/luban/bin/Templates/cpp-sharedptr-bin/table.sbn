@@ -31,7 +31,7 @@ class {{__name}}
     const ::luban::HashMap<{{declaring_type_name __key_type}}, {{declaring_type_name __value_type}}>& getDataMap() const { return _dataMap; }
     const ::luban::Vector<{{declaring_type_name __value_type}}>& getDataList() const { return _dataList; }
 
-    std::optional<{{make_type_cpp_name __value_type.def_bean}}*> getRaw({{declaring_type_name __key_type}} key)
+    std::optional<{{make_type_cpp_name __value_type.def_bean}}*> getRaw({{declaring_type_name __key_type}} key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -44,7 +44,7 @@ class {{__name}}
         }
     }
 
-    std::optional<{{declaring_type_name __value_type}}> get({{declaring_type_name __key_type}} key)
+    std::optional<{{declaring_type_name __value_type}}> get({{declaring_type_name __key_type}} key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())

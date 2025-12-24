@@ -26,14 +26,9 @@ namespace celeritas
     class surname_config;
     class name_config;
     class red_dot_config;
-    class item_config;
     class develop_config;
 
     class weight;
-
-    enum class develop_system_type;
-    enum class develop_sub_type;
-    enum class develop_reset_type;
 
     constexpr std::string_view default_service_registry_host = "127.0.0.1";
     constexpr auto default_service_registry_port = 35000;

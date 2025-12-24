@@ -29,7 +29,6 @@ namespace celeritas
 
     private:
         using develop_data_container = std::map<develop_data_key, develop_data>;
-        using const_item_config_shared_ptr = std::shared_ptr<const item_config>;
 
         void add_develop_data(const develop_data& develop_data);
 
