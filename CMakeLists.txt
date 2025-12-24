@@ -60,6 +60,7 @@ set(PROTOBUF_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/${MSVC_PREFIX}protobuf${MSVC_
 set(MONGO_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/${MSVC_PREFIX}mongo${MSVC_SUFFIX}")
 set(HIREDIS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/hiredis")
 set(OPENSSL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl")
+set(LUBAN_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/luban")
 
 # 包含路径
 include_directories(
@@ -73,6 +74,7 @@ include_directories(
         "${MONGO_DIR}/include/bsoncxx/v_noabi"
         "${HIREDIS_DIR}"
         "${OPENSSL_DIR}/include"
+        "${LUBAN_DIR}/include"
         # 如果依赖项在本地，添加它们的include路径
 )
 
@@ -253,6 +255,24 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 endif ()
 
 target_link_libraries(openssl INTERFACE ${LIB_PREFIX}ssl ${LIB_PREFIX}crypto)
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
+    file(GLOB_RECURSE ALL_CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/config/luban/*.xlsx")
+
+    # 当 Excel 或配置文件变动时，自动重新生成代码
+    add_custom_command(
+            OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/src/config/luban/generated/schema.h"
+            COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/bat/generate_luban.bat"
+            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+            DEPENDS ${ALL_CONFIG_FILES} # 监控配置文件夹
+            COMMENT "Running Luban generator..."
+    )
+
+    add_custom_target(RunLuban ALL DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/config/luban/generated/schema.h")
+
+endif ()
+
 
 # 静态库
 add_subdirectory(cmake/common)
