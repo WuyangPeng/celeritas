@@ -4,7 +4,6 @@
 #include "config/game_config/container_config.tpp"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
-#include "config/game_config/red_dot_config.h"
 
 #include <ranges>
 
@@ -60,7 +59,7 @@ bool celeritas::player_red_dot_node::change_red_dot(const red_dot_type red_dot_t
 void celeritas::player_red_dot_node::set_red_dot_node()
 {
     const auto& game_tables = game_config::get_instance().get_game_tables();
-    const auto& container = game_tables->get_red_dot_config()->get_container();
+    const auto& container = game_tables->get_tables()->red_dot_config_container;
 
     init_red_dot_node(container);
     set_red_dot_node_association(container);
@@ -150,17 +149,17 @@ void celeritas::player_red_dot_node::add_parent_value(const red_dot_node_shared_
     }
 }
 
-void celeritas::player_red_dot_node::init_red_dot_node(const red_container_type& container)
+void celeritas::player_red_dot_node::init_red_dot_node(const config::red_dot_config_container& container)
 {
-    for (const auto& [red_dot_type, red_config] : container)
+    for (const auto& [red_dot_type, red_config] : container.getDataMap())
     {
-        red_dot_node_.emplace(red_dot_type, std::make_shared<red_dot_node>(red_dot_type, red_config->is_save_database()));
+        red_dot_node_.emplace(red_dot_type, std::make_shared<red_dot_node>(red_dot_type, red_config->saveDatabase));
     }
 }
 
-void celeritas::player_red_dot_node::set_red_dot_node_association(const red_container_type& container)
+void celeritas::player_red_dot_node::set_red_dot_node_association(const config::red_dot_config_container& container)
 {
-    for (const auto& element : container | std::views::values)
+    for (const auto& element : container.getDataMap() | std::views::values)
     {
         set_red_dot_node_association(element);
     }
@@ -168,13 +167,13 @@ void celeritas::player_red_dot_node::set_red_dot_node_association(const red_cont
 
 void celeritas::player_red_dot_node::set_red_dot_node_association(const const_red_dot_config_shared_ptr& red_dot_config)
 {
-    const auto self_iter = red_dot_node_.find(red_dot_config->get_id());
+    const auto self_iter = red_dot_node_.find(red_dot_config->id);
     if (self_iter == red_dot_node_.cend())
     {
-        throw celeritas_error{ "set red dot node error,id = {}", static_cast<int>(red_dot_config->get_id()) };
+        throw celeritas_error{ "set red dot node error,id = {}", static_cast<int>(red_dot_config->id) };
     }
 
-    if (const auto parent_node_id = red_dot_config->get_parent_node_id();
+    if (const auto parent_node_id = red_dot_config->parentNodeId;
         parent_node_id != red_dot_type::none)
     {
         const auto parent_iter = red_dot_node_.find(parent_node_id);

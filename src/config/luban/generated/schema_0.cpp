@@ -93,10 +93,11 @@ bool name_config::deserializename_config(::luban::ByteBuf& _buf, ::luban::Shared
 bool red_dot_config::deserialize(::luban::ByteBuf& _buf)
 {
 
-    if(!_buf.readInt(itemTemplateId)) return false;
-    if(!_buf.readInt(itemType)) return false;
-    if(!_buf.readInt(stacked)) return false;
-    if (!_buf.readBool(squares)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; id = red_dot_type(__enum_temp__); }
+    if(!_buf.readString(name)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; parentNodeId = red_dot_type(__enum_temp__); }
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; redDotStatusType = red_dot_status_type(__enum_temp__); }
+    if (!_buf.readBool(saveDatabase)) return false;
 
     return true;
 }

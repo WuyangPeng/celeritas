@@ -23,7 +23,6 @@ namespace celeritas
     template <typename Element, typename IndexType>
     class container_config;
 
-    class red_dot_config;
     class develop_config;
 
     class weight;

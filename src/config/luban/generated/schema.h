@@ -277,15 +277,25 @@ struct red_dot_config : public luban::CfgBean
     bool deserialize(::luban::ByteBuf& _buf);
 
     /**
-     * 物品编号
+     * 红点类型
      */
-    ::luban::int32 itemTemplateId;
+    red_dot_type id;
     /**
-     * 物品类型
+     * 名称
      */
-    ::luban::int32 itemType;
-    ::luban::int32 stacked;
-    bool squares;
+    ::luban::String name;
+    /**
+     * 父节点id
+     */
+    red_dot_type parentNodeId;
+    /**
+     * 红点状态类型
+     */
+    red_dot_status_type redDotStatusType;
+    /**
+     * 是否保存数据库
+     */
+    bool saveDatabase;
 
     static constexpr int __ID__ = 164392806;
 
@@ -481,7 +491,7 @@ class name_config_container
 class red_dot_config_container
 {
     private:
-    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<red_dot_config>> _dataMap;
+    ::luban::HashMap<red_dot_type, ::luban::SharedPtr<red_dot_config>> _dataMap;
     ::luban::Vector<::luban::SharedPtr<red_dot_config>> _dataList;
     
     public:
@@ -494,15 +504,15 @@ class red_dot_config_container
             ::luban::SharedPtr<red_dot_config> _v;
             if(!red_dot_config::deserializered_dot_config(_buf, _v)) return false;
             _dataList.push_back(_v);
-            _dataMap[_v->itemTemplateId] = _v;
+            _dataMap[_v->id] = _v;
         }
         return true;
     }
 
-    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<red_dot_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::HashMap<red_dot_type, ::luban::SharedPtr<red_dot_config>>& getDataMap() const { return _dataMap; }
     const ::luban::Vector<::luban::SharedPtr<red_dot_config>>& getDataList() const { return _dataList; }
 
-    std::optional<red_dot_config*> getRaw(::luban::int32 key) const
+    std::optional<red_dot_config*> getRaw(red_dot_type key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -515,7 +525,7 @@ class red_dot_config_container
         }
     }
 
-    std::optional<::luban::SharedPtr<red_dot_config>> get(::luban::int32 key) const
+    std::optional<::luban::SharedPtr<red_dot_config>> get(red_dot_type key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
