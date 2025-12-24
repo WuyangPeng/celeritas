@@ -13,30 +13,70 @@
 
 #include "CfgBean.h"
 
-namespace config {
+namespace celeritas {namespace config {
 
-namespace test { 
-    enum class quality_type
+ 
+    enum class red_dot_type
     {
         /// <summary>
-        /// 最高品质
+        /// 无
         /// </summary>
-        A = 1,
+        none = 0,
         /// <summary>
-        /// 黑色的
+        /// 角色功能类
         /// </summary>
-        B = 2,
+        role = 10000,
         /// <summary>
-        /// 蓝色的
+        /// 物品功能类
         /// </summary>
-        C = 3,
+        item = 20000,
         /// <summary>
-        /// 最差品质
+        /// 活动功能类
         /// </summary>
-        D = 4,
+        activity = 30000,
+        /// <summary>
+        /// 养成功能类
+        /// </summary>
+        develop = 40000,
+        /// <summary>
+        /// 邮件功能类
+        /// </summary>
+        mail = 50000,
+        /// <summary>
+        /// 任务功能类
+        /// </summary>
+        task = 60000,
+        /// <summary>
+        /// 属性功能类
+        /// </summary>
+        attribute = 70000,
+        /// <summary>
+        /// 副本功能类
+        /// </summary>
+        instance = 80000,
     };
 
-} 
+ 
+
+
+ 
+    enum class sex_type
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        none = 0,
+        /// <summary>
+        /// 男
+        /// </summary>
+        male = 1,
+        /// <summary>
+        /// 女
+        /// </summary>
+        female = 2,
+    };
+
+ 
 
 
  struct develop_config; 
@@ -541,5 +581,5 @@ class Tables
 
 
 
-}
+}}
 

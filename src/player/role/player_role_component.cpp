@@ -2,7 +2,7 @@
 #include "config/database_type.h"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
-#include "config/game_config/sex_type.h"
+#include "config/luban/generated/schema.h"
 #include "database/database_pool_base.h"
 #include "database/generated/mongo/auth/user_server_roles.h"
 #include "player/component/player_state.tpp"
@@ -94,7 +94,7 @@ celeritas::player_role_component::void_awaitable_type celeritas::player_role_com
         user_role_ = user_role{ database_type::mongo, user_id };
         const auto game_tables = game_config::get_instance().get_game_tables();
 
-        user_role_->set_name(game_tables->get_surname() + game_tables->get_name(sex_type::null));
+        user_role_->set_name(game_tables->get_surname() + game_tables->get_name(config::sex_type::none));
     }
 
     user_role_->set_device_id(device_id_);

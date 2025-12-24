@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "config/config_fwd.h"
+#include "config/luban/generated/schema.h"
 
 #include <cstdint>
 #include <string>
@@ -11,6 +12,7 @@ namespace celeritas
     {
     public:
         using class_type = red_dots;
+        using red_dot_type = config::red_dot_type;
 
         red_dots();
 

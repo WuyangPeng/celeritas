@@ -13,6 +13,7 @@ namespace celeritas
     public:
         using class_type = player_red_dot_component;
         using base_type = player_component;
+        using red_dot_type = config::red_dot_type;
 
         explicit player_red_dot_component(player_state* player_state) noexcept;
 

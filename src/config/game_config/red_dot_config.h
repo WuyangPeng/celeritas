@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "config/config_fwd.h"
+#include "config/luban/generated/schema.h"
 
 #include <string>
 
@@ -10,6 +11,7 @@ namespace celeritas
     {
     public:
         using class_type = red_dot_config;
+        using red_dot_type = config::red_dot_type;
 
         red_dot_config(red_dot_type id, std::string name, red_dot_type parent_node_id, red_dot_status_type red_dot_status_type, bool save_database);
 

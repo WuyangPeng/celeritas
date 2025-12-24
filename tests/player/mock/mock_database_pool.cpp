@@ -1,7 +1,6 @@
 ﻿#include "mock_database_pool.h"
 #include "common/time_helper.h"
 #include "config/database_type.h"
-#include "config/game_config/red_dot_type.h"
 #include "database/database_change_type.h"
 #include "database/database_entity_change.h"
 #include "database/document/inventory_data.h"
@@ -204,7 +203,7 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_red
     const basis_database last_check_time{ user_red_dots::last_check_time_describe, time_helper::get_current_milliseconds() };
 
     red_dots red_dot{};
-    red_dot.set_node_id(red_dot_type::null);
+    red_dot.set_node_id(config::red_dot_type::none);
     red_dot.set_state(false);
     red_dot.set_last_value(0);
     red_dot.set_update_time(time_helper::get_current_milliseconds());

@@ -1,7 +1,6 @@
 ﻿#include "container_config.tpp"
 #include "game_tables.h"
 #include "name_config.h"
-#include "sex_type.h"
 #include "surname_config.h"
 #include "common/random_helper.h"
 
@@ -44,7 +43,7 @@ void celeritas::game_tables::set_name_config(const const_name_container_shared_p
 
     name_weight_.clear();
 
-    auto& null_name_weight_ = name_weight_[sex_type::null];
+    auto& null_name_weight_ = name_weight_[sex_type::none];
     auto& male_name_weight = name_weight_[sex_type::male];
     auto& female_name_weight = name_weight_[sex_type::female];
 

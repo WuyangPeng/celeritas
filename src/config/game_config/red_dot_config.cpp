@@ -5,7 +5,7 @@ celeritas::red_dot_config::red_dot_config(const red_dot_type id, std::string nam
 {
 }
 
-celeritas::red_dot_type celeritas::red_dot_config::get_id() const
+celeritas::config::red_dot_type celeritas::red_dot_config::get_id() const
 {
     return id_;
 }
@@ -15,7 +15,7 @@ std::string celeritas::red_dot_config::get_name() const
     return name_;
 }
 
-celeritas::red_dot_type celeritas::red_dot_config::get_parent_node_id() const
+celeritas::config::red_dot_type celeritas::red_dot_config::get_parent_node_id() const
 {
     return parent_node_id_;
 }

@@ -63,7 +63,7 @@ celeritas::red_dot_node::red_dot_node_optional celeritas::red_dot_node::get_pare
     return std::nullopt;
 }
 
-celeritas::red_dot_type celeritas::red_dot_node::get_red_dot_type() const
+celeritas::config::red_dot_type celeritas::red_dot_node::get_red_dot_type() const
 {
     return type_;
 }

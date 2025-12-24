@@ -1,5 +1,4 @@
-﻿#include "config/game_config/red_dot_type.h"
-#include "player/red_dot/red_dot_node.h"
+﻿#include "player/red_dot/red_dot_node.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -8,7 +7,7 @@ namespace
     struct red_dot_node_fixture
     {
         red_dot_node_fixture()
-            : node_{ std::make_shared<celeritas::red_dot_node>(celeritas::red_dot_type::null, false) }
+            : node_{ std::make_shared<celeritas::red_dot_node>(celeritas::config::red_dot_type::none, false) }
         {
         }
 
@@ -24,7 +23,7 @@ BOOST_FIXTURE_TEST_SUITE(red_dot_node_suite, red_dot_node_fixture)
         BOOST_CHECK(node_->is_child());
         BOOST_CHECK(!node_->get_parent().has_value());
         BOOST_CHECK(!node_->is_save_database());
-        BOOST_CHECK_EQUAL(static_cast<int>(node_->get_red_dot_type()), static_cast<int>(celeritas::red_dot_type::null));
+        BOOST_CHECK_EQUAL(static_cast<int>(node_->get_red_dot_type()), static_cast<int>(celeritas::config::red_dot_type::none));
     }
 
     BOOST_AUTO_TEST_CASE(test_value_manipulation)
@@ -39,8 +38,8 @@ BOOST_FIXTURE_TEST_SUITE(red_dot_node_suite, red_dot_node_fixture)
 
     BOOST_AUTO_TEST_CASE(test_parent_child_relationship)
     {
-        const auto parent = std::make_shared<celeritas::red_dot_node>(celeritas::red_dot_type::null, false);
-        const auto child = std::make_shared<celeritas::red_dot_node>(celeritas::red_dot_type::null, false);
+        const auto parent = std::make_shared<celeritas::red_dot_node>(celeritas::config::red_dot_type::none, false);
+        const auto child = std::make_shared<celeritas::red_dot_node>(celeritas::config::red_dot_type::none, false);
 
         child->set_parent_node(parent);
         parent->add_child(child);

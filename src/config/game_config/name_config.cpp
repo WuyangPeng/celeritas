@@ -15,7 +15,7 @@ std::string celeritas::name_config::get_name() const
     return name_;
 }
 
-celeritas::sex_type celeritas::name_config::get_sex_type() const
+celeritas::config::sex_type celeritas::name_config::get_sex_type() const
 {
     return sex_type_;
 }

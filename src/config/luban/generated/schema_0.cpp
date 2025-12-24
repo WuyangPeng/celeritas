@@ -9,7 +9,7 @@
 
 #include "schema.h"
 
-namespace config {
+namespace celeritas {namespace config {
 
 
 bool develop_config::deserialize(::luban::ByteBuf& _buf)
@@ -167,5 +167,5 @@ bool test::bean::deserializebean(::luban::ByteBuf& _buf, ::luban::SharedPtr<test
     }
 }
 
-}
+}}
 

@@ -3,7 +3,6 @@
 #include "config/game_config/game_tables.h"
 #include "config/game_config/red_dot_config.h"
 #include "config/game_config/red_dot_status_type.h"
-#include "config/game_config/red_dot_type.h"
 #include "database/database_pool_manager.h"
 #include "player/mock/mock_database_pool.h"
 #include "player/mock/mock_player_state.h"
@@ -35,9 +34,9 @@ namespace
 
         static void init_game_config()
         {
-            const auto red_dot = std::make_shared<celeritas::container_config<celeritas::red_dot_config, celeritas::red_dot_type> >();
+            const auto red_dot = std::make_shared<celeritas::container_config<celeritas::red_dot_config, celeritas::config::red_dot_type> >();
 
-            const auto red_dot_config = std::make_shared<celeritas::red_dot_config>(celeritas::red_dot_type::role, "test", celeritas::red_dot_type::null, celeritas::red_dot_status_type::sum, true);
+            const auto red_dot_config = std::make_shared<celeritas::red_dot_config>(celeritas::config::red_dot_type::role, "test", celeritas::config::red_dot_type::none, celeritas::red_dot_status_type::sum, true);
 
             red_dot->add_config(red_dot_config);
 
@@ -75,7 +74,7 @@ BOOST_FIXTURE_TEST_SUITE(player_red_dot_component_suite, player_red_dot_componen
         boost::asio::co_spawn(io_context_, component_->on_load_db(), boost::asio::detached);
         run_io_context();
 
-        component_->add_red_dot(celeritas::red_dot_type::role);
+        component_->add_red_dot(celeritas::config::red_dot_type::role);
 
         BOOST_CHECK(component_->is_modify());
 
@@ -101,8 +100,8 @@ BOOST_FIXTURE_TEST_SUITE(player_red_dot_component_suite, player_red_dot_componen
         boost::asio::co_spawn(io_context_, component_->on_load_db(), boost::asio::detached);
         run_io_context();
 
-        component_->add_red_dot(celeritas::red_dot_type::role);
-        BOOST_CHECK_EQUAL(component_->get_red_dot_value(celeritas::red_dot_type::role), 1);
+        component_->add_red_dot(celeritas::config::red_dot_type::role);
+        BOOST_CHECK_EQUAL(component_->get_red_dot_value(celeritas::config::red_dot_type::role), 1);
     }
 
     BOOST_AUTO_TEST_CASE(test_add_red_dot_with_value)
@@ -110,8 +109,8 @@ BOOST_FIXTURE_TEST_SUITE(player_red_dot_component_suite, player_red_dot_componen
         boost::asio::co_spawn(io_context_, component_->on_load_db(), boost::asio::detached);
         run_io_context();
 
-        component_->add_red_dot(celeritas::red_dot_type::role, 5);
-        BOOST_CHECK_EQUAL(component_->get_red_dot_value(celeritas::red_dot_type::role), 5);
+        component_->add_red_dot(celeritas::config::red_dot_type::role, 5);
+        BOOST_CHECK_EQUAL(component_->get_red_dot_value(celeritas::config::red_dot_type::role), 5);
     }
 
     BOOST_AUTO_TEST_CASE(test_reduce_red_dot)
@@ -119,11 +118,11 @@ BOOST_FIXTURE_TEST_SUITE(player_red_dot_component_suite, player_red_dot_componen
         boost::asio::co_spawn(io_context_, component_->on_load_db(), boost::asio::detached);
         run_io_context();
 
-        component_->add_red_dot(celeritas::red_dot_type::role, 3);
-        BOOST_CHECK_EQUAL(component_->get_red_dot_value(celeritas::red_dot_type::role), 3);
+        component_->add_red_dot(celeritas::config::red_dot_type::role, 3);
+        BOOST_CHECK_EQUAL(component_->get_red_dot_value(celeritas::config::red_dot_type::role), 3);
 
-        component_->reduce_red_dot(celeritas::red_dot_type::role);
-        BOOST_CHECK_EQUAL(component_->get_red_dot_value(celeritas::red_dot_type::role), 2);
+        component_->reduce_red_dot(celeritas::config::red_dot_type::role);
+        BOOST_CHECK_EQUAL(component_->get_red_dot_value(celeritas::config::red_dot_type::role), 2);
     }
 
     BOOST_AUTO_TEST_CASE(test_reduce_red_dot_with_value)
@@ -131,9 +130,9 @@ BOOST_FIXTURE_TEST_SUITE(player_red_dot_component_suite, player_red_dot_componen
         boost::asio::co_spawn(io_context_, component_->on_load_db(), boost::asio::detached);
         run_io_context();
 
-        component_->add_red_dot(celeritas::red_dot_type::role, 3);
-        component_->reduce_red_dot(celeritas::red_dot_type::role, 2);
-        BOOST_CHECK_EQUAL(component_->get_red_dot_value(celeritas::red_dot_type::role), 1);
+        component_->add_red_dot(celeritas::config::red_dot_type::role, 3);
+        component_->reduce_red_dot(celeritas::config::red_dot_type::role, 2);
+        BOOST_CHECK_EQUAL(component_->get_red_dot_value(celeritas::config::red_dot_type::role), 1);
     }
 
     BOOST_AUTO_TEST_CASE(test_change_red_dot)
@@ -141,11 +140,11 @@ BOOST_FIXTURE_TEST_SUITE(player_red_dot_component_suite, player_red_dot_componen
         boost::asio::co_spawn(io_context_, component_->on_load_db(), boost::asio::detached);
         run_io_context();
 
-        component_->add_red_dot(celeritas::red_dot_type::role);
-        BOOST_CHECK_EQUAL(component_->get_red_dot_value(celeritas::red_dot_type::role), 1);
+        component_->add_red_dot(celeritas::config::red_dot_type::role);
+        BOOST_CHECK_EQUAL(component_->get_red_dot_value(celeritas::config::red_dot_type::role), 1);
 
-        component_->change_red_dot(celeritas::red_dot_type::role);
-        BOOST_CHECK_EQUAL(component_->get_red_dot_value(celeritas::red_dot_type::role), 0);
+        component_->change_red_dot(celeritas::config::red_dot_type::role);
+        BOOST_CHECK_EQUAL(component_->get_red_dot_value(celeritas::config::red_dot_type::role), 0);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

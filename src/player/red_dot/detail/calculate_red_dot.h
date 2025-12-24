@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "config/config_fwd.h"
+#include "config/luban/generated/schema.h"
 #include "player/player_fwd.h"
 
 #include <memory>
@@ -11,6 +12,7 @@ namespace celeritas
     {
     public:
         using class_type = calculate_red_dot;
+        using red_dot_type = config::red_dot_type;
         using calculate_red_dot_shared_ptr = std::shared_ptr<class_type>;
 
         explicit calculate_red_dot(player_state* player_state) noexcept;

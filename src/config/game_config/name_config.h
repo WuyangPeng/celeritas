@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "config/config_fwd.h"
+#include "config/luban/generated/schema.h"
 
 #include <string>
 
@@ -10,6 +10,7 @@ namespace celeritas
     {
     public:
         using class_type = name_config;
+        using sex_type = config::sex_type;
 
         name_config(int id, std::string name, sex_type sex_type, int weight);
 

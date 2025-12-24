@@ -11,6 +11,7 @@ namespace celeritas
     {
     public:
         using class_type = player_red_dot_document;
+        using red_dot_type = config::red_dot_type;
 
         void set_red_dots(traits::param_type::document_array_type red_dots_document);
 

@@ -1,6 +1,5 @@
 ﻿#include "player_red_dot_component.h"
 #include "config/game_config/game_tables.h"
-#include "config/game_config/red_dot_type.h"
 #include "database/database_pool_base.h"
 #include "detail/calculate_red_dot.h"
 #include "player/component/player_state.h"

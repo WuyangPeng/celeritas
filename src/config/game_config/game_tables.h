@@ -3,6 +3,7 @@
 #include "weight.h"
 #include "config/config_fwd.h"
 #include "config/game_config/container_config.h"
+#include "config/luban/generated/schema.h"
 
 #include <map>
 #include <memory>
@@ -13,6 +14,8 @@ namespace celeritas
     {
     public:
         using class_type = game_tables;
+        using sex_type = config::sex_type;
+        using red_dot_type = config::red_dot_type;
         using surname_container_config = container_config<surname_config>;
         using const_surname_container_config_shared_ptr = std::shared_ptr<const surname_container_config>;
         using name_container_config = container_config<name_config>;

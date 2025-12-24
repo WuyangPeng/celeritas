@@ -14,7 +14,7 @@ celeritas::red_dots::red_dots(const red_dot_type node_id, const bool state)
 {
 }
 
-celeritas::red_dot_type celeritas::red_dots::get_node_id() const
+celeritas::config::red_dot_type celeritas::red_dots::get_node_id() const
 {
     return node_id_;
 }

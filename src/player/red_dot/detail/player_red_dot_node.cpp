@@ -175,7 +175,7 @@ void celeritas::player_red_dot_node::set_red_dot_node_association(const const_re
     }
 
     if (const auto parent_node_id = red_dot_config->get_parent_node_id();
-        parent_node_id != red_dot_type::null)
+        parent_node_id != red_dot_type::none)
     {
         const auto parent_iter = red_dot_node_.find(parent_node_id);
         if (parent_iter == red_dot_node_.cend())

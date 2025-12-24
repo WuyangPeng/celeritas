@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "config/config_fwd.h"
+#include "config/luban/generated/schema.h"
 
 #include <memory>
 #include <optional>
@@ -12,6 +13,7 @@ namespace celeritas
     {
     public:
         using class_type = red_dot_node;
+        using red_dot_type = config::red_dot_type;
         using red_dot_node_shared_ptr = std::shared_ptr<red_dot_node>;
         using red_dot_node_optional = std::optional<red_dot_node_shared_ptr>;
 
