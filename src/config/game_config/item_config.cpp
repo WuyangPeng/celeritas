@@ -15,7 +15,7 @@ int celeritas::item_config::get_item_template_id() const
     return item_template_id_;
 }
 
-celeritas::item_type celeritas::item_config::get_item_type() const
+celeritas::config::item_type celeritas::item_config::get_item_type() const
 {
     return item_type_;
 }

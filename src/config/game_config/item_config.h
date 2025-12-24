@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "item_type.h"
+#include "config/luban/generated/schema.h"
 
 namespace celeritas
 {
@@ -8,6 +8,7 @@ namespace celeritas
     {
     public:
         using class_type = item_config;
+        using item_type = config::item_type;
 
         item_config(int item_template_id, item_type item_type, int stacked, bool squares);
 
@@ -23,7 +24,7 @@ namespace celeritas
 
     private:
         int item_template_id_ = 0;
-        item_type item_type_ = item_type::null;
+        item_type item_type_ = item_type::none;
         int stacked_ = 0;
         bool squares_ = false;
     };

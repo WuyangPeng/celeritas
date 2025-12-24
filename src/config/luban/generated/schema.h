@@ -16,6 +16,46 @@
 namespace celeritas {namespace config {
 
  
+    enum class item_type
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        none = 0,
+        /// <summary>
+        /// 定制
+        /// </summary>
+        custom = 1,
+        /// <summary>
+        /// 消耗品
+        /// </summary>
+        consumable = 2,
+        /// <summary>
+        /// 装备
+        /// </summary>
+        equipment = 3,
+    };
+
+ 
+
+
+ 
+    enum class red_dot_status_type
+    {
+        /// <summary>
+        /// 存在
+        /// </summary>
+        exist = 0,
+        /// <summary>
+        /// 和
+        /// </summary>
+        sum = 1,
+    };
+
+ 
+
+
+ 
     enum class red_dot_type
     {
         /// <summary>

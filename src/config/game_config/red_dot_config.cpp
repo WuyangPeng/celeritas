@@ -20,7 +20,7 @@ celeritas::config::red_dot_type celeritas::red_dot_config::get_parent_node_id() 
     return parent_node_id_;
 }
 
-celeritas::red_dot_status_type celeritas::red_dot_config::get_red_dot_status_type() const
+celeritas::config::red_dot_status_type celeritas::red_dot_config::get_red_dot_status_type() const
 {
     return red_dot_status_type_;
 }

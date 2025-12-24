@@ -31,8 +31,6 @@ namespace celeritas
 
     class weight;
 
-    enum class red_dot_status_type;
-    enum class item_type;
     enum class develop_system_type;
     enum class develop_sub_type;
     enum class develop_reset_type;
