@@ -121,7 +121,7 @@ namespace celeritas
     template <typename E>
     [[nodiscard]] constexpr E operator|(E lhs, E rhs) noexcept requires(std::is_enum_v<E>)
     {
-        return underlying_cast_enum<E>(enum_cast_underlyingg(lhs) | enum_cast_underlying(rhs));
+        return underlying_cast_enum<E>(enum_cast_underlying(lhs) | enum_cast_underlying(rhs));
     }
 
     template <typename E>
@@ -182,6 +182,3 @@ namespace celeritas
         return is;
     }
 }
-
-
- 
