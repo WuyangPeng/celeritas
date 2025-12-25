@@ -28,7 +28,7 @@ namespace
 
         static void init_item_config()
         {
-            const auto tables = std::make_shared<celeritas::config::Tables>();
+            const auto tables = std::make_shared<celeritas::config::tables>();
             const auto dataMap = const_cast<::luban::HashMap<::luban::int32, ::luban::SharedPtr<celeritas::config::item_config> >*>(&tables->item_config_container.getDataMap());
 
             auto item_config1 = std::make_shared<celeritas::config::item_config>();

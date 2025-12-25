@@ -32,7 +32,7 @@ namespace
 
         static void init_game_config()
         {
-            const auto tables = std::make_shared<celeritas::config::Tables>();
+            const auto tables = std::make_shared<celeritas::config::tables>();
             const auto dataMap = const_cast<::luban::HashMap<celeritas::config::red_dot_type, ::luban::SharedPtr<celeritas::config::red_dot_config> >*>(&tables->red_dot_config_container.getDataMap());
 
             auto red_dot_config = std::make_shared<celeritas::config::red_dot_config>();

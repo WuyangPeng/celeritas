@@ -27,7 +27,7 @@ void celeritas::game_config::set_game_tables(const const_game_tables_shared_ptr&
 
 void celeritas::game_config::load_tables()
 {
-    const auto tables = std::make_shared<config::Tables>();
+    const auto tables = std::make_shared<config::tables>();
     const auto current_path = std::filesystem::current_path();
     const auto bin_directory = current_path / config_path / bin_path;
 
@@ -68,6 +68,6 @@ void celeritas::game_config::load_tables()
 }
 
 celeritas::game_config::game_config()
-    : game_tables_{ std::make_shared<game_tables>(std::make_shared<config::Tables>()) }
+    : game_tables_{ std::make_shared<game_tables>(std::make_shared<config::tables>()) }
 {
 }

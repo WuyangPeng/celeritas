@@ -14,7 +14,7 @@ namespace celeritas
     {
     public:
         using class_type = game_tables;
-        using const_tables_shared_ptr = std::shared_ptr<const config::Tables>;
+        using const_tables_shared_ptr = std::shared_ptr<const config::tables>;
         using sex_type = config::sex_type;
         using red_dot_type = config::red_dot_type;
 
