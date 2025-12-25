@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_SUITE(service_info_suite)
                                                                       { celeritas::server_network_type::http, http_port } };
         constexpr auto start_time = 1234567890;
 
-        const celeritas::service_info info(instance_id, service_name, host, external_host, game_server_id, ports, start_time);
+        const celeritas::service_info info{ instance_id, service_name, host, external_host, game_server_id, ports, start_time };
 
         BOOST_CHECK_EQUAL(info.get_instance_id(), instance_id);
         BOOST_CHECK_EQUAL(info.get_service_name(), service_name);
