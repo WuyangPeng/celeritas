@@ -1240,6 +1240,11 @@ Redis），并提供了连接池管理、数据抽象和命令封装等功能。
     - **作用**：处理重新加载配置数据库的请求。
     - **功能**：接收并处理 `reload_config_db` 消息，触发 `config_manager` 单例从数据库中重新加载指定 `db_name` 和 `id` 的配置信息。
 
+
+* **🔄 重载游戏配置消息处理器 (`reload_game_config_message_handler`)**
+    - **作用**：处理重新加载游戏配置的请求。
+    - **功能**：接收并处理 `reload_game_config_request` 消息，触发 `game_config::load_tables()` 重新加载所有游戏配置表。
+
 ### http handlers（HTTP 处理器）
 
 * **🌐 HTTP健康检查请求处理器 (`health_check_request_http_message_handler`)**
