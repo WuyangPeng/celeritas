@@ -16,8 +16,8 @@ namespace luban
     class ByteBuf
     {
     private:
-        static const int INIT_CAPACITY; // 默认空间
-        static const byte EMPTY_BYTES[1];
+        static constexpr int INIT_CAPACITY = 16; // 默认空间
+        static constexpr byte EMPTY_BYTES[1] = { '\0' };
 
         byte* _data;
         int _beginPos;
@@ -963,7 +963,4 @@ namespace luban
             return num < 10 ? '0' + num : 'A' + num - 10;
         }
     };
-
-    constexpr int ByteBuf::INIT_CAPACITY = 16;
-    constexpr byte ByteBuf::EMPTY_BYTES[1] = { '\0' };
 }

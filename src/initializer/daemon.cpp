@@ -39,15 +39,15 @@ celeritas::daemon::~daemon() noexcept
 
 void celeritas::daemon::stop()
 {
-    std::error_code errorCode{};
-    std::filesystem::remove(pid_file_name_, errorCode);
+    std::error_code error_code{};
+    std::filesystem::remove(pid_file_name_, error_code);
 
-    if (errorCode)
+    if (error_code)
     {
         LOG_CHANNEL(initializer_channel, warning)
         << "⚠️ 警告：无法删除 PID 文件 \"" << pid_file_name_ << "\". "
-        << "错误信息: " << errorCode.message()
-        << " (代码: " << errorCode.value()
-        << ", 类别: " << errorCode.category().name() << ")";
+        << "错误信息: " << error_code.message()
+        << " (代码: " << error_code.value()
+        << ", 类别: " << error_code.category().name() << ")";
     }
 }
