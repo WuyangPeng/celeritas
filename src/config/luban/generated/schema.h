@@ -667,19 +667,19 @@ class tables
     {
         ::luban::ByteBuf buf;
         buf.clear();
-        if (!loader(buf, "surname_config_container_")) return false;
+        if (!loader(buf, "surname_config_container")) return false;
         if (!surname_config_container.load(buf)) return false;
         buf.clear();
-        if (!loader(buf, "name_config_container_")) return false;
+        if (!loader(buf, "name_config_container")) return false;
         if (!name_config_container.load(buf)) return false;
         buf.clear();
-        if (!loader(buf, "red_dot_config_container_")) return false;
+        if (!loader(buf, "red_dot_config_container")) return false;
         if (!red_dot_config_container.load(buf)) return false;
         buf.clear();
-        if (!loader(buf, "item_config_container_")) return false;
+        if (!loader(buf, "item_config_container")) return false;
         if (!item_config_container.load(buf)) return false;
         buf.clear();
-        if (!loader(buf, "develop_config_container_")) return false;
+        if (!loader(buf, "develop_config_container")) return false;
         if (!develop_config_container.load(buf)) return false;
         return true;
     }
