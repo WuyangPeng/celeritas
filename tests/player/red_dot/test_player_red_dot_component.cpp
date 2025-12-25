@@ -33,9 +33,9 @@ namespace
         static void init_game_config()
         {
             const auto tables = std::make_shared<celeritas::config::tables>();
-            const auto dataMap = const_cast<::luban::HashMap<celeritas::config::red_dot_type, ::luban::SharedPtr<celeritas::config::red_dot_config> >*>(&tables->red_dot_config_container.getDataMap());
+            const auto dataMap = const_cast<::luban::HashMap<celeritas::config::red_dot_type, ::luban::SharedPtr<celeritas::config::container::red_dot_config> >*>(&tables->red_dot_config_container.getDataMap());
 
-            auto red_dot_config = std::make_shared<celeritas::config::red_dot_config>();
+            auto red_dot_config = std::make_shared<celeritas::config::container::red_dot_config>();
             red_dot_config->id = celeritas::config::red_dot_type::role;
             red_dot_config->name = "test";
             red_dot_config->parentNodeId = celeritas::config::red_dot_type::none;

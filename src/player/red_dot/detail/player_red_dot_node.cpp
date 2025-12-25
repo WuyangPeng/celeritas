@@ -149,7 +149,7 @@ void celeritas::player_red_dot_node::add_parent_value(const red_dot_node_shared_
     }
 }
 
-void celeritas::player_red_dot_node::init_red_dot_node(const config::red_dot_config_container& container)
+void celeritas::player_red_dot_node::init_red_dot_node(const config::container::red_dot_config_container& container)
 {
     for (const auto& [red_dot_type, red_config] : container.getDataMap())
     {
@@ -157,7 +157,7 @@ void celeritas::player_red_dot_node::init_red_dot_node(const config::red_dot_con
     }
 }
 
-void celeritas::player_red_dot_node::set_red_dot_node_association(const config::red_dot_config_container& container)
+void celeritas::player_red_dot_node::set_red_dot_node_association(const config::container::red_dot_config_container& container)
 {
     for (const auto& element : container.getDataMap() | std::views::values)
     {

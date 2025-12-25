@@ -38,7 +38,7 @@ namespace celeritas
         using id_container = std::vector<int64_t>;
         using template_container = std::map<int, id_container>;
         using position_container = std::vector<int64_t>;
-        using const_item_config_shared_ptr = std::shared_ptr<const config::item_config>;
+        using const_item_config_shared_ptr = std::shared_ptr<const config::container::item_config>;
 
         [[nodiscard]] int get_next_position(bool is_squares) const;
 

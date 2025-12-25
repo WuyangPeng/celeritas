@@ -29,23 +29,23 @@ namespace
         static void init_item_config()
         {
             const auto tables = std::make_shared<celeritas::config::tables>();
-            const auto dataMap = const_cast<::luban::HashMap<::luban::int32, ::luban::SharedPtr<celeritas::config::item_config> >*>(&tables->item_config_container.getDataMap());
+            const auto dataMap = const_cast<::luban::HashMap<::luban::int32, ::luban::SharedPtr<celeritas::config::container::item_config> >*>(&tables->item_config_container.getDataMap());
 
-            auto item_config1 = std::make_shared<celeritas::config::item_config>();
+            auto item_config1 = std::make_shared<celeritas::config::container::item_config>();
             item_config1->itemTemplateId = 1001;
             item_config1->itemType = static_cast<int>(celeritas::config::item_type::custom);
             item_config1->stacked = 100;
             item_config1->squares = false;
             dataMap->emplace(item_config1->itemTemplateId, item_config1);
 
-            auto item_config2 = std::make_shared<celeritas::config::item_config>();
+            auto item_config2 = std::make_shared<celeritas::config::container::item_config>();
             item_config2->itemTemplateId = 1002;
             item_config2->itemType = static_cast<int>(celeritas::config::item_type::equipment);
             item_config2->stacked = 1;
             item_config2->squares = false;
             dataMap->emplace(item_config2->itemTemplateId, item_config2);
 
-            auto item_config3 = std::make_shared<celeritas::config::item_config>();
+            auto item_config3 = std::make_shared<celeritas::config::container::item_config>();
             item_config3->itemTemplateId = 1003;
             item_config3->itemType = static_cast<int>(celeritas::config::item_type::equipment);
             item_config3->stacked = 1;

@@ -12,7 +12,7 @@
 namespace celeritas {namespace config {
 
 
-bool develop_config::deserialize(::luban::ByteBuf& _buf)
+bool container::develop_config::deserialize(::luban::ByteBuf& _buf)
 {
 
     if(!_buf.readInt(id)) return false;
@@ -24,9 +24,9 @@ bool develop_config::deserialize(::luban::ByteBuf& _buf)
     return true;
 }
 
-bool develop_config::deserializedevelop_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<develop_config>& _out)
+bool container::develop_config::deserializedevelop_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<container::develop_config>& _out)
 {
-    _out.reset(LUBAN_NEW(develop_config));
+    _out.reset(LUBAN_NEW(container::develop_config));
     if (_out->deserialize(_buf))
     {
         return true;
@@ -39,7 +39,7 @@ bool develop_config::deserializedevelop_config(::luban::ByteBuf& _buf, ::luban::
 }
 
 
-bool item_config::deserialize(::luban::ByteBuf& _buf)
+bool container::item_config::deserialize(::luban::ByteBuf& _buf)
 {
 
     if(!_buf.readInt(itemTemplateId)) return false;
@@ -50,9 +50,9 @@ bool item_config::deserialize(::luban::ByteBuf& _buf)
     return true;
 }
 
-bool item_config::deserializeitem_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<item_config>& _out)
+bool container::item_config::deserializeitem_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<container::item_config>& _out)
 {
-    _out.reset(LUBAN_NEW(item_config));
+    _out.reset(LUBAN_NEW(container::item_config));
     if (_out->deserialize(_buf))
     {
         return true;
@@ -65,7 +65,7 @@ bool item_config::deserializeitem_config(::luban::ByteBuf& _buf, ::luban::Shared
 }
 
 
-bool name_config::deserialize(::luban::ByteBuf& _buf)
+bool container::name_config::deserialize(::luban::ByteBuf& _buf)
 {
 
     if(!_buf.readInt(id)) return false;
@@ -76,9 +76,9 @@ bool name_config::deserialize(::luban::ByteBuf& _buf)
     return true;
 }
 
-bool name_config::deserializename_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<name_config>& _out)
+bool container::name_config::deserializename_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<container::name_config>& _out)
 {
-    _out.reset(LUBAN_NEW(name_config));
+    _out.reset(LUBAN_NEW(container::name_config));
     if (_out->deserialize(_buf))
     {
         return true;
@@ -91,7 +91,7 @@ bool name_config::deserializename_config(::luban::ByteBuf& _buf, ::luban::Shared
 }
 
 
-bool red_dot_config::deserialize(::luban::ByteBuf& _buf)
+bool container::red_dot_config::deserialize(::luban::ByteBuf& _buf)
 {
 
     {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; id = red_dot_type(__enum_temp__); }
@@ -103,9 +103,9 @@ bool red_dot_config::deserialize(::luban::ByteBuf& _buf)
     return true;
 }
 
-bool red_dot_config::deserializered_dot_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<red_dot_config>& _out)
+bool container::red_dot_config::deserializered_dot_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<container::red_dot_config>& _out)
 {
-    _out.reset(LUBAN_NEW(red_dot_config));
+    _out.reset(LUBAN_NEW(container::red_dot_config));
     if (_out->deserialize(_buf))
     {
         return true;
@@ -118,7 +118,7 @@ bool red_dot_config::deserializered_dot_config(::luban::ByteBuf& _buf, ::luban::
 }
 
 
-bool surname_config::deserialize(::luban::ByteBuf& _buf)
+bool container::surname_config::deserialize(::luban::ByteBuf& _buf)
 {
 
     if(!_buf.readInt(id)) return false;
@@ -128,9 +128,9 @@ bool surname_config::deserialize(::luban::ByteBuf& _buf)
     return true;
 }
 
-bool surname_config::deserializesurname_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<surname_config>& _out)
+bool container::surname_config::deserializesurname_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<container::surname_config>& _out)
 {
-    _out.reset(LUBAN_NEW(surname_config));
+    _out.reset(LUBAN_NEW(container::surname_config));
     if (_out->deserialize(_buf))
     {
         return true;

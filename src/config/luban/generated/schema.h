@@ -163,14 +163,14 @@ namespace celeritas {namespace config {
  
 
 
- struct develop_config; 
- struct item_config; 
- struct name_config; 
- struct red_dot_config; 
- struct surname_config; 
+namespace container { struct develop_config; }
+namespace container { struct item_config; }
+namespace container { struct name_config; }
+namespace container { struct red_dot_config; }
+namespace container { struct surname_config; }
 namespace test { struct bean; }
 
-
+namespace container {
 
 struct develop_config : public luban::CfgBean 
 {
@@ -189,14 +189,14 @@ struct develop_config : public luban::CfgBean
     ::luban::int32 maxLevel;
     develop_reset_type developResetType;
 
-    static constexpr int __ID__ = -1169420444;
+    static constexpr int __ID__ = -562616207;
 
     int getTypeId() const override { return __ID__; }
 };
 
+}
 
-
-
+namespace container {
 
 struct item_config : public luban::CfgBean 
 {
@@ -223,14 +223,14 @@ struct item_config : public luban::CfgBean
      */
     bool squares;
 
-    static constexpr int __ID__ = -844891666;
+    static constexpr int __ID__ = -209370111;
 
     int getTypeId() const override { return __ID__; }
 };
 
+}
 
-
-
+namespace container {
 
 struct name_config : public luban::CfgBean 
 {
@@ -257,14 +257,14 @@ struct name_config : public luban::CfgBean
      */
     ::luban::int32 weight;
 
-    static constexpr int __ID__ = -138271882;
+    static constexpr int __ID__ = 497249673;
 
     int getTypeId() const override { return __ID__; }
 };
 
+}
 
-
-
+namespace container {
 
 struct red_dot_config : public luban::CfgBean 
 {
@@ -295,14 +295,14 @@ struct red_dot_config : public luban::CfgBean
      */
     bool saveDatabase;
 
-    static constexpr int __ID__ = 164392806;
+    static constexpr int __ID__ = 771197043;
 
     int getTypeId() const override { return __ID__; }
 };
 
+}
 
-
-
+namespace container {
 
 struct surname_config : public luban::CfgBean 
 {
@@ -325,12 +325,12 @@ struct surname_config : public luban::CfgBean
      */
     ::luban::int32 weight;
 
-    static constexpr int __ID__ = -580824282;
+    static constexpr int __ID__ = 25979955;
 
     int getTypeId() const override { return __ID__; }
 };
 
-
+}
 
 namespace test {
 
@@ -369,14 +369,14 @@ struct bean : public luban::CfgBean
 
 }
 
-
+namespace container {
 
 
 class surname_config_container
 {
     private:
-    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<surname_config>> _dataMap;
-    ::luban::Vector<::luban::SharedPtr<surname_config>> _dataList;
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<container::surname_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<container::surname_config>> _dataList;
     
     public:
     bool load(::luban::ByteBuf& _buf)
@@ -385,18 +385,18 @@ class surname_config_container
         if (!_buf.readSize(n)) return false;
         for(; n > 0 ; --n)
         {
-            ::luban::SharedPtr<surname_config> _v;
-            if(!surname_config::deserializesurname_config(_buf, _v)) return false;
+            ::luban::SharedPtr<container::surname_config> _v;
+            if(!container::surname_config::deserializesurname_config(_buf, _v)) return false;
             _dataList.push_back(_v);
             _dataMap[_v->id] = _v;
         }
         return true;
     }
 
-    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<surname_config>>& getDataMap() const { return _dataMap; }
-    const ::luban::Vector<::luban::SharedPtr<surname_config>>& getDataList() const { return _dataList; }
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<container::surname_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<container::surname_config>>& getDataList() const { return _dataList; }
 
-    std::optional<surname_config*> getRaw(::luban::int32 key) const
+    std::optional<container::surname_config*> getRaw(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -409,7 +409,7 @@ class surname_config_container
         }
     }
 
-    std::optional<::luban::SharedPtr<surname_config>> get(::luban::int32 key) const
+    std::optional<::luban::SharedPtr<container::surname_config>> get(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -424,16 +424,16 @@ class surname_config_container
 
 };
 
+}
 
-
-
+namespace container {
 
 
 class name_config_container
 {
     private:
-    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<name_config>> _dataMap;
-    ::luban::Vector<::luban::SharedPtr<name_config>> _dataList;
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<container::name_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<container::name_config>> _dataList;
     
     public:
     bool load(::luban::ByteBuf& _buf)
@@ -442,18 +442,18 @@ class name_config_container
         if (!_buf.readSize(n)) return false;
         for(; n > 0 ; --n)
         {
-            ::luban::SharedPtr<name_config> _v;
-            if(!name_config::deserializename_config(_buf, _v)) return false;
+            ::luban::SharedPtr<container::name_config> _v;
+            if(!container::name_config::deserializename_config(_buf, _v)) return false;
             _dataList.push_back(_v);
             _dataMap[_v->id] = _v;
         }
         return true;
     }
 
-    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<name_config>>& getDataMap() const { return _dataMap; }
-    const ::luban::Vector<::luban::SharedPtr<name_config>>& getDataList() const { return _dataList; }
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<container::name_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<container::name_config>>& getDataList() const { return _dataList; }
 
-    std::optional<name_config*> getRaw(::luban::int32 key) const
+    std::optional<container::name_config*> getRaw(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -466,7 +466,7 @@ class name_config_container
         }
     }
 
-    std::optional<::luban::SharedPtr<name_config>> get(::luban::int32 key) const
+    std::optional<::luban::SharedPtr<container::name_config>> get(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -481,16 +481,16 @@ class name_config_container
 
 };
 
+}
 
-
-
+namespace container {
 
 
 class red_dot_config_container
 {
     private:
-    ::luban::HashMap<red_dot_type, ::luban::SharedPtr<red_dot_config>> _dataMap;
-    ::luban::Vector<::luban::SharedPtr<red_dot_config>> _dataList;
+    ::luban::HashMap<red_dot_type, ::luban::SharedPtr<container::red_dot_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<container::red_dot_config>> _dataList;
     
     public:
     bool load(::luban::ByteBuf& _buf)
@@ -499,18 +499,18 @@ class red_dot_config_container
         if (!_buf.readSize(n)) return false;
         for(; n > 0 ; --n)
         {
-            ::luban::SharedPtr<red_dot_config> _v;
-            if(!red_dot_config::deserializered_dot_config(_buf, _v)) return false;
+            ::luban::SharedPtr<container::red_dot_config> _v;
+            if(!container::red_dot_config::deserializered_dot_config(_buf, _v)) return false;
             _dataList.push_back(_v);
             _dataMap[_v->id] = _v;
         }
         return true;
     }
 
-    const ::luban::HashMap<red_dot_type, ::luban::SharedPtr<red_dot_config>>& getDataMap() const { return _dataMap; }
-    const ::luban::Vector<::luban::SharedPtr<red_dot_config>>& getDataList() const { return _dataList; }
+    const ::luban::HashMap<red_dot_type, ::luban::SharedPtr<container::red_dot_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<container::red_dot_config>>& getDataList() const { return _dataList; }
 
-    std::optional<red_dot_config*> getRaw(red_dot_type key) const
+    std::optional<container::red_dot_config*> getRaw(red_dot_type key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -523,7 +523,7 @@ class red_dot_config_container
         }
     }
 
-    std::optional<::luban::SharedPtr<red_dot_config>> get(red_dot_type key) const
+    std::optional<::luban::SharedPtr<container::red_dot_config>> get(red_dot_type key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -538,16 +538,16 @@ class red_dot_config_container
 
 };
 
+}
 
-
-
+namespace container {
 
 
 class item_config_container
 {
     private:
-    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<item_config>> _dataMap;
-    ::luban::Vector<::luban::SharedPtr<item_config>> _dataList;
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<container::item_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<container::item_config>> _dataList;
     
     public:
     bool load(::luban::ByteBuf& _buf)
@@ -556,18 +556,18 @@ class item_config_container
         if (!_buf.readSize(n)) return false;
         for(; n > 0 ; --n)
         {
-            ::luban::SharedPtr<item_config> _v;
-            if(!item_config::deserializeitem_config(_buf, _v)) return false;
+            ::luban::SharedPtr<container::item_config> _v;
+            if(!container::item_config::deserializeitem_config(_buf, _v)) return false;
             _dataList.push_back(_v);
             _dataMap[_v->itemTemplateId] = _v;
         }
         return true;
     }
 
-    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<item_config>>& getDataMap() const { return _dataMap; }
-    const ::luban::Vector<::luban::SharedPtr<item_config>>& getDataList() const { return _dataList; }
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<container::item_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<container::item_config>>& getDataList() const { return _dataList; }
 
-    std::optional<item_config*> getRaw(::luban::int32 key) const
+    std::optional<container::item_config*> getRaw(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -580,7 +580,7 @@ class item_config_container
         }
     }
 
-    std::optional<::luban::SharedPtr<item_config>> get(::luban::int32 key) const
+    std::optional<::luban::SharedPtr<container::item_config>> get(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -595,16 +595,16 @@ class item_config_container
 
 };
 
+}
 
-
-
+namespace container {
 
 
 class develop_config_container
 {
     private:
-    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<develop_config>> _dataMap;
-    ::luban::Vector<::luban::SharedPtr<develop_config>> _dataList;
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<container::develop_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<container::develop_config>> _dataList;
     
     public:
     bool load(::luban::ByteBuf& _buf)
@@ -613,18 +613,18 @@ class develop_config_container
         if (!_buf.readSize(n)) return false;
         for(; n > 0 ; --n)
         {
-            ::luban::SharedPtr<develop_config> _v;
-            if(!develop_config::deserializedevelop_config(_buf, _v)) return false;
+            ::luban::SharedPtr<container::develop_config> _v;
+            if(!container::develop_config::deserializedevelop_config(_buf, _v)) return false;
             _dataList.push_back(_v);
             _dataMap[_v->id] = _v;
         }
         return true;
     }
 
-    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<develop_config>>& getDataMap() const { return _dataMap; }
-    const ::luban::Vector<::luban::SharedPtr<develop_config>>& getDataList() const { return _dataList; }
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<container::develop_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<container::develop_config>>& getDataList() const { return _dataList; }
 
-    std::optional<develop_config*> getRaw(::luban::int32 key) const
+    std::optional<container::develop_config*> getRaw(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -637,7 +637,7 @@ class develop_config_container
         }
     }
 
-    std::optional<::luban::SharedPtr<develop_config>> get(::luban::int32 key) const
+    std::optional<::luban::SharedPtr<container::develop_config>> get(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -652,16 +652,16 @@ class develop_config_container
 
 };
 
-
+}
 
 class tables
 {
     public:
-     surname_config_container surname_config_container;
-     name_config_container name_config_container;
-     red_dot_config_container red_dot_config_container;
-     item_config_container item_config_container;
-     develop_config_container develop_config_container;
+     container::surname_config_container surname_config_container;
+     container::name_config_container name_config_container;
+     container::red_dot_config_container red_dot_config_container;
+     container::item_config_container item_config_container;
+     container::develop_config_container develop_config_container;
 
     bool load(::luban::Loader<::luban::ByteBuf> loader)
     {

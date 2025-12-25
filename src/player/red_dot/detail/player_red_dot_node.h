@@ -32,8 +32,8 @@ namespace celeritas
     private:
         using red_dot_node_shared_ptr = std::shared_ptr<red_dot_node>;
         using red_dot_node_container = std::map<red_dot_type, red_dot_node_shared_ptr>;
-        using red_container_type = container_config<config::red_dot_config, red_dot_type>::container;
-        using const_red_dot_config_shared_ptr = std::shared_ptr<const config::red_dot_config>;
+        using red_container_type = container_config<config::container::red_dot_config, red_dot_type>::container;
+        using const_red_dot_config_shared_ptr = std::shared_ptr<const config::container::red_dot_config>;
 
         [[nodiscard]] red_dot_node_shared_ptr get_child_red_dot(red_dot_type red_dot_type) const;
 
@@ -43,9 +43,9 @@ namespace celeritas
 
         static void add_parent_value(const red_dot_node_shared_ptr& red_dot_node, int value);
 
-        void init_red_dot_node(const config::red_dot_config_container& container);
+        void init_red_dot_node(const config::container::red_dot_config_container& container);
 
-        void set_red_dot_node_association(const config::red_dot_config_container& container);
+        void set_red_dot_node_association(const config::container::red_dot_config_container& container);
 
         void set_red_dot_node_association(const const_red_dot_config_shared_ptr& red_dot_config);
 
