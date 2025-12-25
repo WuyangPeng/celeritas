@@ -1,5 +1,8 @@
 ﻿#include "game_config.h"
 #include "game_tables.h"
+#include "common/logger.h"
+
+#include <filesystem>
 
 celeritas::game_config& celeritas::game_config::get_instance()
 {
@@ -20,6 +23,48 @@ void celeritas::game_config::set_game_tables(const const_game_tables_shared_ptr&
     std::lock_guard lock{ shared_mutex_ };
 
     game_tables_ = game_tables;
+}
+
+void celeritas::game_config::load_tables()
+{
+    const auto tables = std::make_shared<config::Tables>();
+    const auto current_path = std::filesystem::current_path();
+    const auto bin_directory = current_path / config_path / bin_path;
+
+    auto loader = [&](luban::ByteBuf& buffer, const std::string& bin_file_name) -> bool {
+        const auto full_path = bin_directory.string() + "/" + bin_file_name + ".bytes";
+
+        std::ifstream ifs{ full_path, std::ios::binary | std::ios::ate };
+        if (!ifs.is_open())
+        {
+            throw std::runtime_error("Cannot open config file: " + full_path);
+        }
+
+        const auto size = ifs.tellg();
+        ifs.seekg(0, std::ios::beg);
+
+        std::vector<char> data(size);
+        if (ifs.read(data.data(), size))
+        {
+            buffer.appendBuffer(data.data(), size);
+            return true;
+        }
+
+        return false;
+    };
+
+    try
+    {
+        tables->load(loader);
+
+        const auto game = std::make_shared<game_tables>(tables);
+
+        get_instance().set_game_tables(game);
+    }
+    catch (std::exception& e)
+    {
+        LOG_CHANNEL(config_channel, error) << "load game config error:" << e.what();
+    }
 }
 
 celeritas::game_config::game_config()

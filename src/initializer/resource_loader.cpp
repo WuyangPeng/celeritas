@@ -2,6 +2,7 @@
 #include "resource_loader.h"
 #include "common/logger.h"
 #include "common/random_helper.h"
+#include "config/game_config/game_config.h"
 #include "config/luban/generated/schema.h"
 #include "database/database_pool_manager.h"
 #include "detail/buffer_pool_timer.h"
@@ -339,38 +340,5 @@ void celeritas::resource_loader::initialize_game_config()
         return;
     }
 
-    const auto tables = std::make_unique<config::Tables>();
-    const auto current_path = std::filesystem::current_path();
-    const auto bin_directory = current_path / config_path / bin_path;
-
-    auto loader = [&](luban::ByteBuf& buffer, const std::string& bin_file_name) -> bool {
-        const auto full_path = bin_directory.string() + "/" + bin_file_name + ".bytes";
-
-        std::ifstream ifs{ full_path, std::ios::binary | std::ios::ate };
-        if (!ifs.is_open())
-        {
-            throw std::runtime_error("Cannot open config file: " + full_path);
-        }
-
-        const auto size = ifs.tellg();
-        ifs.seekg(0, std::ios::beg);
-
-        std::vector<char> data(size);
-        if (ifs.read(data.data(), size))
-        {
-            buffer.appendBuffer(data.data(), size);
-            return true;
-        }
-
-        return false;
-    };
-
-    try
-    {
-        tables->load(loader);
-    }
-    catch (std::exception& e)
-    {
-        LOG_CHANNEL(initializer_channel, error) << "initialize game config error:" << e.what();
-    }
+    game_config::load_tables();
 }

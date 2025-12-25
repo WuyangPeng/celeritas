@@ -20,6 +20,8 @@ namespace celeritas
 
         void set_game_tables(const const_game_tables_shared_ptr& game_tables);
 
+        static void load_tables();
+
     private:
         game_config();
 

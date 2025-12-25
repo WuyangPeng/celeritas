@@ -11,6 +11,13 @@ message reload_config_db_request {
 message reload_config_db_response {
 }
 
+// 重载游戏数据库
+message reload_game_config_request {
+}
+
+message reload_game_config_response {
+}
+
 message service_login_request {
     int64 account_id = 1;
     bool new_account = 2;
@@ -33,14 +40,16 @@ message service_login_response {
 message service_player_request {
   oneof payload {
     reload_config_db_request reload_config_db = 1;
-    service_login_request service_login = 2;
+    reload_game_config_request reload_game_config = 2;
+    service_login_request service_login = 3;
   }
 }
 
 message service_player_response {
   oneof payload {
     reload_config_db_response reload_config_db = 1;
-    service_login_response service_login = 2;
+    reload_game_config_response reload_game_config = 2;
+    service_login_response service_login = 3;
   }
 }
 

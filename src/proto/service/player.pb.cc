@@ -97,6 +97,42 @@ struct service_login_requestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 service_login_requestDefaultTypeInternal _service_login_request_default_instance_;
 template <typename>
+PROTOBUF_CONSTEXPR reload_game_config_response::reload_game_config_response(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(reload_game_config_response_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct reload_game_config_responseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR reload_game_config_responseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~reload_game_config_responseDefaultTypeInternal() {}
+  union {
+    reload_game_config_response _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 reload_game_config_responseDefaultTypeInternal _reload_game_config_response_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR reload_game_config_request::reload_game_config_request(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(reload_game_config_request_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct reload_game_config_requestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR reload_game_config_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~reload_game_config_requestDefaultTypeInternal() {}
+  union {
+    reload_game_config_request _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 reload_game_config_requestDefaultTypeInternal _reload_game_config_request_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR reload_config_db_response::reload_config_db_response(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::internal::ZeroFieldsBase(reload_config_db_response_class_data_.base()){}
@@ -212,6 +248,8 @@ const ::uint32_t
         0,
         1,
         0x000, // bitmap
+        0x000, // bitmap
+        0x000, // bitmap
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_._has_bits_),
         12, // hasbit index offset
@@ -249,8 +287,10 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_response, _impl_._oneof_case_[0]),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_response, _impl_.payload_),
@@ -260,14 +300,18 @@ static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::celeritas::proto::service::reload_config_db_request)},
         {7, sizeof(::celeritas::proto::service::reload_config_db_response)},
-        {8, sizeof(::celeritas::proto::service::service_login_request)},
-        {29, sizeof(::celeritas::proto::service::service_login_response)},
-        {40, sizeof(::celeritas::proto::service::service_player_request)},
-        {45, sizeof(::celeritas::proto::service::service_player_response)},
+        {8, sizeof(::celeritas::proto::service::reload_game_config_request)},
+        {9, sizeof(::celeritas::proto::service::reload_game_config_response)},
+        {10, sizeof(::celeritas::proto::service::service_login_request)},
+        {31, sizeof(::celeritas::proto::service::service_login_response)},
+        {42, sizeof(::celeritas::proto::service::service_player_request)},
+        {48, sizeof(::celeritas::proto::service::service_player_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::service::_reload_config_db_request_default_instance_._instance,
     &::celeritas::proto::service::_reload_config_db_response_default_instance_._instance,
+    &::celeritas::proto::service::_reload_game_config_request_default_instance_._instance,
+    &::celeritas::proto::service::_reload_game_config_response_default_instance_._instance,
     &::celeritas::proto::service::_service_login_request_default_instance_._instance,
     &::celeritas::proto::service::_service_login_response_default_instance_._instance,
     &::celeritas::proto::service::_service_player_request_default_instance_._instance,
@@ -278,37 +322,43 @@ const char descriptor_table_protodef_proto_2fservice_2fplayer_2eproto[] ABSL_ATT
     "\n\032proto/service/player.proto\022\027celeritas."
     "proto.service\"7\n\030reload_config_db_reques"
     "t\022\017\n\007db_name\030\001 \001(\t\022\n\n\002id\030\002 \001(\003\"\033\n\031reload"
-    "_config_db_response\"\333\001\n\025service_login_re"
-    "quest\022\022\n\naccount_id\030\001 \001(\003\022\023\n\013new_account"
-    "\030\002 \001(\010\022\027\n\017account_bind_id\030\003 \001(\003\022\032\n\022new_g"
-    "ame_server_id\030\004 \001(\010\022\026\n\016game_server_id\030\005 "
-    "\001(\t\022\021\n\tdevice_id\030\006 \001(\t\022\023\n\013app_version\030\007 "
-    "\001(\t\022\022\n\nsession_id\030\010 \001(\003\022\020\n\010protocol\030\t \001("
-    "\005\"i\n\026service_login_response\022\024\n\014current_t"
-    "ime\030\001 \001(\003\022\022\n\nsession_id\030\002 \001(\003\022\020\n\010protoco"
-    "l\030\003 \001(\005\022\023\n\013instance_id\030\004 \001(\t\"\273\001\n\026service"
-    "_player_request\022M\n\020reload_config_db\030\001 \001("
-    "\01321.celeritas.proto.service.reload_confi"
-    "g_db_requestH\000\022G\n\rservice_login\030\002 \001(\0132.."
-    "celeritas.proto.service.service_login_re"
-    "questH\000B\t\n\007payload\"\276\001\n\027service_player_re"
-    "sponse\022N\n\020reload_config_db\030\001 \001(\01322.celer"
-    "itas.proto.service.reload_config_db_resp"
-    "onseH\000\022H\n\rservice_login\030\002 \001(\0132/.celerita"
-    "s.proto.service.service_login_responseH\000"
-    "B\t\n\007payloadb\006proto3"
+    "_config_db_response\"\034\n\032reload_game_confi"
+    "g_request\"\035\n\033reload_game_config_response"
+    "\"\333\001\n\025service_login_request\022\022\n\naccount_id"
+    "\030\001 \001(\003\022\023\n\013new_account\030\002 \001(\010\022\027\n\017account_b"
+    "ind_id\030\003 \001(\003\022\032\n\022new_game_server_id\030\004 \001(\010"
+    "\022\026\n\016game_server_id\030\005 \001(\t\022\021\n\tdevice_id\030\006 "
+    "\001(\t\022\023\n\013app_version\030\007 \001(\t\022\022\n\nsession_id\030\010"
+    " \001(\003\022\020\n\010protocol\030\t \001(\005\"i\n\026service_login_"
+    "response\022\024\n\014current_time\030\001 \001(\003\022\022\n\nsessio"
+    "n_id\030\002 \001(\003\022\020\n\010protocol\030\003 \001(\005\022\023\n\013instance"
+    "_id\030\004 \001(\t\"\216\002\n\026service_player_request\022M\n\020"
+    "reload_config_db\030\001 \001(\01321.celeritas.proto"
+    ".service.reload_config_db_requestH\000\022Q\n\022r"
+    "eload_game_config\030\002 \001(\01323.celeritas.prot"
+    "o.service.reload_game_config_requestH\000\022G"
+    "\n\rservice_login\030\003 \001(\0132..celeritas.proto."
+    "service.service_login_requestH\000B\t\n\007paylo"
+    "ad\"\222\002\n\027service_player_response\022N\n\020reload"
+    "_config_db\030\001 \001(\01322.celeritas.proto.servi"
+    "ce.reload_config_db_responseH\000\022R\n\022reload"
+    "_game_config\030\002 \001(\01324.celeritas.proto.ser"
+    "vice.reload_game_config_responseH\000\022H\n\rse"
+    "rvice_login\030\003 \001(\0132/.celeritas.proto.serv"
+    "ice.service_login_responseH\000B\t\n\007payloadb"
+    "\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fservice_2fplayer_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fplayer_2eproto = {
     false,
     false,
-    859,
+    1087,
     descriptor_table_protodef_proto_2fservice_2fplayer_2eproto,
     "proto/service/player.proto",
     &descriptor_table_proto_2fservice_2fplayer_2eproto_once,
     nullptr,
     0,
-    6,
+    8,
     schemas,
     file_default_instances,
     TableStruct_proto_2fservice_2fplayer_2eproto::offsets,
@@ -728,6 +778,224 @@ reload_config_db_response::_table_ = {
 
 
 ::google::protobuf::Metadata reload_config_db_response::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class reload_game_config_request::_Internal {
+ public:
+};
+
+reload_game_config_request::reload_game_config_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, reload_game_config_request_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.reload_game_config_request)
+}
+reload_game_config_request::reload_game_config_request(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const reload_game_config_request& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, reload_game_config_request_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  reload_game_config_request* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.reload_game_config_request)
+}
+
+inline void* PROTOBUF_NONNULL reload_game_config_request::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) reload_game_config_request(arena);
+}
+constexpr auto reload_game_config_request::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(reload_game_config_request),
+                                            alignof(reload_game_config_request));
+}
+constexpr auto reload_game_config_request::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_reload_game_config_request_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &reload_game_config_request::MergeImpl,
+          ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<reload_game_config_request>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &reload_game_config_request::SharedDtor,
+          ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<reload_game_config_request>(), &reload_game_config_request::ByteSizeLong,
+              &reload_game_config_request::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(reload_game_config_request, _impl_._cached_size_),
+          false,
+      },
+      &reload_game_config_request::kDescriptorMethods,
+      &descriptor_table_proto_2fservice_2fplayer_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull reload_game_config_request_class_data_ =
+        reload_game_config_request::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+reload_game_config_request::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&reload_game_config_request_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(reload_game_config_request_class_data_.tc_table);
+  return reload_game_config_request_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
+reload_game_config_request::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    reload_game_config_request_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_game_config_request>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+::google::protobuf::Metadata reload_game_config_request::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class reload_game_config_response::_Internal {
+ public:
+};
+
+reload_game_config_response::reload_game_config_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, reload_game_config_response_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.reload_game_config_response)
+}
+reload_game_config_response::reload_game_config_response(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const reload_game_config_response& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, reload_game_config_response_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  reload_game_config_response* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.reload_game_config_response)
+}
+
+inline void* PROTOBUF_NONNULL reload_game_config_response::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) reload_game_config_response(arena);
+}
+constexpr auto reload_game_config_response::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(reload_game_config_response),
+                                            alignof(reload_game_config_response));
+}
+constexpr auto reload_game_config_response::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_reload_game_config_response_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &reload_game_config_response::MergeImpl,
+          ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<reload_game_config_response>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &reload_game_config_response::SharedDtor,
+          ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<reload_game_config_response>(), &reload_game_config_response::ByteSizeLong,
+              &reload_game_config_response::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(reload_game_config_response, _impl_._cached_size_),
+          false,
+      },
+      &reload_game_config_response::kDescriptorMethods,
+      &descriptor_table_proto_2fservice_2fplayer_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull reload_game_config_response_class_data_ =
+        reload_game_config_response::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+reload_game_config_response::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&reload_game_config_response_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(reload_game_config_response_class_data_.tc_table);
+  return reload_game_config_response_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
+reload_game_config_response::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    reload_game_config_response_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_game_config_response>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+::google::protobuf::Metadata reload_game_config_response::GetMetadata() const {
   return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
@@ -1667,6 +1935,19 @@ void service_player_request::set_allocated_reload_config_db(::celeritas::proto::
   }
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_player_request.reload_config_db)
 }
+void service_player_request::set_allocated_reload_game_config(::celeritas::proto::service::reload_game_config_request* PROTOBUF_NULLABLE reload_game_config) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (reload_game_config) {
+    ::google::protobuf::Arena* submessage_arena = reload_game_config->GetArena();
+    if (message_arena != submessage_arena) {
+      reload_game_config = ::google::protobuf::internal::GetOwnedMessage(message_arena, reload_game_config, submessage_arena);
+    }
+    set_has_reload_game_config();
+    _impl_.payload_.reload_game_config_ = reload_game_config;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_player_request.reload_game_config)
+}
 void service_player_request::set_allocated_service_login(::celeritas::proto::service::service_login_request* PROTOBUF_NULLABLE service_login) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
@@ -1716,6 +1997,9 @@ service_player_request::service_player_request(
       case kReloadConfigDb:
         _impl_.payload_.reload_config_db_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.reload_config_db_);
         break;
+      case kReloadGameConfig:
+        _impl_.payload_.reload_game_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.reload_game_config_);
+        break;
       case kServiceLogin:
         _impl_.payload_.service_login_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.service_login_);
         break;
@@ -1759,6 +2043,14 @@ void service_player_request::clear_payload() {
         delete _impl_.payload_.reload_config_db_;
       } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
         ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.reload_config_db_);
+      }
+      break;
+    }
+    case kReloadGameConfig: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.reload_game_config_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.reload_game_config_);
       }
       break;
     }
@@ -1821,17 +2113,17 @@ service_player_request::GetClassData() const {
   return service_player_request_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 2, 2, 0, 2>
+const ::_pbi::TcParseTable<0, 3, 3, 0, 2>
 service_player_request::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 0,  // max_field_number, fast_idx_mask
+    3, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
-    2,  // num_aux_entries
+    3,  // num_field_entries
+    3,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     service_player_request_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -1846,11 +2138,14 @@ service_player_request::_table_ = {
   }}, {{
     // .celeritas.proto.service.reload_config_db_request reload_config_db = 1;
     {PROTOBUF_FIELD_OFFSET(service_player_request, _impl_.payload_.reload_config_db_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .celeritas.proto.service.service_login_request service_login = 2;
-    {PROTOBUF_FIELD_OFFSET(service_player_request, _impl_.payload_.service_login_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.service.reload_game_config_request reload_game_config = 2;
+    {PROTOBUF_FIELD_OFFSET(service_player_request, _impl_.payload_.reload_game_config_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.service.service_login_request service_login = 3;
+    {PROTOBUF_FIELD_OFFSET(service_player_request, _impl_.payload_.service_login_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_config_db_request>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_game_config_request>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_login_request>()},
   }},
   {{
@@ -1892,9 +2187,15 @@ PROTOBUF_NOINLINE void service_player_request::Clear() {
           stream);
       break;
     }
+    case kReloadGameConfig: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          2, *this_._impl_.payload_.reload_game_config_, this_._impl_.payload_.reload_game_config_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     case kServiceLogin: {
       target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          2, *this_._impl_.payload_.service_login_, this_._impl_.payload_.service_login_->GetCachedSize(), target,
+          3, *this_._impl_.payload_.service_login_, this_._impl_.payload_.service_login_->GetCachedSize(), target,
           stream);
       break;
     }
@@ -1931,7 +2232,13 @@ PROTOBUF_NOINLINE void service_player_request::Clear() {
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.reload_config_db_);
       break;
     }
-    // .celeritas.proto.service.service_login_request service_login = 2;
+    // .celeritas.proto.service.reload_game_config_request reload_game_config = 2;
+    case kReloadGameConfig: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.reload_game_config_);
+      break;
+    }
+    // .celeritas.proto.service.service_login_request service_login = 3;
     case kServiceLogin: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.service_login_);
@@ -1973,6 +2280,14 @@ void service_player_request::MergeImpl(::google::protobuf::MessageLite& to_msg, 
           _this->_impl_.payload_.reload_config_db_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.reload_config_db_);
         } else {
           _this->_impl_.payload_.reload_config_db_->MergeFrom(*from._impl_.payload_.reload_config_db_);
+        }
+        break;
+      }
+      case kReloadGameConfig: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.reload_game_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.reload_game_config_);
+        } else {
+          _this->_impl_.payload_.reload_game_config_->MergeFrom(*from._impl_.payload_.reload_game_config_);
         }
         break;
       }
@@ -2030,6 +2345,19 @@ void service_player_response::set_allocated_reload_config_db(::celeritas::proto:
   }
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_player_response.reload_config_db)
 }
+void service_player_response::set_allocated_reload_game_config(::celeritas::proto::service::reload_game_config_response* PROTOBUF_NULLABLE reload_game_config) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (reload_game_config) {
+    ::google::protobuf::Arena* submessage_arena = reload_game_config->GetArena();
+    if (message_arena != submessage_arena) {
+      reload_game_config = ::google::protobuf::internal::GetOwnedMessage(message_arena, reload_game_config, submessage_arena);
+    }
+    set_has_reload_game_config();
+    _impl_.payload_.reload_game_config_ = reload_game_config;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_player_response.reload_game_config)
+}
 void service_player_response::set_allocated_service_login(::celeritas::proto::service::service_login_response* PROTOBUF_NULLABLE service_login) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
@@ -2079,6 +2407,9 @@ service_player_response::service_player_response(
       case kReloadConfigDb:
         _impl_.payload_.reload_config_db_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.reload_config_db_);
         break;
+      case kReloadGameConfig:
+        _impl_.payload_.reload_game_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.reload_game_config_);
+        break;
       case kServiceLogin:
         _impl_.payload_.service_login_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.service_login_);
         break;
@@ -2122,6 +2453,14 @@ void service_player_response::clear_payload() {
         delete _impl_.payload_.reload_config_db_;
       } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
         ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.reload_config_db_);
+      }
+      break;
+    }
+    case kReloadGameConfig: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.reload_game_config_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.reload_game_config_);
       }
       break;
     }
@@ -2184,17 +2523,17 @@ service_player_response::GetClassData() const {
   return service_player_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 2, 2, 0, 2>
+const ::_pbi::TcParseTable<0, 3, 3, 0, 2>
 service_player_response::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 0,  // max_field_number, fast_idx_mask
+    3, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
-    2,  // num_aux_entries
+    3,  // num_field_entries
+    3,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     service_player_response_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -2209,11 +2548,14 @@ service_player_response::_table_ = {
   }}, {{
     // .celeritas.proto.service.reload_config_db_response reload_config_db = 1;
     {PROTOBUF_FIELD_OFFSET(service_player_response, _impl_.payload_.reload_config_db_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .celeritas.proto.service.service_login_response service_login = 2;
-    {PROTOBUF_FIELD_OFFSET(service_player_response, _impl_.payload_.service_login_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.service.reload_game_config_response reload_game_config = 2;
+    {PROTOBUF_FIELD_OFFSET(service_player_response, _impl_.payload_.reload_game_config_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.service.service_login_response service_login = 3;
+    {PROTOBUF_FIELD_OFFSET(service_player_response, _impl_.payload_.service_login_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_config_db_response>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_game_config_response>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_login_response>()},
   }},
   {{
@@ -2255,9 +2597,15 @@ PROTOBUF_NOINLINE void service_player_response::Clear() {
           stream);
       break;
     }
+    case kReloadGameConfig: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          2, *this_._impl_.payload_.reload_game_config_, this_._impl_.payload_.reload_game_config_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     case kServiceLogin: {
       target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          2, *this_._impl_.payload_.service_login_, this_._impl_.payload_.service_login_->GetCachedSize(), target,
+          3, *this_._impl_.payload_.service_login_, this_._impl_.payload_.service_login_->GetCachedSize(), target,
           stream);
       break;
     }
@@ -2294,7 +2642,13 @@ PROTOBUF_NOINLINE void service_player_response::Clear() {
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.reload_config_db_);
       break;
     }
-    // .celeritas.proto.service.service_login_response service_login = 2;
+    // .celeritas.proto.service.reload_game_config_response reload_game_config = 2;
+    case kReloadGameConfig: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.reload_game_config_);
+      break;
+    }
+    // .celeritas.proto.service.service_login_response service_login = 3;
     case kServiceLogin: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.service_login_);
@@ -2336,6 +2690,14 @@ void service_player_response::MergeImpl(::google::protobuf::MessageLite& to_msg,
           _this->_impl_.payload_.reload_config_db_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.reload_config_db_);
         } else {
           _this->_impl_.payload_.reload_config_db_->MergeFrom(*from._impl_.payload_.reload_config_db_);
+        }
+        break;
+      }
+      case kReloadGameConfig: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.reload_game_config_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.reload_game_config_);
+        } else {
+          _this->_impl_.payload_.reload_game_config_->MergeFrom(*from._impl_.payload_.reload_game_config_);
         }
         break;
       }
