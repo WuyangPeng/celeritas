@@ -19,7 +19,7 @@ celeritas::login_servers::login_servers(http_handle_parameter_shared_ptr handle_
 
 celeritas::auth_service_base::void_awaitable_type celeritas::login_servers::response()
 {
-    login_servers_parameter login_servers_parameter{ get_http_handle_parameter() };
+    const login_servers_parameter login_servers_parameter{ get_http_handle_parameter() };
     if (login_servers_parameter.is_failure())
     {
         co_return co_await write_immediately(login_servers_parameter.get_response());
@@ -36,7 +36,7 @@ celeritas::auth_service_base::void_awaitable_type celeritas::login_servers::resp
         co_return co_await write_immediately(login_servers_response{ game_error_type::token_error });
     }
 
-    session_token session_token{ *optional_session_token };
+    const session_token session_token{ *optional_session_token };
     co_await create_server_role(login_servers_parameter, session_token);
 
     if (login_servers_parameter.is_only_preferred())
@@ -176,7 +176,7 @@ celeritas::auth_service_base::void_awaitable_type celeritas::login_servers::resp
 celeritas::auth_service_base::void_awaitable_type celeritas::login_servers::response_is_all(const login_servers_parameter& login_servers_parameter)
 {
     const auto server_cell_container = server_cell_repository::get_instance().get_server_cell_by_app_id(login_servers_parameter.get_app_id(), login_servers_parameter.get_zone());
-    login_servers_response::container container{};
+    login_servers_response::container_type container{};
     for (const auto& element : server_cell_container)
     {
         container.emplace_back(get_login_server_info(login_servers_parameter, element));

@@ -16,7 +16,7 @@ celeritas::login_servers_response::login_servers_response(const game_error_type 
     LOG_CHANNEL(auth_channel, trace) << "login servers code:" << get_game_error_description(code) << ",message:" << get_message();
 }
 
-celeritas::login_servers_response::login_servers_response(const game_error_type code, std::string message, container login_server_info)
+celeritas::login_servers_response::login_servers_response(const game_error_type code, std::string message, container_type login_server_info)
     : bass_type{ code, std::move(message) }, login_server_info_{ std::move(login_server_info) }
 {
     LOG_CHANNEL(auth_channel, trace) << "login servers code:" << get_game_error_description(code) << ",message:" << get_message();
@@ -34,13 +34,13 @@ celeritas::login_servers_response::login_servers_response(bass_type http_respons
     LOG_CHANNEL(auth_channel, trace) << "login servers code:" << get_game_error_description(get_code()) << ",message:" << get_message();
 }
 
-celeritas::login_servers_response::login_servers_response(bass_type http_response, container login_server_info)
+celeritas::login_servers_response::login_servers_response(bass_type http_response, container_type login_server_info)
     : bass_type{ std::move(http_response) }, login_server_info_{ std::move(login_server_info) }
 {
     LOG_CHANNEL(auth_channel, trace) << "login servers code:" << get_game_error_description(get_code()) << ",message:" << get_message();
 }
 
-celeritas::login_servers_response::container celeritas::login_servers_response::get_login_server_info() const
+celeritas::login_servers_response::container_type celeritas::login_servers_response::get_login_server_info() const
 {
     return login_server_info_;
 }
@@ -60,7 +60,7 @@ celeritas::login_servers_response celeritas::login_servers_response::tag_invoke(
 {
     const auto& object = value.as_object();
     auto http_response = bass_type::tag_invoke(value);
-    auto login_server_info = boost::json::value_to<container>(object.at(login_server_info_description));
+    auto login_server_info = boost::json::value_to<container_type>(object.at(login_server_info_description));
 
     return login_servers_response{ std::move(http_response), std::move(login_server_info) };
 }

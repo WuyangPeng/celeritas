@@ -10,7 +10,7 @@ namespace celeritas
     public:
         using class_type = login_servers_response;
         using bass_type = http_response;
-        using container = std::vector<login_server_info>;
+        using container_type = std::vector<login_server_info>;
 
         login_servers_response() noexcept = default;
 
@@ -18,15 +18,15 @@ namespace celeritas
 
         login_servers_response(game_error_type code, std::string message);
 
-        login_servers_response(game_error_type code, std::string message, container login_server_info);
+        login_servers_response(game_error_type code, std::string message, container_type login_server_info);
 
         login_servers_response(game_error_type code, std::string message, login_server_info login_server_info);
 
         explicit login_servers_response(bass_type http_response);
 
-        login_servers_response(bass_type http_response, container login_server_info);
+        login_servers_response(bass_type http_response, container_type login_server_info);
 
-        [[nodiscard]] container get_login_server_info() const;
+        [[nodiscard]] container_type get_login_server_info() const;
 
         [[nodiscard]] std::string to_json_string() const override;
 
@@ -37,7 +37,7 @@ namespace celeritas
         static constexpr std::string_view login_server_info_description = "login_server_info";
 
     private:
-        container login_server_info_;
+        container_type login_server_info_;
     };
 
     using login_servers_response_tag = boost::json::value_to_tag<login_servers_response>;
