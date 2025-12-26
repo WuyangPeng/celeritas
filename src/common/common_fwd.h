@@ -79,5 +79,5 @@ namespace celeritas
     constexpr auto max_month = 31LL;
     constexpr auto max_month_milliseconds = day_milliseconds * max_month;
 
-    constexpr auto http_request_timestamp_expired = minute_seconds * 5;
+    constexpr auto http_request_timestamp_expired = minute_milliseconds * 5;
 }
