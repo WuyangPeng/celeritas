@@ -37,6 +37,13 @@ ${database_get_define}${database_set_define}${database_modify_define}${database_
     return field_name_container;
 }
 
+const celeritas::database_entity::database_field_container& celeritas::${class_name}::get_mongo_database_field_container()
+{
+    static const database_field_container field_name_container{ ${mongo_database_field} };
+
+    return field_name_container;
+}
+
 celeritas::${class_name}::database_entity_change_const_shared_ptr celeritas::${class_name}::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,

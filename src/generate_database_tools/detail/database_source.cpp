@@ -28,6 +28,7 @@ void celeritas::database_source::generate(const database_attribute& attribute, c
         database_get_define_ += create_database_get_define_content(element, database_template_file);
         database_set_define_ += create_database_set_define_content(element, database_template_file);
         database_field_ += create_database_field_content(index, attribute, element, database_template_file);
+        mongo_database_field_ += create_mongo_database_field_content(index, attribute, element, database_template_file);
         database_add_modify_ += create_database_add_modify_content(index, attribute, element, database_template_file);
 
         ++index;
@@ -67,6 +68,11 @@ const std::string& celeritas::database_source::get_field_init() const noexcept
 const std::string& celeritas::database_source::get_database_field() const noexcept
 {
     return database_field_;
+}
+
+const std::string& celeritas::database_source::get_mongo_database_field() const noexcept
+{
+    return mongo_database_field_;
 }
 
 const std::string& celeritas::database_source::get_database_add_modify() const noexcept
@@ -203,6 +209,30 @@ std::string celeritas::database_source::create_database_field_content(const int 
     }
 
     return database_field_content;
+}
+
+std::string celeritas::database_source::create_mongo_database_field_content(int index, const database_attribute& attribute, const entity_attribute& entity_attribute, const database_template_file& database_template_file)
+{
+    if (index == 0)
+    {
+        auto database_field_content = database_template_file.get_mongo_database_field_content();
+
+        boost::replace_all(database_field_content, "${entity}", entity_attribute.get_entity_name());
+        if (index + 1 == attribute.size())
+        {
+            boost::replace_all(database_field_content, "${field_is_end}", "");
+        }
+        else
+        {
+            boost::replace_all(database_field_content, "${field_is_end}", ",\n");
+        }
+
+        boost::replace_all(database_field_content, "${entity_indent}", "");
+
+        return database_field_content;
+    }
+
+    return create_database_field_content(index, attribute, entity_attribute, database_template_file);
 }
 
 std::string celeritas::database_source::create_database_add_modify_content(const int index, const database_attribute& attribute, const entity_attribute& entity_attribute, const database_template_file& database_template_file)

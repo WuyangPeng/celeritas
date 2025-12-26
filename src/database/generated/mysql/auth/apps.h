@@ -52,6 +52,8 @@ namespace celeritas
 
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
+        [[nodiscard]] static const database_field_container& get_mongo_database_field_container();
+
         [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type);
 
         [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, traits::param_type::int64_type app_id);

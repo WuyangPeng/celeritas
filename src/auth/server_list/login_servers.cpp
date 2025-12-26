@@ -113,7 +113,7 @@ celeritas::login_servers::void_awaitable_type celeritas::login_servers::create_s
     {
         const auto mongo_pool = database_pool_manager::get_instance().get_pool(mongo_auth_db_name.data());
 
-        if (const auto database_entity_change = co_await mongo_pool->select_one(user_server_roles::get_select(database_type::mongo, session_token.get_account_id()), user_server_roles::get_database_field_container()))
+        if (const auto database_entity_change = co_await mongo_pool->select_one(user_server_roles::get_select(database_type::mongo, session_token.get_account_id()), user_server_roles::get_mongo_database_field_container()))
         {
             const user_server_roles user_server_roles{ *database_entity_change };
             for (const auto servers = user_server_roles.get_servers();

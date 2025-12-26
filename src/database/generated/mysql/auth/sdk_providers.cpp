@@ -212,6 +212,21 @@ const celeritas::database_entity::database_field_container& celeritas::sdk_provi
     return field_name_container;
 }
 
+const celeritas::database_entity::database_field_container& celeritas::sdk_providers::get_mongo_database_field_container()
+{
+    static const database_field_container field_name_container{ decltype(sdk_id_)::get_mongo_database_field(),
+                                                                decltype(app_id_)::get_database_field(),
+                                                                decltype(process_type_)::get_database_field(),
+                                                                decltype(provider_name_)::get_database_field(),
+                                                                decltype(base_url_)::get_database_field(),
+                                                                decltype(api_key_)::get_database_field(),
+                                                                decltype(api_secret_)::get_database_field(),
+                                                                decltype(decryption_key_)::get_database_field(),
+                                                                decltype(active_)::get_database_field() };
+
+    return field_name_container;
+}
+
 celeritas::sdk_providers::database_entity_change_const_shared_ptr celeritas::sdk_providers::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,

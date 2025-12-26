@@ -15,6 +15,12 @@ celeritas::database_field celeritas::entity<FieldName, Type, Index>::get_databas
     return database_field{ FieldName, Type, Index };
 }
 
+template <const std::string_view&FieldName, celeritas::database_data_type Type, celeritas::database_index_type Index>
+celeritas::database_field celeritas::entity<FieldName, Type, Index>::get_mongo_database_field() noexcept
+{
+    return database_field{ "_id", Type, Index };
+}
+
 template <const std::string_view& FieldName, celeritas::database_data_type Type, celeritas::database_index_type Index>
 celeritas::entity<FieldName, Type, Index>::entity_type celeritas::entity<FieldName, Type, Index>::get_value() const noexcept(std::is_arithmetic_v<entity_type>)
 {

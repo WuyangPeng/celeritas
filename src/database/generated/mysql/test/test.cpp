@@ -186,6 +186,19 @@ const celeritas::database_entity::database_field_container& celeritas::test::get
     return field_name_container;
 }
 
+const celeritas::database_entity::database_field_container& celeritas::test::get_mongo_database_field_container()
+{
+    static const database_field_container field_name_container{ decltype(user_id_)::get_mongo_database_field(),
+                                                                decltype(chapter_id_)::get_database_field(),
+                                                                decltype(chapter_name_)::get_database_field(),
+                                                                decltype(chance_winning_)::get_database_field(),
+                                                                decltype(winning_)::get_database_field(),
+                                                                decltype(currency_)::get_database_field(),
+                                                                decltype(count_)::get_database_field() };
+
+    return field_name_container;
+}
+
 celeritas::test::database_entity_change_const_shared_ptr celeritas::test::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,

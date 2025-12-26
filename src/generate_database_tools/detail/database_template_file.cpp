@@ -25,6 +25,7 @@ celeritas::database_template_file::database_template_file(std::string template_d
       field_assignment_content_{},
       field_init_content_{},
       database_field_content_{},
+      mongo_database_field_content_{},
       database_add_modify_content_{}
 {
     load_template();
@@ -105,6 +106,11 @@ std::string celeritas::database_template_file::get_database_field_content() cons
     return database_field_content_;
 }
 
+std::string celeritas::database_template_file::get_mongo_database_field_content() const
+{
+    return mongo_database_field_content_;
+}
+
 std::string celeritas::database_template_file::get_database_add_modify_content() const
 {
     return database_add_modify_content_;
@@ -127,6 +133,7 @@ void celeritas::database_template_file::load_template()
     load_template(field_assignment_template_name, field_assignment_content_);
     load_template(field_init_template_name, field_init_content_);
     load_template(database_field_template_name, database_field_content_);
+    load_template(mongo_database_field_template_name, mongo_database_field_content_);
     load_template(database_add_modify_template_name, database_add_modify_content_);
 }
 

@@ -36,6 +36,8 @@ namespace celeritas
 
         [[nodiscard]] static database_field get_database_field() noexcept;
 
+        [[nodiscard]] static database_field get_mongo_database_field() noexcept;
+
         [[nodiscard]] entity_type get_value() const noexcept(std::is_arithmetic_v<entity_type>);
 
         void set_value(boost::call_traits<entity_type>::param_type entity) noexcept(std::is_arithmetic_v<entity_type>);

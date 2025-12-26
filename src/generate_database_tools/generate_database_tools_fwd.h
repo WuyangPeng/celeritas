@@ -35,5 +35,6 @@ namespace celeritas
     constexpr std::string_view field_assignment_template_name{ "field_assignment.txt" };
     constexpr std::string_view field_init_template_name{ "field_init.txt" };
     constexpr std::string_view database_field_template_name{ "database_field.txt" };
+    constexpr std::string_view mongo_database_field_template_name{ "mongo_database_field.txt" };
     constexpr std::string_view database_add_modify_template_name{ "database_add_modify.txt" };
 }

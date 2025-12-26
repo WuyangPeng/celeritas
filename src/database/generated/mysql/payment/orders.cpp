@@ -412,6 +412,31 @@ const celeritas::database_entity::database_field_container& celeritas::orders::g
     return field_name_container;
 }
 
+const celeritas::database_entity::database_field_container& celeritas::orders::get_mongo_database_field_container()
+{
+    static const database_field_container field_name_container{ decltype(id_)::get_mongo_database_field(),
+                                                                decltype(order_id_)::get_database_field(),
+                                                                decltype(account_id_)::get_database_field(),
+                                                                decltype(game_server_id_)::get_database_field(),
+                                                                decltype(role_id_)::get_database_field(),
+                                                                decltype(product_id_)::get_database_field(),
+                                                                decltype(amount_)::get_database_field(),
+                                                                decltype(platform_)::get_database_field(),
+                                                                decltype(transaction_id_)::get_database_field(),
+                                                                decltype(status_)::get_database_field(),
+                                                                decltype(delivery_status_)::get_database_field(),
+                                                                decltype(client_request_id_)::get_database_field(),
+                                                                decltype(retry_count_)::get_database_field(),
+                                                                decltype(create_time_)::get_database_field(),
+                                                                decltype(pay_time_)::get_database_field(),
+                                                                decltype(expire_time_)::get_database_field(),
+                                                                decltype(callback_data_)::get_database_field(),
+                                                                decltype(refund_time_)::get_database_field(),
+                                                                decltype(refund_amount_)::get_database_field() };
+
+    return field_name_container;
+}
+
 celeritas::orders::database_entity_change_const_shared_ptr celeritas::orders::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,

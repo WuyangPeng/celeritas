@@ -85,7 +85,7 @@ celeritas::player_role_component::void_awaitable_type celeritas::player_role_com
     const auto player_user = get_player_state()->get_component<player_user_component>();
     const auto user_id = player_user->get_user_id();
 
-    if (const auto database_entity_change = co_await mongo_player_pool->select_one(user_role::get_select(database_type::mongo, user_id), user_role::get_database_field_container()))
+    if (const auto database_entity_change = co_await mongo_player_pool->select_one(user_role::get_select(database_type::mongo, user_id), user_role::get_mongo_database_field_container()))
     {
         user_role_ = user_role{ *database_entity_change };
     }
@@ -108,7 +108,7 @@ celeritas::player_role_component::void_awaitable_type celeritas::player_role_com
     const auto player_user = get_player_state()->get_component<player_user_component>();
     const auto account_id = player_user->get_account_id();
 
-    if (const auto database_entity_change = co_await mongo_auth_pool->select_one(user_server_roles::get_select(database_type::mongo, account_id), user_server_roles::get_database_field_container()))
+    if (const auto database_entity_change = co_await mongo_auth_pool->select_one(user_server_roles::get_select(database_type::mongo, account_id), user_server_roles::get_mongo_database_field_container()))
     {
         user_server_roles_ = user_server_roles{ *database_entity_change };
     }

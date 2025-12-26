@@ -99,6 +99,15 @@ const celeritas::database_entity::database_field_container& celeritas::email_cod
     return field_name_container;
 }
 
+const celeritas::database_entity::database_field_container& celeritas::email_code::get_mongo_database_field_container()
+{
+    static const database_field_container field_name_container{ decltype(email_)::get_mongo_database_field(),
+                                                                decltype(code_)::get_database_field(),
+                                                                decltype(retry_count_)::get_database_field() };
+
+    return field_name_container;
+}
+
 celeritas::email_code::database_entity_change_const_shared_ptr celeritas::email_code::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,

@@ -72,6 +72,14 @@ const celeritas::database_entity::database_field_container& celeritas::sms_limit
     return field_name_container;
 }
 
+const celeritas::database_entity::database_field_container& celeritas::sms_limit::get_mongo_database_field_container()
+{
+    static const database_field_container field_name_container{ decltype(phone_)::get_mongo_database_field(),
+                                                                decltype(exist_)::get_database_field() };
+
+    return field_name_container;
+}
+
 celeritas::sms_limit::database_entity_change_const_shared_ptr celeritas::sms_limit::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,

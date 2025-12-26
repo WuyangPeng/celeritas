@@ -172,6 +172,19 @@ const celeritas::database_entity::database_field_container& celeritas::apps::get
     return field_name_container;
 }
 
+const celeritas::database_entity::database_field_container& celeritas::apps::get_mongo_database_field_container()
+{
+    static const database_field_container field_name_container{ decltype(app_id_)::get_mongo_database_field(),
+                                                                decltype(game_name_)::get_database_field(),
+                                                                decltype(app_secret_)::get_database_field(),
+                                                                decltype(app_payment_secret_)::get_database_field(),
+                                                                decltype(sms_provider_id_)::get_database_field(),
+                                                                decltype(email_provider_id_)::get_database_field(),
+                                                                decltype(status_)::get_database_field() };
+
+    return field_name_container;
+}
+
 celeritas::apps::database_entity_change_const_shared_ptr celeritas::apps::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
