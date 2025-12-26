@@ -66,7 +66,7 @@ set(LUBAN_DIR "${CMAKE_CURRENT_SOURCE_DIR}/deps/luban")
 include_directories(
         "${CMAKE_CURRENT_SOURCE_DIR}/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/tests"
-        "${CMAKE_CURRENT_SOURCE_DIR}/proto"
+        "data/proto"
         "${BOOST_DIR}"
         "${PROTOBUF_DIR}/include"
         "${MONGO_DIR}/include/"
@@ -150,7 +150,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     # Protobuf 编译
     # 使用 GLOB_RECURSE 递归查找 proto 目录下所有的 .proto 文件
-    file(GLOB_RECURSE PROTO_FILES "${CMAKE_CURRENT_SOURCE_DIR}/proto/*.proto")
+    file(GLOB_RECURSE PROTO_FILES "data/proto/*.proto")
 
     # 自定义输出目录
     set(PROTO_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
@@ -158,7 +158,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     # 遍历你的 .proto 文件，为每个文件生成 C++ 代码
     foreach (proto_file ${PROTO_FILES})
 
-        file(RELATIVE_PATH relative_proto_path "${CMAKE_CURRENT_SOURCE_DIR}" "${proto_file}")
+        file(RELATIVE_PATH relative_proto_path "${CMAKE_CURRENT_SOURCE_DIR}/data" "${proto_file}")
 
         # 替换文件扩展名为 .pb.cc 和 .pb.h
         string(REPLACE ".proto" ".pb.cc" output_cc_path ${relative_proto_path})
@@ -176,7 +176,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
         add_custom_command(
                 OUTPUT ${output_cc} ${output_h}
                 COMMAND ${Protobuf_PROTOC_EXECUTABLE}
-                --proto_path=${CMAKE_CURRENT_SOURCE_DIR} # .proto 文件所在的搜索路径
+                --proto_path=${CMAKE_CURRENT_SOURCE_DIR}/data # .proto 文件所在的搜索路径
                 --cpp_out=${PROTO_OUTPUT_DIR} # C++ 代码输出目录
                 ${proto_file}
                 DEPENDS ${proto_file} # 依赖 .proto 文件
@@ -299,7 +299,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             # 生成 handler
             COMMAND $<TARGET_FILE:generate_handler_tools>
             --process=generate_handler
-            --proto_directory=${CMAKE_CURRENT_SOURCE_DIR}/proto
+            --proto_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/proto
             --output_directory=${HANDLER_GENERATED_DIR}
             --template_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/template/handler
 
