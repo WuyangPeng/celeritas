@@ -121,7 +121,7 @@ start_server() {
 
     echo ">>>> 正在启动: $name ($exe) <<<<"
 
-    # 1. 检查是否已运行
+    # 检查是否已运行
     if [ -f "$pid_file" ]; then
         local pid=$(cat "$pid_file")
         if ps -p "$pid" > /dev/null; then
@@ -133,7 +133,7 @@ start_server() {
         fi
     fi
     
-    # 2. 启动程序
+    # 启动程序
     local exe_basename=$(basename "$exe")
 
     (cd "$server_root_dir" && nohup "./$exe_basename" > "$name.log" 2>&1 &)
@@ -151,7 +151,7 @@ start_server() {
         current_wait=$((current_wait + 1))
     done
 
-    # 3. 检查 PID 文件是否成功创建
+    # 检查 PID 文件是否成功创建
     if [ $success -eq 1 ]; then
         local pid=$(cat "$pid_file")
         echo "✅ 成功启动 $name。pid: $pid"
@@ -205,7 +205,7 @@ declare -a target_list
 get_target_servers target_list
 
 echo "================================================"
-echo "          操作: $action 目标: $target          "
+echo "          操作: $action 目标: $target             "
 echo "================================================"
 
 # 如果是重启操作，先执行停止
@@ -239,5 +239,5 @@ done
 
 echo ""
 echo "================================================"
-echo "          $action 任务完成 ($target)。          "
+echo "          $action 任务完成 ($target)。            "
 echo "================================================"
