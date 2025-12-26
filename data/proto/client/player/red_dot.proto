@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+
+package celeritas.proto.client;
+
+message red_dot_response {
+}
+
+message client_red_dot_response {
+  oneof payload {
+    red_dot_response red_dot = 1;
+  }
+}

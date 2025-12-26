@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+
+package celeritas.proto.client;
+
+message role_response {
+    string name = 1;
+}
+
+message client_role_response {
+  oneof payload {
+    role_response role = 1;
+  }
+}

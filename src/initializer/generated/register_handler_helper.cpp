@@ -19,12 +19,15 @@ void celeritas::register_handler_helper::register_handler() const
     message_registry_->register_handler(std::make_shared<reload_server_cell_db_message_handler>());
     message_registry_->register_handler(std::make_shared<reload_sms_providers_db_message_handler>());
     message_registry_->register_handler(std::make_shared<celeritas_message_handler>());
+    message_registry_->register_handler(std::make_shared<client_item_response_message_handler>());
     message_registry_->register_handler(std::make_shared<client_login_request_message_handler>());
     message_registry_->register_handler(std::make_shared<client_login_response_message_handler>());
     message_registry_->register_handler(std::make_shared<client_player_request_message_handler>());
     message_registry_->register_handler(std::make_shared<client_player_response_message_handler>());
+    message_registry_->register_handler(std::make_shared<client_red_dot_response_message_handler>());
     message_registry_->register_handler(std::make_shared<client_request_message_handler>());
     message_registry_->register_handler(std::make_shared<client_response_message_handler>());
+    message_registry_->register_handler(std::make_shared<client_role_response_message_handler>());
     message_registry_->register_handler(std::make_shared<request_message_handler>());
     message_registry_->register_handler(std::make_shared<response_message_handler>());
     message_registry_->register_handler(std::make_shared<service_auth_request_message_handler>());

@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+
+package celeritas.proto.client;
+
+message item_response {
+}
+
+message client_item_response {
+  oneof payload {
+    item_response item = 1;
+  }
+}

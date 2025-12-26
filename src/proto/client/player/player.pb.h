@@ -31,6 +31,9 @@
 #include "google/protobuf/unknown_field_set.h"
 #include "proto/client/player/login.pb.h"
 #include "proto/client/player/heartbeat.pb.h"
+#include "proto/client/player/role.pb.h"
+#include "proto/client/player/red_dot.pb.h"
+#include "proto/client/player/item.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -140,6 +143,9 @@ class client_player_response final : public ::google::protobuf::Message
   enum PayloadCase {
     kLogin = 1,
     kHeartbeat = 2,
+    kRole = 3,
+    kRedDot = 4,
+    kItem = 5,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 1;
@@ -232,6 +238,9 @@ class client_player_response final : public ::google::protobuf::Message
   enum : int {
     kLoginFieldNumber = 1,
     kHeartbeatFieldNumber = 2,
+    kRoleFieldNumber = 3,
+    kRedDotFieldNumber = 4,
+    kItemFieldNumber = 5,
   };
   // .celeritas.proto.client.client_login_response login = 1;
   bool has_login() const;
@@ -271,6 +280,63 @@ class client_player_response final : public ::google::protobuf::Message
   ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NONNULL _internal_mutable_heartbeat();
 
   public:
+  // .celeritas.proto.client.client_role_response role = 3;
+  bool has_role() const;
+  private:
+  bool _internal_has_role() const;
+
+  public:
+  void clear_role() ;
+  const ::celeritas::proto::client::client_role_response& role() const;
+  [[nodiscard]] ::celeritas::proto::client::client_role_response* PROTOBUF_NULLABLE release_role();
+  ::celeritas::proto::client::client_role_response* PROTOBUF_NONNULL mutable_role();
+  void set_allocated_role(::celeritas::proto::client::client_role_response* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_role(::celeritas::proto::client::client_role_response* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::client_role_response* PROTOBUF_NULLABLE unsafe_arena_release_role();
+
+  private:
+  const ::celeritas::proto::client::client_role_response& _internal_role() const;
+  ::celeritas::proto::client::client_role_response* PROTOBUF_NONNULL _internal_mutable_role();
+
+  public:
+  // .celeritas.proto.client.client_red_dot_response red_dot = 4;
+  bool has_red_dot() const;
+  private:
+  bool _internal_has_red_dot() const;
+
+  public:
+  void clear_red_dot() ;
+  const ::celeritas::proto::client::client_red_dot_response& red_dot() const;
+  [[nodiscard]] ::celeritas::proto::client::client_red_dot_response* PROTOBUF_NULLABLE release_red_dot();
+  ::celeritas::proto::client::client_red_dot_response* PROTOBUF_NONNULL mutable_red_dot();
+  void set_allocated_red_dot(::celeritas::proto::client::client_red_dot_response* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_red_dot(::celeritas::proto::client::client_red_dot_response* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::client_red_dot_response* PROTOBUF_NULLABLE unsafe_arena_release_red_dot();
+
+  private:
+  const ::celeritas::proto::client::client_red_dot_response& _internal_red_dot() const;
+  ::celeritas::proto::client::client_red_dot_response* PROTOBUF_NONNULL _internal_mutable_red_dot();
+
+  public:
+  // .celeritas.proto.client.client_item_response item = 5;
+  bool has_item() const;
+  private:
+  bool _internal_has_item() const;
+
+  public:
+  void clear_item() ;
+  const ::celeritas::proto::client::client_item_response& item() const;
+  [[nodiscard]] ::celeritas::proto::client::client_item_response* PROTOBUF_NULLABLE release_item();
+  ::celeritas::proto::client::client_item_response* PROTOBUF_NONNULL mutable_item();
+  void set_allocated_item(::celeritas::proto::client::client_item_response* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_item(::celeritas::proto::client::client_item_response* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::client_item_response* PROTOBUF_NULLABLE unsafe_arena_release_item();
+
+  private:
+  const ::celeritas::proto::client::client_item_response& _internal_item() const;
+  ::celeritas::proto::client::client_item_response* PROTOBUF_NONNULL _internal_mutable_item();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_player_response)
@@ -278,11 +344,14 @@ class client_player_response final : public ::google::protobuf::Message
   class _Internal;
   void set_has_login();
   void set_has_heartbeat();
+  void set_has_role();
+  void set_has_red_dot();
+  void set_has_item();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 2,
-                                   2, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 5,
+                                   5, 0,
                                    2>
       _table_;
 
@@ -304,8 +373,11 @@ class client_player_response final : public ::google::protobuf::Message
     union PayloadUnion {
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
-      ::celeritas::proto::client::client_login_response* PROTOBUF_NULLABLE login_;
-      ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NULLABLE heartbeat_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE login_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE heartbeat_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE role_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE red_dot_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE item_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -736,7 +808,7 @@ inline ::celeritas::proto::client::client_login_response* PROTOBUF_NULLABLE clie
   // @@protoc_insertion_point(field_release:celeritas.proto.client.client_player_response.login)
   if (payload_case() == kLogin) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.login_;
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_login_response*>(_impl_.payload_.login_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -747,7 +819,7 @@ inline ::celeritas::proto::client::client_login_response* PROTOBUF_NULLABLE clie
   }
 }
 inline const ::celeritas::proto::client::client_login_response& client_player_response::_internal_login() const {
-  return payload_case() == kLogin ? *_impl_.payload_.login_ : reinterpret_cast<::celeritas::proto::client::client_login_response&>(::celeritas::proto::client::_client_login_response_default_instance_);
+  return payload_case() == kLogin ? *reinterpret_cast<::celeritas::proto::client::client_login_response*>(_impl_.payload_.login_) : reinterpret_cast<::celeritas::proto::client::client_login_response&>(::celeritas::proto::client::_client_login_response_default_instance_);
 }
 inline const ::celeritas::proto::client::client_login_response& client_player_response::login() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:celeritas.proto.client.client_player_response.login)
@@ -757,7 +829,7 @@ inline ::celeritas::proto::client::client_login_response* PROTOBUF_NULLABLE clie
   // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_player_response.login)
   if (payload_case() == kLogin) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.login_;
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_login_response*>(_impl_.payload_.login_);
     _impl_.payload_.login_ = nullptr;
     return temp;
   } else {
@@ -772,7 +844,7 @@ inline void client_player_response::unsafe_arena_set_allocated_login(
   clear_payload();
   if (value) {
     set_has_login();
-    _impl_.payload_.login_ = value;
+    _impl_.payload_.login_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_player_response.login)
 }
@@ -780,10 +852,10 @@ inline ::celeritas::proto::client::client_login_response* PROTOBUF_NONNULL clien
   if (payload_case() != kLogin) {
     clear_payload();
     set_has_login();
-    _impl_.payload_.login_ = 
-        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_login_response>(GetArena());
+    _impl_.payload_.login_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_login_response>(GetArena()));
   }
-  return _impl_.payload_.login_;
+  return reinterpret_cast<::celeritas::proto::client::client_login_response*>(_impl_.payload_.login_);
 }
 inline ::celeritas::proto::client::client_login_response* PROTOBUF_NONNULL client_player_response::mutable_login()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -806,7 +878,7 @@ inline ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NULLABLE 
   // @@protoc_insertion_point(field_release:celeritas.proto.client.client_player_response.heartbeat)
   if (payload_case() == kHeartbeat) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.heartbeat_;
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_heartbeat_response*>(_impl_.payload_.heartbeat_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -817,7 +889,7 @@ inline ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NULLABLE 
   }
 }
 inline const ::celeritas::proto::client::client_heartbeat_response& client_player_response::_internal_heartbeat() const {
-  return payload_case() == kHeartbeat ? *_impl_.payload_.heartbeat_ : reinterpret_cast<::celeritas::proto::client::client_heartbeat_response&>(::celeritas::proto::client::_client_heartbeat_response_default_instance_);
+  return payload_case() == kHeartbeat ? *reinterpret_cast<::celeritas::proto::client::client_heartbeat_response*>(_impl_.payload_.heartbeat_) : reinterpret_cast<::celeritas::proto::client::client_heartbeat_response&>(::celeritas::proto::client::_client_heartbeat_response_default_instance_);
 }
 inline const ::celeritas::proto::client::client_heartbeat_response& client_player_response::heartbeat() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:celeritas.proto.client.client_player_response.heartbeat)
@@ -827,7 +899,7 @@ inline ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NULLABLE 
   // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_player_response.heartbeat)
   if (payload_case() == kHeartbeat) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.heartbeat_;
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_heartbeat_response*>(_impl_.payload_.heartbeat_);
     _impl_.payload_.heartbeat_ = nullptr;
     return temp;
   } else {
@@ -842,7 +914,7 @@ inline void client_player_response::unsafe_arena_set_allocated_heartbeat(
   clear_payload();
   if (value) {
     set_has_heartbeat();
-    _impl_.payload_.heartbeat_ = value;
+    _impl_.payload_.heartbeat_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_player_response.heartbeat)
 }
@@ -850,15 +922,225 @@ inline ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NONNULL c
   if (payload_case() != kHeartbeat) {
     clear_payload();
     set_has_heartbeat();
-    _impl_.payload_.heartbeat_ = 
-        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_heartbeat_response>(GetArena());
+    _impl_.payload_.heartbeat_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_heartbeat_response>(GetArena()));
   }
-  return _impl_.payload_.heartbeat_;
+  return reinterpret_cast<::celeritas::proto::client::client_heartbeat_response*>(_impl_.payload_.heartbeat_);
 }
 inline ::celeritas::proto::client::client_heartbeat_response* PROTOBUF_NONNULL client_player_response::mutable_heartbeat()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::client::client_heartbeat_response* _msg = _internal_mutable_heartbeat();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_player_response.heartbeat)
+  return _msg;
+}
+
+// .celeritas.proto.client.client_role_response role = 3;
+inline bool client_player_response::has_role() const {
+  return payload_case() == kRole;
+}
+inline bool client_player_response::_internal_has_role() const {
+  return payload_case() == kRole;
+}
+inline void client_player_response::set_has_role() {
+  _impl_._oneof_case_[0] = kRole;
+}
+inline ::celeritas::proto::client::client_role_response* PROTOBUF_NULLABLE client_player_response::release_role() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_player_response.role)
+  if (payload_case() == kRole) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_role_response*>(_impl_.payload_.role_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.role_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::client_role_response& client_player_response::_internal_role() const {
+  return payload_case() == kRole ? *reinterpret_cast<::celeritas::proto::client::client_role_response*>(_impl_.payload_.role_) : reinterpret_cast<::celeritas::proto::client::client_role_response&>(::celeritas::proto::client::_client_role_response_default_instance_);
+}
+inline const ::celeritas::proto::client::client_role_response& client_player_response::role() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_player_response.role)
+  return _internal_role();
+}
+inline ::celeritas::proto::client::client_role_response* PROTOBUF_NULLABLE client_player_response::unsafe_arena_release_role() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_player_response.role)
+  if (payload_case() == kRole) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_role_response*>(_impl_.payload_.role_);
+    _impl_.payload_.role_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_player_response::unsafe_arena_set_allocated_role(
+    ::celeritas::proto::client::client_role_response* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_role();
+    _impl_.payload_.role_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_player_response.role)
+}
+inline ::celeritas::proto::client::client_role_response* PROTOBUF_NONNULL client_player_response::_internal_mutable_role() {
+  if (payload_case() != kRole) {
+    clear_payload();
+    set_has_role();
+    _impl_.payload_.role_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_role_response>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::client::client_role_response*>(_impl_.payload_.role_);
+}
+inline ::celeritas::proto::client::client_role_response* PROTOBUF_NONNULL client_player_response::mutable_role()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::client_role_response* _msg = _internal_mutable_role();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_player_response.role)
+  return _msg;
+}
+
+// .celeritas.proto.client.client_red_dot_response red_dot = 4;
+inline bool client_player_response::has_red_dot() const {
+  return payload_case() == kRedDot;
+}
+inline bool client_player_response::_internal_has_red_dot() const {
+  return payload_case() == kRedDot;
+}
+inline void client_player_response::set_has_red_dot() {
+  _impl_._oneof_case_[0] = kRedDot;
+}
+inline ::celeritas::proto::client::client_red_dot_response* PROTOBUF_NULLABLE client_player_response::release_red_dot() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_player_response.red_dot)
+  if (payload_case() == kRedDot) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_red_dot_response*>(_impl_.payload_.red_dot_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.red_dot_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::client_red_dot_response& client_player_response::_internal_red_dot() const {
+  return payload_case() == kRedDot ? *reinterpret_cast<::celeritas::proto::client::client_red_dot_response*>(_impl_.payload_.red_dot_) : reinterpret_cast<::celeritas::proto::client::client_red_dot_response&>(::celeritas::proto::client::_client_red_dot_response_default_instance_);
+}
+inline const ::celeritas::proto::client::client_red_dot_response& client_player_response::red_dot() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_player_response.red_dot)
+  return _internal_red_dot();
+}
+inline ::celeritas::proto::client::client_red_dot_response* PROTOBUF_NULLABLE client_player_response::unsafe_arena_release_red_dot() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_player_response.red_dot)
+  if (payload_case() == kRedDot) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_red_dot_response*>(_impl_.payload_.red_dot_);
+    _impl_.payload_.red_dot_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_player_response::unsafe_arena_set_allocated_red_dot(
+    ::celeritas::proto::client::client_red_dot_response* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_red_dot();
+    _impl_.payload_.red_dot_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_player_response.red_dot)
+}
+inline ::celeritas::proto::client::client_red_dot_response* PROTOBUF_NONNULL client_player_response::_internal_mutable_red_dot() {
+  if (payload_case() != kRedDot) {
+    clear_payload();
+    set_has_red_dot();
+    _impl_.payload_.red_dot_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_red_dot_response>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::client::client_red_dot_response*>(_impl_.payload_.red_dot_);
+}
+inline ::celeritas::proto::client::client_red_dot_response* PROTOBUF_NONNULL client_player_response::mutable_red_dot()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::client_red_dot_response* _msg = _internal_mutable_red_dot();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_player_response.red_dot)
+  return _msg;
+}
+
+// .celeritas.proto.client.client_item_response item = 5;
+inline bool client_player_response::has_item() const {
+  return payload_case() == kItem;
+}
+inline bool client_player_response::_internal_has_item() const {
+  return payload_case() == kItem;
+}
+inline void client_player_response::set_has_item() {
+  _impl_._oneof_case_[0] = kItem;
+}
+inline ::celeritas::proto::client::client_item_response* PROTOBUF_NULLABLE client_player_response::release_item() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_player_response.item)
+  if (payload_case() == kItem) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_item_response*>(_impl_.payload_.item_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.item_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::client_item_response& client_player_response::_internal_item() const {
+  return payload_case() == kItem ? *reinterpret_cast<::celeritas::proto::client::client_item_response*>(_impl_.payload_.item_) : reinterpret_cast<::celeritas::proto::client::client_item_response&>(::celeritas::proto::client::_client_item_response_default_instance_);
+}
+inline const ::celeritas::proto::client::client_item_response& client_player_response::item() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_player_response.item)
+  return _internal_item();
+}
+inline ::celeritas::proto::client::client_item_response* PROTOBUF_NULLABLE client_player_response::unsafe_arena_release_item() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_player_response.item)
+  if (payload_case() == kItem) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_item_response*>(_impl_.payload_.item_);
+    _impl_.payload_.item_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_player_response::unsafe_arena_set_allocated_item(
+    ::celeritas::proto::client::client_item_response* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_item();
+    _impl_.payload_.item_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_player_response.item)
+}
+inline ::celeritas::proto::client::client_item_response* PROTOBUF_NONNULL client_player_response::_internal_mutable_item() {
+  if (payload_case() != kItem) {
+    clear_payload();
+    set_has_item();
+    _impl_.payload_.item_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_item_response>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::client::client_item_response*>(_impl_.payload_.item_);
+}
+inline ::celeritas::proto::client::client_item_response* PROTOBUF_NONNULL client_player_response::mutable_item()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::client_item_response* _msg = _internal_mutable_item();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_player_response.item)
   return _msg;
 }
 

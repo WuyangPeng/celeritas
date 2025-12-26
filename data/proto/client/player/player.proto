@@ -4,6 +4,9 @@ package celeritas.proto.client;
 
 import "proto/client/player/login.proto";
 import "proto/client/player/heartbeat.proto";
+import "proto/client/player/role.proto";
+import "proto/client/player/red_dot.proto";
+import "proto/client/player/item.proto";
 
 message client_player_request {
   oneof payload {
@@ -16,5 +19,8 @@ message client_player_response {
   oneof payload {
     client_login_response login = 1;
     client_heartbeat_response heartbeat = 2;
+    client_role_response role = 3;
+    client_red_dot_response red_dot = 4;
+    client_item_response item = 5;
   }
 }
