@@ -32,6 +32,8 @@ namespace celeritas
 
         void add_session_route(int64_t user_id, session_route session_route) override;
 
+        void check_client(io_context_type& io_context, const std::string& server_type, const service_info_container& container) override;
+
     private:
         app_config_shared_ptr app_config_;
     };

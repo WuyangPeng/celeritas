@@ -15,6 +15,7 @@
 #include "network/tcp_client.h"
 #include "proto/celeritas.pb.h"
 #include "service_registry/data/health_check_level_type.h"
+#include "service_registry/data/service_info.h"
 #include "service_registry/detail/service_registry_internal_fwd.h"
 
 #include <ranges>
@@ -29,7 +30,9 @@ celeritas::resource_loader::resource_loader(const std::string_view server_type, 
       buffer_pool_timer_{},
       start_server_time_{ std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count() },
       server_type_{ server_type },
-      session_route_{}
+      session_route_{},
+      network_message_callback_{},
+      mutex_{}
 {
 }
 
@@ -40,6 +43,8 @@ std::string_view celeritas::resource_loader::get_server_type() const
 
 void celeritas::resource_loader::initialize(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
 {
+    network_message_callback_ = network_message_callback;
+
     initialize_logger_resource();
     initialize_server_resource(io_context, network_message_callback);
     initialize_database_resource(io_context);
@@ -53,7 +58,7 @@ void celeritas::resource_loader::initialize(io_context_type& io_context, const n
 
 void celeritas::resource_loader::release_resource()
 {
-    for (const auto& element : tcp_clients_)
+    for (const auto& element : tcp_clients_ | std::views::values)
     {
         if (element->get_server_type() == service_registry_type)
         {
@@ -89,7 +94,7 @@ bool celeritas::resource_loader::write(const std::string& server_type, const hea
 {
     auto to_write = false;
 
-    for (const auto& element : tcp_clients_)
+    for (const auto& element : tcp_clients_ | std::views::values)
     {
         if (element->get_server_type() == server_type)
         {
@@ -105,7 +110,7 @@ bool celeritas::resource_loader::write(const std::string& server_type, const std
 {
     auto to_write = false;
 
-    for (const auto& element : tcp_clients_)
+    for (const auto& element : tcp_clients_ | std::views::values)
     {
         if (element->get_server_type() == server_type && element->get_instance_id() == instance_id)
         {
@@ -142,14 +147,13 @@ bool celeritas::resource_loader::write_to_client(const header& header, const pro
 
 void celeritas::resource_loader::process_check_tcp_clients_by_duration(io_context_type& io_context)
 {
-    for (auto index = 0; index < tcp_clients_.size(); ++index)
+    for (const auto& tcp_client : tcp_clients_ | std::views::values)
     {
-        if (const auto& tcp_client = tcp_clients_[index];
-            !tcp_client->is_open())
+        if (!tcp_client->is_open())
         {
             if (!is_service_registry_ && tcp_client->get_server_type() == service_registry_type)
             {
-                modify_service_registry_resource(io_context, tcp_client->get_network_message_callback(), index);
+                modify_service_registry_resource(io_context, tcp_client->get_network_message_callback(), tcp_client->get_instance_id());
             }
             else
             {
@@ -200,7 +204,7 @@ celeritas::resource_loader::health_check_level_awaitable_type celeritas::resourc
         co_return health_check_level_type::crash;
     }
 
-    for (const auto& element : tcp_clients_)
+    for (const auto& element : tcp_clients_ | std::views::values)
     {
         if (element->is_full())
         {
@@ -214,6 +218,41 @@ celeritas::resource_loader::health_check_level_awaitable_type celeritas::resourc
 void celeritas::resource_loader::add_session_route(int64_t user_id, session_route session_route)
 {
     session_route_.emplace(user_id, std::move(session_route));
+}
+
+void celeritas::resource_loader::check_client(io_context_type& io_context, const std::string& server_type, const service_info_container& container)
+{
+    for (auto iter = tcp_clients_.begin(); iter != tcp_clients_.end();)
+    {
+        if (iter->second->get_server_type() == server_type && !container.contains(iter->first))
+        {
+            iter = tcp_clients_.erase(iter);
+        }
+        else
+        {
+            ++iter;
+        }
+    }
+
+    for (const auto& [instance_id, service_info] : container)
+    {
+        if (!tcp_clients_.contains(instance_id))
+        {
+            const auto client = std::make_shared<tcp_client>(io_context,
+                                                             network_message_callback_,
+                                                             service_info.get_game_server_id(),
+                                                             service_info.get_instance_id(),
+                                                             service_info.get_host(),
+                                                             service_info.get_port(server_network_type::tcp),
+                                                             server_type);
+
+            boost::asio::co_spawn(io_context,
+                                  client->connect(),
+                                  boost::asio::detached);
+
+            tcp_clients_.emplace(client->get_instance_id(), client);
+        }
+    }
 }
 
 void celeritas::resource_loader::initialize_logger_resource()
@@ -270,7 +309,7 @@ void celeritas::resource_loader::initialize_service_registry_resource(io_context
         {
             const auto client = get_random_client(io_context, network_message_callback, service_registry);
 
-            tcp_clients_.emplace_back(client);
+            tcp_clients_.emplace(client->get_instance_id(), client);
         }
     }
     else
@@ -285,18 +324,24 @@ void celeritas::resource_loader::initialize_service_registry_resource(io_context
             {
                 const auto client = service_registry_loader::loader_service_registry(io_context, element, network_message_callback, game_server_id, service_registry_type.data());
 
-                tcp_clients_.emplace_back(client);
+                tcp_clients_.emplace(client->get_instance_id(), client);
             }
         }
     }
 }
 
-void celeritas::resource_loader::modify_service_registry_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback, const int index)
+void celeritas::resource_loader::modify_service_registry_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback, const std::string& instance_id)
 {
     if (const auto service_registry = app_config_->get_service_registry_config();
         !service_registry.empty())
     {
-        tcp_clients_.at(index) = get_random_client(io_context, network_message_callback, service_registry);
+        const auto tcp_client = get_random_client(io_context, network_message_callback, service_registry);
+        if (tcp_client->get_instance_id() != instance_id)
+        {
+            tcp_clients_.erase(instance_id);
+        }
+
+        tcp_clients_[tcp_client->get_instance_id()] = tcp_client;
     }
 }
 

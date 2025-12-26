@@ -61,9 +61,11 @@ namespace celeritas
 
         void add_session_route(int64_t user_id, session_route session_route) override;
 
+        void check_client(io_context_type& io_context, const std::string& server_type, const service_info_container& container) override;
+
     protected:
         using tcp_client_shared_ptr = std::shared_ptr<tcp_client>;
-        using tcp_client_container_type = std::vector<tcp_client_shared_ptr>;
+        using tcp_client_container_type = std::map<std::string, tcp_client_shared_ptr>;
 
     private:
         using listener_shared_ptr = std::shared_ptr<listener>;
@@ -90,7 +92,7 @@ namespace celeritas
 
         void modify_service_registry_resource(io_context_type& io_context,
                                               const network_message_callback_weak_ptr& network_message_callback,
-                                              int index);
+                                              const std::string& instance_id);
 
         virtual void service_initialize_resource(io_context_type& io_context,
                                                  const network_message_callback_weak_ptr& network_message_callback) = 0;
@@ -118,6 +120,7 @@ namespace celeritas
         int64_t start_server_time_;
         std::string_view server_type_;
         gateway_mapping_type session_route_;
+        network_message_callback_weak_ptr network_message_callback_;
         std::shared_mutex mutex_;
     };
 }

@@ -47,3 +47,8 @@ bool celeritas::mock_resource_loader::write_to_client(const header& header, cons
 void celeritas::mock_resource_loader::add_session_route(int64_t user_id, session_route session_route)
 {
 }
+
+void celeritas::mock_resource_loader::check_client(io_context_type& io_context, const std::string& server_type, const service_info_container& container)
+{
+}
+

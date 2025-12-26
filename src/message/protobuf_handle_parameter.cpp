@@ -164,3 +164,10 @@ std::string celeritas::protobuf_handle_parameter::get_instance_id() const
     throw celeritas_error{ "session is null." };
 }
 
+void celeritas::protobuf_handle_parameter::check_client(const std::string& server_type, const service_info_container& container) const
+{
+    return get_resource_loader()->check_client(io_context_, server_type, container);
+}
+
+
+

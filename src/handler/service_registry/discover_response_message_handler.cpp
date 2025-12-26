@@ -1,10 +1,12 @@
 ﻿#include "discover_response_message_handler.h"
 #include "message/concrete_message_handler.tpp"
+#include "message/protobuf_handle_parameter.h"
 #include "service_registry/core/service_registry.h"
 #include "service_registry/data/service_info.h"
 
 bool celeritas::discover_response_message_handler::handle_concrete(const protobuf_handle_parameter_shared_ptr& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
 {
+    std::map<std::string, service_info> service_info_container{};
     for (auto index = 0; index < current_message.server_info_size(); ++index)
     {
         const auto& server_info_message = current_message.server_info(index);
@@ -29,7 +31,11 @@ bool celeritas::discover_response_message_handler::handle_concrete(const protobu
         }
 
         service_registry::register_service(service_info);
+
+        service_info_container.emplace(service_info.get_instance_id(), service_info);
     }
+
+    handle_parameter->check_client(current_message.service_name(), service_info_container);
 
     return true;
 }

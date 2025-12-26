@@ -20,6 +20,7 @@ namespace celeritas
         using app_config_shared_ptr = std::shared_ptr<app_config>;
         using health_check_level_awaitable_type = boost::asio::awaitable<health_check_level_type>;
         using protobuf_message = google::protobuf::Message;
+        using service_info_container = std::map<std::string, service_info>;
 
         resource_loader_base() noexcept = default;
 
@@ -50,5 +51,7 @@ namespace celeritas
         [[nodiscard]] virtual bool write_to_client(const header& header, const protobuf_message& response) = 0;
 
         virtual void add_session_route(int64_t user_id, session_route session_route) = 0;
+
+        virtual void check_client(io_context_type& io_context, const std::string& server_type, const service_info_container& container) = 0;
     };
 }

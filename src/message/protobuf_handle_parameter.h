@@ -3,6 +3,7 @@
 #include "header.h"
 #include "common/common_fwd.h"
 #include "config/config_fwd.h"
+#include "service_registry/data/service_info.h"
 
 #include <boost/asio/io_context.hpp>
 #include <google/protobuf/message.h>
@@ -20,6 +21,7 @@ namespace celeritas
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
         using application_loader_shared_ptr = std::shared_ptr<application_loader_base>;
         using app_config_const_shared_ptr = std::shared_ptr<const app_config>;
+        using service_info_container = std::map<std::string, service_info>;
 
         protobuf_handle_parameter(io_context_type& io_context,
                                   const header& header,
@@ -59,6 +61,8 @@ namespace celeritas
         void set_instance_id(const std::string& instance_id);
 
         [[nodiscard]] std::string get_instance_id() const;
+
+        void check_client(const std::string& server_type, const service_info_container& container) const;
 
     private:
         using session_weak_ptr = std::weak_ptr<session>;
