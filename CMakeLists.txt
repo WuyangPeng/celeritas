@@ -400,6 +400,23 @@ add_subdirectory(cmake/battle_server)
 add_subdirectory(cmake/cross_server)
 add_subdirectory(cmake/log_server)
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows" AND NOT MSVC)
+
+    # 串行编译链接，避免同时链接导致内存不足
+    add_dependencies(auth_server service_registry_server)
+    add_dependencies(payment_server auth_server)
+    add_dependencies(admin_server payment_server)
+    add_dependencies(chat_server admin_server)
+    add_dependencies(gateway_server chat_server)
+    add_dependencies(player_server gateway_server)
+    add_dependencies(logic_server player_server)
+    add_dependencies(game_server logic_server)
+    add_dependencies(battle_server game_server)
+    add_dependencies(cross_server battle_server)
+    add_dependencies(log_server cross_server)
+
+endif ()
+
 # 安装规则
 install(TARGETS
         service_registry_server

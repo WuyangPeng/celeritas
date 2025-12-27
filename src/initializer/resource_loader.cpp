@@ -367,7 +367,7 @@ void celeritas::resource_loader::initialize_service_registry_resource(io_context
                 const auto client = service_registry_loader::loader_service_registry(io_context, element, network_message_callback, game_server_id, service_registry_type.data());
 
                 std::unique_lock lock{ mutex_ };
- tcp_clients_.emplace(client->get_instance_id(), client);
+                tcp_clients_.emplace(client->get_instance_id(), client);
             }
         }
     }
