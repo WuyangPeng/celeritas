@@ -129,7 +129,7 @@ namespace celeritas
         static constexpr std::string_view refund_amount_describe{ "refund_amount" };
 
     private:
-        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::int64_type id);
+        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(traits::param_type::int64_type id);
 
         entity<id_describe, database_data_type::int64_type, database_index_type::key> id_;
         entity<order_id_describe, database_data_type::string_type, database_index_type::unique_index> order_id_;

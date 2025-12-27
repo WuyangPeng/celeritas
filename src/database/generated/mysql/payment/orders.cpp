@@ -78,7 +78,7 @@ celeritas::orders::orders(const database_type database_type, const database_enti
 }
 
 celeritas::orders::orders(const database_type database_type, traits::param_type::int64_type id)
-    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, id) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(id) },
       id_{ id },
       order_id_{ traits::string_type{} },
       account_id_{ traits::int64_type{} },
@@ -426,7 +426,7 @@ celeritas::orders::database_entity_change_const_shared_ptr celeritas::orders::ge
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(database_type, id));
+                                                    get_key_basis_database_container(id));
 }
 
 celeritas::orders::database_entity_change_const_shared_ptr celeritas::orders::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
@@ -437,7 +437,7 @@ celeritas::orders::database_entity_change_const_shared_ptr celeritas::orders::ge
                                                     key);
 }
 
-celeritas::orders::basis_database_container_const_shared_ptr celeritas::orders::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type id)
+celeritas::orders::basis_database_container_const_shared_ptr celeritas::orders::get_key_basis_database_container(traits::param_type::int64_type id)
 {
     return std::make_shared<basis_database_container>(basis_database{ id_describe, id });
 }

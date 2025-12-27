@@ -74,7 +74,7 @@ namespace celeritas
         static constexpr std::string_view process_type_describe{ "process_type" };
 
     private:
-        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::int64_type provider_id);
+        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(traits::param_type::int64_type provider_id);
 
         entity<provider_id_describe, database_data_type::int64_type, database_index_type::key> provider_id_;
         entity<provider_name_describe, database_data_type::string_type> provider_name_;

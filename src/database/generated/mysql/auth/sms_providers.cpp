@@ -45,7 +45,7 @@ celeritas::sms_providers::sms_providers(const database_type database_type, const
 }
 
 celeritas::sms_providers::sms_providers(const database_type database_type, traits::param_type::int64_type provider_id)
-    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, provider_id) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(provider_id) },
       provider_id_{ provider_id },
       provider_name_{ traits::string_type{} },
       base_url_{ traits::string_type{} },
@@ -206,7 +206,7 @@ celeritas::sms_providers::database_entity_change_const_shared_ptr celeritas::sms
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(database_type, provider_id));
+                                                    get_key_basis_database_container(provider_id));
 }
 
 celeritas::sms_providers::database_entity_change_const_shared_ptr celeritas::sms_providers::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
@@ -217,7 +217,7 @@ celeritas::sms_providers::database_entity_change_const_shared_ptr celeritas::sms
                                                     key);
 }
 
-celeritas::sms_providers::basis_database_container_const_shared_ptr celeritas::sms_providers::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type provider_id)
+celeritas::sms_providers::basis_database_container_const_shared_ptr celeritas::sms_providers::get_key_basis_database_container(traits::param_type::int64_type provider_id)
 {
     return std::make_shared<basis_database_container>(basis_database{ provider_id_describe, provider_id });
 }

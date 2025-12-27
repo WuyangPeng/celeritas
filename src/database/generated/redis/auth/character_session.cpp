@@ -27,7 +27,7 @@ celeritas::character_session::character_session(const database_type database_typ
 }
 
 celeritas::character_session::character_session(const database_type database_type, traits::param_type::int64_type account_id)
-    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, account_id) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(account_id) },
       account_id_{ account_id },
       player_server_instance_id_{ traits::string_type{} }
 {
@@ -86,7 +86,7 @@ celeritas::character_session::database_entity_change_const_shared_ptr celeritas:
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(database_type, account_id));
+                                                    get_key_basis_database_container(account_id));
 }
 
 celeritas::character_session::database_entity_change_const_shared_ptr celeritas::character_session::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
@@ -97,7 +97,7 @@ celeritas::character_session::database_entity_change_const_shared_ptr celeritas:
                                                     key);
 }
 
-celeritas::character_session::basis_database_container_const_shared_ptr celeritas::character_session::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type account_id)
+celeritas::character_session::basis_database_container_const_shared_ptr celeritas::character_session::get_key_basis_database_container(traits::param_type::int64_type account_id)
 {
     return std::make_shared<basis_database_container>(basis_database{ account_id_describe, account_id });
 }

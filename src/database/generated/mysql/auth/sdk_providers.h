@@ -79,7 +79,7 @@ namespace celeritas
         static constexpr std::string_view active_describe{ "active" };
 
     private:
-        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::int64_type sdk_id);
+        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(traits::param_type::int64_type sdk_id);
 
         entity<sdk_id_describe, database_data_type::int64_type, database_index_type::key> sdk_id_;
         entity<app_id_describe, database_data_type::int64_type, database_index_type::composite_unique_index> app_id_;

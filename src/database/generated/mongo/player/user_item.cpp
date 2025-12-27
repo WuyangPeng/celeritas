@@ -33,7 +33,7 @@ celeritas::user_item::user_item(const database_type database_type, const databas
 }
 
 celeritas::user_item::user_item(const database_type database_type, traits::param_type::int64_type user_id)
-    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, user_id) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(user_id) },
       user_id_{ user_id },
       inventory_data_{ traits::document_array_type{} },
       data_version_{ traits::int32_type{} },
@@ -148,7 +148,7 @@ celeritas::user_item::database_entity_change_const_shared_ptr celeritas::user_it
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(database_type, user_id));
+                                                    get_key_basis_database_container(user_id));
 }
 
 celeritas::user_item::database_entity_change_const_shared_ptr celeritas::user_item::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
@@ -159,7 +159,7 @@ celeritas::user_item::database_entity_change_const_shared_ptr celeritas::user_it
                                                     key);
 }
 
-celeritas::user_item::basis_database_container_const_shared_ptr celeritas::user_item::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type user_id)
+celeritas::user_item::basis_database_container_const_shared_ptr celeritas::user_item::get_key_basis_database_container(traits::param_type::int64_type user_id)
 {
     return std::make_shared<basis_database_container>(basis_database{ user_id_describe, user_id });
 }

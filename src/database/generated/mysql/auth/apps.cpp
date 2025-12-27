@@ -42,7 +42,7 @@ celeritas::apps::apps(const database_type database_type, const database_entity_c
 }
 
 celeritas::apps::apps(const database_type database_type, traits::param_type::int64_type app_id)
-    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, app_id) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(app_id) },
       app_id_{ app_id },
       game_name_{ traits::string_type{} },
       app_secret_{ traits::string_type{} },
@@ -186,7 +186,7 @@ celeritas::apps::database_entity_change_const_shared_ptr celeritas::apps::get_se
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(database_type, app_id));
+                                                    get_key_basis_database_container(app_id));
 }
 
 celeritas::apps::database_entity_change_const_shared_ptr celeritas::apps::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
@@ -197,7 +197,7 @@ celeritas::apps::database_entity_change_const_shared_ptr celeritas::apps::get_se
                                                     key);
 }
 
-celeritas::apps::basis_database_container_const_shared_ptr celeritas::apps::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type app_id)
+celeritas::apps::basis_database_container_const_shared_ptr celeritas::apps::get_key_basis_database_container(traits::param_type::int64_type app_id)
 {
     return std::make_shared<basis_database_container>(basis_database{ app_id_describe, app_id });
 }

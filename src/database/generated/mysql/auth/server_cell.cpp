@@ -45,7 +45,7 @@ celeritas::server_cell::server_cell(const database_type database_type, const dat
 }
 
 celeritas::server_cell::server_cell(const database_type database_type, traits::param_type::int64_type cell_id)
-    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, cell_id) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(cell_id) },
       cell_id_{ cell_id },
       game_server_id_{ traits::string_type{} },
       server_name_{ traits::string_type{} },
@@ -206,7 +206,7 @@ celeritas::server_cell::database_entity_change_const_shared_ptr celeritas::serve
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(database_type, cell_id));
+                                                    get_key_basis_database_container(cell_id));
 }
 
 celeritas::server_cell::database_entity_change_const_shared_ptr celeritas::server_cell::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
@@ -217,7 +217,7 @@ celeritas::server_cell::database_entity_change_const_shared_ptr celeritas::serve
                                                     key);
 }
 
-celeritas::server_cell::basis_database_container_const_shared_ptr celeritas::server_cell::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type cell_id)
+celeritas::server_cell::basis_database_container_const_shared_ptr celeritas::server_cell::get_key_basis_database_container(traits::param_type::int64_type cell_id)
 {
     return std::make_shared<basis_database_container>(basis_database{ cell_id_describe, cell_id });
 }

@@ -49,7 +49,7 @@ namespace celeritas
         static constexpr std::string_view update_time_describe{ "update_time" };
 
     private:
-        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::int64_type account_id);
+        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(traits::param_type::int64_type account_id);
 
         entity<account_id_describe, database_data_type::int64_type, database_index_type::key> account_id_;
         entity<game_server_id_describe, database_data_type::string_type> game_server_id_;

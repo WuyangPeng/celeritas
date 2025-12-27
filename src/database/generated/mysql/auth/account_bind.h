@@ -64,7 +64,7 @@ namespace celeritas
         static constexpr std::string_view auth_key_describe{ "auth_key" };
 
     private:
-        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::int64_type account_bind_id);
+        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(traits::param_type::int64_type account_bind_id);
 
         entity<account_bind_id_describe, database_data_type::int64_type, database_index_type::key> account_bind_id_;
         entity<account_id_describe, database_data_type::int64_type, database_index_type::index> account_id_;

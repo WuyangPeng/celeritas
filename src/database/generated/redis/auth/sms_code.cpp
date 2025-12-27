@@ -30,7 +30,7 @@ celeritas::sms_code::sms_code(const database_type database_type, const database_
 }
 
 celeritas::sms_code::sms_code(const database_type database_type, traits::param_type::string_type phone)
-    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, phone) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(phone) },
       phone_{ phone },
       code_{ traits::int32_type{} },
       retry_count_{ traits::int32_count_type{} }
@@ -113,7 +113,7 @@ celeritas::sms_code::database_entity_change_const_shared_ptr celeritas::sms_code
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(database_type, phone));
+                                                    get_key_basis_database_container(phone));
 }
 
 celeritas::sms_code::database_entity_change_const_shared_ptr celeritas::sms_code::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
@@ -124,7 +124,7 @@ celeritas::sms_code::database_entity_change_const_shared_ptr celeritas::sms_code
                                                     key);
 }
 
-celeritas::sms_code::basis_database_container_const_shared_ptr celeritas::sms_code::get_key_basis_database_container(const database_type database_type, traits::param_type::string_type phone)
+celeritas::sms_code::basis_database_container_const_shared_ptr celeritas::sms_code::get_key_basis_database_container(traits::param_type::string_type phone)
 {
     return std::make_shared<basis_database_container>(basis_database{ phone_describe, phone });
 }

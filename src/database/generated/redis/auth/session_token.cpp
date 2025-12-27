@@ -33,7 +33,7 @@ celeritas::session_token::session_token(const database_type database_type, const
 }
 
 celeritas::session_token::session_token(const database_type database_type, traits::param_type::string_type token)
-    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, token) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(token) },
       token_{ token },
       account_id_{ traits::int64_type{} },
       account_bind_id_{ traits::int64_type{} },
@@ -126,7 +126,7 @@ celeritas::session_token::database_entity_change_const_shared_ptr celeritas::ses
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(database_type, token));
+                                                    get_key_basis_database_container(token));
 }
 
 celeritas::session_token::database_entity_change_const_shared_ptr celeritas::session_token::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
@@ -137,7 +137,7 @@ celeritas::session_token::database_entity_change_const_shared_ptr celeritas::ses
                                                     key);
 }
 
-celeritas::session_token::basis_database_container_const_shared_ptr celeritas::session_token::get_key_basis_database_container(const database_type database_type, traits::param_type::string_type token)
+celeritas::session_token::basis_database_container_const_shared_ptr celeritas::session_token::get_key_basis_database_container(traits::param_type::string_type token)
 {
     return std::make_shared<basis_database_container>(basis_database{ token_describe, token });
 }

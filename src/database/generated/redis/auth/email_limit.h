@@ -44,7 +44,7 @@ namespace celeritas
         static constexpr std::string_view exist_describe{ "exist" };
 
     private:
-        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::string_type email);
+        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(traits::param_type::string_type email);
 
         entity<email_describe, database_data_type::string_type, database_index_type::key> email_;
         entity<exist_describe, database_data_type::bool_type> exist_;

@@ -30,7 +30,7 @@ celeritas::account_last_login::account_last_login(const database_type database_t
 }
 
 celeritas::account_last_login::account_last_login(const database_type database_type, traits::param_type::int64_type account_id)
-    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, account_id) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(account_id) },
       account_id_{ account_id },
       game_server_id_{ traits::string_type{} },
       update_time_{ traits::int64_type{} }
@@ -106,7 +106,7 @@ celeritas::account_last_login::database_entity_change_const_shared_ptr celeritas
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(database_type, account_id));
+                                                    get_key_basis_database_container(account_id));
 }
 
 celeritas::account_last_login::database_entity_change_const_shared_ptr celeritas::account_last_login::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
@@ -117,7 +117,7 @@ celeritas::account_last_login::database_entity_change_const_shared_ptr celeritas
                                                     key);
 }
 
-celeritas::account_last_login::basis_database_container_const_shared_ptr celeritas::account_last_login::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type account_id)
+celeritas::account_last_login::basis_database_container_const_shared_ptr celeritas::account_last_login::get_key_basis_database_container(traits::param_type::int64_type account_id)
 {
     return std::make_shared<basis_database_container>(basis_database{ account_id_describe, account_id });
 }

@@ -73,7 +73,7 @@ namespace celeritas
         static constexpr std::string_view count_describe{ "count" };
 
     private:
-        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::int64_type user_id);
+        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(traits::param_type::int64_type user_id);
 
         entity<user_id_describe, database_data_type::int64_type, database_index_type::key> user_id_;
         entity<chapter_id_describe, database_data_type::int32_type> chapter_id_;

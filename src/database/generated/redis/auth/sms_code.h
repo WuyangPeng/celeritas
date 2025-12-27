@@ -51,7 +51,7 @@ namespace celeritas
         static constexpr std::string_view retry_count_describe{ "retry_count" };
 
     private:
-        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(database_type database_type, traits::param_type::string_type phone);
+        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(traits::param_type::string_type phone);
 
         entity<phone_describe, database_data_type::string_type, database_index_type::key> phone_;
         entity<code_describe, database_data_type::int32_type> code_;

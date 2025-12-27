@@ -42,7 +42,7 @@ celeritas::test::test(const database_type database_type, const database_entity_c
 }
 
 celeritas::test::test(const database_type database_type, traits::param_type::int64_type user_id)
-    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, user_id) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(user_id) },
       user_id_{ user_id },
       chapter_id_{ traits::int32_type{} },
       chapter_name_{ traits::string_type{} },
@@ -200,7 +200,7 @@ celeritas::test::database_entity_change_const_shared_ptr celeritas::test::get_se
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(database_type, user_id));
+                                                    get_key_basis_database_container(user_id));
 }
 
 celeritas::test::database_entity_change_const_shared_ptr celeritas::test::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
@@ -211,7 +211,7 @@ celeritas::test::database_entity_change_const_shared_ptr celeritas::test::get_se
                                                     key);
 }
 
-celeritas::test::basis_database_container_const_shared_ptr celeritas::test::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type user_id)
+celeritas::test::basis_database_container_const_shared_ptr celeritas::test::get_key_basis_database_container(traits::param_type::int64_type user_id)
 {
     return std::make_shared<basis_database_container>(basis_database{ user_id_describe, user_id });
 }

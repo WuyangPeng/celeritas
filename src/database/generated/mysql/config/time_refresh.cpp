@@ -30,7 +30,7 @@ celeritas::time_refresh::time_refresh(const database_type database_type, const d
 }
 
 celeritas::time_refresh::time_refresh(const database_type database_type, traits::param_type::int64_type id)
-    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, id) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(id) },
       id_{ id },
       time_refresh_type_{ traits::int32_type{} },
       parameter_{ traits::int32_type{} }
@@ -106,7 +106,7 @@ celeritas::time_refresh::database_entity_change_const_shared_ptr celeritas::time
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(database_type, id));
+                                                    get_key_basis_database_container(id));
 }
 
 celeritas::time_refresh::database_entity_change_const_shared_ptr celeritas::time_refresh::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
@@ -117,7 +117,7 @@ celeritas::time_refresh::database_entity_change_const_shared_ptr celeritas::time
                                                     key);
 }
 
-celeritas::time_refresh::basis_database_container_const_shared_ptr celeritas::time_refresh::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type id)
+celeritas::time_refresh::basis_database_container_const_shared_ptr celeritas::time_refresh::get_key_basis_database_container(traits::param_type::int64_type id)
 {
     return std::make_shared<basis_database_container>(basis_database{ id_describe, id });
 }

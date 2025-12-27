@@ -30,7 +30,7 @@ celeritas::email_code::email_code(const database_type database_type, const datab
 }
 
 celeritas::email_code::email_code(const database_type database_type, traits::param_type::string_type email)
-    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, email) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(email) },
       email_{ email },
       code_{ traits::int32_type{} },
       retry_count_{ traits::int32_count_type{} }
@@ -113,7 +113,7 @@ celeritas::email_code::database_entity_change_const_shared_ptr celeritas::email_
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(database_type, email));
+                                                    get_key_basis_database_container(email));
 }
 
 celeritas::email_code::database_entity_change_const_shared_ptr celeritas::email_code::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
@@ -124,7 +124,7 @@ celeritas::email_code::database_entity_change_const_shared_ptr celeritas::email_
                                                     key);
 }
 
-celeritas::email_code::basis_database_container_const_shared_ptr celeritas::email_code::get_key_basis_database_container(const database_type database_type, traits::param_type::string_type email)
+celeritas::email_code::basis_database_container_const_shared_ptr celeritas::email_code::get_key_basis_database_container(traits::param_type::string_type email)
 {
     return std::make_shared<basis_database_container>(basis_database{ email_describe, email });
 }

@@ -48,7 +48,7 @@ celeritas::sdk_providers::sdk_providers(const database_type database_type, const
 }
 
 celeritas::sdk_providers::sdk_providers(const database_type database_type, traits::param_type::int64_type sdk_id)
-    : base_type{ database_type, database_name, get_key_basis_database_container(database_type, sdk_id) },
+    : base_type{ database_type, database_name, get_key_basis_database_container(sdk_id) },
       sdk_id_{ sdk_id },
       app_id_{ traits::int64_type{} },
       process_type_{ traits::int32_type{} },
@@ -226,7 +226,7 @@ celeritas::sdk_providers::database_entity_change_const_shared_ptr celeritas::sdk
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
                                                     database_change_type::select_type,
-                                                    get_key_basis_database_container(database_type, sdk_id));
+                                                    get_key_basis_database_container(sdk_id));
 }
 
 celeritas::sdk_providers::database_entity_change_const_shared_ptr celeritas::sdk_providers::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
@@ -237,7 +237,7 @@ celeritas::sdk_providers::database_entity_change_const_shared_ptr celeritas::sdk
                                                     key);
 }
 
-celeritas::sdk_providers::basis_database_container_const_shared_ptr celeritas::sdk_providers::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type sdk_id)
+celeritas::sdk_providers::basis_database_container_const_shared_ptr celeritas::sdk_providers::get_key_basis_database_container(traits::param_type::int64_type sdk_id)
 {
     return std::make_shared<basis_database_container>(basis_database{ sdk_id_describe, sdk_id });
 }
