@@ -56,6 +56,10 @@ extern const ::google::protobuf::internal::DescriptorTable descriptor_table_prot
 namespace celeritas {
 namespace proto {
 namespace service {
+class offline_request;
+struct offline_requestDefaultTypeInternal;
+extern offline_requestDefaultTypeInternal _offline_request_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull offline_request_class_data_;
 class reload_config_db_request;
 struct reload_config_db_requestDefaultTypeInternal;
 extern reload_config_db_requestDefaultTypeInternal _reload_config_db_request_default_instance_;
@@ -1252,6 +1256,141 @@ class reload_config_db_request final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull reload_config_db_request_class_data_;
 // -------------------------------------------------------------------
 
+class offline_request final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:celeritas.proto.service.offline_request) */ {
+ public:
+  inline offline_request() : offline_request(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(offline_request* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(offline_request));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR offline_request(::google::protobuf::internal::ConstantInitialized);
+
+  inline offline_request(const offline_request& from) : offline_request(nullptr, from) {}
+  inline offline_request(offline_request&& from) noexcept
+      : offline_request(nullptr, ::std::move(from)) {}
+  inline offline_request& operator=(const offline_request& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline offline_request& operator=(offline_request&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const offline_request& default_instance() {
+    return *reinterpret_cast<const offline_request*>(
+        &_offline_request_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(offline_request& a, offline_request& b) { a.Swap(&b); }
+  inline void Swap(offline_request* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(offline_request* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  offline_request* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<offline_request>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const offline_request& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const offline_request& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.service.offline_request"; }
+
+ protected:
+  explicit offline_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  offline_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const offline_request& from);
+  offline_request(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, offline_request&& from) noexcept
+      : offline_request(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:celeritas.proto.service.offline_request)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 0,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  friend struct ::TableStruct_proto_2fservice_2fplayer_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull offline_request_class_data_;
+// -------------------------------------------------------------------
+
 class service_player_response final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:celeritas.proto.service.service_player_response) */ {
  public:
@@ -1313,7 +1452,7 @@ class service_player_response final : public ::google::protobuf::Message
     kServiceLogin = 3,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(service_player_response& a, service_player_response& b) { a.Swap(&b); }
   inline void Swap(service_player_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1570,9 +1709,10 @@ class service_player_request final : public ::google::protobuf::Message
     kReloadConfigDb = 1,
     kReloadGameConfig = 2,
     kServiceLogin = 3,
+    kOffline = 4,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 7;
   friend void swap(service_player_request& a, service_player_request& b) { a.Swap(&b); }
   inline void Swap(service_player_request* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1663,6 +1803,7 @@ class service_player_request final : public ::google::protobuf::Message
     kReloadConfigDbFieldNumber = 1,
     kReloadGameConfigFieldNumber = 2,
     kServiceLoginFieldNumber = 3,
+    kOfflineFieldNumber = 4,
   };
   // .celeritas.proto.service.reload_config_db_request reload_config_db = 1;
   bool has_reload_config_db() const;
@@ -1721,6 +1862,25 @@ class service_player_request final : public ::google::protobuf::Message
   ::celeritas::proto::service::service_login_request* PROTOBUF_NONNULL _internal_mutable_service_login();
 
   public:
+  // .celeritas.proto.service.offline_request offline = 4;
+  bool has_offline() const;
+  private:
+  bool _internal_has_offline() const;
+
+  public:
+  void clear_offline() ;
+  const ::celeritas::proto::service::offline_request& offline() const;
+  [[nodiscard]] ::celeritas::proto::service::offline_request* PROTOBUF_NULLABLE release_offline();
+  ::celeritas::proto::service::offline_request* PROTOBUF_NONNULL mutable_offline();
+  void set_allocated_offline(::celeritas::proto::service::offline_request* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_offline(::celeritas::proto::service::offline_request* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::service::offline_request* PROTOBUF_NULLABLE unsafe_arena_release_offline();
+
+  private:
+  const ::celeritas::proto::service::offline_request& _internal_offline() const;
+  ::celeritas::proto::service::offline_request* PROTOBUF_NONNULL _internal_mutable_offline();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.service.service_player_request)
@@ -1729,11 +1889,12 @@ class service_player_request final : public ::google::protobuf::Message
   void set_has_reload_config_db();
   void set_has_reload_game_config();
   void set_has_service_login();
+  void set_has_offline();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 3,
-                                   3, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 4,
+                                   4, 0,
                                    2>
       _table_;
 
@@ -1758,6 +1919,7 @@ class service_player_request final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE reload_config_db_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE reload_game_config_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE service_login_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE offline_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -2372,6 +2534,10 @@ inline void service_login_response::set_allocated_instance_id(::std::string* PRO
 
 // -------------------------------------------------------------------
 
+// offline_request
+
+// -------------------------------------------------------------------
+
 // service_player_request
 
 // .celeritas.proto.service.reload_config_db_request reload_config_db = 1;
@@ -2614,6 +2780,87 @@ inline ::celeritas::proto::service::service_login_request* PROTOBUF_NONNULL serv
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::service::service_login_request* _msg = _internal_mutable_service_login();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_player_request.service_login)
+  return _msg;
+}
+
+// .celeritas.proto.service.offline_request offline = 4;
+inline bool service_player_request::has_offline() const {
+  return payload_case() == kOffline;
+}
+inline bool service_player_request::_internal_has_offline() const {
+  return payload_case() == kOffline;
+}
+inline void service_player_request::set_has_offline() {
+  _impl_._oneof_case_[0] = kOffline;
+}
+inline void service_player_request::clear_offline() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kOffline) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.offline_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.offline_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::celeritas::proto::service::offline_request* PROTOBUF_NULLABLE service_player_request::release_offline() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_player_request.offline)
+  if (payload_case() == kOffline) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::service::offline_request*>(_impl_.payload_.offline_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.offline_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::service::offline_request& service_player_request::_internal_offline() const {
+  return payload_case() == kOffline ? *reinterpret_cast<::celeritas::proto::service::offline_request*>(_impl_.payload_.offline_) : reinterpret_cast<::celeritas::proto::service::offline_request&>(::celeritas::proto::service::_offline_request_default_instance_);
+}
+inline const ::celeritas::proto::service::offline_request& service_player_request::offline() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_player_request.offline)
+  return _internal_offline();
+}
+inline ::celeritas::proto::service::offline_request* PROTOBUF_NULLABLE service_player_request::unsafe_arena_release_offline() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.service.service_player_request.offline)
+  if (payload_case() == kOffline) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::service::offline_request*>(_impl_.payload_.offline_);
+    _impl_.payload_.offline_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void service_player_request::unsafe_arena_set_allocated_offline(
+    ::celeritas::proto::service::offline_request* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_offline();
+    _impl_.payload_.offline_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.service_player_request.offline)
+}
+inline ::celeritas::proto::service::offline_request* PROTOBUF_NONNULL service_player_request::_internal_mutable_offline() {
+  if (payload_case() != kOffline) {
+    clear_payload();
+    set_has_offline();
+    _impl_.payload_.offline_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::service::offline_request>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::service::offline_request*>(_impl_.payload_.offline_);
+}
+inline ::celeritas::proto::service::offline_request* PROTOBUF_NONNULL service_player_request::mutable_offline()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::service::offline_request* _msg = _internal_mutable_offline();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_player_request.offline)
   return _msg;
 }
 

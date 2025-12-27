@@ -178,6 +178,24 @@ struct reload_config_db_requestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 reload_config_db_requestDefaultTypeInternal _reload_config_db_request_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR offline_request::offline_request(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(offline_request_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct offline_requestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR offline_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~offline_requestDefaultTypeInternal() {}
+  union {
+    offline_request _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 offline_requestDefaultTypeInternal _offline_request_default_instance_;
 
 inline constexpr service_player_response::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -282,8 +300,10 @@ const ::uint32_t
         2,
         3,
         0,
+        0x000, // bitmap
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_._oneof_case_[0]),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
@@ -304,8 +324,9 @@ static const ::_pbi::MigrationSchema
         {9, sizeof(::celeritas::proto::service::reload_game_config_response)},
         {10, sizeof(::celeritas::proto::service::service_login_request)},
         {31, sizeof(::celeritas::proto::service::service_login_response)},
-        {42, sizeof(::celeritas::proto::service::service_player_request)},
-        {48, sizeof(::celeritas::proto::service::service_player_response)},
+        {42, sizeof(::celeritas::proto::service::offline_request)},
+        {43, sizeof(::celeritas::proto::service::service_player_request)},
+        {50, sizeof(::celeritas::proto::service::service_player_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::service::_reload_config_db_request_default_instance_._instance,
@@ -314,6 +335,7 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::service::_reload_game_config_response_default_instance_._instance,
     &::celeritas::proto::service::_service_login_request_default_instance_._instance,
     &::celeritas::proto::service::_service_login_response_default_instance_._instance,
+    &::celeritas::proto::service::_offline_request_default_instance_._instance,
     &::celeritas::proto::service::_service_player_request_default_instance_._instance,
     &::celeritas::proto::service::_service_player_response_default_instance_._instance,
 };
@@ -332,13 +354,15 @@ const char descriptor_table_protodef_proto_2fservice_2fplayer_2eproto[] ABSL_ATT
     " \001(\003\022\020\n\010protocol\030\t \001(\005\"i\n\026service_login_"
     "response\022\024\n\014current_time\030\001 \001(\003\022\022\n\nsessio"
     "n_id\030\002 \001(\003\022\020\n\010protocol\030\003 \001(\005\022\023\n\013instance"
-    "_id\030\004 \001(\t\"\216\002\n\026service_player_request\022M\n\020"
-    "reload_config_db\030\001 \001(\01321.celeritas.proto"
-    ".service.reload_config_db_requestH\000\022Q\n\022r"
-    "eload_game_config\030\002 \001(\01323.celeritas.prot"
-    "o.service.reload_game_config_requestH\000\022G"
-    "\n\rservice_login\030\003 \001(\0132..celeritas.proto."
-    "service.service_login_requestH\000B\t\n\007paylo"
+    "_id\030\004 \001(\t\"\021\n\017offline_request\"\313\002\n\026service"
+    "_player_request\022M\n\020reload_config_db\030\001 \001("
+    "\01321.celeritas.proto.service.reload_confi"
+    "g_db_requestH\000\022Q\n\022reload_game_config\030\002 \001"
+    "(\01323.celeritas.proto.service.reload_game"
+    "_config_requestH\000\022G\n\rservice_login\030\003 \001(\013"
+    "2..celeritas.proto.service.service_login"
+    "_requestH\000\022;\n\007offline\030\004 \001(\0132(.celeritas."
+    "proto.service.offline_requestH\000B\t\n\007paylo"
     "ad\"\222\002\n\027service_player_response\022N\n\020reload"
     "_config_db\030\001 \001(\01322.celeritas.proto.servi"
     "ce.reload_config_db_responseH\000\022R\n\022reload"
@@ -352,13 +376,13 @@ static ::absl::once_flag descriptor_table_proto_2fservice_2fplayer_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fplayer_2eproto = {
     false,
     false,
-    1087,
+    1167,
     descriptor_table_protodef_proto_2fservice_2fplayer_2eproto,
     "proto/service/player.proto",
     &descriptor_table_proto_2fservice_2fplayer_2eproto_once,
     nullptr,
     0,
-    8,
+    9,
     schemas,
     file_default_instances,
     TableStruct_proto_2fservice_2fplayer_2eproto::offsets,
@@ -1916,6 +1940,115 @@ void service_login_response::InternalSwap(service_login_response* PROTOBUF_RESTR
 }
 // ===================================================================
 
+class offline_request::_Internal {
+ public:
+};
+
+offline_request::offline_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, offline_request_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.offline_request)
+}
+offline_request::offline_request(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const offline_request& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, offline_request_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  offline_request* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.offline_request)
+}
+
+inline void* PROTOBUF_NONNULL offline_request::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) offline_request(arena);
+}
+constexpr auto offline_request::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(offline_request),
+                                            alignof(offline_request));
+}
+constexpr auto offline_request::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_offline_request_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &offline_request::MergeImpl,
+          ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<offline_request>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &offline_request::SharedDtor,
+          ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<offline_request>(), &offline_request::ByteSizeLong,
+              &offline_request::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(offline_request, _impl_._cached_size_),
+          false,
+      },
+      &offline_request::kDescriptorMethods,
+      &descriptor_table_proto_2fservice_2fplayer_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull offline_request_class_data_ =
+        offline_request::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+offline_request::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&offline_request_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(offline_request_class_data_.tc_table);
+  return offline_request_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
+offline_request::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    offline_request_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::service::offline_request>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+::google::protobuf::Metadata offline_request::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class service_player_request::_Internal {
  public:
   static constexpr ::int32_t kOneofCaseOffset =
@@ -1961,6 +2094,19 @@ void service_player_request::set_allocated_service_login(::celeritas::proto::ser
   }
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_player_request.service_login)
 }
+void service_player_request::set_allocated_offline(::celeritas::proto::service::offline_request* PROTOBUF_NULLABLE offline) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (offline) {
+    ::google::protobuf::Arena* submessage_arena = offline->GetArena();
+    if (message_arena != submessage_arena) {
+      offline = ::google::protobuf::internal::GetOwnedMessage(message_arena, offline, submessage_arena);
+    }
+    set_has_offline();
+    _impl_.payload_.offline_ = offline;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_player_request.offline)
+}
 service_player_request::service_player_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, service_player_request_class_data_.base()) {
@@ -2002,6 +2148,9 @@ service_player_request::service_player_request(
         break;
       case kServiceLogin:
         _impl_.payload_.service_login_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.service_login_);
+        break;
+      case kOffline:
+        _impl_.payload_.offline_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.offline_);
         break;
   }
 
@@ -2062,6 +2211,14 @@ void service_player_request::clear_payload() {
       }
       break;
     }
+    case kOffline: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.offline_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.offline_);
+      }
+      break;
+    }
     case PAYLOAD_NOT_SET: {
       break;
     }
@@ -2113,17 +2270,17 @@ service_player_request::GetClassData() const {
   return service_player_request_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 3, 3, 0, 2>
+const ::_pbi::TcParseTable<0, 4, 4, 0, 2>
 service_player_request::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    3, 0,  // max_field_number, fast_idx_mask
+    4, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    3,  // num_aux_entries
+    4,  // num_field_entries
+    4,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     service_player_request_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -2142,11 +2299,14 @@ service_player_request::_table_ = {
     {PROTOBUF_FIELD_OFFSET(service_player_request, _impl_.payload_.reload_game_config_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.service.service_login_request service_login = 3;
     {PROTOBUF_FIELD_OFFSET(service_player_request, _impl_.payload_.service_login_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.service.offline_request offline = 4;
+    {PROTOBUF_FIELD_OFFSET(service_player_request, _impl_.payload_.offline_), _Internal::kOneofCaseOffset + 0, 3, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_config_db_request>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_game_config_request>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_login_request>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::service::offline_request>()},
   }},
   {{
   }},
@@ -2199,6 +2359,12 @@ PROTOBUF_NOINLINE void service_player_request::Clear() {
           stream);
       break;
     }
+    case kOffline: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          4, *this_._impl_.payload_.offline_, this_._impl_.payload_.offline_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     default:
       break;
   }
@@ -2242,6 +2408,12 @@ PROTOBUF_NOINLINE void service_player_request::Clear() {
     case kServiceLogin: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.service_login_);
+      break;
+    }
+    // .celeritas.proto.service.offline_request offline = 4;
+    case kOffline: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.offline_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -2296,6 +2468,14 @@ void service_player_request::MergeImpl(::google::protobuf::MessageLite& to_msg, 
           _this->_impl_.payload_.service_login_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.service_login_);
         } else {
           _this->_impl_.payload_.service_login_->MergeFrom(*from._impl_.payload_.service_login_);
+        }
+        break;
+      }
+      case kOffline: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.offline_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.offline_);
+        } else {
+          _this->_impl_.payload_.offline_->MergeFrom(*from._impl_.payload_.offline_);
         }
         break;
       }

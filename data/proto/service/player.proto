@@ -37,11 +37,15 @@ message service_login_response {
     string instance_id = 4;
 }
 
+message offline_request {
+}
+
 message service_player_request {
   oneof payload {
     reload_config_db_request reload_config_db = 1;
     reload_game_config_request reload_game_config = 2;
     service_login_request service_login = 3;
+    offline_request offline = 4;
   }
 }
 
