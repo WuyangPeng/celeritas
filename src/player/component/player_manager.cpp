@@ -75,7 +75,7 @@ celeritas::player_manager::void_awaitable_type celeritas::player_manager::time_c
     }
 }
 
-celeritas::player_manager::void_awaitable_type celeritas::player_manager::offline_player(int64_t user_id)
+celeritas::player_manager::void_awaitable_type celeritas::player_manager::offline_player(const int64_t user_id)
 {
     std::lock_guard lock{ mutex_ };
 

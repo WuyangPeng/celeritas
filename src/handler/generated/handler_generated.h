@@ -53,6 +53,7 @@
 #include "handler/payment/order_create_http_message_handler.h"
 #include "handler/payment/reload_sdk_payment_providers_db_message_handler.h"
 #include "handler/player/client_heartbeat_request_message_handler.h"
+#include "handler/player/offline_request_message_handler.h"
 #include "handler/player/reload_config_db_message_handler.h"
 #include "handler/player/reload_game_config_message_handler.h"
 #include "handler/player/service_login_request_message_handler.h"
