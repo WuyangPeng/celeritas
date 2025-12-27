@@ -5,7 +5,7 @@
 
 namespace celeritas
 {
-    class service_heartbeat_response_message_handler final : public concrete_message_handler<proto::service::register_response>
+    class service_heartbeat_response_message_handler final : public concrete_message_handler<proto::service::service_heartbeat_response>
     {
     public:
         using class_type = service_heartbeat_response_message_handler;
