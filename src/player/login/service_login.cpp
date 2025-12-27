@@ -1,6 +1,7 @@
 ﻿#include "create_account.h"
 #include "create_user.h"
 #include "service_login.h"
+#include "common/logger.h"
 #include "common/time_helper.h"
 #include "config/app_config.h"
 #include "database/database_fwd.h"
@@ -22,6 +23,8 @@ celeritas::service_login::int64_awaitable_type celeritas::service_login::send_me
 {
     if (login_.new_account())
     {
+        LOG_CHANNEL(player_channel, debug) << "login new account,account = " << login_.account_id() << ",bind id = " << login_.account_bind_id();
+
         if (const create_account create_account{ protobuf_handle_parameter_, login_ };
             !co_await create_account.save_database())
         {
@@ -35,6 +38,8 @@ celeritas::service_login::int64_awaitable_type celeritas::service_login::send_me
     {
         co_return 0;
     }
+
+    LOG_CHANNEL(player_channel, debug) << "login add player = " << login_.account_id() << ",bind id = " << login_.account_bind_id();
 
     const auto player = player_manager::get_instance().add_player(*user, protobuf_handle_parameter_->get_resource_loader(), protobuf_handle_parameter_->get_io_context(), protobuf_handle_parameter_->get_instance_id(), login_);
 

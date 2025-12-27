@@ -56,7 +56,7 @@ void celeritas::protobuf_handle_parameter::write_to_server(const std::string& se
     {
         if (resource_loader_shared_ptr->write(server_type, instance_id, header_, message))
         {
-            LOG_CHANNEL(initializer_channel, trace) << "write message to server_type: " << server_type;
+            LOG_CHANNEL(initializer_channel, trace) << "write message to server type: " << server_type;
         }
     }
 }

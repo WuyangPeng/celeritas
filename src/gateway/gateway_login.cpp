@@ -1,4 +1,5 @@
 ﻿#include "gateway_login.h"
+#include "common/logger.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/redis/auth/character_session.h"
 #include "database/generated/redis/auth/session_token.h"
@@ -40,6 +41,8 @@ void celeritas::gateway_login::write_to_server(const session_token& session_toke
 
 celeritas::gateway_login::void_awaitable_type celeritas::gateway_login::send_message() const
 {
+    LOG_CHANNEL(gateway_channel, debug) << "gateway login begin. token = " << login_.token();
+
     const auto redis_pool = database_pool_manager::get_instance().get_pool(redis_db_name.data());
 
     const auto optional_session_token = co_await redis_pool->select_one(session_token::get_select(database_type::redis, login_.token()), session_token::get_database_field_container());
@@ -65,6 +68,8 @@ celeritas::gateway_login::void_awaitable_type celeritas::gateway_login::send_mes
     {
         co_return send_error_message(game_error_type::server_error);
     }
+
+    LOG_CHANNEL(gateway_channel, debug) << "gateway login to player server. token = " << login_.token();
 
     co_return write_to_server(session_token, optional_services_info->get_instance_id(), true);
 }
