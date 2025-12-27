@@ -44,6 +44,9 @@ namespace celeritas
                                  const header& header,
                                  const protobuf_message& request) override;
 
+        [[nodiscard]] bool write(const header& header,
+                                 const protobuf_message& request);
+
         [[nodiscard]] bool write(const std::string& server_type,
                                  const std::string& instance_id,
                                  const header& header,
@@ -109,6 +112,8 @@ namespace celeritas
                                                               const service_registry_config_container& service_registry) const;
 
         void initialize_game_config();
+
+        void send_service_heartbeat();
 
         app_config_shared_ptr app_config_;
         listener_container_type listener_;

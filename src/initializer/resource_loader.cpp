@@ -110,6 +110,24 @@ bool celeritas::resource_loader::write(const std::string& server_type, const hea
     return to_write;
 }
 
+bool celeritas::resource_loader::write(const header& header, const protobuf_message& request)
+{
+    std::shared_lock lock{ mutex_ };
+
+    auto to_write = false;
+
+    for (const auto& element : tcp_clients_ | std::views::values)
+    {
+        if (!element->get_server_type().empty())
+        {
+            element->write(header, request);
+            to_write = true;
+        }
+    }
+
+    return to_write;
+}
+
 bool celeritas::resource_loader::write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request)
 {
     std::shared_lock lock{ mutex_ };
@@ -220,6 +238,8 @@ void celeritas::resource_loader::process_service_registry_by_duration()
     {
         LOG_CHANNEL(initializer_channel, trace) << "service registry registry: " << server.get_instance_id();
     }
+
+    send_service_heartbeat();
 }
 
 celeritas::resource_loader::app_config_shared_ptr celeritas::resource_loader::get_app_config() const
@@ -432,4 +452,15 @@ void celeritas::resource_loader::initialize_game_config()
     }
 
     game_config::load_tables();
+}
+
+void celeritas::resource_loader::send_service_heartbeat()
+{
+    proto::celeritas request{};
+    request.mutable_celeritas_request()->mutable_service()->mutable_registry()->mutable_service_heartbeat();
+
+    if (write(header{}, request))
+    {
+        LOG_CHANNEL(initializer_channel, trace) << "service heartbeat. ";
+    }
 }

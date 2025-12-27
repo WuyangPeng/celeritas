@@ -46,11 +46,19 @@ message close_request {
   string instance_id = 1;
 }
 
+// 服务器心跳消息
+message service_heartbeat_request {
+}
+
+message service_heartbeat_response {
+}
+
 message service_registry_request {
   oneof payload {
     register_request server_register = 1;
     discover_request server_discover = 2;
     close_request server_close = 3;
+    service_heartbeat_request service_heartbeat = 4;
   }
 }
 
@@ -58,5 +66,6 @@ message service_registry_response {
   oneof payload {
     register_response server_register = 1;
     discover_response server_discover = 2;
+    service_heartbeat_response service_heartbeat = 3;
   }
 }

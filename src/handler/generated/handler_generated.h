@@ -63,3 +63,5 @@
 #include "handler/service_registry/manual/health_check_response_http_message_handler.h"
 #include "handler/service_registry/register_request_message_handler.h"
 #include "handler/service_registry/register_response_message_handler.h"
+#include "handler/service_registry/service_heartbeat_request_message_handler.h"
+#include "handler/service_registry/service_heartbeat_response_message_handler.h"
