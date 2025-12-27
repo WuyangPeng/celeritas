@@ -15,7 +15,8 @@ namespace celeritas
         generate_database_file(std::string relative_path,
                                std::string database_file,
                                std::string output_directory,
-                               const database_template_file& database_template_file);
+                               const database_template_file& database_template_file,
+                               bool mongo);
 
         void execute() override;
 
@@ -34,5 +35,6 @@ namespace celeritas
         std::string database_file_;
         std::string output_directory_;
         const database_template_file& database_template_file_;
+        bool mongo_;
     };
 }

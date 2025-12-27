@@ -9,7 +9,7 @@
 
 celeritas::account::account(const database_entity_change& entity)
     : base_type{ entity },
-      account_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : account_id_describe) },
+      account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       account_name_{ entity.get_value<database_data_type::string_type>(account_name_describe) },
       password_hash_{ entity.get_value<database_data_type::string_type>(password_hash_describe) },
       salt_{ entity.get_value<database_data_type::string_type>(salt_describe) },
@@ -22,7 +22,7 @@ celeritas::account::account(const database_entity_change& entity)
 
 celeritas::account::account(const database_type database_type, const database_entity_change& entity)
     : base_type{ database_type, entity },
-      account_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : account_id_describe) },
+      account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       account_name_{ entity.get_value<database_data_type::string_type>(account_name_describe) },
       password_hash_{ entity.get_value<database_data_type::string_type>(password_hash_describe) },
       salt_{ entity.get_value<database_data_type::string_type>(salt_describe) },
@@ -192,20 +192,6 @@ const celeritas::database_entity::database_field_container& celeritas::account::
     return field_name_container;
 }
 
-const celeritas::database_entity::database_field_container& celeritas::account::get_mongo_database_field_container()
-{
-    static const database_field_container field_name_container{ decltype(account_id_)::get_mongo_database_field(),
-                                                                decltype(account_name_)::get_database_field(),
-                                                                decltype(password_hash_)::get_database_field(),
-                                                                decltype(salt_)::get_database_field(),
-                                                                decltype(device_id_)::get_database_field(),
-                                                                decltype(app_id_)::get_database_field(),
-                                                                decltype(create_time_)::get_database_field(),
-                                                                decltype(status_)::get_database_field() };
-
-    return field_name_container;
-}
-
 celeritas::account::database_entity_change_const_shared_ptr celeritas::account::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
@@ -233,9 +219,5 @@ celeritas::account::database_entity_change_const_shared_ptr celeritas::account::
 
 celeritas::account::basis_database_container_const_shared_ptr celeritas::account::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type account_id)
 {
-    const auto field_name = database_type == database_type::mongo ? "_id" : account_id_describe;
-
-    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, account_id });
-
-    return container;
+    return std::make_shared<basis_database_container>(basis_database{ account_id_describe, account_id });
 }

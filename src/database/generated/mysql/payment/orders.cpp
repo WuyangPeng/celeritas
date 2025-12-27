@@ -9,7 +9,7 @@
 
 celeritas::orders::orders(const database_entity_change& entity)
     : base_type{ entity },
-      id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : id_describe) },
+      id_{ entity.get_value<database_data_type::int64_type>(id_describe) },
       order_id_{ entity.get_value<database_data_type::string_type>(order_id_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       game_server_id_{ entity.get_value<database_data_type::string_type>(game_server_id_describe) },
@@ -33,7 +33,7 @@ celeritas::orders::orders(const database_entity_change& entity)
 
 celeritas::orders::orders(const database_type database_type, const database_entity_change& entity)
     : base_type{ database_type, entity },
-      id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : id_describe) },
+      id_{ entity.get_value<database_data_type::int64_type>(id_describe) },
       order_id_{ entity.get_value<database_data_type::string_type>(order_id_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       game_server_id_{ entity.get_value<database_data_type::string_type>(game_server_id_describe) },
@@ -412,31 +412,6 @@ const celeritas::database_entity::database_field_container& celeritas::orders::g
     return field_name_container;
 }
 
-const celeritas::database_entity::database_field_container& celeritas::orders::get_mongo_database_field_container()
-{
-    static const database_field_container field_name_container{ decltype(id_)::get_mongo_database_field(),
-                                                                decltype(order_id_)::get_database_field(),
-                                                                decltype(account_id_)::get_database_field(),
-                                                                decltype(game_server_id_)::get_database_field(),
-                                                                decltype(role_id_)::get_database_field(),
-                                                                decltype(product_id_)::get_database_field(),
-                                                                decltype(amount_)::get_database_field(),
-                                                                decltype(platform_)::get_database_field(),
-                                                                decltype(transaction_id_)::get_database_field(),
-                                                                decltype(status_)::get_database_field(),
-                                                                decltype(delivery_status_)::get_database_field(),
-                                                                decltype(client_request_id_)::get_database_field(),
-                                                                decltype(retry_count_)::get_database_field(),
-                                                                decltype(create_time_)::get_database_field(),
-                                                                decltype(pay_time_)::get_database_field(),
-                                                                decltype(expire_time_)::get_database_field(),
-                                                                decltype(callback_data_)::get_database_field(),
-                                                                decltype(refund_time_)::get_database_field(),
-                                                                decltype(refund_amount_)::get_database_field() };
-
-    return field_name_container;
-}
-
 celeritas::orders::database_entity_change_const_shared_ptr celeritas::orders::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
@@ -464,9 +439,5 @@ celeritas::orders::database_entity_change_const_shared_ptr celeritas::orders::ge
 
 celeritas::orders::basis_database_container_const_shared_ptr celeritas::orders::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type id)
 {
-    const auto field_name = database_type == database_type::mongo ? "_id" : id_describe;
-
-    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, id });
-
-    return container;
+    return std::make_shared<basis_database_container>(basis_database{ id_describe, id });
 }

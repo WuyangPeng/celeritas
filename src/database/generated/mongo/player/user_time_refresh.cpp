@@ -9,14 +9,14 @@
 
 celeritas::user_time_refresh::user_time_refresh(const database_entity_change& entity)
     : base_type{ entity },
-      user_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : user_id_describe) },
+      user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       player_time_refresh_{ entity.get_value<database_data_type::document_array_type>(player_time_refresh_describe) }
 {
 }
 
 celeritas::user_time_refresh::user_time_refresh(const database_type database_type, const database_entity_change& entity)
     : base_type{ database_type, entity },
-      user_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : user_id_describe) },
+      user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       player_time_refresh_{ entity.get_value<database_data_type::document_array_type>(player_time_refresh_describe) }
 {
     if (database_type != entity.get_database_type())
@@ -94,14 +94,6 @@ const celeritas::database_entity::database_field_container& celeritas::user_time
     return field_name_container;
 }
 
-const celeritas::database_entity::database_field_container& celeritas::user_time_refresh::get_mongo_database_field_container()
-{
-    static const database_field_container field_name_container{ decltype(user_id_)::get_mongo_database_field(),
-                                                                decltype(player_time_refresh_)::get_database_field() };
-
-    return field_name_container;
-}
-
 celeritas::user_time_refresh::database_entity_change_const_shared_ptr celeritas::user_time_refresh::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
@@ -129,9 +121,5 @@ celeritas::user_time_refresh::database_entity_change_const_shared_ptr celeritas:
 
 celeritas::user_time_refresh::basis_database_container_const_shared_ptr celeritas::user_time_refresh::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type user_id)
 {
-    const auto field_name = database_type == database_type::mongo ? "_id" : user_id_describe;
-
-    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, user_id });
-
-    return container;
+    return std::make_shared<basis_database_container>(basis_database{ user_id_describe, user_id });
 }

@@ -9,7 +9,7 @@
 
 celeritas::sdk_payment_providers::sdk_payment_providers(const database_entity_change& entity)
     : base_type{ entity },
-      sdk_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : sdk_id_describe) },
+      sdk_id_{ entity.get_value<database_data_type::int64_type>(sdk_id_describe) },
       app_id_{ entity.get_value<database_data_type::int64_type>(app_id_describe) },
       platform_{ entity.get_value<database_data_type::int32_type>(platform_describe) },
       provider_name_{ entity.get_value<database_data_type::string_type>(provider_name_describe) },
@@ -23,7 +23,7 @@ celeritas::sdk_payment_providers::sdk_payment_providers(const database_entity_ch
 
 celeritas::sdk_payment_providers::sdk_payment_providers(const database_type database_type, const database_entity_change& entity)
     : base_type{ database_type, entity },
-      sdk_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : sdk_id_describe) },
+      sdk_id_{ entity.get_value<database_data_type::int64_type>(sdk_id_describe) },
       app_id_{ entity.get_value<database_data_type::int64_type>(app_id_describe) },
       platform_{ entity.get_value<database_data_type::int32_type>(platform_describe) },
       provider_name_{ entity.get_value<database_data_type::string_type>(provider_name_describe) },
@@ -212,21 +212,6 @@ const celeritas::database_entity::database_field_container& celeritas::sdk_payme
     return field_name_container;
 }
 
-const celeritas::database_entity::database_field_container& celeritas::sdk_payment_providers::get_mongo_database_field_container()
-{
-    static const database_field_container field_name_container{ decltype(sdk_id_)::get_mongo_database_field(),
-                                                                decltype(app_id_)::get_database_field(),
-                                                                decltype(platform_)::get_database_field(),
-                                                                decltype(provider_name_)::get_database_field(),
-                                                                decltype(api_key_)::get_database_field(),
-                                                                decltype(api_secret_)::get_database_field(),
-                                                                decltype(decryption_key_)::get_database_field(),
-                                                                decltype(http_suffix_)::get_database_field(),
-                                                                decltype(active_)::get_database_field() };
-
-    return field_name_container;
-}
-
 celeritas::sdk_payment_providers::database_entity_change_const_shared_ptr celeritas::sdk_payment_providers::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
@@ -254,9 +239,5 @@ celeritas::sdk_payment_providers::database_entity_change_const_shared_ptr celeri
 
 celeritas::sdk_payment_providers::basis_database_container_const_shared_ptr celeritas::sdk_payment_providers::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type sdk_id)
 {
-    const auto field_name = database_type == database_type::mongo ? "_id" : sdk_id_describe;
-
-    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, sdk_id });
-
-    return container;
+    return std::make_shared<basis_database_container>(basis_database{ sdk_id_describe, sdk_id });
 }

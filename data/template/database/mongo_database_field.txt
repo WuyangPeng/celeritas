@@ -1,1 +1,0 @@
-${entity_indent}decltype(${entity}_)::get_mongo_database_field()${field_is_end}

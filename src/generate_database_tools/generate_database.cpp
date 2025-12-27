@@ -47,13 +47,20 @@ void celeritas::generate_database::generate(const std::string& directory)
 
             const auto relative_path = relative_full_path.parent_path();
 
-            generate_file(relative_path.string(), entry.path().string());
+            if (relative_path.filename().string().find("mongo") != std::string::npos)
+            {
+                generate_file(relative_path.string(), entry.path().string(), true);
+            }
+            else
+            {
+                generate_file(relative_path.string(), entry.path().string(), false);
+            }
         }
     }
 }
 
-void celeritas::generate_database::generate_file(const std::string& relative_path, const std::string& database_file) const
+void celeritas::generate_database::generate_file(const std::string& relative_path, const std::string& database_file, const bool mongo) const
 {
-    generate_database_file generate_database_file{ relative_path, database_file, output_directory_, database_template_file_ };
+    generate_database_file generate_database_file{ relative_path, database_file, output_directory_, database_template_file_, mongo };
     generate_database_file.execute();
 }

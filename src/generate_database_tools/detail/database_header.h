@@ -11,7 +11,7 @@ namespace celeritas
     public:
         using class_type = database_header;
 
-        void generate(const database_attribute& attribute, const database_template_file& database_template_file);
+        void generate(const database_attribute& attribute, const database_template_file& database_template_file, bool mongo);
 
         [[nodiscard]] const std::string& get_database_get_declaration() const noexcept;
 
@@ -34,7 +34,7 @@ namespace celeritas
 
         [[nodiscard]] static std::string create_database_array_modify_declaration_content(const entity_attribute& entity_attribute, const database_template_file& database_template_file);
 
-        [[nodiscard]] static std::string create_database_describe_content(const entity_attribute& entity_attribute, const database_template_file& database_template_file);
+        [[nodiscard]] static std::string create_database_describe_content(const std::string& entity_key_name, const std::string& entity_name, const database_template_file& database_template_file);
 
         [[nodiscard]] static std::string create_field_content(const entity_attribute& entity_attribute, const database_template_file& database_template_file);
 

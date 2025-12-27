@@ -49,7 +49,7 @@ celeritas::player_time_database::void_awaitable_type celeritas::player_time_data
 {
     const auto mongo_pool = player_time_component_->get_mongo_player_database_pool();
 
-    if (const auto optional_user_time_refresh = co_await mongo_pool->select_one(user_time_refresh::get_select(database_type::mongo, user_id_), user_time_refresh::get_mongo_database_field_container()))
+    if (const auto optional_user_time_refresh = co_await mongo_pool->select_one(user_time_refresh::get_select(database_type::mongo, user_id_), user_time_refresh::get_database_field_container()))
     {
         user_time_refresh_ = user_time_refresh{ *optional_user_time_refresh };
     }

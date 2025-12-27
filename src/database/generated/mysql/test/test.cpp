@@ -9,7 +9,7 @@
 
 celeritas::test::test(const database_entity_change& entity)
     : base_type{ entity },
-      user_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : user_id_describe) },
+      user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       chapter_id_{ entity.get_value<database_data_type::int32_type>(chapter_id_describe) },
       chapter_name_{ entity.get_value<database_data_type::string_type>(chapter_name_describe) },
       chance_winning_{ entity.get_value<database_data_type::double_type>(chance_winning_describe) },
@@ -21,7 +21,7 @@ celeritas::test::test(const database_entity_change& entity)
 
 celeritas::test::test(const database_type database_type, const database_entity_change& entity)
     : base_type{ database_type, entity },
-      user_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : user_id_describe) },
+      user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       chapter_id_{ entity.get_value<database_data_type::int32_type>(chapter_id_describe) },
       chapter_name_{ entity.get_value<database_data_type::string_type>(chapter_name_describe) },
       chance_winning_{ entity.get_value<database_data_type::double_type>(chance_winning_describe) },
@@ -186,19 +186,6 @@ const celeritas::database_entity::database_field_container& celeritas::test::get
     return field_name_container;
 }
 
-const celeritas::database_entity::database_field_container& celeritas::test::get_mongo_database_field_container()
-{
-    static const database_field_container field_name_container{ decltype(user_id_)::get_mongo_database_field(),
-                                                                decltype(chapter_id_)::get_database_field(),
-                                                                decltype(chapter_name_)::get_database_field(),
-                                                                decltype(chance_winning_)::get_database_field(),
-                                                                decltype(winning_)::get_database_field(),
-                                                                decltype(currency_)::get_database_field(),
-                                                                decltype(count_)::get_database_field() };
-
-    return field_name_container;
-}
-
 celeritas::test::database_entity_change_const_shared_ptr celeritas::test::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
@@ -226,9 +213,5 @@ celeritas::test::database_entity_change_const_shared_ptr celeritas::test::get_se
 
 celeritas::test::basis_database_container_const_shared_ptr celeritas::test::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type user_id)
 {
-    const auto field_name = database_type == database_type::mongo ? "_id" : user_id_describe;
-
-    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, user_id });
-
-    return container;
+    return std::make_shared<basis_database_container>(basis_database{ user_id_describe, user_id });
 }

@@ -18,7 +18,7 @@ celeritas::player_develop_database::void_awaitable_type celeritas::player_develo
     const auto player_user = player_state_->get_component<player_user_component>();
     const auto user_id = player_user->get_user_id();
 
-    if (const auto database_entity_change = co_await mongo_player_pool->select_one(user_develop::get_select(database_type::mongo, user_id), user_develop::get_mongo_database_field_container()))
+    if (const auto database_entity_change = co_await mongo_player_pool->select_one(user_develop::get_select(database_type::mongo, user_id), user_develop::get_database_field_container()))
     {
         user_develop_ = user_develop{ *database_entity_change };
     }

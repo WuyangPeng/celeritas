@@ -9,14 +9,14 @@
 
 celeritas::character_session::character_session(const database_entity_change& entity)
     : base_type{ entity },
-      account_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : account_id_describe) },
+      account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       player_server_instance_id_{ entity.get_value<database_data_type::string_type>(player_server_instance_id_describe) }
 {
 }
 
 celeritas::character_session::character_session(const database_type database_type, const database_entity_change& entity)
     : base_type{ database_type, entity },
-      account_id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : account_id_describe) },
+      account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       player_server_instance_id_{ entity.get_value<database_data_type::string_type>(player_server_instance_id_describe) }
 {
     if (database_type != entity.get_database_type())
@@ -72,14 +72,6 @@ const celeritas::database_entity::database_field_container& celeritas::character
     return field_name_container;
 }
 
-const celeritas::database_entity::database_field_container& celeritas::character_session::get_mongo_database_field_container()
-{
-    static const database_field_container field_name_container{ decltype(account_id_)::get_mongo_database_field(),
-                                                                decltype(player_server_instance_id_)::get_database_field() };
-
-    return field_name_container;
-}
-
 celeritas::character_session::database_entity_change_const_shared_ptr celeritas::character_session::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
@@ -107,9 +99,5 @@ celeritas::character_session::database_entity_change_const_shared_ptr celeritas:
 
 celeritas::character_session::basis_database_container_const_shared_ptr celeritas::character_session::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type account_id)
 {
-    const auto field_name = database_type == database_type::mongo ? "_id" : account_id_describe;
-
-    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, account_id });
-
-    return container;
+    return std::make_shared<basis_database_container>(basis_database{ account_id_describe, account_id });
 }

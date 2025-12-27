@@ -9,7 +9,7 @@
 
 celeritas::email_code::email_code(const database_entity_change& entity)
     : base_type{ entity },
-      email_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : email_describe) },
+      email_{ entity.get_value<database_data_type::string_type>(email_describe) },
       code_{ entity.get_value<database_data_type::int32_type>(code_describe) },
       retry_count_{ entity.get_value<database_data_type::int32_count_type>(retry_count_describe) }
 {
@@ -17,7 +17,7 @@ celeritas::email_code::email_code(const database_entity_change& entity)
 
 celeritas::email_code::email_code(const database_type database_type, const database_entity_change& entity)
     : base_type{ database_type, entity },
-      email_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : email_describe) },
+      email_{ entity.get_value<database_data_type::string_type>(email_describe) },
       code_{ entity.get_value<database_data_type::int32_type>(code_describe) },
       retry_count_{ entity.get_value<database_data_type::int32_count_type>(retry_count_describe) }
 {
@@ -99,15 +99,6 @@ const celeritas::database_entity::database_field_container& celeritas::email_cod
     return field_name_container;
 }
 
-const celeritas::database_entity::database_field_container& celeritas::email_code::get_mongo_database_field_container()
-{
-    static const database_field_container field_name_container{ decltype(email_)::get_mongo_database_field(),
-                                                                decltype(code_)::get_database_field(),
-                                                                decltype(retry_count_)::get_database_field() };
-
-    return field_name_container;
-}
-
 celeritas::email_code::database_entity_change_const_shared_ptr celeritas::email_code::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
@@ -135,9 +126,5 @@ celeritas::email_code::database_entity_change_const_shared_ptr celeritas::email_
 
 celeritas::email_code::basis_database_container_const_shared_ptr celeritas::email_code::get_key_basis_database_container(const database_type database_type, traits::param_type::string_type email)
 {
-    const auto field_name = database_type == database_type::mongo ? "_id" : email_describe;
-
-    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, email });
-
-    return container;
+    return std::make_shared<basis_database_container>(basis_database{ email_describe, email });
 }

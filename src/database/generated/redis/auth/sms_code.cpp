@@ -9,7 +9,7 @@
 
 celeritas::sms_code::sms_code(const database_entity_change& entity)
     : base_type{ entity },
-      phone_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : phone_describe) },
+      phone_{ entity.get_value<database_data_type::string_type>(phone_describe) },
       code_{ entity.get_value<database_data_type::int32_type>(code_describe) },
       retry_count_{ entity.get_value<database_data_type::int32_count_type>(retry_count_describe) }
 {
@@ -17,7 +17,7 @@ celeritas::sms_code::sms_code(const database_entity_change& entity)
 
 celeritas::sms_code::sms_code(const database_type database_type, const database_entity_change& entity)
     : base_type{ database_type, entity },
-      phone_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : phone_describe) },
+      phone_{ entity.get_value<database_data_type::string_type>(phone_describe) },
       code_{ entity.get_value<database_data_type::int32_type>(code_describe) },
       retry_count_{ entity.get_value<database_data_type::int32_count_type>(retry_count_describe) }
 {
@@ -99,15 +99,6 @@ const celeritas::database_entity::database_field_container& celeritas::sms_code:
     return field_name_container;
 }
 
-const celeritas::database_entity::database_field_container& celeritas::sms_code::get_mongo_database_field_container()
-{
-    static const database_field_container field_name_container{ decltype(phone_)::get_mongo_database_field(),
-                                                                decltype(code_)::get_database_field(),
-                                                                decltype(retry_count_)::get_database_field() };
-
-    return field_name_container;
-}
-
 celeritas::sms_code::database_entity_change_const_shared_ptr celeritas::sms_code::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
@@ -135,9 +126,5 @@ celeritas::sms_code::database_entity_change_const_shared_ptr celeritas::sms_code
 
 celeritas::sms_code::basis_database_container_const_shared_ptr celeritas::sms_code::get_key_basis_database_container(const database_type database_type, traits::param_type::string_type phone)
 {
-    const auto field_name = database_type == database_type::mongo ? "_id" : phone_describe;
-
-    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, phone });
-
-    return container;
+    return std::make_shared<basis_database_container>(basis_database{ phone_describe, phone });
 }

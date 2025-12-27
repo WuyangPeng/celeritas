@@ -4,7 +4,7 @@
 
 #include <boost/algorithm/string.hpp>
 
-void celeritas::database_header::generate(const database_attribute& attribute, const database_template_file& database_template_file)
+void celeritas::database_header::generate(const database_attribute& attribute, const database_template_file& database_template_file, bool mongo)
 {
     for (const auto& element : attribute)
     {
@@ -20,7 +20,16 @@ void celeritas::database_header::generate(const database_attribute& attribute, c
 
         database_get_declaration_ += create_database_get_declaration_content(element, database_template_file);
         database_set_declaration_ += create_database_set_declaration_content(element, database_template_file);
-        database_describe_ += create_database_describe_content(element, database_template_file);
+
+        if (element.is_key_type() && mongo)
+        {
+            database_describe_ += create_database_describe_content("_id", element.get_entity_name(), database_template_file);
+        }
+        else
+        {
+            database_describe_ += create_database_describe_content(element.get_entity_name(), element.get_entity_name(), database_template_file);
+        }
+
         field_ += create_field_content(element, database_template_file);
     }
 }
@@ -113,12 +122,12 @@ std::string celeritas::database_header::create_database_array_modify_declaration
     return database_array_modify_declaration_content;
 }
 
-std::string celeritas::database_header::create_database_describe_content(const entity_attribute& entity_attribute, const database_template_file& database_template_file)
+std::string celeritas::database_header::create_database_describe_content(const std::string& entity_key_name, const std::string& entity_name, const database_template_file& database_template_file)
 {
     auto database_describe_content = database_template_file.get_database_describe_content();
 
-    boost::replace_all(database_describe_content, "${entity_is_key}", entity_attribute.get_entity_name());
-    boost::replace_all(database_describe_content, "${entity}", entity_attribute.get_entity_name());
+    boost::replace_all(database_describe_content, "${entity_is_key}", entity_key_name);
+    boost::replace_all(database_describe_content, "${entity}", entity_name);
 
     return database_describe_content;
 }

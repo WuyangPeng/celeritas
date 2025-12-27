@@ -13,8 +13,8 @@
 #include <fstream>
 #include <sstream>
 
-celeritas::generate_database_file::generate_database_file(std::string relative_path, std::string database_file, std::string output_directory, const database_template_file& database_template_file)
-    : relative_path_{ std::move(relative_path) }, database_file_{ std::move(database_file) }, output_directory_{ std::move(output_directory) }, database_template_file_{ database_template_file }
+celeritas::generate_database_file::generate_database_file(std::string relative_path, std::string database_file, std::string output_directory, const database_template_file& database_template_file, const bool mongo)
+    : relative_path_{ std::move(relative_path) }, database_file_{ std::move(database_file) }, output_directory_{ std::move(output_directory) }, database_template_file_{ database_template_file }, mongo_{ mongo }
 {
 }
 
@@ -81,7 +81,7 @@ void celeritas::generate_database_file::generate_entity_cpp_file(const database_
     std::filesystem::path path{ output_directory_ };
     path /= relative_path_;
 
-    std::filesystem::path database_file_path{ database_file_ };
+    const std::filesystem::path database_file_path{ database_file_ };
     auto file_name = database_file_path.filename();
     file_name = file_name.replace_extension("");
     path /= file_name;
@@ -89,10 +89,10 @@ void celeritas::generate_database_file::generate_entity_cpp_file(const database_
     std::filesystem::create_directory(path);
     path /= class_name + ".cpp";
 
-    if (const auto file_name = path.string();
-        !is_content_same(file_name, entity_cpp_content))
+    if (const auto file_name_path = path.string();
+        !is_content_same(file_name_path, entity_cpp_content))
     {
-        save_database(file_name, entity_cpp_content);
+        save_database(file_name_path, entity_cpp_content);
     }
 }
 
@@ -106,7 +106,7 @@ std::string celeritas::generate_database_file::generate_header_content(const dat
     boost::replace_all(entity_h_content, "${key_name}", attribute.get_key_name());
 
     database_header header{};
-    header.generate(attribute, database_template_file_);
+    header.generate(attribute, database_template_file_, mongo_);
 
     boost::replace_all(entity_h_content, "${database_get_declaration}", header.get_database_get_declaration());
     boost::replace_all(entity_h_content, "${database_set_declaration}", header.get_database_set_declaration());
@@ -136,7 +136,6 @@ std::string celeritas::generate_database_file::generate_source_content(const dat
     boost::replace_all(entity_cpp_content, "${field_init}", source.get_field_init());
     boost::replace_all(entity_cpp_content, "${class_name}", attribute.get_class_name());
     boost::replace_all(entity_cpp_content, "${database_field}", source.get_database_field());
-    boost::replace_all(entity_cpp_content, "${mongo_database_field}", source.get_mongo_database_field());
     boost::replace_all(entity_cpp_content, "${add_modify}", source.get_database_add_modify());
 
     return entity_cpp_content;

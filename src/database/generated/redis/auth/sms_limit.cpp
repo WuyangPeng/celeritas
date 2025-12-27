@@ -9,14 +9,14 @@
 
 celeritas::sms_limit::sms_limit(const database_entity_change& entity)
     : base_type{ entity },
-      phone_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : phone_describe) },
+      phone_{ entity.get_value<database_data_type::string_type>(phone_describe) },
       exist_{ entity.get_value<database_data_type::bool_type>(exist_describe) }
 {
 }
 
 celeritas::sms_limit::sms_limit(const database_type database_type, const database_entity_change& entity)
     : base_type{ database_type, entity },
-      phone_{ entity.get_value<database_data_type::string_type>(entity.get_database_type() == database_type::mongo ? "_id" : phone_describe) },
+      phone_{ entity.get_value<database_data_type::string_type>(phone_describe) },
       exist_{ entity.get_value<database_data_type::bool_type>(exist_describe) }
 {
     if (database_type != entity.get_database_type())
@@ -72,14 +72,6 @@ const celeritas::database_entity::database_field_container& celeritas::sms_limit
     return field_name_container;
 }
 
-const celeritas::database_entity::database_field_container& celeritas::sms_limit::get_mongo_database_field_container()
-{
-    static const database_field_container field_name_container{ decltype(phone_)::get_mongo_database_field(),
-                                                                decltype(exist_)::get_database_field() };
-
-    return field_name_container;
-}
-
 celeritas::sms_limit::database_entity_change_const_shared_ptr celeritas::sms_limit::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
@@ -107,9 +99,5 @@ celeritas::sms_limit::database_entity_change_const_shared_ptr celeritas::sms_lim
 
 celeritas::sms_limit::basis_database_container_const_shared_ptr celeritas::sms_limit::get_key_basis_database_container(const database_type database_type, traits::param_type::string_type phone)
 {
-    const auto field_name = database_type == database_type::mongo ? "_id" : phone_describe;
-
-    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, phone });
-
-    return container;
+    return std::make_shared<basis_database_container>(basis_database{ phone_describe, phone });
 }

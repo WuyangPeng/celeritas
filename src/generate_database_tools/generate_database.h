@@ -20,7 +20,7 @@ namespace celeritas
 
         void generate(const std::string& directory);
 
-        void generate_file(const std::string& relative_path, const std::string& database_file) const;
+        void generate_file(const std::string& relative_path, const std::string& database_file, bool mongo) const;
 
         std::string database_directory_;
         std::string output_directory_;

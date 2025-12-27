@@ -9,7 +9,7 @@
 
 celeritas::user_server_roles::user_server_roles(const database_entity_change& entity)
     : base_type{ entity },
-      id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : id_describe) },
+      id_{ entity.get_value<database_data_type::int64_type>(id_describe) },
       servers_{ entity.get_value<database_data_type::document_array_type>(servers_describe) },
       update_time_{ entity.get_value<database_data_type::int64_type>(update_time_describe) }
 {
@@ -17,7 +17,7 @@ celeritas::user_server_roles::user_server_roles(const database_entity_change& en
 
 celeritas::user_server_roles::user_server_roles(const database_type database_type, const database_entity_change& entity)
     : base_type{ database_type, entity },
-      id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : id_describe) },
+      id_{ entity.get_value<database_data_type::int64_type>(id_describe) },
       servers_{ entity.get_value<database_data_type::document_array_type>(servers_describe) },
       update_time_{ entity.get_value<database_data_type::int64_type>(update_time_describe) }
 {
@@ -114,15 +114,6 @@ const celeritas::database_entity::database_field_container& celeritas::user_serv
     return field_name_container;
 }
 
-const celeritas::database_entity::database_field_container& celeritas::user_server_roles::get_mongo_database_field_container()
-{
-    static const database_field_container field_name_container{ decltype(id_)::get_mongo_database_field(),
-                                                                decltype(servers_)::get_database_field(),
-                                                                decltype(update_time_)::get_database_field() };
-
-    return field_name_container;
-}
-
 celeritas::user_server_roles::database_entity_change_const_shared_ptr celeritas::user_server_roles::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
@@ -150,9 +141,5 @@ celeritas::user_server_roles::database_entity_change_const_shared_ptr celeritas:
 
 celeritas::user_server_roles::basis_database_container_const_shared_ptr celeritas::user_server_roles::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type id)
 {
-    const auto field_name = database_type == database_type::mongo ? "_id" : id_describe;
-
-    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, id });
-
-    return container;
+    return std::make_shared<basis_database_container>(basis_database{ id_describe, id });
 }

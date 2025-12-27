@@ -9,13 +9,13 @@
 
 celeritas::${class_name}::${class_name}(const database_entity_change& entity)
     : base_type{ entity },
-      ${key_name}_{ entity.get_value<database_data_type::${key_type}>(entity.get_database_type() == database_type::mongo ? "_id" : ${key_name}_describe) },
+      ${key_name}_{ entity.get_value<database_data_type::${key_type}>(${key_name}_describe) },
 ${field_assignment}{
 }
 
 celeritas::${class_name}::${class_name}(const database_type database_type, const database_entity_change& entity)
     : base_type{ database_type, entity },
-      ${key_name}_{ entity.get_value<database_data_type::${key_type}>(entity.get_database_type() == database_type::mongo ? "_id" : ${key_name}_describe) },
+      ${key_name}_{ entity.get_value<database_data_type::${key_type}>(${key_name}_describe) },
 ${field_assignment}{
     if (database_type != entity.get_database_type())
     {
@@ -33,13 +33,6 @@ ${field_init}{
 ${database_get_define}${database_set_define}${database_modify_define}${database_array_modify_define}const celeritas::database_entity::database_field_container& celeritas::${class_name}::get_database_field_container()
 {
     static const database_field_container field_name_container{ ${database_field} };
-
-    return field_name_container;
-}
-
-const celeritas::database_entity::database_field_container& celeritas::${class_name}::get_mongo_database_field_container()
-{
-    static const database_field_container field_name_container{ ${mongo_database_field} };
 
     return field_name_container;
 }
@@ -71,9 +64,5 @@ celeritas::${class_name}::database_entity_change_const_shared_ptr celeritas::${c
 
 celeritas::${class_name}::basis_database_container_const_shared_ptr celeritas::${class_name}::get_key_basis_database_container(const database_type database_type, traits::param_type::${key_type} ${key_name})
 {
-    const auto field_name = database_type == database_type::mongo ? "_id" : ${key_name}_describe;
-
-    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, ${key_name} });
-
-    return container;
+    return std::make_shared<basis_database_container>(basis_database{ ${key_name}_describe, ${key_name} });
 }

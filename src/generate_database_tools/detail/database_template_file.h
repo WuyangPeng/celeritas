@@ -41,8 +41,6 @@ namespace celeritas
 
         [[nodiscard]] std::string get_database_field_content() const;
 
-        [[nodiscard]] std::string get_mongo_database_field_content() const;
-
         [[nodiscard]] std::string get_database_add_modify_content() const;
 
     private:
@@ -66,7 +64,6 @@ namespace celeritas
         std::string field_assignment_content_;
         std::string field_init_content_;
         std::string database_field_content_;
-        std::string mongo_database_field_content_;
         std::string database_add_modify_content_;
     };
 }

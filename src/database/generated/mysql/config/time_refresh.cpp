@@ -9,7 +9,7 @@
 
 celeritas::time_refresh::time_refresh(const database_entity_change& entity)
     : base_type{ entity },
-      id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : id_describe) },
+      id_{ entity.get_value<database_data_type::int64_type>(id_describe) },
       time_refresh_type_{ entity.get_value<database_data_type::int32_type>(time_refresh_type_describe) },
       parameter_{ entity.get_value<database_data_type::int32_type>(parameter_describe) }
 {
@@ -17,7 +17,7 @@ celeritas::time_refresh::time_refresh(const database_entity_change& entity)
 
 celeritas::time_refresh::time_refresh(const database_type database_type, const database_entity_change& entity)
     : base_type{ database_type, entity },
-      id_{ entity.get_value<database_data_type::int64_type>(entity.get_database_type() == database_type::mongo ? "_id" : id_describe) },
+      id_{ entity.get_value<database_data_type::int64_type>(id_describe) },
       time_refresh_type_{ entity.get_value<database_data_type::int32_type>(time_refresh_type_describe) },
       parameter_{ entity.get_value<database_data_type::int32_type>(parameter_describe) }
 {
@@ -92,15 +92,6 @@ const celeritas::database_entity::database_field_container& celeritas::time_refr
     return field_name_container;
 }
 
-const celeritas::database_entity::database_field_container& celeritas::time_refresh::get_mongo_database_field_container()
-{
-    static const database_field_container field_name_container{ decltype(id_)::get_mongo_database_field(),
-                                                                decltype(time_refresh_type_)::get_database_field(),
-                                                                decltype(parameter_)::get_database_field() };
-
-    return field_name_container;
-}
-
 celeritas::time_refresh::database_entity_change_const_shared_ptr celeritas::time_refresh::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
@@ -128,9 +119,5 @@ celeritas::time_refresh::database_entity_change_const_shared_ptr celeritas::time
 
 celeritas::time_refresh::basis_database_container_const_shared_ptr celeritas::time_refresh::get_key_basis_database_container(const database_type database_type, traits::param_type::int64_type id)
 {
-    const auto field_name = database_type == database_type::mongo ? "_id" : id_describe;
-
-    const auto container = std::make_shared<basis_database_container>(basis_database{ field_name, id });
-
-    return container;
+    return std::make_shared<basis_database_container>(basis_database{ id_describe, id });
 }
