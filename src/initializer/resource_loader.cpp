@@ -58,13 +58,15 @@ void celeritas::resource_loader::initialize(io_context_type& io_context, const n
 
 void celeritas::resource_loader::release_resource()
 {
+    std::unique_lock lock{ mutex_ };
+
     for (const auto& element : tcp_clients_ | std::views::values)
     {
         if (element->get_server_type() == service_registry_type)
         {
             proto::celeritas request{};
             request.mutable_celeritas_request()->mutable_service()->mutable_registry()->mutable_server_close();
-            element->write(header{ proto::common::empty_message_header{} }, request);
+            element->write(header{}, request);
         }
 
         element->stop();
@@ -92,6 +94,8 @@ void celeritas::resource_loader::release_resource()
 
 bool celeritas::resource_loader::write(const std::string& server_type, const header& header, const protobuf_message& request)
 {
+    std::shared_lock lock{ mutex_ };
+
     auto to_write = false;
 
     for (const auto& element : tcp_clients_ | std::views::values)
@@ -108,6 +112,8 @@ bool celeritas::resource_loader::write(const std::string& server_type, const hea
 
 bool celeritas::resource_loader::write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request)
 {
+    std::shared_lock lock{ mutex_ };
+
     auto to_write = false;
 
     for (const auto& element : tcp_clients_ | std::views::values)
@@ -138,6 +144,8 @@ bool celeritas::resource_loader::write(const std::string& server_type, const std
 
 bool celeritas::resource_loader::write_to_client(const header& header, const protobuf_message& response)
 {
+    std::shared_lock lock{ mutex_ };
+
     auto to_write = false;
 
     if (const auto iter = session_route_.find(header.get_user_id());
@@ -161,20 +169,29 @@ bool celeritas::resource_loader::write_to_client(const header& header, const pro
 
 void celeritas::resource_loader::process_check_tcp_clients_by_duration(io_context_type& io_context)
 {
-    for (const auto& tcp_client : tcp_clients_ | std::views::values)
+    std::vector<tcp_client_shared_ptr> no_open_clients;
     {
-        if (!tcp_client->is_open())
+        std::shared_lock lock{ mutex_ };
+        for (const auto& element : tcp_clients_ | std::views::values)
         {
-            if (!is_service_registry_ && tcp_client->get_server_type() == service_registry_type)
+            if (!element->is_open())
             {
-                modify_service_registry_resource(io_context, tcp_client->get_network_message_callback(), tcp_client->get_instance_id());
+                no_open_clients.emplace_back(element);
             }
-            else
-            {
-                boost::asio::co_spawn(io_context,
-                                      tcp_client->connect(),
-                                      boost::asio::detached);
-            }
+        }
+    }
+
+    for (const auto& tcp_client : no_open_clients)
+    {
+        if (!is_service_registry_ && tcp_client->get_server_type() == service_registry_type)
+        {
+            modify_service_registry_resource(io_context, tcp_client->get_network_message_callback(), tcp_client->get_instance_id());
+        }
+        else
+        {
+            boost::asio::co_spawn(io_context,
+                                  tcp_client->connect(),
+                                  boost::asio::detached);
         }
     }
 }
@@ -218,11 +235,14 @@ celeritas::resource_loader::health_check_level_awaitable_type celeritas::resourc
         co_return health_check_level_type::crash;
     }
 
-    for (const auto& element : tcp_clients_ | std::views::values)
     {
-        if (element->is_full())
+        std::shared_lock lock{ mutex_ };
+        for (const auto& element : tcp_clients_ | std::views::values)
         {
-            co_return health_check_level_type::unhealthy;
+            if (element->is_full())
+            {
+                co_return health_check_level_type::unhealthy;
+            }
         }
     }
 
@@ -231,11 +251,15 @@ celeritas::resource_loader::health_check_level_awaitable_type celeritas::resourc
 
 void celeritas::resource_loader::add_session_route(int64_t user_id, session_route session_route)
 {
+    std::unique_lock lock{ mutex_ };
+
     session_route_.emplace(user_id, std::move(session_route));
 }
 
 void celeritas::resource_loader::check_client(io_context_type& io_context, const std::string& server_type, const service_info_container& container)
 {
+    std::unique_lock lock{ mutex_ };
+
     for (auto iter = tcp_clients_.begin(); iter != tcp_clients_.end();)
     {
         if (iter->second->get_server_type() == server_type && !container.contains(iter->first))
@@ -309,6 +333,8 @@ void celeritas::resource_loader::initialize_server_resource(io_context_type& io_
 
         listener->start();
 
+        std::unique_lock lock{ mutex_ };
+
         listener_.emplace_back(listener);
     }
 }
@@ -322,6 +348,8 @@ void celeritas::resource_loader::initialize_service_registry_resource(io_context
         if (!service_registry.empty())
         {
             const auto client = get_random_client(io_context, network_message_callback, service_registry);
+
+            std::unique_lock lock{ mutex_ };
 
             tcp_clients_.emplace(client->get_instance_id(), client);
         }
@@ -338,7 +366,8 @@ void celeritas::resource_loader::initialize_service_registry_resource(io_context
             {
                 const auto client = service_registry_loader::loader_service_registry(io_context, element, network_message_callback, game_server_id, service_registry_type.data());
 
-                tcp_clients_.emplace(client->get_instance_id(), client);
+                std::unique_lock lock{ mutex_ };
+ tcp_clients_.emplace(client->get_instance_id(), client);
             }
         }
     }
@@ -350,6 +379,9 @@ void celeritas::resource_loader::modify_service_registry_resource(io_context_typ
         !service_registry.empty())
     {
         const auto tcp_client = get_random_client(io_context, network_message_callback, service_registry);
+
+        std::unique_lock lock{ mutex_ };
+
         if (tcp_client->get_instance_id() != instance_id)
         {
             tcp_clients_.erase(instance_id);
