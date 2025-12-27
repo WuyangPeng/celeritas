@@ -269,11 +269,11 @@ celeritas::resource_loader::health_check_level_awaitable_type celeritas::resourc
     co_return health_check_level_type::health;
 }
 
-void celeritas::resource_loader::add_session_route(int64_t user_id, session_route session_route)
+void celeritas::resource_loader::add_session_route(const int64_t user_id, session_route session_route)
 {
     std::unique_lock lock{ mutex_ };
 
-    session_route_.emplace(user_id, std::move(session_route));
+    session_route_[user_id] = std::move(session_route);
 }
 
 void celeritas::resource_loader::check_client(io_context_type& io_context, const std::string& server_type, const service_info_container& container)
