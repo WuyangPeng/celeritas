@@ -1,5 +1,6 @@
 ﻿#include "client_heartbeat_request_message_handler.h"
 #include "common/time_helper.h"
+#include "message/concrete_message_handler.tpp"
 #include "message/protobuf_handle_parameter.h"
 #include "proto/celeritas.pb.h"
 
