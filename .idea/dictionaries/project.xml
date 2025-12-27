@@ -4,6 +4,7 @@
       <w>bsoncxx</w>
       <w>celeritas</w>
       <w>charconv</w>
+      <w>cxxflags</w>
       <w>mongocxx</w>
       <w>noabi</w>
       <w>nullguard</w>
