@@ -28,3 +28,8 @@ celeritas::listener::session_shared_ptr celeritas::tcp_listener::get_session(int
 {
     return listener_accept_->get_session(id);
 }
+
+bool celeritas::tcp_listener::write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request)
+{
+    return listener_accept_->write(server_type, instance_id, header, request);
+}

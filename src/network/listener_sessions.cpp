@@ -55,3 +55,18 @@ celeritas::server_network_type celeritas::listener_sessions::get_server_network_
 {
     return server_network_type_;
 }
+
+bool celeritas::listener_sessions::write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request)
+{
+    auto to_write = false;
+    for (const auto& element : sessions_)
+    {
+        if (element.second->get_instance_id() == instance_id)
+        {
+            element.second->write(header, request);
+            to_write = true;
+        }
+    }
+
+    return to_write;
+}

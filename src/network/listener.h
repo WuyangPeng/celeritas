@@ -2,8 +2,11 @@
 
 #include "network_fwd.h"
 #include "config/config_fwd.h"
+#include "message/message_fwd.h"
 
 #include <boost/asio.hpp>
+#include <google/protobuf/message.h>
+
 #include <memory>
 
 namespace celeritas
@@ -16,6 +19,7 @@ namespace celeritas
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using session_shared_ptr = std::shared_ptr<session_base>;
+        using protobuf_message = google::protobuf::Message;
 
         listener(io_context_type& io_context,
                  network_message_callback_weak_ptr callback,
@@ -43,6 +47,8 @@ namespace celeritas
         [[nodiscard]] virtual session_shared_ptr get_session(int64_t id) = 0;
 
         [[nodiscard]] server_network_type get_server_network_type() const noexcept;
+
+        [[nodiscard]] virtual bool write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request) = 0;
 
     protected:
         [[nodiscard]] std::string get_game_server_id() const;

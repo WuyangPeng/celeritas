@@ -29,6 +29,11 @@ celeritas::listener::session_shared_ptr celeritas::http_listener::get_session(in
     return listener_accept_->get_session(id);
 }
 
+bool celeritas::http_listener::write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request)
+{
+    return false;
+}
+
 void celeritas::http_listener::set_option(const int port)
 {
     acceptor_.set_option(boost::asio::socket_base::reuse_address(true));

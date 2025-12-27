@@ -25,6 +25,8 @@ namespace celeritas
 
         [[nodiscard]] session_shared_ptr get_session(int64_t id) override;
 
+        [[nodiscard]] bool write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request) override;
+
     private:
         using acceptor_type = boost::asio::ip::tcp::acceptor;
         using listener_accept_shared_ptr = std::shared_ptr<listener_accept>;

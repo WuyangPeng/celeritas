@@ -119,6 +119,17 @@ bool celeritas::resource_loader::write(const std::string& server_type, const std
         }
     }
 
+    if (app_config_->get_server_config().get_service_name() != gateway_type)
+    {
+        for (const auto& element : listener_)
+        {
+            if (element->get_server_network_type() == server_network_type::tcp)
+            {
+                element->write(header, request);
+            }
+        }
+    }
+
     return to_write;
 }
 

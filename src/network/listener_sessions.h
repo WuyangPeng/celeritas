@@ -3,8 +3,11 @@
 #include "listener_sessions_base.h"
 #include "config/config_fwd.h"
 #include "network/network_fwd.h"
+#include "message/message_fwd.h"
 
+#include <google/protobuf/message.h>
 #include <boost/asio/awaitable.hpp>
+
 #include <map>
 #include <memory>
 
@@ -17,6 +20,7 @@ namespace celeritas
         using void_awaitable_type = boost::asio::awaitable<void>;
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
         using session_shared_ptr = std::shared_ptr<session_base>;
+        using protobuf_message = google::protobuf::Message;
 
         explicit listener_sessions(server_network_type server_network_type) noexcept;
 
@@ -25,6 +29,8 @@ namespace celeritas
         [[nodiscard]] session_shared_ptr get_session(int64_t id);
 
         [[nodiscard]] server_network_type get_server_network_type() const noexcept;
+
+        [[nodiscard]] bool write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request);
 
     protected:
         void set_stop();
