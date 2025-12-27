@@ -27,9 +27,16 @@ namespace celeritas
 
         [[nodiscard]] bool is_modify() const override;
 
+        [[nodiscard]] void_awaitable_type on_dependencies_ready() override;
+
+        [[nodiscard]] int64_t get_heartbeat() const;
+
+        void set_heartbeat();
+
     private:
         using optional_account_last_login = std::optional<account_last_login>;
 
         optional_account_last_login account_last_login_;
+        int64_t heartbeat_;
     };
 }

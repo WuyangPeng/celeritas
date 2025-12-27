@@ -3,6 +3,8 @@
 #include "player_state_type.h"
 #include "common/celeritas_error.h"
 #include "../time/player_time_refresh_key.h"
+#include "common/time_helper.h"
+#include "player/online/player_online_component.h"
 
 #include <ranges>
 
@@ -84,6 +86,50 @@ celeritas::player_manager::void_awaitable_type celeritas::player_manager::offlin
     {
         co_await iter->second->on_logout();
     }
+}
+
+celeritas::player_manager::void_awaitable_type celeritas::player_manager::check_player()
+{
+    std::lock_guard lock{ mutex_ };
+
+    std::vector<player_state_shared_ptr> remove_player{};
+    for (const auto& element : container_ | std::views::values)
+    {
+        const auto heartbeat = element->get_component<player_online_component>()->get_heartbeat();
+        const auto current_time = time_helper::get_current_milliseconds();
+        switch (element->get_player_state_type())
+        {
+            case player_state_type::loading:
+            case player_state_type::online:
+            {
+                if (current_time - heartbeat >= minute_milliseconds * 5)
+                {
+                    element->set_player_state_type(player_state_type::disconnected_ghost);
+                    co_await element->on_logout();
+                }
+            }
+            case player_state_type::disconnected_ghost:
+            {
+                if (current_time - heartbeat >= minute_milliseconds * 10)
+                {
+                    element->set_player_state_type(player_state_type::logout_pending);
+                }
+            }
+            break;
+            case player_state_type::logout_pending:
+            {
+                remove_player.emplace_back(element);
+            }
+            break;
+        }
+    }
+
+    for (const auto& element : remove_player)
+    {
+        container_.erase(element->get_user_id());
+    }
+
+    co_return;
 }
 
 celeritas::player_manager::player_manager()

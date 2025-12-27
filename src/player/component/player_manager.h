@@ -39,6 +39,8 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type offline_player(int64_t user_id);
 
+        [[nodiscard]] void_awaitable_type check_player();
+
     private:
         using container_type = std::unordered_map<int64_t, player_state_shared_ptr>;
 

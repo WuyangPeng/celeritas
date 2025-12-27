@@ -4,7 +4,7 @@
 #include "player/component/player_state.h"
 
 celeritas::player_online_component::player_online_component(player_state* player_state) noexcept
-    : base_type{ get_player_component_type(), player_state }, account_last_login_{}
+    : base_type{ get_player_component_type(), player_state }, account_last_login_{}, heartbeat_{ time_helper::get_current_milliseconds() }
 {
 }
 
@@ -43,3 +43,22 @@ bool celeritas::player_online_component::is_modify() const
 {
     return account_last_login_->is_modify();
 }
+
+celeritas::player_component::void_awaitable_type celeritas::player_online_component::on_dependencies_ready()
+{
+    heartbeat_ = time_helper::get_current_milliseconds();
+
+    co_return;
+}
+
+int64_t celeritas::player_online_component::get_heartbeat() const
+{
+    return heartbeat_;
+}
+
+void celeritas::player_online_component::set_heartbeat()
+{
+    heartbeat_ = time_helper::get_current_milliseconds();
+}
+
+
