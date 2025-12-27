@@ -43,6 +43,8 @@ namespace celeritas
 
         void call_back(const std::string& path, const std::string& params, const session_shared_ptr& session) override;
 
+        void send_offline_message(int64_t session_id) override;
+
     private:
         using configuration_loader_unique_ptr = initializer_factory::configuration_loader_unique_ptr;
         using resource_loader_shared_ptr = initializer_factory::resource_loader_shared_ptr;

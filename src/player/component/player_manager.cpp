@@ -75,6 +75,17 @@ celeritas::player_manager::void_awaitable_type celeritas::player_manager::time_c
     }
 }
 
+celeritas::player_manager::void_awaitable_type celeritas::player_manager::offline_player(int64_t user_id)
+{
+    std::lock_guard lock{ mutex_ };
+
+    if (const auto iter = container_.find(user_id);
+        iter != container_.cend())
+    {
+        co_await iter->second->on_logout();
+    }
+}
+
 celeritas::player_manager::player_manager()
     : container_{}, mutex_{}
 {

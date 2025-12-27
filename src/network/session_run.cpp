@@ -18,3 +18,7 @@ celeritas::session_run::session_shared_ptr celeritas::session_run::get_session()
 {
     return session_.lock();
 }
+
+void celeritas::session_run::send_offline_message()
+{
+}

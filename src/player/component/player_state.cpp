@@ -105,6 +105,7 @@ celeritas::player_state::void_awaitable_type celeritas::player_state::on_logout(
     }
 
     dirty_ = false;
+    player_state_ = player_state_type::disconnected_ghost;
 }
 
 celeritas::player_state::void_awaitable_type celeritas::player_state::save_db()

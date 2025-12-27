@@ -66,6 +66,8 @@ namespace celeritas
 
         void check_client(io_context_type& io_context, const std::string& server_type, const service_info_container& container) override;
 
+        void send_offline_message(int64_t session_id);
+
     protected:
         using tcp_client_shared_ptr = std::shared_ptr<tcp_client>;
         using tcp_client_container_type = std::map<std::string, tcp_client_shared_ptr>;
@@ -82,6 +84,7 @@ namespace celeritas
         using buffer_pool_timer_shared_ptr = std::shared_ptr<buffer_pool_timer>;
         using service_registry_config_container = std::map<std::string, service_registry_config>;
         using gateway_mapping_type = std::map<int64_t, session_route>;
+        using session_mapping_type = std::map<int64_t, int64_t>;
 
         void initialize_logger_resource();
 
@@ -125,6 +128,7 @@ namespace celeritas
         int64_t start_server_time_;
         std::string_view server_type_;
         gateway_mapping_type session_route_;
+        session_mapping_type session_mapping_;
         network_message_callback_weak_ptr network_message_callback_;
         std::shared_mutex mutex_;
     };

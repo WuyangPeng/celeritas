@@ -37,6 +37,8 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type time_callback(time_refresh_type time_refresh_type, int64_t parameter);
 
+        [[nodiscard]] void_awaitable_type offline_player(int64_t user_id);
+
     private:
         using container_type = std::unordered_map<int64_t, player_state_shared_ptr>;
 

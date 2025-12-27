@@ -32,6 +32,8 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type start_awaitable(const session_weak_ptr& session);
 
+        virtual void send_offline_message();
+
     protected:
         using session_shared_ptr = std::shared_ptr<session>;
 

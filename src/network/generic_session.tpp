@@ -23,6 +23,12 @@ template <typename SocketType>
 celeritas::generic_session<SocketType>::~generic_session() noexcept
 {
     noexcept_safe_call_and_log([this] {
+                                   session_run_->send_offline_message();
+                               },
+                               network_channel,
+                               "send offline message error: ");
+
+    noexcept_safe_call_and_log([this] {
                                    this->stop();
                                },
                                network_channel,

@@ -1,4 +1,5 @@
 ﻿#include "listener.h"
+#include "network_message_callback.h"
 #include "session_callback.h"
 
 celeritas::session_callback::session_callback(listener_accept_weak_ptr listener_accept, network_message_callback_weak_ptr network_message_callback)
@@ -23,6 +24,15 @@ celeritas::session_callback::network_message_callback_weak_ptr celeritas::sessio
 celeritas::session_callback::network_message_callback_shared_ptr celeritas::session_callback::get_network_message_callback_shared_ptr()
 {
     return network_message_callback_.lock();
+}
+
+void celeritas::session_callback::send_offline_message(int64_t session_id)
+{
+    const auto network_message_callback = get_network_message_callback_shared_ptr();
+    if (network_message_callback != nullptr)
+    {
+        network_message_callback->send_offline_message(session_id);
+    }
 }
 
 

@@ -33,5 +33,7 @@ namespace celeritas
         virtual void call_back(const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session) = 0;
 
         virtual void call_back(const std::string& path, const std::string& params, const session_shared_ptr& session) = 0;
+
+        virtual void send_offline_message(int64_t session_id) = 0;
     };
 }

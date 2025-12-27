@@ -96,6 +96,11 @@ void celeritas::initializer::call_back(const std::string& path, const std::strin
     }
 }
 
+void celeritas::initializer::send_offline_message(int64_t session_id)
+{
+    resource_loader_->send_offline_message(session_id);
+}
+
 std::string celeritas::initializer::get_server_type() const
 {
     auto server_type = server_type_;

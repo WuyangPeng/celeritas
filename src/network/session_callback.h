@@ -23,6 +23,8 @@ namespace celeritas
 
         [[nodiscard]] network_message_callback_shared_ptr get_network_message_callback_shared_ptr();
 
+        void send_offline_message(int64_t session_id);
+
     private:
         listener_accept_weak_ptr listener_accept_;
         network_message_callback_weak_ptr network_message_callback_;

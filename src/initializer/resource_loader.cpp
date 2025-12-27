@@ -13,6 +13,7 @@
 #include "detail/service_registry_loader.h"
 #include "detail/service_registry_timer.h"
 #include "network/tcp_client.h"
+#include "player_server/player_server.h"
 #include "proto/celeritas.pb.h"
 #include "service_registry/data/health_check_level_type.h"
 #include "service_registry/data/service_info.h"
@@ -31,6 +32,7 @@ celeritas::resource_loader::resource_loader(const std::string_view server_type, 
       start_server_time_{ std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()).time_since_epoch().count() },
       server_type_{ server_type },
       session_route_{},
+      session_mapping_{},
       network_message_callback_{},
       mutex_{}
 {
@@ -273,7 +275,18 @@ void celeritas::resource_loader::add_session_route(const int64_t user_id, sessio
 {
     std::unique_lock lock{ mutex_ };
 
-    session_route_[user_id] = std::move(session_route);
+    auto iter = session_route_.find(user_id);
+    if (iter == session_route_.end())
+    {
+        session_route_.emplace(user_id, std::move(session_route));
+    }
+    else
+    {
+        session_mapping_.erase(session_route.get_session_id());
+        iter->second = std::move(session_route);
+    }
+
+    session_mapping_[session_route.get_session_id()] = user_id;
 }
 
 void celeritas::resource_loader::check_client(io_context_type& io_context, const std::string& server_type, const service_info_container& container)
@@ -309,6 +322,21 @@ void celeritas::resource_loader::check_client(io_context_type& io_context, const
                                   boost::asio::detached);
 
             tcp_clients_.emplace(client->get_instance_id(), client);
+        }
+    }
+}
+
+void celeritas::resource_loader::send_offline_message(const int64_t session_id)
+{
+    if (const auto iter = session_mapping_.find(session_id);
+        iter != session_mapping_.end())
+    {
+        proto::celeritas request{};
+        request.mutable_celeritas_request()->mutable_service()->mutable_player()->mutable_offline();
+
+        if (write(player_type.data(), header{ iter->second }, request))
+        {
+            LOG_CHANNEL(initializer_channel, debug) << "user :" << iter->second << " is offline.";
         }
     }
 }

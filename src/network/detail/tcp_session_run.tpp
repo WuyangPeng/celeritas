@@ -62,6 +62,12 @@ celeritas::session_run::void_awaitable_type celeritas::tcp_session_run<SocketTyp
 }
 
 template <typename SocketType>
+void celeritas::tcp_session_run<SocketType>::send_offline_message()
+{
+    session_callback_.send_offline_message(session_id_);
+}
+
+template <typename SocketType>
 auto celeritas::tcp_session_run<SocketType>::setup_timeout_cancellation_slot(steady_timer_type& steady_timer, cancellation_signal_type& cancel_signal)
 {
     co_spawn(socket_.get_executor(), [&]() -> boost::asio::awaitable<void> {

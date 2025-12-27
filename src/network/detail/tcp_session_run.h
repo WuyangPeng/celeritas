@@ -22,6 +22,8 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type run() override;
 
+        void send_offline_message() override;
+
     private:
         using read_awaitable_type = boost::asio::awaitable<size_t>;
         using buffer_guard_optional_type = std::optional<buffer_guard>;
