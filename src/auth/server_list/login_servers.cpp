@@ -4,6 +4,7 @@
 #include "auth/detail/login_servers/login_servers_parameter.h"
 #include "common/time_helper.h"
 #include "database/database_pool_manager.h"
+#include "database/document/server_role.h"
 #include "database/generated/mongo/auth/user_server_roles.h"
 #include "database/generated/mysql/auth/account_last_login.h"
 #include "database/generated/mysql/auth/server_cell.h"

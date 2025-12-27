@@ -1,9 +1,10 @@
 ﻿#pragma once
 
+#include "auth/auth_fwd.h"
 #include "auth/core/auth_service_base.h"
-#include "auth/data/server_cell_repository.h"
-#include "auth/detail/login_servers/login_servers_parameter.h"
+#include "auth/detail/auth_internal_fwd.h"
 #include "database/document/server_role.h"
+#include "database/generated/mysql/auth/server_cell.h"
 #include "database/generated/redis/auth/session_token.h"
 
 #include <map>

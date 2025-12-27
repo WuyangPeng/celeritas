@@ -1,4 +1,5 @@
 ﻿#include "login_server_info.h"
+#include "common/enum_cast.h"
 
 celeritas::login_server_info::login_server_info(std::string game_server_id,
                                                 std::string server_name,
@@ -13,18 +14,26 @@ celeritas::login_server_info::login_server_info(std::string game_server_id,
 {
 }
 
-celeritas::login_server_info::login_server_info(std::string game_server_id, std::string server_name, server_status_type server_status, connection_info connection_info)
+celeritas::login_server_info::login_server_info(std::string game_server_id,
+                                                std::string server_name,
+                                                server_status_type server_status,
+                                                connection_info connection_info)
     : game_server_id_{ std::move(game_server_id) },
       server_name_{ std::move(server_name) },
       server_status_{ server_status },
-      connection_info_{ std::move(connection_info) }
+      connection_info_{ std::move(connection_info) },
+      player_role_{}
 {
 }
 
-celeritas::login_server_info::login_server_info(std::string game_server_id, std::string server_name, const server_status_type server_status)
+celeritas::login_server_info::login_server_info(std::string game_server_id,
+                                                std::string server_name,
+                                                const server_status_type server_status)
     : game_server_id_{ std::move(game_server_id) },
       server_name_{ std::move(server_name) },
-      server_status_{ server_status }
+      server_status_{ server_status },
+      connection_info_{},
+      player_role_{}
 {
 }
 
@@ -86,7 +95,7 @@ celeritas::login_server_info celeritas::tag_invoke(login_server_info_tag, const 
     const auto server_name = boost::json::value_to<std::string>(object.at(login_server_info::server_name_description));
     const auto server_status = boost::json::value_to<int>(object.at(login_server_info::server_status_description));
 
-    login_server_info login_server_info{ game_server_id, server_name, static_cast<server_status_type>(server_status) };
+    login_server_info login_server_info{ game_server_id, server_name, underlying_cast_enum<server_status_type>(server_status) };
 
     if (object.contains(login_server_info::connection_info_description))
     {
@@ -106,7 +115,7 @@ void celeritas::tag_invoke(boost::json::value_from_tag, login_server_info::json_
     auto& object = value.emplace_object();
     object[login_server_info::game_server_id_description] = info.get_game_server_id();
     object[login_server_info::server_name_description] = info.get_server_name();
-    object[login_server_info::server_status_description] = static_cast<int>(info.get_server_status());
+    object[login_server_info::server_status_description] = enum_cast_underlying(info.get_server_status());
 
     if (const auto& connection_info = info.get_connection_info();
         connection_info.has_value())

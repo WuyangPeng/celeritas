@@ -1,4 +1,5 @@
 ﻿#include "connection_info.h"
+#include "common/enum_cast.h"
 
 celeritas::connection_info::connection_info(std::string host, const int port, const server_network_type server_network)
     : host_{ std::move(host) }, port_{ port }, server_network_{ server_network }
@@ -43,7 +44,7 @@ celeritas::connection_info celeritas::tag_invoke(connection_info_tag, const conn
     const auto port = boost::json::value_to<int>(object.at(connection_info::port_description));
     const auto server_network = boost::json::value_to<int>(object.at(connection_info::server_network_description));
 
-    return connection_info{ std::move(host), port, static_cast<server_network_type>(server_network) };
+    return connection_info{ std::move(host), port, underlying_cast_enum<server_network_type>(server_network) };
 }
 
 void celeritas::tag_invoke(boost::json::value_from_tag, connection_info::json_value& value, const connection_info& connection_info)
@@ -51,6 +52,6 @@ void celeritas::tag_invoke(boost::json::value_from_tag, connection_info::json_va
     value = {
         { connection_info::host_description, connection_info.get_host() },
         { connection_info::port_description, connection_info.get_port() },
-        { connection_info::server_network_description, static_cast<int>(connection_info.get_server_network()) }
+        { connection_info::server_network_description, enum_cast_underlying(connection_info.get_server_network()) }
     };
 }
