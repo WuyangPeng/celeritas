@@ -223,9 +223,25 @@ class role_response final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kNameFieldNumber = 1,
+    kSurnameFieldNumber = 1,
+    kNameFieldNumber = 2,
   };
-  // string name = 1;
+  // string surname = 1;
+  void clear_surname() ;
+  const ::std::string& surname() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_surname(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_surname();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_surname();
+  void set_allocated_surname(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_surname() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_surname(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_surname();
+
+  public:
+  // string name = 2;
   void clear_name() ;
   const ::std::string& name() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -244,8 +260,8 @@ class role_response final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
-                                   0, 49,
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   0, 56,
                                    2>
       _table_;
 
@@ -266,6 +282,7 @@ class role_response final : public ::google::protobuf::Message
         const role_response& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr surname_;
     ::google::protobuf::internal::ArenaStringPtr name_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -504,11 +521,76 @@ extern const ::google::protobuf::internal::ClassDataFull client_role_response_cl
 
 // role_response
 
-// string name = 1;
+// string surname = 1;
+inline void role_response::clear_surname() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.surname_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000001U;
+}
+inline const ::std::string& role_response::surname() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.role_response.surname)
+  return _internal_surname();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void role_response::set_surname(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  _impl_.surname_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.role_response.surname)
+}
+inline ::std::string* PROTOBUF_NONNULL role_response::mutable_surname()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_surname();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.role_response.surname)
+  return _s;
+}
+inline const ::std::string& role_response::_internal_surname() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.surname_.Get();
+}
+inline void role_response::_internal_set_surname(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  _impl_.surname_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL role_response::_internal_mutable_surname() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  return _impl_.surname_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE role_response::release_surname() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.role_response.surname)
+  if ((_impl_._has_bits_[0] & 0x00000001U) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001U;
+  auto* released = _impl_.surname_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.surname_.Set("", GetArena());
+  }
+  return released;
+}
+inline void role_response::set_allocated_surname(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001U;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001U;
+  }
+  _impl_.surname_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.surname_.IsDefault()) {
+    _impl_.surname_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.role_response.surname)
+}
+
+// string name = 2;
 inline void role_response::clear_name() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.name_.ClearToEmpty();
-  _impl_._has_bits_[0] &= ~0x00000001U;
+  _impl_._has_bits_[0] &= ~0x00000002U;
 }
 inline const ::std::string& role_response::name() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -518,7 +600,7 @@ inline const ::std::string& role_response::name() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void role_response::set_name(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000001U;
+  _impl_._has_bits_[0] |= 0x00000002U;
   _impl_.name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:celeritas.proto.client.role_response.name)
 }
@@ -534,21 +616,21 @@ inline const ::std::string& role_response::_internal_name() const {
 }
 inline void role_response::_internal_set_name(const ::std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000001U;
+  _impl_._has_bits_[0] |= 0x00000002U;
   _impl_.name_.Set(value, GetArena());
 }
 inline ::std::string* PROTOBUF_NONNULL role_response::_internal_mutable_name() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_._has_bits_[0] |= 0x00000001U;
+  _impl_._has_bits_[0] |= 0x00000002U;
   return _impl_.name_.Mutable( GetArena());
 }
 inline ::std::string* PROTOBUF_NULLABLE role_response::release_name() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:celeritas.proto.client.role_response.name)
-  if ((_impl_._has_bits_[0] & 0x00000001U) == 0) {
+  if ((_impl_._has_bits_[0] & 0x00000002U) == 0) {
     return nullptr;
   }
-  _impl_._has_bits_[0] &= ~0x00000001U;
+  _impl_._has_bits_[0] &= ~0x00000002U;
   auto* released = _impl_.name_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.name_.Set("", GetArena());
@@ -558,9 +640,9 @@ inline ::std::string* PROTOBUF_NULLABLE role_response::release_name() {
 inline void role_response::set_allocated_name(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001U;
+    _impl_._has_bits_[0] |= 0x00000002U;
   } else {
-    _impl_._has_bits_[0] &= ~0x00000001U;
+    _impl_._has_bits_[0] &= ~0x00000002U;
   }
   _impl_.name_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.name_.IsDefault()) {

@@ -9,6 +9,11 @@
         "index_type": "key"
       },
       {
+        "entity_name": "surname",
+        "data_type": "string",
+        "comment": "姓"
+      },
+      {
         "entity_name": "name",
         "data_type": "string",
         "comment": "名字"

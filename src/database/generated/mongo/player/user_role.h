@@ -24,6 +24,8 @@ namespace celeritas
 
         [[nodiscard]] traits::int64_type get_user_id() const noexcept;
 
+        [[nodiscard]] traits::string_type get_surname() const;
+
         [[nodiscard]] traits::string_type get_name() const;
 
         [[nodiscard]] traits::string_type get_device_id() const;
@@ -31,6 +33,8 @@ namespace celeritas
         [[nodiscard]] traits::string_type get_app_version() const;
 
         void set_user_id(traits::param_type::int64_type user_id);
+
+        void set_surname(traits::param_type::string_type surname);
 
         void set_name(traits::param_type::string_type name);
 
@@ -49,6 +53,7 @@ namespace celeritas
         static constexpr std::string_view database_name{ "user_role" };
 
         static constexpr std::string_view user_id_describe{ "_id" };
+        static constexpr std::string_view surname_describe{ "surname" };
         static constexpr std::string_view name_describe{ "name" };
         static constexpr std::string_view device_id_describe{ "device_id" };
         static constexpr std::string_view app_version_describe{ "app_version" };
@@ -57,6 +62,7 @@ namespace celeritas
         [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(traits::param_type::int64_type user_id);
 
         entity<user_id_describe, database_data_type::int64_type, database_index_type::key> user_id_;
+        entity<surname_describe, database_data_type::string_type> surname_;
         entity<name_describe, database_data_type::string_type> name_;
         entity<device_id_describe, database_data_type::string_type> device_id_;
         entity<app_version_describe, database_data_type::string_type> app_version_;

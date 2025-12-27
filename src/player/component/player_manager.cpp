@@ -2,9 +2,10 @@
 #include "player_state.h"
 #include "player_state_type.h"
 #include "common/celeritas_error.h"
-#include "../time/player_time_refresh_key.h"
 #include "common/time_helper.h"
+#include "player/component/player_state.tpp"
 #include "player/online/player_online_component.h"
+#include "player/time/player_time_refresh_key.h"
 
 #include <ranges>
 
@@ -49,7 +50,7 @@ celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::ge
     std::shared_lock lock{ mutex_ };
 
     if (const auto iter = container_.find(user_id);
-        iter != container_.cend())
+        iter != container_.cend() && iter->second->get_player_state_type() == player_state_type::online)
     {
         return iter->second;
     }

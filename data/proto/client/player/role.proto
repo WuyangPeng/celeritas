@@ -3,7 +3,8 @@
 package celeritas.proto.client;
 
 message role_response {
-    string name = 1;
+    string surname = 1;
+    string name = 2;
 }
 
 message client_role_response {

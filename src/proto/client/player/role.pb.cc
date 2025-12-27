@@ -31,6 +31,9 @@ namespace client {
 inline constexpr role_response::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
+        surname_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
         name_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()) {}
@@ -92,9 +95,11 @@ const ::uint32_t
         protodesc_cold) = {
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::role_response, _impl_._has_bits_),
-        4, // hasbit index offset
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::role_response, _impl_.surname_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::role_response, _impl_.name_),
         0,
+        1,
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_role_response, _impl_._oneof_case_[0]),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_role_response, _impl_.payload_),
@@ -104,7 +109,7 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::celeritas::proto::client::role_response)},
-        {5, sizeof(::celeritas::proto::client::client_role_response)},
+        {7, sizeof(::celeritas::proto::client::client_role_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::client::_role_response_default_instance_._instance,
@@ -113,16 +118,17 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_proto_2fclient_2fplayer_2frole_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\036proto/client/player/role.proto\022\026celeri"
-    "tas.proto.client\"\035\n\rrole_response\022\014\n\004nam"
-    "e\030\001 \001(\t\"X\n\024client_role_response\0225\n\004role\030"
-    "\001 \001(\0132%.celeritas.proto.client.role_resp"
-    "onseH\000B\t\n\007payloadb\006proto3"
+    "tas.proto.client\".\n\rrole_response\022\017\n\007sur"
+    "name\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\"X\n\024client_role_"
+    "response\0225\n\004role\030\001 \001(\0132%.celeritas.proto"
+    ".client.role_responseH\000B\t\n\007payloadb\006prot"
+    "o3"
 };
 static ::absl::once_flag descriptor_table_proto_2fclient_2fplayer_2frole_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fclient_2fplayer_2frole_2eproto = {
     false,
     false,
-    185,
+    202,
     descriptor_table_protodef_proto_2fclient_2fplayer_2frole_2eproto,
     "proto/client/player/role.proto",
     &descriptor_table_proto_2fclient_2fplayer_2frole_2eproto_once,
@@ -163,6 +169,7 @@ PROTOBUF_NDEBUG_INLINE role_response::Impl_::Impl_(
     [[maybe_unused]] const ::celeritas::proto::client::role_response& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
+        surname_(arena, from.surname_),
         name_(arena, from.name_) {}
 
 role_response::role_response(
@@ -185,6 +192,7 @@ PROTOBUF_NDEBUG_INLINE role_response::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : _cached_size_{0},
+        surname_(arena),
         name_(arena) {}
 
 inline void role_response::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
@@ -201,6 +209,7 @@ inline void role_response::SharedDtor(MessageLite& self) {
   }
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.surname_.Destroy();
   this_._impl_.name_.Destroy();
   this_._impl_.~Impl_();
 }
@@ -248,16 +257,16 @@ role_response::GetClassData() const {
   return role_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 49, 2>
+const ::_pbi::TcParseTable<1, 2, 0, 56, 2>
 role_response::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(role_response, _impl_._has_bits_),
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    2, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
+    2,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     role_response_class_data_.base(),
@@ -267,19 +276,25 @@ role_response::_table_ = {
     ::_pbi::TcParser::GetTable<::celeritas::proto::client::role_response>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string name = 1;
+    // string name = 2;
     {::_pbi::TcParser::FastUS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(role_response, _impl_.name_)}},
+     {18, 1, 0, PROTOBUF_FIELD_OFFSET(role_response, _impl_.name_)}},
+    // string surname = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(role_response, _impl_.surname_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string name = 1;
-    {PROTOBUF_FIELD_OFFSET(role_response, _impl_.name_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string surname = 1;
+    {PROTOBUF_FIELD_OFFSET(role_response, _impl_.surname_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string name = 2;
+    {PROTOBUF_FIELD_OFFSET(role_response, _impl_.name_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\44\4\0\0\0\0\0\0"
+    "\44\7\4\0\0\0\0\0"
     "celeritas.proto.client.role_response"
+    "surname"
     "name"
   }},
 };
@@ -291,8 +306,13 @@ PROTOBUF_NOINLINE void role_response::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000001U) != 0) {
-    _impl_.name_.ClearNonDefaultToEmpty();
+  if ((cached_has_bits & 0x00000003U) != 0) {
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      _impl_.surname_.ClearNonDefaultToEmpty();
+    }
+    if ((cached_has_bits & 0x00000002U) != 0) {
+      _impl_.name_.ClearNonDefaultToEmpty();
+    }
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -316,13 +336,23 @@ PROTOBUF_NOINLINE void role_response::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // string name = 1;
+  // string surname = 1;
   if ((this_._impl_._has_bits_[0] & 0x00000001U) != 0) {
+    if (!this_._internal_surname().empty()) {
+      const ::std::string& _s = this_._internal_surname();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.client.role_response.surname");
+      target = stream->WriteStringMaybeAliased(1, _s, target);
+    }
+  }
+
+  // string name = 2;
+  if ((this_._impl_._has_bits_[0] & 0x00000002U) != 0) {
     if (!this_._internal_name().empty()) {
       const ::std::string& _s = this_._internal_name();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.client.role_response.name");
-      target = stream->WriteStringMaybeAliased(1, _s, target);
+      target = stream->WriteStringMaybeAliased(2, _s, target);
     }
   }
 
@@ -349,10 +379,18 @@ PROTOBUF_NOINLINE void role_response::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void)cached_has_bits;
 
-   {
-    // string name = 1;
-    cached_has_bits = this_._impl_._has_bits_[0];
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003U) != 0) {
+    // string surname = 1;
     if ((cached_has_bits & 0x00000001U) != 0) {
+      if (!this_._internal_surname().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_surname());
+      }
+    }
+    // string name = 2;
+    if ((cached_has_bits & 0x00000002U) != 0) {
       if (!this_._internal_name().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_name());
@@ -375,12 +413,23 @@ void role_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::g
   (void) cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000001U) != 0) {
-    if (!from._internal_name().empty()) {
-      _this->_internal_set_name(from._internal_name());
-    } else {
-      if (_this->_impl_.name_.IsDefault()) {
-        _this->_internal_set_name("");
+  if ((cached_has_bits & 0x00000003U) != 0) {
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      if (!from._internal_surname().empty()) {
+        _this->_internal_set_surname(from._internal_surname());
+      } else {
+        if (_this->_impl_.surname_.IsDefault()) {
+          _this->_internal_set_surname("");
+        }
+      }
+    }
+    if ((cached_has_bits & 0x00000002U) != 0) {
+      if (!from._internal_name().empty()) {
+        _this->_internal_set_name(from._internal_name());
+      } else {
+        if (_this->_impl_.name_.IsDefault()) {
+          _this->_internal_set_name("");
+        }
       }
     }
   }
@@ -402,6 +451,7 @@ void role_response::InternalSwap(role_response* PROTOBUF_RESTRICT PROTOBUF_NONNU
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.surname_, &other->_impl_.surname_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, &other->_impl_.name_, arena);
 }
 

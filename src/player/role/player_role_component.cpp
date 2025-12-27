@@ -94,7 +94,8 @@ celeritas::player_role_component::void_awaitable_type celeritas::player_role_com
         user_role_ = user_role{ database_type::mongo, user_id };
         const auto game_tables = game_config::get_instance().get_game_tables();
 
-        user_role_->set_name(game_tables->get_surname() + game_tables->get_name(config::sex_type::none));
+        user_role_->set_surname(game_tables->get_surname());
+        user_role_->set_name(game_tables->get_name(config::sex_type::none));
     }
 
     user_role_->set_device_id(device_id_);
@@ -137,7 +138,7 @@ void celeritas::player_role_component::set_server_role()
 
     if (!server_role_)
     {
-        server_role_ = server_role{ player_user->get_game_server_id(), user_role_->get_name() };
+        server_role_ = server_role{ player_user->get_game_server_id(), user_role_->get_surname(), user_role_->get_name() };
 
         user_server_roles_->add_servers(server_role_->to_json_string());
     }
