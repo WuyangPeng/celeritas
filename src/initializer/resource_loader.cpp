@@ -125,7 +125,10 @@ bool celeritas::resource_loader::write(const std::string& server_type, const std
         {
             if (element->get_server_network_type() == server_network_type::tcp)
             {
-                element->write(header, request);
+                if (element->write(server_type, instance_id, header, request))
+                {
+                    to_write = true;
+                }
             }
         }
     }

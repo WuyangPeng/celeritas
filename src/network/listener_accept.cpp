@@ -4,4 +4,3 @@ celeritas::listener_accept::listener_accept(const server_network_type server_net
     : base_type{ server_network_type }
 {
 }
- 
