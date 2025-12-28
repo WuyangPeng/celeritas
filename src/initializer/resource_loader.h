@@ -54,6 +54,8 @@ namespace celeritas
 
         [[nodiscard]] bool write_to_client(const header& header, const protobuf_message& response) override;
 
+        [[nodiscard]] bool write_to_user(const std::string& server_type, int64_t session_id, const header& header_message, const protobuf_message& message) override;
+
         void process_check_tcp_clients_by_duration(io_context_type& io_context) override;
 
         void process_service_registry_by_duration() override;

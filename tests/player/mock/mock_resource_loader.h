@@ -26,9 +26,11 @@ namespace celeritas
 
         [[nodiscard]] bool write(const std::string& server_type, const header& header, const protobuf_message& request) override;
 
-        [[nodiscard]] bool write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request) override;
+        [[nodiscard]] bool write(const std::string& server_type, const std::string& instance_id, const header& header_message, const protobuf_message& request) override;
 
         [[nodiscard]] bool write_to_client(const header& header, const protobuf_message& response) override;
+
+        [[nodiscard]] bool write_to_user(const std::string& server_type, int64_t session_id, const header& header, const protobuf_message& message) override;
 
         void add_session_route(int64_t user_id, session_route session_route) override;
 

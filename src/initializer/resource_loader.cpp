@@ -187,6 +187,23 @@ bool celeritas::resource_loader::write_to_client(const header& header, const pro
     return to_write;
 }
 
+bool celeritas::resource_loader::write_to_user(const std::string& server_type, int64_t session_id, const header& header_message, const protobuf_message& message)
+{
+    std::shared_lock lock{ mutex_ };
+
+    const auto iter = session_mapping_.find(session_id);
+    if (iter != session_mapping_.end())
+    {
+        const auto session = session_route_.find(iter->second);
+        if (session != session_route_.end())
+        {
+            return write(server_type, session->second.get_instance_id(), header{ header_message.get_rpc(), iter->second }, message);
+        }
+    }
+
+    return false;
+}
+
 void celeritas::resource_loader::process_check_tcp_clients_by_duration(io_context_type& io_context)
 {
     std::vector<tcp_client_shared_ptr> no_open_clients;

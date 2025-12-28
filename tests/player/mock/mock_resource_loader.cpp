@@ -34,12 +34,17 @@ bool celeritas::mock_resource_loader::write(const std::string& server_type, cons
     return true;
 }
 
-bool celeritas::mock_resource_loader::write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request)
+bool celeritas::mock_resource_loader::write(const std::string& server_type, const std::string& instance_id, const header& header_message, const protobuf_message& request)
 {
     return true;
 }
 
 bool celeritas::mock_resource_loader::write_to_client(const header& header, const protobuf_message& response)
+{
+    return true;
+}
+
+bool celeritas::mock_resource_loader::write_to_user(const std::string& server_type, int64_t session_id, const header& header, const protobuf_message& message)
 {
     return true;
 }

@@ -3,6 +3,7 @@
 #include "session_route.h"
 #include "config/config_fwd.h"
 #include "message/message_fwd.h"
+#include "message/protobuf_handle_parameter.h"
 #include "service_registry/service_registry_fwd.h"
 
 #include <boost/asio.hpp>
@@ -46,9 +47,11 @@ namespace celeritas
 
         [[nodiscard]] virtual bool write(const std::string& server_type, const header& header, const protobuf_message& request) = 0;
 
-        [[nodiscard]] virtual bool write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request) = 0;
+        [[nodiscard]] virtual bool write(const std::string& server_type, const std::string& instance_id, const header& header_message, const protobuf_message& request) = 0;
 
         [[nodiscard]] virtual bool write_to_client(const header& header, const protobuf_message& response) = 0;
+
+        [[nodiscard]] virtual bool write_to_user(const std::string& server_type, int64_t session_id, const header& header, const protobuf_message& message) = 0;
 
         virtual void add_session_route(int64_t user_id, session_route session_route) = 0;
 

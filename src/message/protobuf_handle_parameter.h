@@ -34,6 +34,8 @@ namespace celeritas
 
         void write(const header& header, const protobuf_message& response) const;
 
+        void write_to_user(const std::string& server_type) const;
+
         void write_to_server(const std::string& server_type, const protobuf_message& message) const;
 
         void write_to_server(const std::string& server_type, const std::string& instance_id, const protobuf_message& message) const;

@@ -27,7 +27,8 @@ bool celeritas::gateway_client_player_request_message_handler::handle_concrete(c
             // 转发到其他服务器
             default:
             {
-                return false;
+                handle_parameter->write_to_user(player_type.data());
+                return true;
             }
         }
         return true;

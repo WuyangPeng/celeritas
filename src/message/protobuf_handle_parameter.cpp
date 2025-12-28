@@ -37,6 +37,19 @@ void celeritas::protobuf_handle_parameter::write(const header& header, const pro
     }
 }
 
+void celeritas::protobuf_handle_parameter::write_to_user(const std::string& server_type) const
+{
+    const auto session_shared_ptr = session_.lock();
+    if (const auto resource_loader_shared_ptr = resource_loader_.lock();
+        resource_loader_shared_ptr != nullptr && session_shared_ptr != nullptr)
+    {
+        if (resource_loader_shared_ptr->write_to_user(server_type, session_shared_ptr->get_session_id(), header_, *request_message_))
+        {
+            LOG_CHANNEL(initializer_channel, trace) << "write message to server_type: " << server_type;
+        }
+    }
+}
+
 void celeritas::protobuf_handle_parameter::write_to_server(const std::string& server_type, const protobuf_message& message) const
 {
     if (const auto resource_loader_shared_ptr = resource_loader_.lock();

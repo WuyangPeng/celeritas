@@ -94,7 +94,7 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
 
         case database_data_type::document_array_type:
         {
-            const bsoncxx::document::value doc_value{ row_view.get_document().value };
+            const bsoncxx::document::value doc_value{ row_view.get_array().value };
             basis_database::string_array result{};
             for (const auto& element : doc_value)
             {
