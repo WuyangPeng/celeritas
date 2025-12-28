@@ -17,9 +17,16 @@ bool celeritas::service_login_request_message_handler::handle_concrete(const pro
 
 celeritas::service_login_request_message_handler::void_awaitable_type celeritas::service_login_request_message_handler::response(protobuf_handle_parameter_shared_ptr protobuf_handle_parameter, const message_type& login)
 {
-    const service_login service_login{ std::move(protobuf_handle_parameter), login };
+    try
+    {
+        const service_login service_login{ std::move(protobuf_handle_parameter), login };
 
-    co_await service_login.send_message();
+        co_await service_login.send_message();
+    }
+    catch (const std::exception& error)
+    {
+        LOG_CHANNEL(message_channel, error) << "service login error " << error.what();
+    }
 
     co_return;
 }

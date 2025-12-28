@@ -1,6 +1,8 @@
 ﻿#include "gateway_client_player_request_message_handler.h"
 #include "gateway/gateway_login.h"
+#include "initializer/initializer_fwd.h"
 #include "message/concrete_message_handler.tpp"
+#include "player_server/player_server.h"
 
 celeritas::gateway_client_player_request_message_handler::gateway_client_player_request_message_handler()
 {
@@ -18,6 +20,10 @@ bool celeritas::gateway_client_player_request_message_handler::handle_concrete(c
     {
         switch (current_message.payload_case())
         {
+            case proto::client::client_player_request::PayloadCase::PAYLOAD_NOT_SET:
+            {
+                return false;
+            }
             // 转发到其他服务器
             default:
             {

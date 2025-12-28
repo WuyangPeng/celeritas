@@ -101,7 +101,10 @@ celeritas::player_state::void_awaitable_type celeritas::player_state::on_logout(
     {
         co_await element->on_logout();
 
-        co_await element->save_db();
+        if (player_state_ == player_state_type::online)
+        {
+            co_await element->save_db();
+        }
     }
 
     dirty_ = false;
