@@ -126,7 +126,10 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_tim
     refresh_data.add_component(player_component_type::finish);
     refresh_data.set_last_refresh_time(time_helper::get_current_milliseconds());
 
-    const basis_database player_time{ user_time_refresh::player_time_refresh_describe, database_data_type::document_array_type, refresh_data.to_document_type() };
+    traits::document_array_type document_array{};
+    document_array.emplace_back(refresh_data.to_document_type());
+
+    const basis_database player_time{ user_time_refresh::player_time_refresh_describe, database_data_type::document_array_type, document_array };
 
     database_entity_change database_entity_change{ database_type::mongo,
                                                    user_time_refresh::database_name,
@@ -142,6 +145,7 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_rol
 {
     const basis_database user_id{ "_id", int64_t{ 11111 } };
     const basis_database name{ user_role::name_describe, std::string{ "test_name" } };
+    const basis_database surname{ user_role::surname_describe, std::string{ "test_name" } };
     const basis_database device_id{ user_role::device_id_describe, std::string{ "test_device" } };
     const basis_database app_version{ user_role::app_version_describe, std::string{ "1.0.0" } };
 
@@ -151,6 +155,7 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_rol
                                                    std::make_shared<basis_database_container>(basis_database_container::object_container{ user_id }) };
     database_entity_change.modify(user_id);
     database_entity_change.modify(name);
+    database_entity_change.modify(surname);
     database_entity_change.modify(device_id);
     database_entity_change.modify(app_version);
 
@@ -167,7 +172,10 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_ser
     server_role.set_game_server_id("test_game_server_id");
     server_role.set_last_login_time(time_helper::get_current_milliseconds());
 
-    const basis_database servers{ user_server_roles::servers_describe, database_data_type::document_array_type, server_role.to_document_type() };
+    traits::document_array_type document_array{};
+    document_array.emplace_back(server_role.to_document_type());
+
+    const basis_database servers{ user_server_roles::servers_describe, database_data_type::document_array_type, document_array };
 
     database_entity_change database_entity_change{ database_type::mongo,
                                                    user_server_roles::database_name,
@@ -208,7 +216,9 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_red
     red_dot.set_last_value(0);
     red_dot.set_update_time(time_helper::get_current_milliseconds());
 
-    const basis_database red_dots{ user_red_dots::red_dots_describe, database_data_type::document_array_type, red_dot.to_document_type() };
+    traits::document_array_type document_array{};
+    document_array.emplace_back(red_dot.to_document_type());
+    const basis_database red_dots{ user_red_dots::red_dots_describe, database_data_type::document_array_type, document_array };
 
     database_entity_change database_entity_change{ database_type::mongo,
                                                    user_red_dots::database_name,
@@ -301,8 +311,10 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_mock_use
     data.set_template_id(1003);
     data.set_count(111);
     data.set_position(0);
+    traits::document_array_type document_array{};
+    document_array.emplace_back(data.to_document_type());
 
-    const basis_database inventory_data{ user_item::inventory_data_describe, database_data_type::document_array_type, data.to_document_type() };
+    const basis_database inventory_data{ user_item::inventory_data_describe, database_data_type::document_array_type, document_array };
 
     database_entity_change database_entity_change{ database_type::mongo,
                                                    user_item::database_name,
