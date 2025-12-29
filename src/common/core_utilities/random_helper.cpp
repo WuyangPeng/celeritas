@@ -1,6 +1,8 @@
 ﻿#include "celeritas_error.h"
 #include "random_helper.h"
 
+#include <boost/numeric/conversion/cast.hpp>
+
 #include <algorithm>
 #include <numeric>
 
@@ -102,11 +104,11 @@ int celeritas::random_helper::get_random_index_by_weight(const weights_type& wei
         cumulative_weight += weights[index];
         if (random_value < cumulative_weight)
         {
-            return index;
+            return boost::numeric_cast<int>(index);
         }
     }
 
-    return weights.size() - 1;
+    return boost::numeric_cast<int>(weights.size() - 1);
 }
 
 std::mt19937& celeritas::random_helper::get_engine()
