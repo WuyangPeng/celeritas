@@ -1,4 +1,6 @@
 ﻿#include "custom_data.h"
+#include "develop_data.h"
+#include "database/basis_database.tpp"
 
 #include <bsoncxx/types.hpp>
 #include <bsoncxx/builder/basic/kvp.hpp>
@@ -10,19 +12,20 @@ celeritas::custom_data::custom_data()
 
 celeritas::custom_data::document_type celeritas::custom_data::to_document_type() const
 {
-    document_type builder{};
+    document_type document{};
+
     std::visit(
-        [&builder]<typename ArgType>(ArgType&& arg) {
+        [&document]<typename ArgType>(ArgType&& arg) {
             using T = std::decay_t<ArgType>;
             if constexpr (std::is_same_v<T, equipment_data>)
             {
-                builder.append(bsoncxx::builder::basic::kvp(std::string{ type_description }, std::string{ equipment_description }));
-                builder.append(bsoncxx::builder::basic::kvp(std::string{ data_description }, arg.to_document_type().view()));
+                document.emplace_back(type_description, std::string{ equipment_description });
+                document.emplace_back(data_description, arg.to_document_type());
             }
             else if constexpr (std::is_same_v<T, consumable_data>)
             {
-                builder.append(bsoncxx::builder::basic::kvp(std::string{ type_description }, std::string{ consumable_description }));
-                builder.append(bsoncxx::builder::basic::kvp(std::string{ data_description }, arg.to_document_type().view()));
+                document.emplace_back(type_description, std::string{ consumable_description });
+                document.emplace_back(data_description, arg.to_document_type());
             }
             else if constexpr (std::is_same_v<T, std::monostate>)
             {
@@ -30,36 +33,46 @@ celeritas::custom_data::document_type celeritas::custom_data::to_document_type()
             }
         },
         detail_);
-    return builder;
+
+    return document;
 }
 
-void celeritas::custom_data::set_document(const document_view_type& document_view)
+celeritas::custom_data celeritas::custom_data::from_document(const document_type& document)
 {
-    if (document_view.empty())
+    custom_data custom_data{};
+
+    std::string type{};
+    for (const auto& element : document)
     {
-        return;
+        if (element.get_field_name() == type_description)
+        {
+            type = element.get_value<database_data_type::string_type>();
+            break;
+        }
     }
 
-    const auto type_element = document_view[type_description];
-    if (!type_element || type_element.type() != bsoncxx::type::k_string)
-    {
-        return;
-    }
-
-    const auto type = type_element.get_string().value;
-    const auto data_element = document_view[data_description];
-    if (!data_element || data_element.type() != bsoncxx::type::k_document)
-    {
-        return;
-    }
-
-    const auto data_view = data_element.get_document().value;
     if (type == equipment_description)
     {
-        detail_ = equipment_data{ data_view };
+        for (const auto& element : document)
+        {
+            if (element.get_field_name() == data_description)
+            {
+                custom_data.detail_ = equipment_data::from_document(element.get_value<database_data_type::document_type>());
+                break;
+            }
+        }
     }
     else if (type == consumable_description)
     {
-        detail_ = consumable_data{ data_view };
+        for (const auto& element : document)
+        {
+            if (element.get_field_name() == data_description)
+            {
+                custom_data.detail_ = consumable_data::from_document(element.get_value<database_data_type::document_type>());
+                break;
+            }
+        }
     }
+
+    return custom_data;
 }

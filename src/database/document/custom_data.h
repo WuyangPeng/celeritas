@@ -2,6 +2,7 @@
 
 #include "consumable_data.h"
 #include "equipment_data.h"
+#include "database/database_data_type_traits.h"
 
 #include <bsoncxx/builder/basic/document.hpp>
 #include <variant>
@@ -12,14 +13,13 @@ namespace celeritas
     {
     public:
         using class_type = custom_data;
-        using document_type = bsoncxx::builder::basic::document;
-        using document_view_type = bsoncxx::document::view;
+        using document_type = traits::document_type;
 
         custom_data();
 
         [[nodiscard]] document_type to_document_type() const;
 
-        void set_document(const document_view_type& document_view);
+        [[nodiscard]] static custom_data from_document(const document_type& document);
 
         static constexpr std::string_view type_description = "type";
         static constexpr std::string_view data_description = "data";

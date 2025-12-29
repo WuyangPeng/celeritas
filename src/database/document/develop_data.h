@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "database/database_data_type_traits.h"
+
 #include <cstdint>
 #include <string>
 
@@ -9,6 +11,7 @@ namespace celeritas
     {
     public:
         using class_type = develop_data;
+        using document_type = traits::document_type;
 
         develop_data() noexcept = default;
 
@@ -38,9 +41,9 @@ namespace celeritas
 
         void clear();
 
-        [[nodiscard]] std::string to_json_string() const;
+        [[nodiscard]] document_type to_document_type() const;
 
-        [[nodiscard]] static develop_data from_json_string(const std::string& json_string);
+        [[nodiscard]] static develop_data from_document(const document_type& document);
 
         static constexpr std::string_view system_id_description = "system_id";
         static constexpr std::string_view instance_id_description = "instance_id";

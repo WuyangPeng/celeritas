@@ -1,5 +1,6 @@
 ﻿#include "server_role.h"
 #include "common/time_helper.h"
+#include "database/basis_database.tpp"
 
 #include <bsoncxx/json.hpp>
 #include <bsoncxx/builder/basic/document.hpp>
@@ -55,34 +56,40 @@ void celeritas::server_role::set_last_login_time(const int64_t last_login_time)
     last_login_time_ = last_login_time;
 }
 
-std::string celeritas::server_role::to_json_string() const
+celeritas::server_role::document_type celeritas::server_role::to_document_type() const
 {
-    bsoncxx::builder::basic::document builder{};
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ game_server_id_description }, game_server_id_));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ role_surname_description }, role_surname_));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ role_name_description }, role_name_));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ last_login_time_description }, last_login_time_));
+    document_type document{};
 
-    return bsoncxx::to_json(builder.view());
+    document.emplace_back(game_server_id_description, game_server_id_);
+    document.emplace_back(role_surname_description, role_surname_);
+    document.emplace_back(role_name_description, role_name_);
+    document.emplace_back(last_login_time_description, last_login_time_);
+
+    return document;
 }
 
-celeritas::server_role celeritas::server_role::from_json_string(const std::string& json_string)
+celeritas::server_role celeritas::server_role::from_document(const document_type& document)
 {
-    const auto parsed_view = bsoncxx::from_json(json_string);
-
     server_role role{};
-    role.set_game_server_id(std::string{ parsed_view[game_server_id_description].get_string().value });
-    role.set_role_surname(std::string{ parsed_view[role_surname_description].get_string().value });
-    role.set_role_name(std::string{ parsed_view[role_name_description].get_string().value });
 
-    if (const auto& last_login_time_element = parsed_view[last_login_time_description];
-        last_login_time_element.type() == bsoncxx::type::k_int32)
+    for (const auto& element : document)
     {
-        role.set_last_login_time(last_login_time_element.get_int32());
-    }
-    else
-    {
-        role.set_last_login_time(last_login_time_element.get_int64());
+        if (element.get_field_name() == game_server_id_description)
+        {
+            role.set_game_server_id(element.get_value<database_data_type::string_type>());
+        }
+        if (element.get_field_name() == role_surname_description)
+        {
+            role.set_role_surname(element.get_value<database_data_type::string_type>());
+        }
+        if (element.get_field_name() == role_name_description)
+        {
+            role.set_role_name(element.get_value<database_data_type::string_type>());
+        }
+        if (element.get_field_name() == last_login_time_description)
+        {
+            role.set_last_login_time(element.get_value<database_data_type::int64_type>());
+        }
     }
 
     return role;

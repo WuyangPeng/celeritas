@@ -53,7 +53,7 @@ void celeritas::player_role_component::change_name(const std::string& name)
 {
     user_role_->set_name(name);
     server_role_->set_role_name(name);
-    user_server_roles_->set_servers(server_role_index_, server_role_->to_json_string());
+    user_server_roles_->set_servers(server_role_index_, server_role_->to_document_type());
 
     get_player_state()->set_dirty();
 }
@@ -125,7 +125,7 @@ void celeritas::player_role_component::set_server_role()
     for (const auto servers = user_server_roles_->get_servers();
          const auto& element : servers)
     {
-        if (auto server_role = server_role::from_json_string(element);
+        if (auto server_role = server_role::from_document(element);
             server_role.get_game_server_id() == player_user->get_game_server_id())
         {
             server_role_ = server_role;
@@ -140,6 +140,6 @@ void celeritas::player_role_component::set_server_role()
     {
         server_role_ = server_role{ player_user->get_game_server_id(), user_role_->get_surname(), user_role_->get_name() };
 
-        user_server_roles_->add_servers(server_role_->to_json_string());
+        user_server_roles_->add_servers(server_role_->to_document_type());
     }
 }

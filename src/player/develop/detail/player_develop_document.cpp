@@ -11,7 +11,7 @@ void celeritas::player_develop_document::set_develop(traits::param_type::documen
 {
     for (const auto& element : develop_document)
     {
-        auto develop_data = develop_data::from_json_string(element);
+        auto develop_data = develop_data::from_document(element);
         add_develop_data(develop_data);
     }
 }
@@ -21,7 +21,7 @@ celeritas::traits::document_array_type celeritas::player_develop_document::get_d
     traits::document_array_type documents{};
     for (auto& element : develop_data_ | std::views::values)
     {
-        documents.emplace_back(element.to_json_string());
+        documents.emplace_back(element.to_document_type());
     }
 
     return documents;

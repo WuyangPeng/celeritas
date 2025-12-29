@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "database/database_data_type_traits.h"
+
 #include <bsoncxx/builder/basic/document.hpp>
 
 namespace celeritas
@@ -8,12 +10,9 @@ namespace celeritas
     {
     public:
         using class_type = consumable_data;
-        using document_type = bsoncxx::builder::basic::document;
-        using document_view_type = bsoncxx::document::view;
+        using document_type = traits::document_type;
 
         consumable_data();
-
-        explicit consumable_data(const document_view_type& document_view);
 
         explicit consumable_data(int64_t expire_time);
 
@@ -23,7 +22,7 @@ namespace celeritas
 
         [[nodiscard]] document_type to_document_type() const;
 
-        void set_document(const document_view_type& document_view);
+        [[nodiscard]] static consumable_data from_document(const document_type& document);
 
         static constexpr std::string_view expire_time_description = "expire_time";
 

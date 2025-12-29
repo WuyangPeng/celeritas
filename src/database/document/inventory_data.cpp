@@ -1,4 +1,5 @@
 ﻿#include "inventory_data.h"
+#include "database/basis_database.tpp"
 
 #include <bsoncxx/json.hpp>
 #include <bsoncxx/builder/basic/array.hpp>
@@ -59,11 +60,6 @@ void celeritas::inventory_data::set_custom_data(const custom_data& custom_data)
     custom_data_ = custom_data;
 }
 
-void celeritas::inventory_data::set_custom_data(const document_view_type& document)
-{
-    custom_data_.set_document(document);
-}
-
 void celeritas::inventory_data::add_count(const int64_t count)
 {
     count_ += count;
@@ -74,29 +70,48 @@ void celeritas::inventory_data::reduce_count(const int64_t count)
     count_ -= count;
 }
 
-std::string celeritas::inventory_data::to_json_string() const
+celeritas::inventory_data::document_type celeritas::inventory_data::to_document_type() const
 {
-    bsoncxx::builder::basic::document builder{};
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ item_id_description }, item_id_));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ template_id_description }, template_id_));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ count_description }, count_));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ position_description }, position_));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ custom_data_description }, custom_data_.to_document_type()));
+    document_type document{};
 
-    return bsoncxx::to_json(builder.view());
+    document.emplace_back(item_id_description, item_id_);
+    document.emplace_back(template_id_description, template_id_);
+    document.emplace_back(count_description, count_);
+    document.emplace_back(position_description, position_);
+    document.emplace_back(custom_data_description, custom_data_.to_document_type());
+
+    return document;
 }
 
-celeritas::inventory_data celeritas::inventory_data::from_json_string(const std::string& json_string)
+celeritas::inventory_data celeritas::inventory_data::from_document(const document_type& document)
 {
-    const auto parsed_view = bsoncxx::from_json(json_string);
-
     inventory_data inventory_data{};
 
-    inventory_data.set_item_id(parsed_view[item_id_description].type() == bsoncxx::type::k_int32 ? parsed_view[item_id_description].get_int32().value : parsed_view[item_id_description].get_int64().value);
-    inventory_data.set_template_id(parsed_view[template_id_description].get_int32().value);
-    inventory_data.set_count(parsed_view[count_description].type() == bsoncxx::type::k_int32 ? parsed_view[count_description].get_int32().value : parsed_view[count_description].get_int64().value);
-    inventory_data.set_position(parsed_view[position_description].get_int32().value);
-    inventory_data.set_custom_data(parsed_view[custom_data_description].get_document().value);
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == item_id_description)
+        {
+            inventory_data.set_item_id(element.get_value<database_data_type::int64_type>());
+        }
+        if (element.get_field_name() == template_id_description)
+        {
+            inventory_data.set_template_id(element.get_value<database_data_type::int32_type>());
+        }
+        if (element.get_field_name() == count_description)
+        {
+            inventory_data.set_count(element.get_value<database_data_type::int64_type>());
+        }
+        if (element.get_field_name() == position_description)
+        {
+            inventory_data.set_position(element.get_value<database_data_type::int32_type>());
+        }
+        if (element.get_field_name() == custom_data_description)
+        {
+            const auto& database = element.get_value<database_data_type::document_type>();
+            const auto custom_data = custom_data::from_document(database);
+            inventory_data.set_custom_data(custom_data);
+        }
+    }
 
     return inventory_data;
 }

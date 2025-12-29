@@ -1,4 +1,5 @@
 ﻿#include "player_red_dot_document.h"
+#include "database/basis_database.tpp"
 
 #include <ranges>
 
@@ -6,7 +7,7 @@ void celeritas::player_red_dot_document::set_red_dots(traits::param_type::docume
 {
     for (const auto& element : red_dots_document)
     {
-        auto red_dots = red_dots::from_json_string(element);
+        auto red_dots = red_dots::from_document(element);
         red_dots_.emplace(red_dots.get_node_id(), red_dots);
     }
 }
@@ -16,7 +17,7 @@ celeritas::traits::document_array_type celeritas::player_red_dot_document::get_r
     traits::document_array_type documents{};
     for (auto& element : red_dots_ | std::views::values)
     {
-        documents.emplace_back(element.to_json_string());
+        documents.emplace_back(element.to_document_type());
     }
 
     return documents;

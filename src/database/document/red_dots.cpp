@@ -1,5 +1,7 @@
 ﻿#include "red_dots.h"
+#include "common/enum_cast.h"
 #include "common/time_helper.h"
+#include "database/basis_database.tpp"
 
 #include <bsoncxx/json.hpp>
 #include <bsoncxx/builder/basic/document.hpp>
@@ -54,26 +56,41 @@ void celeritas::red_dots::set_update_time(const int64_t updateTime)
     update_time_ = updateTime;
 }
 
-std::string celeritas::red_dots::to_json_string() const
+celeritas::red_dots::document_type celeritas::red_dots::to_document_type() const
 {
-    bsoncxx::builder::basic::document builder{};
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ node_id_description }, static_cast<int32_t>(node_id_)));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ state_description }, state_));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ last_value_description }, last_value_));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ update_time_description }, update_time_));
+    document_type document{};
 
-    return bsoncxx::to_json(builder.view());
+    document.emplace_back(node_id_description, enum_cast_underlying(node_id_));
+    document.emplace_back(state_description, state_);
+    document.emplace_back(last_value_description, last_value_);
+    document.emplace_back(update_time_description, update_time_);
+
+    return document;
 }
 
-celeritas::red_dots celeritas::red_dots::from_json_string(const std::string& json_string)
+celeritas::red_dots celeritas::red_dots::from_document(const document_type& document)
 {
-    const auto parsed_view = bsoncxx::from_json(json_string);
-
     red_dots red_dots{};
-    red_dots.set_node_id(static_cast<red_dot_type>(parsed_view[node_id_description].get_int32().value));
-    red_dots.set_state(parsed_view[state_description].get_bool());
-    red_dots.set_last_value(parsed_view[last_value_description].type() == bsoncxx::type::k_int32 ? parsed_view[last_value_description].get_int32().value : parsed_view[last_value_description].get_int64().value);
-    red_dots.set_last_value(parsed_view[update_time_description].type() == bsoncxx::type::k_int32 ? parsed_view[update_time_description].get_int32().value : parsed_view[update_time_description].get_int64().value);
+
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == node_id_description)
+        {
+            red_dots.set_node_id(underlying_cast_enum<red_dot_type>(element.get_value<database_data_type::int32_type>()));
+        }
+        if (element.get_field_name() == state_description)
+        {
+            red_dots.set_state(element.get_value<database_data_type::bool_type>());
+        }
+        if (element.get_field_name() == last_value_description)
+        {
+            red_dots.set_last_value(element.get_value<database_data_type::int64_type>());
+        }
+        if (element.get_field_name() == update_time_description)
+        {
+            red_dots.set_update_time(element.get_value<database_data_type::int64_type>());
+        }
+    }
 
     return red_dots;
 }

@@ -7,6 +7,7 @@
 #include "config/game_config/container_config.tpp"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
+#include "database/basis_database.tpp"
 
 #include <ranges>
 
@@ -14,7 +15,7 @@ void celeritas::player_item_document::set_item(traits::param_type::document_arra
 {
     for (const auto& element : item_document)
     {
-        auto inventory_data = inventory_data::from_json_string(element);
+        auto inventory_data = inventory_data::from_document(element);
         add_inventory_data(inventory_data);
     }
 }
@@ -24,7 +25,7 @@ celeritas::traits::document_array_type celeritas::player_item_document::get_item
     traits::document_array_type documents{};
     for (auto& element : inventory_data_ | std::views::values)
     {
-        documents.emplace_back(element.to_json_string());
+        documents.emplace_back(element.to_document_type());
     }
 
     return documents;

@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#include "boost/asio/execution/allocator.hpp"
+#include "database/database_data_type_traits.h"
+
 #include <cstdint>
 #include <string>
 
@@ -9,6 +12,7 @@ namespace celeritas
     {
     public:
         using class_type = server_role;
+        using document_type = traits::document_type;
 
         server_role();
 
@@ -30,9 +34,9 @@ namespace celeritas
 
         void set_last_login_time(int64_t last_login_time);
 
-        [[nodiscard]] std::string to_json_string() const;
+        [[nodiscard]] document_type to_document_type() const;
 
-        [[nodiscard]] static server_role from_json_string(const std::string& json_string);
+        [[nodiscard]] static server_role from_document(const document_type& document);
 
         static constexpr std::string_view game_server_id_description = "game_server_id";
         static constexpr std::string_view role_surname_description = "role_surname";

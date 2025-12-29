@@ -2,6 +2,7 @@
 
 #include "config/config_fwd.h"
 #include "config/luban/generated/schema.h"
+#include "database/database_data_type_traits.h"
 
 #include <cstdint>
 #include <string>
@@ -13,6 +14,7 @@ namespace celeritas
     public:
         using class_type = red_dots;
         using red_dot_type = config::red_dot_type;
+        using document_type = traits::document_type;
 
         red_dots();
 
@@ -34,9 +36,9 @@ namespace celeritas
 
         void set_update_time(int64_t updateTime);
 
-        [[nodiscard]] std::string to_json_string() const;
+        [[nodiscard]] document_type to_document_type() const;
 
-        [[nodiscard]] static red_dots from_json_string(const std::string& json_string);
+        [[nodiscard]] static red_dots from_document(const document_type& document);
 
         static constexpr std::string_view node_id_description = "node_id";
         static constexpr std::string_view state_description = "state";

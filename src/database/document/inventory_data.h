@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "custom_data.h"
+#include "database/database_data_type_traits.h"
 
 #include <cstdint>
 #include <string>
@@ -11,7 +12,7 @@ namespace celeritas
     {
     public:
         using class_type = inventory_data;
-        using document_view_type = bsoncxx::document::view;
+        using document_type = traits::document_type;
 
         inventory_data() noexcept = default;
 
@@ -37,15 +38,13 @@ namespace celeritas
 
         void set_custom_data(const custom_data& custom_data);
 
-        void set_custom_data(const document_view_type& document);
-
         void add_count(int64_t count);
 
         void reduce_count(int64_t count);
 
-        [[nodiscard]] std::string to_json_string() const;
+        [[nodiscard]] document_type to_document_type() const;
 
-        [[nodiscard]] static inventory_data from_json_string(const std::string& json_string);
+        [[nodiscard]] static inventory_data from_document(const document_type& document);
 
         static constexpr std::string_view item_id_description = "item_id";
         static constexpr std::string_view template_id_description = "template_id";

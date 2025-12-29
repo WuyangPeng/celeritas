@@ -125,8 +125,8 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_tim
     refresh_data.set_time_id(456);
     refresh_data.add_component(player_component_type::finish);
     refresh_data.set_last_refresh_time(time_helper::get_current_milliseconds());
-    basis_database::string_array result{ refresh_data.to_json_string() };
-    const basis_database player_time{ user_time_refresh::player_time_refresh_describe, database_data_type::document_array_type, result };
+
+    const basis_database player_time{ user_time_refresh::player_time_refresh_describe, database_data_type::document_array_type, refresh_data.to_document_type() };
 
     database_entity_change database_entity_change{ database_type::mongo,
                                                    user_time_refresh::database_name,
@@ -166,8 +166,8 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_ser
     server_role.set_role_name("test_name");
     server_role.set_game_server_id("test_game_server_id");
     server_role.set_last_login_time(time_helper::get_current_milliseconds());
-    basis_database::string_array result{ server_role.to_json_string() };
-    const basis_database servers{ user_server_roles::servers_describe, database_data_type::document_array_type, result };
+
+    const basis_database servers{ user_server_roles::servers_describe, database_data_type::document_array_type, server_role.to_document_type() };
 
     database_entity_change database_entity_change{ database_type::mongo,
                                                    user_server_roles::database_name,
@@ -207,8 +207,8 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_red
     red_dot.set_state(false);
     red_dot.set_last_value(0);
     red_dot.set_update_time(time_helper::get_current_milliseconds());
-    basis_database::string_array result{ red_dot.to_json_string() };
-    const basis_database red_dots{ user_red_dots::red_dots_describe, database_data_type::document_array_type, result };
+
+    const basis_database red_dots{ user_red_dots::red_dots_describe, database_data_type::document_array_type, red_dot.to_document_type() };
 
     database_entity_change database_entity_change{ database_type::mongo,
                                                    user_red_dots::database_name,
@@ -301,8 +301,8 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_mock_use
     data.set_template_id(1003);
     data.set_count(111);
     data.set_position(0);
-    basis_database::string_array result{ data.to_json_string() };
-    const basis_database inventory_data{ user_item::inventory_data_describe, database_data_type::document_array_type, result };
+
+    const basis_database inventory_data{ user_item::inventory_data_describe, database_data_type::document_array_type, data.to_document_type() };
 
     database_entity_change database_entity_change{ database_type::mongo,
                                                    user_item::database_name,

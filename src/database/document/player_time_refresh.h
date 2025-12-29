@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "player/player_fwd.h"
+#include "database/database_data_type_traits.h"
 
 #include <cstdint>
 #include <string>
@@ -13,6 +14,7 @@ namespace celeritas
     public:
         using class_type = player_time_refresh;
         using component_container = std::vector<player_component_type>;
+        using document_type = traits::document_type;
 
         player_time_refresh() noexcept;
 
@@ -48,9 +50,9 @@ namespace celeritas
 
         [[nodiscard]] bool is_default() const;
 
-        [[nodiscard]] std::string to_json_string() const;
+        [[nodiscard]] document_type to_document_type() const;
 
-        [[nodiscard]] static player_time_refresh from_json_string(const std::string& json_string);
+        [[nodiscard]] static player_time_refresh from_document(const document_type& document);
 
         static constexpr std::string_view time_refresh_type_description = "time_refresh_type";
         static constexpr std::string_view parameter_description = "parameter";

@@ -120,7 +120,7 @@ celeritas::login_servers::void_awaitable_type celeritas::login_servers::create_s
             for (const auto servers = user_server_roles.get_servers();
                  const auto& element : servers)
             {
-                auto server_role = server_role::from_json_string(element);
+                auto server_role = server_role::from_document(element);
 
                 server_role_.emplace(server_role.get_game_server_id(), std::move(server_role));
             }

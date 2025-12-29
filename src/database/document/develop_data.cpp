@@ -1,5 +1,6 @@
 ﻿#include "develop_data.h"
 #include "common/time_helper.h"
+#include "database/basis_database.tpp"
 
 #include <bsoncxx/json.hpp>
 #include <bsoncxx/builder/basic/array.hpp>
@@ -73,29 +74,46 @@ void celeritas::develop_data::clear()
     updated_time_ = time_helper::get_current_milliseconds();
 }
 
-std::string celeritas::develop_data::to_json_string() const
+celeritas::develop_data::document_type celeritas::develop_data::to_document_type() const
 {
-    bsoncxx::builder::basic::document builder{};
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ system_id_description }, system_id_));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ instance_id_description }, instance_id_));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ level_description }, level_));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ exp_description }, exp_));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ updated_time_description }, updated_time_));
+    document_type document{};
 
-    return bsoncxx::to_json(builder.view());
+    document.emplace_back(system_id_description, system_id_);
+    document.emplace_back(instance_id_description, instance_id_);
+    document.emplace_back(level_description, level_);
+    document.emplace_back(exp_description, exp_);
+    document.emplace_back(updated_time_description, updated_time_);
+
+    return document;
 }
 
-celeritas::develop_data celeritas::develop_data::from_json_string(const std::string& json_string)
+celeritas::develop_data celeritas::develop_data::from_document(const document_type& document)
 {
-    const auto parsed_view = bsoncxx::from_json(json_string);
-
     develop_data develop_data{};
 
-    develop_data.set_system_id(parsed_view[system_id_description].get_int32().value);
-    develop_data.set_instance_id(parsed_view[instance_id_description].type() == bsoncxx::type::k_int32 ? parsed_view[instance_id_description].get_int32().value : parsed_view[instance_id_description].get_int64().value);
-    develop_data.set_level(parsed_view[level_description].get_int32().value);
-    develop_data.set_exp(parsed_view[exp_description].type() == bsoncxx::type::k_int32 ? parsed_view[exp_description].get_int32().value : parsed_view[exp_description].get_int64().value);
-    develop_data.set_updated_time(parsed_view[updated_time_description].type() == bsoncxx::type::k_int32 ? parsed_view[updated_time_description].get_int32().value : parsed_view[updated_time_description].get_int64().value);
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == system_id_description)
+        {
+            develop_data.set_system_id(element.get_value<database_data_type::int32_type>());
+        }
+        if (element.get_field_name() == instance_id_description)
+        {
+            develop_data.set_instance_id(element.get_value<database_data_type::int64_type>());
+        }
+        if (element.get_field_name() == level_description)
+        {
+            develop_data.set_level(element.get_value<database_data_type::int32_type>());
+        }
+        if (element.get_field_name() == exp_description)
+        {
+            develop_data.set_exp(element.get_value<database_data_type::int64_type>());
+        }
+        if (element.get_field_name() == updated_time_description)
+        {
+            develop_data.set_updated_time(element.get_value<database_data_type::int64_type>());
+        }
+    }
 
     return develop_data;
 }

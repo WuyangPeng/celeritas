@@ -24,7 +24,7 @@ void celeritas::player_time_database::update_document()
     traits::document_array_type documents{};
     for (auto& element : container | std::views::values)
     {
-        documents.emplace_back(element.to_json_string());
+        documents.emplace_back(element.to_document_type());
     }
 
     user_time_refresh_->set_player_time_refresh(documents);
@@ -64,7 +64,7 @@ celeritas::player_time_database::player_time_refresh_container celeritas::player
     player_time_refresh_container container{};
     for (const auto& element : user_time_refresh_->get_player_time_refresh())
     {
-        auto player_time = player_time_refresh::from_json_string(element);
+        auto player_time = player_time_refresh::from_document(element);
         player_time_refresh_key player_time_refresh_key{ player_time };
         container.emplace(player_time_refresh_key, std::move(player_time));
     }

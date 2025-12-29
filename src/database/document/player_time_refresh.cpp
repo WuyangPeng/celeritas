@@ -1,7 +1,9 @@
 ﻿#include "player_time_refresh.h"
 #include "common/common_fwd.h"
+#include "common/enum_cast.h"
 #include "common/time_helper.h"
 #include "player/time/time_refresh_type.h"
+#include "database/basis_database.tpp"
 
 #include <bsoncxx/json.hpp>
 #include <bsoncxx/builder/basic/array.hpp>
@@ -126,36 +128,57 @@ bool celeritas::player_time_refresh::is_default() const
     }
 }
 
-std::string celeritas::player_time_refresh::to_json_string() const
+celeritas::player_time_refresh::document_type celeritas::player_time_refresh::to_document_type() const
 {
-    bsoncxx::builder::basic::document builder{};
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ time_refresh_type_description }, static_cast<int32_t>(time_refresh_type_)));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ parameter_description }, parameter_));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ time_id_description }, time_id_));
-    bsoncxx::builder::basic::array basic{};
+    document_type document{};
+
+    document.emplace_back(time_refresh_type_description, enum_cast_underlying(time_refresh_type_));
+    document.emplace_back(parameter_description, parameter_);
+    document.emplace_back(time_id_description, time_id_);
+    traits::int32_array_type basic{};
     for (const auto& element : component_)
     {
-        basic.append(static_cast<int32_t>(element));
+        basic.emplace_back(static_cast<int32_t>(element));
     }
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ component_description }, basic));
-    builder.append(bsoncxx::builder::basic::kvp(std::string{ last_refresh_time_description }, last_refresh_time_));
+    document.emplace_back(component_description, basic);
+    document.emplace_back(last_refresh_time_description, last_refresh_time_);
 
-    return bsoncxx::to_json(builder.view());
+    return document;
 }
 
-celeritas::player_time_refresh celeritas::player_time_refresh::from_json_string(const std::string& json_string)
+celeritas::player_time_refresh celeritas::player_time_refresh::from_document(const document_type& document)
 {
-    const auto parsed_view = bsoncxx::from_json(json_string);
-
     player_time_refresh player_time_refresh{};
-    player_time_refresh.set_time_refresh_type(static_cast<time_refresh_type>(parsed_view[time_refresh_type_description].get_int32().value));
-    player_time_refresh.set_parameter(parsed_view[parameter_description].type() == bsoncxx::type::k_int32 ? parsed_view[parameter_description].get_int32().value : parsed_view[parameter_description].get_int64().value);
-    player_time_refresh.set_time_id(parsed_view[time_id_description].type() == bsoncxx::type::k_int32 ? parsed_view[time_id_description].get_int32().value : parsed_view[time_id_description].get_int64().value);
-    for (const auto& element : parsed_view[component_description].get_array().value)
+
+    for (const auto& element : document)
     {
-        player_time_refresh.add_component(static_cast<player_component_type>(element.get_int32().value));
+        if (element.get_field_name() == time_refresh_type_description)
+        {
+            player_time_refresh.set_time_refresh_type(underlying_cast_enum<time_refresh_type>(element.get_value<database_data_type::int32_type>()));
+        }
+        if (element.get_field_name() == parameter_description)
+        {
+            player_time_refresh.set_parameter(element.get_value<database_data_type::int64_type>());
+        }
+        if (element.get_field_name() == time_id_description)
+        {
+            player_time_refresh.set_time_id(element.get_value<database_data_type::int64_type>());
+        }
+        if (element.get_field_name() == component_description)
+        {
+            const auto value = element.get_value<database_data_type::int32_array_type>();
+            component_container container{};
+            for (const auto& component_type : value)
+            {
+                container.emplace_back(underlying_cast_enum<player_component_type>(component_type));
+            }
+            player_time_refresh.set_component(container);
+        }
+        if (element.get_field_name() == last_refresh_time_description)
+        {
+            player_time_refresh.set_last_refresh_time(element.get_value<database_data_type::int64_type>());
+        }
     }
-    player_time_refresh.set_last_refresh_time(parsed_view[last_refresh_time_description].type() == bsoncxx::type::k_int32 ? parsed_view[last_refresh_time_description].get_int32().value : parsed_view[last_refresh_time_description].get_int64().value);
 
     return player_time_refresh;
 }
