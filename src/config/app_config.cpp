@@ -1,5 +1,5 @@
 ﻿#include "app_config.h"
-#include "common/celeritas_error.h"
+#include "../common/core_utilities/celeritas_error.h"
 #include "common/logger.h"
 #include "common/time_helper.h"
 #include "detail/database_config_reader.h"

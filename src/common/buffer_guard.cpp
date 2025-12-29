@@ -1,6 +1,6 @@
 ﻿#include "buffer_guard.h"
 #include "buffer_pool.h"
-#include "noexcept_safe_call_and_log.h"
+#include "core_utilities/noexcept_safe_call_and_log.h"
 
 celeritas::buffer_guard::buffer_guard(buffer_pool_data buffer_data, const size_t effective_size)
     : buffer_data_{ std::move(buffer_data) }, effective_size_{ effective_size }

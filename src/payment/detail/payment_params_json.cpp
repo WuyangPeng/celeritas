@@ -1,6 +1,6 @@
 ﻿#include "payment_params_json.h"
 #include "we_chat_payment_params_json.h"
-#include "common/celeritas_error.h"
+#include "../../common/core_utilities/celeritas_error.h"
 
 celeritas::payment_params_json::payment_params_json(const order_create_parameter& order_create_parameter)
     : order_create_parameter_{ order_create_parameter }

@@ -2,7 +2,7 @@
 #include "auth/data/app_secret.h"
 #include "auth/server_list/login_servers.h"
 #include "auth/server_list/login_servers_response.h"
-#include "common/celeritas_error.h"
+#include "../../common/core_utilities/celeritas_error.h"
 #include "common/logger.h"
 #include "config/app_config.h"
 #include "handler/handler_fwd.h"

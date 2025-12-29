@@ -1,5 +1,5 @@
 ﻿#include "register_handler_template_file.h"
-#include "common/celeritas_error.h"
+#include "../../common/core_utilities/celeritas_error.h"
 #include "generate_handler_tools/generate_handler_tools_fwd.h"
 
 #include <filesystem>

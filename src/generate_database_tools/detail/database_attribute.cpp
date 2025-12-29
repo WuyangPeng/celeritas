@@ -1,5 +1,5 @@
 ﻿#include "database_attribute.h"
-#include "common/celeritas_error.h"
+#include "../../common/core_utilities/celeritas_error.h"
 #include "database/entity.h"
 
 celeritas::database_attribute::database_attribute()

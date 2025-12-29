@@ -1,5 +1,5 @@
 ﻿#include "consumable_data.h"
-#include "common/celeritas_error.h"
+#include "../../common/core_utilities/celeritas_error.h"
 #include "database/basis_database.tpp"
 
 #include <bsoncxx/types.hpp>

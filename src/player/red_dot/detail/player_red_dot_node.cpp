@@ -1,6 +1,6 @@
 ﻿#include "calculate_red_dot.h"
 #include "player_red_dot_node.h"
-#include "common/celeritas_error.h"
+#include "../../../common/core_utilities/celeritas_error.h"
 #include "config/game_config/container_config.tpp"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"

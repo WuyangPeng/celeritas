@@ -1,6 +1,6 @@
 ﻿#include "http_session.h"
 #include "common/logger.h"
-#include "common/noexcept_safe_call_and_log.h"
+#include "../common/core_utilities/noexcept_safe_call_and_log.h"
 #include "detail/http_request_session_run.h"
 #include "detail/http_request_session_write.h"
 #include "detail/http_response_session_run.h"

@@ -12,7 +12,7 @@
 #include "chat_server/chat_application_loader.h"
 #include "chat_server/chat_configuration_loader.h"
 #include "chat_server/chat_resource_loader.h"
-#include "common/celeritas_error.h"
+#include "../common/core_utilities/celeritas_error.h"
 #include "cross_server/cross_application_loader.h"
 #include "cross_server/cross_configuration_loader.h"
 #include "cross_server/cross_resource_loader.h"

@@ -1,5 +1,5 @@
 ﻿#include "entity_attribute.h"
-#include "common/celeritas_error.h"
+#include "../../common/core_utilities/celeritas_error.h"
 
 std::string celeritas::entity_attribute::get_entity_name() const
 {

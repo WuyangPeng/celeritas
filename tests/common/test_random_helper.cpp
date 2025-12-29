@@ -1,4 +1,4 @@
-﻿#include "common/celeritas_error.h"
+﻿#include "../../src/common/core_utilities/celeritas_error.h"
 #include "common/random_helper.h"
 
 #include <boost/test/unit_test.hpp>

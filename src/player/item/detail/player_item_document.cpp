@@ -1,6 +1,6 @@
 ﻿#include "player_item_document.h"
 #include "boost/numeric/conversion/cast.hpp"
-#include "common/celeritas_error.h"
+#include "../../../common/core_utilities/celeritas_error.h"
 #include "common/logger.h"
 #include "common/snowflake_generator.h"
 #include "config/app_config.h"

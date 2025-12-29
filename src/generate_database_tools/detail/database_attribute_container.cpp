@@ -1,5 +1,5 @@
 ﻿#include "database_attribute_container.h"
-#include "common/celeritas_error.h"
+#include "../../common/core_utilities/celeritas_error.h"
 
 celeritas::database_attribute_container::database_attribute_container(container container)
     : container_{ std::move(container) }
