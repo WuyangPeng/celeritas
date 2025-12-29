@@ -1,4 +1,4 @@
-﻿#include "core_utilities/celeritas_error.h"
+﻿#include "celeritas_error.h"
 #include "random_helper.h"
 
 #include <algorithm>
