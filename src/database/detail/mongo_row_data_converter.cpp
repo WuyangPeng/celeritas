@@ -100,10 +100,16 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
         case database_data_type::document_array_type:
         {
             const bsoncxx::document::value doc_value{ row_view.get_array().value };
-            basis_database::string_array result{};
+            basis_database::document_array result{};
             for (const auto& element : doc_value)
             {
-                result.emplace_back(bsoncxx::to_json(element.get_document().value));
+                basis_database::document_type document{};
+                for (const auto& value : element.get_document().value)
+                {
+                    document.emplace_back(get_basis_database(value));
+                }
+
+                result.emplace_back(document);
             }
 
             return basis_database{ iter->get_field_name(), database_data_type::document_array_type, result };
@@ -209,13 +215,14 @@ celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_con
 
             case database_data_type::document_type:
             {
-                const auto document_type = value.get_value<database_data_type::document_type>();
-                for (const auto& element : document_type)
+                bsoncxx::builder::basic::document current_document{};
+                for (const auto document_type = value.get_value<database_data_type::document_type>();
+                     const auto& element : document_type)
                 {
+                    append_document(current_document, element);
                 }
-                //auto doc_value = bsoncxx::from_json(document_type);
 
-                //document.append(bsoncxx::builder::basic::kvp(fieldName, doc_value));
+                document.append(bsoncxx::builder::basic::kvp(fieldName, current_document));
                 break;
             }
             case database_data_type::document_array_type:
@@ -224,8 +231,12 @@ celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_con
                 bsoncxx::builder::basic::array basic{};
                 for (const auto& element : document_type)
                 {
-                    // auto doc_value = bsoncxx::from_json(element);
-                    //basic.append(doc_value);
+                    bsoncxx::builder::basic::document current_document{};
+                    for (const auto& database_data : element)
+                    {
+                        append_document(current_document, database_data);
+                    }
+                    basic.append(current_document);
                 }
 
                 document.append(bsoncxx::builder::basic::kvp(fieldName, basic));
@@ -279,11 +290,193 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
             {
                 return basis_database{ row_view.key(), basis_database::int32_array{} };
             }
-
-            for (const auto& element : row_view_array)
+            const auto sub_type = row_view_array.begin()->type();
+            switch (sub_type)
             {
+                case bsoncxx::type::k_double:
+                {
+                    basis_database::double_array database{};
+                    for (const auto& element : row_view_array)
+                    {
+                        database.emplace_back(element.get_double().value);
+                    }
+                    return basis_database{ row_view.key(), database };
+                }
+                case bsoncxx::type::k_string:
+                {
+                    basis_database::string_array database{};
+                    for (const auto& element : row_view_array)
+                    {
+                        database.emplace_back(element.get_string().value);
+                    }
+                    return basis_database{ row_view.key(), database };
+                }
+                case bsoncxx::type::k_document:
+                {
+                    basis_database::document_array database{};
+                    for (const auto& element : row_view_array)
+                    {
+                        basis_database::document_type document_type{};
+                        const auto& doc = element.get_document().value;
+                        for (const auto& value : doc)
+                        {
+                            document_type.emplace_back(get_basis_database(value));
+                        }
+                        database.emplace_back(document_type);
+                    }
+                    return basis_database{ row_view.key(), database };
+                }
+                case bsoncxx::type::k_int32:
+                {
+                    basis_database::int32_array database{};
+                    for (const auto& element : row_view_array)
+                    {
+                        database.emplace_back(element.get_int32().value);
+                    }
+                    return basis_database{ row_view.key(), database };
+                }
+                case bsoncxx::type::k_int64:
+                {
+                    basis_database::int64_array database{};
+                    for (const auto& element : row_view_array)
+                    {
+                        database.emplace_back(element.get_int64().value);
+                    }
+                    return basis_database{ row_view.key(), database };
+                }
+                default:
+                {
+                    throw celeritas_error{ "Unsupported type in mongo row data." };
+                }
             }
         }
+        default:
+        {
+            throw celeritas_error{ "Unsupported type in mongo row data." };
+        }
+    }
+}
+
+void celeritas::mongo_row_data_converter::append_document(document_type& document, const basis_database& basis_database)
+{
+    switch (basis_database.get_data_type())
+    {
+        case database_data_type::null_type:
+        {
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), ""));
+            break;
+        }
+
+        case database_data_type::string_type:
+        {
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basis_database.get_value<database_data_type::string_type>()));
+            break;
+        }
+        case database_data_type::string_array_type:
+        {
+            bsoncxx::builder::basic::array basic{};
+            for (const auto& element : basis_database.get_value<database_data_type::string_array_type>())
+            {
+                basic.append(element);
+            }
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basic));
+            break;
+        }
+        case database_data_type::int32_type:
+        {
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basis_database.get_value<database_data_type::int32_type>()));
+            break;
+        }
+        case database_data_type::int32_count_type:
+        {
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basis_database.get_value<database_data_type::int32_count_type>()));
+            break;
+        }
+        case database_data_type::int32_array_type:
+        {
+            bsoncxx::builder::basic::array basic{};
+            for (const auto& element : basis_database.get_value<database_data_type::int32_array_type>())
+            {
+                basic.append(element);
+            }
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basic));
+            break;
+        }
+        case database_data_type::int64_type:
+        {
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basis_database.get_value<database_data_type::int64_type>()));
+            break;
+        }
+        case database_data_type::int64_count_type:
+        {
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basis_database.get_value<database_data_type::int64_count_type>()));
+            break;
+        }
+        case database_data_type::int64_array_type:
+        {
+            bsoncxx::builder::basic::array basic{};
+            for (const auto& element : basis_database.get_value<database_data_type::int64_array_type>())
+            {
+                basic.append(element);
+            }
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basic));
+            break;
+        }
+        case database_data_type::double_type:
+        {
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basis_database.get_value<database_data_type::double_type>()));
+            break;
+        }
+        case database_data_type::double_array_type:
+        {
+            bsoncxx::builder::basic::array basic{};
+            for (const auto& element : basis_database.get_value<database_data_type::double_array_type>())
+            {
+                basic.append(element);
+            }
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basic));
+            break;
+        }
+        case database_data_type::bool_type:
+        {
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basis_database.get_value<database_data_type::bool_type>()));
+            break;
+        }
+        case database_data_type::byte_array_type:
+        {
+            const auto& byteArray = basis_database.get_value<database_data_type::byte_array_type>();
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), bsoncxx::types::b_binary{ bsoncxx::binary_sub_type::k_binary, static_cast<uint32_t>(byteArray.size()), byteArray.data() }));
+            break;
+        }
+        case database_data_type::document_type:
+        {
+            bsoncxx::builder::basic::document current_document{};
+            for (const auto& element : basis_database.get_value<database_data_type::document_type>())
+            {
+                append_document(current_document, element);
+            }
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), current_document));
+
+            break;
+        }
+
+        case database_data_type::document_array_type:
+        {
+            bsoncxx::builder::basic::array current_document{};
+            for (const auto& element : basis_database.get_value<database_data_type::document_array_type>())
+            {
+                bsoncxx::builder::basic::document current{};
+                for (const auto& value : element)
+                {
+                    append_document(current, value);
+                }
+
+                current_document.append(current);
+            }
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), current_document));
+            break;
+        }
+
         default:
         {
             throw celeritas_error{ "Unsupported type in mongo row data." };

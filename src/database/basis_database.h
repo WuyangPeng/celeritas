@@ -80,9 +80,12 @@ namespace celeritas
 
         [[nodiscard]] std::string get_document_array_string() const;
 
-    private:
         std::string_view field_name_;
         database_data_type data_type_ = database_data_type::null_type;
         std::any value_;
     };
+
+    [[nodiscard]] bool operator==(const basis_database& lhs, const basis_database& rhs);
+
+    [[nodiscard]] bool operator!=(const basis_database& lhs, const basis_database& rhs);
 }

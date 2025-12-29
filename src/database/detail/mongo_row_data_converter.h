@@ -30,5 +30,7 @@ namespace celeritas
 
         template <typename T>
         [[nodiscard]] static std::vector<T> get_numeric_array(const array_type& array_view);
+
+        static void append_document(document_type& document, const basis_database& basis_database);
     };
 }

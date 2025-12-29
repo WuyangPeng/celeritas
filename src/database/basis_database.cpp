@@ -210,3 +210,86 @@ std::string celeritas::basis_database::get_document_array_string() const
 {
     return "";
 }
+
+bool celeritas::operator==(const basis_database& lhs, const basis_database& rhs)
+{
+    if (lhs.get_data_type() != rhs.get_data_type())
+    {
+        return false;
+    }
+
+    if (lhs.get_field_name() != rhs.get_field_name())
+    {
+        return false;
+    }
+    switch (lhs.get_data_type())
+    {
+        case database_data_type::null_type:
+        {
+            return true;
+        }
+        case database_data_type::string_type:
+        {
+            return lhs.get_value<database_data_type::string_type>() == rhs.get_value<database_data_type::string_type>();
+        }
+        case database_data_type::string_array_type:
+        {
+            return lhs.get_value<database_data_type::string_array_type>() == rhs.get_value<database_data_type::string_array_type>();
+        }
+        case database_data_type::int32_type:
+        {
+            return lhs.get_value<database_data_type::int32_type>() == rhs.get_value<database_data_type::int32_type>();
+        }
+        case database_data_type::int32_count_type:
+        {
+            return lhs.get_value<database_data_type::int32_count_type>() == rhs.get_value<database_data_type::int32_count_type>();
+        }
+        case database_data_type::int32_array_type:
+        {
+            return lhs.get_value<database_data_type::int32_array_type>() == rhs.get_value<database_data_type::int32_array_type>();
+        }
+        case database_data_type::int64_type:
+        {
+            return lhs.get_value<database_data_type::int64_type>() == rhs.get_value<database_data_type::int64_type>();
+        }
+        case database_data_type::int64_count_type:
+        {
+            return lhs.get_value<database_data_type::int64_count_type>() == rhs.get_value<database_data_type::int64_count_type>();
+        }
+        case database_data_type::int64_array_type:
+        {
+            return lhs.get_value<database_data_type::int64_array_type>() == rhs.get_value<database_data_type::int64_array_type>();
+        }
+        case database_data_type::double_type:
+        {
+            return lhs.get_value<database_data_type::double_type>() == rhs.get_value<database_data_type::double_type>();
+        }
+        case database_data_type::double_array_type:
+        {
+            return lhs.get_value<database_data_type::double_array_type>() == rhs.get_value<database_data_type::double_array_type>();
+        }
+        case database_data_type::bool_type:
+        {
+            return lhs.get_value<database_data_type::bool_type>() == rhs.get_value<database_data_type::bool_type>();
+        }
+        case database_data_type::byte_array_type:
+        {
+            return lhs.get_value<database_data_type::byte_array_type>() == rhs.get_value<database_data_type::byte_array_type>();
+        }
+        case database_data_type::document_type:
+        {
+            return lhs.get_value<database_data_type::document_type>() == rhs.get_value<database_data_type::document_type>();
+        }
+        case database_data_type::document_array_type:
+        {
+            return lhs.get_value<database_data_type::document_array_type>() == rhs.get_value<database_data_type::document_array_type>();
+        }
+    }
+
+    return false;
+}
+
+bool celeritas::operator!=(const basis_database& lhs, const basis_database& rhs)
+{
+    return !(lhs == rhs);
+}
