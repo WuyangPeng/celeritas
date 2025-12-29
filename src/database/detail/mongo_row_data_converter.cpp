@@ -89,7 +89,12 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
         case database_data_type::document_type:
         {
             const bsoncxx::document::value doc_value{ row_view.get_document().value };
-            return basis_database{ iter->get_field_name(), database_data_type::document_type, bsoncxx::to_json(doc_value) };
+            basis_database::document_type document{};
+            for (const auto& element : doc_value)
+            {
+                document.emplace_back(get_basis_database(element));
+            }
+            return basis_database{ iter->get_field_name(), database_data_type::document_type, document };
         }
 
         case database_data_type::document_array_type:
@@ -205,9 +210,12 @@ celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_con
             case database_data_type::document_type:
             {
                 const auto document_type = value.get_value<database_data_type::document_type>();
-                auto doc_value = bsoncxx::from_json(document_type);
+                for (const auto& element : document_type)
+                {
+                }
+                //auto doc_value = bsoncxx::from_json(document_type);
 
-                document.append(bsoncxx::builder::basic::kvp(fieldName, doc_value));
+                //document.append(bsoncxx::builder::basic::kvp(fieldName, doc_value));
                 break;
             }
             case database_data_type::document_array_type:
@@ -216,8 +224,8 @@ celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_con
                 bsoncxx::builder::basic::array basic{};
                 for (const auto& element : document_type)
                 {
-                    auto doc_value = bsoncxx::from_json(element);
-                    basic.append(doc_value);
+                    // auto doc_value = bsoncxx::from_json(element);
+                    //basic.append(doc_value);
                 }
 
                 document.append(bsoncxx::builder::basic::kvp(fieldName, basic));
@@ -229,4 +237,56 @@ celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_con
     }
 
     return document;
+}
+
+celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_database(const document_element_type& row_view)
+{
+    switch (row_view.type())
+    {
+        case bsoncxx::type::k_double:
+        {
+            return basis_database{ row_view.key(), row_view.get_double().value };
+        }
+        case bsoncxx::type::k_string:
+        {
+            return basis_database{ row_view.key(), std::string{ row_view.get_string().value } };
+        }
+        case bsoncxx::type::k_bool:
+        {
+            return basis_database{ row_view.key(), row_view.get_bool().value };
+        }
+        case bsoncxx::type::k_document:
+        {
+            basis_database::document_type document{};
+            for (const auto& element : row_view.get_document().value)
+            {
+                document.emplace_back(get_basis_database(element));
+            }
+            return basis_database{ row_view.key(), document };
+        }
+        case bsoncxx::type::k_int32:
+        {
+            return basis_database{ row_view.key(), row_view.get_int32().value };
+        }
+        case bsoncxx::type::k_int64:
+        {
+            return basis_database{ row_view.key(), row_view.get_int64().value };
+        }
+        case bsoncxx::type::k_array:
+        {
+            const auto row_view_array = row_view.get_array().value;
+            if (row_view_array.empty())
+            {
+                return basis_database{ row_view.key(), basis_database::int32_array{} };
+            }
+
+            for (const auto& element : row_view_array)
+            {
+            }
+        }
+        default:
+        {
+            throw celeritas_error{ "Unsupported type in mongo row data." };
+        }
+    }
 }

@@ -29,6 +29,11 @@ celeritas::basis_database::basis_database(const std::string_view field_name, con
 {
 }
 
+celeritas::basis_database::basis_database(const std::string_view field_name, const document_type& value)
+    : class_type{ field_name, database_data_type::document_type, value }
+{
+}
+
 celeritas::basis_database::basis_database(const std::string_view field_name, const byte_array& value)
     : class_type{ field_name, database_data_type::byte_array_type, value }
 {
@@ -56,6 +61,11 @@ celeritas::basis_database::basis_database(const std::string_view field_name, con
 
 celeritas::basis_database::basis_database(const std::string_view field_name, const double_array& value)
     : class_type{ field_name, database_data_type::double_array_type, value }
+{
+}
+
+celeritas::basis_database::basis_database(const std::string_view field_name, const document_array& value)
+    : class_type{ field_name, database_data_type::document_array_type, value }
 {
 }
 
@@ -158,12 +168,12 @@ std::string celeritas::basis_database::get_string() const
 
             case database_data_type::document_type:
             {
-                return get_value<database_data_type::string_type>();
+                return get_document_string();
             }
 
             case database_data_type::document_array_type:
             {
-                return get_array_string_value<database_data_type::string_array_type>();
+                return get_document_array_string();
             }
 
             default:
@@ -189,4 +199,14 @@ std::string celeritas::basis_database::get_quotation_mark_string() const
 celeritas::basis_database::basis_database(const std::string_view field_name, const database_data_type dataType, std::any value)
     : field_name_{ field_name }, data_type_{ dataType }, value_{ std::move(value) }
 {
+}
+
+std::string celeritas::basis_database::get_document_string() const
+{
+    return "";
+}
+
+std::string celeritas::basis_database::get_document_array_string() const
+{
+    return "";
 }

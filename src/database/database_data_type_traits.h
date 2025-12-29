@@ -104,14 +104,14 @@ namespace celeritas
     template <>
     struct database_data_Type_traits<database_data_type::document_type>
     {
-        using type = std::string;
+        using type = std::vector<basis_database>;
         using element_type = type;
     };
 
     template <>
     struct database_data_Type_traits<database_data_type::document_array_type>
     {
-        using type = std::vector<std::string>;
+        using type = std::vector<std::vector<basis_database> >;
         using element_type = type::value_type;
     };
 

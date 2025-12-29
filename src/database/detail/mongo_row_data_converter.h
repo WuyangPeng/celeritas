@@ -26,6 +26,8 @@ namespace celeritas
     private:
         using array_type = bsoncxx::array::view;
 
+        [[nodiscard]] static basis_database get_basis_database(const document_element_type& row_view);
+
         template <typename T>
         [[nodiscard]] static std::vector<T> get_numeric_array(const array_type& array_view);
     };

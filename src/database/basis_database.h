@@ -20,6 +20,8 @@ namespace celeritas
         using int32_array = std::vector<int32_t>;
         using int64_array = std::vector<int64_t>;
         using double_array = std::vector<double>;
+        using document_type = std::vector<basis_database>;
+        using document_array = std::vector<document_type>;
 
         explicit basis_database(std::string_view field_name);
 
@@ -30,6 +32,8 @@ namespace celeritas
         basis_database(std::string_view field_name, int64_t value);
 
         basis_database(std::string_view field_name, uint64_t value);
+
+        basis_database(std::string_view field_name, const document_type& value);
 
         basis_database(std::string_view field_name, const byte_array& value);
 
@@ -42,6 +46,8 @@ namespace celeritas
         basis_database(std::string_view field_name, const int64_array& value);
 
         basis_database(std::string_view field_name, const double_array& value);
+
+        basis_database(std::string_view field_name, const document_array& value);
 
         template <typename T> requires(std::is_integral_v<T>)
         basis_database(std::string_view field_name, T value);
@@ -68,6 +74,11 @@ namespace celeritas
         [[nodiscard]] std::string get_quotation_mark_string() const;
 
         basis_database(std::string_view field_name, database_data_type dataType, std::any value);
+
+    private:
+        [[nodiscard]] std::string get_document_string() const;
+
+        [[nodiscard]] std::string get_document_array_string() const;
 
     private:
         std::string_view field_name_;
