@@ -342,7 +342,7 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
                     {
                         database_array.emplace_back(element.get_int64().value);
                     }
-                    return basis_database{ row_view.key(), database_array };
+                    return basis_database{ row_view.key().data(), database_array };
                 }
                 default:
                 {
