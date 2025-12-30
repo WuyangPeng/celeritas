@@ -2,8 +2,7 @@
 
 #include "common/core/session_route.h"
 #include "config/config_fwd.h"
-#include "message/message_fwd.h"
-#include "message/protobuf_handle_parameter.h"
+#include "message/message_fwd.h" 
 #include "service_registry/service_registry_fwd.h"
 
 #include <boost/asio.hpp>

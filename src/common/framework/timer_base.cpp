@@ -1,8 +1,8 @@
-﻿#include "common/logger/logger.h"
+﻿#include "timer_base.h"
 #include "common/core/noexcept_safe_call_and_log.h"
-#include "timer_base.h"
+#include "common/logger/logger.h"
 
-celeritas::timer_base::timer_base(io_context_type& io_context, const duration_type interval, bool disposable)
+celeritas::timer_base::timer_base(io_context_type& io_context, const duration_type interval, const bool disposable)
     : timer_{ io_context }, interval_{ interval }, disposable_{ disposable }
 {
 }
@@ -31,6 +31,17 @@ void celeritas::timer_base::stop()
     timer_.cancel();
 }
 
+void celeritas::timer_base::wait_for_next_tick()
+{
+    auto self = shared_from_this();
+
+    timer_.expires_after(interval_);
+    timer_.async_wait(
+        [self](const error_code_type& error_code) {
+            self->next_tick(error_code);
+        });
+}
+
 void celeritas::timer_base::set_duration_type(duration_type interval)
 {
     interval_ = interval;
@@ -50,17 +61,6 @@ void celeritas::timer_base::on_timer_elapsed()
     {
         LOG_CHANNEL(common_channel, fatal) << "timer elapsed error: an unknown exception";
     }
-}
-
-void celeritas::timer_base::wait_for_next_tick()
-{
-    auto self = shared_from_this();
-
-    timer_.expires_after(interval_);
-    timer_.async_wait(
-        [self](const error_code_type& error_code) {
-            self->next_tick(error_code);
-        });
 }
 
 void celeritas::timer_base::next_tick(const error_code_type& error_code)
