@@ -363,7 +363,6 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
     {
         case database_data_type::null_type:
         {
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), std::string{}));
             break;
         }
 
