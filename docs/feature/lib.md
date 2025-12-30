@@ -42,21 +42,15 @@
         - **获取带偏移的本周开始时间戳**：返回本周第一天 00:00:00并指定偏移后的开始时间戳。
         - **获取本月开始时间戳**：返回本月第一天 00:00:00 的毫秒时间戳。
         - **获取带偏移的本月开始时间戳**：返回本月第一天 00:00:00 并指定偏移后的开始时间戳。
-        - **获取当天结束时间戳**：`get_end_of_day_milliseconds()` 返回当天 23:59:59 的毫秒时间戳。
-        - **获取带偏移的当天结束时间戳**：`get_end_of_day_milliseconds_with_offset(offset)` 返回当天指定偏移后的结束时间戳。
-        - **获取指定时间带偏移的当天结束时间戳**：`get_end_of_day_milliseconds_with_offset(check_time, offset)`
-          返回指定时间点当天指定偏移后的结束时间戳。
-        - **获取本周结束时间戳**：`get_end_of_week_milliseconds()` 返回本周最后一天 23:59:59 的毫秒时间戳。
-        - **获取带偏移的本周结束时间戳**：`get_end_of_week_milliseconds_with_offset(offset)` 返回本周指定偏移后的结束时间戳。
-        - **获取指定时间带偏移的本周结束时间戳**：`get_end_of_week_milliseconds_with_offset(check_time, offset)`
-          返回指定时间点本周指定偏移后的结束时间戳。
-        - **获取本月结束时间戳**：`get_end_of_month_milliseconds()` 返回本月最后一天 23:59:59 的毫秒时间戳。
-        - **获取带偏移的本月结束时间戳**：`get_end_of_month_milliseconds_with_offset(offset)` 返回本月指定偏移后的结束时间戳。
-        - **获取指定时间带偏移的本月结束时间戳**：`get_end_of_month_milliseconds_with_offset(check_time, offset)`
-          返回指定时间点本月指定偏移后的结束时间戳。
-        - **转换为毫秒时间戳**：`to_milliseconds(time_point)` 将 `time_point` 转换为毫秒时间戳。
-        - **转换为本地时间**：`to_local_time(time_point)` 将 `time_point` 转换为本地时间。
-        - **获取本地时区**：`get_local_zone()` 获取当前系统的本地时区。
+        - **获取下一天开始时间戳**：返回下一天 00:00:00 的毫秒时间戳。
+        - **获取带偏移的下一天开始时间戳**：返回下一天 00:00:00 并指定偏移后的开始时间戳。
+        - **获取下周开始时间戳**：返回下周第一天 00:00:00 的毫秒时间戳。
+        - **获取带偏移的下周开始时间戳**：返回下周第一天 00:00:00 并指定偏移后的开始时间戳。
+        - **获取下月开始时间戳**：返回下月第一天 00:00:00 的毫秒时间戳。
+        - **获取带偏移的下月开始时间戳**：返回下月第一天 00:00:00 并指定偏移后的开始时间戳。
+        - **时间点转毫秒**：将 `std::chrono::system_clock::time_point` 转换为毫秒时间戳。
+        - **时间点转本地时间**：将 `std::chrono::system_clock::time_point` 转换为本地时间。
+        - **获取本地时区**：获取当前系统的本地时区。
 
 
 * **❄️ 雪花算法ID生成器（`snowflake_generator`）**

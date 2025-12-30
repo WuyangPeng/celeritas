@@ -295,25 +295,25 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
             {
                 case bsoncxx::type::k_double:
                 {
-                    basis_database::double_array database{};
+                    basis_database::double_array database_array{};
                     for (const auto& element : row_view_array)
                     {
-                        database.emplace_back(element.get_double().value);
+                        database_array.emplace_back(element.get_double().value);
                     }
-                    return basis_database{ row_view.key(), database };
+                    return basis_database{ row_view.key(), database_array };
                 }
                 case bsoncxx::type::k_string:
                 {
-                    basis_database::string_array database{};
+                    basis_database::string_array database_array{};
                     for (const auto& element : row_view_array)
                     {
-                        database.emplace_back(element.get_string().value);
+                        database_array.emplace_back(element.get_string().value);
                     }
-                    return basis_database{ row_view.key(), database };
+                    return basis_database{ row_view.key(), database_array };
                 }
                 case bsoncxx::type::k_document:
                 {
-                    basis_database::document_array database{};
+                    basis_database::document_array database_array{};
                     for (const auto& element : row_view_array)
                     {
                         basis_database::document_type document_type{};
@@ -322,27 +322,27 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
                         {
                             document_type.emplace_back(get_basis_database(value));
                         }
-                        database.emplace_back(document_type);
+                        database_array.emplace_back(document_type);
                     }
-                    return basis_database{ row_view.key(), database };
+                    return basis_database{ row_view.key(), database_array };
                 }
                 case bsoncxx::type::k_int32:
                 {
-                    basis_database::int32_array database{};
+                    basis_database::int32_array database_array{};
                     for (const auto& element : row_view_array)
                     {
-                        database.emplace_back(element.get_int32().value);
+                        database_array.emplace_back(element.get_int32().value);
                     }
-                    return basis_database{ row_view.key(), database };
+                    return basis_database{ row_view.key(), database_array };
                 }
                 case bsoncxx::type::k_int64:
                 {
-                    basis_database::int64_array database{};
+                    basis_database::int64_array database_array{};
                     for (const auto& element : row_view_array)
                     {
-                        database.emplace_back(element.get_int64().value);
+                        database_array.emplace_back(element.get_int64().value);
                     }
-                    return basis_database{ row_view.key(), database };
+                    return basis_database{ row_view.key(), database_array };
                 }
                 default:
                 {

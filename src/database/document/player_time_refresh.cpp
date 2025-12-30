@@ -80,15 +80,15 @@ int64_t celeritas::player_time_refresh::get_next_refresh_time() const
     {
         case time_refresh_type::daily:
         {
-            return time_helper::get_end_of_day_milliseconds_with_offset(last_refresh_time_, parameter_);
+            return time_helper::get_next_day_start_milliseconds_with_offset(last_refresh_time_, parameter_);
         }
         case time_refresh_type::weekly:
         {
-            return time_helper::get_end_of_week_milliseconds_with_offset(last_refresh_time_, parameter_);
+            return time_helper::get_next_week_start_milliseconds_with_offset(last_refresh_time_, parameter_);
         }
         case time_refresh_type::monthly:
         {
-            return time_helper::get_end_of_month_milliseconds_with_offset(last_refresh_time_, parameter_);
+            return time_helper::get_next_month_start_milliseconds_with_offset(last_refresh_time_, parameter_);
         }
         case time_refresh_type::interval_duration:
         {

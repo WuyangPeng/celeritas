@@ -180,7 +180,7 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
     BOOST_AUTO_TEST_CASE(test_get_end_of_day_milliseconds)
     {
         const auto current_milliseconds = celeritas::time_helper::get_current_milliseconds();
-        const auto end_of_day_milliseconds = celeritas::time_helper::get_end_of_day_milliseconds();
+        const auto end_of_day_milliseconds = celeritas::time_helper::get_next_day_start_milliseconds();
         const auto start_of_day_milliseconds = celeritas::time_helper::get_start_of_day_milliseconds();
 
         BOOST_CHECK_GT(end_of_day_milliseconds, current_milliseconds);
@@ -199,7 +199,7 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
         for (auto i = 0; i < celeritas::day_hour; ++i)
         {
             const auto offset = i * celeritas::hour_milliseconds;
-            const auto result = celeritas::time_helper::get_end_of_day_milliseconds_with_offset(offset);
+            const auto result = celeritas::time_helper::get_next_day_start_milliseconds_with_offset(offset);
 
             if (current_milliseconds < start_of_day_milliseconds + offset)
             {
@@ -221,7 +221,7 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
         for (auto i = 0; i < celeritas::day_hour; ++i)
         {
             const auto offset = i * celeritas::hour_milliseconds;
-            const auto result = celeritas::time_helper::get_end_of_day_milliseconds_with_offset(current_milliseconds, offset);
+            const auto result = celeritas::time_helper::get_next_day_start_milliseconds_with_offset(current_milliseconds, offset);
 
             if (current_milliseconds < start_of_day_milliseconds + offset)
             {
@@ -237,7 +237,7 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
     BOOST_AUTO_TEST_CASE(test_get_end_of_week_milliseconds)
     {
         const auto current_milliseconds = celeritas::time_helper::get_current_milliseconds();
-        const auto end_of_week_milliseconds = celeritas::time_helper::get_end_of_week_milliseconds();
+        const auto end_of_week_milliseconds = celeritas::time_helper::get_next_week_start_milliseconds();
         const auto start_of_week_milliseconds = celeritas::time_helper::get_start_of_week_milliseconds();
 
         BOOST_CHECK_GT(end_of_week_milliseconds, current_milliseconds);
@@ -259,7 +259,7 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
         for (auto i = 0; i < celeritas::week; ++i)
         {
             const auto offset = i * celeritas::day_milliseconds;
-            const auto result = celeritas::time_helper::get_end_of_week_milliseconds_with_offset(offset);
+            const auto result = celeritas::time_helper::get_next_week_start_milliseconds_with_offset(offset);
 
             if (current_milliseconds < start_of_week_milliseconds + offset)
             {
@@ -281,7 +281,7 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
         for (auto i = 0; i < celeritas::week; ++i)
         {
             const auto offset = i * celeritas::day_milliseconds;
-            const auto result = celeritas::time_helper::get_end_of_week_milliseconds_with_offset(current_milliseconds, offset);
+            const auto result = celeritas::time_helper::get_next_week_start_milliseconds_with_offset(current_milliseconds, offset);
 
             if (current_milliseconds < start_of_week_milliseconds + offset)
             {
@@ -297,7 +297,7 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
     BOOST_AUTO_TEST_CASE(test_get_end_of_month_milliseconds)
     {
         const auto current_milliseconds = celeritas::time_helper::get_current_milliseconds();
-        const auto end_of_month_milliseconds = celeritas::time_helper::get_end_of_month_milliseconds();
+        const auto end_of_month_milliseconds = celeritas::time_helper::get_next_month_start_milliseconds();
         const auto start_of_month_milliseconds = celeritas::time_helper::get_start_of_month_milliseconds();
 
         const auto [start_date, start_time] = get_time_components(start_of_month_milliseconds);
@@ -334,7 +334,7 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
         for (auto i = 0; i < celeritas::min_month; ++i)
         {
             const auto offset = i * celeritas::day_milliseconds;
-            const auto result = celeritas::time_helper::get_end_of_month_milliseconds_with_offset(offset);
+            const auto result = celeritas::time_helper::get_next_month_start_milliseconds_with_offset(offset);
 
             if (current_milliseconds < start_of_month_milliseconds + offset)
             {
@@ -363,7 +363,7 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
         for (auto i = 0; i < celeritas::min_month; ++i)
         {
             const auto offset = i * celeritas::day_milliseconds;
-            const auto result = celeritas::time_helper::get_end_of_month_milliseconds_with_offset(current_milliseconds, offset);
+            const auto result = celeritas::time_helper::get_next_month_start_milliseconds_with_offset(current_milliseconds, offset);
 
             if (current_milliseconds < start_of_month_milliseconds + offset)
             {
