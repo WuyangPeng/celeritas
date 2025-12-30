@@ -368,7 +368,7 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
 
         case database_data_type::string_type:
         {
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name().data(), basis_database.get_value<database_data_type::string_type>()));
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basis_database.get_value<database_data_type::string_type>()));
             break;
         }
         case database_data_type::string_array_type:
@@ -378,17 +378,17 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
             {
                 basic.append(element);
             }
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name().data(), basic));
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basic));
             break;
         }
         case database_data_type::int32_type:
         {
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name().data(), basis_database.get_value<database_data_type::int32_type>()));
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basis_database.get_value<database_data_type::int32_type>()));
             break;
         }
         case database_data_type::int32_count_type:
         {
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name().data(), basis_database.get_value<database_data_type::int32_count_type>()));
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basis_database.get_value<database_data_type::int32_count_type>()));
             break;
         }
         case database_data_type::int32_array_type:
@@ -398,17 +398,17 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
             {
                 basic.append(element);
             }
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name().data(), basic));
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basic));
             break;
         }
         case database_data_type::int64_type:
         {
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name().data(), basis_database.get_value<database_data_type::int64_type>()));
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basis_database.get_value<database_data_type::int64_type>()));
             break;
         }
         case database_data_type::int64_count_type:
         {
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name().data(), basis_database.get_value<database_data_type::int64_count_type>()));
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basis_database.get_value<database_data_type::int64_count_type>()));
             break;
         }
         case database_data_type::int64_array_type:
@@ -418,12 +418,12 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
             {
                 basic.append(element);
             }
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name().data(), basic));
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basic));
             break;
         }
         case database_data_type::double_type:
         {
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name().data(), basis_database.get_value<database_data_type::double_type>()));
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basis_database.get_value<database_data_type::double_type>()));
             break;
         }
         case database_data_type::double_array_type:
@@ -433,18 +433,18 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
             {
                 basic.append(element);
             }
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name().data(), basic));
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basic));
             break;
         }
         case database_data_type::bool_type:
         {
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name().data(), basis_database.get_value<database_data_type::bool_type>()));
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), basis_database.get_value<database_data_type::bool_type>()));
             break;
         }
         case database_data_type::byte_array_type:
         {
             const auto& byteArray = basis_database.get_value<database_data_type::byte_array_type>();
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name().data(), bsoncxx::types::b_binary{ bsoncxx::binary_sub_type::k_binary, static_cast<uint32_t>(byteArray.size()), byteArray.data() }));
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), bsoncxx::types::b_binary{ bsoncxx::binary_sub_type::k_binary, static_cast<uint32_t>(byteArray.size()), byteArray.data() }));
             break;
         }
         case database_data_type::document_type:
@@ -454,7 +454,7 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
             {
                 append_document(current_document, element);
             }
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name().data(), current_document));
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), current_document));
 
             break;
         }
@@ -472,7 +472,7 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
 
                 current_document.append(current);
             }
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name().data(), current_document));
+            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), current_document));
             break;
         }
 
