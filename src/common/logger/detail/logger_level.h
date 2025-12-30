@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "logger_level_data.h"
 #include "logger_namespace.h"
 
 namespace celeritas
@@ -20,7 +21,7 @@ namespace celeritas
         void set_channel_level(const std::string& channel_name, severity_level_type file_level, bool also_to_console);
 
     private:
-        using channel_levels_type = std::unordered_map<std::string, severity_level_type>;
+        using channel_levels_type = std::unordered_map<std::string, logger_level_data>;
 
         severity_level_type global_level_{};
         severity_level_type console_level_{};

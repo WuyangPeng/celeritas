@@ -7,4 +7,5 @@ namespace celeritas
     class logger_console;
     class logger_support;
     class logger_level;
+    class logger_level_data;
 }

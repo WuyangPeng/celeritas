@@ -57,7 +57,7 @@ void celeritas::logger_impl::init_file(const std::string& channel_name,
     boost::log::add_file_log(
             log_keywords::file_name = full_path_pattern.string(),
             log_keywords::auto_flush = true,
-            log_keywords::rotation_size = rotation_size * 1024 * 1024,
+            log_keywords::rotation_size = rotation_size * one_mebibyte,
             log_keywords::time_based_rotation = daily_rotation,
             log_keywords::open_mode = std::ios::app,
             log_keywords::scan_method = log_sinks::file::scan_method::scan_matching,
@@ -83,7 +83,7 @@ celeritas::logger_impl::severity_logger_optional_type celeritas::logger_impl::ge
     return loggers_.get(channel_name.data());
 }
 
-celeritas::logger_impl::severity_logger_optional_type celeritas::logger_impl::get_default(severity_level_type level)
+celeritas::logger_impl::severity_logger_optional_type celeritas::logger_impl::get_default(const severity_level_type level)
 {
     return get(default_channel, level);
 }
@@ -99,7 +99,7 @@ celeritas::logger_impl::filesystem_path_type celeritas::logger_impl::get_full_pa
         boost::filesystem::create_directories(target_path);
     }
 
-    const auto file_pattern_part = log_file_name + "_%Y%m%d_%N" + logger_extension.data();
+    const auto file_pattern_part = log_file_name + log_daily_suffix.data() + logger_extension.data();
 
     return target_path / file_pattern_part;
 }

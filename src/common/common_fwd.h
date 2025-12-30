@@ -38,8 +38,15 @@ namespace celeritas
     constexpr std::string_view service_registry_channel{ "service_registry" };
     constexpr std::string_view auth_channel{ "auth" };
     constexpr std::string_view payment_channel{ "payment" };
+    constexpr std::string_view admin_channel{ "admin" };
+    constexpr std::string_view chat_channel{ "chat" };
     constexpr std::string_view gateway_channel{ "gateway" };
     constexpr std::string_view player_channel{ "player" };
+    constexpr std::string_view logic_channel{ "logic" };
+    constexpr std::string_view game_channel{ "game" };
+    constexpr std::string_view battle_channel{ "battle" };
+    constexpr std::string_view cross_channel{ "cross" };
+    constexpr std::string_view log_channel{ "log" };
     constexpr std::string_view handler_channel{ "handler" };
     constexpr std::string_view initializer_channel{ "initializer" };
     constexpr std::string_view server_channel{ "server" };
@@ -81,4 +88,9 @@ namespace celeritas
     constexpr auto max_month_milliseconds = day_milliseconds * max_month;
 
     constexpr auto http_request_timestamp_expired = minute_milliseconds * 5;
+
+    constexpr auto one_kibibyte = 1024;
+    constexpr auto one_mebibyte = one_kibibyte * one_kibibyte;
+
+    constexpr std::string_view log_daily_suffix{ "_%Y%m%d_%N" };
 }
