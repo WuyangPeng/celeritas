@@ -3,6 +3,7 @@
 #include "player_state_type.h"
 #include "common/core/celeritas_error.h"
 #include "common/core/time_helper.h"
+#include "common/logger/logger.h"
 #include "player/component/player_state.tpp"
 #include "player/online/player_online_component.h"
 #include "player/time/player_time_refresh_key.h"
@@ -64,7 +65,14 @@ celeritas::player_manager::void_awaitable_type celeritas::player_manager::save_d
 
     for (const auto& element : container_ | std::views::values)
     {
-        co_await element->save_db();
+        try
+        {
+            co_await element->save_db();
+        }
+        catch (const std::exception& exception)
+        {
+            LOG_CHANNEL(player_channel, error) << "save db error: " << exception.what();
+        }
     }
 }
 

@@ -16,22 +16,23 @@ celeritas::gateway_client_player_request_message_handler::gateway_client_player_
 
 bool celeritas::gateway_client_player_request_message_handler::handle_concrete(const protobuf_handle_parameter_shared_ptr& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
 {
-    if (!handle_forward(handle_parameter, current_message, message_registry))
+    if (has_handle(current_message, message_registry))
     {
-        switch (current_message.payload_case())
+        return handle_forward(handle_parameter, current_message, message_registry);
+    }
+
+    switch (current_message.payload_case())
+    {
+        case proto::client::client_player_request::PayloadCase::PAYLOAD_NOT_SET:
         {
-            case proto::client::client_player_request::PayloadCase::PAYLOAD_NOT_SET:
-            {
-                return false;
-            }
-            // 转发到其他服务器
-            default:
-            {
-                handle_parameter->write_to_user(player_type.data());
-                return true;
-            }
+            return false;
         }
-        return true;
+        // 转发到其他服务器
+        default:
+        {
+            handle_parameter->write_to_user(player_type.data());
+            return true;
+        }
     }
     return true;
 }

@@ -40,6 +40,12 @@ celeritas::concrete_message_handler<Message>::handler_function_type celeritas::c
 }
 
 template <typename Message>
+bool celeritas::concrete_message_handler<Message>::has_handler_function(int payload_case) const
+{
+    return handler_.contains(payload_case);
+}
+
+template <typename Message>
 bool celeritas::concrete_message_handler<Message>::handle_forward(const protobuf_handle_parameter_shared_ptr& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
 {
     if (const auto message_registry_shared_ptr = message_registry.lock();
@@ -48,6 +54,18 @@ bool celeritas::concrete_message_handler<Message>::handle_forward(const protobuf
         const auto handler = get_handler_function(current_message.payload_case());
 
         return handler(handle_parameter, current_message, message_registry_shared_ptr);
+    }
+
+    return false;
+}
+
+template <typename Message>
+bool celeritas::concrete_message_handler<Message>::has_handle(const message_type& current_message, const message_registry_weak_ptr& message_registry)
+{
+    if (const auto message_registry_shared_ptr = message_registry.lock();
+        message_registry_shared_ptr != nullptr)
+    {
+        return has_handler_function(current_message.payload_case());
     }
 
     return false;

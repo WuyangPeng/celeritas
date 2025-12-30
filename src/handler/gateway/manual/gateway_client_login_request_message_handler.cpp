@@ -13,18 +13,21 @@ celeritas::gateway_client_login_request_message_handler::gateway_client_login_re
 
 bool celeritas::gateway_client_login_request_message_handler::handle_concrete(const protobuf_handle_parameter_shared_ptr& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
 {
-    if (!handle_forward(handle_parameter, current_message, message_registry))
+    if (has_handle(current_message, message_registry))
     {
-        switch (current_message.payload_case())
-        {
-            // 转发到其他服务器
-            default:
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return handle_forward(handle_parameter, current_message, message_registry);
     }
-    return true;
+
+    switch (current_message.payload_case())
+    {
+        case proto::client::client_login_request::PayloadCase::PAYLOAD_NOT_SET:
+        {
+            return false;
+        }
+        // 转发到其他服务器
+        default:
+        {
+            return true;
+        }
+    }
 }
