@@ -69,6 +69,7 @@ BOOST_AUTO_TEST_SUITE(thread_safe_queue_suite)
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        queue.stop();
         BOOST_CHECK(!queue.pop(task));
 
         BOOST_CHECK_EQUAL(counter, 200);
