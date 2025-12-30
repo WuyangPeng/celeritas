@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "celeritas_error.h"
+
 #include <boost/program_options.hpp>
 
 namespace celeritas
@@ -15,7 +17,15 @@ namespace celeritas
         command_line_config(int argc, char** argv, std::string_view server_type, const options_type& options);
 
         template <typename T>
-        [[nodiscard]] T get(const std::string& key) const;
+        [[nodiscard]] T get(const std::string& key) const
+        {
+            if (variables_.contains(key))
+            {
+                return variables_[key].as<T>();
+            }
+
+            throw celeritas_error("attempted to access unregistered or invalid key: {}", key);
+        }
 
         [[nodiscard]] bool is_exit_requested() const;
 

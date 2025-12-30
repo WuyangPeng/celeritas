@@ -1,4 +1,4 @@
-﻿#include "common/command_line_config.tpp"
+﻿#include "common/core_utilities/command_line_config.h"
 
 #include <boost/test/unit_test.hpp>
 

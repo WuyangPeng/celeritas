@@ -1,6 +1,6 @@
 ﻿#include "generate_database.h"
 #include "generate_database_tools_fwd.h"
-#include "common/command_line_config.tpp"
+#include "common/core_utilities/command_line_config.h"
 #include "common/logger.h"
 #include "detail/generate_database_file.h"
 
