@@ -1,7 +1,7 @@
 ﻿#include "send_sms_to_providers.h"
 #include "send_sms_type.h"
 #include "tencent_cloud_sms.h"
-#include "../../../common/core_utilities/celeritas_error.h"
+#include "common/core_utilities/celeritas_error.h"
 
 celeritas::send_sms_to_providers::send_sms_to_providers(sms_code sms_code, sms_providers sms_providers)
     : sms_code_{ std::move(sms_code) }, sms_providers_{ std::move(sms_providers) }

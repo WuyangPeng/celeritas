@@ -1,7 +1,7 @@
 ﻿#include "sdk_process.h"
 #include "we_chat_sdk_process.h"
 #include "auth/authentication/sdk/sdk_process_type.h"
-#include "../../../common/core_utilities/celeritas_error.h"
+#include "common/core_utilities/celeritas_error.h"
 
 celeritas::sdk_process::sdk_process(sdk_process_parameter sdk_process_parameter)
     : sdk_process_parameter_{ std::move(sdk_process_parameter) }

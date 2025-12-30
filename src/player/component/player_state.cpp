@@ -1,7 +1,7 @@
 ﻿#include "player_null_component.h"
 #include "player_state.tpp"
 #include "player_state_type.h"
-#include "../../common/core_utilities/celeritas_error.h"
+#include "common/core_utilities/celeritas_error.h"
 #include "common/resource_loader_base.h"
 #include "player/activity/player_activity_component.h"
 #include "player/attribute/player_attribute_component.h"

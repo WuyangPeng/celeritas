@@ -42,5 +42,7 @@ namespace celeritas
 
     private:
         [[nodiscard]] static std::mt19937& get_engine();
+
+        [[nodiscard]] static double get_total_weight(const weights_type& weights);
     };
 }

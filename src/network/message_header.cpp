@@ -1,5 +1,5 @@
 ﻿#include "message_header.h"
-#include "../common/core_utilities/celeritas_error.h"
+#include "common/core_utilities/celeritas_error.h"
 #include "detail/network_internal_fwd.h"
 
 #include <boost/asio/ip/tcp.hpp>

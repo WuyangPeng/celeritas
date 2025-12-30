@@ -73,28 +73,7 @@ double celeritas::random_helper::get_random_normal(const double mean, const doub
 
 int celeritas::random_helper::get_random_index_by_weight(const weights_type& weights)
 {
-    if (weights.empty())
-    {
-        throw celeritas_error{ "Weights vector cannot be empty." };
-    }
-
-    if (weights.size() == 1)
-    {
-        return 0;
-    }
-
-    if (std::ranges::any_of(weights, [](const double weight) {
-        return weight < 0.0;
-    }))
-    {
-        throw celeritas_error{ "Weights cannot be negative." };
-    }
-
-    const auto total_weight = std::accumulate(weights.begin(), weights.end(), 0.0);
-    if (total_weight <= 0.0)
-    {
-        throw celeritas_error{ "Total weight must be positive." };
-    }
+    const auto total_weight = get_total_weight(weights);
 
     const auto random_value = get_random_double(0.0, total_weight);
     auto cumulative_weight = 0.0;
@@ -116,4 +95,32 @@ std::mt19937& celeritas::random_helper::get_engine()
     thread_local std::mt19937 engine{ std::random_device{}() };
 
     return engine;
+}
+
+double celeritas::random_helper::get_total_weight(const weights_type& weights)
+{
+    if (weights.empty())
+    {
+        throw celeritas_error{ "Weights vector cannot be empty." };
+    }
+
+    if (weights.size() == 1)
+    {
+        return true;
+    }
+
+    if (std::ranges::any_of(weights, [](const double weight) {
+        return weight < 0.0;
+    }))
+    {
+        throw celeritas_error{ "Weights cannot be negative." };
+    }
+
+    const auto total_weight = std::accumulate(weights.begin(), weights.end(), 0.0);
+    if (total_weight <= 0.0)
+    {
+        throw celeritas_error{ "Total weight must be positive." };
+    }
+
+    return total_weight;
 }

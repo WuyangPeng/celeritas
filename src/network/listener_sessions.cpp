@@ -1,6 +1,6 @@
 ﻿#include "listener_sessions.h"
 #include "session_base.h"
-#include "../common/core_utilities/celeritas_error.h"
+#include "common/core_utilities/celeritas_error.h"
 #include "common/logger.h"
 
 celeritas::listener_sessions::listener_sessions(const server_network_type server_network_type) noexcept

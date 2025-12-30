@@ -2,7 +2,7 @@
 
 #include "concrete_message_handler.h"
 #include "protobuf_message_registry.h"
-#include "../common/core_utilities/celeritas_error.h"
+#include "common/core_utilities/celeritas_error.h"
 #include "common/logger.h"
 
 #include <boost/polymorphic_cast.hpp>

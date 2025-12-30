@@ -27,14 +27,36 @@
         - **生成指定范围的整数（int）**：[0, end) 或 [begin, end)。
         - **生成指定范围的浮点数（float, double）**：[0.0, 1.0) 或 [begin, end)。
         - **生成布尔值（bool）**：可指定返回 true 的概率p。
-        - **生成服从正态分布的 double 值**：（可指定均值和标准差）。
+        - **生成服从正态分布的 double 值**：可指定均值和标准差。
+        - **根据权重获取索引**：传入权重向量 `weights`。
 
 
 * **⏱️ 时间工具（`time_helper`）**
     - **作用**：提供获取当前时间的辅助函数。
     - **功能**：
-        - **获取当前毫秒时间戳**：`get_current_milliseconds_since_epoch()` 返回自 `1970-01-01 00:00:00 UTC` 以来的毫秒数。
-        - **获取当前秒时间戳**：`get_current_seconds_since_epoch()` 返回自 `1970-01-01 00:00:00 UTC` 以来的秒数。
+        - **获取当前毫秒时间戳**：返回自 `1970-01-01 00:00:00 UTC` 以来的毫秒数。
+        - **获取当前秒时间戳**：返回自 `1970-01-01 00:00:00 UTC` 以来的秒数。
+        - **获取当天开始时间戳**：返回当天 00:00:00 的毫秒时间戳。
+        - **获取带偏移的当天开始时间戳**：返回当天00:00:00并指定偏移后的开始时间戳。
+        - **获取本周开始时间戳**：返回本周第一天 00:00:00 的毫秒时间戳。
+        - **获取带偏移的本周开始时间戳**：返回本周第一天 00:00:00并指定偏移后的开始时间戳。
+        - **获取本月开始时间戳**：返回本月第一天 00:00:00 的毫秒时间戳。
+        - **获取带偏移的本月开始时间戳**：返回本月第一天 00:00:00 并指定偏移后的开始时间戳。
+        - **获取当天结束时间戳**：`get_end_of_day_milliseconds()` 返回当天 23:59:59 的毫秒时间戳。
+        - **获取带偏移的当天结束时间戳**：`get_end_of_day_milliseconds_with_offset(offset)` 返回当天指定偏移后的结束时间戳。
+        - **获取指定时间带偏移的当天结束时间戳**：`get_end_of_day_milliseconds_with_offset(check_time, offset)`
+          返回指定时间点当天指定偏移后的结束时间戳。
+        - **获取本周结束时间戳**：`get_end_of_week_milliseconds()` 返回本周最后一天 23:59:59 的毫秒时间戳。
+        - **获取带偏移的本周结束时间戳**：`get_end_of_week_milliseconds_with_offset(offset)` 返回本周指定偏移后的结束时间戳。
+        - **获取指定时间带偏移的本周结束时间戳**：`get_end_of_week_milliseconds_with_offset(check_time, offset)`
+          返回指定时间点本周指定偏移后的结束时间戳。
+        - **获取本月结束时间戳**：`get_end_of_month_milliseconds()` 返回本月最后一天 23:59:59 的毫秒时间戳。
+        - **获取带偏移的本月结束时间戳**：`get_end_of_month_milliseconds_with_offset(offset)` 返回本月指定偏移后的结束时间戳。
+        - **获取指定时间带偏移的本月结束时间戳**：`get_end_of_month_milliseconds_with_offset(check_time, offset)`
+          返回指定时间点本月指定偏移后的结束时间戳。
+        - **转换为毫秒时间戳**：`to_milliseconds(time_point)` 将 `time_point` 转换为毫秒时间戳。
+        - **转换为本地时间**：`to_local_time(time_point)` 将 `time_point` 转换为本地时间。
+        - **获取本地时区**：`get_local_zone()` 获取当前系统的本地时区。
 
 
 * **❄️ 雪花算法ID生成器（`snowflake_generator`）**

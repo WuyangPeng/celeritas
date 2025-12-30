@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "container_config.h"
-#include "../../common/core_utilities/celeritas_error.h"
+#include "common/core_utilities/celeritas_error.h"
 
 #include <boost/core/demangle.hpp>
 
