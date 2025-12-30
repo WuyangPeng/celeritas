@@ -42,17 +42,17 @@ BOOST_AUTO_TEST_SUITE(buffer_guard_suite)
     BOOST_AUTO_TEST_CASE(buffer_guard_reuse_test)
     {
         constexpr auto size = 512;
-        const void* ptr1 = nullptr;
+        const void* ptr = nullptr;
 
         {
             auto data = celeritas::buffer_pool::acquire(size);
-            ptr1 = data.data();
+            ptr = data.data();
             celeritas::buffer_guard guard(std::move(data), 0);
         }
 
         {
             auto data = celeritas::buffer_pool::acquire(size);
-            BOOST_CHECK_EQUAL(data.data(), ptr1);
+            BOOST_CHECK_EQUAL(data.data(), ptr);
             celeritas::buffer_pool::release(std::move(data));
         }
     }
