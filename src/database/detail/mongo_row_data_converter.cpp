@@ -256,15 +256,15 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
     {
         case bsoncxx::type::k_double:
         {
-            return basis_database{ row_view.key(), row_view.get_double().value };
+            return basis_database{ row_view.key().data(), row_view.get_double().value };
         }
         case bsoncxx::type::k_string:
         {
-            return basis_database{ row_view.key(), std::string{ row_view.get_string().value } };
+            return basis_database{ row_view.key().data(), std::string{ row_view.get_string().value } };
         }
         case bsoncxx::type::k_bool:
         {
-            return basis_database{ row_view.key(), row_view.get_bool().value };
+            return basis_database{ row_view.key().data(), row_view.get_bool().value };
         }
         case bsoncxx::type::k_document:
         {
@@ -273,22 +273,22 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
             {
                 document.emplace_back(get_basis_database(element));
             }
-            return basis_database{ row_view.key(), document };
+            return basis_database{ row_view.key().data(), document };
         }
         case bsoncxx::type::k_int32:
         {
-            return basis_database{ row_view.key(), row_view.get_int32().value };
+            return basis_database{ row_view.key().data(), row_view.get_int32().value };
         }
         case bsoncxx::type::k_int64:
         {
-            return basis_database{ row_view.key(), row_view.get_int64().value };
+            return basis_database{ row_view.key().data(), row_view.get_int64().value };
         }
         case bsoncxx::type::k_array:
         {
             const auto row_view_array = row_view.get_array().value;
             if (row_view_array.empty())
             {
-                return basis_database{ row_view.key(), basis_database::int32_array{} };
+                return basis_database{ row_view.key().data(), basis_database::int32_array{} };
             }
             const auto sub_type = row_view_array.begin()->type();
             switch (sub_type)
@@ -300,7 +300,7 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
                     {
                         database_array.emplace_back(element.get_double().value);
                     }
-                    return basis_database{ row_view.key(), database_array };
+                    return basis_database{ row_view.key().data(), database_array };
                 }
                 case bsoncxx::type::k_string:
                 {
@@ -309,7 +309,7 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
                     {
                         database_array.emplace_back(element.get_string().value);
                     }
-                    return basis_database{ row_view.key(), database_array };
+                    return basis_database{ row_view.key().data(), database_array };
                 }
                 case bsoncxx::type::k_document:
                 {
@@ -324,7 +324,7 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
                         }
                         database_array.emplace_back(document_type);
                     }
-                    return basis_database{ row_view.key(), database_array };
+                    return basis_database{ row_view.key().data(), database_array };
                 }
                 case bsoncxx::type::k_int32:
                 {
@@ -333,7 +333,7 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
                     {
                         database_array.emplace_back(element.get_int32().value);
                     }
-                    return basis_database{ row_view.key(), database_array };
+                    return basis_database{ row_view.key().data(), database_array };
                 }
                 case bsoncxx::type::k_int64:
                 {
