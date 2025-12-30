@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "common/application_loader_base.h"
+#include "common/framework/application_loader_base.h"
 
 namespace celeritas
 {

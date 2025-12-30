@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "core/session_route.h"
+#include "common/core/session_route.h"
 #include "config/config_fwd.h"
 #include "message/message_fwd.h"
 #include "message/protobuf_handle_parameter.h"

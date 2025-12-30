@@ -1,9 +1,9 @@
 ﻿#include "http_handle_parameter.h"
-#include "common/application_loader_base.h"
+#include "common/framework/application_loader_base.h"
 #include "common/core/celeritas_error.h"
 #include "common/logger/logger.h"
-#include "common/resource_loader_base.h"
-#include "common/session.h"
+#include "common/framework/resource_loader_base.h"
+#include "common/framework/session.h"
 #include "config/app_config.h"
 
 celeritas::http_handle_parameter::http_handle_parameter(io_context_type& io_context,

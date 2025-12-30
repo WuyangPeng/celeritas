@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "common/resource_loader_base.h"
-#include "common/timer_base.h"
+#include "common/framework/resource_loader_base.h"
+#include "common/framework/timer_base.h"
 
 namespace celeritas
 {

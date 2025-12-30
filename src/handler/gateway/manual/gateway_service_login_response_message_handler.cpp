@@ -1,5 +1,5 @@
 ﻿#include "gateway_service_login_response_message_handler.h"
-#include "common/resource_loader_base.h"
+#include "common/framework/resource_loader_base.h"
 #include "common/core/session_route.h"
 #include "message/concrete_message_handler.tpp"
 #include "message/protobuf_handle_parameter.h"

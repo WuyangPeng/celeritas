@@ -2,7 +2,7 @@
 
 #include "session_callback.h"
 #include "common/buffer/buffer_guard.h"
-#include "common/session.h"
+#include "common/framework/session.h"
 #include "message/header.h"
 
 #include <memory>

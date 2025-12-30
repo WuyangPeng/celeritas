@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "common/common_fwd.h"
-#include "common/session.h"
+#include "common/framework/session.h"
 #include "network/network_fwd.h"
 
 #include <boost/url.hpp>

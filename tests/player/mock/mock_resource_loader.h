@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "common/resource_loader_base.h"
+#include "common/framework/resource_loader_base.h"
 #include "config/app_config.h"
 
 #include <boost/asio/awaitable.hpp>

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "common/celeritas_main.h"
+#include "common/framework/celeritas_main.h"
 #include "common/common_fwd.h"
 
 #include <string>

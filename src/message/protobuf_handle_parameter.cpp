@@ -1,8 +1,8 @@
 ﻿#include "protobuf_handle_parameter.h"
 #include "common/core/celeritas_error.h"
 #include "common/logger/logger.h"
-#include "common/resource_loader_base.h"
-#include "common/session.h"
+#include "common/framework/resource_loader_base.h"
+#include "common/framework/session.h"
 
 celeritas::protobuf_handle_parameter::protobuf_handle_parameter(io_context_type& io_context,
                                                                 const header& header,

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "common/common_fwd.h"
-#include "common/timer_base.h"
+#include "common/framework/timer_base.h"
 #include "initializer/initializer_fwd.h"
 
 namespace celeritas
