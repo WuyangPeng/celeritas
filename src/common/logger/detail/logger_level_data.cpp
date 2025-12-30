@@ -40,7 +40,7 @@ void celeritas::logger_level_data::set_channel_level(const severity_level_type c
     channel_level_ = channel_level;
 }
 
-celeritas::severity_level_type celeritas::logger_level_data::get_file_level(severity_level_type console_level) const
+celeritas::severity_level_type celeritas::logger_level_data::get_file_level(const severity_level_type console_level) const
 {
     if (also_to_console_)
     {

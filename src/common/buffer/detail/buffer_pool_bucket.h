@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "../buffer_pool_data.h"
+#include "common/buffer/buffer_pool_data.h"
 
 #include <chrono>
 #include <list>

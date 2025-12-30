@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "buffer_pool_bucket.h"
-#include "../buffer_pool_data.h"
+#include "common/buffer/buffer_pool_data.h"
 
 #include <map>
 #include <mutex>
