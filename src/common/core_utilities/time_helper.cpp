@@ -203,15 +203,21 @@ celeritas::time_helper::time_point_type celeritas::time_helper::get_start_of_wee
     return current_zone->to_sys(week_local_day);
 }
 
-celeritas::time_helper::time_point_type celeritas::time_helper::get_start_of_month(const time_point_type& time_point)
+celeritas::time_helper::time_point_type celeritas::time_helper::get_start_of_month(const time_point_type& time_point, const int months_offset)
 {
     const auto local_day = get_local_day(time_point);
 
     const std::chrono::year_month_day today_year_month_day{ local_day };
     const auto this_month_first_day = std::chrono::year_month_day{ today_year_month_day.year(), today_year_month_day.month(), std::chrono::day{ 1 } };
 
+    auto target_month_first_day = this_month_first_day;
+    if (months_offset != 0)
+    {
+        target_month_first_day = this_month_first_day + std::chrono::months(months_offset);
+    }
+
     const auto* current_zone = get_local_zone();
-    return current_zone->to_sys(std::chrono::local_days{ this_month_first_day });
+    return current_zone->to_sys(std::chrono::local_days{ target_month_first_day });
 }
 
 int64_t celeritas::time_helper::get_start_of_day_milliseconds_with_offset(const time_point_type& check_time, const int64_t milliseconds_offset)
@@ -292,23 +298,14 @@ int64_t celeritas::time_helper::get_start_of_month_milliseconds_with_offset(cons
     {
         // 如果还没过，说明当前仍属于上一月的“逻辑月”
         // 因此，需要找到上个月的日期
-        cycle_target_time = get_last_of_month_milliseconds(check_time, milliseconds_offset);
+        const auto last_month_first_day = get_start_of_month(check_time, -1);
+
+        // 正确的周期刷新点是上个月的这个时间
+        cycle_target_time = last_month_first_day + std::chrono::milliseconds(milliseconds_offset);
     }
 
     // 将最终计算出的正确周期刷新点转换为毫秒时间戳
     return to_milliseconds(cycle_target_time);
-}
-
-celeritas::time_helper::time_point_type celeritas::time_helper::get_last_of_month_milliseconds(const time_point_type& check_time, const int64_t milliseconds_offset)
-{
-    const auto local_day = get_local_day(check_time);
-    const std::chrono::year_month_day local_year_month_day{ local_day };
-    const auto this_month_first_day = std::chrono::year_month_day{ local_year_month_day.year(), local_year_month_day.month(), std::chrono::day{ 1 } };
-    const auto last_month_first_day = this_month_first_day - std::chrono::months(1);
-
-    const auto* current_zone = get_local_zone();
-    // 正确的周期刷新点是上个月的这个时间
-    return current_zone->to_sys(std::chrono::local_days{ last_month_first_day }) + std::chrono::milliseconds(milliseconds_offset);
 }
 
 int64_t celeritas::time_helper::get_next_day_start_milliseconds_with_offset(const time_point_type& check_time, const int64_t milliseconds_offset)
@@ -347,12 +344,8 @@ int64_t celeritas::time_helper::get_next_month_start_milliseconds_with_offset(co
     auto end_of_cycle_time = target_time_this_month;
     if (check_time >= target_time_this_month)
     {
-        const auto today_local = get_local_day(check_time);
-        const std::chrono::year_month_day year_month_day_local{ today_local };
-        const auto this_month_first_day_local = std::chrono::year_month_day{ year_month_day_local.year(), year_month_day_local.month(), std::chrono::day{ 1 } };
-        const auto next_month_first_day_local = this_month_first_day_local + std::chrono::months(1);
-        const auto* current_zone = get_local_zone();
-        end_of_cycle_time = current_zone->to_sys(std::chrono::local_days{ next_month_first_day_local }) + std::chrono::milliseconds(milliseconds_offset);
+        const auto next_month_first_day = get_start_of_month(check_time, 1);
+        end_of_cycle_time = next_month_first_day + std::chrono::milliseconds(milliseconds_offset);
     }
 
     return to_milliseconds(end_of_cycle_time);

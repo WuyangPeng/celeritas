@@ -70,15 +70,13 @@ namespace celeritas
 
         [[nodiscard]] static time_point_type get_start_of_week(const time_point_type& time_point);
 
-        [[nodiscard]] static time_point_type get_start_of_month(const time_point_type& time_point);
+        [[nodiscard]] static time_point_type get_start_of_month(const time_point_type& time_point, int months_offset = 0);
 
         [[nodiscard]] static int64_t get_start_of_day_milliseconds_with_offset(const time_point_type& check_time, int64_t milliseconds_offset);
 
         [[nodiscard]] static int64_t get_start_of_week_milliseconds_with_offset(const time_point_type& check_time, int64_t milliseconds_offset);
 
         [[nodiscard]] static int64_t get_start_of_month_milliseconds_with_offset(const time_point_type& check_time, int64_t milliseconds_offset);
-
-        [[nodiscard]] static time_point_type get_last_of_month_milliseconds(const time_point_type& check_time, int64_t milliseconds_offset);
 
         [[nodiscard]] static int64_t get_next_day_start_milliseconds_with_offset(const time_point_type& check_time, int64_t milliseconds_offset);
 
