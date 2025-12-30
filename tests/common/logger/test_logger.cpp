@@ -9,6 +9,15 @@ using namespace std::literals;
 
 namespace
 {
+    constexpr std::string_view message_trace = "测试 trace 消息";
+    constexpr std::string_view message_debug = "测试 debug 消息";
+    constexpr std::string_view message_info = "测试 info 消息";
+    constexpr std::string_view message_warning = "测试 warning 消息";
+    constexpr std::string_view message_error = "测试 error 消息";
+    constexpr std::string_view message_fatal = "测试 fatal 消息";
+    constexpr std::string_view message_channel_info = "测试通道 info 消息";
+    constexpr std::string_view message_file_only = "这条消息只应该出现在文件中，不应出现在控制台";
+
     struct capture_clog
     {
         std::stringstream buffer;
@@ -105,22 +114,22 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
         celeritas::logger::init_console(boost::log::trivial::trace);
 
         // 这些宏应该能编译并运行无误
-        LOG(trace) << "测试 trace 消息";
-        LOG(debug) << "测试 debug 消息";
-        LOG(info) << "测试 info 消息";
-        LOG(warning) << "测试 warning 消息";
-        LOG(error) << "测试 error 消息";
-        LOG(fatal) << "测试 fatal 消息";
+        LOG(trace) << message_trace;
+        LOG(debug) << message_debug;
+        LOG(info) << message_info;
+        LOG(warning) << message_warning;
+        LOG(error) << message_error;
+        LOG(fatal) << message_fatal;
 
         boost::log::core::get()->flush();
 
         const auto output = capture.str();
-        BOOST_CHECK(output.find("测试 trace 消息") != std::string::npos);
-        BOOST_CHECK(output.find("测试 debug 消息") != std::string::npos);
-        BOOST_CHECK(output.find("测试 info 消息") != std::string::npos);
-        BOOST_CHECK(output.find("测试 warning 消息") != std::string::npos);
-        BOOST_CHECK(output.find("测试 error 消息") != std::string::npos);
-        BOOST_CHECK(output.find("测试 fatal 消息") != std::string::npos);
+        BOOST_CHECK(output.find(message_trace) != std::string::npos);
+        BOOST_CHECK(output.find(message_debug) != std::string::npos);
+        BOOST_CHECK(output.find(message_info) != std::string::npos);
+        BOOST_CHECK(output.find(message_warning) != std::string::npos);
+        BOOST_CHECK(output.find(message_error) != std::string::npos);
+        BOOST_CHECK(output.find(message_fatal) != std::string::npos);
     }
 
     BOOST_AUTO_TEST_CASE(test_channel_logger)
@@ -138,10 +147,10 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
         celeritas::logger::init_file(channel_name, log_file, boost::log::trivial::info, 1024 * 1024, true);
 
         // 测试记录到该通道
-        LOG_CHANNEL(channel_name, info) << "测试通道 info 消息";
+        LOG_CHANNEL(channel_name, info) << message_channel_info;
 
         boost::log::core::get()->flush();
-        BOOST_CHECK(capture.str().find("测试通道 info 消息") != std::string::npos);
+        BOOST_CHECK(capture.str().find(message_channel_info) != std::string::npos);
 
         // 测试通道上的过滤
         // 如果文件日志设置为 INFO，则 DEBUG 应该被过滤掉
@@ -154,6 +163,10 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
 
     BOOST_AUTO_TEST_CASE(test_file_logger_no_console)
     {
+        const capture_clog capture{};
+
+        celeritas::logger::init_console(boost::log::trivial::warning);
+
         const std::string channel_name{ "file_only_channel" };
         const auto log_file = "file_only"s + celeritas::log_daily_suffix.data() + celeritas::logger_extension.data();
 
@@ -163,7 +176,10 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
         const auto logger = celeritas::logger::get(channel_name, boost::log::trivial::debug);
         BOOST_CHECK(logger.has_value());
 
-        LOG_CHANNEL(channel_name, debug) << "这条消息只应该出现在文件中，不应出现在控制台";
+        LOG_CHANNEL(channel_name, debug) << message_file_only;
+
+        boost::log::core::get()->flush();
+        BOOST_CHECK(capture.str().find(message_file_only) == std::string::npos);
     }
 
     BOOST_AUTO_TEST_CASE(test_unknown_channel)
@@ -172,7 +188,6 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
         const std::string unknown_channel = "unknown_channel";
 
         // 尝试获取未知通道的 logger
-
         if (const auto logger = celeritas::logger::get(unknown_channel, boost::log::trivial::info);
             logger.has_value())
         {
