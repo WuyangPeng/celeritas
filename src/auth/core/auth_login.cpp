@@ -3,7 +3,7 @@
 #include "common/core_utilities/celeritas_error.h"
 #include "common/hmac_sha_256.h"
 #include "common/snowflake_generator.h"
-#include "common/time_helper.h"
+#include "common/core_utilities/time_helper.h"
 #include "config/app_config.h"
 #include "database/database_pool_base.h"
 #include "database/generated/mysql/auth/account_bind.h"

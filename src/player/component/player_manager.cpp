@@ -2,7 +2,7 @@
 #include "player_state.h"
 #include "player_state_type.h"
 #include "common/core_utilities/celeritas_error.h"
-#include "common/time_helper.h"
+#include "common/core_utilities/time_helper.h"
 #include "player/component/player_state.tpp"
 #include "player/online/player_online_component.h"
 #include "player/time/player_time_refresh_key.h"

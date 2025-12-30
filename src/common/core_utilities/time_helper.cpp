@@ -1,6 +1,6 @@
-﻿#include "common_fwd.h"
-#include "logger.h"
-#include "time_helper.h"
+﻿#include "time_helper.h"
+#include "common/common_fwd.h"
+#include "common/logger.h"
 
 int64_t celeritas::time_helper::get_current_milliseconds()
 {
