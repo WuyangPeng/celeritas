@@ -195,158 +195,158 @@ celeritas::time_helper::time_point_type celeritas::time_helper::get_start_of_wee
 {
     const auto local_day = get_local_day(time_point);
 
-    const std::chrono::weekday today_weekday{ local_day };
-    const auto days_to_subtract = std::chrono::days{ (today_weekday.c_encoding() + 6) % 7 };
-    const auto week_local_day = local_day - days_to_subtract;
+    const std::chrono::weekday weekday{ local_day };
+    const auto days_diff = std::chrono::days{ (weekday.c_encoding() + 6) % 7 };
+    const auto week_start_local = local_day - days_diff;
 
     const auto* current_zone = get_local_zone();
-    return current_zone->to_sys(week_local_day);
+    return current_zone->to_sys(week_start_local);
 }
 
 celeritas::time_helper::time_point_type celeritas::time_helper::get_start_of_month(const time_point_type& time_point, const int months_offset)
 {
     const auto local_day = get_local_day(time_point);
 
-    const std::chrono::year_month_day today_year_month_day{ local_day };
-    const auto this_month_first_day = std::chrono::year_month_day{ today_year_month_day.year(), today_year_month_day.month(), std::chrono::day{ 1 } };
+    const std::chrono::year_month_day year_month_day{ local_day };
+    const auto month_start = std::chrono::year_month_day{ year_month_day.year(), year_month_day.month(), std::chrono::day{ 1 } };
 
-    auto target_month_first_day = this_month_first_day;
+    auto target_month_start = month_start;
     if (months_offset != 0)
     {
-        target_month_first_day = this_month_first_day + std::chrono::months(months_offset);
+        target_month_start = month_start + std::chrono::months(months_offset);
     }
 
     const auto* current_zone = get_local_zone();
-    return current_zone->to_sys(std::chrono::local_days{ target_month_first_day });
+    return current_zone->to_sys(std::chrono::local_days{ target_month_start });
 }
 
 int64_t celeritas::time_helper::get_start_of_day_milliseconds_with_offset(const time_point_type& check_time, const int64_t milliseconds_offset)
 {
     // 获取当天的零点时间
-    const auto today_midnight = get_start_of_day(check_time);
+    const auto day_start = get_start_of_day(check_time);
 
     if (milliseconds_offset == 0)
     {
-        return to_milliseconds(today_midnight);
+        return to_milliseconds(day_start);
     }
 
     // 计算今天日历上的逻辑刷新点（零点 + 毫秒偏移）
-    const auto target_time_today = today_midnight + std::chrono::milliseconds(milliseconds_offset);
+    const auto target_time = day_start + std::chrono::milliseconds(milliseconds_offset);
 
     // 默认目标时间为今天的刷新点
-    auto cycle_target_time = target_time_today;
+    auto cycle_start = target_time;
 
     // 检查当前时间是否已经过了今天的刷新点
-    if (check_time < target_time_today)
+    if (check_time < target_time)
     {
         // 如果还没过，说明当前仍属于前一天的“逻辑日”
         // 因此，正确的周期刷新点是昨天的这个时间
-        cycle_target_time = target_time_today - std::chrono::days(1);
+        cycle_start = target_time - std::chrono::days(1);
     }
 
     // 将最终计算出的正确周期刷新点转换为毫秒时间戳
-    return to_milliseconds(cycle_target_time);
+    return to_milliseconds(cycle_start);
 }
 
 int64_t celeritas::time_helper::get_start_of_week_milliseconds_with_offset(const time_point_type& check_time, const int64_t milliseconds_offset)
 {
     // 获取本周一的零点时间
-    const auto this_week_monday = get_start_of_week(check_time);
+    const auto week_start = get_start_of_week(check_time);
 
     if (milliseconds_offset == 0)
     {
         // 将本周一的零点时间点转换为毫秒时间戳并返回
-        return to_milliseconds(this_week_monday);
+        return to_milliseconds(week_start);
     }
 
     // 计算出本周的逻辑刷新点（周一零点 + 毫秒偏移）
-    const auto target_time_this_week = this_week_monday + std::chrono::milliseconds(milliseconds_offset);
+    const auto target_time = week_start + std::chrono::milliseconds(milliseconds_offset);
 
     // 默认目标时间为本周的刷新点
-    auto cycle_target_time = target_time_this_week;
+    auto cycle_start = target_time;
 
     // 检查当前时间是否已经过了本周的刷新点
-    if (check_time < target_time_this_week)
+    if (check_time < target_time)
     {
         // 如果还没过，说明当前仍属于上一周的“逻辑周”
         // 因此，正确的周期刷新点是上周的这个时间
-        cycle_target_time = target_time_this_week - std::chrono::days(7);
+        cycle_start = target_time - std::chrono::days(7);
     }
 
     // 将最终计算出的正确周期刷新点转换为毫秒时间戳
-    return to_milliseconds(cycle_target_time);
+    return to_milliseconds(cycle_start);
 }
 
 int64_t celeritas::time_helper::get_start_of_month_milliseconds_with_offset(const time_point_type& check_time, const int64_t milliseconds_offset)
 {
     // 获取本月1号的零点时间
-    const auto this_month_first_day = get_start_of_month(check_time);
+    const auto month_start = get_start_of_month(check_time);
 
     if (milliseconds_offset == 0)
     {
-        return to_milliseconds(this_month_first_day);
+        return to_milliseconds(month_start);
     }
 
     // 计算出本月的逻辑刷新点（本月1号零点 + 毫秒偏移）
-    const auto target_time_this_month = this_month_first_day + std::chrono::milliseconds(milliseconds_offset);
+    const auto target_time = month_start + std::chrono::milliseconds(milliseconds_offset);
 
     // 默认目标时间为本月的刷新点
-    auto cycle_target_time = target_time_this_month;
+    auto cycle_start = target_time;
 
     // 检查当前时间是否已经过了本月的刷新点
-    if (check_time < target_time_this_month)
+    if (check_time < target_time)
     {
         // 如果还没过，说明当前仍属于上一月的“逻辑月”
         // 因此，需要找到上个月的日期
-        const auto last_month_first_day = get_start_of_month(check_time, -1);
+        const auto last_month_start = get_start_of_month(check_time, -1);
 
         // 正确的周期刷新点是上个月的这个时间
-        cycle_target_time = last_month_first_day + std::chrono::milliseconds(milliseconds_offset);
+        cycle_start = last_month_start + std::chrono::milliseconds(milliseconds_offset);
     }
 
     // 将最终计算出的正确周期刷新点转换为毫秒时间戳
-    return to_milliseconds(cycle_target_time);
+    return to_milliseconds(cycle_start);
 }
 
 int64_t celeritas::time_helper::get_next_day_start_milliseconds_with_offset(const time_point_type& check_time, const int64_t milliseconds_offset)
 {
-    const auto today_midnight = get_start_of_day(check_time);
-    const auto target_time_today = today_midnight + std::chrono::milliseconds(milliseconds_offset);
+    const auto day_start = get_start_of_day(check_time);
+    const auto target_time = day_start + std::chrono::milliseconds(milliseconds_offset);
 
-    auto end_of_cycle_time = target_time_today;
-    if (check_time >= target_time_today)
+    auto next_cycle_start = target_time;
+    if (check_time >= target_time)
     {
-        end_of_cycle_time = target_time_today + std::chrono::days(1);
+        next_cycle_start = target_time + std::chrono::days(1);
     }
 
-    return to_milliseconds(end_of_cycle_time);
+    return to_milliseconds(next_cycle_start);
 }
 
 int64_t celeritas::time_helper::get_next_week_start_milliseconds_with_offset(const time_point_type& check_time, const int64_t milliseconds_offset)
 {
-    const auto this_week_monday = get_start_of_week(check_time);
-    const auto target_time_this_week = this_week_monday + std::chrono::milliseconds(milliseconds_offset);
+    const auto week_start = get_start_of_week(check_time);
+    const auto target_time = week_start + std::chrono::milliseconds(milliseconds_offset);
 
-    auto end_of_cycle_time = target_time_this_week;
-    if (check_time >= target_time_this_week)
+    auto next_cycle_start = target_time;
+    if (check_time >= target_time)
     {
-        end_of_cycle_time = target_time_this_week + std::chrono::days(7);
+        next_cycle_start = target_time + std::chrono::days(7);
     }
 
-    return to_milliseconds(end_of_cycle_time);
+    return to_milliseconds(next_cycle_start);
 }
 
 int64_t celeritas::time_helper::get_next_month_start_milliseconds_with_offset(const time_point_type& check_time, const int64_t milliseconds_offset)
 {
-    const auto this_month_first_day = get_start_of_month(check_time);
-    const auto target_time_this_month = this_month_first_day + std::chrono::milliseconds(milliseconds_offset);
+    const auto month_start = get_start_of_month(check_time);
+    const auto target_time = month_start + std::chrono::milliseconds(milliseconds_offset);
 
-    auto end_of_cycle_time = target_time_this_month;
-    if (check_time >= target_time_this_month)
+    auto next_cycle_start = target_time;
+    if (check_time >= target_time)
     {
-        const auto next_month_first_day = get_start_of_month(check_time, 1);
-        end_of_cycle_time = next_month_first_day + std::chrono::milliseconds(milliseconds_offset);
+        const auto next_month_start = get_start_of_month(check_time, 1);
+        next_cycle_start = next_month_start + std::chrono::milliseconds(milliseconds_offset);
     }
 
-    return to_milliseconds(end_of_cycle_time);
+    return to_milliseconds(next_cycle_start);
 }
