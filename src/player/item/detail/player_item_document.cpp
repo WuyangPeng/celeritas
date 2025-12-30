@@ -2,7 +2,7 @@
 #include "boost/numeric/conversion/cast.hpp"
 #include "common/core_utilities/celeritas_error.h"
 #include "common/logger.h"
-#include "common/snowflake_generator.h"
+#include "common/core_utilities/snowflake_generator.h"
 #include "config/app_config.h"
 #include "config/game_config/container_config.tpp"
 #include "config/game_config/game_config.h"

@@ -1,5 +1,5 @@
 ﻿#include "common/common_fwd.h"
-#include "common/snowflake_generator.h"
+#include "common/core_utilities/snowflake_generator.h"
 
 #include <boost/test/unit_test.hpp>
 
