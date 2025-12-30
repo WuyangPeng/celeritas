@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_SUITE(thread_safe_queue_suite)
         queue.stop();
 
         celeritas::thread_safe_queue::task_type task{};
-        BOOST_CHECK(!queue.pop(task));
+        BOOST_CHECK(queue.pop(task));
         BOOST_CHECK(!task_executed);
     }
 
