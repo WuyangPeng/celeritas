@@ -10,7 +10,7 @@
 
 BOOST_AUTO_TEST_SUITE(buffer_guard_suite)
 
-    BOOST_AUTO_TEST_CASE(buffer_guard_lifecycle_test)
+    BOOST_AUTO_TEST_CASE(test_buffer_guard_lifecycle)
     {
         constexpr auto size = 128;
         auto data = celeritas::buffer_pool::acquire(size);
@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_SUITE(buffer_guard_suite)
         }
     }
 
-    BOOST_AUTO_TEST_CASE(buffer_guard_reuse_test)
+    BOOST_AUTO_TEST_CASE(test_buffer_guard_reuse)
     {
         constexpr auto size = 512;
         const void* ptr = nullptr;
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_SUITE(buffer_guard_suite)
         }
     }
 
-    BOOST_AUTO_TEST_CASE(buffer_guard_access_test)
+    BOOST_AUTO_TEST_CASE(test_buffer_guard_access)
     {
         constexpr auto size = 100;
         celeritas::buffer_pool_data data{ size };
@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_SUITE(buffer_guard_suite)
         BOOST_CHECK_THROW([&] { std::ignore = guard.get(size); }(), celeritas::celeritas_error);
     }
 
-    BOOST_AUTO_TEST_CASE(buffer_guard_empty_test)
+    BOOST_AUTO_TEST_CASE(test_buffer_guard_empty)
     {
         celeritas::buffer_pool_data empty_data{ 0 };
         const celeritas::buffer_guard guard{ std::move(empty_data), 0 };

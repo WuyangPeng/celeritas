@@ -8,7 +8,7 @@
 
 BOOST_AUTO_TEST_SUITE(buffer_pool_suite)
 
-    BOOST_AUTO_TEST_CASE(buffer_pool_acquire_release_test)
+    BOOST_AUTO_TEST_CASE(test_buffer_pool_acquire_release)
     {
         constexpr auto size = 256;
         auto data = celeritas::buffer_pool::acquire(size);
@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_SUITE(buffer_pool_suite)
         celeritas::buffer_pool::reclaim(std::chrono::seconds(1));
     }
 
-    BOOST_AUTO_TEST_CASE(buffer_pool_reuse_test)
+    BOOST_AUTO_TEST_CASE(test_buffer_pool_reuse)
     {
         constexpr auto size = 512;
         const void* ptr = nullptr;

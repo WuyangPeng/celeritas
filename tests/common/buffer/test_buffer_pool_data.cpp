@@ -9,7 +9,7 @@
 
 BOOST_AUTO_TEST_SUITE(buffer_pool_data_suite)
 
-    BOOST_AUTO_TEST_CASE(buffer_pool_data_basic_test)
+    BOOST_AUTO_TEST_CASE(test_buffer_pool_data_basic)
     {
         constexpr auto size = 1024;
         celeritas::buffer_pool_data data{ size };
@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_SUITE(buffer_pool_data_suite)
         BOOST_CHECK_EQUAL(const_data.size(), size);
     }
 
-    BOOST_AUTO_TEST_CASE(buffer_pool_data_empty_test)
+    BOOST_AUTO_TEST_CASE(test_buffer_pool_data_empty)
     {
         celeritas::buffer_pool_data data{ 0 };
         BOOST_CHECK(!data.is_effective());
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_SUITE(buffer_pool_data_suite)
         BOOST_CHECK(const_data.data() == nullptr);
     }
 
-    BOOST_AUTO_TEST_CASE(buffer_pool_data_operations_test)
+    BOOST_AUTO_TEST_CASE(test_buffer_pool_data_operations)
     {
         constexpr auto size = 100;
         celeritas::buffer_pool_data data{ size };
