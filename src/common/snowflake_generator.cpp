@@ -1,6 +1,6 @@
-﻿#include "core_utilities/celeritas_error.h"
-#include "common_fwd.h"
+﻿#include "common_fwd.h"
 #include "snowflake_generator.h"
+#include "core_utilities/celeritas_error.h"
 #include "core_utilities/time_helper.h"
 
 #include <mutex>
