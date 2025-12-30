@@ -1,5 +1,5 @@
 ﻿#include "command_line_config.h"
-#include "logger/logger.h"
+#include "common/logger/logger.h"
 
 celeritas::command_line_config::command_line_config(const int argc, char** argv, const std::string_view server_type)
     : options_description_{ "Allowed options" }, variables_{}, exit_requested_{ false }
