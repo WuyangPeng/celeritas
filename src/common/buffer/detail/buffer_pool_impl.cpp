@@ -7,7 +7,7 @@ celeritas::buffer_pool_data celeritas::buffer_pool_impl::acquire(const size_t re
     if (auto buffer = try_acquire_from_pool(required_size);
         buffer)
     {
-        return *buffer;
+        return std::move(*buffer);
     }
 
     // 如果池中没有合适的，则创建新的
