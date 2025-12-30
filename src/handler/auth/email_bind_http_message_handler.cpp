@@ -1,7 +1,7 @@
 ﻿#include "email_bind_http_message_handler.h"
 #include "auth/authentication/email/email_bind_response.h"
 #include "auth/authentication/email/email_bind.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "handler/handler_fwd.h"
 #include "message/http_handle_parameter.h"
 #include "message/game_error_type.h"

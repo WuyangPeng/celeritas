@@ -1,6 +1,6 @@
 ﻿#include "write_protobuf_message.h"
 #include "common/buffer_pool.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "network/message_header.h"
 
 #include  <boost/numeric/conversion/cast.hpp>

@@ -3,7 +3,7 @@
 #include "auth/server_list/login_servers.h"
 #include "auth/server_list/login_servers_response.h"
 #include "common/core_utilities/celeritas_error.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "config/app_config.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_fwd.h"

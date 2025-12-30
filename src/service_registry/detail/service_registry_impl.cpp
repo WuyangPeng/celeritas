@@ -1,7 +1,7 @@
 ﻿#include "cleanup_timer.h"
 #include "service_registry_impl.h"
 #include "service_registry_internal_fwd.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 
 #include <ranges>
 

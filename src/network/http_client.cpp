@@ -1,6 +1,6 @@
 ﻿#include "http_client.h"
 #include "http_session.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "config/server_network_type.h"
 
 celeritas::http_client::http_client(io_context_type& io_context,

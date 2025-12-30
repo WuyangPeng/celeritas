@@ -1,6 +1,6 @@
 ﻿#include "handler_template_file.h"
 #include "proto_generator.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 
 #include <boost/algorithm/string.hpp>
 

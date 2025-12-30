@@ -1,5 +1,5 @@
 ﻿#include "crash.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 
 #include <boost/stacktrace.hpp>
 #include <csignal>

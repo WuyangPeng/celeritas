@@ -1,5 +1,5 @@
 ﻿#include "source_proto_generator.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem/path.hpp>

@@ -2,7 +2,7 @@
 #include "http_session_run.h"
 #include "network_internal_fwd.h"
 #include "common/buffer_guard.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "network/network_message_callback.h"
 
 #include <boost/beast.hpp>

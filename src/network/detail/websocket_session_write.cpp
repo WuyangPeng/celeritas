@@ -1,6 +1,6 @@
 ﻿#include "network_internal_fwd.h"
 #include "websocket_session_write.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 
 #include <boost/asio.hpp>
 

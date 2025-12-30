@@ -1,7 +1,7 @@
 ﻿#include "password_login_http_message_handler.h"
 #include "auth/authentication/password/password_login.h"
 #include "auth/authentication/password/password_login_response.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_fwd.h"
 #include "message/game_error_type.h"

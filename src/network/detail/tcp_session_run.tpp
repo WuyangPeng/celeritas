@@ -5,7 +5,7 @@
 #include "common/buffer_guard.h"
 #include "common/buffer_pool.h"
 #include "common/common_fwd.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "network/message_header.h"
 #include "network/network_message_callback.h"
 

@@ -3,9 +3,9 @@
 #include "database_entity_change.h"
 #include "database_field.h"
 #include "redis_database_session.h"
-#include "../common/core_utilities/celeritas_error.h"
+#include "common/core_utilities/celeritas_error.h"
 #include "common/common_fwd.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "detail/redis_key_data_converter.h"
 
 using namespace std::literals;

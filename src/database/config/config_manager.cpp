@@ -1,5 +1,5 @@
 ﻿#include "config_manager.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/player/user.h"
 

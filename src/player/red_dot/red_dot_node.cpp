@@ -1,4 +1,4 @@
-﻿#include "common/logger.h"
+﻿#include "common/logger/logger.h"
 #include "player/red_dot/red_dot_node.h"
 
 celeritas::red_dot_node::red_dot_node(const red_dot_type type, const bool save_database)

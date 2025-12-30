@@ -1,6 +1,6 @@
 ﻿#include "generate_handler_header.h"
 #include "generate_handler_tools_fwd.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "detail/generate_handler_header_file.h"
 
 #include <filesystem>

@@ -3,7 +3,7 @@
 #include "connection_pool.h"
 #include "database_entity_change.h"
 #include "database_session_guard.tpp"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 
 #include <boost/polymorphic_pointer_cast.hpp>
 

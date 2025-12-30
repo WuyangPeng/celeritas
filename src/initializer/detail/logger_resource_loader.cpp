@@ -1,5 +1,5 @@
 ﻿#include "logger_resource_loader.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "config/logger_config.h"
 #include "config/logger_level_config.h"
 

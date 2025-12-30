@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "common/common_fwd.h"
-#include "detail/common_internal_fwd.h"
+#include "detail/common_logger_internal_fwd.h"
 #include "detail/logger_namespace.h"
 
 #include <boost/log/sources/severity_logger.hpp>

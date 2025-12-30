@@ -2,9 +2,9 @@
 #include "database_change_type.h"
 #include "database_entity_change.h"
 #include "mysql_database_session.h"
-#include "../common/core_utilities/celeritas_error.h"
-#include "common/logger.h"
-#include "../common/core_utilities/noexcept_safe_call_and_log.h"
+#include "common/core_utilities/celeritas_error.h"
+#include "common/logger/logger.h"
+#include "common/core_utilities/noexcept_safe_call_and_log.h"
 #include "detail/mysql_row_data_converter.h"
 #include "detail/mysql_statement_generator.h"
 

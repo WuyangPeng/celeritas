@@ -4,7 +4,7 @@
 #include "database_entity_change.h"
 #include "mongo_database_session.h"
 #include "common/core_utilities/celeritas_error.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "detail/mongo_row_data_converter.h"
 
 #include <boost/asio/use_awaitable.hpp>

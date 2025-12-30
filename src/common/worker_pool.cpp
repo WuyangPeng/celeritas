@@ -1,5 +1,5 @@
 ﻿#include "worker_pool.h"
-#include "common/logger.h"
+#include "logger/logger.h"
 #include "core_utilities/noexcept_safe_call_and_log.h"
 
 celeritas::worker_pool::worker_pool(const int num_threads)

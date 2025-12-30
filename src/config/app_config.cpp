@@ -1,6 +1,6 @@
 ﻿#include "app_config.h"
 #include "common/core_utilities/celeritas_error.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "common/core_utilities/time_helper.h"
 #include "detail/database_config_reader.h"
 #include "detail/global_config_reader.h"

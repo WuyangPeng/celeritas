@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "common/detail/logger_namespace.h"
+#include "common/logger/detail/logger_namespace.h"
 
 #include <boost/log/trivial.hpp>
 #include <optional>

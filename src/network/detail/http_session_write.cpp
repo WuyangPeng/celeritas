@@ -1,6 +1,6 @@
 ﻿#include "http_session_write.h"
 #include "network_internal_fwd.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "network/session_base.h"
 
 #include <boost/asio.hpp>

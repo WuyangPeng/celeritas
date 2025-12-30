@@ -3,7 +3,7 @@
 #include "auth/authentication/guest/guest_login.h"
 #include "auth/authentication/guest/guest_login_response.h"
 #include "common/core_utilities/celeritas_error.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/mysql_database_session.h"

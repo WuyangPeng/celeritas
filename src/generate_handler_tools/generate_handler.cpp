@@ -2,7 +2,7 @@
 #include "generate_handler_tools_fwd.h"
 #include "common/core_utilities/celeritas_error.h"
 #include "common/core_utilities/command_line_config.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "detail/generate_handler_file.h"
 
 #include <filesystem>

@@ -1,7 +1,7 @@
 ﻿#include "phone_bind_http_message_handler.h"
 #include "auth/authentication/phone/phone_bind.h"
 #include "auth/authentication/phone/phone_bind_response.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_fwd.h"
 #include "message/game_error_type.h"

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "database_entity_change.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 
 #include <boost/core/demangle.hpp>
 

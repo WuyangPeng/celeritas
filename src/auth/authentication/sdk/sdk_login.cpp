@@ -6,7 +6,7 @@
 #include "auth/detail/sdk/sdk_login_parameter.h"
 #include "auth/detail/sdk/sdk_process.h"
 #include "auth/detail/sdk/sdk_process_parameter.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/auth/account.h"

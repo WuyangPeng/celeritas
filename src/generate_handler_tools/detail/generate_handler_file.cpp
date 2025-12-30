@@ -2,7 +2,7 @@
 #include "header_proto_generator.h"
 #include "protobuf_compiler_importer.h"
 #include "source_proto_generator.h"
-#include "common/logger.h"
+#include "common/logger/logger.h"
 #include "generate_handler_tools/generate_handler_tools_fwd.h"
 
 #include <boost/algorithm/string.hpp>
