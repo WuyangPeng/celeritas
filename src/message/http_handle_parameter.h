@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "common/common_fwd.h"
-#include "common/thread_safe_queue.h"
+#include "common/worker_pool/thread_safe_queue.h"
 #include "config/config_fwd.h"
 #include "config/database_config.h"
 #include "service_registry/service_registry_fwd.h"

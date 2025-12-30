@@ -3,7 +3,7 @@
 #include "boost/asio/io_context.hpp"
 #include "common/application_loader_base.h"
 #include "common/common_fwd.h"
-#include "common/worker_pool.h"
+#include "common/worker_pool/worker_pool.h"
 #include "config/app_config.h"
 #include "message/protobuf_message_registry.h"
 

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "thread_safe_queue.h"
+#include "worker_pool/thread_safe_queue.h"
 
 #include <memory>
 
