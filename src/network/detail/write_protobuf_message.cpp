@@ -1,5 +1,5 @@
 ﻿#include "write_protobuf_message.h"
-#include "common/buffer_pool.h"
+#include "common/buffer/buffer_pool.h"
 #include "common/logger/logger.h"
 #include "network/message_header.h"
 

@@ -1,5 +1,5 @@
 ﻿#include "read_buffer_guard.h"
-#include "common/buffer_pool.h"
+#include "common/buffer/buffer_pool.h"
 #include "common/logger/logger.h"
 
 celeritas::read_buffer_guard::read_buffer_guard(const payload_data_type& payload_data)

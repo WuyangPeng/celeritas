@@ -1,8 +1,8 @@
 ﻿#include "buffer_consumer.h"
 #include "read_buffer_guard.h"
 #include "websocket_session_handle_one_message.h"
-#include "common/buffer_pool.h"
-#include "../../common/logger/logger.h"
+#include "common/buffer/buffer_pool.h"
+#include "common/logger/logger.h"
 #include "network/message_header.h"
 
 celeritas::websocket_session_handle_one_message::websocket_session_handle_one_message(web_socket_stream_type& web_socket,

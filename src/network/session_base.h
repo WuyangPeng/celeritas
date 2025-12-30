@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "session_callback.h"
-#include "common/buffer_guard.h"
+#include "common/buffer/buffer_guard.h"
 #include "common/session.h"
 #include "message/header.h"
 

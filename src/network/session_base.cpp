@@ -1,5 +1,5 @@
 ﻿#include "session_base.h"
-#include "common/buffer_pool.h"
+#include "common/buffer/buffer_pool.h"
 #include "detail/write_protobuf_message.h"
 
 celeritas::session_base::session_base(const server_network_type server_network_type, const int64_t session_id, session_callback session_callback)

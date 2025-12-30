@@ -2,7 +2,7 @@
 
 #include "network_internal_fwd.h"
 #include "tcp_session_run.h"
-#include "common/buffer_guard.h"
+#include "common/buffer/buffer_guard.h"
 #include "common/buffer_pool.h"
 #include "common/common_fwd.h"
 #include "common/logger/logger.h"

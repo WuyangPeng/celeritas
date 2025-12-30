@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "common/buffer_guard.h"
+#include "common/buffer/buffer_guard.h"
 #include "network/message_header.h"
 
 #include <optional>

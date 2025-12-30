@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "session_base.h"
-#include "common/buffer_guard.h"
+#include "common/buffer/buffer_guard.h"
 
 namespace celeritas
 {

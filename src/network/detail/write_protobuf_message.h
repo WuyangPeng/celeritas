@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "common/buffer_guard.h"
+#include "common/buffer/buffer_guard.h"
 #include "common/common_fwd.h"
 #include "message/header.h"
 

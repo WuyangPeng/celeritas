@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "buffer_pool_data.h"
-#include "common/detail/common_internal_fwd.h"
+#include "detail/common_buffer_internal_fwd.h"
 
 #include <chrono>
 

@@ -1,5 +1,5 @@
 ﻿#include "buffer_pool_impl.h"
-#include "common_internal_fwd.h"
+#include "common_buffer_internal_fwd.h"
 
 celeritas::buffer_pool_data celeritas::buffer_pool_impl::acquire(const size_t required_size)
 {
