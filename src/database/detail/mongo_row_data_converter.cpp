@@ -369,7 +369,7 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
         case database_data_type::string_type:
         {
             const auto result = basis_database.get_value<database_data_type::string_type>();
-            document.append(bsoncxx::builder::basic::kvp(basis_database.get_field_name(), result));
+            document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, result));
             break;
         }
         case database_data_type::string_array_type:
