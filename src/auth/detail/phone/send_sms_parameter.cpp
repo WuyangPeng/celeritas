@@ -1,6 +1,6 @@
 ﻿#include "send_sms_parameter.h"
 #include "auth/data/app_secret.h"
-#include "common/hmac_sha_256.h"
+#include "common/core_utilities/hmac_sha_256.h"
 
 celeritas::send_sms_parameter::send_sms_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)
     : base_type{ http_handle_parameter }, response_{}

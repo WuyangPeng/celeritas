@@ -1,4 +1,4 @@
-﻿#include "common/hmac_sha_256.h"
+﻿#include "common/core_utilities/hmac_sha_256.h"
 
 #include <boost/test/unit_test.hpp>
 

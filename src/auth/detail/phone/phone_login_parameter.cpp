@@ -1,5 +1,5 @@
 ﻿#include "phone_login_parameter.h"
-#include "common/hmac_sha_256.h"
+#include "common/core_utilities/hmac_sha_256.h"
 
 celeritas::phone_login_parameter::phone_login_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)
     : base_type{ http_handle_parameter }, response_{}

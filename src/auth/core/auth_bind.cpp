@@ -1,5 +1,5 @@
 ﻿#include "auth_bind.h"
-#include "common/hmac_sha_256.h"
+#include "common/core_utilities/hmac_sha_256.h"
 #include "common/core_utilities/snowflake_generator.h"
 #include "config/app_config.h"
 #include "database/database_pool_base.h"

@@ -3,7 +3,7 @@
 #include "auth/authentication/sdk/sdk_process_type.h"
 #include "auth/data/app_secret.h"
 #include "auth/detail/password/password_login_parameter.h"
-#include "common/hmac_sha_256.h"
+#include "common/core_utilities/hmac_sha_256.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/auth/account.h"

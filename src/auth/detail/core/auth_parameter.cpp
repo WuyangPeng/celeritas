@@ -1,6 +1,6 @@
 ﻿#include "auth_parameter.h"
 #include "auth/detail/auth_internal_fwd.h"
-#include "common/hmac_sha_256.h"
+#include "common/core_utilities/hmac_sha_256.h"
 #include "common/core_utilities/time_helper.h"
 #include "database/generated/mysql/auth/account.h"
 
