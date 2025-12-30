@@ -1,4 +1,4 @@
-﻿#include "common/core_utilities/session_route.h"
+﻿#include "common/core/session_route.h"
 #include "config/server_network_type.h"
 
 #include <boost/test/unit_test.hpp>

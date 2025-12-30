@@ -1,5 +1,5 @@
-﻿#include "common/core_utilities/celeritas_error.h"
-#include "common/core_utilities/noexcept_safe_call_and_log.h"
+﻿#include "common/core/celeritas_error.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 
 #include <boost/test/unit_test.hpp>
 

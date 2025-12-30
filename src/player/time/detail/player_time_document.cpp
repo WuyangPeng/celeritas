@@ -1,7 +1,7 @@
 ﻿#include "change_timer_result.h"
 #include "player_time_document.h"
-#include "common/core_utilities/celeritas_error.h"
-#include "common/core_utilities/time_helper.h"
+#include "common/core/celeritas_error.h"
+#include "common/core/time_helper.h"
 #include "player/component/player_state.h"
 #include "player/time/player_time_refresh_key.h"
 

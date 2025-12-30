@@ -1,6 +1,6 @@
 ﻿#include "websocket_session.h"
 #include "common/logger/logger.h"
-#include "common/core_utilities/noexcept_safe_call_and_log.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "detail/websocket_session_run.h"
 #include "detail/websocket_session_write.h"
 

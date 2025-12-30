@@ -2,7 +2,7 @@
 #include "guest_login_response.h"
 #include "auth/data/app_secret.h"
 #include "auth/detail/guest/guest_login_parameter.h"
-#include "common/core_utilities/celeritas_error.h"
+#include "common/core/celeritas_error.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/auth/account.h"

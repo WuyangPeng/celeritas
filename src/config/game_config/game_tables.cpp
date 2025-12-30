@@ -1,6 +1,6 @@
 ﻿#include "container_config.tpp"
 #include "game_tables.h"
-#include "common/core_utilities/random_helper.h"
+#include "common/core/random_helper.h"
 
 celeritas::game_tables::game_tables(const_tables_shared_ptr tables)
     : tables_{ std::move(tables) },

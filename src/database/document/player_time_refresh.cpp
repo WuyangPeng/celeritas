@@ -1,7 +1,7 @@
 ﻿#include "player_time_refresh.h"
 #include "common/common_fwd.h"
-#include "common/core_utilities/enum_cast.h"
-#include "common/core_utilities/time_helper.h"
+#include "common/core/enum_cast.h"
+#include "common/core/time_helper.h"
 #include "player/time/time_refresh_type.h"
 #include "database/basis_database.tpp"
 

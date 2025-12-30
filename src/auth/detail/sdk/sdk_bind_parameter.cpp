@@ -1,6 +1,6 @@
 ﻿#include "sdk_bind_parameter.h"
 #include "auth/detail/auth_internal_fwd.h"
-#include "common/core_utilities/hmac_sha_256.h"
+#include "common/core/hmac_sha_256.h"
 
 celeritas::sdk_bind_parameter::sdk_bind_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)
     : base_type{ http_handle_parameter }, response_{}, token_{}

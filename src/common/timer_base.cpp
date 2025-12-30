@@ -1,5 +1,5 @@
 ﻿#include "logger/logger.h"
-#include "core_utilities/noexcept_safe_call_and_log.h"
+#include "core/noexcept_safe_call_and_log.h"
 #include "timer_base.h"
 
 celeritas::timer_base::timer_base(io_context_type& io_context, const duration_type interval, bool disposable)

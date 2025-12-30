@@ -1,6 +1,6 @@
 ﻿#include "generate_database_tools_fwd.h"
 #include "generate_mysql.h"
-#include "common/core_utilities/celeritas_error.h"
+#include "common/core/celeritas_error.h"
 #include "common/logger/logger.h"
 #include "detail/generate_mysql_file.h"
 #include "detail/save_mysql_file.h"

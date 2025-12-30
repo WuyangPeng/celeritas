@@ -1,5 +1,5 @@
 ﻿#include "buffer_pool_data.h"
-#include "common/core_utilities/celeritas_error.h"
+#include "common/core/celeritas_error.h"
 
 #include <algorithm>
 #include <ranges>

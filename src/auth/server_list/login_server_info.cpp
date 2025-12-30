@@ -1,5 +1,5 @@
 ﻿#include "login_server_info.h"
-#include "common/core_utilities/enum_cast.h"
+#include "common/core/enum_cast.h"
 
 celeritas::login_server_info::login_server_info(std::string game_server_id,
                                                 std::string server_name,

@@ -1,6 +1,6 @@
 ﻿#include "app_secret.h"
 #include "auth/core/app_status_type.h"
-#include "common/core_utilities/celeritas_error.h"
+#include "common/core/celeritas_error.h"
 #include "common/logger/logger.h"
 #include "database/database_pool_manager.h"
 

@@ -1,5 +1,5 @@
 ﻿#include "database_type.h"
-#include "common/core_utilities/celeritas_error.h"
+#include "common/core/celeritas_error.h"
 
 #include <map>
 

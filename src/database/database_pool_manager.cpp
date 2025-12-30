@@ -3,7 +3,7 @@
 #include "mongo_database_session.h"
 #include "mysql_database_session.h"
 #include "redis_database_session.h"
-#include "../common/core_utilities/celeritas_error.h"
+#include "../common/core/celeritas_error.h"
 
 #include <ranges>
 

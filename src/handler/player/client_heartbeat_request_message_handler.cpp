@@ -1,5 +1,5 @@
 ﻿#include "client_heartbeat_request_message_handler.h"
-#include "common/core_utilities/time_helper.h"
+#include "common/core/time_helper.h"
 #include "message/concrete_message_handler.tpp"
 #include "message/game_error_type.h"
 #include "message/protobuf_handle_parameter.h"

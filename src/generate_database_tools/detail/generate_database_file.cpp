@@ -3,7 +3,7 @@
 #include "database_source.h"
 #include "database_template_file.h"
 #include "generate_database_file.h"
-#include "common/core_utilities/celeritas_error.h"
+#include "common/core/celeritas_error.h"
 #include "common/logger/logger.h"
 
 #include <boost/json.hpp>

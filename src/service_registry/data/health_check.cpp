@@ -1,5 +1,5 @@
 ﻿#include "health_check.h"
-#include "../../common/core_utilities/celeritas_error.h"
+#include "../../common/core/celeritas_error.h"
 
 #include <boost/json.hpp>
 

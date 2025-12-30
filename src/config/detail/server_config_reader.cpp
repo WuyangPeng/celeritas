@@ -1,5 +1,5 @@
 ﻿#include "server_config_reader.h"
-#include "common/core_utilities/celeritas_error.h"
+#include "common/core/celeritas_error.h"
 #include "common/common_fwd.h"
 #include "config/config_fwd.h"
 

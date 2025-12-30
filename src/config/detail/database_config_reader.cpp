@@ -1,5 +1,5 @@
 ﻿#include "database_config_reader.h"
-#include "common/core_utilities/celeritas_error.h"
+#include "common/core/celeritas_error.h"
 #include "config/config_fwd.h"
 
 #include <boost/property_tree/ptree.hpp>

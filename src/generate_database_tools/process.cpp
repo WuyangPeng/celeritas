@@ -2,7 +2,7 @@
 #include "generate_mysql.h"
 #include "generate_database_tools_fwd.h"
 #include "process.h"
-#include "../common/core_utilities/celeritas_error.h"
+#include "../common/core/celeritas_error.h"
 
 #include <filesystem>
 

@@ -3,7 +3,7 @@
 #include "generate_handler_tools_fwd.h"
 #include "generate_register_handler_helper.h"
 #include "process.h"
-#include "../common/core_utilities/celeritas_error.h"
+#include "../common/core/celeritas_error.h"
 
 #include <filesystem>
 

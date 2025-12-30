@@ -1,4 +1,4 @@
-﻿#include "common/core_utilities/enum_operator.h"
+﻿#include "common/core/enum_operator.h"
 
 #include <boost/test/unit_test.hpp>
 #include <sstream>

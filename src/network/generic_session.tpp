@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "generic_session.h"
-#include "common/core_utilities/noexcept_safe_call_and_log.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "detail/tcp_session_run.tpp"
 #include "detail/tcp_session_write.tpp"
 

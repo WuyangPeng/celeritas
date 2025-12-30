@@ -1,7 +1,7 @@
 ﻿#include "send_email_to_providers.h"
 #include "send_email_type.h"
 #include "tencent_cloud_email.h"
-#include "common/core_utilities/celeritas_error.h"
+#include "common/core/celeritas_error.h"
 
 celeritas::send_email_to_providers::send_email_to_providers(email_code email_code, email_providers email_providers)
     : email_code_{ std::move(email_code) }, email_providers_{ std::move(email_providers) }

@@ -1,7 +1,7 @@
 ﻿#include "payment_platform_type.h"
 #include "recharge_notify.h"
 #include "we_chat_recharge_notify.h"
-#include "common/core_utilities/celeritas_error.h"
+#include "common/core/celeritas_error.h"
 
 celeritas::recharge_notify::recharge_notify(sdk_payment_providers sdk_payment_providers, http_handle_parameter_shared_ptr handle_parameter)
     : sdk_payment_providers_{ std::move(sdk_payment_providers) }, handle_parameter_{ std::move(handle_parameter) }

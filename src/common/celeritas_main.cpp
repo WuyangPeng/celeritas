@@ -1,5 +1,5 @@
 ﻿#include "celeritas_main.h"
-#include "core_utilities/command_line_config.h"
+#include "core/command_line_config.h"
 
 celeritas::celeritas_main::celeritas_main(const std::string_view& server_type)
     : server_type_{ server_type }

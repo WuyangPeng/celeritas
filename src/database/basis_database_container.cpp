@@ -1,5 +1,5 @@
 ﻿#include "basis_database_container.h"
-#include "../common/core_utilities/celeritas_error.h"
+#include "../common/core/celeritas_error.h"
 
 #include <boost/numeric/conversion/cast.hpp>
 

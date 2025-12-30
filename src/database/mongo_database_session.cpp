@@ -3,7 +3,7 @@
 #include "database_data_type.h"
 #include "database_entity_change.h"
 #include "mongo_database_session.h"
-#include "common/core_utilities/celeritas_error.h"
+#include "common/core/celeritas_error.h"
 #include "common/logger/logger.h"
 #include "detail/mongo_row_data_converter.h"
 

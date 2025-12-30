@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "common/core_utilities/command_line_config.h"
+#include "common/core/command_line_config.h"
 
 #include <memory>
 

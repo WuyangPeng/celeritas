@@ -1,5 +1,5 @@
 ﻿#include "create_user.h"
-#include "common/core_utilities/snowflake_generator.h"
+#include "common/core/snowflake_generator.h"
 #include "config/app_config.h"
 #include "config/database_type.h"
 #include "database/database_pool_manager.h"

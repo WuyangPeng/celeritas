@@ -1,5 +1,5 @@
 ﻿#include "connection_info.h"
-#include "common/core_utilities/enum_cast.h"
+#include "common/core/enum_cast.h"
 
 celeritas::connection_info::connection_info(std::string host, const int port, const server_network_type server_network)
     : host_{ std::move(host) }, port_{ port }, server_network_{ server_network }
