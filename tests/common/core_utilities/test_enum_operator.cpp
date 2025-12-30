@@ -1,4 +1,4 @@
-﻿#include "common/enum_operator.h"
+﻿#include "common/core_utilities/enum_operator.h"
 
 #include <boost/test/unit_test.hpp>
 #include <sstream>
@@ -47,14 +47,14 @@ BOOST_AUTO_TEST_SUITE(enum_operator_tests)
         auto e3 = celeritas::test_enum_operator::one;
         ++e3;
         BOOST_CHECK(e3 == celeritas::test_enum_operator::two);
-        auto e4 = e3++;
+        const auto e4 = e3++;
         BOOST_CHECK(e4 == celeritas::test_enum_operator::two);
         BOOST_CHECK(e3 == celeritas::test_enum_operator::three);
 
         auto e5 = celeritas::test_enum_operator::two;
         --e5;
         BOOST_CHECK(e5 == celeritas::test_enum_operator::one);
-        auto e6 = e5--;
+        const auto e6 = e5--;
         BOOST_CHECK(e6 == celeritas::test_enum_operator::one);
         BOOST_CHECK(e5 == celeritas::test_enum_operator::zero);
 
@@ -76,11 +76,11 @@ BOOST_AUTO_TEST_SUITE(enum_operator_tests)
         e9 ^= celeritas::test_enum_operator::one;
         BOOST_CHECK(e9 == celeritas::test_enum_operator::two);
 
-        std::stringstream ss1;
+        std::stringstream ss1{};
         ss1 << celeritas::test_enum_operator::one;
         BOOST_CHECK_EQUAL(ss1.str(), "1");
 
-        std::stringstream ss2("2");
+        std::stringstream ss2{"2"};
         celeritas::test_enum_operator e10;
         ss2 >> e10;
         BOOST_CHECK_EQUAL(e10, celeritas::test_enum_operator::two);

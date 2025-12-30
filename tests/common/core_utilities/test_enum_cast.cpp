@@ -1,4 +1,4 @@
-﻿#include "common/enum_cast.h"
+﻿#include "common/core_utilities/enum_cast.h"
 
 #include <boost/test/unit_test.hpp>
 
