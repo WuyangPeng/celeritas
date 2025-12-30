@@ -31,7 +31,7 @@ namespace
     };
 }
 
-BOOST_FIXTURE_TEST_SUITE(logger_tests, logger_fixture)
+BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
 
     BOOST_AUTO_TEST_CASE(test_logger_initialization_and_filtering)
     {
@@ -96,7 +96,7 @@ BOOST_FIXTURE_TEST_SUITE(logger_tests, logger_fixture)
 
         // 初始化一个特定的文件日志通道
         const std::string channel_name{ "test_channel" };
-        const std::string log_file{ "test_channel"s + celeritas::log_daily_suffix.data() + celeritas::logger_extension.data() };
+        const auto log_file = "test_channel"s + celeritas::log_daily_suffix.data() + celeritas::logger_extension.data();
 
         // 初始化文件日志，级别为 INFO，同时输出到控制台
         celeritas::logger::init_file(channel_name, log_file, boost::log::trivial::info, 1024 * 1024, true);
@@ -116,7 +116,7 @@ BOOST_FIXTURE_TEST_SUITE(logger_tests, logger_fixture)
     BOOST_AUTO_TEST_CASE(test_file_logger_no_console)
     {
         const std::string channel_name{ "file_only_channel" };
-        const std::string log_file{ "file_only"s + celeritas::log_daily_suffix.data() + celeritas::logger_extension.data() };
+        const auto log_file = "file_only"s + celeritas::log_daily_suffix.data() + celeritas::logger_extension.data();
 
         // 初始化仅文件日志，不输出到控制台，级别为 DEBUG
         celeritas::logger::init_file(channel_name, log_file, boost::log::trivial::debug, celeritas::default_logger_rotation_size, false);
