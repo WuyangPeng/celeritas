@@ -1,6 +1,7 @@
 ﻿#include "common/logger/logger.h"
 #include "config/config_fwd.h"
 
+#include <boost/log/core.hpp>
 #include <boost/log/trivial.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -8,6 +9,27 @@ using namespace std::literals;
 
 namespace
 {
+    struct capture_clog
+    {
+        std::stringstream buffer;
+        std::streambuf* old_buffer;
+
+        capture_clog()
+        {
+            old_buffer = std::clog.rdbuf(buffer.rdbuf());
+        }
+
+        ~capture_clog()
+        {
+            std::clog.rdbuf(old_buffer);
+        }
+
+        std::string str() const
+        {
+            return buffer.str();
+        }
+    };
+
     // 辅助 fixture，用于在每个测试用例前重置 logger 状态
     struct logger_fixture
     {
@@ -76,6 +98,8 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
 
     BOOST_AUTO_TEST_CASE(test_logger_macros)
     {
+        const capture_clog capture{};
+
         // 重新初始化为 TRACE 以允许所有日志
         celeritas::logger::init_global(boost::log::trivial::trace);
         celeritas::logger::init_console(boost::log::trivial::trace);
@@ -87,10 +111,22 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
         LOG(warning) << "测试 warning 消息";
         LOG(error) << "测试 error 消息";
         LOG(fatal) << "测试 fatal 消息";
+
+        boost::log::core::get()->flush();
+
+        const auto output = capture.str();
+        BOOST_CHECK(output.find("测试 trace 消息") != std::string::npos);
+        BOOST_CHECK(output.find("测试 debug 消息") != std::string::npos);
+        BOOST_CHECK(output.find("测试 info 消息") != std::string::npos);
+        BOOST_CHECK(output.find("测试 warning 消息") != std::string::npos);
+        BOOST_CHECK(output.find("测试 error 消息") != std::string::npos);
+        BOOST_CHECK(output.find("测试 fatal 消息") != std::string::npos);
     }
 
     BOOST_AUTO_TEST_CASE(test_channel_logger)
     {
+        const capture_clog capture{};
+
         // 确保全局级别允许 INFO
         celeritas::logger::init_global(boost::log::trivial::info);
 
@@ -103,6 +139,9 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
 
         // 测试记录到该通道
         LOG_CHANNEL(channel_name, info) << "测试通道 info 消息";
+
+        boost::log::core::get()->flush();
+        BOOST_CHECK(capture.str().find("测试通道 info 消息") != std::string::npos);
 
         // 测试通道上的过滤
         // 如果文件日志设置为 INFO，则 DEBUG 应该被过滤掉

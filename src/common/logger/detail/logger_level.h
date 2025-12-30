@@ -25,6 +25,6 @@ namespace celeritas
 
         severity_level_type global_level_{};
         severity_level_type console_level_{};
-        channel_levels_type channel_levels_;;
+        channel_levels_type channel_levels_;
     };
 }
