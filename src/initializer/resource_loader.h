@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "common/resource_loader_base.h"
-#include "common/session_route.h"
+#include "common/core_utilities/session_route.h"
 #include "config/app_config.h"
 #include "detail/initializer_internal_fwd.h"
 #include "message/message_fwd.h"
