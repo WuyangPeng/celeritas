@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_SUITE(buffer_pool_data_suite)
         BOOST_CHECK_THROW([&data] { std::ignore = data.get(0); }(), celeritas::celeritas_error);
 
         const auto& const_data = data;
-        BOOST_CHECK(const_data.data() == nullptr);
+        BOOST_CHECK_THROW([&const_data] { std::ignore = const_data.data() ; }(), celeritas:: celeritas_error);
     }
 
     BOOST_AUTO_TEST_CASE(test_buffer_pool_data_operations)
@@ -53,8 +53,8 @@ BOOST_AUTO_TEST_SUITE(buffer_pool_data_suite)
         data.set(span_source);
         BOOST_CHECK_EQUAL(std::strncmp(data.data(), span_str.c_str(), span_str.size()), 0);
 
-        BOOST_CHECK_THROW([&data] { std::ignore =data.get(size); }(), celeritas::celeritas_error);
-        BOOST_CHECK_THROW([&data] { std::ignore =data.get(size + 1); }(), celeritas:: celeritas_error);
+        BOOST_CHECK_THROW([&data] { std::ignore = data.get(size); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW([&data] { std::ignore = data.get(size + 1); }(), celeritas:: celeritas_error);
 
         const std::string large_str(size + 1, 'x');
         BOOST_CHECK_THROW(data.set(large_str), celeritas:: celeritas_error);

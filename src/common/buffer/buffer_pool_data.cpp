@@ -26,7 +26,7 @@ const char* celeritas::buffer_pool_data::data() const
         return data_.data();
     }
 
-    return nullptr;
+    throw celeritas_error("unsupported buffer pool data size");
 }
 
 size_t celeritas::buffer_pool_data::size() const noexcept

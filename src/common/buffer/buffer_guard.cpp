@@ -9,11 +9,7 @@ celeritas::buffer_guard::buffer_guard(buffer_pool_data buffer_data, const size_t
 
 celeritas::buffer_guard::~buffer_guard() noexcept
 {
-    noexcept_safe_call_and_log([this] {
-                                   this->release();
-                               },
-                               common_channel,
-                               "buffer guard release error: ");
+    release();
 }
 
 celeritas::buffer_guard::buffer_guard(buffer_guard&& rhs) noexcept
@@ -25,6 +21,8 @@ celeritas::buffer_guard& celeritas::buffer_guard::operator=(buffer_guard&& rhs) 
 {
     if (this != &rhs)
     {
+        release();
+
         buffer_data_ = std::move(rhs.buffer_data_);
         effective_size_ = rhs.effective_size_;
     }
@@ -77,7 +75,16 @@ bool celeritas::buffer_guard::is_effective() const noexcept
     return buffer_data_.is_effective();
 }
 
-void celeritas::buffer_guard::release()
+void celeritas::buffer_guard::release() noexcept
+{
+    noexcept_safe_call_and_log([this] {
+                                   this->do_release();
+                               },
+                               common_channel,
+                               "buffer guard release error: ");
+}
+
+void celeritas::buffer_guard::do_release()
 {
     if (buffer_data_.is_effective())
     {

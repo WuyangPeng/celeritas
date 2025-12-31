@@ -44,7 +44,9 @@ namespace celeritas
         [[nodiscard]] bool is_effective() const noexcept;
 
     private:
-        void release();
+        void release() noexcept;
+
+        void do_release();
 
         buffer_pool_data buffer_data_;
         size_t effective_size_ = 0;
