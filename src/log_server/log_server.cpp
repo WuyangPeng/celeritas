@@ -13,7 +13,7 @@ int main(const int argc, char** argv)
 {
     try
     {
-        const celeritas::log_server server{};
+        celeritas::log_server server{};
 
         server.run(argc, argv);
     }
