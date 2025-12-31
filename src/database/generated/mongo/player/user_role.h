@@ -28,9 +28,17 @@ namespace celeritas
 
         [[nodiscard]] traits::string_type get_name() const;
 
+        [[nodiscard]] traits::bool_type is_modify_name() const noexcept;
+
+        [[nodiscard]] traits::int32_type get_change_count() const noexcept;
+
+        [[nodiscard]] traits::int32_type get_per_day_change_count() const noexcept;
+
         [[nodiscard]] traits::string_type get_device_id() const;
 
         [[nodiscard]] traits::string_type get_app_version() const;
+
+        [[nodiscard]] traits::int64_type get_change_name_time() const noexcept;
 
         void set_user_id(traits::param_type::int64_type user_id);
 
@@ -38,9 +46,17 @@ namespace celeritas
 
         void set_name(traits::param_type::string_type name);
 
+        void set_modify_name(traits::param_type::bool_type modify_name);
+
+        void set_change_count(traits::param_type::int32_type change_count);
+
+        void set_per_day_change_count(traits::param_type::int32_type per_day_change_count);
+
         void set_device_id(traits::param_type::string_type device_id);
 
         void set_app_version(traits::param_type::string_type app_version);
+
+        void set_change_name_time(traits::param_type::int64_type change_name_time);
 
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
@@ -55,8 +71,12 @@ namespace celeritas
         static constexpr std::string_view user_id_describe{ "_id" };
         static constexpr std::string_view surname_describe{ "surname" };
         static constexpr std::string_view name_describe{ "name" };
+        static constexpr std::string_view modify_name_describe{ "modify_name" };
+        static constexpr std::string_view change_count_describe{ "change_count" };
+        static constexpr std::string_view per_day_change_count_describe{ "per_day_change_count" };
         static constexpr std::string_view device_id_describe{ "device_id" };
         static constexpr std::string_view app_version_describe{ "app_version" };
+        static constexpr std::string_view change_name_time_describe{ "change_name_time" };
 
     private:
         [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(traits::param_type::int64_type user_id);
@@ -64,7 +84,11 @@ namespace celeritas
         entity<user_id_describe, database_data_type::int64_type, database_index_type::key> user_id_;
         entity<surname_describe, database_data_type::string_type> surname_;
         entity<name_describe, database_data_type::string_type> name_;
+        entity<modify_name_describe, database_data_type::bool_type> modify_name_;
+        entity<change_count_describe, database_data_type::int32_type> change_count_;
+        entity<per_day_change_count_describe, database_data_type::int32_type> per_day_change_count_;
         entity<device_id_describe, database_data_type::string_type> device_id_;
         entity<app_version_describe, database_data_type::string_type> app_version_;
+        entity<change_name_time_describe, database_data_type::int64_type> change_name_time_;
     };
 }

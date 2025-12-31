@@ -64,6 +64,10 @@ class client_login_response;
 struct client_login_responseDefaultTypeInternal;
 extern client_login_responseDefaultTypeInternal _client_login_response_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull client_login_response_class_data_;
+class error_response;
+struct error_responseDefaultTypeInternal;
+extern error_responseDefaultTypeInternal _error_response_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull error_response_class_data_;
 class login_finish_response;
 struct login_finish_responseDefaultTypeInternal;
 extern login_finish_responseDefaultTypeInternal _login_finish_response_default_instance_;
@@ -666,6 +670,141 @@ class login_finish_response final : public ::google::protobuf::internal::ZeroFie
 extern const ::google::protobuf::internal::ClassDataFull login_finish_response_class_data_;
 // -------------------------------------------------------------------
 
+class error_response final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client.error_response) */ {
+ public:
+  inline error_response() : error_response(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(error_response* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(error_response));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR error_response(::google::protobuf::internal::ConstantInitialized);
+
+  inline error_response(const error_response& from) : error_response(nullptr, from) {}
+  inline error_response(error_response&& from) noexcept
+      : error_response(nullptr, ::std::move(from)) {}
+  inline error_response& operator=(const error_response& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline error_response& operator=(error_response&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const error_response& default_instance() {
+    return *reinterpret_cast<const error_response*>(
+        &_error_response_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 3;
+  friend void swap(error_response& a, error_response& b) { a.Swap(&b); }
+  inline void Swap(error_response* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(error_response* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  error_response* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<error_response>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const error_response& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const error_response& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.error_response"; }
+
+ protected:
+  explicit error_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  error_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const error_response& from);
+  error_response(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, error_response&& from) noexcept
+      : error_response(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client.error_response)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 0,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  friend struct ::TableStruct_proto_2fclient_2fplayer_2flogin_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull error_response_class_data_;
+// -------------------------------------------------------------------
+
 class client_login_response final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:celeritas.proto.client.client_login_response) */ {
  public:
@@ -724,9 +863,10 @@ class client_login_response final : public ::google::protobuf::Message
   enum PayloadCase {
     kLogin = 1,
     kLoginFinish = 2,
+    kError = 3,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(client_login_response& a, client_login_response& b) { a.Swap(&b); }
   inline void Swap(client_login_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -816,6 +956,7 @@ class client_login_response final : public ::google::protobuf::Message
   enum : int {
     kLoginFieldNumber = 1,
     kLoginFinishFieldNumber = 2,
+    kErrorFieldNumber = 3,
   };
   // .celeritas.proto.client.login_response login = 1;
   bool has_login() const;
@@ -855,6 +996,25 @@ class client_login_response final : public ::google::protobuf::Message
   ::celeritas::proto::client::login_finish_response* PROTOBUF_NONNULL _internal_mutable_login_finish();
 
   public:
+  // .celeritas.proto.client.error_response error = 3;
+  bool has_error() const;
+  private:
+  bool _internal_has_error() const;
+
+  public:
+  void clear_error() ;
+  const ::celeritas::proto::client::error_response& error() const;
+  [[nodiscard]] ::celeritas::proto::client::error_response* PROTOBUF_NULLABLE release_error();
+  ::celeritas::proto::client::error_response* PROTOBUF_NONNULL mutable_error();
+  void set_allocated_error(::celeritas::proto::client::error_response* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_error(::celeritas::proto::client::error_response* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::error_response* PROTOBUF_NULLABLE unsafe_arena_release_error();
+
+  private:
+  const ::celeritas::proto::client::error_response& _internal_error() const;
+  ::celeritas::proto::client::error_response* PROTOBUF_NONNULL _internal_mutable_error();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_login_response)
@@ -862,11 +1022,12 @@ class client_login_response final : public ::google::protobuf::Message
   class _Internal;
   void set_has_login();
   void set_has_login_finish();
+  void set_has_error();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 2,
-                                   2, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 3,
+                                   3, 0,
                                    2>
       _table_;
 
@@ -888,8 +1049,9 @@ class client_login_response final : public ::google::protobuf::Message
     union PayloadUnion {
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
-      ::celeritas::proto::client::login_response* PROTOBUF_NULLABLE login_;
-      ::celeritas::proto::client::login_finish_response* PROTOBUF_NULLABLE login_finish_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE login_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE login_finish_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE error_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -961,7 +1123,7 @@ class client_login_request final : public ::google::protobuf::Message
     kLogin = 1,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(client_login_request& a, client_login_request& b) { a.Swap(&b); }
   inline void Swap(client_login_request* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1424,6 +1586,10 @@ inline void login_response::_internal_set_current_time(::int64_t value) {
 
 // -------------------------------------------------------------------
 
+// error_response
+
+// -------------------------------------------------------------------
+
 // client_login_request
 
 // .celeritas.proto.client.login_request login = 1;
@@ -1545,7 +1711,7 @@ inline ::celeritas::proto::client::login_response* PROTOBUF_NULLABLE client_logi
   // @@protoc_insertion_point(field_release:celeritas.proto.client.client_login_response.login)
   if (payload_case() == kLogin) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.login_;
+    auto* temp = reinterpret_cast<::celeritas::proto::client::login_response*>(_impl_.payload_.login_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -1556,7 +1722,7 @@ inline ::celeritas::proto::client::login_response* PROTOBUF_NULLABLE client_logi
   }
 }
 inline const ::celeritas::proto::client::login_response& client_login_response::_internal_login() const {
-  return payload_case() == kLogin ? *_impl_.payload_.login_ : reinterpret_cast<::celeritas::proto::client::login_response&>(::celeritas::proto::client::_login_response_default_instance_);
+  return payload_case() == kLogin ? *reinterpret_cast<::celeritas::proto::client::login_response*>(_impl_.payload_.login_) : reinterpret_cast<::celeritas::proto::client::login_response&>(::celeritas::proto::client::_login_response_default_instance_);
 }
 inline const ::celeritas::proto::client::login_response& client_login_response::login() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:celeritas.proto.client.client_login_response.login)
@@ -1566,7 +1732,7 @@ inline ::celeritas::proto::client::login_response* PROTOBUF_NULLABLE client_logi
   // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_login_response.login)
   if (payload_case() == kLogin) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.login_;
+    auto* temp = reinterpret_cast<::celeritas::proto::client::login_response*>(_impl_.payload_.login_);
     _impl_.payload_.login_ = nullptr;
     return temp;
   } else {
@@ -1581,7 +1747,7 @@ inline void client_login_response::unsafe_arena_set_allocated_login(
   clear_payload();
   if (value) {
     set_has_login();
-    _impl_.payload_.login_ = value;
+    _impl_.payload_.login_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_login_response.login)
 }
@@ -1589,10 +1755,10 @@ inline ::celeritas::proto::client::login_response* PROTOBUF_NONNULL client_login
   if (payload_case() != kLogin) {
     clear_payload();
     set_has_login();
-    _impl_.payload_.login_ = 
-        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::login_response>(GetArena());
+    _impl_.payload_.login_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::login_response>(GetArena()));
   }
-  return _impl_.payload_.login_;
+  return reinterpret_cast<::celeritas::proto::client::login_response*>(_impl_.payload_.login_);
 }
 inline ::celeritas::proto::client::login_response* PROTOBUF_NONNULL client_login_response::mutable_login()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -1626,7 +1792,7 @@ inline ::celeritas::proto::client::login_finish_response* PROTOBUF_NULLABLE clie
   // @@protoc_insertion_point(field_release:celeritas.proto.client.client_login_response.login_finish)
   if (payload_case() == kLoginFinish) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.login_finish_;
+    auto* temp = reinterpret_cast<::celeritas::proto::client::login_finish_response*>(_impl_.payload_.login_finish_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -1637,7 +1803,7 @@ inline ::celeritas::proto::client::login_finish_response* PROTOBUF_NULLABLE clie
   }
 }
 inline const ::celeritas::proto::client::login_finish_response& client_login_response::_internal_login_finish() const {
-  return payload_case() == kLoginFinish ? *_impl_.payload_.login_finish_ : reinterpret_cast<::celeritas::proto::client::login_finish_response&>(::celeritas::proto::client::_login_finish_response_default_instance_);
+  return payload_case() == kLoginFinish ? *reinterpret_cast<::celeritas::proto::client::login_finish_response*>(_impl_.payload_.login_finish_) : reinterpret_cast<::celeritas::proto::client::login_finish_response&>(::celeritas::proto::client::_login_finish_response_default_instance_);
 }
 inline const ::celeritas::proto::client::login_finish_response& client_login_response::login_finish() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:celeritas.proto.client.client_login_response.login_finish)
@@ -1647,7 +1813,7 @@ inline ::celeritas::proto::client::login_finish_response* PROTOBUF_NULLABLE clie
   // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_login_response.login_finish)
   if (payload_case() == kLoginFinish) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.login_finish_;
+    auto* temp = reinterpret_cast<::celeritas::proto::client::login_finish_response*>(_impl_.payload_.login_finish_);
     _impl_.payload_.login_finish_ = nullptr;
     return temp;
   } else {
@@ -1662,7 +1828,7 @@ inline void client_login_response::unsafe_arena_set_allocated_login_finish(
   clear_payload();
   if (value) {
     set_has_login_finish();
-    _impl_.payload_.login_finish_ = value;
+    _impl_.payload_.login_finish_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_login_response.login_finish)
 }
@@ -1670,15 +1836,96 @@ inline ::celeritas::proto::client::login_finish_response* PROTOBUF_NONNULL clien
   if (payload_case() != kLoginFinish) {
     clear_payload();
     set_has_login_finish();
-    _impl_.payload_.login_finish_ = 
-        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::login_finish_response>(GetArena());
+    _impl_.payload_.login_finish_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::login_finish_response>(GetArena()));
   }
-  return _impl_.payload_.login_finish_;
+  return reinterpret_cast<::celeritas::proto::client::login_finish_response*>(_impl_.payload_.login_finish_);
 }
 inline ::celeritas::proto::client::login_finish_response* PROTOBUF_NONNULL client_login_response::mutable_login_finish()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::client::login_finish_response* _msg = _internal_mutable_login_finish();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_login_response.login_finish)
+  return _msg;
+}
+
+// .celeritas.proto.client.error_response error = 3;
+inline bool client_login_response::has_error() const {
+  return payload_case() == kError;
+}
+inline bool client_login_response::_internal_has_error() const {
+  return payload_case() == kError;
+}
+inline void client_login_response::set_has_error() {
+  _impl_._oneof_case_[0] = kError;
+}
+inline void client_login_response::clear_error() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kError) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.error_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.error_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::celeritas::proto::client::error_response* PROTOBUF_NULLABLE client_login_response::release_error() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_login_response.error)
+  if (payload_case() == kError) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::error_response*>(_impl_.payload_.error_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.error_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::error_response& client_login_response::_internal_error() const {
+  return payload_case() == kError ? *reinterpret_cast<::celeritas::proto::client::error_response*>(_impl_.payload_.error_) : reinterpret_cast<::celeritas::proto::client::error_response&>(::celeritas::proto::client::_error_response_default_instance_);
+}
+inline const ::celeritas::proto::client::error_response& client_login_response::error() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_login_response.error)
+  return _internal_error();
+}
+inline ::celeritas::proto::client::error_response* PROTOBUF_NULLABLE client_login_response::unsafe_arena_release_error() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_login_response.error)
+  if (payload_case() == kError) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::error_response*>(_impl_.payload_.error_);
+    _impl_.payload_.error_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_login_response::unsafe_arena_set_allocated_error(
+    ::celeritas::proto::client::error_response* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_error();
+    _impl_.payload_.error_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_login_response.error)
+}
+inline ::celeritas::proto::client::error_response* PROTOBUF_NONNULL client_login_response::_internal_mutable_error() {
+  if (payload_case() != kError) {
+    clear_payload();
+    set_has_error();
+    _impl_.payload_.error_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::error_response>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::client::error_response*>(_impl_.payload_.error_);
+}
+inline ::celeritas::proto::client::error_response* PROTOBUF_NONNULL client_login_response::mutable_error()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::error_response* _msg = _internal_mutable_error();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_login_response.error)
   return _msg;
 }
 

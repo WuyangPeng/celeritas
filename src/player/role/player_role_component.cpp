@@ -1,13 +1,18 @@
 ﻿#include "player_role_component.h"
 #include "common/core/time_helper.h"
+#include "common/logging/logger.h"
 #include "config/database_type.h"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
 #include "config/luban/generated/schema.h"
 #include "database/database_pool_base.h"
 #include "database/generated/mongo/auth/user_server_roles.h"
+#include "initializer/initializer_fwd.h"
 #include "player/component/player_state.tpp"
+#include "player/time/player_time_refresh_key.h"
+#include "player/time/time_refresh_type.h"
 #include "player/user/player_user_component.h"
+#include "proto/celeritas.pb.h"
 
 celeritas::player_role_component::player_role_component(player_state* player_state, const service_login_request_type& login) noexcept
     : base_type{ get_player_component_type(), player_state },
@@ -50,12 +55,19 @@ bool celeritas::player_role_component::is_modify() const
     return user_role_->is_must_save() || user_server_roles_->is_must_save();
 }
 
-void celeritas::player_role_component::change_name(const std::string& name)
+void celeritas::player_role_component::change_name(const std::string& surname, const std::string& name)
 {
+    const auto change_name_time = time_helper::get_current_milliseconds();
+
+    user_role_->set_surname(surname);
     user_role_->set_name(name);
+    user_role_->set_modify_name(true);
+    user_role_->set_change_name_time(change_name_time);
+
+    server_role_->set_role_surname(surname);
     server_role_->set_role_name(name);
     user_server_roles_->set_servers(server_role_index_, server_role_->to_document_type());
-    user_server_roles_->set_update_time(time_helper::get_current_milliseconds());
+    user_server_roles_->set_update_time(change_name_time);
 
     get_player_state()->set_dirty();
 }
@@ -81,6 +93,30 @@ std::string celeritas::player_role_component::get_app_version() const
     return user_role_->get_app_version();
 }
 
+celeritas::player_component::void_awaitable_type celeritas::player_role_component::time_callback(const player_time_refresh_key& player_time_refresh_key, bool is_login)
+{
+    if (player_time_refresh_key.get_time_refresh_type() == time_refresh_type::daily)
+    {
+        user_role_->set_per_day_change_count(0);
+
+        get_player_state()->set_dirty();
+
+        if (!is_login)
+        {
+            send_role_response();
+        }
+    }
+
+    co_return;
+}
+
+celeritas::player_component::void_awaitable_type celeritas::player_role_component::send_initial_sync()
+{
+    send_role_response();
+
+    co_return;
+}
+
 celeritas::player_role_component::void_awaitable_type celeritas::player_role_component::load_user_role_db()
 {
     const auto mongo_player_pool = get_mongo_player_database_pool();
@@ -98,6 +134,7 @@ celeritas::player_role_component::void_awaitable_type celeritas::player_role_com
 
         user_role_->set_surname(game_tables->get_surname());
         user_role_->set_name(game_tables->get_name(config::sex_type::none));
+        user_role_->set_change_name_time(time_helper::get_current_milliseconds());
     }
 
     user_role_->set_device_id(device_id_);
@@ -144,5 +181,26 @@ void celeritas::player_role_component::set_server_role()
 
         user_server_roles_->add_servers(server_role_->to_document_type());
         user_server_roles_->set_update_time(time_helper::get_current_milliseconds());
+    }
+}
+
+void celeritas::player_role_component::send_role_response()
+{
+    auto* player_state = get_player_state();
+
+    const header header{ player_state->get_user_id() };
+
+    proto::celeritas response{};
+    auto* role_response = response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_role()->mutable_role();
+
+    role_response->set_surname(user_role_->get_surname());
+    role_response->set_name(user_role_->get_name());
+    role_response->set_modify_name(user_role_->is_modify());
+    role_response->set_change_count(user_role_->get_change_count());
+    role_response->set_per_day_change_count(user_role_->get_per_day_change_count());
+
+    if (!player_state->write(gateway_type.data(), player_state->get_instance_id(), header, response))
+    {
+        LOG_CHANNEL(player_channel, error) << "send message error.";
     }
 }

@@ -12,6 +12,7 @@ message client_player_request {
   oneof payload {
     client_login_request login = 1;
     client_heartbeat_request heartbeat = 2;
+    client_role_request role = 3;
   }
 }
 

@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_SUITE(player_role_component_suite)
         run_io_context();
 
         const std::string new_name{ "new_test_name" };
-        role_component.change_name(new_name);
+        role_component.change_name(new_name, new_name);
 
         BOOST_CHECK_EQUAL(role_component.get_name(), new_name);
     }
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_SUITE(player_role_component_suite)
 
         BOOST_CHECK(!role_component.is_modify());
 
-        role_component.change_name("new_name");
+        role_component.change_name("new_name", "new_name");
 
         BOOST_CHECK(role_component.is_modify());
     }
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_SUITE(player_role_component_suite)
 
         BOOST_CHECK(!role_component.is_modify());
 
-        role_component.change_name("another_name");
+        role_component.change_name("another_name", "another_name");
 
         BOOST_CHECK(role_component.is_modify());
 

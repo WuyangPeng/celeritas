@@ -29,7 +29,7 @@ namespace celeritas
 
         [[nodiscard]] bool is_modify() const override;
 
-        void change_name(const std::string& name);
+        void change_name(const std::string& surname, const std::string& name);
 
         void set_login(const service_login_request_type& login);
 
@@ -38,6 +38,10 @@ namespace celeritas
         [[nodiscard]] std::string get_device_id() const;
 
         [[nodiscard]] std::string get_app_version() const;
+
+        [[nodiscard]] void_awaitable_type time_callback(const player_time_refresh_key& player_time_refresh_key, bool is_login) override;
+
+        [[nodiscard]] void_awaitable_type send_initial_sync() override;
 
     private:
         using optional_user_role = std::optional<user_role>;
@@ -49,6 +53,8 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type load_user_server_roles_db();
 
         void set_server_role();
+
+        void send_role_response();
 
         optional_user_role user_role_;
         optional_user_server_roles user_server_roles_;

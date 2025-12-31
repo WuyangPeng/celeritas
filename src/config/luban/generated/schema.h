@@ -167,8 +167,11 @@ namespace container { struct develop_config; }
 namespace container { struct item_config; }
 namespace container { struct name_config; }
 namespace container { struct red_dot_config; }
+namespace container { struct rename_cost_config; }
 namespace container { struct surname_config; }
-namespace test { struct bean; }
+ struct interval; 
+ struct item; 
+ struct priority_item; 
 
 namespace container {
 
@@ -213,7 +216,7 @@ struct item_config : public luban::CfgBean
     /**
      * 物品类型
      */
-    ::luban::int32 itemType;
+    item_type itemType;
     /**
      * 堆叠数
      */
@@ -304,6 +307,36 @@ struct red_dot_config : public luban::CfgBean
 
 namespace container {
 
+struct rename_cost_config : public luban::CfgBean 
+{
+    static bool deserializerename_cost_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<rename_cost_config>& _out);
+
+    virtual ~rename_cost_config() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 编号
+     */
+    ::luban::int32 id;
+    /**
+     * 区间
+     */
+    ::luban::SharedPtr<interval> interval;
+    /**
+     * 所需物品
+     */
+    ::luban::Vector<::luban::SharedPtr<priority_item>> priorityItem;
+
+    static constexpr int __ID__ = 1782928128;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+}
+
+namespace container {
+
 struct surname_config : public luban::CfgBean 
 {
     static bool deserializesurname_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<surname_config>& _out);
@@ -332,42 +365,96 @@ struct surname_config : public luban::CfgBean
 
 }
 
-namespace test {
+
 
 /**
- * 这是个测试excel结构
+ * 区间
  */
-struct bean : public luban::CfgBean 
+struct interval : public luban::CfgBean 
 {
-    static bool deserializebean(::luban::ByteBuf& _buf, ::luban::SharedPtr<bean>& _out);
+    static bool deserializeinterval(::luban::ByteBuf& _buf, ::luban::SharedPtr<interval>& _out);
 
-    virtual ~bean() {}
+    virtual ~interval() {}
 
     bool deserialize(::luban::ByteBuf& _buf);
 
     /**
-     * 最高品质
+     * 最小值
      */
-    ::luban::int32 x1;
+    ::luban::int32 min;
     /**
-     * 黑色的
+     * 最大值
      */
-    ::luban::String x2;
-    /**
-     * 蓝色的
-     */
-    ::luban::int32 x3;
-    /**
-     * 最差品质
-     */
-    ::luban::float32 x4;
+    ::luban::int32 max;
 
-    static constexpr int __ID__ = -1225911412;
+    static constexpr int __ID__ = 570418373;
 
     int getTypeId() const override { return __ID__; }
 };
 
-}
+
+
+
+
+/**
+ * 物品
+ */
+struct item : public luban::CfgBean 
+{
+    static bool deserializeitem(::luban::ByteBuf& _buf, ::luban::SharedPtr<item>& _out);
+
+    virtual ~item() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 道具id
+     */
+    ::luban::int32 itemId;
+    /**
+     * 道具数量
+     */
+    ::luban::int32 itemCount;
+
+    static constexpr int __ID__ = 3242771;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+
+
+
+
+/**
+ * 带优先级的物品
+ */
+struct priority_item : public luban::CfgBean 
+{
+    static bool deserializepriority_item(::luban::ByteBuf& _buf, ::luban::SharedPtr<priority_item>& _out);
+
+    virtual ~priority_item() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 道具id
+     */
+    ::luban::int32 itemId;
+    /**
+     * 道具数量
+     */
+    ::luban::int32 itemCount;
+    /**
+     * 优先级
+     */
+    ::luban::int32 priority;
+
+    static constexpr int __ID__ = 841097422;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+
 
 namespace container {
 
@@ -654,6 +741,63 @@ class develop_config_container
 
 }
 
+namespace container {
+
+
+class rename_cost_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<container::rename_cost_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<container::rename_cost_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<container::rename_cost_config> _v;
+            if(!container::rename_cost_config::deserializerename_cost_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->id] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<container::rename_cost_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<container::rename_cost_config>>& getDataList() const { return _dataList; }
+
+    std::optional<container::rename_cost_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<container::rename_cost_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
 class tables
 {
     public:
@@ -662,6 +806,7 @@ class tables
      container::red_dot_config_container red_dot_config_container;
      container::item_config_container item_config_container;
      container::develop_config_container develop_config_container;
+     container::rename_cost_config_container rename_cost_config_container;
 
     bool load(::luban::Loader<::luban::ByteBuf> loader)
     {
@@ -681,6 +826,9 @@ class tables
         buf.clear();
         if (!loader(buf, "develop_config_container")) return false;
         if (!develop_config_container.load(buf)) return false;
+        buf.clear();
+        if (!loader(buf, "rename_cost_config_container")) return false;
+        if (!rename_cost_config_container.load(buf)) return false;
         return true;
     }
 };

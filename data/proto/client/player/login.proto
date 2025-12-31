@@ -16,6 +16,9 @@ message login_response {
 message login_finish_response {
 }
 
+message error_response {
+}
+
 message client_login_request {
   oneof payload {
     login_request login = 1;
@@ -26,6 +29,7 @@ message client_login_response {
   oneof payload {
     login_response login = 1;
     login_finish_response login_finish = 2;
+    error_response error = 3;
   }
 }
 

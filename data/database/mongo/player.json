@@ -19,6 +19,21 @@
         "comment": "名字"
       },
       {
+        "entity_name": "modify_name",
+        "data_type": "bool",
+        "comment": "是否是修改后的名字"
+      },
+      {
+        "entity_name": "change_count",
+        "data_type": "int32",
+        "comment": "改名次数"
+      },
+      {
+        "entity_name": "per_day_change_count",
+        "data_type": "int32",
+        "comment": "每日改名次数"
+      },
+      {
         "entity_name": "device_id",
         "data_type": "string",
         "comment": "设备id"
@@ -27,6 +42,11 @@
         "entity_name": "app_version",
         "data_type": "string",
         "comment": "客户端版本"
+      },
+      {
+        "entity_name": "change_name_time",
+        "data_type": "int64",
+        "comment": "改名时间"
       }
     ]
   },

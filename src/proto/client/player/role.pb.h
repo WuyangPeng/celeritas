@@ -55,6 +55,14 @@ extern const ::google::protobuf::internal::DescriptorTable descriptor_table_prot
 namespace celeritas {
 namespace proto {
 namespace client {
+class change_role_name_request;
+struct change_role_name_requestDefaultTypeInternal;
+extern change_role_name_requestDefaultTypeInternal _change_role_name_request_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull change_role_name_request_class_data_;
+class client_role_request;
+struct client_role_requestDefaultTypeInternal;
+extern client_role_requestDefaultTypeInternal _client_role_request_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull client_role_request_class_data_;
 class client_role_response;
 struct client_role_responseDefaultTypeInternal;
 extern client_role_responseDefaultTypeInternal _client_role_response_default_instance_;
@@ -225,6 +233,9 @@ class role_response final : public ::google::protobuf::Message
   enum : int {
     kSurnameFieldNumber = 1,
     kNameFieldNumber = 2,
+    kModifyNameFieldNumber = 3,
+    kChangeCountFieldNumber = 4,
+    kPerDayChangeCountFieldNumber = 5,
   };
   // string surname = 1;
   void clear_surname() ;
@@ -256,11 +267,41 @@ class role_response final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_name();
 
   public:
+  // bool modify_name = 3;
+  void clear_modify_name() ;
+  bool modify_name() const;
+  void set_modify_name(bool value);
+
+  private:
+  bool _internal_modify_name() const;
+  void _internal_set_modify_name(bool value);
+
+  public:
+  // int32 change_count = 4;
+  void clear_change_count() ;
+  ::int32_t change_count() const;
+  void set_change_count(::int32_t value);
+
+  private:
+  ::int32_t _internal_change_count() const;
+  void _internal_set_change_count(::int32_t value);
+
+  public:
+  // int32 per_day_change_count = 5;
+  void clear_per_day_change_count() ;
+  ::int32_t per_day_change_count() const;
+  void set_per_day_change_count(::int32_t value);
+
+  private:
+  ::int32_t _internal_per_day_change_count() const;
+  void _internal_set_per_day_change_count(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.role_response)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
+  static const ::google::protobuf::internal::TcParseTable<3, 5,
                                    0, 56,
                                    2>
       _table_;
@@ -284,6 +325,9 @@ class role_response final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr surname_;
     ::google::protobuf::internal::ArenaStringPtr name_;
+    bool modify_name_;
+    ::int32_t change_count_;
+    ::int32_t per_day_change_count_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -291,6 +335,219 @@ class role_response final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull role_response_class_data_;
+// -------------------------------------------------------------------
+
+class change_role_name_request final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client.change_role_name_request) */ {
+ public:
+  inline change_role_name_request() : change_role_name_request(nullptr) {}
+  ~change_role_name_request() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(change_role_name_request* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(change_role_name_request));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR change_role_name_request(::google::protobuf::internal::ConstantInitialized);
+
+  inline change_role_name_request(const change_role_name_request& from) : change_role_name_request(nullptr, from) {}
+  inline change_role_name_request(change_role_name_request&& from) noexcept
+      : change_role_name_request(nullptr, ::std::move(from)) {}
+  inline change_role_name_request& operator=(const change_role_name_request& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline change_role_name_request& operator=(change_role_name_request&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const change_role_name_request& default_instance() {
+    return *reinterpret_cast<const change_role_name_request*>(
+        &_change_role_name_request_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 1;
+  friend void swap(change_role_name_request& a, change_role_name_request& b) { a.Swap(&b); }
+  inline void Swap(change_role_name_request* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(change_role_name_request* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  change_role_name_request* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<change_role_name_request>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const change_role_name_request& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const change_role_name_request& from) { change_role_name_request::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(change_role_name_request* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.change_role_name_request"; }
+
+ protected:
+  explicit change_role_name_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  change_role_name_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const change_role_name_request& from);
+  change_role_name_request(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, change_role_name_request&& from) noexcept
+      : change_role_name_request(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kSurnameFieldNumber = 1,
+    kNameFieldNumber = 2,
+  };
+  // string surname = 1;
+  void clear_surname() ;
+  const ::std::string& surname() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_surname(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_surname();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_surname();
+  void set_allocated_surname(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_surname() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_surname(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_surname();
+
+  public:
+  // string name = 2;
+  void clear_name() ;
+  const ::std::string& name() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_name(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_name();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_name();
+  void set_allocated_name(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_name() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_name(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_name();
+
+  public:
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client.change_role_name_request)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   0, 67,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const change_role_name_request& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr surname_;
+    ::google::protobuf::internal::ArenaStringPtr name_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fclient_2fplayer_2frole_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull change_role_name_request_class_data_;
 // -------------------------------------------------------------------
 
 class client_role_response final : public ::google::protobuf::Message
@@ -352,7 +609,7 @@ class client_role_response final : public ::google::protobuf::Message
     kRole = 1,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 1;
+  static constexpr int kIndexInFileMessages = 3;
   friend void swap(client_role_response& a, client_role_response& b) { a.Swap(&b); }
   inline void Swap(client_role_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -504,6 +761,219 @@ class client_role_response final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull client_role_response_class_data_;
+// -------------------------------------------------------------------
+
+class client_role_request final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client.client_role_request) */ {
+ public:
+  inline client_role_request() : client_role_request(nullptr) {}
+  ~client_role_request() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(client_role_request* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(client_role_request));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR client_role_request(::google::protobuf::internal::ConstantInitialized);
+
+  inline client_role_request(const client_role_request& from) : client_role_request(nullptr, from) {}
+  inline client_role_request(client_role_request&& from) noexcept
+      : client_role_request(nullptr, ::std::move(from)) {}
+  inline client_role_request& operator=(const client_role_request& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline client_role_request& operator=(client_role_request&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const client_role_request& default_instance() {
+    return *reinterpret_cast<const client_role_request*>(
+        &_client_role_request_default_instance_);
+  }
+  enum PayloadCase {
+    kChangeRoleName = 1,
+    PAYLOAD_NOT_SET = 0,
+  };
+  static constexpr int kIndexInFileMessages = 2;
+  friend void swap(client_role_request& a, client_role_request& b) { a.Swap(&b); }
+  inline void Swap(client_role_request* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(client_role_request* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  client_role_request* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<client_role_request>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const client_role_request& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const client_role_request& from) { client_role_request::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(client_role_request* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.client_role_request"; }
+
+ protected:
+  explicit client_role_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  client_role_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const client_role_request& from);
+  client_role_request(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, client_role_request&& from) noexcept
+      : client_role_request(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kChangeRoleNameFieldNumber = 1,
+  };
+  // .celeritas.proto.client.change_role_name_request change_role_name = 1;
+  bool has_change_role_name() const;
+  private:
+  bool _internal_has_change_role_name() const;
+
+  public:
+  void clear_change_role_name() ;
+  const ::celeritas::proto::client::change_role_name_request& change_role_name() const;
+  [[nodiscard]] ::celeritas::proto::client::change_role_name_request* PROTOBUF_NULLABLE release_change_role_name();
+  ::celeritas::proto::client::change_role_name_request* PROTOBUF_NONNULL mutable_change_role_name();
+  void set_allocated_change_role_name(::celeritas::proto::client::change_role_name_request* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_change_role_name(::celeritas::proto::client::change_role_name_request* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::change_role_name_request* PROTOBUF_NULLABLE unsafe_arena_release_change_role_name();
+
+  private:
+  const ::celeritas::proto::client::change_role_name_request& _internal_change_role_name() const;
+  ::celeritas::proto::client::change_role_name_request* PROTOBUF_NONNULL _internal_mutable_change_role_name();
+
+  public:
+  void clear_payload();
+  PayloadCase payload_case() const;
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_role_request)
+ private:
+  class _Internal;
+  void set_has_change_role_name();
+  inline bool has_payload() const;
+  inline void clear_has_payload();
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   1, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const client_role_request& from_msg);
+    union PayloadUnion {
+      constexpr PayloadUnion() : _constinit_{} {}
+      ::google::protobuf::internal::ConstantInitialized _constinit_;
+      ::celeritas::proto::client::change_role_name_request* PROTOBUF_NULLABLE change_role_name_;
+    } payload_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::uint32_t _oneof_case_[1];
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fclient_2fplayer_2frole_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull client_role_request_class_data_;
 
 // ===================================================================
 
@@ -651,6 +1121,306 @@ inline void role_response::set_allocated_name(::std::string* PROTOBUF_NULLABLE v
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.role_response.name)
 }
 
+// bool modify_name = 3;
+inline void role_response::clear_modify_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.modify_name_ = false;
+  _impl_._has_bits_[0] &= ~0x00000004U;
+}
+inline bool role_response::modify_name() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.role_response.modify_name)
+  return _internal_modify_name();
+}
+inline void role_response::set_modify_name(bool value) {
+  _internal_set_modify_name(value);
+  _impl_._has_bits_[0] |= 0x00000004U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.role_response.modify_name)
+}
+inline bool role_response::_internal_modify_name() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.modify_name_;
+}
+inline void role_response::_internal_set_modify_name(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.modify_name_ = value;
+}
+
+// int32 change_count = 4;
+inline void role_response::clear_change_count() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.change_count_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000008U;
+}
+inline ::int32_t role_response::change_count() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.role_response.change_count)
+  return _internal_change_count();
+}
+inline void role_response::set_change_count(::int32_t value) {
+  _internal_set_change_count(value);
+  _impl_._has_bits_[0] |= 0x00000008U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.role_response.change_count)
+}
+inline ::int32_t role_response::_internal_change_count() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.change_count_;
+}
+inline void role_response::_internal_set_change_count(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.change_count_ = value;
+}
+
+// int32 per_day_change_count = 5;
+inline void role_response::clear_per_day_change_count() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.per_day_change_count_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000010U;
+}
+inline ::int32_t role_response::per_day_change_count() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.role_response.per_day_change_count)
+  return _internal_per_day_change_count();
+}
+inline void role_response::set_per_day_change_count(::int32_t value) {
+  _internal_set_per_day_change_count(value);
+  _impl_._has_bits_[0] |= 0x00000010U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.role_response.per_day_change_count)
+}
+inline ::int32_t role_response::_internal_per_day_change_count() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.per_day_change_count_;
+}
+inline void role_response::_internal_set_per_day_change_count(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.per_day_change_count_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// change_role_name_request
+
+// string surname = 1;
+inline void change_role_name_request::clear_surname() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.surname_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000001U;
+}
+inline const ::std::string& change_role_name_request::surname() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.change_role_name_request.surname)
+  return _internal_surname();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void change_role_name_request::set_surname(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  _impl_.surname_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.change_role_name_request.surname)
+}
+inline ::std::string* PROTOBUF_NONNULL change_role_name_request::mutable_surname()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_surname();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.change_role_name_request.surname)
+  return _s;
+}
+inline const ::std::string& change_role_name_request::_internal_surname() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.surname_.Get();
+}
+inline void change_role_name_request::_internal_set_surname(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  _impl_.surname_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL change_role_name_request::_internal_mutable_surname() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  return _impl_.surname_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE change_role_name_request::release_surname() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.change_role_name_request.surname)
+  if ((_impl_._has_bits_[0] & 0x00000001U) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001U;
+  auto* released = _impl_.surname_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.surname_.Set("", GetArena());
+  }
+  return released;
+}
+inline void change_role_name_request::set_allocated_surname(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001U;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001U;
+  }
+  _impl_.surname_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.surname_.IsDefault()) {
+    _impl_.surname_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.change_role_name_request.surname)
+}
+
+// string name = 2;
+inline void change_role_name_request::clear_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.name_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000002U;
+}
+inline const ::std::string& change_role_name_request::name() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.change_role_name_request.name)
+  return _internal_name();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void change_role_name_request::set_name(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000002U;
+  _impl_.name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.change_role_name_request.name)
+}
+inline ::std::string* PROTOBUF_NONNULL change_role_name_request::mutable_name()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_name();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.change_role_name_request.name)
+  return _s;
+}
+inline const ::std::string& change_role_name_request::_internal_name() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.name_.Get();
+}
+inline void change_role_name_request::_internal_set_name(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000002U;
+  _impl_.name_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL change_role_name_request::_internal_mutable_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000002U;
+  return _impl_.name_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE change_role_name_request::release_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.change_role_name_request.name)
+  if ((_impl_._has_bits_[0] & 0x00000002U) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000002U;
+  auto* released = _impl_.name_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.name_.Set("", GetArena());
+  }
+  return released;
+}
+inline void change_role_name_request::set_allocated_name(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000002U;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002U;
+  }
+  _impl_.name_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.name_.IsDefault()) {
+    _impl_.name_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.change_role_name_request.name)
+}
+
+// -------------------------------------------------------------------
+
+// client_role_request
+
+// .celeritas.proto.client.change_role_name_request change_role_name = 1;
+inline bool client_role_request::has_change_role_name() const {
+  return payload_case() == kChangeRoleName;
+}
+inline bool client_role_request::_internal_has_change_role_name() const {
+  return payload_case() == kChangeRoleName;
+}
+inline void client_role_request::set_has_change_role_name() {
+  _impl_._oneof_case_[0] = kChangeRoleName;
+}
+inline void client_role_request::clear_change_role_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kChangeRoleName) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.change_role_name_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.change_role_name_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::celeritas::proto::client::change_role_name_request* PROTOBUF_NULLABLE client_role_request::release_change_role_name() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_role_request.change_role_name)
+  if (payload_case() == kChangeRoleName) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.change_role_name_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.change_role_name_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::change_role_name_request& client_role_request::_internal_change_role_name() const {
+  return payload_case() == kChangeRoleName ? *_impl_.payload_.change_role_name_ : reinterpret_cast<::celeritas::proto::client::change_role_name_request&>(::celeritas::proto::client::_change_role_name_request_default_instance_);
+}
+inline const ::celeritas::proto::client::change_role_name_request& client_role_request::change_role_name() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_role_request.change_role_name)
+  return _internal_change_role_name();
+}
+inline ::celeritas::proto::client::change_role_name_request* PROTOBUF_NULLABLE client_role_request::unsafe_arena_release_change_role_name() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_role_request.change_role_name)
+  if (payload_case() == kChangeRoleName) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.change_role_name_;
+    _impl_.payload_.change_role_name_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_role_request::unsafe_arena_set_allocated_change_role_name(
+    ::celeritas::proto::client::change_role_name_request* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_change_role_name();
+    _impl_.payload_.change_role_name_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_role_request.change_role_name)
+}
+inline ::celeritas::proto::client::change_role_name_request* PROTOBUF_NONNULL client_role_request::_internal_mutable_change_role_name() {
+  if (payload_case() != kChangeRoleName) {
+    clear_payload();
+    set_has_change_role_name();
+    _impl_.payload_.change_role_name_ = 
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::change_role_name_request>(GetArena());
+  }
+  return _impl_.payload_.change_role_name_;
+}
+inline ::celeritas::proto::client::change_role_name_request* PROTOBUF_NONNULL client_role_request::mutable_change_role_name()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::change_role_name_request* _msg = _internal_mutable_change_role_name();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_role_request.change_role_name)
+  return _msg;
+}
+
+inline bool client_role_request::has_payload() const {
+  return payload_case() != PAYLOAD_NOT_SET;
+}
+inline void client_role_request::clear_has_payload() {
+  _impl_._oneof_case_[0] = PAYLOAD_NOT_SET;
+}
+inline client_role_request::PayloadCase client_role_request::payload_case() const {
+  return client_role_request::PayloadCase(_impl_._oneof_case_[0]);
+}
 // -------------------------------------------------------------------
 
 // client_role_response

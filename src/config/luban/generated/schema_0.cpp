@@ -43,7 +43,7 @@ bool container::item_config::deserialize(::luban::ByteBuf& _buf)
 {
 
     if(!_buf.readInt(itemTemplateId)) return false;
-    if(!_buf.readInt(itemType)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; itemType = item_type(__enum_temp__); }
     if(!_buf.readInt(stacked)) return false;
     if (!_buf.readBool(squares)) return false;
 
@@ -118,6 +118,31 @@ bool container::red_dot_config::deserializered_dot_config(::luban::ByteBuf& _buf
 }
 
 
+bool container::rename_cost_config::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(id)) return false;
+    if(!interval::deserializeinterval(_buf, interval)) return false;
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); priorityItem.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<priority_item> _e; if(!priority_item::deserializepriority_item(_buf, _e)) return false; priorityItem.push_back(_e);}}
+
+    return true;
+}
+
+bool container::rename_cost_config::deserializerename_cost_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<container::rename_cost_config>& _out)
+{
+    _out.reset(LUBAN_NEW(container::rename_cost_config));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
 bool container::surname_config::deserialize(::luban::ByteBuf& _buf)
 {
 
@@ -143,20 +168,67 @@ bool container::surname_config::deserializesurname_config(::luban::ByteBuf& _buf
 }
 
 
-bool test::bean::deserialize(::luban::ByteBuf& _buf)
+bool interval::deserialize(::luban::ByteBuf& _buf)
 {
 
-    if(!_buf.readInt(x1)) return false;
-    if(!_buf.readString(x2)) return false;
-    if(!_buf.readInt(x3)) return false;
-    if(!_buf.readFloat(x4)) return false;
+    if(!_buf.readInt(min)) return false;
+    if(!_buf.readInt(max)) return false;
 
     return true;
 }
 
-bool test::bean::deserializebean(::luban::ByteBuf& _buf, ::luban::SharedPtr<test::bean>& _out)
+bool interval::deserializeinterval(::luban::ByteBuf& _buf, ::luban::SharedPtr<interval>& _out)
 {
-    _out.reset(LUBAN_NEW(test::bean));
+    _out.reset(LUBAN_NEW(interval));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
+bool item::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(itemId)) return false;
+    if(!_buf.readInt(itemCount)) return false;
+
+    return true;
+}
+
+bool item::deserializeitem(::luban::ByteBuf& _buf, ::luban::SharedPtr<item>& _out)
+{
+    _out.reset(LUBAN_NEW(item));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
+bool priority_item::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(itemId)) return false;
+    if(!_buf.readInt(itemCount)) return false;
+    if(!_buf.readInt(priority)) return false;
+
+    return true;
+}
+
+bool priority_item::deserializepriority_item(::luban::ByteBuf& _buf, ::luban::SharedPtr<priority_item>& _out)
+{
+    _out.reset(LUBAN_NEW(priority_item));
     if (_out->deserialize(_buf))
     {
         return true;

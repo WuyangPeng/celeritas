@@ -21,7 +21,7 @@ celeritas::player_component::void_awaitable_type celeritas::player_finish_compon
 
     if (!player_state->write(gateway_type.data(), player_state->get_instance_id(), header, response))
     {
-        LOG_CHANNEL(message_channel, error) << "send message error.";
+        LOG_CHANNEL(player_channel, error) << "send message error.";
     }
 
     co_return;
