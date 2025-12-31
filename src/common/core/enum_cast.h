@@ -4,7 +4,7 @@
 
 namespace celeritas
 {
-    /// 枚举和整型之间的转换
+    // 枚举和整型之间的转换
 
     template <typename E>
     [[nodiscard]] constexpr auto enum_cast_underlying(E enumerator) noexcept requires(std::is_enum_v<E>)
@@ -29,7 +29,7 @@ namespace celeritas
     template <typename E>
     void underlying_cast_enum_ptr(std::underlying_type_t<E> value, E* ptr) noexcept requires(std::is_enum_v<E>)
     {
-        /// 指针允许为空。
+        // 指针允许为空。
         if (ptr != nullptr)
         {
             *ptr = underlying_cast_enum<E>(value);

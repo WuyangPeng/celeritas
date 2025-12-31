@@ -1,6 +1,5 @@
 ﻿#include "logger_impl.h"
 #include "logger_support.h"
-#include "common/common_fwd.h"
 #include "config/config_fwd.h"
 
 #include <boost/filesystem/operations.hpp>

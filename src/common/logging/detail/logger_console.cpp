@@ -1,6 +1,5 @@
 ﻿#include "logger_console.h"
 #include "logger_support.h"
-#include "common/common_fwd.h"
 
 #include <boost/log/expressions.hpp>
 #include <boost/log/utility/setup/console.hpp>

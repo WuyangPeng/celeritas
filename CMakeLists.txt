@@ -256,6 +256,7 @@ endif ()
 
 target_link_libraries(openssl INTERFACE ${LIB_PREFIX}ssl ${LIB_PREFIX}crypto)
 
+# 生成luban
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
     file(GLOB_RECURSE ALL_CONFIG_FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/config/luban/*.xlsx")
@@ -272,7 +273,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     add_custom_target(run_luban ALL DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/config/luban/generated/schema.h")
 
 endif ()
-
 
 # 静态库
 add_subdirectory(cmake/common)

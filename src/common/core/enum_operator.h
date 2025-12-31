@@ -144,7 +144,7 @@ namespace celeritas
         return lhs;
     }
 
-    /// 使用下面函数需要包含头文件<iostream>。
+    // 使用下面函数需要包含头文件<iostream>。
 
     template <typename E>
     std::ostream& operator<<(std::ostream& os, E lhs) requires(std::is_enum_v<E>)
