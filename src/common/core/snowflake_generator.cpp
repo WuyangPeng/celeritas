@@ -1,7 +1,7 @@
 ﻿#include "celeritas_error.h"
 #include "snowflake_generator.h"
 #include "time_helper.h"
-#include "common/common_fwd.h"
+#include "common/common_constant.h"
 
 #include <mutex>
 

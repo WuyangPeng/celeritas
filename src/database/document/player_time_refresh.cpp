@@ -1,13 +1,9 @@
 ﻿#include "player_time_refresh.h"
-#include "common/common_fwd.h"
+#include "common/common_constant.h"
 #include "common/core/enum_cast.h"
 #include "common/core/time_helper.h"
-#include "player/time/time_refresh_type.h"
 #include "database/basis_database.tpp"
-
-#include <bsoncxx/json.hpp>
-#include <bsoncxx/builder/basic/array.hpp>
-#include <bsoncxx/builder/basic/document.hpp>
+#include "player/time/time_refresh_type.h"
 
 celeritas::player_time_refresh::player_time_refresh() noexcept
     : time_refresh_type_{}, parameter_{}, time_id_{}, component_{}, last_refresh_time_{}
@@ -37,6 +33,16 @@ int64_t celeritas::player_time_refresh::get_parameter() const
 void celeritas::player_time_refresh::set_parameter(const int64_t parameter)
 {
     parameter_ = parameter;
+}
+
+int64_t celeritas::player_time_refresh::get_time_id() const
+{
+    return time_id_;
+}
+
+void celeritas::player_time_refresh::set_time_id(const int64_t time_id)
+{
+    time_id_ = time_id;
 }
 
 celeritas::player_time_refresh::component_container celeritas::player_time_refresh::get_component() const
@@ -181,14 +187,4 @@ celeritas::player_time_refresh celeritas::player_time_refresh::from_document(con
     }
 
     return player_time_refresh;
-}
-
-void celeritas::player_time_refresh::set_time_id(const int64_t time_id)
-{
-    time_id_ = time_id;
-}
-
-int64_t celeritas::player_time_refresh::get_time_id() const
-{
-    return time_id_;
 }

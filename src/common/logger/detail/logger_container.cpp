@@ -1,5 +1,5 @@
 ﻿#include "logger_container.h"
-#include "common/common_fwd.h"
+#include "common/common_constant.h"
 
 #include <boost/log/attributes/constant.hpp>
 

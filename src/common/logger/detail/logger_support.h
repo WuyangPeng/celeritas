@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "logger_namespace.h"
-#include "common/common_fwd.h"
+#include "common/common_constant.h"
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/log/expressions.hpp>

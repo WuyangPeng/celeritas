@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "common/common_fwd.h"
+#include "common/common_constant.h"
 #include "detail/common_logger_internal_fwd.h"
 #include "detail/logger_namespace.h"
 

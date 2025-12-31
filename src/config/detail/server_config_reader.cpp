@@ -1,6 +1,6 @@
 ﻿#include "server_config_reader.h"
 #include "common/core/celeritas_error.h"
-#include "common/common_fwd.h"
+#include "common/common_constant.h"
 #include "config/config_fwd.h"
 
 #include <boost/property_tree/ptree.hpp>
