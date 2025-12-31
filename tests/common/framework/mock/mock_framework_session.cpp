@@ -34,9 +34,10 @@ celeritas::server_network_type celeritas::mock_framework_session::get_server_net
 
 void celeritas::mock_framework_session::set_instance_id(const std::string& instance_id)
 {
+    instance_id_ = instance_id;
 }
 
 std::string celeritas::mock_framework_session::get_instance_id() const
 {
-    return 0;
+    return instance_id_;
 }

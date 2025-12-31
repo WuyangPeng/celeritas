@@ -8,7 +8,7 @@ celeritas::mock_framework_resource_loader::mock_framework_resource_loader()
 
 std::string_view celeritas::mock_framework_resource_loader::get_server_type() const
 {
-    return "test_server";
+    return "mock_server";
 }
 
 void celeritas::mock_framework_resource_loader::process_check_tcp_clients_by_duration(io_context_type& io_context)

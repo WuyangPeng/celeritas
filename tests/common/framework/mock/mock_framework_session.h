@@ -30,5 +30,8 @@ namespace celeritas
         void set_instance_id(const std::string& instance_id) override;
 
         [[nodiscard]] std::string get_instance_id() const override;
+
+    private:
+        std::string instance_id_;
     };
 }

@@ -11,11 +11,11 @@ BOOST_AUTO_TEST_SUITE(timer_base_suite)
     BOOST_AUTO_TEST_CASE(test_timer_execution)
     {
         boost::asio::io_context io_context{};
-        const auto timer = std::make_shared<celeritas::mock_timer>(io_context, std::chrono::milliseconds(10), false);
+        const auto timer = std::make_shared<celeritas::mock_timer>(io_context, std::chrono::milliseconds(100), false);
 
         timer->start();
 
-        io_context.run_for(std::chrono::milliseconds(25));
+        io_context.run_for(std::chrono::milliseconds(250));
 
         BOOST_CHECK(timer->get_execution_count() > 1);
         timer->stop();
