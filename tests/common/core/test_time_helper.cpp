@@ -409,4 +409,35 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
         BOOST_CHECK_EQUAL(celeritas::time_helper::to_milliseconds(specific_tp_100s), 100 * celeritas::milliseconds);
     }
 
+    BOOST_AUTO_TEST_CASE(test_get_local_zone)
+    {
+        const auto* local_zone = celeritas::time_helper::get_local_zone();
+        BOOST_CHECK(local_zone != nullptr);
+
+        // 检查时区名称是否有效
+        BOOST_CHECK(!local_zone->name().empty());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_to_local_time)
+    {
+        const auto now_sys = std::chrono::system_clock::now();
+        const auto now_local = celeritas::time_helper::to_local_time(now_sys);
+
+        // 将系统时间转换为本地时间
+        const std::chrono::zoned_time zoned_time{ celeritas::time_helper::get_local_zone(), now_sys };
+        const auto expected_local_time = zoned_time.get_local_time();
+
+        // 比较 to_local_time 的结果与手动转换的结果
+        BOOST_CHECK_EQUAL(now_local.time_since_epoch().count(), expected_local_time.time_since_epoch().count());
+
+        // 测试一个已知的时间点 (Epoch)
+        const auto epoch_sys = std::chrono::system_clock::from_time_t(0);
+        const auto epoch_local = celeritas::time_helper::to_local_time(epoch_sys);
+
+        const std::chrono::zoned_time zoned_time_epoch{ celeritas::time_helper::get_local_zone(), epoch_sys };
+        const auto expected_epoch_local = zoned_time_epoch.get_local_time();
+
+        BOOST_CHECK_EQUAL(epoch_local.time_since_epoch().count(), expected_epoch_local.time_since_epoch().count());
+    }
+
 BOOST_AUTO_TEST_SUITE_END()
