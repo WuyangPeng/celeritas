@@ -4,10 +4,10 @@
 
 namespace celeritas
 {
-    class mock_application_loader final : public application_loader_base
+    class mock_framework_application_loader final : public application_loader_base
     {
     public:
-        using class_type = mock_application_loader;
+        using class_type = mock_framework_application_loader;
         using base_type = application_loader_base;
 
         void submit_task(task_type task) override;
