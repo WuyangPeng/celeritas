@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "common/common_fwd.h"
+#include "common/common_constant.h"
 
 namespace celeritas
 {

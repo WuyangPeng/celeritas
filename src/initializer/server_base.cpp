@@ -1,4 +1,5 @@
 ﻿#include "server_base.h"
+#include "common/common_constant.h"
 #include "common/core/command_line_config.h"
 #include "initializer/initializer.h"
 

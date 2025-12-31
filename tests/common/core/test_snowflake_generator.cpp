@@ -1,4 +1,4 @@
-﻿#include "common/common_fwd.h"
+﻿#include "common/common_constant.h"
 #include "common/core/snowflake_generator.h"
 
 #include <boost/test/unit_test.hpp>
