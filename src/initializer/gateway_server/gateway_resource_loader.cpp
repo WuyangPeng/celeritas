@@ -23,7 +23,7 @@ void celeritas::gateway_resource_loader::send_player_check()
     auto* server_discover = request.mutable_celeritas_request()->mutable_service()->mutable_registry()->mutable_server_discover();
     server_discover->set_service_name(player_type);
 
-    if (!write(service_registry_type.data(), header{ proto::common::empty_message_header{} }, request))
+    if (!write_to_server(service_registry_type.data(), header{ proto::common::empty_message_header{} }, request))
     {
         LOG_CHANNEL(initializer_channel, warning) << "write server discover error.";
     }

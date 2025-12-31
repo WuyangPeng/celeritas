@@ -2,7 +2,7 @@
 
 #include "common/core/session_route.h"
 #include "config/config_fwd.h"
-#include "message/message_fwd.h" 
+#include "message/message_fwd.h"
 #include "service_registry/service_registry_fwd.h"
 
 #include <boost/asio.hpp>
@@ -44,9 +44,9 @@ namespace celeritas
 
         [[nodiscard]] virtual health_check_level_awaitable_type get_health_check_level() = 0;
 
-        [[nodiscard]] virtual bool write(const std::string& server_type, const header& header, const protobuf_message& request) = 0;
+        [[nodiscard]] virtual bool write_to_server(const std::string& server_type, const header& header, const protobuf_message& request) = 0;
 
-        [[nodiscard]] virtual bool write(const std::string& server_type, const std::string& instance_id, const header& header_message, const protobuf_message& request) = 0;
+        [[nodiscard]] virtual bool write_to_server(const std::string& server_type, const std::string& instance_id, const header& header_message, const protobuf_message& request) = 0;
 
         [[nodiscard]] virtual bool write_to_client(const header& header, const protobuf_message& response) = 0;
 

@@ -12,9 +12,9 @@ namespace celeritas
 
         generate_database_tools();
 
-        void run(int argc, char** argv) const override;
+        void run(int argc, char** argv) override;
 
     private:
-        void create_initializer(const command_line_config& command_line_config) const override;
+        void create_initializer(const command_line_config& command_line_config) override;
     };
 }

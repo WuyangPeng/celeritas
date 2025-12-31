@@ -55,7 +55,7 @@ void celeritas::protobuf_handle_parameter::write_to_server(const std::string& se
     if (const auto resource_loader_shared_ptr = resource_loader_.lock();
         resource_loader_shared_ptr != nullptr)
     {
-        if (resource_loader_shared_ptr->write(server_type, header_, message))
+        if (resource_loader_shared_ptr->write_to_server(server_type, header_, message))
         {
             LOG_CHANNEL(initializer_channel, trace) << "write message to server_type: " << server_type;
         }
@@ -67,7 +67,7 @@ void celeritas::protobuf_handle_parameter::write_to_server(const std::string& se
     if (const auto resource_loader_shared_ptr = resource_loader_.lock();
         resource_loader_shared_ptr != nullptr)
     {
-        if (resource_loader_shared_ptr->write(server_type, instance_id, header_, message))
+        if (resource_loader_shared_ptr->write_to_server(server_type, instance_id, header_, message))
         {
             LOG_CHANNEL(initializer_channel, trace) << "write message to server type: " << server_type;
         }

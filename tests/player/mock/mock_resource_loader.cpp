@@ -29,12 +29,12 @@ celeritas::resource_loader_base::health_check_level_awaitable_type celeritas::mo
     co_return health_check_level_type::health;
 }
 
-bool celeritas::mock_resource_loader::write(const std::string& server_type, const header& header, const protobuf_message& request)
+bool celeritas::mock_resource_loader::write_to_server(const std::string& server_type, const header& header, const protobuf_message& request)
 {
     return true;
 }
 
-bool celeritas::mock_resource_loader::write(const std::string& server_type, const std::string& instance_id, const header& header_message, const protobuf_message& request)
+bool celeritas::mock_resource_loader::write_to_server(const std::string& server_type, const std::string& instance_id, const header& header_message, const protobuf_message& request)
 {
     return true;
 }

@@ -12,7 +12,7 @@ celeritas::generate_handler_tools::generate_handler_tools()
 {
 }
 
-void celeritas::generate_handler_tools::run(const int argc, char** argv) const
+void celeritas::generate_handler_tools::run(const int argc, char** argv)
 {
     if (const command_line_config command_line_config{ argc,
                                                        argv,
@@ -28,7 +28,7 @@ void celeritas::generate_handler_tools::run(const int argc, char** argv) const
     }
 }
 
-void celeritas::generate_handler_tools::create_initializer(const command_line_config& command_line_config) const
+void celeritas::generate_handler_tools::create_initializer(const command_line_config& command_line_config)
 {
     const auto process_unique_ptr = process::create_process(command_line_config);
     process_unique_ptr->execute();
@@ -38,7 +38,7 @@ int main(const int argc, char** argv)
 {
     try
     {
-        const celeritas::generate_handler_tools tools{};
+        celeritas::generate_handler_tools tools{};
 
         tools.run(argc, argv);
     }

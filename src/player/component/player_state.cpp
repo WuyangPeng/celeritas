@@ -167,7 +167,7 @@ bool celeritas::player_state::write(const std::string& server_type, const std::s
     const auto resource_loader_shared_ptr = resource_loader_.lock();
     if (resource_loader_shared_ptr != nullptr)
     {
-        return resource_loader_shared_ptr->write(server_type, instance_id, header, request);
+        return resource_loader_shared_ptr->write_to_server(server_type, instance_id, header, request);
     }
 
     return false;

@@ -94,7 +94,7 @@ void celeritas::resource_loader::release_resource()
     }
 }
 
-bool celeritas::resource_loader::write(const std::string& server_type, const header& header, const protobuf_message& request)
+bool celeritas::resource_loader::write_to_server(const std::string& server_type, const header& header, const protobuf_message& request)
 {
     std::shared_lock lock{ mutex_ };
 
@@ -130,7 +130,7 @@ bool celeritas::resource_loader::write(const header& header, const protobuf_mess
     return to_write;
 }
 
-bool celeritas::resource_loader::write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request)
+bool celeritas::resource_loader::write_to_server(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request)
 {
     std::shared_lock lock{ mutex_ };
 
@@ -197,7 +197,7 @@ bool celeritas::resource_loader::write_to_user(const std::string& server_type, i
         const auto session = session_route_.find(iter->second);
         if (session != session_route_.end())
         {
-            return write(server_type, session->second.get_instance_id(), header{ header_message.get_rpc(), iter->second }, message);
+            return write_to_server(server_type, session->second.get_instance_id(), header{ header_message.get_rpc(), iter->second }, message);
         }
     }
 
@@ -253,7 +253,7 @@ void celeritas::resource_loader::process_service_registry_by_duration()
         port->set_port(element.get_port());
     }
 
-    if (write(service_registry_type.data(), header{}, request))
+    if (write_to_server(service_registry_type.data(), header{}, request))
     {
         LOG_CHANNEL(initializer_channel, trace) << "service registry registry: " << server.get_instance_id();
     }
@@ -351,7 +351,7 @@ void celeritas::resource_loader::send_offline_message(const int64_t session_id)
         proto::celeritas request{};
         request.mutable_celeritas_request()->mutable_service()->mutable_player()->mutable_offline();
 
-        if (write(player_type.data(), header{ iter->second }, request))
+        if (write_to_server(player_type.data(), header{ iter->second }, request))
         {
             LOG_CHANNEL(initializer_channel, debug) << "user :" << iter->second << " is offline.";
         }

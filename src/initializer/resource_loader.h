@@ -40,14 +40,14 @@ namespace celeritas
 
         void release_resource();
 
-        [[nodiscard]] bool write(const std::string& server_type,
+        [[nodiscard]] bool write_to_server(const std::string& server_type,
                                  const header& header,
                                  const protobuf_message& request) override;
 
         [[nodiscard]] bool write(const header& header,
                                  const protobuf_message& request);
 
-        [[nodiscard]] bool write(const std::string& server_type,
+        [[nodiscard]] bool write_to_server(const std::string& server_type,
                                  const std::string& instance_id,
                                  const header& header,
                                  const protobuf_message& request) override;

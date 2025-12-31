@@ -6,7 +6,7 @@ celeritas::celeritas_main::celeritas_main(const std::string_view& server_type)
 {
 }
 
-void celeritas::celeritas_main::run(const int argc, char** argv) const
+void celeritas::celeritas_main::run(const int argc, char** argv)
 {
     if (const command_line_config command_line_config{ argc, argv, server_type_ };
         !command_line_config.is_exit_requested())

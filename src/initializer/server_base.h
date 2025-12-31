@@ -16,6 +16,6 @@ namespace celeritas
         explicit server_base(const std::string_view& server_type);
 
     private:
-        void create_initializer(const command_line_config& command_line_config) const override;
+        void create_initializer(const command_line_config& command_line_config) override;
     };
 }

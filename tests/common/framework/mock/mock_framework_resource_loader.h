@@ -1,18 +1,16 @@
 ﻿#pragma once
 
 #include "common/framework/resource_loader_base.h"
-#include "config/app_config.h"
-
-#include <boost/asio/awaitable.hpp>
-
-#include <memory>
 
 namespace celeritas
 {
-    class mock_resource_loader final : public resource_loader_base
+    class mock_framework_resource_loader final : public resource_loader_base
     {
     public:
-        mock_resource_loader();
+        using class_type = mock_framework_resource_loader;
+        using base_type = resource_loader_base;
+
+        mock_framework_resource_loader();
 
         [[nodiscard]] std::string_view get_server_type() const override;
 
@@ -35,8 +33,5 @@ namespace celeritas
         void add_session_route(int64_t user_id, session_route session_route) override;
 
         void check_client(io_context_type& io_context, const std::string& server_type, const service_info_container& container) override;
-
-    private:
-        app_config_shared_ptr app_config_;
     };
 }

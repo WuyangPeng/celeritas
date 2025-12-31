@@ -24,7 +24,7 @@ void celeritas::auth_resource_loader::send_gateway_check()
     auto* server_discover = request.mutable_celeritas_request()->mutable_service()->mutable_registry()->mutable_server_discover();
     server_discover->set_service_name(gateway_type);
 
-    if (!write(service_registry_type.data(), header{ proto::common::empty_message_header{} }, request))
+    if (!write_to_server(service_registry_type.data(), header{ proto::common::empty_message_header{} }, request))
     {
         LOG_CHANNEL(initializer_channel, warning) << "write server discover error.";
     }
