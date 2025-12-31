@@ -146,8 +146,12 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_rol
     const basis_database user_id{ "_id", int64_t{ 11111 } };
     const basis_database name{ user_role::name_describe, std::string{ "test_name" } };
     const basis_database surname{ user_role::surname_describe, std::string{ "test_name" } };
+    const basis_database modify_name{ user_role::modify_name_describe, false };
+    const basis_database change_count{ user_role::change_count_describe, 0 };
+    const basis_database per_day_change_count{ user_role::per_day_change_count_describe, 0 };
     const basis_database device_id{ user_role::device_id_describe, std::string{ "test_device" } };
     const basis_database app_version{ user_role::app_version_describe, std::string{ "1.0.0" } };
+    const basis_database change_name_time{ user_role::change_name_time_describe, time_helper::get_current_milliseconds() };
 
     database_entity_change database_entity_change{ database_type::mongo,
                                                    user_role::database_name,
@@ -156,6 +160,10 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_rol
     database_entity_change.modify(user_id);
     database_entity_change.modify(name);
     database_entity_change.modify(surname);
+    database_entity_change.modify(modify_name);
+    database_entity_change.modify(change_count);
+    database_entity_change.modify(per_day_change_count);
+    database_entity_change.modify(change_name_time);
     database_entity_change.modify(device_id);
     database_entity_change.modify(app_version);
 
@@ -168,6 +176,7 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_ser
     const basis_database update_time{ user_server_roles::update_time_describe, time_helper::get_current_milliseconds() };
 
     server_role server_role{};
+    server_role.set_role_surname("test_surname");
     server_role.set_role_name("test_name");
     server_role.set_game_server_id("test_game_server_id");
     server_role.set_last_login_time(time_helper::get_current_milliseconds());

@@ -39,7 +39,12 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
     }
 
     template <typename Func>
-    void check_start_of_cycle_with_offset(const int64_t current_cycle_start, const int64_t prev_cycle_start, const int64_t current_time, const int iterations, const int64_t step, Func func)
+    void check_start_of_cycle_with_offset(const int64_t current_cycle_start,
+                                          const int64_t prev_cycle_start,
+                                          const int64_t current_time,
+                                          const int iterations,
+                                          const int64_t step,
+                                          Func func)
     {
         for (auto i = 0; i < iterations; ++i)
         {
@@ -58,7 +63,12 @@ BOOST_AUTO_TEST_SUITE(time_helper_suite)
     }
 
     template <typename Func>
-    void check_next_cycle_start_with_offset(const int64_t current_cycle_start, const int64_t next_cycle_start, const int64_t current_time, const int iterations, const int64_t step, Func func)
+    void check_next_cycle_start_with_offset(const int64_t current_cycle_start,
+                                            const int64_t next_cycle_start,
+                                            const int64_t current_time,
+                                            const int iterations,
+                                            const int64_t step,
+                                            Func func)
     {
         for (auto i = 0; i < iterations; ++i)
         {
