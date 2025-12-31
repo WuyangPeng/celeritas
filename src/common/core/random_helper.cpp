@@ -106,7 +106,7 @@ double celeritas::random_helper::get_total_weight(const weights_type& weights)
 
     if (weights.size() == 1)
     {
-        return true;
+        return weights.at(0);
     }
 
     if (std::ranges::any_of(weights, [](const double weight) {

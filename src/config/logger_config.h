@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "config_fwd.h"
-#include "common/logger/detail/logger_namespace.h"
+#include "common/logging/detail/logger_namespace.h"
 
 #include <boost/property_tree/ptree.hpp>
 

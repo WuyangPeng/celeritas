@@ -4,7 +4,7 @@
 #include "auth/data/app_secret.h"
 #include "auth/data/app_sms_providers.h"
 #include "auth/data/server_cell_repository.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "detail/auth_server_fwd.h"
 #include "network/http_client.h"
 #include "service_registry/core/service_registry.h"

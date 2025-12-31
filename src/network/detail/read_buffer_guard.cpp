@@ -1,6 +1,6 @@
 ﻿#include "read_buffer_guard.h"
 #include "common/buffer/buffer_pool.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 
 celeritas::read_buffer_guard::read_buffer_guard(const payload_data_type& payload_data)
     : payload_data_{ payload_data }, message_header_{}, is_successful_{ true }

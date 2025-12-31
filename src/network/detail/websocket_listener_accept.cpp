@@ -1,5 +1,5 @@
 ﻿#include "websocket_listener_accept.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 
 celeritas::websocket_listener_accept::websocket_listener_accept(acceptor_type& acceptor, const server_network_type server_network_type, std::string game_server_id, network_message_callback_weak_ptr callback)
     : base_type{ server_network_type }, acceptor_{ acceptor }, game_server_id_{ std::move(game_server_id) }, callback_{ std::move(callback) }

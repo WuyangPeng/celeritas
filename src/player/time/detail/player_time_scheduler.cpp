@@ -1,7 +1,7 @@
 ﻿#include "change_timer_result.h"
 #include "player_timer.h"
 #include "player_time_scheduler.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "common/core/time_helper.h"
 #include "player/component/player_state.h"
 #include "player/time/player_time_component.h"

@@ -5,7 +5,7 @@
 #include "auth/detail/email/email_login_parameter.h"
 #include "auth/detail/email/email_operation_parameter.tpp"
 #include "common/core/celeritas_error.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/auth/account.h"

@@ -1,5 +1,5 @@
 ﻿#include "generator.h"
-#include "../../common/logger/logger.h"
+#include "../../common/logging/logger.h"
 
 #include <fstream>
 

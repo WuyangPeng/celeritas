@@ -1,6 +1,6 @@
 ﻿#include "generate_mysql_file.h"
 #include "common/core/celeritas_error.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 
 #include <boost/algorithm/string.hpp>
 

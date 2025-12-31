@@ -2,7 +2,7 @@
 #include "auth/authentication/password/password_bind.h"
 #include "auth/authentication/password/password_bind_response.h"
 #include "auth/authentication/phone/phone_bind.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_fwd.h"
 #include "message/game_error_type.h"

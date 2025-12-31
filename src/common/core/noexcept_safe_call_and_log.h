@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 
 namespace celeritas
 {

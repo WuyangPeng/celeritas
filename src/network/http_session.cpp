@@ -1,5 +1,5 @@
 ﻿#include "http_session.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "detail/http_request_session_run.h"
 #include "detail/http_request_session_write.h"

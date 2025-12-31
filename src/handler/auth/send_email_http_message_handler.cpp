@@ -2,7 +2,7 @@
 #include "auth/authentication/email/send_email.h"
 #include "auth/authentication/email/send_email_response.h"
 #include "boost/asio/co_spawn.hpp"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_fwd.h"
 #include "message/game_error_type.h"

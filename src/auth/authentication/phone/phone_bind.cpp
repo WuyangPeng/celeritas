@@ -3,7 +3,7 @@
 #include "auth/core/auth_bind.tpp"
 #include "auth/detail/phone/phone_bind_parameter.h"
 #include "auth/detail/phone/phone_operation_parameter.tpp"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "common/core/snowflake_generator.h"
 #include "config/app_config.h"
 #include "database/database_pool_manager.h"

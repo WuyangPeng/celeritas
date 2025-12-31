@@ -1,7 +1,7 @@
 ﻿#include "http_handle_parameter.h"
 #include "common/framework/application_loader_base.h"
 #include "common/core/celeritas_error.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "common/framework/resource_loader_base.h"
 #include "common/framework/session.h"
 #include "config/app_config.h"

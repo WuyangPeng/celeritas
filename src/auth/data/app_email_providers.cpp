@@ -1,6 +1,6 @@
 ﻿#include "app_email_providers.h"
 #include "common/core/celeritas_error.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "database/database_pool_manager.h"
 
 celeritas::app_email_providers& celeritas::app_email_providers::get_instance()

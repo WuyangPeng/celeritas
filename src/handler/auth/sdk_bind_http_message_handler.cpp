@@ -1,7 +1,7 @@
 ﻿#include "sdk_bind_http_message_handler.h"
 #include "auth/authentication/sdk/sdk_bind.h"
 #include "auth/authentication/sdk/sdk_bind_response.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_fwd.h"
 #include "message/game_error_type.h"

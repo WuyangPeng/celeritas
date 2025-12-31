@@ -1,6 +1,6 @@
 ﻿#include "timer_base.h"
 #include "common/core/noexcept_safe_call_and_log.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 
 celeritas::timer_base::timer_base(io_context_type& io_context, const duration_type interval, const bool disposable)
     : timer_{ io_context }, interval_{ interval }, disposable_{ disposable }

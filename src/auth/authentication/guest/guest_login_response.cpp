@@ -1,6 +1,6 @@
 ﻿#include "guest_login_response.h"
 #include "common/core/celeritas_error.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 
 celeritas::guest_login_response::guest_login_response(const game_error_type code)
     : bass_type{ code }

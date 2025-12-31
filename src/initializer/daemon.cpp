@@ -1,5 +1,5 @@
 ﻿#include "daemon.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 
 #include <boost/filesystem/operations.hpp>

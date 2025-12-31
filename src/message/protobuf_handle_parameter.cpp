@@ -1,6 +1,6 @@
 ﻿#include "protobuf_handle_parameter.h"
 #include "common/core/celeritas_error.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "common/framework/resource_loader_base.h"
 #include "common/framework/session.h"
 

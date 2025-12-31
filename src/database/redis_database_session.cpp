@@ -5,7 +5,7 @@
 #include "redis_database_session.h"
 #include "common/core/celeritas_error.h"
 #include "common/common_fwd.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "detail/redis_key_data_converter.h"
 
 using namespace std::literals;

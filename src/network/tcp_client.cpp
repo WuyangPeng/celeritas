@@ -1,6 +1,6 @@
 ﻿#include "generic_session.tpp"
 #include "tcp_client.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "config/server_network_type.h"
 
 celeritas::tcp_client::tcp_client(io_context_type& io_context,

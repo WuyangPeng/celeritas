@@ -1,7 +1,7 @@
 ﻿#include "player_item_document.h"
 #include "boost/numeric/conversion/cast.hpp"
 #include "common/core/celeritas_error.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "common/core/snowflake_generator.h"
 #include "config/app_config.h"
 #include "config/game_config/container_config.tpp"

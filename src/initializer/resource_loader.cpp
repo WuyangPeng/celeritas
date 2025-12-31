@@ -1,6 +1,6 @@
 ﻿#include "initializer_fwd.h"
 #include "resource_loader.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "common/core/random_helper.h"
 #include "config/game_config/game_config.h"
 #include "config/luban/generated/schema.h"

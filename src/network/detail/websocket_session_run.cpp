@@ -1,6 +1,6 @@
 ﻿#include "websocket_session_handle_session.h"
 #include "websocket_session_run.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 
 celeritas::websocket_session_run::websocket_session_run(web_socket_stream_type& web_socket, const int64_t session_id, session_callback session_callback)
     : base_type{}, web_socket_{ web_socket }, session_id_{ session_id }, session_callback_{ std::move(session_callback) }

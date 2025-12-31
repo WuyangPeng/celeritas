@@ -3,7 +3,7 @@
 #include "database_entity_change.h"
 #include "mysql_database_session.h"
 #include "common/core/celeritas_error.h"
-#include "common/logger/logger.h"
+#include "common/logging/logger.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "detail/mysql_row_data_converter.h"
 #include "detail/mysql_statement_generator.h"
