@@ -27,7 +27,7 @@ namespace celeritas
 
         void push(task_type task);
 
-        bool pop(task_type& task);
+        [[nodiscard]] bool pop(task_type& task);
 
         void stop();
 
