@@ -16,12 +16,12 @@ namespace celeritas
 
         [[nodiscard]] bool is_create_initializer_called() const;
 
-        [[nodiscard]] std::string get_config_instance_name() const;
+        [[nodiscard]] std::string get_config_file_path() const;
 
     private:
         void create_initializer(const command_line_config& command_line_config) override;
 
         bool create_initializer_called_ = false;
-        std::string config_instance_name_;
+        std::string config_file_path_;
     };
 }

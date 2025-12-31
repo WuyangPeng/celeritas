@@ -9,13 +9,13 @@ BOOST_AUTO_TEST_SUITE(celeritas_main_suite)
     BOOST_AUTO_TEST_CASE(test_run_calls_create_initializer)
     {
         celeritas::mock_celeritas_main main{ "test_server" };
-        char* argv[] = { const_cast<char*>("test_program"), const_cast<char*>("--instance_name=test_instance"), nullptr };
+        char* argv[] = { const_cast<char*>("test_program"), const_cast<char*>("--config_file_path=test_instance"), nullptr };
         constexpr auto argc = std::size(argv) - 1;
 
         main.run(argc, argv);
 
         BOOST_CHECK(main.is_create_initializer_called());
-        BOOST_CHECK_EQUAL(main.get_config_instance_name(), "test_instance");
+        BOOST_CHECK_EQUAL(main.get_config_file_path(), "test_instance");
     }
 
     BOOST_AUTO_TEST_CASE(test_get_server_type)
