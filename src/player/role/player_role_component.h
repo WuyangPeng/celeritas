@@ -15,6 +15,7 @@ namespace celeritas
         using class_type = player_role_component;
         using base_type = player_component;
         using service_login_request_type = proto::service::service_login_request;
+        using bool_awaitable_type = boost::asio::awaitable<bool>;
 
         explicit player_role_component(player_state* player_state, const service_login_request_type& login) noexcept;
 
@@ -29,7 +30,7 @@ namespace celeritas
 
         [[nodiscard]] bool is_modify() const override;
 
-        void change_name(const std::string& surname, const std::string& name);
+        [[nodiscard]] bool_awaitable_type change_name(const std::string& surname, const std::string& name);
 
         void set_login(const service_login_request_type& login);
 

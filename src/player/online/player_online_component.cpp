@@ -33,9 +33,10 @@ celeritas::player_component::void_awaitable_type celeritas::player_online_compon
     {
         const auto mysql_pool = get_mysql_auth_database_pool();
 
-        co_await mysql_pool->execute_changes(account_last_login_->get_modify());
-
-        account_last_login_->clear_modify();
+        if (co_await mysql_pool->execute_changes(account_last_login_->get_modify()))
+        {
+            account_last_login_->clear_modify();
+        }
     }
 }
 

@@ -45,9 +45,10 @@ celeritas::player_red_dot_database::void_awaitable_type celeritas::player_red_do
     if (user_red_dots_->is_must_save())
     {
         const auto mongo_player_pool = player_red_dot_component_->get_mongo_player_database_pool();
-        co_await mongo_player_pool->execute_changes(user_red_dots_->get_modify());
-
-        user_red_dots_->clear_modify();
+        if (co_await mongo_player_pool->execute_changes(user_red_dots_->get_modify()))
+        {
+            user_red_dots_->clear_modify();
+        }
     }
 }
 

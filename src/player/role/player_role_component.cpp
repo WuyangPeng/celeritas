@@ -38,15 +38,19 @@ celeritas::player_component::void_awaitable_type celeritas::player_role_componen
     if (user_role_->is_must_save())
     {
         const auto mongo_player_pool = get_mongo_player_database_pool();
-        co_await mongo_player_pool->execute_changes(user_role_->get_modify());
-        user_role_->clear_modify();
+        if (co_await mongo_player_pool->execute_changes(user_role_->get_modify()))
+        {
+            user_role_->clear_modify();
+        }
     }
 
     if (user_server_roles_->is_must_save())
     {
         const auto mongo_auth_pool = get_mongo_auth_database_pool();
-        co_await mongo_auth_pool->execute_changes(user_server_roles_->get_modify());
-        user_server_roles_->clear_modify();
+        if (co_await mongo_auth_pool->execute_changes(user_server_roles_->get_modify()))
+        {
+            user_server_roles_->clear_modify();
+        }
     }
 }
 
@@ -55,14 +59,28 @@ bool celeritas::player_role_component::is_modify() const
     return user_role_->is_must_save() || user_server_roles_->is_must_save();
 }
 
-void celeritas::player_role_component::change_name(const std::string& surname, const std::string& name)
+celeritas::player_role_component::bool_awaitable_type celeritas::player_role_component::change_name(const std::string& surname, const std::string& name)
 {
     const auto change_name_time = time_helper::get_current_milliseconds();
+    const auto player_user = get_player_state()->get_component<player_user_component>();
+    const auto old_user_role = *user_role_;
 
     user_role_->set_surname(surname);
     user_role_->set_name(name);
     user_role_->set_modify_name(true);
     user_role_->set_change_name_time(change_name_time);
+    user_role_->set_full_name(player_user->get_game_server_id() + surname + name);
+
+    const auto mongo_player_pool = get_mongo_player_database_pool();
+    if (co_await mongo_player_pool->execute_changes(user_role_->get_modify()))
+    {
+        user_role_->clear_modify();
+    }
+    else
+    {
+        user_role_ = old_user_role;
+        co_return false;
+    }
 
     server_role_->set_role_surname(surname);
     server_role_->set_role_name(name);
@@ -70,6 +88,8 @@ void celeritas::player_role_component::change_name(const std::string& surname, c
     user_server_roles_->set_update_time(change_name_time);
 
     get_player_state()->set_dirty();
+
+    co_return true;
 }
 
 void celeritas::player_role_component::set_login(const service_login_request_type& login)
@@ -135,6 +155,7 @@ celeritas::player_role_component::void_awaitable_type celeritas::player_role_com
         user_role_->set_surname(game_tables->get_surname());
         user_role_->set_name(game_tables->get_name(config::sex_type::none));
         user_role_->set_change_name_time(time_helper::get_current_milliseconds());
+        user_role_->set_full_name(std::to_string(user_id));
     }
 
     user_role_->set_device_id(device_id_);

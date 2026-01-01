@@ -47,6 +47,12 @@
         "entity_name": "change_name_time",
         "data_type": "int64",
         "comment": "改名时间"
+      },
+      {
+        "entity_name": "full_name",
+        "data_type": "string",
+        "comment": "名字，改名时撞数据库",
+        "index_type": "unique_index"
       }
     ]
   },

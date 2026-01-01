@@ -17,7 +17,8 @@ celeritas::user_role::user_role(const database_entity_change& entity)
       per_day_change_count_{ entity.get_value<database_data_type::int32_type>(per_day_change_count_describe) },
       device_id_{ entity.get_value<database_data_type::string_type>(device_id_describe) },
       app_version_{ entity.get_value<database_data_type::string_type>(app_version_describe) },
-      change_name_time_{ entity.get_value<database_data_type::int64_type>(change_name_time_describe) }
+      change_name_time_{ entity.get_value<database_data_type::int64_type>(change_name_time_describe) },
+      full_name_{ entity.get_value<database_data_type::string_type>(full_name_describe) }
 {
 }
 
@@ -31,7 +32,8 @@ celeritas::user_role::user_role(const database_type database_type, const databas
       per_day_change_count_{ entity.get_value<database_data_type::int32_type>(per_day_change_count_describe) },
       device_id_{ entity.get_value<database_data_type::string_type>(device_id_describe) },
       app_version_{ entity.get_value<database_data_type::string_type>(app_version_describe) },
-      change_name_time_{ entity.get_value<database_data_type::int64_type>(change_name_time_describe) }
+      change_name_time_{ entity.get_value<database_data_type::int64_type>(change_name_time_describe) },
+      full_name_{ entity.get_value<database_data_type::string_type>(full_name_describe) }
 {
     if (database_type != entity.get_database_type())
     {
@@ -44,6 +46,7 @@ celeritas::user_role::user_role(const database_type database_type, const databas
         add_modify(device_id_describe, get_device_id());
         add_modify(app_version_describe, get_app_version());
         add_modify(change_name_time_describe, get_change_name_time());
+        add_modify(full_name_describe, get_full_name());
     }
 }
 
@@ -57,7 +60,8 @@ celeritas::user_role::user_role(const database_type database_type, traits::param
       per_day_change_count_{ traits::int32_type{} },
       device_id_{ traits::string_type{} },
       app_version_{ traits::string_type{} },
-      change_name_time_{ traits::int64_type{} }
+      change_name_time_{ traits::int64_type{} },
+      full_name_{ traits::string_type{} }
 {
     add_modify(user_id_describe, user_id);
 }
@@ -105,6 +109,11 @@ celeritas::traits::string_type celeritas::user_role::get_app_version() const
 celeritas::traits::int64_type celeritas::user_role::get_change_name_time() const noexcept
 {
     return change_name_time_.get_value();
+}
+
+celeritas::traits::string_type celeritas::user_role::get_full_name() const
+{
+    return full_name_.get_value();
 }
 
 void celeritas::user_role::set_user_id(traits::param_type::int64_type user_id)
@@ -197,6 +206,16 @@ void celeritas::user_role::set_change_name_time(traits::param_type::int64_type c
     }
 }
 
+void celeritas::user_role::set_full_name(traits::param_type::string_type full_name)
+{
+    if (full_name != get_full_name())
+    {
+        full_name_.set_value(full_name);
+
+        add_modify(full_name_describe, get_full_name());
+    }
+}
+
 const celeritas::database_entity::database_field_container& celeritas::user_role::get_database_field_container()
 {
     static const database_field_container field_name_container{ decltype(user_id_)::get_database_field(),
@@ -207,7 +226,8 @@ const celeritas::database_entity::database_field_container& celeritas::user_role
                                                                 decltype(per_day_change_count_)::get_database_field(),
                                                                 decltype(device_id_)::get_database_field(),
                                                                 decltype(app_version_)::get_database_field(),
-                                                                decltype(change_name_time_)::get_database_field() };
+                                                                decltype(change_name_time_)::get_database_field(),
+                                                                decltype(full_name_)::get_database_field() };
 
     return field_name_container;
 }

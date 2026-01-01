@@ -152,6 +152,7 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_rol
     const basis_database device_id{ user_role::device_id_describe, std::string{ "test_device" } };
     const basis_database app_version{ user_role::app_version_describe, std::string{ "1.0.0" } };
     const basis_database change_name_time{ user_role::change_name_time_describe, time_helper::get_current_milliseconds() };
+    const basis_database full_name{ user_role::full_name_describe, std::string{ "test_name" } };
 
     database_entity_change database_entity_change{ database_type::mongo,
                                                    user_role::database_name,
@@ -166,6 +167,7 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_rol
     database_entity_change.modify(change_name_time);
     database_entity_change.modify(device_id);
     database_entity_change.modify(app_version);
+    database_entity_change.modify(full_name);
 
     return database_entity_change;
 }

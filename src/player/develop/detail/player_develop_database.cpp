@@ -47,9 +47,10 @@ celeritas::player_develop_database::void_awaitable_type celeritas::player_develo
     if (user_develop_->is_must_save())
     {
         const auto mongo_player_pool = player_develop_component_->get_mongo_player_database_pool();
-        co_await mongo_player_pool->execute_changes(user_develop_->get_modify());
-
-        user_develop_->clear_modify();
+        if (co_await mongo_player_pool->execute_changes(user_develop_->get_modify()))
+        {
+            user_develop_->clear_modify();
+        }
     }
 }
 

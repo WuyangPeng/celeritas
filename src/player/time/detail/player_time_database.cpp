@@ -35,8 +35,10 @@ celeritas::player_time_database::void_awaitable_type celeritas::player_time_data
     if (user_time_refresh_->is_must_save())
     {
         const auto mongo_pool = player_time_component_->get_mongo_player_database_pool();
-        co_await mongo_pool->execute_changes(user_time_refresh_->get_modify());
-        user_time_refresh_->clear_modify();
+        if (co_await mongo_pool->execute_changes(user_time_refresh_->get_modify()))
+        {
+            user_time_refresh_->clear_modify();
+        }
     }
 }
 
