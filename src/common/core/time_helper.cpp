@@ -186,8 +186,7 @@ celeritas::time_helper::time_point_type celeritas::time_helper::get_start_of_day
 {
     const auto local_day = get_local_day(time_point);
 
-    const auto* current_zone = get_local_zone();
-    return current_zone->to_sys(local_day);
+    return get_local_zone()->to_sys(local_day);
 }
 
 celeritas::time_helper::time_point_type celeritas::time_helper::get_start_of_week(const time_point_type& time_point)
@@ -195,11 +194,10 @@ celeritas::time_helper::time_point_type celeritas::time_helper::get_start_of_wee
     const auto local_day = get_local_day(time_point);
 
     const std::chrono::weekday weekday{ local_day };
-    const auto days_diff = std::chrono::days{ (weekday.c_encoding() + 6) % 7 };
+    const std::chrono::days days_diff{ (weekday.c_encoding() + 6) % 7 };
     const auto week_start_local = local_day - days_diff;
 
-    const auto* current_zone = get_local_zone();
-    return current_zone->to_sys(week_start_local);
+    return get_local_zone()->to_sys(week_start_local);
 }
 
 celeritas::time_helper::time_point_type celeritas::time_helper::get_start_of_month(const time_point_type& time_point, const int months_offset)
@@ -207,7 +205,7 @@ celeritas::time_helper::time_point_type celeritas::time_helper::get_start_of_mon
     const auto local_day = get_local_day(time_point);
 
     const std::chrono::year_month_day year_month_day{ local_day };
-    const auto month_start = std::chrono::year_month_day{ year_month_day.year(), year_month_day.month(), std::chrono::day{ 1 } };
+    const std::chrono::year_month_day month_start{ year_month_day.year(), year_month_day.month(), std::chrono::day{ 1 } };
 
     auto target_month_start = month_start;
     if (months_offset != 0)
@@ -215,8 +213,7 @@ celeritas::time_helper::time_point_type celeritas::time_helper::get_start_of_mon
         target_month_start = month_start + std::chrono::months(months_offset);
     }
 
-    const auto* current_zone = get_local_zone();
-    return current_zone->to_sys(std::chrono::local_days{ target_month_start });
+    return get_local_zone()->to_sys(std::chrono::local_days{ target_month_start });
 }
 
 int64_t celeritas::time_helper::get_start_of_day_milliseconds_with_offset(const time_point_type& check_time, const int64_t milliseconds_offset)

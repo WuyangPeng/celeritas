@@ -22,6 +22,6 @@ namespace celeritas
         static void reclaim(duration_type idle_seconds);
 
     private:
-        [[nodiscard]] static buffer_pool_impl& get_buffer_pool();
+        [[nodiscard]] static buffer_pool_impl& get_buffer_pool() noexcept;
     };
 }

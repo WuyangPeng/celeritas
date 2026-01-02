@@ -24,7 +24,7 @@ namespace celeritas
                 return variables_[key].as<T>();
             }
 
-            throw celeritas_error("attempted to access unregistered or invalid key: {}", key);
+            throw celeritas_error{ "attempted to access unregistered or invalid key: {}", key };
         }
 
         [[nodiscard]] bool is_exit_requested() const noexcept;

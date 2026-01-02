@@ -2,6 +2,7 @@
 #include "common/core/random_helper.h"
 
 #include <boost/test/unit_test.hpp>
+#include <boost/test/data/test_case.hpp>
 
 #include <map>
 #include <numeric>
@@ -10,15 +11,12 @@
 BOOST_AUTO_TEST_SUITE(random_helper_suite)
 
     // 测试 get_random_int(int end)
-    BOOST_AUTO_TEST_CASE(test_get_random_int_end_range)
+    BOOST_DATA_TEST_CASE(test_get_random_int_end_range, boost::unit_test::data::xrange(1000), index)
     {
-        for (auto i = 0; i < 1000; ++i)
-        {
-            constexpr auto end = 100;
-            const auto random_value = celeritas::random_helper::get_random_int(end);
-            BOOST_CHECK_GE(random_value, 0);
-            BOOST_CHECK_LT(random_value, end);
-        }
+        constexpr auto end = 100;
+        const auto random_value = celeritas::random_helper::get_random_int(end);
+        BOOST_CHECK_GE(random_value, 0);
+        BOOST_CHECK_LT(random_value, end);
     }
 
     BOOST_AUTO_TEST_CASE(test_get_random_int_end_zero)
@@ -28,17 +26,14 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
     }
 
     // 测试 get_random_int(int begin, int end)
-    BOOST_AUTO_TEST_CASE(test_get_random_int_begin_end_range)
+    BOOST_DATA_TEST_CASE(test_get_random_int_begin_end_range, boost::unit_test::data::xrange(1000), index)
     {
-        for (auto i = 0; i < 1000; ++i)
-        {
-            constexpr auto begin = -50;
-            constexpr auto end = 50;
+        constexpr auto begin = -50;
+        constexpr auto end = 50;
 
-            const auto random_value = celeritas::random_helper::get_random_int(begin, end);
-            BOOST_CHECK_GE(random_value, begin);
-            BOOST_CHECK_LT(random_value, end);
-        }
+        const auto random_value = celeritas::random_helper::get_random_int(begin, end);
+        BOOST_CHECK_GE(random_value, begin);
+        BOOST_CHECK_LT(random_value, end);
     }
 
     BOOST_AUTO_TEST_CASE(test_get_random_int_begin_end_equal)
@@ -57,28 +52,22 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
     }
 
     // 测试 get_random_float()
-    BOOST_AUTO_TEST_CASE(test_get_random_float_range)
+    BOOST_DATA_TEST_CASE(test_get_random_float_range, boost::unit_test::data::xrange(1000), index)
     {
-        for (auto i = 0; i < 1000; ++i)
-        {
-            const auto random_value = celeritas::random_helper::get_random_float();
-            BOOST_CHECK_GE(random_value, 0.0f);
-            BOOST_CHECK_LT(random_value, 1.0f);
-        }
+        const auto random_value = celeritas::random_helper::get_random_float();
+        BOOST_CHECK_GE(random_value, 0.0f);
+        BOOST_CHECK_LT(random_value, 1.0f);
     }
 
     // 测试 get_random_float(float begin, float end)
-    BOOST_AUTO_TEST_CASE(test_get_random_float_begin_end_range)
+    BOOST_DATA_TEST_CASE(test_get_random_float_begin_end_range, boost::unit_test::data::xrange(1000), index)
     {
-        for (auto i = 0; i < 1000; ++i)
-        {
-            constexpr auto begin = -10.0f;
-            constexpr auto end = 10.0f;
+        constexpr auto begin = -10.0f;
+        constexpr auto end = 10.0f;
 
-            const auto random_value = celeritas::random_helper::get_random_float(begin, end);
-            BOOST_CHECK_GE(random_value, begin);
-            BOOST_CHECK_LT(random_value, end);
-        }
+        const auto random_value = celeritas::random_helper::get_random_float(begin, end);
+        BOOST_CHECK_GE(random_value, begin);
+        BOOST_CHECK_LT(random_value, end);
     }
 
     // 新增测试：get_random_float 在 begin > end 时抛出异常
@@ -90,28 +79,22 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
     }
 
     // 测试 get_random_double()
-    BOOST_AUTO_TEST_CASE(test_get_random_double_range)
+    BOOST_DATA_TEST_CASE(test_get_random_double_range, boost::unit_test::data::xrange(1000), index)
     {
-        for (auto i = 0; i < 1000; ++i)
-        {
-            const auto random_value = celeritas::random_helper::get_random_double();
-            BOOST_CHECK_GE(random_value, 0.0);
-            BOOST_CHECK_LT(random_value, 1.0);
-        }
+        const auto random_value = celeritas::random_helper::get_random_double();
+        BOOST_CHECK_GE(random_value, 0.0);
+        BOOST_CHECK_LT(random_value, 1.0);
     }
 
     // 测试 get_random_double(double begin, double end)
-    BOOST_AUTO_TEST_CASE(test_get_random_double_begin_end_range)
+    BOOST_DATA_TEST_CASE(test_get_random_double_begin_end_range, boost::unit_test::data::xrange(1000), index)
     {
-        for (auto i = 0; i < 1000; ++i)
-        {
-            constexpr auto begin = -100.0;
-            constexpr auto end = 100.0;
+        constexpr auto begin = -100.0;
+        constexpr auto end = 100.0;
 
-            const auto random_value = celeritas::random_helper::get_random_double(begin, end);
-            BOOST_CHECK_GE(random_value, begin);
-            BOOST_CHECK_LT(random_value, end);
-        }
+        const auto random_value = celeritas::random_helper::get_random_double(begin, end);
+        BOOST_CHECK_GE(random_value, begin);
+        BOOST_CHECK_LT(random_value, end);
     }
 
     // 新增测试：get_random_double 在 begin > end 时抛出异常
@@ -141,20 +124,14 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
         BOOST_CHECK_CLOSE(static_cast<double>(true_count) / num_iterations, p_true, 5.0);
     }
 
-    BOOST_AUTO_TEST_CASE(test_get_random_bool_always_true)
+    BOOST_DATA_TEST_CASE(test_get_random_bool_always_true, boost::unit_test::data::xrange(100), index)
     {
-        for (auto i = 0; i < 100; ++i)
-        {
-            BOOST_CHECK(celeritas::random_helper::get_random_bool(1.0));
-        }
+        BOOST_CHECK(celeritas::random_helper::get_random_bool(1.0));
     }
 
-    BOOST_AUTO_TEST_CASE(test_get_random_bool_always_false)
+    BOOST_DATA_TEST_CASE(test_get_random_bool_always_false, boost::unit_test::data::xrange(100), index)
     {
-        for (auto i = 0; i < 100; ++i)
-        {
-            BOOST_CHECK(!celeritas::random_helper::get_random_bool(0.0));
-        }
+        BOOST_CHECK(!celeritas::random_helper::get_random_bool(0.0));
     }
 
     // 测试 get_random_normal(double mean, double stddev)
@@ -212,25 +189,19 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
     }
 
     // 测试 get_random_index_by_weight 的单个元素
-    BOOST_AUTO_TEST_CASE(test_get_random_index_by_weight_single_element)
+    BOOST_DATA_TEST_CASE(test_get_random_index_by_weight_single_element, boost::unit_test::data::xrange(100), index)
     {
         const celeritas::random_helper::weights_type weights{ 100.0 };
-        for (auto i = 0; i < 100; ++i)
-        {
-            const auto index = celeritas::random_helper::get_random_index_by_weight(weights);
-            BOOST_CHECK_EQUAL(index, 0);
-        }
+        const auto result_index = celeritas::random_helper::get_random_index_by_weight(weights);
+        BOOST_CHECK_EQUAL(result_index, 0);
     }
 
     // 测试 get_random_index_by_weight 包含零权重
-    BOOST_AUTO_TEST_CASE(test_get_random_index_by_weight_with_zero_weight)
+    BOOST_DATA_TEST_CASE(test_get_random_index_by_weight_with_zero_weight, boost::unit_test::data::xrange(1000), index)
     {
         const celeritas::random_helper::weights_type weights{ 1.0, 0.0, 1.0 };
-        for (auto i = 0; i < 1000; ++i)
-        {
-            const auto index = celeritas::random_helper::get_random_index_by_weight(weights);
-            BOOST_CHECK_NE(index, 1);
-        }
+        const auto result_index = celeritas::random_helper::get_random_index_by_weight(weights);
+        BOOST_CHECK_NE(result_index, 1);
     }
 
     // 测试 get_random_index_by_weight 空向量抛出异常

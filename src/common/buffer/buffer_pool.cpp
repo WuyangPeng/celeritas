@@ -16,7 +16,7 @@ void celeritas::buffer_pool::reclaim(const duration_type idle_seconds)
     get_buffer_pool().reclaim(idle_seconds);
 }
 
-celeritas::buffer_pool_impl& celeritas::buffer_pool::get_buffer_pool()
+celeritas::buffer_pool_impl& celeritas::buffer_pool::get_buffer_pool() noexcept
 {
     static buffer_pool_impl buffer_pool{};
 

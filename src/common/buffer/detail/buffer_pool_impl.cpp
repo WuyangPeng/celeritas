@@ -19,18 +19,18 @@ void celeritas::buffer_pool_impl::release(buffer_pool_data buffer)
 {
     std::lock_guard lock{ mutex_ };
 
-    if (auto& entry = pool_[buffer.size()];
-        entry.size() < max_idle_per_size)
+    if (auto& bucket = pool_[buffer.size()];
+        bucket.size() < max_idle_per_size)
     {
-        entry.emplace_front(std::move(buffer));
+        bucket.emplace_front(std::move(buffer));
     }
 }
 
 void celeritas::buffer_pool_impl::reclaim(const duration_type idle_seconds)
 {
-    const auto deadline = std::chrono::steady_clock::now() - idle_seconds;
-
     std::lock_guard lock{ mutex_ };
+
+    const auto deadline = std::chrono::steady_clock::now() - idle_seconds;
 
     std::erase_if(pool_, [&](auto& entry) {
         return entry.second.last_take() < deadline;
