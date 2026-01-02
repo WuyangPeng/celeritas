@@ -26,6 +26,17 @@ namespace
         const auto logger = celeritas::logger::get_default(level);
         BOOST_CHECK_EQUAL(logger.has_value(), expected);
     }
+
+    void check_capture(const celeritas::capture_clog& capture)
+    {
+        const auto output = capture.str();
+        BOOST_CHECK(output.find(message_trace) != std::string::npos);
+        BOOST_CHECK(output.find(message_debug) != std::string::npos);
+        BOOST_CHECK(output.find(message_info) != std::string::npos);
+        BOOST_CHECK(output.find(message_warning) != std::string::npos);
+        BOOST_CHECK(output.find(message_error) != std::string::npos);
+        BOOST_CHECK(output.find(message_fatal) != std::string::npos);
+    }
 }
 
 BOOST_FIXTURE_TEST_SUITE(logger_suite, celeritas::logger_fixture)
@@ -81,13 +92,7 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, celeritas::logger_fixture)
 
         boost::log::core::get()->flush();
 
-        const auto output = capture.str();
-        BOOST_CHECK(output.find(message_trace) != std::string::npos);
-        BOOST_CHECK(output.find(message_debug) != std::string::npos);
-        BOOST_CHECK(output.find(message_info) != std::string::npos);
-        BOOST_CHECK(output.find(message_warning) != std::string::npos);
-        BOOST_CHECK(output.find(message_error) != std::string::npos);
-        BOOST_CHECK(output.find(message_fatal) != std::string::npos);
+        check_capture(capture);
     }
 
     BOOST_AUTO_TEST_CASE(test_channel_logger)
@@ -111,11 +116,9 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, celeritas::logger_fixture)
         BOOST_CHECK(capture.str().find(message_channel_info) != std::string::npos);
 
         // 如果文件日志设置为 INFO，则 DEBUG 应该被过滤掉
-        const auto logger_debug = celeritas::logger::get(channel_name, boost::log::trivial::debug);
-        BOOST_CHECK(!logger_debug.has_value());
+        check_level(boost::log::trivial::debug, false);
 
-        const auto logger_info = celeritas::logger::get(channel_name, boost::log::trivial::info);
-        BOOST_CHECK(logger_info.has_value());
+        check_level(boost::log::trivial::info, true);
     }
 
     BOOST_AUTO_TEST_CASE(test_file_logger_no_console)
@@ -130,8 +133,7 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, celeritas::logger_fixture)
         // 初始化仅文件日志，不输出到控制台，级别为 DEBUG
         celeritas::logger::init_file(channel_name, log_file, boost::log::trivial::debug, celeritas::default_logger_rotation_size, false);
 
-        const auto channel_logger = celeritas::logger::get(channel_name, boost::log::trivial::debug);
-        BOOST_CHECK(channel_logger.has_value());
+        check_level(boost::log::trivial::debug, true);
 
         LOG_CHANNEL(channel_name, debug) << message_file_only;
 
