@@ -1,4 +1,5 @@
 ﻿#include "common/worker_pool/thread_safe_queue.h"
+#include "fixture/multiple_producers_fixture.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -9,33 +10,8 @@
 
 namespace
 {
-    constexpr auto tasks_per_producer = 100;
-    constexpr auto total_tasks = tasks_per_producer * 2;
     constexpr auto num_tasks = 200;
     constexpr auto num_consumers = 5;
-
-    // 生产者任务：向队列推送指定数量的任务
-    void produce_tasks(celeritas::thread_safe_queue& queue, std::atomic<int>& counter)
-    {
-        for (auto i = 0; i < tasks_per_producer; ++i)
-        {
-            queue.push([&counter] {
-                ++counter;
-            });
-        }
-    }
-
-    // 消费者任务：从队列取出并执行任务
-    void consume_tasks(celeritas::thread_safe_queue& queue)
-    {
-        auto executed_tasks = 0;
-        celeritas::thread_safe_queue::task_type task{};
-        while (executed_tasks < total_tasks && queue.pop(task))
-        {
-            task();
-            ++executed_tasks;
-        }
-    }
 
     // 准备任务：向队列预先填充任务
     void prepare_tasks(celeritas::thread_safe_queue& queue, std::atomic<int>& counter)
@@ -93,26 +69,14 @@ BOOST_AUTO_TEST_SUITE(thread_safe_queue_suite)
         BOOST_CHECK(!task_executed);
     }
 
-    BOOST_AUTO_TEST_CASE(test_multiple_producers)
+    BOOST_FIXTURE_TEST_CASE(test_multiple_producers, celeritas::multiple_producers_fixture)
     {
-        celeritas::thread_safe_queue queue{};
-        std::atomic counter{ 0 };
-
-        std::thread t1{ produce_tasks, std::ref(queue), std::ref(counter) };
-        std::thread t2{ produce_tasks, std::ref(queue), std::ref(counter) };
-
-        t1.join();
-        t2.join();
-
-        consume_tasks(queue);
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        queue.stop();
+        produce();
 
         celeritas::thread_safe_queue::task_type task{};
-        BOOST_CHECK(!queue.pop(task));
+        BOOST_CHECK(!pop(task));
 
-        BOOST_CHECK_EQUAL(counter, total_tasks);
+        BOOST_CHECK_EQUAL(get_counter(), total_tasks);
     }
 
     BOOST_AUTO_TEST_CASE(test_multiple_consumers)
