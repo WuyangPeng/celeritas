@@ -1,6 +1,6 @@
 ﻿#include "common/logging/logger.h"
 #include "common/logging/detail/common_logger_internal_constant.h"
-#include "config/config_fwd.h"
+#include "config/config_constant.h"
 #include "detail/capture_clog.h"
 #include "fixture/logger_fixture.h"
 

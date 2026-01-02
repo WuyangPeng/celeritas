@@ -1,6 +1,6 @@
 ﻿#include "logger_fixture.h"
 #include "common/logging/logger.h"
-#include "config/config_fwd.h"
+#include "config/config_constant.h"
 
 celeritas::logger_fixture::logger_fixture()
 {
