@@ -27,6 +27,17 @@ namespace
         BOOST_CHECK_EQUAL(logger.has_value(), expected);
     }
 
+    void logger_message()
+    {
+        // 这些宏应该能编译并运行无误
+        LOG(trace) << message_trace;
+        LOG(debug) << message_debug;
+        LOG(info) << message_info;
+        LOG(warning) << message_warning;
+        LOG(error) << message_error;
+        LOG(fatal) << message_fatal;
+    }
+
     void check_capture(const celeritas::capture_clog& capture)
     {
         const auto output = capture.str();
@@ -82,13 +93,7 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, celeritas::logger_fixture)
         celeritas::logger::init_global(boost::log::trivial::trace);
         celeritas::logger::init_console(boost::log::trivial::trace);
 
-        // 这些宏应该能编译并运行无误
-        LOG(trace) << message_trace;
-        LOG(debug) << message_debug;
-        LOG(info) << message_info;
-        LOG(warning) << message_warning;
-        LOG(error) << message_error;
-        LOG(fatal) << message_fatal;
+        logger_message();
 
         boost::log::core::get()->flush();
 
