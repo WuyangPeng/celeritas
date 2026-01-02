@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 namespace celeritas
 {
     enum class server_network_type;

@@ -19,12 +19,12 @@ namespace celeritas
     constexpr std::string_view config_path = "config";
     constexpr std::string_view bin_path = "bin";
     constexpr std::string_view logger_path = "log";
+    constexpr std::string_view logger_extension = ".log";
+
     constexpr std::string_view service_registry_xml = "service_registry.xml";
     constexpr std::string_view server_xml = "server.xml";
     constexpr std::string_view health_check_url_xml = "health_check_url.xml";
     constexpr std::string_view databases_xml = "databases.xml";
     constexpr std::string_view loggers_xml = "loggers.xml";
     constexpr std::string_view global_xml = "global.xml";
-
-    constexpr std::string_view logger_extension = ".log";
 }
