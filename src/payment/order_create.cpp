@@ -4,7 +4,7 @@
 #include "payment_status_type.h"
 #include "common/core/snowflake_generator.h"
 #include "common/core/time_helper.h"
-#include "config/app_config.h"
+#include "config/aggregate/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/payment/orders.h"
 #include "detail/payment_params_json.h"

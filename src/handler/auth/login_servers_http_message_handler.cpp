@@ -4,7 +4,7 @@
 #include "auth/server_list/login_servers_response.h"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
-#include "config/app_config.h"
+#include "config/aggregate/app_config.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_fwd.h"
 #include "message/game_error_type.h"

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "config/app_config.h"
+#include "config/aggregate/app_config.h"
 
 #include <boost/filesystem.hpp>
 #include <string>

@@ -3,7 +3,7 @@
 #include "service_login.h"
 #include "common/logging/logger.h"
 #include "common/core/time_helper.h"
-#include "config/app_config.h"
+#include "config/aggregate/app_config.h"
 #include "database/database_fwd.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/player/user.h"

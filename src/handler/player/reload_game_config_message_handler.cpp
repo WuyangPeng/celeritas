@@ -1,6 +1,6 @@
 ﻿#include "reload_game_config_message_handler.h"
-#include "config/app_config.h"
-#include "config/game_config/game_config.h"
+#include "config/aggregate/app_config.h"
+#include "config/game/game_config.h"
 #include "database/config/config_manager.h"
 #include "message/protobuf_handle_parameter.h"
 #include "proto/celeritas.pb.h"

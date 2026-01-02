@@ -1,4 +1,4 @@
-﻿#include "config/app_config.h"
+﻿#include "config/aggregate/app_config.h"
 #include "database/database_pool_manager.h"
 #include "message/game_error_type.h"
 #include "message/protobuf_handle_parameter.h"

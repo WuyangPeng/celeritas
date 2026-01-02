@@ -6,7 +6,7 @@
 #include "auth/detail/phone/phone_operation_parameter.tpp"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
-#include "config/app_config.h"
+#include "config/aggregate/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/mysql/auth/account_bind.h"

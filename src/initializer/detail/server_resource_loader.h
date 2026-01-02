@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "config/server_config.h"
+#include "config/aggregate/server_config.h"
 #include "network/listener.h"
 
 #include <boost/asio/io_context.hpp>

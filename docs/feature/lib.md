@@ -204,7 +204,6 @@
     - **枚举值**：`unknown`、`mysql`、`mongodb`、`redis`。
     - **功能**：提供了全局函数`get_database_type(const std::string&)`，用于将数据库类型名称字符串转换为对应的枚举值。
 
-
 ### local configuration structures（局部配置结构）
 
 * **🔌 服务器网络配置（`server_network_config`）**
@@ -251,7 +250,6 @@
 * **🌍 全局配置 (`global_config`)**
     - **作用**：`global_config` 类用于存储全局配置选项。
 
-
 ### aggregate and top-level configurations（聚合配置结构与顶级配置）
 
 * **⚙️ 服务器配置（`server_config`）**
@@ -286,14 +284,6 @@
     - **作用**：一个模板化的配置类，用于加载和管理一组相同类型的配置元素。
 
 
-* **👤 姓氏配置 (`surname_config`)**
-    - **作用**：专门用于加载和管理角色姓氏的数据表。
-
-
-* **👤 名字配置 (`name_config`)**
-    - **作用**：专门用于加载和管理角色名字的数据表。
-
-
 * **⚖️ 权重配置 (`weight`)**
     - **作用**：用于管理和操作一组带权重的元素。
     - **功能**：
@@ -301,33 +291,6 @@
         - **`get_weights()`**：获取所有元素的权重列表。
         - **`get_id(index)`**：根据索引获取元素的ID。
         - **`clear()`**：清空所有元素。
-
-
-* **🔴 红点配置 (`red_config`)**
-    - **作用**：定义和管理游戏中的红点系统配置。
-    - **功能**：
-        - **`get_id()`**：获取红点ID。
-        - **`get_name()`**：获取红点名称。
-        - **`get_parent_node_id()`**：获取父节点ID。
-        - **`get_red_status_type()`**：获取红点状态类型。
-
-
-* **🎒 道具配置 (`item_config`)**
-    - **作用**：定义了游戏道具的基础配置信息。
-    - **功能**：
-        - **`get_item_template_id()`**：获取道具模板ID。
-        - **`get_item_type()`**：获取道具类型。
-        - **`get_stacked()`**：获取道具堆叠数量。
-
-
-* **🛠️ 养成配置 (`develop_config`)**
-    - **作用**：定义了游戏养成系统的基础配置信息。
-    - **功能**：
-        - **`get_id()`**：获取养成配置ID。
-        - **`get_develop_system_type()`**：获取养成系统类型。
-        - **`get_develop_sub_type()`**：获取养成子类型。
-        - **`get_max_level()`**：获取最大等级。
-        - **`get_develop_reset_type()`**：获取养成重置类型。
 
 ## message（消息）
 

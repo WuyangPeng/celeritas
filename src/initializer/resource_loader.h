@@ -2,7 +2,7 @@
 
 #include "common/framework/resource_loader_base.h"
 #include "common/core/session_route.h"
-#include "config/app_config.h"
+#include "config/aggregate/app_config.h"
 #include "detail/initializer_internal_fwd.h"
 #include "message/message_fwd.h"
 #include "network/listener.h"

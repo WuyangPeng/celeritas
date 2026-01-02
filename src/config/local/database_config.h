@@ -1,7 +1,8 @@
 ﻿#pragma once
 
-#include "config_fwd.h"
-#include "basic/database_type.h"
+#include "../config_fwd.h"
+#include "../basic/database_type.h"
+#include "config/config_constant.h"
 
 #include <string>
 

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "config/logger_config.h"
-#include "config/logger_level_config.h"
+#include "config/local/logger_config.h"
+#include "config/local/logger_level_config.h"
 
 #include <boost/property_tree/ptree.hpp>
 #include <vector>

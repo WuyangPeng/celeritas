@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "config/global_config.h"
+#include "config/local/global_config.h"
 
 #include <string>
 

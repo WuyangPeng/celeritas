@@ -7,7 +7,7 @@
 #include "auth/detail/sdk/sdk_process.h"
 #include "auth/detail/sdk/sdk_process_parameter.h"
 #include "common/logging/logger.h"
-#include "config/app_config.h"
+#include "config/aggregate/app_config.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/mysql/auth/account_bind.h"

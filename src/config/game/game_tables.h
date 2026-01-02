@@ -2,7 +2,7 @@
 
 #include "weight.h"
 #include "config/config_fwd.h"
-#include "config/game_config/container_config.h"
+#include "config/game/container_config.h"
 #include "config/luban/generated/schema.h"
 
 #include <map>

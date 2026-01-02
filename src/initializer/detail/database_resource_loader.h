@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "config/database_config.h"
+#include "config/local/database_config.h"
 
 #include <boost/asio/io_context.hpp>
 

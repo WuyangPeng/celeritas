@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "common/framework/resource_loader_base.h"
-#include "config/app_config.h"
+#include "config/aggregate/app_config.h"
 
 #include <boost/asio/awaitable.hpp>
 

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "config_fwd.h"
-#include "server_network_config.h"
+#include "config/local/server_network_config.h"
+#include "config/config_constant.h"
 
 #include <string>
 #include <vector>

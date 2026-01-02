@@ -4,7 +4,7 @@
 #include "common/framework/application_loader_base.h"
 #include "common/common_fwd.h"
 #include "common/worker_pool/worker_pool.h"
-#include "config/app_config.h"
+#include "config/aggregate/app_config.h"
 #include "message/protobuf_message_registry.h"
 
 #include <boost/url.hpp>

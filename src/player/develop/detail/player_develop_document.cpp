@@ -1,7 +1,7 @@
 ﻿#include "player_develop_document.h"
-#include "config/game_config/container_config.tpp"
-#include "config/game_config/game_config.h"
-#include "config/game_config/game_tables.h"
+#include "config/game/container_config.tpp"
+#include "config/game/game_config.h"
+#include "config/game/game_tables.h"
 #include "database/config/config_manager.h"
 #include "message/celeritas_game_error.h"
 

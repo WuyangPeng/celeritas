@@ -1,7 +1,8 @@
 ﻿#pragma once
 
-#include "boost/property_tree/ptree.hpp"
-#include "config/database_config.h"
+#include "config/local/database_config.h"
+
+#include <boost/property_tree/ptree.hpp>
 
 #include <vector>
 

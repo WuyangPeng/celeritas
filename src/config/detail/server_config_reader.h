@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "config/server_config.h"
+#include "config/aggregate/server_config.h"
 
 #include <boost/property_tree/ptree.hpp>
 

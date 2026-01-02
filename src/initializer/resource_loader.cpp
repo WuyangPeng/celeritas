@@ -2,7 +2,7 @@
 #include "resource_loader.h"
 #include "common/logging/logger.h"
 #include "common/core/random_helper.h"
-#include "config/game_config/game_config.h"
+#include "config/game/game_config.h"
 #include "config/luban/generated/schema.h"
 #include "database/database_pool_manager.h"
 #include "detail/buffer_pool_timer.h"

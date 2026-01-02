@@ -3,10 +3,10 @@
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
 #include "common/core/snowflake_generator.h"
-#include "config/app_config.h"
-#include "config/game_config/container_config.tpp"
-#include "config/game_config/game_config.h"
-#include "config/game_config/game_tables.h"
+#include "config/aggregate/app_config.h"
+#include "config/game/container_config.tpp"
+#include "config/game/game_config.h"
+#include "config/game/game_tables.h"
 #include "database/basis_database.tpp"
 
 #include <ranges>

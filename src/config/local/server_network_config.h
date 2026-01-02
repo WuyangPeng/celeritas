@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "basic/server_network_type.h"
+#include "../basic/server_network_type.h"
 
 namespace celeritas
 {

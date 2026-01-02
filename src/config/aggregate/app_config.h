@@ -1,12 +1,12 @@
 ﻿#pragma once
 
-#include "database_config.h"
-#include "global_config.h"
-#include "health_check_url_config.h"
-#include "logger_config.h"
-#include "logger_level_config.h"
 #include "server_config.h"
-#include "service_registry_config.h"
+#include "config/local/database_config.h"
+#include "config/local/global_config.h"
+#include "config/local/health_check_url_config.h"
+#include "config/local/logger_config.h"
+#include "config/local/logger_level_config.h"
+#include "config/local/service_registry_config.h"
 
 #include <map>
 

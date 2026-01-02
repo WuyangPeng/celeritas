@@ -1,6 +1,7 @@
 ﻿#include "game_config.h"
 #include "game_tables.h"
 #include "common/logging/logger.h"
+#include "config/config_constant.h"
 
 #include <filesystem>
 

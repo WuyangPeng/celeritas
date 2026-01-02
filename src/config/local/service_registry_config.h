@@ -1,6 +1,7 @@
 ﻿#pragma once
 
-#include "config_fwd.h"
+#include "../config_fwd.h"
+#include "config/config_constant.h"
 
 #include <string>
 

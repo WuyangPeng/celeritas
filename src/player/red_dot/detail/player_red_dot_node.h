@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "player_red_dot_document.h"
-#include "config/game_config/container_config.h"
+#include "config/game/container_config.h"
 #include "config/luban/generated/schema.h"
 #include "player/red_dot/red_dot_node.h"
 

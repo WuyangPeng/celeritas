@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "config/service_registry_config.h"
+#include "config/local/service_registry_config.h"
 
 #include <boost/property_tree/ptree.hpp>
 

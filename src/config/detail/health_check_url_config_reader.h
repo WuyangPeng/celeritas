@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "config/health_check_url_config.h"
+#include "config/local/health_check_url_config.h"
 
 namespace celeritas
 {
