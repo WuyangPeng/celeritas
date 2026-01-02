@@ -36,8 +36,6 @@ namespace celeritas
     constexpr auto default_database_expire_seconds = 86400;
     constexpr auto default_worker_pool_size = 4;
     constexpr auto min_worker_pool_size = 1;
-    constexpr auto default_datacenter_id = 0;
-    constexpr auto default_worker_id = 0;
 
     constexpr std::string_view config_path = "config";
     constexpr std::string_view bin_path = "bin";

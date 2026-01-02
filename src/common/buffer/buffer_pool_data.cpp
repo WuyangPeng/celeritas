@@ -16,7 +16,7 @@ char* celeritas::buffer_pool_data::data()
         return data_.data();
     }
 
-    throw celeritas_error("unsupported buffer pool data size");
+    throw celeritas_error{ "unsupported buffer pool data size" };
 }
 
 const char* celeritas::buffer_pool_data::data() const
@@ -26,7 +26,7 @@ const char* celeritas::buffer_pool_data::data() const
         return data_.data();
     }
 
-    throw celeritas_error("unsupported buffer pool data size");
+    throw celeritas_error{ "unsupported buffer pool data size" };
 }
 
 size_t celeritas::buffer_pool_data::size() const noexcept
@@ -46,7 +46,7 @@ char* celeritas::buffer_pool_data::get(const size_t offset)
         return &data_[offset];
     }
 
-    throw celeritas_error("unsupported buffer pool data offset");
+    throw celeritas_error{ "unsupported buffer pool data size" };
 }
 
 void celeritas::buffer_pool_data::set(const std::string& response)

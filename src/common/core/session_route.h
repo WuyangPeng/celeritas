@@ -12,11 +12,11 @@ namespace celeritas
     public:
         using class_type = session_route;
 
-        session_route(server_network_type server_network_type, int64_t session_id, std::string instance_id);
+        session_route(server_network_type server_network_type, int64_t session_id, std::string instance_id) noexcept;
 
-        [[nodiscard]] server_network_type get_server_network_type() const;
+        [[nodiscard]] server_network_type get_server_network_type() const noexcept;
 
-        [[nodiscard]] int64_t get_session_id() const;
+        [[nodiscard]] int64_t get_session_id() const noexcept;
 
         [[nodiscard]] std::string get_instance_id() const;
 

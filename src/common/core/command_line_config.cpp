@@ -13,7 +13,7 @@ celeritas::command_line_config::command_line_config(const int argc, char** argv,
     init(argc, argv, server_type, options);
 }
 
-bool celeritas::command_line_config::is_exit_requested() const
+bool celeritas::command_line_config::is_exit_requested() const noexcept
 {
     return exit_requested_;
 }

@@ -17,9 +17,9 @@ namespace celeritas
     public:
         using class_type = resource_loader_base;
         using io_context_type = boost::asio::io_context;
+        using protobuf_message = google::protobuf::Message;
         using app_config_shared_ptr = std::shared_ptr<app_config>;
         using health_check_level_awaitable_type = boost::asio::awaitable<health_check_level_type>;
-        using protobuf_message = google::protobuf::Message;
         using service_info_container = std::map<std::string, service_info>;
 
         resource_loader_base() noexcept = default;

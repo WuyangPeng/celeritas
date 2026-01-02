@@ -18,12 +18,12 @@ celeritas::server_config celeritas::server_config_reader::load_config(const std:
     const auto instance_id = node.get<std::string>("instance_id");
     const auto service_name = node.get<std::string>("service_name");
     const auto host = node.get<std::string>("host");
+    const auto datacenter_id = node.get<int>("datacenter_id");
+    const auto worker_id = node.get<int>("worker_id");
 
     // 可选配置项
     const auto game_server_id = node.get<std::string>("game_server_id", "");
     const auto worker_pool = node.get<int>("worker_pool", default_worker_pool_size);
-    const auto datacenter_id = node.get<int>("datacenter_id", default_datacenter_id);
-    const auto worker_id = node.get<int>("worker_id", default_worker_id);
     const auto load_game_config = node.get<bool>("load_game_config", false);
 
     if (datacenter_id > max_datacenter_id || datacenter_id < 0)

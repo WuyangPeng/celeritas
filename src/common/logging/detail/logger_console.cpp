@@ -40,16 +40,15 @@ void celeritas::logger_console::update_console_filter(const severity_level_type 
 {
     if (also_to_console)
     {
-        if (console_channels_.insert(channel_name).second)
+        if (!console_channels_.insert(channel_name).second)
         {
-            update_console_filter(console_level);
+            return;
         }
     }
-    else
+    else if (console_channels_.erase(channel_name) <= 0)
     {
-        if (0 < console_channels_.erase(channel_name))
-        {
-            update_console_filter(console_level);
-        }
+        return;
     }
+
+    update_console_filter(console_level);
 }

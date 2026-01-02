@@ -54,9 +54,9 @@ namespace celeritas
     constexpr auto minute_seconds = 60LL;
     constexpr auto minute_milliseconds = minute_seconds * milliseconds;
     constexpr auto hour_seconds = minute_seconds * minute_seconds;
+    constexpr auto hour_milliseconds = hour_seconds * milliseconds;
     constexpr auto day_hour = 24LL;
     constexpr auto day_seconds = hour_seconds * day_hour;
-    constexpr auto hour_milliseconds = hour_seconds * milliseconds;
     constexpr auto day_milliseconds = day_seconds * milliseconds;
     constexpr auto week = 7LL;
     constexpr auto week_milliseconds = day_milliseconds * week;
@@ -68,6 +68,4 @@ namespace celeritas
 
     constexpr auto one_kibibyte = 1024;
     constexpr auto one_mebibyte = one_kibibyte * one_kibibyte;
-
-    constexpr std::string_view log_daily_suffix{ "_%Y%m%d_%N" };
 }

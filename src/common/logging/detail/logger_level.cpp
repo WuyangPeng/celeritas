@@ -2,7 +2,7 @@
 
 #include <ranges>
 
-celeritas::severity_level_type celeritas::logger_level::get_console_level() const
+celeritas::severity_level_type celeritas::logger_level::get_console_level() const noexcept
 {
     return console_level_;
 }
@@ -44,9 +44,10 @@ void celeritas::logger_level::set_console_level(const severity_level_type consol
 void celeritas::logger_level::set_channel_level(const std::string& channel_name, const severity_level_type file_level, const bool also_to_console)
 {
     auto& data = channel_levels_[channel_name];
-    const auto channel_level = std::max(data.get_file_level(console_level_), global_level_);
 
     data.set_also_to_console(also_to_console);
     data.set_file_level(file_level);
+
+    const auto channel_level = std::max(data.get_file_level(console_level_), global_level_);
     data.set_channel_level(channel_level);
 }

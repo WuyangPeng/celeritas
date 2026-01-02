@@ -5,8 +5,8 @@
     <game_server_id></game_server_id>
     <host>127.0.0.1</host>
     <worker_pool>4</worker_pool>
-    <datacenter_id>1</datacenter_id>
-    <worker_id>1</worker_id>
+    <datacenter_id>0</datacenter_id>
+    <worker_id>0</worker_id>
     <load_game_config>false</load_game_config>
     <network>
         <network_type>tcp</network_type>

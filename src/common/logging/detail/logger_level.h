@@ -10,7 +10,7 @@ namespace celeritas
     public:
         using class_type = logger_level;
 
-        [[nodiscard]] severity_level_type get_console_level() const;
+        [[nodiscard]] severity_level_type get_console_level() const noexcept;
 
         [[nodiscard]] bool can_logger(const std::string& channel_name, severity_level_type level) const;
 

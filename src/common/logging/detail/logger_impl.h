@@ -20,7 +20,7 @@ namespace celeritas
         using severity_logger_reference_type = std::reference_wrapper<severity_logger_type>;
         using severity_logger_optional_type = std::optional<severity_logger_reference_type>;
 
-        logger_impl();
+        logger_impl() noexcept = default;
 
         ~logger_impl() noexcept = default;
 

@@ -5,13 +5,6 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/log/utility/setup/file.hpp>
 
-celeritas::logger_impl::logger_impl()
-    : loggers_{},
-      console_{},
-      level_{}
-{
-}
-
 void celeritas::logger_impl::init_global(severity_level_type global_level)
 {
     std::lock_guard lock{ mutex_ };

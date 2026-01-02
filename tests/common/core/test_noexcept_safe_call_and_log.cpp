@@ -69,4 +69,37 @@ BOOST_AUTO_TEST_SUITE(noexcept_safe_call_and_log_suite)
         BOOST_CHECK(called);
     }
 
+    // 测试：带返回值的重载 - 正常返回
+    BOOST_AUTO_TEST_CASE(test_return_value_no_exception)
+    {
+        auto func = []() -> int {
+            return 42;
+        };
+
+        const auto result = celeritas::noexcept_safe_call_and_log(func, "test_channel", "error message", 0);
+        BOOST_CHECK_EQUAL(result, 42);
+    }
+
+    // 测试：带返回值的重载 - 抛出 std::exception 时返回默认值
+    BOOST_AUTO_TEST_CASE(test_return_value_std_exception)
+    {
+        auto func = []() -> int {
+            throw std::runtime_error("runtime error");
+        };
+
+        const auto result = celeritas::noexcept_safe_call_and_log(func, "test_channel", "error message", -1);
+        BOOST_CHECK_EQUAL(result, -1);
+    }
+
+    // 测试：带返回值的重载 - 抛出未知异常时返回默认值
+    BOOST_AUTO_TEST_CASE(test_return_value_unknown_exception)
+    {
+        auto func = []() -> int {
+            throw 123;
+        };
+
+        const auto result = celeritas::noexcept_safe_call_and_log(func, "test_channel", "error message", -1);
+        BOOST_CHECK_EQUAL(result, -1);
+    }
+
 BOOST_AUTO_TEST_SUITE_END()

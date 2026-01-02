@@ -15,9 +15,12 @@ std::string celeritas::hmac_sha256::calculate(const std::string& secret_key, con
     // HMAC 计算
     // 参数: 算法, Key, Key长度, 数据, 数据长度, 输出Buffer, 输出长度指针
     HMAC(EVP_sha256(),
-         secret_key.c_str(), static_cast<int>(secret_key.size()),
-         reinterpret_cast<const unsigned char*>(data.c_str()), data.length(),
-         result.data(), &result_length);
+         secret_key.c_str(),
+         static_cast<int>(secret_key.size()),
+         reinterpret_cast<const unsigned char*>(data.c_str()),
+         data.length(),
+         result.data(),
+         &result_length);
 
     // Hex 转换
     std::string hex_output{};

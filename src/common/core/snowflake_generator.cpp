@@ -5,7 +5,7 @@
 
 #include <mutex>
 
-celeritas::snowflake_generator& celeritas::snowflake_generator::get_instance()
+celeritas::snowflake_generator& celeritas::snowflake_generator::get_instance() noexcept
 {
     static snowflake_generator generator{};
 

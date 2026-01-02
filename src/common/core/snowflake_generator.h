@@ -10,7 +10,7 @@ namespace celeritas
     public:
         using class_type = snowflake_generator;
 
-        [[nodiscard]] static snowflake_generator& get_instance();
+        [[nodiscard]] static snowflake_generator& get_instance() noexcept;
 
         /**
          * @brief 生成一个全局唯一的雪花ID.

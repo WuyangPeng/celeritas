@@ -27,7 +27,7 @@ namespace celeritas
             throw celeritas_error("attempted to access unregistered or invalid key: {}", key);
         }
 
-        [[nodiscard]] bool is_exit_requested() const;
+        [[nodiscard]] bool is_exit_requested() const noexcept;
 
     private:
         using options_description_type = boost::program_options::options_description;

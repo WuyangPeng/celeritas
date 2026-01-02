@@ -8,10 +8,10 @@ namespace celeritas
     {
     public:
         using class_type = time_helper;
-        using local_time_type = std::chrono::local_time<std::chrono::system_clock::duration>;
+        using local_days_type = std::chrono::local_days;
         using time_point_type = std::chrono::system_clock::time_point;
         using const_time_zone_ptr_type = const std::chrono::time_zone*;
-        using local_days_type = std::chrono::local_days;
+        using local_time_type = std::chrono::local_time<std::chrono::system_clock::duration>;
 
         [[nodiscard]] static int64_t get_current_milliseconds();
 

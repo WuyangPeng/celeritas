@@ -31,9 +31,11 @@ namespace celeritas
     private:
         using worker_type = std::vector<std::jthread>;
 
+        void init_work(int num_threads);
+
         void add_work();
 
-        [[nodiscard]] bool execute_task();
+        [[nodiscard]] bool execute_task() noexcept;
 
         [[nodiscard]] bool get_and_run_task();
 

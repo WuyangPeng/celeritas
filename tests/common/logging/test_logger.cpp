@@ -1,4 +1,5 @@
 ﻿#include "common/logging/logger.h"
+#include "common/logging/detail/common_logger_internal_constant.h"
 #include "config/config_fwd.h"
 
 #include <boost/log/core.hpp>

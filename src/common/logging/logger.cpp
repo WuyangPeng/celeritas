@@ -30,7 +30,7 @@ celeritas::logger::severity_logger_optional_type celeritas::logger::get_default(
     return get_logger_impl().get_default(level);
 }
 
-celeritas::logger_impl& celeritas::logger::get_logger_impl()
+celeritas::logger_impl& celeritas::logger::get_logger_impl() noexcept
 {
     static logger_impl logger_impl{};
 

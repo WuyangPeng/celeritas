@@ -3,11 +3,9 @@
 #include "common/logging/logger.h"
 
 celeritas::worker_pool::worker_pool(const int num_threads)
+    : queue_{}, workers_{}
 {
-    for (auto i = 0; i < num_threads; ++i)
-    {
-        add_work();
-    }
+    init_work(num_threads);
 }
 
 celeritas::worker_pool::~worker_pool() noexcept
@@ -24,6 +22,14 @@ void celeritas::worker_pool::submit(task_type task)
     queue_.push(std::move(task));
 }
 
+void celeritas::worker_pool::init_work(const int num_threads)
+{
+    for (auto i = 0; i < num_threads; ++i)
+    {
+        add_work();
+    }
+}
+
 void celeritas::worker_pool::add_work()
 {
     workers_.emplace_back([this] {
@@ -33,22 +39,14 @@ void celeritas::worker_pool::add_work()
     });
 }
 
-bool celeritas::worker_pool::execute_task()
+bool celeritas::worker_pool::execute_task() noexcept
 {
-    try
-    {
-        return get_and_run_task();
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(common_channel, error) << "Task threw an exception: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(common_channel, fatal) << "Task threw an unknown exception";
-    }
-
-    return true;
+    return noexcept_safe_call_and_log([this] {
+                                          return this->get_and_run_task();
+                                      },
+                                      common_channel,
+                                      "Task threw an exception: ",
+                                      false);
 }
 
 bool celeritas::worker_pool::get_and_run_task()

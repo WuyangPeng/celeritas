@@ -36,7 +36,7 @@ namespace celeritas
         [[nodiscard]] static severity_logger_optional_type get_default(severity_level_type level);
 
     private:
-        static logger_impl& get_logger_impl();
+        static logger_impl& get_logger_impl() noexcept;
     };
 }
 

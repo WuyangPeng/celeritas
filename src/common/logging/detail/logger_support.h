@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "common_logger_internal_constant.h"
 #include "logger_namespace.h"
 #include "common/common_constant.h"
 
@@ -22,7 +23,7 @@ namespace celeritas
             // 设置日志格式
             return log_expressions::stream
                    << "["
-                   << log_expressions::format_date_time<time_type>("TimeStamp", "%Y-%m-%d %H:%M:%S.%f")
+                   << log_expressions::format_date_time<time_type>("TimeStamp", log_date_time_format.data())
                    << "]["
                    << log_trivial::severity
                    << "]["

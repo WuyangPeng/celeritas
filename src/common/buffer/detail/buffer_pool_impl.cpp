@@ -7,6 +7,7 @@ celeritas::buffer_pool_data celeritas::buffer_pool_impl::acquire(const size_t re
     if (auto buffer = try_acquire_from_pool(required_size);
         buffer)
     {
+        // 由于使用std::optional，这里使用std::move避免复制
         return std::move(*buffer);
     }
 

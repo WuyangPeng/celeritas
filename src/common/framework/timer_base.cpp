@@ -49,18 +49,11 @@ void celeritas::timer_base::set_duration_type(duration_type interval)
 
 void celeritas::timer_base::on_timer_elapsed()
 {
-    try
-    {
-        execute_timer_task();
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(common_channel, error) << "timer elapsed error: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(common_channel, fatal) << "timer elapsed error: an unknown exception";
-    }
+    noexcept_safe_call_and_log([this] {
+                                   this->execute_timer_task();
+                               },
+                               common_channel,
+                               "timer elapsed error: ");
 }
 
 void celeritas::timer_base::next_tick(const error_code_type& error_code)
