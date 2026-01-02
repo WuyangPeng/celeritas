@@ -50,8 +50,6 @@ namespace
 
         static void reset()
         {
-            // 由于 logger 是单例且没有提供显式的 reset 接口，
-            // 我们通过重新初始化来模拟重置状态。
             celeritas::logger::init_global(boost::log::trivial::trace);
             celeritas::logger::init_console(boost::log::trivial::trace);
             celeritas::logger::init_file(celeritas::default_channel.data(),

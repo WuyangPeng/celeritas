@@ -7,6 +7,59 @@
 #include <thread>
 #include <vector>
 
+namespace
+{
+    constexpr auto tasks_per_producer = 100;
+    constexpr auto total_tasks = tasks_per_producer * 2;
+    constexpr auto num_tasks = 200;
+    constexpr auto num_consumers = 5;
+
+    // 生产者任务：向队列推送指定数量的任务
+    void produce_tasks(celeritas::thread_safe_queue& queue, std::atomic<int>& counter)
+    {
+        for (auto i = 0; i < tasks_per_producer; ++i)
+        {
+            queue.push([&counter] {
+                ++counter;
+            });
+        }
+    }
+
+    // 消费者任务：从队列取出并执行任务
+    void consume_tasks(celeritas::thread_safe_queue& queue)
+    {
+        auto executed_tasks = 0;
+        celeritas::thread_safe_queue::task_type task{};
+        while (executed_tasks < total_tasks && queue.pop(task))
+        {
+            task();
+            ++executed_tasks;
+        }
+    }
+
+    // 准备任务：向队列预先填充任务
+    void prepare_tasks(celeritas::thread_safe_queue& queue, std::atomic<int>& counter)
+    {
+        for (auto i = 0; i < num_tasks; ++i)
+        {
+            queue.push([&counter] {
+                ++counter;
+            });
+        }
+    }
+
+    // 消费者线程函数
+    void consumer_thread_func(celeritas::thread_safe_queue& queue, std::atomic<int>& consumed_count)
+    {
+        celeritas::thread_safe_queue::task_type task{};
+        while (queue.pop(task))
+        {
+            task();
+            ++consumed_count;
+        }
+    }
+}
+
 BOOST_AUTO_TEST_SUITE(thread_safe_queue_suite)
 
     BOOST_AUTO_TEST_CASE(test_push_and_pop)
@@ -45,34 +98,21 @@ BOOST_AUTO_TEST_SUITE(thread_safe_queue_suite)
         celeritas::thread_safe_queue queue{};
         std::atomic counter{ 0 };
 
-        auto produce = [&] {
-            for (auto i = 0; i < 100; ++i)
-            {
-                queue.push([&counter] {
-                    ++counter;
-                });
-            }
-        };
-
-        std::thread t1{ produce };
-        std::thread t2{ produce };
+        std::thread t1{ produce_tasks, std::ref(queue), std::ref(counter) };
+        std::thread t2{ produce_tasks, std::ref(queue), std::ref(counter) };
 
         t1.join();
         t2.join();
 
-        auto executed_tasks = 0;
-        celeritas::thread_safe_queue::task_type task{};
-        while (executed_tasks < 200 && queue.pop(task))
-        {
-            task();
-            ++executed_tasks;
-        }
+        consume_tasks(queue);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
         queue.stop();
+
+        celeritas::thread_safe_queue::task_type task{};
         BOOST_CHECK(!queue.pop(task));
 
-        BOOST_CHECK_EQUAL(counter, 200);
+        BOOST_CHECK_EQUAL(counter, total_tasks);
     }
 
     BOOST_AUTO_TEST_CASE(test_multiple_consumers)
@@ -80,30 +120,17 @@ BOOST_AUTO_TEST_SUITE(thread_safe_queue_suite)
         celeritas::thread_safe_queue queue{};
         std::atomic counter{ 0 };
 
-        for (auto i = 0; i < 200; ++i)
-        {
-            queue.push([&counter] {
-                ++counter;
-            });
-        }
+        prepare_tasks(queue, counter);
 
         std::atomic consumed_count{ 0 };
-        auto consume = [&] {
-            celeritas::thread_safe_queue::task_type task{};
-            while (queue.pop(task))
-            {
-                task();
-                ++consumed_count;
-            }
-        };
-
         std::vector<std::thread> consumers{};
-        for (auto i = 0; i < 5; ++i)
+
+        for (auto i = 0; i < num_consumers; ++i)
         {
-            consumers.emplace_back(consume);
+            consumers.emplace_back(consumer_thread_func, std::ref(queue), std::ref(consumed_count));
         }
 
-        while (consumed_count < 200)
+        while (consumed_count < num_tasks)
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
@@ -115,8 +142,8 @@ BOOST_AUTO_TEST_SUITE(thread_safe_queue_suite)
             t.join();
         }
 
-        BOOST_CHECK_EQUAL(counter, 200);
-        BOOST_CHECK_EQUAL(consumed_count, 200);
+        BOOST_CHECK_EQUAL(counter, num_tasks);
+        BOOST_CHECK_EQUAL(consumed_count, num_tasks);
     }
 
 BOOST_AUTO_TEST_SUITE_END()
