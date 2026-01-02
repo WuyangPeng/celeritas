@@ -1,4 +1,4 @@
-﻿#include "config/server_network_type.h"
+﻿#include "config/basic/server_network_type.h"
 #include "service_registry/core/service_registry.h"
 #include "service_registry/data/health_check_level_type.h"
 #include "service_registry/data/protocol_port.h"

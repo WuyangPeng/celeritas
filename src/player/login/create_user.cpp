@@ -1,7 +1,7 @@
 ﻿#include "create_user.h"
 #include "common/core/snowflake_generator.h"
 #include "config/app_config.h"
-#include "config/database_type.h"
+#include "config/basic/database_type.h"
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/player/user.h"
 #include "message/protobuf_handle_parameter.h"

@@ -1,6 +1,6 @@
 ﻿#include "mock_database_pool.h"
 #include "common/core/time_helper.h"
-#include "config/database_type.h"
+#include "config/basic/database_type.h"
 #include "database/database_change_type.h"
 #include "database/database_entity_change.h"
 #include "database/document/inventory_data.h"

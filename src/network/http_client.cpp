@@ -1,7 +1,7 @@
 ﻿#include "http_client.h"
 #include "http_session.h"
 #include "common/logging/logger.h"
-#include "config/server_network_type.h"
+#include "config/basic/server_network_type.h"
 
 celeritas::http_client::http_client(io_context_type& io_context,
                                     network_message_callback_weak_ptr callback,

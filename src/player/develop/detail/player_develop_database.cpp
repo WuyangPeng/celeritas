@@ -1,7 +1,7 @@
 ﻿#include "player_develop_database.h"
 #include "player_develop_internal_fwd.h"
 #include "common/core/time_helper.h"
-#include "config/database_type.h"
+#include "config/basic/database_type.h"
 #include "database/database_pool_base.h"
 #include "player/component/player_state.h"
 #include "player/develop/player_develop_component.h"

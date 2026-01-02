@@ -1,6 +1,6 @@
 ﻿#include "player_red_dot_database.h"
 #include "common/core/time_helper.h"
-#include "config/database_type.h"
+#include "config/basic/database_type.h"
 #include "database/database_pool_base.h"
 #include "player/component/player_state.h"
 #include "player/red_dot/player_red_dot_component.h"

@@ -17,5 +17,5 @@ celeritas::database_type celeritas::get_database_type(const std::string& databas
         return iter->second;
     }
 
-    throw celeritas_error{ "database_type error,name = " + database_name };
+    throw celeritas_error{ "database_type error,name = {}" , database_name };
 }

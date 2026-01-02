@@ -1,7 +1,7 @@
 // 此文件是自动生成，请勿手动修改。
 
 #include "user_red_dots.h"
-#include "config/database_type.h"
+#include "config/basic/database_type.h"
 #include "database/database_change_type.h"
 #include "database/database_entity_change.tpp"
 #include "database/database_entity.tpp"

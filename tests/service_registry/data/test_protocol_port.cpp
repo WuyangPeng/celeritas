@@ -1,4 +1,4 @@
-﻿#include "config/server_network_type.h"
+﻿#include "config/basic/server_network_type.h"
 #include "service_registry/data/protocol_port.h"
 
 #include <boost/test/unit_test.hpp>

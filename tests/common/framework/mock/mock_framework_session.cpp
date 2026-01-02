@@ -1,5 +1,5 @@
 ﻿#include "mock_framework_session.h"
-#include "config/server_network_type.h"
+#include "config/basic/server_network_type.h"
 
 void celeritas::mock_framework_session::stop()
 {

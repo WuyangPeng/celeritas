@@ -1,6 +1,6 @@
 ﻿#include "server_resource_loader.h"
-#include "../../common/core/celeritas_error.h"
-#include "config/server_network_type.h"
+#include "common/core/celeritas_error.h"
+#include "config/basic/server_network_type.h"
 #include "network/http_listener.h"
 #include "network/tcp_listener.h"
 #include "network/websocket_listener.h"

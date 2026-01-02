@@ -1,7 +1,7 @@
 ﻿#include "generic_session.tpp"
 #include "tcp_client.h"
 #include "common/logging/logger.h"
-#include "config/server_network_type.h"
+#include "config/basic/server_network_type.h"
 
 celeritas::tcp_client::tcp_client(io_context_type& io_context,
                                   network_message_callback_weak_ptr callback,

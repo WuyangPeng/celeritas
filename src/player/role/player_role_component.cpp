@@ -1,7 +1,7 @@
 ﻿#include "player_role_component.h"
 #include "common/core/time_helper.h"
 #include "common/logging/logger.h"
-#include "config/database_type.h"
+#include "config/basic/database_type.h"
 #include "config/game_config/game_config.h"
 #include "config/game_config/game_tables.h"
 #include "config/luban/generated/schema.h"

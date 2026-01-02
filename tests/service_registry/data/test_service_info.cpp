@@ -1,4 +1,4 @@
-﻿#include "config/server_network_type.h"
+﻿#include "config/basic/server_network_type.h"
 #include "service_registry/data/service_info.h"
 
 #include <boost/test/unit_test.hpp>

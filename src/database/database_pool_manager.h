@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "database_pool_base.h"
-#include "config/database_type.h"
+#include "config/basic/database_type.h"
 
 #include <mongocxx/instance.hpp>
 

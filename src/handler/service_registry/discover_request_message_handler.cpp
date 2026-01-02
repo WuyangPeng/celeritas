@@ -1,5 +1,5 @@
 ﻿#include "discover_request_message_handler.h"
-#include "config/server_network_type.h"
+#include "config/basic/server_network_type.h"
 #include "message/concrete_message_handler.tpp"
 #include "message/protobuf_handle_parameter.h"
 #include "proto/celeritas.pb.h"

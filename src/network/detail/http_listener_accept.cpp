@@ -1,6 +1,6 @@
 ﻿#include "http_listener_accept.h"
 #include "common/logging/logger.h"
-#include "config/server_network_type.h"
+#include "config/basic/server_network_type.h"
 #include "network/http_session.h"
 
 celeritas::http_listener_accept::http_listener_accept(acceptor_type& acceptor, const server_network_type server_network_type, std::string game_server_id, network_message_callback_weak_ptr callback)
