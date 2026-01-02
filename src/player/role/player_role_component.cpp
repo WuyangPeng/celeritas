@@ -61,6 +61,12 @@ bool celeritas::player_role_component::is_modify() const
 
 celeritas::player_role_component::bool_awaitable_type celeritas::player_role_component::change_name(const std::string& surname, const std::string& name)
 {
+    const auto mongo_player_pool = get_mongo_player_database_pool();
+    if (co_await mongo_player_pool->execute_changes(user_role_->get_modify()))
+    {
+        co_return false;
+    }
+
     const auto change_name_time = time_helper::get_current_milliseconds();
     const auto player_user = get_player_state()->get_component<player_user_component>();
     const auto old_user_role = *user_role_;
@@ -71,7 +77,6 @@ celeritas::player_role_component::bool_awaitable_type celeritas::player_role_com
     user_role_->set_change_name_time(change_name_time);
     user_role_->set_full_name(player_user->get_game_server_id() + surname + name);
 
-    const auto mongo_player_pool = get_mongo_player_database_pool();
     if (co_await mongo_player_pool->execute_changes(user_role_->get_modify()))
     {
         user_role_->clear_modify();
@@ -79,6 +84,7 @@ celeritas::player_role_component::bool_awaitable_type celeritas::player_role_com
     else
     {
         user_role_ = old_user_role;
+        user_role_->clear_modify();
         co_return false;
     }
 
