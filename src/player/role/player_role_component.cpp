@@ -62,7 +62,7 @@ bool celeritas::player_role_component::is_modify() const
 celeritas::player_role_component::bool_awaitable_type celeritas::player_role_component::change_name(const std::string& surname, const std::string& name)
 {
     const auto mongo_player_pool = get_mongo_player_database_pool();
-    if (co_await mongo_player_pool->execute_changes(user_role_->get_modify()))
+    if (!co_await mongo_player_pool->execute_changes(user_role_->get_modify()))
     {
         co_return false;
     }
