@@ -1,6 +1,8 @@
 ﻿#include "common/logging/logger.h"
 #include "common/logging/detail/common_logger_internal_constant.h"
 #include "config/config_fwd.h"
+#include "detail/capture_clog.h"
+#include "fixture/logger_fixture.h"
 
 #include <boost/log/core.hpp>
 #include <boost/log/trivial.hpp>
@@ -19,49 +21,14 @@ namespace
     constexpr std::string_view message_channel_info = "测试通道 info 消息";
     constexpr std::string_view message_file_only = "这条消息只应该出现在文件中，不应出现在控制台";
 
-    struct capture_clog
+    void check_level(const celeritas::severity_level_type level, const bool expected)
     {
-        std::stringstream buffer;
-        std::streambuf* old_buffer;
-
-        capture_clog()
-        {
-            old_buffer = std::clog.rdbuf(buffer.rdbuf());
-        }
-
-        ~capture_clog()
-        {
-            std::clog.rdbuf(old_buffer);
-        }
-
-        std::string str() const
-        {
-            return buffer.str();
-        }
-    };
-
-    // 辅助 fixture，用于在每个测试用例前重置 logger 状态
-    struct logger_fixture
-    {
-        logger_fixture()
-        {
-            reset();
-        }
-
-        static void reset()
-        {
-            celeritas::logger::init_global(boost::log::trivial::trace);
-            celeritas::logger::init_console(boost::log::trivial::trace);
-            celeritas::logger::init_file(celeritas::default_channel.data(),
-                                         celeritas::default_channel.data(),
-                                         celeritas::severity_level_type::trace,
-                                         celeritas::default_logger_rotation_size,
-                                         true);
-        }
-    };
+        const auto logger = celeritas::logger::get_default(level);
+        BOOST_CHECK_EQUAL(logger.has_value(), expected);
+    }
 }
 
-BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
+BOOST_FIXTURE_TEST_SUITE(logger_suite, celeritas::logger_fixture)
 
     BOOST_AUTO_TEST_CASE(test_logger_initialization_and_filtering)
     {
@@ -69,17 +36,13 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
         celeritas::logger::init_global(boost::log::trivial::info);
 
         // 测试 get_default 获取满足级别的日志器 (INFO >= INFO)
-        const auto logger_info = celeritas::logger::get_default(boost::log::trivial::info);
-        BOOST_CHECK(logger_info.has_value());
+        check_level(boost::log::trivial::info, true);
 
         // 测试 get_default 获取更高优先级的日志器 (WARNING >= INFO)
-        const auto logger_warning = celeritas::logger::get_default(boost::log::trivial::warning);
-        BOOST_CHECK(logger_warning.has_value());
+        check_level(boost::log::trivial::warning, true);
 
         // 测试 get_default 获取不足级别的日志器 (DEBUG < INFO)
-        // 假设日志器实现会根据上面设置的全局级别进行过滤
-        const auto logger_debug = celeritas::logger::get_default(boost::log::trivial::debug);
-        BOOST_CHECK(!logger_debug.has_value());
+        check_level(boost::log::trivial::debug, false);
     }
 
     BOOST_AUTO_TEST_CASE(test_console_initialization)
@@ -91,22 +54,18 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
                                      true);
 
         // 初始化控制台日志级别为 WARNING
-        // 这通常会影响默认的控制台输出
         celeritas::logger::init_console(boost::log::trivial::warning);
 
         // 验证 WARNING 级别应该可用
-        const auto logger_warning = celeritas::logger::get_default(boost::log::trivial::warning);
-        BOOST_CHECK(logger_warning.has_value());
+        check_level(boost::log::trivial::warning, true);
 
         // 验证 INFO 级别应该被过滤 (INFO < WARNING)
-        // 假设 init_console 设置了控制台 sink 的过滤器
-        const auto logger_info = celeritas::logger::get_default(boost::log::trivial::info);
-        BOOST_CHECK(!logger_info.has_value());
+        check_level(boost::log::trivial::info, false);
     }
 
     BOOST_AUTO_TEST_CASE(test_logger_macros)
     {
-        const capture_clog capture{};
+        const celeritas::capture_clog capture{};
 
         // 重新初始化为 TRACE 以允许所有日志
         celeritas::logger::init_global(boost::log::trivial::trace);
@@ -133,7 +92,7 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
 
     BOOST_AUTO_TEST_CASE(test_channel_logger)
     {
-        const capture_clog capture{};
+        const celeritas::capture_clog capture{};
 
         // 确保全局级别允许 INFO
         celeritas::logger::init_global(boost::log::trivial::info);
@@ -151,7 +110,6 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
         boost::log::core::get()->flush();
         BOOST_CHECK(capture.str().find(message_channel_info) != std::string::npos);
 
-        // 测试通道上的过滤
         // 如果文件日志设置为 INFO，则 DEBUG 应该被过滤掉
         const auto logger_debug = celeritas::logger::get(channel_name, boost::log::trivial::debug);
         BOOST_CHECK(!logger_debug.has_value());
@@ -162,7 +120,7 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
 
     BOOST_AUTO_TEST_CASE(test_file_logger_no_console)
     {
-        const capture_clog capture{};
+        const celeritas::capture_clog capture{};
 
         celeritas::logger::init_console(boost::log::trivial::warning);
 
@@ -172,8 +130,8 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
         // 初始化仅文件日志，不输出到控制台，级别为 DEBUG
         celeritas::logger::init_file(channel_name, log_file, boost::log::trivial::debug, celeritas::default_logger_rotation_size, false);
 
-        const auto logger = celeritas::logger::get(channel_name, boost::log::trivial::debug);
-        BOOST_CHECK(logger.has_value());
+        const auto channel_logger = celeritas::logger::get(channel_name, boost::log::trivial::debug);
+        BOOST_CHECK(channel_logger.has_value());
 
         LOG_CHANNEL(channel_name, debug) << message_file_only;
 
@@ -187,8 +145,8 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, logger_fixture)
         const std::string unknown_channel = "unknown_channel";
 
         // 尝试获取未知通道的 logger
-        if (const auto logger = celeritas::logger::get(unknown_channel, boost::log::trivial::info);
-            logger.has_value())
+        if (const auto channel_logger = celeritas::logger::get(unknown_channel, boost::log::trivial::info);
+            channel_logger.has_value())
         {
             LOG_CHANNEL(unknown_channel, info) << "未知通道消息 (如果可见)";
         }
