@@ -48,6 +48,14 @@ namespace
         BOOST_CHECK(output.find(message_error) != std::string::npos);
         BOOST_CHECK(output.find(message_fatal) != std::string::npos);
     }
+
+    void init_test_channel(const std::string& channel_name)
+    {
+        const auto log_file = "test_channel"s + celeritas::log_daily_suffix.data() + celeritas::logger_extension.data();
+
+        // 初始化文件日志，级别为 INFO，同时输出到控制台
+        celeritas::logger::init_file(channel_name, log_file, boost::log::trivial::info, celeritas::default_logger_rotation_size, true);
+    }
 }
 
 BOOST_FIXTURE_TEST_SUITE(logger_suite, celeritas::logger_fixture)
@@ -109,10 +117,7 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, celeritas::logger_fixture)
 
         // 初始化一个特定的文件日志通道
         const std::string channel_name{ "test_channel" };
-        const auto log_file = "test_channel"s + celeritas::log_daily_suffix.data() + celeritas::logger_extension.data();
-
-        // 初始化文件日志，级别为 INFO，同时输出到控制台
-        celeritas::logger::init_file(channel_name, log_file, boost::log::trivial::info, 1024 * 1024, true);
+        init_test_channel(channel_name);
 
         // 测试记录到该通道
         LOG_CHANNEL(channel_name, info) << message_channel_info;
@@ -133,10 +138,7 @@ BOOST_FIXTURE_TEST_SUITE(logger_suite, celeritas::logger_fixture)
         celeritas::logger::init_console(boost::log::trivial::warning);
 
         const std::string channel_name{ "file_only_channel" };
-        const auto log_file = "file_only"s + celeritas::log_daily_suffix.data() + celeritas::logger_extension.data();
-
-        // 初始化仅文件日志，不输出到控制台，级别为 DEBUG
-        celeritas::logger::init_file(channel_name, log_file, boost::log::trivial::debug, celeritas::default_logger_rotation_size, false);
+        init_test_channel(channel_name);
 
         check_level(boost::log::trivial::debug, true);
 
