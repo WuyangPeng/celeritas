@@ -8,6 +8,82 @@
 #include <numeric>
 #include <vector>
 
+namespace
+{
+    constexpr auto num_random_bool_iterations = 10000;
+    constexpr auto p_true = 0.7;
+    constexpr auto num_samples_iterations = 1000;
+    constexpr auto mean_value = 10.0;
+    constexpr auto stddev_value = 2.0;
+    constexpr auto num_weight_iterations = 20000;
+
+    [[nodiscard]] int get_random_bool_count()
+    {
+        auto true_count = 0;
+        for (auto i = 0; i < num_random_bool_iterations; ++i)
+        {
+            if (celeritas::random_helper::get_random_bool(p_true))
+            {
+                ++true_count;
+            }
+        }
+
+        return true_count;
+    }
+
+    [[nodiscard]] std::vector<double> generate_normal_samples()
+    {
+        std::vector<double> samples{};
+        samples.reserve(num_samples_iterations);
+        for (auto i = 0; i < num_samples_iterations; ++i)
+        {
+            samples.emplace_back(celeritas::random_helper::get_random_normal(mean_value, stddev_value));
+        }
+
+        return samples;
+    }
+
+    void test_average(const std::vector<double>& samples)
+    {
+        // 基本检查：平均值应接近均值
+        const auto sum = std::accumulate(samples.begin(), samples.end(), 0.0);
+        const auto average = sum / num_samples_iterations;
+
+        // 允许平均值有 10% 的容差
+        BOOST_CHECK_CLOSE(average, mean_value, 10.0);
+    }
+
+    void test_sample(const std::vector<double>& samples)
+    {
+        // 基本检查：值通常应在均值的几个标准差范围内
+        auto outliers = 0;
+        for (const auto value : samples)
+        {
+            if (value < mean_value - 4 * stddev_value || value > mean_value + 4 * stddev_value)
+            {
+                ++outliers;
+            }
+        }
+        // 允许有少数几个离群值
+        BOOST_CHECK_LT(outliers, 3);
+    }
+
+    [[nodiscard]] std::map<size_t, int> generate_weight_distribution()
+    {
+        const celeritas::random_helper::weights_type weights{ 10.0, 20.0, 70.0 };
+        std::map<size_t, int> counts{};
+
+        for (auto i = 0; i < num_weight_iterations; ++i)
+        {
+            const auto index = celeritas::random_helper::get_random_index_by_weight(weights);
+            BOOST_CHECK_LT(index, weights.size());
+            ++counts[index];
+        }
+
+        return counts;
+    }
+}
+
 BOOST_AUTO_TEST_SUITE(random_helper_suite)
 
     // 测试 get_random_int(int end)
@@ -108,20 +184,11 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
     // 测试 get_random_bool(double p)
     BOOST_AUTO_TEST_CASE(test_get_random_bool_probability)
     {
-        constexpr auto num_iterations = 10000;
-        constexpr auto p_true = 0.7;
-        auto true_count = 0;
+        const auto true_count = get_random_bool_count();
 
-        for (auto i = 0; i < num_iterations; ++i)
-        {
-            if (celeritas::random_helper::get_random_bool(p_true))
-            {
-                true_count++;
-            }
-        }
         // 检查真值的比例是否大致接近 p_true
         // 使用 5% 的容差进行基本检查
-        BOOST_CHECK_CLOSE(static_cast<double>(true_count) / num_iterations, p_true, 5.0);
+        BOOST_CHECK_CLOSE(static_cast<double>(true_count) / num_random_bool_iterations, p_true, 5.0);
     }
 
     BOOST_DATA_TEST_CASE(test_get_random_bool_always_true, boost::unit_test::data::xrange(100), index)
@@ -135,57 +202,24 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
     }
 
     // 测试 get_random_normal(double mean, double stddev)
-    BOOST_AUTO_TEST_CASE(test_get_random_normal_basic)
+    BOOST_AUTO_TEST_CASE(test_get_random_normal_mean)
     {
-        constexpr auto mean_value = 10.0;
-        constexpr auto stddev_value = 2.0;
-        constexpr auto num_iterations = 1000;
-        std::vector<double> samples{};
-        samples.reserve(num_iterations);
+        const auto samples = generate_normal_samples();
 
-        for (auto i = 0; i < num_iterations; ++i)
-        {
-            samples.emplace_back(celeritas::random_helper::get_random_normal(mean_value, stddev_value));
-        }
-
-        // 基本检查：平均值应接近均值
-        const auto sum = std::accumulate(samples.begin(), samples.end(), 0.0);
-        const auto average = sum / num_iterations;
-        // 允许平均值有 10% 的容差
-        BOOST_CHECK_CLOSE(average, mean_value, 10.0);
-
-        // 基本检查：值通常应在均值的几个标准差范围内
-        auto outliers = 0;
-        for (const auto value : samples)
-        {
-            if (value < mean_value - 4 * stddev_value || value > mean_value + 4 * stddev_value)
-            {
-                outliers++;
-            }
-        }
-        // 允许有少数几个离群值
-        BOOST_CHECK_LT(outliers, 3);
+        test_average(samples);
+        test_sample(samples);
     }
 
     // 测试 get_random_index_by_weight 的分布
     BOOST_AUTO_TEST_CASE(test_get_random_index_by_weight_distribution)
     {
-        const celeritas::random_helper::weights_type weights{ 10.0, 20.0, 70.0 };
-        constexpr auto num_iterations = 20000;
-        std::map<size_t, int> counts{};
-
-        for (auto i = 0; i < num_iterations; ++i)
-        {
-            const auto index = celeritas::random_helper::get_random_index_by_weight(weights);
-            BOOST_CHECK_LT(index, weights.size());
-            counts[index]++;
-        }
+        const auto counts = generate_weight_distribution();
 
         // 检查分布是否大致正确
         // 10% 容差
-        BOOST_CHECK_CLOSE(static_cast<double>(counts[0]) / num_iterations, 0.1, 10.0);
-        BOOST_CHECK_CLOSE(static_cast<double>(counts[1]) / num_iterations, 0.2, 10.0);
-        BOOST_CHECK_CLOSE(static_cast<double>(counts[2]) / num_iterations, 0.7, 10.0);
+        BOOST_CHECK_CLOSE(static_cast<double>(counts.at(0)) / num_weight_iterations, 0.1, 10.0);
+        BOOST_CHECK_CLOSE(static_cast<double>(counts.at(1)) / num_weight_iterations, 0.2, 10.0);
+        BOOST_CHECK_CLOSE(static_cast<double>(counts.at(2)) / num_weight_iterations, 0.7, 10.0);
     }
 
     // 测试 get_random_index_by_weight 的单个元素
