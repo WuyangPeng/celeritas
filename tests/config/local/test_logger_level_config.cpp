@@ -2,7 +2,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_SUITE(logger_level_config_tests)
+BOOST_AUTO_TEST_SUITE(logger_level_config_suite)
 
     BOOST_AUTO_TEST_CASE(test_logger_level_config_default)
     {

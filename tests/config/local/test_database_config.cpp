@@ -2,7 +2,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_SUITE(database_config_tests)
+BOOST_AUTO_TEST_SUITE(database_config_suite)
 
     BOOST_AUTO_TEST_CASE(test_database_config_default_constructor)
     {

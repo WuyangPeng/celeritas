@@ -3,7 +3,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_SUITE(database_type_tests)
+BOOST_AUTO_TEST_SUITE(database_type_suite)
 
     BOOST_AUTO_TEST_CASE(test_get_database_type_valid)
     {

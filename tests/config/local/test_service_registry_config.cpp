@@ -2,7 +2,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_SUITE(service_registry_config_tests)
+BOOST_AUTO_TEST_SUITE(service_registry_config_suite)
 
     BOOST_AUTO_TEST_CASE(test_service_registry_config_default_constructor)
     {

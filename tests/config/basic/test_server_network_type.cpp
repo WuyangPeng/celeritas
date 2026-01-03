@@ -3,7 +3,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_SUITE(server_network_type_tests)
+BOOST_AUTO_TEST_SUITE(server_network_type_suite)
 
     BOOST_AUTO_TEST_CASE(test_get_server_network_type_valid)
     {
