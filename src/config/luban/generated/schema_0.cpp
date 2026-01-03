@@ -122,8 +122,8 @@ bool game::rename_cost_config::deserialize(::luban::ByteBuf& _buf)
 {
 
     if(!_buf.readInt(id)) return false;
-    if(!interval::deserializeinterval(_buf, interval)) return false;
-    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); priorityItem.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<priority_item> _e; if(!priority_item::deserializepriority_item(_buf, _e)) return false; priorityItem.push_back(_e);}}
+    if(!interval::deserializeinterval(_buf, renameCount)) return false;
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); item.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<priority_item> _e; if(!priority_item::deserializepriority_item(_buf, _e)) return false; item.push_back(_e);}}
 
     return true;
 }

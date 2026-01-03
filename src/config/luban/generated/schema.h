@@ -322,11 +322,11 @@ struct rename_cost_config : public luban::CfgBean
     /**
      * 区间
      */
-    ::luban::SharedPtr<interval> interval;
+    ::luban::SharedPtr<interval> renameCount;
     /**
      * 所需物品
      */
-    ::luban::Vector<::luban::SharedPtr<priority_item>> priorityItem;
+    ::luban::Vector<::luban::SharedPtr<priority_item>> item;
 
     static constexpr int __ID__ = 2043646959;
 
