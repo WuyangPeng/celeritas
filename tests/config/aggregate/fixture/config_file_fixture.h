@@ -17,14 +17,21 @@ namespace celeritas
 
         [[nodiscard]] static config_file_fixture get_health_check_url();
 
+        [[nodiscard]] static config_file_fixture get_databases();
+
+        [[nodiscard]] static config_file_fixture get_loggers();
+
+        [[nodiscard]] static config_file_fixture get_service_registry();
+
+        [[nodiscard]] static config_file_fixture get_server();
+
         [[nodiscard]] std::string get_filename() const;
 
     private:
         void init(const std::string& content) const;
 
-        void remove_file();
+        void remove_file() const;
 
         std::string filename_;
     };
 }
-

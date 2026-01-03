@@ -87,6 +87,11 @@ void celeritas::app_config::load_global_config(const std::string& filename)
     }
 }
 
+celeritas::app_config::service_registry_config_container celeritas::app_config::get_service_registry_config() const
+{
+    return service_registry_;
+}
+
 celeritas::logger_level_config celeritas::app_config::get_logger_level_config() const
 {
     return logger_level_config_;
@@ -121,11 +126,6 @@ celeritas::server_config celeritas::app_config::get_server_config() const
 celeritas::health_check_url_config celeritas::app_config::get_health_check_url_config() const
 {
     return health_check_url_;
-}
-
-celeritas::app_config::service_registry_config_container celeritas::app_config::get_service_registry_config() const
-{
-    return service_registry_;
 }
 
 int64_t celeritas::app_config::get_expire_milliseconds(const std::string& db_name) const

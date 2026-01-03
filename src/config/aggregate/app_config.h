@@ -19,6 +19,7 @@ namespace celeritas
         using logger_config_container = std::map<std::string, logger_config>;
         using database_config_container = std::map<std::string, database_config>;
         using service_registry_config_container = std::map<std::string, service_registry_config>;
+        using const_service_registry_config_container_shared_ptr = std::shared_ptr<const service_registry_config_container>;
 
         void load_service_registry_config(const std::string& filename);
 
@@ -32,6 +33,8 @@ namespace celeritas
 
         void load_global_config(const std::string& filename);
 
+        [[nodiscard]] service_registry_config_container get_service_registry_config() const;
+
         [[nodiscard]] logger_level_config get_logger_level_config() const;
 
         [[nodiscard]] logger_config_container get_logger_config() const;
@@ -43,8 +46,6 @@ namespace celeritas
         [[nodiscard]] server_config get_server_config() const;
 
         [[nodiscard]] health_check_url_config get_health_check_url_config() const;
-
-        [[nodiscard]] service_registry_config_container get_service_registry_config() const;
 
         [[nodiscard]] int64_t get_expire_milliseconds(const std::string& db_name) const;
 
