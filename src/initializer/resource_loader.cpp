@@ -1,4 +1,5 @@
-﻿#include "initializer_fwd.h"
+﻿#include "initializer_constant.h"
+#include "initializer_fwd.h"
 #include "resource_loader.h"
 #include "common/logging/logger.h"
 #include "common/core/random_helper.h"

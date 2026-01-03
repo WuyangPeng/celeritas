@@ -1,5 +1,4 @@
 ﻿#include "logger_config_reader.h"
-#include "config/config_fwd.h"
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>

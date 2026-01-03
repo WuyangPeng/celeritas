@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "config/local/server_network_config.h"
 #include "config/config_constant.h"
+#include "config/local/server_network_config.h"
 
 #include <string>
 #include <vector>
@@ -35,11 +35,11 @@ namespace celeritas
 
         [[nodiscard]] std::string get_host() const;
 
-        [[nodiscard]] int get_datacenter_id() const;
+        [[nodiscard]] int get_datacenter_id() const noexcept;
 
-        [[nodiscard]] int get_worker_id() const;
+        [[nodiscard]] int get_worker_id() const noexcept;
 
-        [[nodiscard]] bool is_load_game_config() const;
+        [[nodiscard]] bool is_load_game_config() const noexcept;
 
     private:
         std::string instance_id_;

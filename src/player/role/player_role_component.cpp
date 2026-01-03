@@ -7,6 +7,7 @@
 #include "config/luban/generated/schema.h"
 #include "database/database_pool_base.h"
 #include "database/generated/mongo/auth/user_server_roles.h"
+#include "initializer/initializer_constant.h"
 #include "initializer/initializer_fwd.h"
 #include "player/component/player_state.tpp"
 #include "player/time/player_time_refresh_key.h"

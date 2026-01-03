@@ -3,6 +3,7 @@
 #include "database/database_pool_manager.h"
 #include "database/generated/redis/auth/character_session.h"
 #include "database/generated/redis/auth/session_token.h"
+#include "initializer/initializer_constant.h"
 #include "initializer/initializer_fwd.h"
 #include "message/game_error_type.h"
 #include "proto/celeritas.pb.h"

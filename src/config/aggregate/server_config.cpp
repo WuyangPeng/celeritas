@@ -1,5 +1,5 @@
 ﻿#include "server_config.h"
-#include "initializer/initializer_fwd.h"
+#include "initializer/initializer_constant.h"
 
 celeritas::server_config::server_config(std::string instance_id,
                                         std::string service_name,
@@ -62,17 +62,17 @@ std::string celeritas::server_config::get_host() const
     return host_;
 }
 
-int celeritas::server_config::get_datacenter_id() const
+int celeritas::server_config::get_datacenter_id() const noexcept
 {
     return datacenter_id_;
 }
 
-int celeritas::server_config::get_worker_id() const
+int celeritas::server_config::get_worker_id() const noexcept
 {
     return worker_id_;
 }
 
-bool celeritas::server_config::is_load_game_config() const
+bool celeritas::server_config::is_load_game_config() const noexcept
 {
     return load_game_config_;
 }

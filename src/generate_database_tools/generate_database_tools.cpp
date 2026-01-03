@@ -3,7 +3,7 @@
 #include "process.h"
 #include "common/core/command_line_config.h"
 #include "common/logging/logger.h"
-#include "initializer/initializer_fwd.h"
+#include "initializer/initializer_constant.h"
 
 #include <exception>
 

@@ -1,4 +1,5 @@
 ﻿#include "register_request_message_handler.h"
+#include "initializer/initializer_constant.h"
 #include "initializer/initializer_fwd.h"
 #include "message/concrete_message_handler.tpp"
 #include "message/protobuf_handle_parameter.h"

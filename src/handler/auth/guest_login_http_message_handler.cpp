@@ -9,6 +9,7 @@
 #include "database/mysql_database_session.h"
 #include "database/generated/mysql/auth/account.h"
 #include "handler/handler_fwd.h"
+#include "initializer/initializer_constant.h"
 #include "initializer/initializer_fwd.h"
 #include "message/game_error_type.h"
 #include "message/http_handle_parameter.h"

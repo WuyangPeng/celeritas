@@ -1,5 +1,6 @@
 ﻿#include "gateway_client_player_request_message_handler.h"
 #include "gateway/gateway_login.h"
+#include "initializer/initializer_constant.h"
 #include "initializer/initializer_fwd.h"
 #include "message/concrete_message_handler.tpp"
 #include "player_server/player_server.h"

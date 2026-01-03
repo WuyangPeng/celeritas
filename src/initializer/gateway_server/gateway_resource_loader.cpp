@@ -1,6 +1,7 @@
 ﻿#include "gateway_resource_loader.h"
 #include "common/logging/logger.h"
 #include "detail/gateway_server_fwd.h"
+#include "initializer/initializer_constant.h"
 #include "initializer/initializer_fwd.h"
 #include "message/header.h"
 #include "proto/common/common.pb.h"

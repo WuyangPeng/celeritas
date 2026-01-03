@@ -6,6 +6,7 @@
 #include "auth/data/server_cell_repository.h"
 #include "common/logging/logger.h"
 #include "detail/auth_server_fwd.h"
+#include "initializer/initializer_constant.h"
 #include "network/http_client.h"
 #include "service_registry/core/service_registry.h"
 #include "service_registry/data/service_info.h"

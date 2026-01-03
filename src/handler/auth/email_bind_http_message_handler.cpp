@@ -3,6 +3,7 @@
 #include "auth/authentication/email/email_bind.h"
 #include "common/logging/logger.h"
 #include "handler/handler_fwd.h"
+#include "initializer/initializer_constant.h"
 #include "message/http_handle_parameter.h"
 #include "message/game_error_type.h"
 #include "initializer/initializer_fwd.h"

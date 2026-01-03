@@ -1,5 +1,6 @@
 ﻿#include "player_finish_component.h"
 #include "common/logging/logger.h"
+#include "initializer/initializer_constant.h"
 #include "initializer/initializer_fwd.h"
 #include "player/component/player_component.h"
 #include "player/component/player_state.h"

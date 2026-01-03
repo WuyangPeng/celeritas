@@ -4,6 +4,7 @@
 #include "config/local/logger_level_config.h"
 
 #include <boost/property_tree/ptree.hpp>
+
 #include <vector>
 
 namespace celeritas

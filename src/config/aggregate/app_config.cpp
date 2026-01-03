@@ -1,13 +1,13 @@
 ﻿#include "app_config.h"
 #include "common/core/celeritas_error.h"
-#include "common/logging/logger.h"
 #include "common/core/time_helper.h"
-#include "config/detail/database_config_reader.h"
-#include "config/detail/global_config_reader.h"
-#include "config/detail/health_check_url_config_reader.h"
-#include "config/detail/logger_config_reader.h"
-#include "config/detail/server_config_reader.h"
-#include "config/detail/service_registry_config_reader.h"
+#include "common/logging/logger.h"
+#include "detail/database_config_reader.h"
+#include "detail/global_config_reader.h"
+#include "detail/health_check_url_config_reader.h"
+#include "detail/logger_config_reader.h"
+#include "detail/server_config_reader.h"
+#include "detail/service_registry_config_reader.h"
 
 void celeritas::app_config::load_service_registry_config(const std::string& filename)
 {
@@ -110,7 +110,7 @@ celeritas::database_config celeritas::app_config::get_database_config(const std:
         return iter->second;
     }
 
-    throw celeritas_error{ "db is not exist,db name:" + db_name };
+    throw celeritas_error{ "db is not exist,db name:{}", db_name };
 }
 
 celeritas::server_config celeritas::app_config::get_server_config() const

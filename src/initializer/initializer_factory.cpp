@@ -1,4 +1,5 @@
-﻿#include "initializer_factory.h"
+﻿#include "initializer_constant.h"
+#include "initializer_factory.h"
 #include "initializer_fwd.h"
 #include "admin_server/admin_application_loader.h"
 #include "admin_server/admin_configuration_loader.h"
