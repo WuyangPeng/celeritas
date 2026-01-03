@@ -14,3 +14,8 @@ int celeritas::health_check_url_config::get_interval() const noexcept
 {
     return interval_;
 }
+
+int celeritas::health_check_url_config::get_timeout() const noexcept
+{
+    return timeout_;
+}

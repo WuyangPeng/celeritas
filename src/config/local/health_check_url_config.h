@@ -19,6 +19,8 @@ namespace celeritas
 
         [[nodiscard]] int get_interval() const noexcept;
 
+        [[nodiscard]] int get_timeout() const noexcept;
+
     private:
         std::string url_;
         int interval_ = default_health_check_interval;

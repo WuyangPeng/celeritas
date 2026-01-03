@@ -36,6 +36,8 @@ namespace celeritas
         create_user_error = 10004,
 
         // 玩家服务器错误 60000 - 69999
+
+        // 养成模块
         max_develop = 60000,
         non_resettable = 60001,
         develop_not_exist = 60002,

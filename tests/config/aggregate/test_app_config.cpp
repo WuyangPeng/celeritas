@@ -1,67 +1,37 @@
-﻿#include "config/aggregate/app_config.h"
-#include "common/core/celeritas_error.h"
+﻿#include "common/core/celeritas_error.h"
+#include "common/core/time_helper.h"
 #include "common/logging/logger.h"
+#include "config/aggregate/app_config.h"
+#include "fixture/config_file_fixture.h"
 
 #include <boost/test/unit_test.hpp>
-#include <fstream>
+
 #include <filesystem>
-
-// 用于创建临时配置文件的辅助类
-struct ConfigFileFixture
-{
-    std::string filename;
-
-    ConfigFileFixture(const std::string& name, const std::string& content)
-        : filename(name)
-    {
-        std::ofstream out(filename);
-        out << content;
-        out.close();
-    }
-
-    ~ConfigFileFixture()
-    {
-        if (std::filesystem::exists(filename))
-        {
-            std::filesystem::remove(filename);
-        }
-    }
-};
+#include <fstream>
 
 BOOST_AUTO_TEST_SUITE(app_config_suite)
 
     BOOST_AUTO_TEST_CASE(test_load_global_config)
     {
-        std::string content = R"(<?xml version="1.0" encoding="utf-8"?>
-<global>
-    <external_host>192.168.1.100</external_host>
-</global>)";
-        std::string filename = "test_global.xml";
-        ConfigFileFixture fixture{ filename, content };
+        const auto fixture = celeritas::config_file_fixture::get_global();
 
-        celeritas::app_config config;
-        config.load_global_config(filename);
+        celeritas::app_config config{};
+        config.load_global_config(fixture.get_filename());
 
         BOOST_CHECK_EQUAL(config.get_external_host(), "192.168.1.100");
     }
 
     BOOST_AUTO_TEST_CASE(test_load_health_check_url_config)
     {
-        std::string content = R"(<?xml version="1.0" encoding="utf-8"?>
-<health_check_url>
-    <url>/status</url>
-    <interval>60</interval>
-    <timeout>10</timeout>
-</health_check_url>)";
-        std::string filename = "test_health_check.xml";
-        ConfigFileFixture fixture{ filename, content };
+        const auto fixture = celeritas::config_file_fixture::get_health_check_url();
 
-        celeritas::app_config config;
-        config.load_health_check_url_config(filename);
+        celeritas::app_config config{};
+        config.load_health_check_url_config(fixture.get_filename());
 
-        auto health_config = config.get_health_check_url_config();
+        const auto health_config = config.get_health_check_url_config();
         BOOST_CHECK_EQUAL(health_config.get_url(), "/status");
         BOOST_CHECK_EQUAL(health_config.get_interval(), 60);
+        BOOST_CHECK_EQUAL(health_config.get_timeout(), 10);
     }
 
     BOOST_AUTO_TEST_CASE(test_load_databases_config)
@@ -82,20 +52,22 @@ BOOST_AUTO_TEST_SUITE(app_config_suite)
     </database>
 </databases>)";
         std::string filename = "test_databases.xml";
-        ConfigFileFixture fixture{ filename, content };
+        celeritas::config_file_fixture fixture{ filename, content };
 
         celeritas::app_config config;
         config.load_databases_config(filename);
 
-        auto db_config = config.get_database_config("test_db");
-        BOOST_CHECK_EQUAL(db_config.get_name(), "test_db");
-        BOOST_CHECK(db_config.get_database_type() == celeritas::database_type::mysql);
-        BOOST_CHECK_EQUAL(db_config.get_host(), "localhost");
-        BOOST_CHECK_EQUAL(db_config.get_expire_seconds(), 3600);
+        auto database_config = config.get_database_config("test_db");
+        BOOST_CHECK_EQUAL(database_config.get_name(), "test_db");
+        BOOST_CHECK(database_config.get_database_type() == celeritas::database_type::mysql);
+        BOOST_CHECK_EQUAL(database_config.get_host(), "localhost");
+        BOOST_CHECK_EQUAL(database_config.get_expire_seconds(), 3600);
+
+        const auto current_time = celeritas::time_helper::get_current_milliseconds();
 
         // 测试 get_expire_milliseconds
         // 注意：此测试依赖于当前时间，因此我们检查它是否大致正确（大于当前时间）
-        BOOST_CHECK(config.get_expire_milliseconds("test_db") > 0);
+        BOOST_CHECK(config.get_expire_milliseconds("test_db") >= current_time + database_config.get_expire_seconds() * celeritas::milliseconds);
 
         // 测试不存在的数据库
         BOOST_CHECK_THROW([config] { std::ignore = config.get_database_config("non_existent");}(), celeritas::celeritas_error);
@@ -116,7 +88,7 @@ BOOST_AUTO_TEST_SUITE(app_config_suite)
     </logger>
 </loggers>)";
         std::string filename = "test_loggers.xml";
-        ConfigFileFixture fixture{ filename, content };
+        celeritas::config_file_fixture fixture{ filename, content };
 
         celeritas::app_config config;
         config.load_loggers_config(filename);
@@ -143,7 +115,7 @@ BOOST_AUTO_TEST_SUITE(app_config_suite)
     </network>
 </service_registry>)";
         std::string filename = "test_service_registry.xml";
-        ConfigFileFixture fixture{ filename, content };
+        celeritas::config_file_fixture fixture{ filename, content };
 
         celeritas::app_config config;
         config.load_service_registry_config(filename);
@@ -177,7 +149,7 @@ BOOST_AUTO_TEST_SUITE(app_config_suite)
     </network>
 </server>)";
         std::string filename = "test_server.xml";
-        ConfigFileFixture fixture{ filename, content };
+        celeritas::config_file_fixture fixture{ filename, content };
 
         celeritas::app_config config;
         config.load_server_config(filename);
