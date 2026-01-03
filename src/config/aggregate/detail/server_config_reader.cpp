@@ -5,7 +5,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
-celeritas::server_config celeritas::server_config_reader::load_config(const std::string& filename)
+celeritas::server_config_reader::const_server_config_shared_ptr celeritas::server_config_reader::load_config(const std::string& filename)
 {
     boost::property_tree::ptree tree{};
 
@@ -45,7 +45,7 @@ celeritas::server_config celeritas::server_config_reader::load_config(const std:
         }
     }
 
-    return server_config{ instance_id, service_name, container, game_server_id, host, worker_pool, datacenter_id, worker_id, load_game_config };
+    return std::make_shared<server_config>(instance_id, service_name, container, game_server_id, host, worker_pool, datacenter_id, worker_id, load_game_config);
 }
 
 celeritas::server_network_config celeritas::server_config_reader::get_server_network_config(const node_type& node)

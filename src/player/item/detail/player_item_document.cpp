@@ -60,7 +60,7 @@ bool celeritas::player_item_document::change_item(const const_app_config_shared_
 
     while (0 < count)
     {
-        count = add_new_item(template_id, count, stacked, item->squares, server_config);
+        count = add_new_item(template_id, count, stacked, item->squares, *server_config);
     }
 
     return true;

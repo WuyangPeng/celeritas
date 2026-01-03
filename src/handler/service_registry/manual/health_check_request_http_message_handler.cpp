@@ -43,7 +43,7 @@ celeritas::health_check_request_http_message_handler::void_awaitable_type celeri
 celeritas::health_check_request_http_message_handler::void_awaitable_type celeritas::health_check_request_http_message_handler::do_health_check_result(http_handle_parameter_shared_ptr handle_parameter)
 {
     const auto app_config = handle_parameter->get_app_config();
-    const auto instance_id = app_config->get_server_config().get_instance_id();
+    const auto instance_id = app_config->get_server_config()->get_instance_id();
 
     const auto health_check_level = co_await handle_parameter->get_health_check_level();
 

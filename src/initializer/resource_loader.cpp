@@ -146,7 +146,7 @@ bool celeritas::resource_loader::write_to_server(const std::string& server_type,
         }
     }
 
-    if (app_config_->get_server_config().get_service_name() != gateway_type)
+    if (app_config_->get_server_config()->get_service_name() != gateway_type)
     {
         for (const auto& element : listener_)
         {
@@ -240,14 +240,14 @@ void celeritas::resource_loader::process_service_registry_by_duration()
     auto* server_register = request.mutable_celeritas_request()->mutable_service()->mutable_registry()->mutable_server_register();
     const auto server = app_config_->get_server_config();
 
-    server_register->set_service_name(server.get_service_name());
-    server_register->set_instance_id(server.get_instance_id());
-    server_register->set_game_server_id(server.get_game_server_id());
-    server_register->set_host(server.get_host());
+    server_register->set_service_name(server->get_service_name());
+    server_register->set_instance_id(server->get_instance_id());
+    server_register->set_game_server_id(server->get_game_server_id());
+    server_register->set_host(server->get_host());
     server_register->set_external_host(app_config_->get_external_host());
     server_register->set_start_server_time(start_server_time_);
 
-    for (const auto& element : server)
+    for (const auto& element : *server)
     {
         auto* port = server_register->add_port();
         port->set_protocol(static_cast<int>(element.get_server_network_type()));
@@ -256,7 +256,7 @@ void celeritas::resource_loader::process_service_registry_by_duration()
 
     if (write_to_server(service_registry_type.data(), header{}, request))
     {
-        LOG_CHANNEL(initializer_channel, trace) << "service registry registry: " << server.get_instance_id();
+        LOG_CHANNEL(initializer_channel, trace) << "service registry registry: " << server->get_instance_id();
     }
 
     send_service_heartbeat();
@@ -388,14 +388,14 @@ void celeritas::resource_loader::initialize_server_resource(io_context_type& io_
 {
     const auto server = app_config_->get_server_config();
 
-    if (server.is_service_registry_server())
+    if (server->is_service_registry_server())
     {
         is_service_registry_ = true;
     }
 
-    for (const auto& element : server)
+    for (const auto& element : *server)
     {
-        const auto listener = server_resource_loader::loader_server(io_context, server, element, network_message_callback);
+        const auto listener = server_resource_loader::loader_server(io_context, *server, element, network_message_callback);
 
         listener->start();
 
@@ -423,8 +423,8 @@ void celeritas::resource_loader::initialize_service_registry_resource(io_context
     else
     {
         const auto server = app_config_->get_server_config();
-        const auto instance_id = server.get_instance_id();
-        const auto game_server_id = server.get_game_server_id();
+        const auto instance_id = server->get_instance_id();
+        const auto game_server_id = server->get_game_server_id();
 
         for (const auto& element : *service_registry | std::views::values)
         {
@@ -486,13 +486,13 @@ celeritas::resource_loader::tcp_client_shared_ptr celeritas::resource_loader::ge
     std::advance(iter, random_index);
 
     const auto server = app_config_->get_server_config();
-    return service_registry_loader::loader_service_registry(io_context, *(iter->second), network_message_callback, server.get_game_server_id(), service_registry_type.data());
+    return service_registry_loader::loader_service_registry(io_context, *(iter->second), network_message_callback, server->get_game_server_id(), service_registry_type.data());
 }
 
 void celeritas::resource_loader::initialize_game_config()
 {
     if (const auto server_config = app_config_->get_server_config();
-        !server_config.is_load_game_config())
+        !server_config->is_load_game_config())
     {
         return;
     }

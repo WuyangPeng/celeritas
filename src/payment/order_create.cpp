@@ -52,7 +52,7 @@ celeritas::order_create::optional_orders_awaitable_type celeritas::order_create:
     }
 
     const auto server_config = app_config->get_server_config();
-    const auto id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
+    const auto id = snowflake_generator::get_instance().generate(server_config->get_datacenter_id(), server_config->get_worker_id());
 
     orders orders{ database_type::mysql, id };
     orders.set_order_id(generate_token());

@@ -64,7 +64,7 @@ void celeritas::application_loader::submit_task(task_type task)
 
 void celeritas::application_loader::initialize_worker_pool()
 {
-    const auto work_pool_size = std::max(min_worker_pool_size, app_config_->get_server_config().get_worker_pool_size());
+    const auto work_pool_size = std::max(min_worker_pool_size, app_config_->get_server_config()->get_worker_pool_size());
 
     worker_pool_ = std::make_unique<worker_pool>(work_pool_size);
 }

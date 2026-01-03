@@ -10,7 +10,7 @@ bool celeritas::reload_game_config_message_handler::handle_concrete(const protob
                                                                     const message_registry_weak_ptr& message_registry)
 {
     if (const auto server_config = handle_parameter->get_app_config()->get_server_config();
-        !server_config.is_load_game_config())
+        !server_config->is_load_game_config())
     {
         return true;
     }

@@ -69,7 +69,7 @@ void celeritas::service_login::send_success_message(const int64_t user_id) const
     login->set_current_time(time_helper::get_current_milliseconds());
     login->set_session_id(login_.session_id());
     login->set_protocol(login_.protocol());
-    login->set_instance_id(protobuf_handle_parameter_->get_app_config()->get_server_config().get_instance_id());
+    login->set_instance_id(protobuf_handle_parameter_->get_app_config()->get_server_config()->get_instance_id());
 
     protobuf_handle_parameter_->write(header, response);
 }

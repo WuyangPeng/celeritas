@@ -121,17 +121,17 @@ BOOST_AUTO_TEST_SUITE(app_config_suite)
         config.load_server_config(fixture.get_filename());
 
         const auto server_cfg = config.get_server_config();
-        BOOST_CHECK_EQUAL(server_cfg.get_instance_id(), "server_1");
-        BOOST_CHECK_EQUAL(server_cfg.get_service_name(), "game");
-        BOOST_CHECK_EQUAL(server_cfg.get_game_server_id(), "game_server_id_1");
-        BOOST_CHECK_EQUAL(server_cfg.get_host(), "0.0.0.0");
-        BOOST_CHECK_EQUAL(server_cfg.get_worker_pool_size(), 4);
-        BOOST_CHECK_EQUAL(server_cfg.get_datacenter_id(), 1);
-        BOOST_CHECK_EQUAL(server_cfg.get_worker_id(), 2);
-        BOOST_CHECK(server_cfg.is_load_game_config());
+        BOOST_CHECK_EQUAL(server_cfg->get_instance_id(), "server_1");
+        BOOST_CHECK_EQUAL(server_cfg->get_service_name(), "game");
+        BOOST_CHECK_EQUAL(server_cfg->get_game_server_id(), "game_server_id_1");
+        BOOST_CHECK_EQUAL(server_cfg->get_host(), "0.0.0.0");
+        BOOST_CHECK_EQUAL(server_cfg->get_worker_pool_size(), 4);
+        BOOST_CHECK_EQUAL(server_cfg->get_datacenter_id(), 1);
+        BOOST_CHECK_EQUAL(server_cfg->get_worker_id(), 2);
+        BOOST_CHECK(server_cfg->is_load_game_config());
 
-        const auto iter = server_cfg.begin();
-        BOOST_CHECK(iter != server_cfg.end());
+        const auto iter = server_cfg->begin();
+        BOOST_CHECK(iter != server_cfg->end());
         BOOST_CHECK(iter->get_server_network_type() == celeritas::server_network_type::http);
         BOOST_CHECK_EQUAL(iter->get_port(), 8080);
     }

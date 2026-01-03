@@ -31,7 +31,7 @@ celeritas::auth_login::account_awaitable_type celeritas::auth_login::create_new_
                                                                                         const const_app_config_shared_ptr& app_config)
 {
     const auto server_config = app_config->get_server_config();
-    const auto account_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
+    const auto account_id = snowflake_generator::get_instance().generate(server_config->get_datacenter_id(), server_config->get_worker_id());
 
     // 账号只存入redis，等待玩家真正登陆时再写入mysql
     account account{ database_type::redis, account_id };
@@ -92,7 +92,7 @@ celeritas::auth_login::account_awaitable_type celeritas::auth_login::create_new_
                                                                                         const const_app_config_shared_ptr& app_config)
 {
     const auto server_config = app_config->get_server_config();
-    const auto account_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
+    const auto account_id = snowflake_generator::get_instance().generate(server_config->get_datacenter_id(), server_config->get_worker_id());
 
     // 账号只存入redis，等待玩家真正登陆时再写入mysql
     account account{ database_type::redis, account_id };
@@ -110,7 +110,7 @@ celeritas::auth_login::account_awaitable_type celeritas::auth_login::create_new_
         account.set_password_hash(hashed_password);
     }
 
-    account_bind_id_ = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
+    account_bind_id_ = snowflake_generator::get_instance().generate(server_config->get_datacenter_id(), server_config->get_worker_id());
     account_bind account_bind{ database_type::redis, account_bind_id_ };
     account_bind.set_account_id(account_id);
     account_bind.set_auth_key(auth_key);

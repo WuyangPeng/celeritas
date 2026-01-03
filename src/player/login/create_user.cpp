@@ -14,7 +14,7 @@ celeritas::create_user::create_user(protobuf_handle_parameter_shared_ptr protobu
 celeritas::create_user::optional_user_awaitable_type celeritas::create_user::save_database() const
 {
     const auto server_config = protobuf_handle_parameter_->get_app_config()->get_server_config();
-    const auto user_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
+    const auto user_id = snowflake_generator::get_instance().generate(server_config->get_datacenter_id(), server_config->get_worker_id());
 
     user user{ database_type::mysql, user_id };
     user.set_account_id(login_.account_id());

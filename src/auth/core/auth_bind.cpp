@@ -45,7 +45,7 @@ celeritas::auth_bind::bool_awaitable_type celeritas::auth_bind::bind(account& ac
     }
 
     const auto server_config = get_app_config()->get_server_config();
-    const auto account_bind_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
+    const auto account_bind_id = snowflake_generator::get_instance().generate(server_config->get_datacenter_id(), server_config->get_worker_id());
     account_bind account_bind{ database_type::mysql, account_bind_id };
     account_bind.set_account_id(account.get_account_id());
     account_bind.set_auth_key(auth_key);

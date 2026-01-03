@@ -10,7 +10,8 @@
 #include "detail/service_registry_config_reader.h"
 
 celeritas::app_config::app_config()
-    : service_registry_{ std::make_shared<registry_container>() }
+    : service_registry_{ std::make_shared<registry_container>() },
+      server_{ std::make_shared<server_config>() }
 {
 }
 
@@ -123,7 +124,7 @@ celeritas::database_config celeritas::app_config::get_database_config(const std:
     throw celeritas_error{ "db is not exist,db name:{}", db_name };
 }
 
-celeritas::server_config celeritas::app_config::get_server_config() const
+celeritas::app_config::const_server_config_shared_ptr celeritas::app_config::get_server_config() const
 {
     return server_;
 }

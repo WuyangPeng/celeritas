@@ -10,8 +10,9 @@ namespace celeritas
     {
     public:
         using class_type = server_config_reader;
+        using const_server_config_shared_ptr = std::shared_ptr<const server_config>;
 
-        static server_config load_config(const std::string& filename);
+        static const_server_config_shared_ptr load_config(const std::string& filename);
 
     private:
         using node_type = boost::property_tree::basic_ptree<std::string, std::string>;
