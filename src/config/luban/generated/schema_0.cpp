@@ -12,7 +12,7 @@
 namespace celeritas {namespace config {
 
 
-bool container::develop_config::deserialize(::luban::ByteBuf& _buf)
+bool game::develop_config::deserialize(::luban::ByteBuf& _buf)
 {
 
     if(!_buf.readInt(id)) return false;
@@ -24,9 +24,9 @@ bool container::develop_config::deserialize(::luban::ByteBuf& _buf)
     return true;
 }
 
-bool container::develop_config::deserializedevelop_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<container::develop_config>& _out)
+bool game::develop_config::deserializedevelop_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::develop_config>& _out)
 {
-    _out.reset(LUBAN_NEW(container::develop_config));
+    _out.reset(LUBAN_NEW(game::develop_config));
     if (_out->deserialize(_buf))
     {
         return true;
@@ -39,7 +39,7 @@ bool container::develop_config::deserializedevelop_config(::luban::ByteBuf& _buf
 }
 
 
-bool container::item_config::deserialize(::luban::ByteBuf& _buf)
+bool game::item_config::deserialize(::luban::ByteBuf& _buf)
 {
 
     if(!_buf.readInt(itemTemplateId)) return false;
@@ -50,9 +50,9 @@ bool container::item_config::deserialize(::luban::ByteBuf& _buf)
     return true;
 }
 
-bool container::item_config::deserializeitem_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<container::item_config>& _out)
+bool game::item_config::deserializeitem_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::item_config>& _out)
 {
-    _out.reset(LUBAN_NEW(container::item_config));
+    _out.reset(LUBAN_NEW(game::item_config));
     if (_out->deserialize(_buf))
     {
         return true;
@@ -65,7 +65,7 @@ bool container::item_config::deserializeitem_config(::luban::ByteBuf& _buf, ::lu
 }
 
 
-bool container::name_config::deserialize(::luban::ByteBuf& _buf)
+bool game::name_config::deserialize(::luban::ByteBuf& _buf)
 {
 
     if(!_buf.readInt(id)) return false;
@@ -76,9 +76,9 @@ bool container::name_config::deserialize(::luban::ByteBuf& _buf)
     return true;
 }
 
-bool container::name_config::deserializename_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<container::name_config>& _out)
+bool game::name_config::deserializename_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::name_config>& _out)
 {
-    _out.reset(LUBAN_NEW(container::name_config));
+    _out.reset(LUBAN_NEW(game::name_config));
     if (_out->deserialize(_buf))
     {
         return true;
@@ -91,7 +91,7 @@ bool container::name_config::deserializename_config(::luban::ByteBuf& _buf, ::lu
 }
 
 
-bool container::red_dot_config::deserialize(::luban::ByteBuf& _buf)
+bool game::red_dot_config::deserialize(::luban::ByteBuf& _buf)
 {
 
     {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; id = red_dot_type(__enum_temp__); }
@@ -103,9 +103,9 @@ bool container::red_dot_config::deserialize(::luban::ByteBuf& _buf)
     return true;
 }
 
-bool container::red_dot_config::deserializered_dot_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<container::red_dot_config>& _out)
+bool game::red_dot_config::deserializered_dot_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::red_dot_config>& _out)
 {
-    _out.reset(LUBAN_NEW(container::red_dot_config));
+    _out.reset(LUBAN_NEW(game::red_dot_config));
     if (_out->deserialize(_buf))
     {
         return true;
@@ -118,7 +118,7 @@ bool container::red_dot_config::deserializered_dot_config(::luban::ByteBuf& _buf
 }
 
 
-bool container::rename_cost_config::deserialize(::luban::ByteBuf& _buf)
+bool game::rename_cost_config::deserialize(::luban::ByteBuf& _buf)
 {
 
     if(!_buf.readInt(id)) return false;
@@ -128,9 +128,9 @@ bool container::rename_cost_config::deserialize(::luban::ByteBuf& _buf)
     return true;
 }
 
-bool container::rename_cost_config::deserializerename_cost_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<container::rename_cost_config>& _out)
+bool game::rename_cost_config::deserializerename_cost_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::rename_cost_config>& _out)
 {
-    _out.reset(LUBAN_NEW(container::rename_cost_config));
+    _out.reset(LUBAN_NEW(game::rename_cost_config));
     if (_out->deserialize(_buf))
     {
         return true;
@@ -143,7 +143,7 @@ bool container::rename_cost_config::deserializerename_cost_config(::luban::ByteB
 }
 
 
-bool container::surname_config::deserialize(::luban::ByteBuf& _buf)
+bool game::surname_config::deserialize(::luban::ByteBuf& _buf)
 {
 
     if(!_buf.readInt(id)) return false;
@@ -153,9 +153,9 @@ bool container::surname_config::deserialize(::luban::ByteBuf& _buf)
     return true;
 }
 
-bool container::surname_config::deserializesurname_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<container::surname_config>& _out)
+bool game::surname_config::deserializesurname_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::surname_config>& _out)
 {
-    _out.reset(LUBAN_NEW(container::surname_config));
+    _out.reset(LUBAN_NEW(game::surname_config));
     if (_out->deserialize(_buf))
     {
         return true;
