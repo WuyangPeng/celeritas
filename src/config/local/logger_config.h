@@ -1,10 +1,7 @@
 ﻿#pragma once
 
-#include "../config_fwd.h"
 #include "common/logging/detail/logger_namespace.h"
 #include "config/config_constant.h"
-
-#include <boost/property_tree/ptree.hpp>
 
 namespace celeritas
 {
@@ -15,7 +12,7 @@ namespace celeritas
 
         logger_config() noexcept = default;
 
-        logger_config(std::string name, severity_level_type severity_level, bool console_enabled, std::string channel_name, std::string log_file_name, int rotation_size);
+        logger_config(std::string name, severity_level_type severity_level, bool console_enabled, std::string channel_name, std::string log_file_name, int rotation_size) noexcept;
 
         [[nodiscard]] std::string get_name() const;
 
@@ -23,11 +20,11 @@ namespace celeritas
 
         [[nodiscard]] std::string get_log_file_name() const;
 
-        [[nodiscard]] severity_level_type get_severity_level_type() const;
+        [[nodiscard]] severity_level_type get_severity_level_type() const noexcept;
 
-        [[nodiscard]] int get_rotation_size() const;
+        [[nodiscard]] int get_rotation_size() const noexcept;
 
-        [[nodiscard]] bool is_console_enabled() const;
+        [[nodiscard]] bool is_console_enabled() const noexcept;
 
         [[nodiscard]] static severity_level_type get_severity_level_type(const std::string& severity_level_name);
 

@@ -8,7 +8,7 @@ celeritas::logger_config::logger_config(std::string name,
                                         const bool console_enabled,
                                         std::string channel_name,
                                         std::string log_file_name,
-                                        const int rotation_size)
+                                        const int rotation_size) noexcept
     : name_{ std::move(name) },
       level_{ severity_level },
       console_enabled_{ console_enabled },
@@ -33,17 +33,17 @@ std::string celeritas::logger_config::get_log_file_name() const
     return log_file_name_;
 }
 
-celeritas::severity_level_type celeritas::logger_config::get_severity_level_type() const
+celeritas::severity_level_type celeritas::logger_config::get_severity_level_type() const noexcept
 {
     return level_;
 }
 
-int celeritas::logger_config::get_rotation_size() const
+int celeritas::logger_config::get_rotation_size() const noexcept
 {
     return rotation_size_;
 }
 
-bool celeritas::logger_config::is_console_enabled() const
+bool celeritas::logger_config::is_console_enabled() const noexcept
 {
     return console_enabled_;
 }
@@ -65,5 +65,5 @@ celeritas::severity_level_type celeritas::logger_config::get_severity_level_type
         return iter->second;
     }
 
-    throw celeritas_error{ "get_severity_level_type error,name =" + severity_level_name };
+    throw celeritas_error{ "get_severity_level_type error,name ={}", severity_level_name };
 }

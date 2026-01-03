@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "../config_fwd.h"
 #include "config/config_constant.h"
 
 #include <string>
@@ -14,11 +13,11 @@ namespace celeritas
 
         health_check_url_config() noexcept = default;
 
-        health_check_url_config(std::string url, int interval, int timeout);
+        health_check_url_config(std::string url, int interval, int timeout) noexcept;
 
         [[nodiscard]] std::string get_url() const;
 
-        [[nodiscard]] int get_interval() const;
+        [[nodiscard]] int get_interval() const noexcept;
 
     private:
         std::string url_;

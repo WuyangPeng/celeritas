@@ -30,12 +30,12 @@ celeritas::severity_level_type celeritas::logger_level_config::get_console_level
     return boost::log::trivial::trace;
 }
 
-void celeritas::logger_level_config::set_default_level(const severity_level_type severity_level_type)
+void celeritas::logger_level_config::set_default_level(const severity_level_type severity_level_type) noexcept
 {
     default_level_ = severity_level_type;
 }
 
-void celeritas::logger_level_config::set_console_level(const severity_level_type severity_level_type)
+void celeritas::logger_level_config::set_console_level(const severity_level_type severity_level_type) noexcept
 {
     console_level_ = severity_level_type;
 }

@@ -1,6 +1,6 @@
 ﻿#include "global_config.h"
 
-celeritas::global_config::global_config(std::string external_host)
+celeritas::global_config::global_config(std::string external_host) noexcept
     : external_host_{ std::move(external_host) }
 {
 }

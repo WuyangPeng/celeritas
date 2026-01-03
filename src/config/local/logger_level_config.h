@@ -2,7 +2,6 @@
 
 #include "common/logging/detail/logger_namespace.h"
 
-#include <boost/log/trivial.hpp>
 #include <optional>
 
 namespace celeritas
@@ -20,9 +19,9 @@ namespace celeritas
 
         [[nodiscard ]] severity_level_type get_console_level() const noexcept;
 
-        void set_default_level(severity_level_type severity_level_type);
+        void set_default_level(severity_level_type severity_level_type) noexcept;
 
-        void set_console_level(severity_level_type severity_level_type);
+        void set_console_level(severity_level_type severity_level_type) noexcept;
 
     private:
         using optional_severity_level_type = std::optional<severity_level_type>;

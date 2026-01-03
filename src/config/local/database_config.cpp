@@ -10,7 +10,7 @@ celeritas::database_config::database_config(std::string name,
                                             const int min_connections,
                                             const int max_connections,
                                             const int timeout_seconds,
-                                            const int expire_seconds)
+                                            const int expire_seconds) noexcept
     : name_{ std::move(name) },
       database_type_{ database_type },
       host_{ std::move(host) },
@@ -30,7 +30,7 @@ std::string celeritas::database_config::get_name() const
     return name_;
 }
 
-celeritas::database_type celeritas::database_config::get_database_type() const
+celeritas::database_type celeritas::database_config::get_database_type() const noexcept
 {
     return database_type_;
 }
@@ -40,7 +40,7 @@ std::string celeritas::database_config::get_host() const
     return host_;
 }
 
-int celeritas::database_config::get_port() const
+int celeritas::database_config::get_port() const noexcept
 {
     return port_;
 }
@@ -60,22 +60,22 @@ std::string celeritas::database_config::get_db_name() const
     return db_name_;
 }
 
-int celeritas::database_config::get_min_connections() const
+int celeritas::database_config::get_min_connections() const noexcept
 {
     return min_connections_;
 }
 
-int celeritas::database_config::get_max_connections() const
+int celeritas::database_config::get_max_connections() const noexcept
 {
     return max_connections_;
 }
 
-int celeritas::database_config::get_timeout_seconds() const
+int celeritas::database_config::get_timeout_seconds() const noexcept
 {
     return timeout_seconds_;
 }
 
-int celeritas::database_config::get_expire_seconds() const
+int celeritas::database_config::get_expire_seconds() const noexcept
 {
     return expire_seconds_;
 }
