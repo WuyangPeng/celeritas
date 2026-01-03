@@ -11,7 +11,7 @@ celeritas::service_registry_config_reader::service_registry_config_reader(std::s
     load_config();
 }
 
-celeritas::service_registry_config_reader::const_registry_container_shared_ptr celeritas::service_registry_config_reader::get_service_registry_config_container() const
+celeritas::service_registry_config_reader::const_container_shared_ptr celeritas::service_registry_config_reader::get_service_registry_config_container() const
 {
     return service_registry_;
 }
@@ -35,8 +35,8 @@ void celeritas::service_registry_config_reader::load_node(const node_type& node)
     const auto host = node.get<std::string>("host", default_service_registry_host.data());
     const auto port = node.get("port", default_service_registry_port);
 
-    service_registry_config service_registry_config{ server_name, host, port };
+    auto config = std::make_shared<service_registry_config>(server_name, host, port);
 
-    service_registry_->emplace_back(service_registry_config);
+    service_registry_->emplace_back(std::move(config));
 }
 

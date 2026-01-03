@@ -428,9 +428,9 @@ void celeritas::resource_loader::initialize_service_registry_resource(io_context
 
         for (const auto& element : *service_registry | std::views::values)
         {
-            if (element.get_name() != instance_id)
+            if (element->get_name() != instance_id)
             {
-                const auto client = service_registry_loader::loader_service_registry(io_context, element, network_message_callback, game_server_id, service_registry_type.data());
+                const auto client = service_registry_loader::loader_service_registry(io_context, *element, network_message_callback, game_server_id, service_registry_type.data());
 
                 std::unique_lock lock{ mutex_ };
                 tcp_clients_.emplace(client->get_instance_id(), client);
@@ -486,7 +486,7 @@ celeritas::resource_loader::tcp_client_shared_ptr celeritas::resource_loader::ge
     std::advance(iter, random_index);
 
     const auto server = app_config_->get_server_config();
-    return service_registry_loader::loader_service_registry(io_context, iter->second, network_message_callback, server.get_game_server_id(), service_registry_type.data());
+    return service_registry_loader::loader_service_registry(io_context, *(iter->second), network_message_callback, server.get_game_server_id(), service_registry_type.data());
 }
 
 void celeritas::resource_loader::initialize_game_config()

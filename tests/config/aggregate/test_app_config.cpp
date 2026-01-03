@@ -107,9 +107,9 @@ BOOST_AUTO_TEST_SUITE(app_config_suite)
             iter != registry_configs->cend())
         {
             const auto& registry_config = iter->second;
-            BOOST_CHECK_EQUAL(registry_config.get_name(), registry_name);
-            BOOST_CHECK_EQUAL(registry_config.get_host(), "127.0.0.1");
-            BOOST_CHECK_EQUAL(registry_config.get_port(), 5000);
+            BOOST_CHECK_EQUAL(registry_config->get_name(), registry_name);
+            BOOST_CHECK_EQUAL(registry_config->get_host(), "127.0.0.1");
+            BOOST_CHECK_EQUAL(registry_config->get_port(), 5000);
         }
     }
 

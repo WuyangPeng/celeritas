@@ -16,10 +16,11 @@ namespace celeritas
     {
     public:
         using class_type = app_config;
+        using const_registry_config_shared_ptr = std::shared_ptr<const service_registry_config>;
+        using registry_container = std::map<std::string, const_registry_config_shared_ptr>;
+        using const_registry_container_shared_ptr = std::shared_ptr<const registry_container>;
         using logger_config_container = std::map<std::string, logger_config>;
         using database_config_container = std::map<std::string, database_config>;
-        using registry_container = std::map<std::string, service_registry_config>;
-        using const_registry_container_shared_ptr = std::shared_ptr<const registry_container>;
 
         app_config();
 

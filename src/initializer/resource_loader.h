@@ -41,16 +41,16 @@ namespace celeritas
         void release_resource();
 
         [[nodiscard]] bool write_to_server(const std::string& server_type,
-                                 const header& header,
-                                 const protobuf_message& request) override;
+                                           const header& header,
+                                           const protobuf_message& request) override;
 
         [[nodiscard]] bool write(const header& header,
                                  const protobuf_message& request);
 
         [[nodiscard]] bool write_to_server(const std::string& server_type,
-                                 const std::string& instance_id,
-                                 const header& header,
-                                 const protobuf_message& request) override;
+                                           const std::string& instance_id,
+                                           const header& header,
+                                           const protobuf_message& request) override;
 
         [[nodiscard]] bool write_to_client(const header& header, const protobuf_message& response) override;
 
@@ -84,7 +84,8 @@ namespace celeritas
         using check_tcp_clients_timer_shared_ptr = std::shared_ptr<check_tcp_clients_timer>;
         using service_registry_timer_shared_ptr = std::shared_ptr<service_registry_timer>;
         using buffer_pool_timer_shared_ptr = std::shared_ptr<buffer_pool_timer>;
-        using service_registry_config_container = std::map<std::string, service_registry_config>;
+        using const_service_registry_config_shared_ptr = std::shared_ptr<const service_registry_config>;
+        using service_registry_config_container = std::map<std::string, const_service_registry_config_shared_ptr>;
         using gateway_mapping_type = std::map<int64_t, session_route>;
         using session_mapping_type = std::map<int64_t, int64_t>;
 

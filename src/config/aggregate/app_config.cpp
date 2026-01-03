@@ -179,13 +179,14 @@ void celeritas::app_config::do_load_loggers_config(const std::string& filename)
 void celeritas::app_config::do_load_service_registry_config(const std::string& filename)
 {
     const service_registry_config_reader service_registry_config_reader{ filename };
+
     for (const auto& result = service_registry_config_reader.get_service_registry_config_container();
          const auto& element : *result)
     {
-        const auto emplace_result = service_registry_->emplace(element.get_name(), element);
+        const auto emplace_result = service_registry_->emplace(element->get_name(), element);
         if (!emplace_result.second)
         {
-            LOG_CHANNEL(config_channel, warning) << "load service registry config repeat,name = " << element.get_name();
+            LOG_CHANNEL(config_channel, warning) << "load service registry config repeat,name = " << element->get_name();
         }
     }
 }
