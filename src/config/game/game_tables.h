@@ -1,8 +1,6 @@
 ﻿#pragma once
 
 #include "weight.h"
-#include "config/config_fwd.h"
-#include "config/game/container_config.h"
 #include "config/luban/generated/schema.h"
 
 #include <map>
@@ -16,7 +14,6 @@ namespace celeritas
         using class_type = game_tables;
         using const_tables_shared_ptr = std::shared_ptr<const config::tables>;
         using sex_type = config::sex_type;
-        using red_dot_type = config::red_dot_type;
 
         explicit game_tables(const_tables_shared_ptr tables);
 
@@ -34,7 +31,6 @@ namespace celeritas
         void init_name_config();
 
         const_tables_shared_ptr tables_;
-
         weight surname_weight_;
         name_weight_type name_weight_;
     };

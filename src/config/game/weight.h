@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 #include <vector>
 
 namespace celeritas
@@ -10,7 +11,7 @@ namespace celeritas
         using id_container_type = std::vector<int>;
         using weights_type = std::vector<double>;
 
-        void clear();
+        void clear() noexcept;
 
         void add_element(int id, double weights);
 

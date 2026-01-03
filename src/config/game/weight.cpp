@@ -1,6 +1,6 @@
 ﻿#include "weight.h"
 
-void celeritas::weight::clear()
+void celeritas::weight::clear() noexcept
 {
     id_.clear();
     weights_.clear();
