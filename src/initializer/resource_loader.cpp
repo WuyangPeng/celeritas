@@ -411,9 +411,9 @@ void celeritas::resource_loader::initialize_service_registry_resource(io_context
 
     if (!is_service_registry_)
     {
-        if (!service_registry.empty())
+        if (!service_registry->empty())
         {
-            const auto client = get_random_client(io_context, network_message_callback, service_registry);
+            const auto client = get_random_client(io_context, network_message_callback, *service_registry);
 
             std::unique_lock lock{ mutex_ };
 
@@ -426,7 +426,7 @@ void celeritas::resource_loader::initialize_service_registry_resource(io_context
         const auto instance_id = server.get_instance_id();
         const auto game_server_id = server.get_game_server_id();
 
-        for (const auto& element : service_registry | std::views::values)
+        for (const auto& element : *service_registry | std::views::values)
         {
             if (element.get_name() != instance_id)
             {
@@ -442,9 +442,9 @@ void celeritas::resource_loader::initialize_service_registry_resource(io_context
 void celeritas::resource_loader::modify_service_registry_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback, const std::string& instance_id)
 {
     if (const auto service_registry = app_config_->get_service_registry_config();
-        !service_registry.empty())
+        !service_registry->empty())
     {
-        const auto tcp_client = get_random_client(io_context, network_message_callback, service_registry);
+        const auto tcp_client = get_random_client(io_context, network_message_callback, *service_registry);
 
         std::unique_lock lock{ mutex_ };
 

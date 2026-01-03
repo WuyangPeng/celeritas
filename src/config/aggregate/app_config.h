@@ -18,8 +18,10 @@ namespace celeritas
         using class_type = app_config;
         using logger_config_container = std::map<std::string, logger_config>;
         using database_config_container = std::map<std::string, database_config>;
-        using service_registry_config_container = std::map<std::string, service_registry_config>;
-        using const_service_registry_config_container_shared_ptr = std::shared_ptr<const service_registry_config_container>;
+        using registry_container = std::map<std::string, service_registry_config>;
+        using const_registry_container_shared_ptr = std::shared_ptr<const registry_container>;
+
+        app_config();
 
         void load_service_registry_config(const std::string& filename);
 
@@ -33,7 +35,7 @@ namespace celeritas
 
         void load_global_config(const std::string& filename);
 
-        [[nodiscard]] service_registry_config_container get_service_registry_config() const;
+        [[nodiscard]] const_registry_container_shared_ptr get_service_registry_config() const;
 
         [[nodiscard]] logger_level_config get_logger_level_config() const;
 
@@ -52,15 +54,17 @@ namespace celeritas
         [[nodiscard]] std::string get_external_host() const;
 
     private:
+        using registry_container_shared_ptr = std::shared_ptr<registry_container>;
+
+        void do_load_service_registry_config(const std::string& filename);
+
         void do_load_databases_config(const std::string& filename);
 
         void do_load_loggers_config(const std::string& filename);
 
-        void do_load_service_registry_config(const std::string& filename);
-
         void do_load_global_config(const std::string& filename);
 
-        service_registry_config_container service_registry_;
+        registry_container_shared_ptr service_registry_;
         server_config server_;
         health_check_url_config health_check_url_;
         logger_level_config logger_level_config_;

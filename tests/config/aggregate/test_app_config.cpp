@@ -101,10 +101,10 @@ BOOST_AUTO_TEST_SUITE(app_config_suite)
         const std::string registry_name{ "registry_1" };
 
         const auto registry_configs = config.get_service_registry_config();
-        BOOST_CHECK(registry_configs.contains(registry_name));
+        BOOST_CHECK(registry_configs->contains(registry_name));
 
-        if (const auto iter = registry_configs.find(registry_name);
-            iter != registry_configs.cend())
+        if (const auto iter = registry_configs->find(registry_name);
+            iter != registry_configs->cend())
         {
             const auto& registry_config = iter->second;
             BOOST_CHECK_EQUAL(registry_config.get_name(), registry_name);

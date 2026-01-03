@@ -9,6 +9,11 @@
 #include "detail/server_config_reader.h"
 #include "detail/service_registry_config_reader.h"
 
+celeritas::app_config::app_config()
+    : service_registry_{ std::make_shared<registry_container>() }
+{
+}
+
 void celeritas::app_config::load_service_registry_config(const std::string& filename)
 {
     try
@@ -87,7 +92,7 @@ void celeritas::app_config::load_global_config(const std::string& filename)
     }
 }
 
-celeritas::app_config::service_registry_config_container celeritas::app_config::get_service_registry_config() const
+celeritas::app_config::const_registry_container_shared_ptr celeritas::app_config::get_service_registry_config() const
 {
     return service_registry_;
 }
@@ -175,9 +180,13 @@ void celeritas::app_config::do_load_service_registry_config(const std::string& f
 {
     const service_registry_config_reader service_registry_config_reader{ filename };
     for (const auto& result = service_registry_config_reader.get_service_registry_config_container();
-         const auto& element : result)
+         const auto& element : *result)
     {
-        service_registry_[element.get_name()] = element;
+        const auto emplace_result = service_registry_->emplace(element.get_name(), element);
+        if (!emplace_result.second)
+        {
+            LOG_CHANNEL(config_channel, warning) << "load service registry config repeat,name = " << element.get_name();
+        }
     }
 }
 
