@@ -16,7 +16,7 @@ namespace celeritas
 
         [[nodiscard]] std::string_view get_server_type() const override;
 
-        void process_check_tcp_clients_by_duration(io_context_type& io_context) override;
+        void process_check_tcp_clients_by_duration(const any_io_executor& any_io_executor) override;
 
         void process_service_registry_by_duration() override;
 
