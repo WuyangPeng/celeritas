@@ -29,9 +29,9 @@ BOOST_AUTO_TEST_SUITE(app_config_suite)
         config.load_health_check_url_config(fixture.get_filename());
 
         const auto health_config = config.get_health_check_url_config();
-        BOOST_CHECK_EQUAL(health_config.get_url(), "/status");
-        BOOST_CHECK_EQUAL(health_config.get_interval(), 60);
-        BOOST_CHECK_EQUAL(health_config.get_timeout(), 10);
+        BOOST_CHECK_EQUAL(health_config->get_url(), "/status");
+        BOOST_CHECK_EQUAL(health_config->get_interval(), 60);
+        BOOST_CHECK_EQUAL(health_config->get_timeout(), 10);
     }
 
     BOOST_AUTO_TEST_CASE(test_load_databases_config)
@@ -44,21 +44,21 @@ BOOST_AUTO_TEST_SUITE(app_config_suite)
         const std::string db_name{ "test_db" };
 
         const auto database_config = config.get_database_config(db_name);
-        BOOST_CHECK_EQUAL(database_config.get_name(), db_name);
-        BOOST_CHECK(database_config.get_database_type() == celeritas::database_type::mysql);
-        BOOST_CHECK_EQUAL(database_config.get_host(), "localhost");
-        BOOST_CHECK_EQUAL(database_config.get_port(), 3306);
-        BOOST_CHECK_EQUAL(database_config.get_user(), "root");
-        BOOST_CHECK_EQUAL(database_config.get_password(), "pass");
-        BOOST_CHECK_EQUAL(database_config.get_db_name(), "test");
-        BOOST_CHECK_EQUAL(database_config.get_min_connections(), 1);
-        BOOST_CHECK_EQUAL(database_config.get_max_connections(), 5);
-        BOOST_CHECK_EQUAL(database_config.get_timeout_seconds(), 3);
-        BOOST_CHECK_EQUAL(database_config.get_expire_seconds(), 3600);
+        BOOST_CHECK_EQUAL(database_config->get_name(), db_name);
+        BOOST_CHECK(database_config->get_database_type() == celeritas::database_type::mysql);
+        BOOST_CHECK_EQUAL(database_config->get_host(), "localhost");
+        BOOST_CHECK_EQUAL(database_config->get_port(), 3306);
+        BOOST_CHECK_EQUAL(database_config->get_user(), "root");
+        BOOST_CHECK_EQUAL(database_config->get_password(), "pass");
+        BOOST_CHECK_EQUAL(database_config->get_db_name(), "test");
+        BOOST_CHECK_EQUAL(database_config->get_min_connections(), 1);
+        BOOST_CHECK_EQUAL(database_config->get_max_connections(), 5);
+        BOOST_CHECK_EQUAL(database_config->get_timeout_seconds(), 3);
+        BOOST_CHECK_EQUAL(database_config->get_expire_seconds(), 3600);
 
         const auto current_time = celeritas::time_helper::get_current_milliseconds();
 
-        BOOST_CHECK(config.get_expire_milliseconds(db_name) >= current_time + database_config.get_expire_seconds() * celeritas::milliseconds);
+        BOOST_CHECK(config.get_expire_milliseconds(db_name) >= current_time + database_config->get_expire_seconds() * celeritas::milliseconds);
 
         BOOST_CHECK_THROW([&config] { std::ignore = config.get_database_config("non_existent");}(), celeritas::celeritas_error);
     }

@@ -18,7 +18,7 @@ void celeritas::service_registry_resource_loader::send_health_check(io_context_t
 
     for (const auto& [instance_id, service_info] : service_registry::get_services())
     {
-        auto client = std::make_shared<http_client>(io_context, network_message_callback, "", service_info.get_host(), service_info.get_port(server_network_type::http), service_info.get_service_name(), health_check_url_config.get_url());
+        auto client = std::make_shared<http_client>(io_context, network_message_callback, "", service_info.get_host(), service_info.get_port(server_network_type::http), service_info.get_service_name(), health_check_url_config->get_url());
 
         boost::asio::co_spawn(io_context,
                               send_health_check(std::move(client)),
@@ -36,7 +36,7 @@ void celeritas::service_registry_resource_loader::start_health_check_timer(io_co
     const auto app_config = get_app_config();
     const auto health_check_url_config = app_config->get_health_check_url_config();
 
-    health_check_timer_ = std::make_unique<health_check_timer>(io_context, std::chrono::seconds(health_check_url_config.get_interval()), boost::polymorphic_pointer_downcast<class_type>(shared_from_this()), network_message_callback);
+    health_check_timer_ = std::make_unique<health_check_timer>(io_context, std::chrono::seconds(health_check_url_config->get_interval()), boost::polymorphic_pointer_downcast<class_type>(shared_from_this()), network_message_callback);
 
     health_check_timer_->start();
 }

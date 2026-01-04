@@ -3,7 +3,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
-celeritas::health_check_url_config celeritas::health_check_url_config_reader::load_config(const std::string& filename)
+celeritas::health_check_url_config_reader::const_health_check_url_config_shared_ptr celeritas::health_check_url_config_reader::load_config(const std::string& filename)
 {
     boost::property_tree::ptree tree{};
 
@@ -18,5 +18,5 @@ celeritas::health_check_url_config celeritas::health_check_url_config_reader::lo
     const auto interval = node.get<int>("interval", default_health_check_interval);
     const auto timeout = node.get<int>("timeout", default_health_check_timeout);
 
-    return health_check_url_config{ url, interval, timeout };
+    return std::make_shared<health_check_url_config>(url, interval, timeout);
 }

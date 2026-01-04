@@ -11,7 +11,9 @@
 
 celeritas::app_config::app_config()
     : service_registry_{ std::make_shared<registry_container>() },
-      server_{ std::make_shared<server_config>() }
+      server_{ std::make_shared<server_config>() },
+      health_check_url_{ std::make_shared<health_check_url_config>() },
+      database_{ std::make_shared<database_config_container>() }
 {
 }
 
@@ -98,6 +100,11 @@ celeritas::app_config::const_registry_container_shared_ptr celeritas::app_config
     return service_registry_;
 }
 
+celeritas::app_config::const_server_config_shared_ptr celeritas::app_config::get_server_config() const
+{
+    return server_;
+}
+
 celeritas::logger_level_config celeritas::app_config::get_logger_level_config() const
 {
     return logger_level_config_;
@@ -108,15 +115,15 @@ celeritas::app_config::logger_config_container celeritas::app_config::get_logger
     return logger_;
 }
 
-celeritas::app_config::database_config_container celeritas::app_config::get_database_config() const
+celeritas::app_config::const_database_config_container_shared_ptr celeritas::app_config::get_database_config() const
 {
     return database_;
 }
 
-celeritas::database_config celeritas::app_config::get_database_config(const std::string& db_name) const
+celeritas::app_config::const_database_config_shared_ptr celeritas::app_config::get_database_config(const std::string& db_name) const
 {
-    if (const auto iter = database_.find(db_name);
-        iter != database_.cend())
+    if (const auto iter = database_->find(db_name);
+        iter != database_->cend())
     {
         return iter->second;
     }
@@ -124,12 +131,7 @@ celeritas::database_config celeritas::app_config::get_database_config(const std:
     throw celeritas_error{ "db is not exist,db name:{}", db_name };
 }
 
-celeritas::app_config::const_server_config_shared_ptr celeritas::app_config::get_server_config() const
-{
-    return server_;
-}
-
-celeritas::health_check_url_config celeritas::app_config::get_health_check_url_config() const
+celeritas::app_config::const_health_check_url_config_shared_ptr celeritas::app_config::get_health_check_url_config() const
 {
     return health_check_url_;
 }
@@ -138,7 +140,7 @@ int64_t celeritas::app_config::get_expire_milliseconds(const std::string& db_nam
 {
     const auto database_config = get_database_config(db_name);
 
-    return time_helper::get_current_milliseconds() + database_config.get_expire_seconds() * milliseconds;
+    return time_helper::get_current_milliseconds() + database_config->get_expire_seconds() * milliseconds;
 }
 
 std::string celeritas::app_config::get_external_host() const
@@ -146,12 +148,27 @@ std::string celeritas::app_config::get_external_host() const
     return global_.get_external_host();
 }
 
+void celeritas::app_config::do_load_service_registry_config(const std::string& filename)
+{
+    const service_registry_config_reader service_registry_config_reader{ filename };
+
+    for (const auto& result = service_registry_config_reader.get_service_registry_config_container();
+         const auto& element : *result)
+    {
+        const auto emplace_result = service_registry_->emplace(element->get_name(), element);
+        if (!emplace_result.second)
+        {
+            LOG_CHANNEL(config_channel, warning) << "load service registry config repeat,name = " << element->get_name();
+        }
+    }
+}
+
 void celeritas::app_config::do_load_databases_config(const std::string& filename)
 {
     for (const auto& result = database_config_reader::load_config(filename);
-         const auto& element : result)
+         const auto& element : *result)
     {
-        database_[element.get_name()] = element;
+        (*database_)[element->get_name()] = element;
     }
 }
 
@@ -174,21 +191,6 @@ void celeritas::app_config::do_load_loggers_config(const std::string& filename)
     if (logger_level_config.is_set_console_level())
     {
         logger_level_config_.set_console_level(logger_level_config.get_console_level());
-    }
-}
-
-void celeritas::app_config::do_load_service_registry_config(const std::string& filename)
-{
-    const service_registry_config_reader service_registry_config_reader{ filename };
-
-    for (const auto& result = service_registry_config_reader.get_service_registry_config_container();
-         const auto& element : *result)
-    {
-        const auto emplace_result = service_registry_->emplace(element->get_name(), element);
-        if (!emplace_result.second)
-        {
-            LOG_CHANNEL(config_channel, warning) << "load service registry config repeat,name = " << element->get_name();
-        }
     }
 }
 

@@ -126,7 +126,7 @@ std::string_view celeritas::http_handle_parameter::get_server_type() const
     return get_resource_loader()->get_server_type();
 }
 
-celeritas::database_config celeritas::http_handle_parameter::get_database_config(const std::string& db_name) const
+celeritas::http_handle_parameter::const_database_config_shared_ptr celeritas::http_handle_parameter::get_database_config(const std::string& db_name) const
 {
     const auto app_config = get_resource_loader()->get_app_config();
 

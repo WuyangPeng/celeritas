@@ -80,7 +80,7 @@ void celeritas::application_loader::initialize_health_check()
 {
     const auto health_check_url_config = app_config_->get_health_check_url_config();
 
-    const auto url = health_check_url_config.get_url();
+    const auto url = health_check_url_config->get_url();
 
     http_message_registry_->register_handler(std::make_shared<health_check_request_http_message_handler>(url));
     http_message_registry_->register_handler(std::make_shared<health_check_response_http_message_handler>(url));

@@ -25,6 +25,7 @@ namespace celeritas
         using optional_string = std::optional<std::string>;
         using task_type = thread_safe_queue::task_type;
         using void_waitable_type = boost::asio::awaitable<void>;
+        using const_database_config_shared_ptr = std::shared_ptr<const database_config>;
 
         http_handle_parameter(io_context_type& io_context,
                               std::string path,
@@ -66,7 +67,7 @@ namespace celeritas
 
         [[nodiscard]] std::string_view get_server_type() const;
 
-        [[nodiscard]] database_config get_database_config(const std::string& db_name) const;
+        [[nodiscard]] const_database_config_shared_ptr get_database_config(const std::string& db_name) const;
 
         void submit_task(task_type task) const;
 

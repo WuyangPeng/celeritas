@@ -373,12 +373,12 @@ void celeritas::resource_loader::initialize_logger_resource()
 void celeritas::resource_loader::initialize_database_resource(io_context_type& io_context)
 {
     const auto database = app_config_->get_database_config();
-    for (const auto& element : database | std::views::values)
+    for (const auto& element : *database | std::views::values)
     {
-        database_resource_loader::loader_database(io_context, element);
+        database_resource_loader::loader_database(io_context, *element);
     }
 
-    if (!database.empty())
+    if (!database->empty())
     {
         database_pool_manager::get_instance().start_cleanup_timer(io_context);
     }

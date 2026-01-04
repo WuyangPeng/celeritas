@@ -4,9 +4,9 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
-celeritas::database_config_reader::database_config_container celeritas::database_config_reader::load_config(const std::string& filename)
+celeritas::database_config_reader::const_database_container_shared_ptr celeritas::database_config_reader::load_config(const std::string& filename)
 {
-    database_config_container container{};
+    auto container = std::make_shared<database_config_container>();
 
     boost::property_tree::ptree tree{};
 
@@ -16,14 +16,14 @@ celeritas::database_config_reader::database_config_container celeritas::database
     {
         if (name == "database")
         {
-            container.emplace_back(get_database_node(node));
+            container->emplace_back(get_database_node(node));
         }
     }
 
     return container;
 }
 
-celeritas::database_config celeritas::database_config_reader::get_database_node(const node_type& node)
+celeritas::database_config_reader::const_database_config_shared_ptr celeritas::database_config_reader::get_database_node(const node_type& node)
 {
     // 必需配置项
     const auto name = node.get<std::string>("<xmlattr>.name");
@@ -45,5 +45,5 @@ celeritas::database_config celeritas::database_config_reader::get_database_node(
         throw celeritas_error{ "redis expire seconds must be greater than 0." };
     }
 
-    return database_config{ name, database_type, host, port, user, password, db_name, min_connections, max_connections, timeout_seconds, expire_seconds };
+    return std::make_shared<database_config>(name, database_type, host, port, user, password, db_name, min_connections, max_connections, timeout_seconds, expire_seconds);
 }
