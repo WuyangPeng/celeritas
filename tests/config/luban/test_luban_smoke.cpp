@@ -8,12 +8,11 @@
 // 用于验证 Luban 生成的真实数据可以被成功加载
 BOOST_AUTO_TEST_SUITE(luban_smoke_suite)
 
-    // 测试用例：加载所有配置表
-    // 目的：确保程序能正确解析策划提供的所有最新 .bytes 文件，而不会因格式或数据问题崩溃。
-    // 这是一个集成测试，它依赖于真实的二进制配置文件。
+    // 加载所有配置表
+    // 确保程序能正确解析策划提供的所有最新 .bytes 文件，而不会因格式或数据问题崩溃。
     BOOST_AUTO_TEST_CASE(test_load_all_tables_from_real_files)
     {
-        // 使用 __FILE__ 宏和 std::filesystem 来定位项目中的数据目录，避免使用绝对路径
+        // 使用 __FILE__ 宏和 std::filesystem 来定位项目中的数据目录
         const std::filesystem::path source_file_path{ __FILE__ };
         const auto project_root = source_file_path.parent_path().parent_path().parent_path().parent_path();
         const auto base_path = project_root / "config" / "bin";

@@ -1,5 +1,5 @@
-﻿#include "config/basic/server_network_type.h"
-#include "common/core/celeritas_error.h"
+﻿#include "common/core/celeritas_error.h"
+#include "config/basic/server_network_type.h"
 
 #include <boost/test/unit_test.hpp>
 

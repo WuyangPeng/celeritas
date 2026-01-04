@@ -12,7 +12,12 @@ namespace celeritas
 
         logger_config() noexcept = default;
 
-        logger_config(std::string name, severity_level_type severity_level, bool console_enabled, std::string channel_name, std::string log_file_name, int rotation_size) noexcept;
+        logger_config(std::string name,
+                      severity_level_type severity_level,
+                      bool console_enabled,
+                      std::string channel_name,
+                      std::string log_file_name,
+                      int rotation_size) noexcept;
 
         [[nodiscard]] std::string get_name() const;
 

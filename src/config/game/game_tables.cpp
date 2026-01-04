@@ -1,6 +1,5 @@
 ﻿#include "container_config.tpp"
 #include "game_tables.h"
-#include "common/core/random_helper.h"
 
 #include <ranges>
 
@@ -15,9 +14,7 @@ celeritas::game_tables::game_tables(const_tables_shared_ptr tables)
 
 std::string celeritas::game_tables::get_surname() const
 {
-    const auto index = random_helper::get_random_index_by_weight(surname_weight_.get_weights());
-
-    const auto id = surname_weight_.get_id(index);
+    const auto id = surname_weight_.get_random_id_by_weight();
 
     const auto surname = tables_->surname_config_container.get(id);
 
@@ -32,9 +29,7 @@ std::string celeritas::game_tables::get_name(const sex_type sex_type) const
         throw celeritas_error{ "name weight is not exist ,sex type = {}", static_cast<int>(sex_type) };
     }
 
-    const auto index = random_helper::get_random_index_by_weight(iter->second.get_weights());
-
-    const auto id = iter->second.get_id(index);
+    const auto id = iter->second.get_random_id_by_weight();
 
     if (const auto name = tables_->name_config_container.get(id))
     {

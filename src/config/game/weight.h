@@ -15,9 +15,11 @@ namespace celeritas
 
         void add_element(int id, double weights);
 
-        [[nodiscard]] const weights_type& get_weights() const;
+        [[nodiscard]] int get_random_index_by_weight() const;
 
         [[nodiscard]] int get_id(int index) const;
+
+        [[nodiscard]] int get_random_id_by_weight() const;
 
     private:
         id_container_type id_;
