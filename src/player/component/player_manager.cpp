@@ -141,6 +141,29 @@ celeritas::player_manager::void_awaitable_type celeritas::player_manager::check_
     co_return;
 }
 
+celeritas::player_manager::void_awaitable_type celeritas::player_manager::clear()
+{
+    try
+    {
+        std::lock_guard lock{ mutex_ };
+
+        for (const auto& element : container_ | std::views::values)
+        {
+            co_await element->on_logout();
+        }
+
+        container_.clear();
+    }
+    catch (const std::exception& exception)
+    {
+        LOG_CHANNEL(player_channel, error) << "clear exception: " << exception.what();
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(player_channel, error) << "clear unknown exception";
+    }
+}
+
 celeritas::player_manager::player_manager()
     : container_{}, mutex_{}
 {

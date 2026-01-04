@@ -2,10 +2,12 @@
 #include "initializer.h"
 #include "common/buffer/buffer_guard.h"
 #include "common/core/celeritas_error.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 #include "database/database_pool_manager.h"
 #include "message/basic/header.h"
 #include "network/message_header.h"
+#include "player/component/player_manager.h"
 #include "proto/celeritas.pb.h"
 #include "proto/common/common.pb.h"
 
@@ -203,6 +205,12 @@ void celeritas::initializer::setup_signal_handler()
 void celeritas::initializer::stop()
 {
     daemon_.reset();
+    boost::asio::co_spawn(io_context_,
+                          [&]() -> boost::asio::awaitable<void> {
+                              co_await player_manager::get_instance().clear();
+                          },
+                          boost::asio::detached);
+
     database_pool_manager::get_instance().release_pool();
     resource_loader_->release_resource();
     application_loader_->stop();

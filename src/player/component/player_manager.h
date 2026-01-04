@@ -41,6 +41,8 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type check_player();
 
+        [[nodiscard]] void_awaitable_type clear();
+
     private:
         using container_type = std::unordered_map<int64_t, player_state_shared_ptr>;
 
