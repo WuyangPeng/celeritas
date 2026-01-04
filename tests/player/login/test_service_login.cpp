@@ -71,7 +71,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
         login_request.set_game_server_id("test_server");
         login_request.set_new_account(false);
 
-        celeritas::service_login service{ parameter_, login_request };
+        const celeritas::service_login service{ parameter_, login_request };
 
         // 模拟 user 查询成功
         mock_pool_->set_select_one_result(true);
@@ -81,6 +81,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
                                   const auto user_id = co_await service.send_message();
                                   const auto player_state = celeritas::player_manager::get_instance().get_player(user_id);
                                   player_state->get_component<celeritas::player_time_component>()->stop_timer();
+                                  std::ignore = celeritas::player_manager::get_instance().offline_player(user_id);
                               },
                               boost::asio::detached);
 
@@ -101,7 +102,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
         login_request.set_game_server_id("test_server");
         login_request.set_new_account(false);
 
-        celeritas::service_login service{ parameter_, login_request };
+        const celeritas::service_login service{ parameter_, login_request };
 
         // 模拟 user 查询失败 (用户未找到)
         mock_pool_->set_select_one_result(false);
@@ -110,7 +111,8 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
 
         boost::asio::co_spawn(io_context_,
                               [&]() -> boost::asio::awaitable<void> {
-                                  co_await service.send_message();
+                                  const auto user_id = co_await service.send_message();
+                                  std::ignore = celeritas::player_manager::get_instance().offline_player(user_id);
                               },
                               boost::asio::detached);
 
@@ -128,14 +130,15 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
         login_request.set_account_id(111);
         login_request.set_new_account(true); // 请求创建新账号
 
-        celeritas::service_login service{ parameter_, login_request };
+        const celeritas::service_login service{ parameter_, login_request };
 
         // 模拟 redis account 查询失败 (导致 create_account 失败)
         mock_pool_->set_select_one_result(false);
 
         boost::asio::co_spawn(io_context_,
                               [&]() -> boost::asio::awaitable<void> {
-                                  co_await service.send_message();
+                                  const auto user_id = co_await service.send_message();
+                                  std::ignore = celeritas::player_manager::get_instance().offline_player(user_id);
                               },
                               boost::asio::detached);
 
