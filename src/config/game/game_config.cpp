@@ -4,6 +4,8 @@
 #include "common/logging/logger.h"
 #include "config/config_constant.h"
 
+#include <boost/numeric/conversion/cast.hpp>
+
 #include <fstream>
 
 celeritas::game_config& celeritas::game_config::get_instance()
@@ -76,7 +78,7 @@ bool celeritas::game_config::load_tables_from_file(luban_byte_buf& buffer, const
     std::vector<char> data(size);
     if (stream.read(data.data(), size))
     {
-        buffer.appendBuffer(data.data(), size);
+        buffer.appendBuffer(data.data(), boost::numeric_cast<int>(data.size()));
         return true;
     }
 

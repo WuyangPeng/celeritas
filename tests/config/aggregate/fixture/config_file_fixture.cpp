@@ -81,6 +81,7 @@ celeritas::config_file_fixture celeritas::config_file_fixture::get_loggers()
     </logger>
 </loggers>)" };
     const std::string filename{ "test_loggers.xml" };
+
     return config_file_fixture{ filename, content };
 }
 
