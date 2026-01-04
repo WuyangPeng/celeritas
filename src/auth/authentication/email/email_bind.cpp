@@ -9,7 +9,7 @@
 #include "database/database_pool_manager.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "initializer/account_type.h"
-#include "message/game_error_type.h"
+#include "message/basic/game_error_type.h"
 
 celeritas::email_bind::email_bind(http_handle_parameter_shared_ptr handle_parameter)
     : base_type{ std::move(handle_parameter) }

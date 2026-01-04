@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "common/framework/session.h"
-#include "message/header.h"
+#include "message/basic/header.h"
 
 #include <boost/asio/awaitable.hpp>
 

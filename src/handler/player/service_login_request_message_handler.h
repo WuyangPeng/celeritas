@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "message/concrete_message_handler.h"
+#include "message/handler_base/concrete_message_handler.h"
 #include "proto/service/player.pb.h"
 
 #include <boost/asio.hpp>

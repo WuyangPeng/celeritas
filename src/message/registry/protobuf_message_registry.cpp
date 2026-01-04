@@ -1,4 +1,4 @@
-﻿#include "protobuf_base_message_handler.h"
+﻿#include "message/handler_base/protobuf_base_message_handler.h"
 #include "protobuf_message_registry.h"
 
 #include <mutex>

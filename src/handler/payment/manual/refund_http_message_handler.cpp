@@ -3,7 +3,7 @@
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_constant.h"
 #include "initializer/initializer_fwd.h"
-#include "message/http_handle_parameter.h"
+#include "message/parameters/http_handle_parameter.h"
 #include "payment/recharge_notify.h"
 #include "payment/refund_notify.h"
 

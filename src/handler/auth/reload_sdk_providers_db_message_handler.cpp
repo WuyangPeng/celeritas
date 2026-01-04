@@ -1,6 +1,6 @@
 ﻿#include "reload_sdk_providers_db_message_handler.h"
 #include "auth/data/app_sdk_providers.h"
-#include "message/protobuf_handle_parameter.h"
+#include "message/parameters/protobuf_handle_parameter.h"
 #include "proto/celeritas.pb.h"
 
 bool celeritas::reload_sdk_providers_db_message_handler::handle_concrete(const protobuf_handle_parameter_shared_ptr& handle_parameter,

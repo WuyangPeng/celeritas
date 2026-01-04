@@ -6,7 +6,7 @@
 #include "handler/gateway/manual/gateway_client_request_message_handler.h"
 #include "handler/gateway/manual/gateway_client_response_message_handler.h"
 #include "handler/gateway/manual/gateway_service_login_response_message_handler.h"
-#include "message/concrete_message_handler.tpp"
+#include "message/handler_base/concrete_message_handler.tpp"
 
 celeritas::gateway_application_loader::gateway_application_loader(app_config_shared_ptr app_config)
     : base_type{ std::move(app_config) }

@@ -2,7 +2,7 @@
 
 #include "auth/authentication/guest/guest_login_response.h"
 #include "auth/detail/core/auth_parameter.h"
-#include "message/http_handle_parameter.h"
+#include "message/parameters/http_handle_parameter.h"
 
 namespace celeritas
 {

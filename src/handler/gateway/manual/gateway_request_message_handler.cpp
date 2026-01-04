@@ -1,5 +1,5 @@
 ﻿#include "gateway_request_message_handler.h"
-#include "message/concrete_message_handler.tpp"
+#include "message/handler_base/concrete_message_handler.tpp"
 
 celeritas::gateway_request_message_handler::gateway_request_message_handler()
 {

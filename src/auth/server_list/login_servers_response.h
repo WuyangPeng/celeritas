@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "login_server_info.h"
-#include "message/http_response.h"
+#include "message/basic/http_response.h"
 
 namespace celeritas
 {

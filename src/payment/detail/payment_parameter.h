@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "message/http_response.h"
+#include "message/basic/http_response.h"
 #include "message/message_fwd.h"
 
 #include <memory>

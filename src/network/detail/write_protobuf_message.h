@@ -2,7 +2,7 @@
 
 #include "common/buffer/buffer_guard.h"
 #include "common/common_fwd.h"
-#include "message/header.h"
+#include "message/basic/header.h"
 
 namespace celeritas
 {

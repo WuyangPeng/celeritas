@@ -13,7 +13,7 @@
 #include "database/generated/redis/auth/session_token.h"
 #include "database/generated/redis/auth/sms_code.h"
 #include "initializer/account_type.h"
-#include "message/game_error_type.h"
+#include "message/basic/game_error_type.h"
 
 celeritas::phone_login::phone_login(http_handle_parameter_shared_ptr handle_parameter)
     : base_type{ std::move(handle_parameter) }

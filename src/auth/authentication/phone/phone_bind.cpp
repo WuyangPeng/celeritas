@@ -10,7 +10,7 @@
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "initializer/account_type.h"
-#include "message/game_error_type.h"
+#include "message/basic/game_error_type.h"
 
 celeritas::phone_bind::phone_bind(http_handle_parameter_shared_ptr handle_parameter)
     : base_type{ std::move(handle_parameter) }

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "auth/core/auth_bind.h"
-#include "message/http_handle_parameter.h"
+#include "message/parameters/http_handle_parameter.h"
 
 namespace celeritas
 {

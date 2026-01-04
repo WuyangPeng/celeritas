@@ -4,7 +4,7 @@
 #include "player_manager.h"
 #include "common/common_fwd.h"
 #include "database/generated/mysql/player/user.h"
-#include "message/header.h"
+#include "message/basic/header.h"
 #include "player/component/player_component_type.h"
 #include "proto/service/player.pb.h"
 

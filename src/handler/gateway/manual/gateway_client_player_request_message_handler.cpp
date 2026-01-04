@@ -2,7 +2,7 @@
 #include "gateway/gateway_login.h"
 #include "initializer/initializer_constant.h"
 #include "initializer/initializer_fwd.h"
-#include "message/concrete_message_handler.tpp"
+#include "message/handler_base/concrete_message_handler.tpp"
 #include "player_server/player_server.h"
 
 celeritas::gateway_client_player_request_message_handler::gateway_client_player_request_message_handler()

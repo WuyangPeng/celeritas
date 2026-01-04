@@ -6,8 +6,8 @@
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_constant.h"
 #include "initializer/initializer_fwd.h"
-#include "message/game_error_type.h"
-#include "message/http_handle_parameter.h"
+#include "message/basic/game_error_type.h"
+#include "message/parameters/http_handle_parameter.h"
 
 std::string celeritas::send_sms_http_message_handler::get_supported_type_name() const
 {

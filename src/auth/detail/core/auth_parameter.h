@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "message/http_handle_parameter.h"
-#include "message/http_response.h"
+#include "message/parameters/http_handle_parameter.h"
+#include "message/basic/http_response.h"
 
 namespace celeritas
 {

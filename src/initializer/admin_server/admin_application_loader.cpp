@@ -1,5 +1,5 @@
 ﻿#include "admin_application_loader.h"
-#include "message/concrete_message_handler.tpp"
+#include "message/handler_base/concrete_message_handler.tpp"
 
 celeritas::admin_application_loader::admin_application_loader(app_config_shared_ptr app_config)
     : base_type{ std::move(app_config) }

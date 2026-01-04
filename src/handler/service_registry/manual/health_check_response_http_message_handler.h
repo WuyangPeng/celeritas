@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "message/http_base_message_handler.h"
+#include "message/handler_base/http_base_message_handler.h"
 
 namespace celeritas
 {

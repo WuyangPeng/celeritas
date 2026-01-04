@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "message/concrete_message_handler.h"
+#include "message/handler_base/concrete_message_handler.h"
 #include "proto/client/player/item.pb.h"
 
 namespace celeritas

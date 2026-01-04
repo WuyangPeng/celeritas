@@ -1,6 +1,6 @@
 ﻿#include "reload_server_cell_db_message_handler.h"
 #include "auth/data/server_cell_repository.h"
-#include "message/protobuf_handle_parameter.h"
+#include "message/parameters/protobuf_handle_parameter.h"
 #include "proto/celeritas.pb.h"
 
 bool celeritas::reload_server_cell_db_message_handler::handle_concrete(const protobuf_handle_parameter_shared_ptr& handle_parameter,

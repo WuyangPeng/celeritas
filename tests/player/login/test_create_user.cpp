@@ -1,6 +1,6 @@
 ﻿#include "config/aggregate/app_config.h"
 #include "database/database_pool_manager.h"
-#include "message/protobuf_handle_parameter.h"
+#include "message/parameters/protobuf_handle_parameter.h"
 #include "player/login/create_user.h"
 #include "player/mock/mock_application_loader.h"
 #include "player/mock/mock_database_pool.h"

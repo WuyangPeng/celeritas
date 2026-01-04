@@ -3,7 +3,7 @@
 #include "detail/gateway_server_fwd.h"
 #include "initializer/initializer_constant.h"
 #include "initializer/initializer_fwd.h"
-#include "message/header.h"
+#include "message/basic/header.h"
 #include "proto/common/common.pb.h"
 
 #include <boost/polymorphic_pointer_cast.hpp>

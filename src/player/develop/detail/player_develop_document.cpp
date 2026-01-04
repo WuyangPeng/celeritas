@@ -3,7 +3,7 @@
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
 #include "database/config/config_manager.h"
-#include "message/celeritas_game_error.h"
+#include "message/basic/celeritas_game_error.h"
 
 #include <ranges>
 

@@ -5,7 +5,7 @@
 #include "database/generated/redis/auth/session_token.h"
 #include "initializer/initializer_constant.h"
 #include "initializer/initializer_fwd.h"
-#include "message/game_error_type.h"
+#include "message/basic/game_error_type.h"
 #include "proto/celeritas.pb.h"
 #include "service_registry/core/service_registry.h"
 #include "service_registry/data/service_info.h"

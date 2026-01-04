@@ -8,7 +8,7 @@
 #include "database/database_pool_manager.h"
 #include "database/generated/redis/auth/sms_code.h"
 #include "database/generated/redis/auth/sms_limit.h"
-#include "message/game_error_type.h"
+#include "message/basic/game_error_type.h"
 
 celeritas::send_sms::send_sms(http_handle_parameter_shared_ptr handle_parameter)
     : base_type{ std::move(handle_parameter) }

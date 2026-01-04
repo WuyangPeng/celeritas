@@ -2,7 +2,7 @@
 
 #include "database/generated/redis/auth/session_token.h"
 #include "message/message_fwd.h"
-#include "message/protobuf_handle_parameter.h"
+#include "message/parameters/protobuf_handle_parameter.h"
 #include "proto/client/player/login.pb.h"
 
 #include <boost/asio/awaitable.hpp>

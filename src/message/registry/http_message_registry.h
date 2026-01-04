@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "message_fwd.h"
+#include "message/message_fwd.h"
 #include "network/network_fwd.h"
 
 #include <optional>

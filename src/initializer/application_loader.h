@@ -5,7 +5,7 @@
 #include "common/common_fwd.h"
 #include "common/worker_pool/worker_pool.h"
 #include "config/aggregate/app_config.h"
-#include "message/protobuf_message_registry.h"
+#include "message/registry/protobuf_message_registry.h"
 
 #include <boost/url.hpp>
 

@@ -1,5 +1,5 @@
 ﻿#include "player_develop_component.h"
-#include "message/game_error_type.h"
+#include "message/basic/game_error_type.h"
 
 celeritas::player_develop_component::player_develop_component(player_state* player_state) noexcept
     : base_type{ get_player_component_type(), player_state },

@@ -1,7 +1,7 @@
 // 此文件是自动生成，请勿手动修改。
 
 #include "service_registry_request_message_handler.h"
-#include "message/concrete_message_handler.tpp"
+#include "message/handler_base/concrete_message_handler.tpp"
 
 celeritas::service_registry_request_message_handler::service_registry_request_message_handler()
 {
