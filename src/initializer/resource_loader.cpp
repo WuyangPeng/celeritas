@@ -308,7 +308,7 @@ void celeritas::resource_loader::add_session_route(const int64_t user_id, sessio
     session_mapping_[session_route.get_session_id()] = user_id;
 }
 
-void celeritas::resource_loader::check_client(io_context_type& io_context, const std::string& server_type, const service_info_container& container)
+void celeritas::resource_loader::check_client(const any_io_executor& any_io_executor, const std::string& server_type, const service_info_container& container)
 {
     std::unique_lock lock{ mutex_ };
 
@@ -328,7 +328,7 @@ void celeritas::resource_loader::check_client(io_context_type& io_context, const
     {
         if (!tcp_clients_.contains(instance_id))
         {
-            const auto client = std::make_shared<tcp_client>(io_context,
+            const auto client = std::make_shared<tcp_client>(any_io_executor,
                                                              network_message_callback_,
                                                              service_info.get_game_server_id(),
                                                              service_info.get_instance_id(),
@@ -336,7 +336,7 @@ void celeritas::resource_loader::check_client(io_context_type& io_context, const
                                                              service_info.get_port(server_network_type::tcp),
                                                              server_type);
 
-            boost::asio::co_spawn(io_context,
+            boost::asio::co_spawn(any_io_executor,
                                   client->connect(),
                                   boost::asio::detached);
 
@@ -406,7 +406,7 @@ void celeritas::resource_loader::initialize_server_resource(const any_io_executo
     }
 }
 
-void celeritas::resource_loader::initialize_service_registry_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
+void celeritas::resource_loader::initialize_service_registry_resource(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback)
 {
     const auto service_registry = app_config_->get_service_registry_config();
 
@@ -414,7 +414,7 @@ void celeritas::resource_loader::initialize_service_registry_resource(io_context
     {
         if (!service_registry->empty())
         {
-            const auto client = get_random_client(io_context, network_message_callback, *service_registry);
+            const auto client = get_random_client(any_io_executor, network_message_callback, *service_registry);
 
             std::unique_lock lock{ mutex_ };
 
@@ -431,7 +431,7 @@ void celeritas::resource_loader::initialize_service_registry_resource(io_context
         {
             if (element->get_name() != instance_id)
             {
-                const auto client = service_registry_loader::loader_service_registry(io_context, *element, network_message_callback, game_server_id, service_registry_type.data());
+                const auto client = service_registry_loader::loader_service_registry(any_io_executor, *element, network_message_callback, game_server_id, service_registry_type.data());
 
                 std::unique_lock lock{ mutex_ };
                 tcp_clients_.emplace(client->get_instance_id(), client);
@@ -440,12 +440,12 @@ void celeritas::resource_loader::initialize_service_registry_resource(io_context
     }
 }
 
-void celeritas::resource_loader::modify_service_registry_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback, const std::string& instance_id)
+void celeritas::resource_loader::modify_service_registry_resource(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback, const std::string& instance_id)
 {
     if (const auto service_registry = app_config_->get_service_registry_config();
         !service_registry->empty())
     {
-        const auto tcp_client = get_random_client(io_context, network_message_callback, *service_registry);
+        const auto tcp_client = get_random_client(any_io_executor, network_message_callback, *service_registry);
 
         std::unique_lock lock{ mutex_ };
 
@@ -458,28 +458,28 @@ void celeritas::resource_loader::modify_service_registry_resource(io_context_typ
     }
 }
 
-void celeritas::resource_loader::start_check_tcp_clients_timer(io_context_type& io_context)
+void celeritas::resource_loader::start_check_tcp_clients_timer(const any_io_executor& any_io_executor)
 {
-    check_tcp_clients_timer_ = std::make_unique<check_tcp_clients_timer>(io_context, check_tcp_clients_seconds, shared_from_this());
+    check_tcp_clients_timer_ = std::make_unique<check_tcp_clients_timer>(any_io_executor, check_tcp_clients_seconds, shared_from_this());
 
     check_tcp_clients_timer_->start();
 }
 
-void celeritas::resource_loader::start_service_registry_timer(io_context_type& io_context)
+void celeritas::resource_loader::start_service_registry_timer(const any_io_executor& any_io_executor)
 {
-    service_registry_timer_ = std::make_unique<service_registry_timer>(io_context, service_registry_seconds, shared_from_this());
+    service_registry_timer_ = std::make_unique<service_registry_timer>(any_io_executor, service_registry_seconds, shared_from_this());
 
     service_registry_timer_->start(true);
 }
 
-void celeritas::resource_loader::start_buffer_pool_timer(io_context_type& io_context)
+void celeritas::resource_loader::start_buffer_pool_timer(const any_io_executor& any_io_executor)
 {
-    buffer_pool_timer_ = std::make_unique<buffer_pool_timer>(io_context, buffer_pool_seconds);
+    buffer_pool_timer_ = std::make_unique<buffer_pool_timer>(any_io_executor, buffer_pool_seconds);
 
     buffer_pool_timer_->start();
 }
 
-celeritas::resource_loader::tcp_client_shared_ptr celeritas::resource_loader::get_random_client(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback, const service_registry_config_container& service_registry) const
+celeritas::resource_loader::tcp_client_shared_ptr celeritas::resource_loader::get_random_client(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback, const service_registry_config_container& service_registry) const
 {
     const auto random_index = random_helper::get_random_int(service_registry.size());
 
@@ -487,7 +487,7 @@ celeritas::resource_loader::tcp_client_shared_ptr celeritas::resource_loader::ge
     std::advance(iter, random_index);
 
     const auto server = app_config_->get_server_config();
-    return service_registry_loader::loader_service_registry(io_context, *(iter->second), network_message_callback, server->get_game_server_id(), service_registry_type.data());
+    return service_registry_loader::loader_service_registry(any_io_executor, *(iter->second), network_message_callback, server->get_game_server_id(), service_registry_type.data());
 }
 
 void celeritas::resource_loader::initialize_game_config()

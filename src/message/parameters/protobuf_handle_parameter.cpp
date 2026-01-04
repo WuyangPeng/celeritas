@@ -179,7 +179,7 @@ std::string celeritas::protobuf_handle_parameter::get_instance_id() const
 
 void celeritas::protobuf_handle_parameter::check_client(const std::string& server_type, const service_info_container& container) const
 {
-    return get_resource_loader()->check_client(io_context_, server_type, container);
+    return get_resource_loader()->check_client(get_any_io_executor(), server_type, container);
 }
 
 celeritas::protobuf_handle_parameter::any_io_executor celeritas::protobuf_handle_parameter::get_any_io_executor() const

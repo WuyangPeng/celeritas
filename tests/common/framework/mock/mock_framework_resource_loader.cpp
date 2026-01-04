@@ -53,7 +53,7 @@ void celeritas::mock_framework_resource_loader::add_session_route(int64_t user_i
 {
 }
 
-void celeritas::mock_framework_resource_loader::check_client(io_context_type& io_context, const std::string& server_type, const service_info_container& container)
+void celeritas::mock_framework_resource_loader::check_client(const any_io_executor& any_io_executor, const std::string& server_type, const service_info_container& container)
 {
 }
 

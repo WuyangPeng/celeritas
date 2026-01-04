@@ -22,8 +22,9 @@ namespace celeritas
         using void_waitable_type = boost::asio::awaitable<void>;
         using protobuf_message = google::protobuf::Message;
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
+        using any_io_executor = boost::asio::any_io_executor;
 
-        tcp_client(io_context_type& io_context,
+        tcp_client(const any_io_executor& any_io_executor,
                    network_message_callback_weak_ptr callback,
                    std::string game_server_id,
                    std::string instance_id,
@@ -64,7 +65,7 @@ namespace celeritas
 
         [[nodiscard]] void_waitable_type do_connect();
 
-        io_context_type& io_context_;
+        any_io_executor any_io_executor_;
         network_message_callback_weak_ptr network_message_callback_;
         std::string game_server_id_;
         std::string instance_id_;
