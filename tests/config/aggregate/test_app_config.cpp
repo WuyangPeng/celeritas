@@ -2,6 +2,11 @@
 #include "common/core/time_helper.h"
 #include "common/logging/logger.h"
 #include "config/aggregate/app_config.h"
+#include "config/local/database_config.h"
+#include "config/local/health_check_url_config.h"
+#include "config/local/logger_config.h"
+#include "config/local/logger_level_config.h"
+#include "config/local/service_registry_config.h"
 #include "fixture/config_file_fixture.h"
 
 #include <boost/test/unit_test.hpp>

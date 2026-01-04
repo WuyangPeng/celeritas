@@ -5,6 +5,7 @@
 #include "auth/data/app_sms_providers.h"
 #include "auth/data/server_cell_repository.h"
 #include "common/logging/logger.h"
+#include "config/local/health_check_url_config.h"
 #include "detail/auth_server_fwd.h"
 #include "initializer/initializer_constant.h"
 #include "network/http_client.h"

@@ -34,9 +34,12 @@ std::string celeritas::game_tables::get_name(const sex_type sex_type) const
 
     const auto id = iter->second.get_id(index);
 
-    const auto name = tables_->name_config_container.get(id);
+    if (const auto name = tables_->name_config_container.get(id))
+    {
+        return (*name)->name;
+    }
 
-    return (*name)->name;
+    throw celeritas_error{ "name is not exist ,id = {}", id };
 }
 
 celeritas::game_tables::const_tables_shared_ptr celeritas::game_tables::get_tables() const

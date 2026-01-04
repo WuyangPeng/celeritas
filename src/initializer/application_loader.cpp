@@ -1,4 +1,5 @@
 ﻿#include "application_loader.h"
+#include "config/local/health_check_url_config.h"
 #include "generated/register_handler_helper.h"
 #include "handler/generated/request_message_handler.h"
 #include "handler/generated/response_message_handler.h"

@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "config/config_fwd.h"
-#include "config/luban/generated/schema.h"
 
 #include <memory>
 #include <shared_mutex>
