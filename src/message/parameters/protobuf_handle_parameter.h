@@ -3,7 +3,7 @@
 #include "message/basic/header.h"
 #include "common/common_fwd.h"
 #include "config/config_fwd.h"
-#include "service_registry/data/service_info.h"
+#include "service_registry/service_registry_fwd.h"
 
 #include <boost/asio/io_context.hpp>
 #include <google/protobuf/message.h>

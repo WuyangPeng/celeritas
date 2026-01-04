@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "common/common_fwd.h"
 #include "message/message_fwd.h"
 
 #include <memory>
