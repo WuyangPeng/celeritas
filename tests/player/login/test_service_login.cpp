@@ -81,7 +81,6 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
                                   const auto user_id = co_await service.send_message();
                                   const auto player_state = celeritas::player_manager::get_instance().get_player(user_id);
                                   player_state->get_component<celeritas::player_time_component>()->stop_timer();
-                                  std::ignore = celeritas::player_manager::get_instance().clear();
                               },
                               boost::asio::detached);
 
@@ -93,6 +92,14 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
         // 应该发送了成功消息
         // 我们可以通过 mock_session_ 检查最后发送的消息
         BOOST_CHECK_EQUAL(mock_session_->get_code(), static_cast<int>(celeritas::game_error_type::success));
+
+        boost::asio::co_spawn(io_context_,
+                              [&]() -> boost::asio::awaitable<void> {
+                                  co_await celeritas::player_manager::get_instance().clear();
+                              },
+                              boost::asio::detached);
+
+        run_io_context_two_times();
     }
 
     BOOST_AUTO_TEST_CASE(test_login_new_user_creation_success)
@@ -112,7 +119,6 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
         boost::asio::co_spawn(io_context_,
                               [&]() -> boost::asio::awaitable<void> {
                                   co_await service.send_message();
-                                  std::ignore = celeritas::player_manager::get_instance().clear();
                               },
                               boost::asio::detached);
 
@@ -122,6 +128,14 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
         BOOST_CHECK_EQUAL(mock_pool_->get_execute_changes_call_count(), 1);
 
         BOOST_CHECK_EQUAL(mock_session_->get_code(), static_cast<int>(celeritas::game_error_type::success));
+
+        boost::asio::co_spawn(io_context_,
+                              [&]() -> boost::asio::awaitable<void> {
+                                  co_await celeritas::player_manager::get_instance().clear();
+                              },
+                              boost::asio::detached);
+
+        run_io_context_two_times();
     }
 
     BOOST_AUTO_TEST_CASE(test_login_new_account_creation_failure)
@@ -138,7 +152,6 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
         boost::asio::co_spawn(io_context_,
                               [&]() -> boost::asio::awaitable<void> {
                                   co_await service.send_message();
-                                  std::ignore = celeritas::player_manager::get_instance().clear();
                               },
                               boost::asio::detached);
 
