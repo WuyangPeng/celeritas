@@ -209,32 +209,32 @@
 * **🔌 服务器网络配置（`server_network_config`）**
     - **作用**：封装单个服务器实例的一个网络监听配置，即一个协议类型和对应的端口号。
     - **成员**：
-        - **server_network_type_**：网络协议类型 (`server_network_type`)。
-        - **port_**：监听端口号。
+        - **server_network_type**：网络协议类型 (`server_network_type`)。
+        - **port**：监听端口号。
 
 
 * **📜 日志级别配置（`logger_level_config`）**
     - **作用**：集中配置日志系统的默认级别和控制台输出级别。
     - **成员**：
-        - **default_level_**：默认日志级别。
-        - **console_level_**：控制台日志级别。
+        - **default_level**：默认日志级别。
+        - **console_level**：控制台日志级别。
     - **功能**：允许设置和获取默认和控制台的日志级别。
 
 
 * **🔭 服务注册配置（`service_registry_config`）**
     - **作用**： 包含服务在向注册中心注册或服务消费者连接注册中心时所需的配置信息。
     - **成员**：
-        - **name_**：服务注册中心的名称。
-        - **host_**：服务注册中心的主机地址。
-        - **port_**：服务注册中心的端口号。
+        - **name**：服务注册中心的名称。
+        - **host**：服务注册中心的主机地址。
+        - **port**：服务注册中心的端口号。
 
 
 * **🩺 健康检查 URL 配置（`health_check_url_config`）**
     - **作用**： 封装了服务器健康检查`URL`的配置信息。
     - **成员**：
-        - **url_**：健康检查请求的`URL`路径。
-        - **interval_**：检查间隔时间。
-        - **timeout_**：检查超时时间。
+        - **url**：健康检查请求的`URL`路径。
+        - **interval**：检查间隔时间。
+        - **timeout**：检查超时时间。
 
 
 * **💾 数据库连接配置（`database_config`）**
@@ -255,12 +255,12 @@
 * **⚙️ 服务器配置（`server_config`）**
     - **作用**：包含一个服务器实例的所有全局配置信息。
     - **成员**：
-        - **instance_id_**：服务器实例的唯一ID。
-        - **service_name_**：服务名称（例如：`"auth"`, `"game"`）。
-        - **server_network_config_**：容器，包含一个或多个`server_network_config`对象，定义了该服务器监听的所有网络端口和协议。
-        - **game_server_id_**：游戏服ID。
-        - **host_**：服务器的IP地址或主机名。
-        - **worker_pool_size_**：工作池线程数量。
+        - **instance_id**：服务器实例的唯一ID。
+        - **service_name**：服务名称（例如：`"auth"`, `"game"`）。
+        - **server_network_config**：容器，包含一个或多个`server_network_config`对象，定义了该服务器监听的所有网络端口和协议。
+        - **game_server_id**：游戏服ID。
+        - **host**：服务器的IP地址或主机名。
+        - **worker_pool_size**：工作池线程数量。
 
 
 * **🧩 应用配置（`app_config`）**
