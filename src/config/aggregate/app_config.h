@@ -24,7 +24,11 @@ namespace celeritas
         using const_database_config_shared_ptr = std::shared_ptr<const database_config>;
         using database_config_container = std::map<std::string, const_database_config_shared_ptr>;
         using const_database_config_container_shared_ptr = std::shared_ptr<const database_config_container>;
-        using logger_config_container = std::map<std::string, logger_config>;
+        using const_logger_config_shared_ptr = std::shared_ptr<const logger_config>;
+        using logger_config_container = std::map<std::string, const_logger_config_shared_ptr>;
+        using const_logger_config_container_shared_ptr = std::shared_ptr<const logger_config_container>;
+        using const_global_config_shared_ptr = std::shared_ptr<const global_config>;
+        using const_logger_level_config_shared_ptr = std::shared_ptr<const logger_level_config>;
 
         app_config();
 
@@ -50,9 +54,9 @@ namespace celeritas
 
         [[nodiscard]] const_database_config_shared_ptr get_database_config(const std::string& db_name) const;
 
-        [[nodiscard]] logger_level_config get_logger_level_config() const;
+        [[nodiscard]] const_logger_level_config_shared_ptr get_logger_level_config() const;
 
-        [[nodiscard]] logger_config_container get_logger_config() const;
+        [[nodiscard]] const_logger_config_container_shared_ptr get_logger_config() const;
 
         [[nodiscard]] int64_t get_expire_milliseconds(const std::string& db_name) const;
 
@@ -61,6 +65,7 @@ namespace celeritas
     private:
         using registry_container_shared_ptr = std::shared_ptr<registry_container>;
         using database_config_container_shared_ptr = std::shared_ptr<database_config_container>;
+        using logger_config_container_shared_ptr = std::shared_ptr<logger_config_container>;
 
         void do_load_service_registry_config(const std::string& filename);
 
@@ -74,8 +79,8 @@ namespace celeritas
         const_server_config_shared_ptr server_;
         const_health_check_url_config_shared_ptr health_check_url_;
         database_config_container_shared_ptr database_;
-        logger_level_config logger_level_config_;
-        logger_config_container logger_;
-        global_config global_;
+        const_logger_level_config_shared_ptr logger_level_config_;
+        logger_config_container_shared_ptr logger_;
+        const_global_config_shared_ptr global_;
     };
 }

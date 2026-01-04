@@ -361,12 +361,12 @@ void celeritas::resource_loader::send_offline_message(const int64_t session_id)
 
 void celeritas::resource_loader::initialize_logger_resource()
 {
-    logger_resource_loader::loader_level_config(app_config_->get_logger_level_config());
+    logger_resource_loader::loader_level_config(*app_config_->get_logger_level_config());
 
     for (const auto logger = app_config_->get_logger_config();
-         const auto& element : logger | std::views::values)
+         const auto& element : *logger | std::views::values)
     {
-        logger_resource_loader::loader_logger(element);
+        logger_resource_loader::loader_logger(*element);
     }
 }
 

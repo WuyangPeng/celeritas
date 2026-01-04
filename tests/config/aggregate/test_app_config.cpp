@@ -71,23 +71,23 @@ BOOST_AUTO_TEST_SUITE(app_config_suite)
         config.load_loggers_config(fixture.get_filename());
 
         const auto level_config = config.get_logger_level_config();
-        BOOST_CHECK(level_config.get_default_level() == celeritas::severity_level_type::info);
-        BOOST_CHECK(level_config.get_console_level() == celeritas::severity_level_type::debug);
+        BOOST_CHECK(level_config->get_default_level() == celeritas::severity_level_type::info);
+        BOOST_CHECK(level_config->get_console_level() == celeritas::severity_level_type::debug);
 
         const std::string logger_name{ "test_logger" };
 
         auto loggers = config.get_logger_config();
-        BOOST_CHECK(loggers.contains(logger_name));
+        BOOST_CHECK(loggers->contains(logger_name));
 
-        if (const auto iter = loggers.find(logger_name);
-            iter != loggers.cend())
+        if (const auto iter = loggers->find(logger_name);
+            iter != loggers->cend())
         {
             const auto& logger = iter->second;
-            BOOST_CHECK(logger.get_severity_level_type() == celeritas::severity_level_type::warning);
-            BOOST_CHECK(logger.is_console_enabled());
-            BOOST_CHECK_EQUAL(logger.get_channel_name(), "test_chan");
-            BOOST_CHECK_EQUAL(logger.get_log_file_name(), "test_log");
-            BOOST_CHECK_EQUAL(logger.get_rotation_size(), 100);
+            BOOST_CHECK(logger->get_severity_level_type() == celeritas::severity_level_type::warning);
+            BOOST_CHECK(logger->is_console_enabled());
+            BOOST_CHECK_EQUAL(logger->get_channel_name(), "test_chan");
+            BOOST_CHECK_EQUAL(logger->get_log_file_name(), "test_log");
+            BOOST_CHECK_EQUAL(logger->get_rotation_size(), 100);
         }
     }
 

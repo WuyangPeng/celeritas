@@ -13,7 +13,10 @@ celeritas::app_config::app_config()
     : service_registry_{ std::make_shared<registry_container>() },
       server_{ std::make_shared<server_config>() },
       health_check_url_{ std::make_shared<health_check_url_config>() },
-      database_{ std::make_shared<database_config_container>() }
+      database_{ std::make_shared<database_config_container>() },
+      logger_level_config_{ std::make_shared<logger_level_config>() },
+      logger_{ std::make_shared<logger_config_container>() },
+      global_{ std::make_shared<global_config>() }
 {
 }
 
@@ -105,12 +108,12 @@ celeritas::app_config::const_server_config_shared_ptr celeritas::app_config::get
     return server_;
 }
 
-celeritas::logger_level_config celeritas::app_config::get_logger_level_config() const
+celeritas::app_config::const_logger_level_config_shared_ptr celeritas::app_config::get_logger_level_config() const
 {
     return logger_level_config_;
 }
 
-celeritas::app_config::logger_config_container celeritas::app_config::get_logger_config() const
+celeritas::app_config::const_logger_config_container_shared_ptr celeritas::app_config::get_logger_config() const
 {
     return logger_;
 }
@@ -145,7 +148,7 @@ int64_t celeritas::app_config::get_expire_milliseconds(const std::string& db_nam
 
 std::string celeritas::app_config::get_external_host() const
 {
-    return global_.get_external_host();
+    return global_->get_external_host();
 }
 
 void celeritas::app_config::do_load_service_registry_config(const std::string& filename)
@@ -176,22 +179,12 @@ void celeritas::app_config::do_load_loggers_config(const std::string& filename)
 {
     const logger_config_reader logger_config_reader{ filename };
     for (const auto& result = logger_config_reader.get_logger_config_container();
-         const auto& element : result)
+         const auto& element : *result)
     {
-        logger_[element.get_name()] = element;
+        (*logger_)[element->get_name()] = element;
     }
 
-    const auto logger_level_config = logger_config_reader.get_logger_level_config();
-
-    if (logger_level_config.is_set_default_level())
-    {
-        logger_level_config_.set_default_level(logger_level_config.get_default_level());
-    }
-
-    if (logger_level_config.is_set_console_level())
-    {
-        logger_level_config_.set_console_level(logger_level_config.get_console_level());
-    }
+    logger_level_config_ = logger_config_reader.get_logger_level_config();
 }
 
 void celeritas::app_config::do_load_global_config(const std::string& filename)
