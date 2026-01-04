@@ -9,6 +9,8 @@
 #include "proto/service/player.pb.h"
 
 #include <boost/asio/awaitable.hpp>
+#include <boost/asio/strand.hpp>
+#include <boost/asio/io_context.hpp>
 
 #include <array>
 #include <memory>
@@ -94,6 +96,8 @@ namespace celeritas
 
         void set_login(const service_login_request_type& login);
 
+        [[nodiscard]] boost::asio::strand<boost::asio::io_context::executor_type>& get_strand();
+
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
@@ -106,5 +110,6 @@ namespace celeritas
         resource_loader_weak_ptr resource_loader_;
         io_context_type& io_context_;
         std::string instance_id_;
+        boost::asio::strand<boost::asio::io_context::executor_type> strand_;
     };
 }

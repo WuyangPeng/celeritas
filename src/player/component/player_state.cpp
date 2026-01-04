@@ -45,7 +45,8 @@ celeritas::player_state::player_state(const user& user,
                    std::make_shared<player_null_component>(this) },
       resource_loader_{ resource_loader },
       io_context_{ io_context },
-      instance_id_{ std::move(instance_id) }
+      instance_id_{ std::move(instance_id) },
+      strand_{ boost::asio::make_strand(io_context_) }
 {
     check();
 }
@@ -201,6 +202,11 @@ void celeritas::player_state::set_mock_player_component(const player_component_s
 void celeritas::player_state::set_login(const service_login_request_type& login)
 {
     get_component<player_role_component>()->set_login(login);
+}
+
+boost::asio::strand<boost::asio::io_context::executor_type>& celeritas::player_state::get_strand()
+{
+    return strand_;
 }
 
 void celeritas::player_state::check() const
