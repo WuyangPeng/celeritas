@@ -1,5 +1,5 @@
-﻿#include "config/local/logger_config.h"
-#include "common/core/celeritas_error.h"
+﻿#include "common/core/celeritas_error.h"
+#include "config/local/logger_config.h"
 
 #include <boost/test/unit_test.hpp>
 

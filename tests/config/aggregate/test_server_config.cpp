@@ -1,5 +1,6 @@
 ﻿#include "config/aggregate/server_config.h"
 #include "config/local/server_network_config.h"
+#include "fixture/server_config_fixture.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -22,23 +23,9 @@ BOOST_AUTO_TEST_SUITE(server_config_suite)
         BOOST_CHECK(config.begin() == config.end());
     }
 
-    BOOST_AUTO_TEST_CASE(test_server_config_parameterized_constructor)
+    BOOST_FIXTURE_TEST_CASE(test_server_config_parameterized_constructor_properties, celeritas::server_config_fixture)
     {
-        const std::string instance_id{ "server_01" };
-        const std::string service_name{ "game_service" };
-
-        celeritas::server_config::server_network_container networks{};
-        networks.emplace_back(celeritas::server_network_type::http, 8080);
-        networks.emplace_back(celeritas::server_network_type::tcp, 9090);
-
-        const std::string game_server_id{ "gs_01" };
-        const std::string host{ "127.0.0.1" };
-        constexpr auto worker_pool_size = 8;
-        constexpr auto datacenter_id = 1;
-        constexpr auto worker_id = 2;
-        constexpr auto load_game_config = true;
-
-        const celeritas::server_config config{ instance_id, service_name, networks, game_server_id, host, worker_pool_size, datacenter_id, worker_id, load_game_config };
+        const auto config = create_config();
 
         BOOST_CHECK_EQUAL(config.get_instance_id(), instance_id);
         BOOST_CHECK_EQUAL(config.get_service_name(), service_name);
@@ -48,6 +35,15 @@ BOOST_AUTO_TEST_SUITE(server_config_suite)
         BOOST_CHECK_EQUAL(config.get_datacenter_id(), datacenter_id);
         BOOST_CHECK_EQUAL(config.get_worker_id(), worker_id);
         BOOST_CHECK_EQUAL(config.is_load_game_config(), load_game_config);
+    }
+
+    BOOST_FIXTURE_TEST_CASE(test_server_config_parameterized_constructor_networks, celeritas::server_config_fixture)
+    {
+        celeritas::server_config::server_network_container networks{};
+        networks.emplace_back(celeritas::server_network_type::http, 8080);
+        networks.emplace_back(celeritas::server_network_type::tcp, 9090);
+
+        const auto config = create_config(networks);
 
         auto iter = config.begin();
         BOOST_CHECK(iter != config.end());
@@ -63,13 +59,16 @@ BOOST_AUTO_TEST_SUITE(server_config_suite)
         BOOST_CHECK(iter == config.end());
     }
 
+    BOOST_AUTO_TEST_CASE(test_is_not_service_registry_server)
+    {
+        const celeritas::server_config config{ "server_01", "game_service", {}, "game_server_id_01", "localhost", 4, 1, 1, false };
+        BOOST_CHECK(!config.is_service_registry_server());
+    }
+
     BOOST_AUTO_TEST_CASE(test_is_service_registry_server)
     {
-        const celeritas::server_config config1{ "inst1", "game_service", {}, "gs1", "localhost", 4, 1, 1, false };
-        BOOST_CHECK(!config1.is_service_registry_server());
-
-        const celeritas::server_config config2{ "inst2", "service_registry_server", {}, "gs2", "localhost", 4, 1, 1, false };
-        BOOST_CHECK(config2.is_service_registry_server());
+        const celeritas::server_config config{ "server_02", "service_registry_server", {}, "game_server_id_02", "localhost", 4, 1, 1, false };
+        BOOST_CHECK(config.is_service_registry_server());
     }
 
 BOOST_AUTO_TEST_SUITE_END()
