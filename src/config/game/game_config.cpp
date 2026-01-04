@@ -28,12 +28,10 @@ void celeritas::game_config::set_game_tables(const const_game_tables_shared_ptr&
 
 void celeritas::game_config::load_tables()
 {
-    const auto tables = std::make_shared<config::tables>();
     const auto current_path = std::filesystem::current_path();
     const auto bin_directory = current_path / config_path / bin_path;
 
     auto loader = [&](luban::ByteBuf& buffer, const std::string& bin_file_name) -> bool {
-
         const auto full_path = bin_directory / (bin_file_name + ".bytes");
 
         std::ifstream stream{ full_path, std::ios::binary | std::ios::ate };
@@ -57,6 +55,7 @@ void celeritas::game_config::load_tables()
 
     try
     {
+        const auto tables = std::make_shared<config::tables>();
         tables->load(loader);
 
         const auto game = std::make_shared<game_tables>(tables);
