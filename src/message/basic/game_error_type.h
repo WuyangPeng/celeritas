@@ -38,9 +38,9 @@ namespace celeritas
         // 玩家服务器错误 60000 - 69999
 
         // 养成模块
-        max_develop = 60000,
-        non_resettable = 60001,
-        develop_not_exist = 60002,
+        max_develop = 60600,
+        non_resettable = 60601,
+        develop_not_exist = 60602,
     };
 
     [[nodiscard]] std::string get_game_error_description(game_error_type game_error);

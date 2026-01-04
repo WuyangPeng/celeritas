@@ -1,4 +1,5 @@
 ﻿#include "mock_framework_session.h"
+#include "common/core/celeritas_error.h"
 #include "config/basic/server_network_type.h"
 
 void celeritas::mock_framework_session::stop()
@@ -40,4 +41,9 @@ void celeritas::mock_framework_session::set_instance_id(const std::string& insta
 std::string celeritas::mock_framework_session::get_instance_id() const
 {
     return instance_id_;
+}
+
+celeritas::session::any_io_executor celeritas::mock_framework_session::get_any_io_executor()
+{
+    throw celeritas_error{ "io executor not support" };
 }

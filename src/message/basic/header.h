@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "boost/log/sources/record_ostream.hpp"
 #include "proto/common/common.pb.h"
 
 namespace celeritas
@@ -20,9 +19,9 @@ namespace celeritas
 
         header(int32_t rpc, int32_t code);
 
-        header(int32_t rpc, int64_t user_id, int32_t code);
-
         header(int32_t rpc, int64_t user_id);
+
+        header(int32_t rpc, int64_t user_id, int32_t code);
 
         explicit header(int64_t user_id);
 

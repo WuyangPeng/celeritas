@@ -30,6 +30,8 @@ namespace celeritas
 
         [[nodiscard]] int32_t get_code() const;
 
+        [[nodiscard]] any_io_executor get_any_io_executor() override;
+
     private:
         int64_t session_id_ = 1;
         std::string instance_id_;

@@ -46,7 +46,7 @@ celeritas::send_email::void_awaitable_type celeritas::send_email::response()
     {
         co_return co_await write_immediately(send_email_response{ game_error_type::success, "send email success" });
 
-        boost::asio::co_spawn(get_io_context(),
+        boost::asio::co_spawn(get_any_io_executor(),
                               [ email_code,app] {
                                   return send_sdk_sms(email_code, app);
                               }, boost::asio::detached);

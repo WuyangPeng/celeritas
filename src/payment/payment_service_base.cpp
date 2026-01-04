@@ -38,7 +38,7 @@ celeritas::payment_service_base::http_handle_parameter_shared_ptr celeritas::pay
     return handle_parameter_;
 }
 
-celeritas::payment_service_base::io_context_type& celeritas::payment_service_base::get_io_context() const
+celeritas::payment_service_base::any_io_executor celeritas::payment_service_base::get_any_io_executor() const
 {
-    return handle_parameter_->get_io_context();
+    return handle_parameter_->get_any_io_executor();
 }

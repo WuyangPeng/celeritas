@@ -74,6 +74,11 @@ bool celeritas::http_session::is_full() const
     return http_write_->is_full();
 }
 
+celeritas::session::any_io_executor celeritas::http_session::get_any_io_executor()
+{
+    return socket_.get_executor();
+}
+
 void celeritas::http_session::do_write(buffer_guard data)
 {
     http_write_->write(std::move(data));

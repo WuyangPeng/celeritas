@@ -14,6 +14,7 @@ namespace celeritas
         using class_type = payment_service_base;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using io_context_type = boost::asio::io_context;
+        using any_io_executor = boost::asio::any_io_executor;
         using http_handle_parameter_shared_ptr = std::shared_ptr<http_handle_parameter>;
 
         explicit payment_service_base(http_handle_parameter_shared_ptr handle_parameter);
@@ -44,7 +45,7 @@ namespace celeritas
 
         [[nodiscard]] http_handle_parameter_shared_ptr get_http_handle_parameter() const;
 
-        [[nodiscard]] io_context_type& get_io_context() const;
+        [[nodiscard]] any_io_executor get_any_io_executor() const;
 
     private:
         http_handle_parameter_shared_ptr handle_parameter_;

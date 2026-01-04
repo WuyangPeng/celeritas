@@ -19,23 +19,21 @@ namespace celeritas
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
         using application_loader_shared_ptr = std::shared_ptr<application_loader_base>;
         using urls_params_view_type = boost::urls::params_view;
-        using app_config_const_shared_ptr = std::shared_ptr<const app_config>;
-        using io_context_type = boost::asio::io_context;
+        using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
+        using any_io_executor = boost::asio::any_io_executor;
+        using void_waitable_type = boost::asio::awaitable<void>;
         using health_check_level_awaitable_type = boost::asio::awaitable<health_check_level_type>;
         using optional_string = std::optional<std::string>;
         using task_type = thread_safe_queue::task_type;
-        using void_waitable_type = boost::asio::awaitable<void>;
         using const_database_config_shared_ptr = std::shared_ptr<const database_config>;
 
-        http_handle_parameter(io_context_type& io_context,
-                              std::string path,
+        http_handle_parameter(std::string path,
                               const urls_params_view_type& params,
                               const session_shared_ptr& session,
                               const resource_loader_shared_ptr& resource_loader,
                               const application_loader_shared_ptr& application_loader);
 
-        http_handle_parameter(io_context_type& io_context,
-                              std::string path,
+        http_handle_parameter(std::string path,
                               std::string params,
                               const session_shared_ptr& session,
                               const resource_loader_shared_ptr& resource_loader,
@@ -59,11 +57,11 @@ namespace celeritas
 
         [[nodiscard]] void_waitable_type write_immediately(const std::string& response) const;
 
-        [[nodiscard]] app_config_const_shared_ptr get_app_config() const;
+        [[nodiscard]] const_app_config_shared_ptr get_app_config() const;
 
         [[nodiscard]] health_check_level_awaitable_type get_health_check_level() const;
 
-        [[nodiscard]] io_context_type& get_io_context() const;
+        [[nodiscard]] any_io_executor get_any_io_executor() const;
 
         [[nodiscard]] std::string_view get_server_type() const;
 
@@ -75,11 +73,10 @@ namespace celeritas
         using session_weak_ptr = std::weak_ptr<session>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
         using application_loader_weak_ptr = std::weak_ptr<application_loader_base>;
-        using resource_loader_const_shared_ptr = std::shared_ptr<const resource_loader_base>;
+        using const_resource_loader_shared_ptr = std::shared_ptr<const resource_loader_base>;
 
-        [[nodiscard]] resource_loader_const_shared_ptr get_resource_loader() const;
+        [[nodiscard]] const_resource_loader_shared_ptr get_resource_loader() const;
 
-        io_context_type& io_context_;
         std::string path_;
         urls_params_view_type params_;
         std::string response_;

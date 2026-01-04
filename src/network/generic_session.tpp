@@ -69,6 +69,12 @@ bool celeritas::generic_session<SocketType>::is_full() const
 }
 
 template <typename SocketType>
+celeritas::session::any_io_executor celeritas::generic_session<SocketType>::get_any_io_executor()
+{
+    return socket_.get_executor();
+}
+
+template <typename SocketType>
 void celeritas::generic_session<SocketType>::do_write(buffer_guard data)
 {
     session_write_->write(std::move(data));

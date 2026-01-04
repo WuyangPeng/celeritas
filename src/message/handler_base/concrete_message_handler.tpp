@@ -1,9 +1,9 @@
 ﻿#pragma once
 
 #include "concrete_message_handler.h"
-#include "message/registry/protobuf_message_registry.h"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
+#include "message/registry/protobuf_message_registry.h"
 
 #include <boost/polymorphic_cast.hpp>
 

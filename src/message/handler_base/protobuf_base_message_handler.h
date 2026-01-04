@@ -15,7 +15,6 @@ namespace celeritas
         using protobuf_message = google::protobuf::Message;
         using protobuf_message_shared_ptr = std::shared_ptr<protobuf_message>;
         using message_registry_weak_ptr = std::weak_ptr<protobuf_message_registry>;
-        using session_shared_ptr = std::shared_ptr<session>;
         using protobuf_handle_parameter_shared_ptr = std::shared_ptr<protobuf_handle_parameter>;
 
         protobuf_base_message_handler() noexcept = default;

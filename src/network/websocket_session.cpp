@@ -65,6 +65,11 @@ bool celeritas::websocket_session::is_full() const
     return websocket_write_->is_full();
 }
 
+celeritas::session::any_io_executor celeritas::websocket_session::get_any_io_executor()
+{
+    return websocket_.get_executor();
+}
+
 void celeritas::websocket_session::set_option(const std::string& game_server_id)
 {
     // 配置 WebSocket 选项

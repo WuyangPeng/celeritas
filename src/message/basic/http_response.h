@@ -30,9 +30,9 @@ namespace celeritas
 
         http_response& operator=(http_response&& rhs) noexcept = default;
 
-        [[nodiscard]] game_error_type get_code() const;
+        [[nodiscard]] game_error_type get_code() const noexcept;
 
-        void set_code(game_error_type code);
+        void set_code(game_error_type code) noexcept;
 
         [[nodiscard]] std::string get_message() const;
 

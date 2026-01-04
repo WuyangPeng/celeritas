@@ -14,6 +14,7 @@ namespace celeritas
     {
     public:
         using class_type = session;
+        using any_io_executor = boost::asio::any_io_executor;
         using protobuf_message_type = google::protobuf::Message;
         using void_awaitable_type = boost::asio::awaitable<void>;
 
@@ -46,5 +47,7 @@ namespace celeritas
         virtual void set_instance_id(const std::string& instance_id) = 0;
 
         [[nodiscard]] virtual std::string get_instance_id() const = 0;
+
+        [[nodiscard]] virtual any_io_executor get_any_io_executor() = 0;
     };
 }

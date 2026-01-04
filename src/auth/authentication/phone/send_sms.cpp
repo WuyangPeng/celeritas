@@ -45,7 +45,7 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
     {
         co_return co_await write_immediately(send_sms_response{ game_error_type::success, "send sms success" });
 
-        boost::asio::co_spawn(get_io_context(),
+        boost::asio::co_spawn(get_any_io_executor(),
                               [ sms_code,app] {
                                   return send_sdk_sms(sms_code, app);
                               }, boost::asio::detached);

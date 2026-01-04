@@ -41,6 +41,8 @@ namespace celeritas
 
         [[nodiscard]] bool is_full() const override;
 
+        [[nodiscard]] any_io_executor get_any_io_executor() override;
+
     private:
         using session_write_shared_ptr = std::shared_ptr<session_write>;
         using session_run_shared_ptr = std::shared_ptr<session_run>;

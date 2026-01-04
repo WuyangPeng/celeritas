@@ -31,6 +31,8 @@ namespace celeritas
 
         [[nodiscard]] std::string get_instance_id() const override;
 
+        [[nodiscard]] any_io_executor get_any_io_executor() override;
+
     private:
         std::string instance_id_;
     };

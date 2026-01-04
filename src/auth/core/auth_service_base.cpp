@@ -42,7 +42,7 @@ void celeritas::auth_service_base::submit_task(task_type task) const
     handle_parameter_->submit_task(std::move(task));
 }
 
-celeritas::auth_service_base::io_context_type& celeritas::auth_service_base::get_io_context() const
+celeritas::auth_service_base::any_io_executor celeritas::auth_service_base::get_any_io_executor() const
 {
-    return handle_parameter_->get_io_context();
+    return handle_parameter_->get_any_io_executor();
 }

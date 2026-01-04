@@ -13,12 +13,12 @@ celeritas::http_response::http_response(const game_error_type code, std::string 
 {
 }
 
-celeritas::game_error_type celeritas::http_response::get_code() const
+celeritas::game_error_type celeritas::http_response::get_code() const noexcept
 {
     return code_;
 }
 
-void celeritas::http_response::set_code(const game_error_type code)
+void celeritas::http_response::set_code(const game_error_type code) noexcept
 {
     code_ = code;
 }
