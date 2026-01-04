@@ -385,7 +385,7 @@ void celeritas::resource_loader::initialize_database_resource(const any_io_execu
     }
 }
 
-void celeritas::resource_loader::initialize_server_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
+void celeritas::resource_loader::initialize_server_resource(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback)
 {
     const auto server = app_config_->get_server_config();
 
@@ -396,7 +396,7 @@ void celeritas::resource_loader::initialize_server_resource(io_context_type& io_
 
     for (const auto& element : *server)
     {
-        const auto listener = server_resource_loader::loader_server(io_context, *server, element, network_message_callback);
+        const auto listener = server_resource_loader::loader_server(any_io_executor, *server, element, network_message_callback);
 
         listener->start();
 

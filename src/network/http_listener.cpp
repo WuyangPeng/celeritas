@@ -2,13 +2,13 @@
 #include "common/logging/logger.h"
 #include "detail/http_listener_accept.h"
 
-celeritas::http_listener::http_listener(io_context_type& io_context,
+celeritas::http_listener::http_listener(const any_io_executor& any_io_executor,
                                         network_message_callback_weak_ptr callback,
                                         std::string game_server_id,
                                         const int port,
                                         const server_network_type server_network_type)
-    : base_type{ io_context, std::move(callback), std::move(game_server_id), server_network_type },
-      acceptor_{ io_context, boost::asio::ip::tcp::endpoint{ boost::asio::ip::tcp::v4(), boost::numeric_cast<uint_least16_t>(port) } },
+    : base_type{ any_io_executor, std::move(callback), std::move(game_server_id), server_network_type },
+      acceptor_{ any_io_executor, boost::asio::ip::tcp::endpoint{ boost::asio::ip::tcp::v4(), boost::numeric_cast<uint_least16_t>(port) } },
       listener_accept_{ std::make_shared<http_listener_accept>(acceptor_, server_network_type, get_game_server_id(), get_network_message_callback()) }
 {
     set_option(port);

@@ -20,8 +20,9 @@ namespace celeritas
         using void_awaitable_type = boost::asio::awaitable<void>;
         using session_shared_ptr = std::shared_ptr<session_base>;
         using protobuf_message = google::protobuf::Message;
+        using any_io_executor = boost::asio::any_io_executor;
 
-        listener(io_context_type& io_context,
+        listener(const any_io_executor& any_io_executor,
                  network_message_callback_weak_ptr callback,
                  std::string game_server_id,
                  server_network_type server_network_type);
@@ -55,10 +56,10 @@ namespace celeritas
 
         [[nodiscard]] network_message_callback_weak_ptr get_network_message_callback();
 
-        [[nodiscard]] io_context_type& get_io_context();
+        [[nodiscard]] any_io_executor get_any_io_executor();
 
     private:
-        io_context_type& io_context_;
+        any_io_executor any_io_executor_;
         network_message_callback_weak_ptr network_message_callback_;
         std::string game_server_id_;
         server_network_type server_network_type_;

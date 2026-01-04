@@ -11,7 +11,7 @@ namespace celeritas
         using class_type = http_listener;
         using base_type = listener;
 
-        http_listener(io_context_type& io_context,
+        http_listener(const any_io_executor& any_io_executor,
                       network_message_callback_weak_ptr callback,
                       std::string game_server_id,
                       int port,
