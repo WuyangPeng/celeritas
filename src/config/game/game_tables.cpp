@@ -2,6 +2,8 @@
 #include "game_tables.h"
 #include "common/core/random_helper.h"
 
+#include <ranges>
+
 celeritas::game_tables::game_tables(const_tables_shared_ptr tables)
     : tables_{ std::move(tables) },
       surname_weight_{},
@@ -61,21 +63,22 @@ void celeritas::game_tables::init_name_config()
 {
     name_weight_.clear();
 
-    auto& null_name_weight_ = name_weight_[sex_type::none];
-    auto& male_name_weight = name_weight_[sex_type::male];
-    auto& female_name_weight = name_weight_[sex_type::female];
-
-    for (const auto& [id, name] : tables_->name_config_container.getDataMap())
+    for (const auto& name : tables_->name_config_container.getDataMap() | std::views::values)
     {
-        null_name_weight_.add_element(id, name->weight);
-        if (name->sexType != sex_type::female)
-        {
-            male_name_weight.add_element(id, name->weight);
-        }
-        if (name->sexType != sex_type::male)
-        {
-            female_name_weight.add_element(id, name->weight);
-        }
+        init_name_config(*name);
+    }
+}
+
+void celeritas::game_tables::init_name_config(const name_config_type& config)
+{
+    name_weight_[sex_type::none].add_element(config.id, config.weight);
+    if (config.sexType != sex_type::female)
+    {
+        name_weight_[sex_type::male].add_element(config.id, config.weight);
+    }
+    if (config.sexType != sex_type::male)
+    {
+        name_weight_[sex_type::female].add_element(config.id, config.weight);
     }
 }
 

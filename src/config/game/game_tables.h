@@ -25,10 +25,13 @@ namespace celeritas
 
     private:
         using name_weight_type = std::map<sex_type, weight>;
+        using name_config_type = config::game::name_config;
 
         void init_surname_config();
 
         void init_name_config();
+
+        void init_name_config(const name_config_type& config);
 
         const_tables_shared_ptr tables_;
         weight surname_weight_;

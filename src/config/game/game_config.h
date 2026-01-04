@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "ByteBuf.h"
 #include "config/config_fwd.h"
 
 #include <memory>

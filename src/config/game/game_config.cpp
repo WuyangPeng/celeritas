@@ -33,19 +33,20 @@ void celeritas::game_config::load_tables()
     const auto bin_directory = current_path / config_path / bin_path;
 
     auto loader = [&](luban::ByteBuf& buffer, const std::string& bin_file_name) -> bool {
-        const auto full_path = bin_directory.string() + "/" + bin_file_name + ".bytes";
 
-        std::ifstream ifs{ full_path, std::ios::binary | std::ios::ate };
-        if (!ifs.is_open())
+        const auto full_path = bin_directory / (bin_file_name + ".bytes");
+
+        std::ifstream stream{ full_path, std::ios::binary | std::ios::ate };
+        if (!stream.is_open())
         {
-            throw std::runtime_error("Cannot open config file: " + full_path);
+            throw std::runtime_error("Cannot open config file: " + full_path.string());
         }
 
-        const auto size = ifs.tellg();
-        ifs.seekg(0, std::ios::beg);
+        const auto size = stream.tellg();
+        stream.seekg(0, std::ios::beg);
 
         std::vector<char> data(size);
-        if (ifs.read(data.data(), size))
+        if (stream.read(data.data(), size))
         {
             buffer.appendBuffer(data.data(), size);
             return true;
