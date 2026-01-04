@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "config/basic/database_type.h"
 #include "config/config_constant.h"
+#include "config/basic/database_type.h"
 
 #include <string>
 

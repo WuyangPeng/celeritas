@@ -1,5 +1,6 @@
 ﻿#include "game_config.h"
 #include "game_tables.h"
+#include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
 #include "config/config_constant.h"
 
@@ -37,7 +38,7 @@ void celeritas::game_config::load_tables()
         std::ifstream stream{ full_path, std::ios::binary | std::ios::ate };
         if (!stream.is_open())
         {
-            throw std::runtime_error("Cannot open config file: " + full_path.string());
+            throw celeritas_error{ "Cannot open config file: {}", full_path.string() };
         }
 
         const auto size = stream.tellg();
