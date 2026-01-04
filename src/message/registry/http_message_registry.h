@@ -2,6 +2,7 @@
 
 #include "message/message_fwd.h"
 
+#include <memory>
 #include <optional>
 #include <shared_mutex>
 #include <unordered_map>
