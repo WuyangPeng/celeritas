@@ -195,13 +195,13 @@
 
 * **🌐 服务器网络类型（`server_network_type`）**
     - **作用**：一个枚举类型，用于明确表示服务器支持的网络通信协议。它是网络配置的基础。
-    - **枚举值**：`unknown`、`tcp`、`http`、`websocket`、`tcp_ssl`、`https`、`websocket_secure`。
+    - **枚举值**：`tcp`、`http`、`websocket`、`tcp_ssl`、`https`、`websocket_secure`。
     - **功能**：提供了全局函数`get_server_network_type(const std::string&)`，用于将协议名称字符串转换为对应的枚举值。
 
 
 * **📊 数据库类型（`database_type`）**
     - **作用**：一个枚举类型，用于明确表示框架支持的数据库类型。它是数据库配置的基础。
-    - **枚举值**：`unknown`、`mysql`、`mongodb`、`redis`。
+    - **枚举值**：`mysql`、`mongodb`、`redis`。
     - **功能**：提供了全局函数`get_database_type(const std::string&)`，用于将数据库类型名称字符串转换为对应的枚举值。
 
 ### local configuration structures（局部配置结构）
@@ -301,7 +301,8 @@
 
 * **📝 配置表结构 (`config_bean`)**
     - **作用**：定义了所有配置表的基础结构。
-    - **特点**：所有具体的配置表（如 `item_config`, `develop_config` 等）都由 Luban 工具自动生成，并继承自基础配置类。这些类包含了具体的业务字段，用于在运行时访问配置数据。
+    - **特点**：所有具体的配置表（如 `item_config`, `develop_config` 等）都由 Luban
+      工具自动生成，并继承自基础配置类。这些类包含了具体的业务字段，用于在运行时访问配置数据。
 
 ## message（消息）
 
