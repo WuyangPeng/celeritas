@@ -4,7 +4,7 @@
 #include <boost/property_tree/xml_parser.hpp>
 
 celeritas::logger_config_reader::logger_config_reader(std::string filename)
-    : filename_{ std::move(filename) }, logger_{}, logger_level_{ std::make_shared<logger_level_config>() }
+    : filename_{ std::move(filename) }, logger_{ std::make_shared<logger_config_container>() }, logger_level_{ std::make_shared<logger_level_config>() }
 {
     load_config();
 }
