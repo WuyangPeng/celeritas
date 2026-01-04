@@ -10,8 +10,8 @@ namespace celeritas
     {
     public:
         using class_type = health_check_url_config_reader;
-        using const_health_check_url_config_shared_ptr = std::shared_ptr<const health_check_url_config>;
+        using const_health_check_url_shared_ptr = std::shared_ptr<const health_check_url_config>;
 
-        static const_health_check_url_config_shared_ptr load_config(const std::string& filename);
+        static const_health_check_url_shared_ptr load_config(const std::string& filename);
     };
 }

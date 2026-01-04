@@ -12,16 +12,16 @@ namespace celeritas
     {
     public:
         using class_type = server_config;
-        using server_network_config_container_type = std::vector<server_network_config>;
-        using server_network_config_const_iterator = server_network_config_container_type::const_iterator;
+        using server_network_container = std::vector<server_network_config>;
+        using container_const_iterator = server_network_container::const_iterator;
 
         server_config() noexcept = default;
 
-        server_config(std::string instance_id, std::string service_name, server_network_config_container_type server_network_config, std::string game_server_id, std::string host, int worker_pool_size, int datacenter_id, int worker_id, bool load_game_config) noexcept;
+        server_config(std::string instance_id, std::string service_name, server_network_container server_network_config, std::string game_server_id, std::string host, int worker_pool_size, int datacenter_id, int worker_id, bool load_game_config) noexcept;
 
-        [[nodiscard]] server_network_config_const_iterator begin() const noexcept;
+        [[nodiscard]] container_const_iterator begin() const noexcept;
 
-        [[nodiscard]] server_network_config_const_iterator end() const noexcept;
+        [[nodiscard]] container_const_iterator end() const noexcept;
 
         [[nodiscard]] std::string get_instance_id() const;
 
@@ -44,7 +44,7 @@ namespace celeritas
     private:
         std::string instance_id_;
         std::string service_name_;
-        server_network_config_container_type server_network_config_;
+        server_network_container server_network_config_;
         std::string game_server_id_;
         std::string host_;
         int worker_pool_size_ = default_worker_pool_size;

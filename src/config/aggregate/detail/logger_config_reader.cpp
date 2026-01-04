@@ -1,20 +1,21 @@
 ﻿#include "logger_config_reader.h"
 
-#include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
 celeritas::logger_config_reader::logger_config_reader(std::string filename)
-    : filename_{ std::move(filename) }, logger_{ std::make_shared<logger_config_container>() }, logger_level_{ std::make_shared<logger_level_config>() }
+    : filename_{ std::move(filename) },
+      logger_{ std::make_shared<logger_container>() },
+      logger_level_{ std::make_shared<logger_level_config>() }
 {
     load_config();
 }
 
-celeritas::logger_config_reader::const_logger_level_config_shared_ptr celeritas::logger_config_reader::get_logger_level_config() const
+celeritas::logger_config_reader::const_logger_level_shared_ptr celeritas::logger_config_reader::get_logger_level_config() const
 {
     return logger_level_;
 }
 
-celeritas::logger_config_reader::const_logger_config_container_shared_ptr celeritas::logger_config_reader::get_logger_config_container() const
+celeritas::logger_config_reader::const_container_shared_ptr celeritas::logger_config_reader::get_logger_config_container() const
 {
     return logger_;
 }

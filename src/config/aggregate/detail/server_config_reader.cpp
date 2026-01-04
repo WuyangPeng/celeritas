@@ -1,11 +1,10 @@
 ﻿#include "server_config_reader.h"
-#include "common/core/celeritas_error.h"
 #include "common/common_constant.h"
+#include "common/core/celeritas_error.h"
 
-#include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
-celeritas::server_config_reader::const_server_config_shared_ptr celeritas::server_config_reader::load_config(const std::string& filename)
+celeritas::server_config_reader::const_server_shared_ptr celeritas::server_config_reader::load_config(const std::string& filename)
 {
     boost::property_tree::ptree tree{};
 
@@ -35,7 +34,7 @@ celeritas::server_config_reader::const_server_config_shared_ptr celeritas::serve
         throw celeritas_error{ "worker id can't be greater than {} or less than 0", max_worker_id };
     }
 
-    server_config::server_network_config_container_type container{};
+    server_config::server_network_container container{};
 
     for (const auto& [name , element] : node)
     {

@@ -3,7 +3,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
-celeritas::global_config_reader::const_global_config_shared_ptr celeritas::global_config_reader::load_config(const std::string& filename)
+celeritas::global_config_reader::const_global_shared_ptr celeritas::global_config_reader::load_config(const std::string& filename)
 {
     boost::property_tree::ptree tree{};
 

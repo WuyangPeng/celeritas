@@ -3,7 +3,7 @@
 
 celeritas::server_config::server_config(std::string instance_id,
                                         std::string service_name,
-                                        server_network_config_container_type server_network_config,
+                                        server_network_container server_network_config,
                                         std::string game_server_id,
                                         std::string host,
                                         const int worker_pool_size,
@@ -22,12 +22,12 @@ celeritas::server_config::server_config(std::string instance_id,
 {
 }
 
-celeritas::server_config::server_network_config_const_iterator celeritas::server_config::begin() const noexcept
+celeritas::server_config::container_const_iterator celeritas::server_config::begin() const noexcept
 {
     return server_network_config_.begin();
 }
 
-celeritas::server_config::server_network_config_const_iterator celeritas::server_config::end() const noexcept
+celeritas::server_config::container_const_iterator celeritas::server_config::end() const noexcept
 {
     return server_network_config_.end();
 }

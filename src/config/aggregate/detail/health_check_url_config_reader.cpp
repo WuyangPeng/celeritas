@@ -3,7 +3,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
-celeritas::health_check_url_config_reader::const_health_check_url_config_shared_ptr celeritas::health_check_url_config_reader::load_config(const std::string& filename)
+celeritas::health_check_url_config_reader::const_health_check_url_shared_ptr celeritas::health_check_url_config_reader::load_config(const std::string& filename)
 {
     boost::property_tree::ptree tree{};
 

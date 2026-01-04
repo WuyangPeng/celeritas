@@ -11,8 +11,8 @@ namespace celeritas
     {
     public:
         using class_type = global_config_reader;
-        using const_global_config_shared_ptr = std::shared_ptr<const global_config>;
+        using const_global_shared_ptr = std::shared_ptr<const global_config>;
 
-        [[nodiscard]] static const_global_config_shared_ptr load_config(const std::string& filename);
+        [[nodiscard]] static const_global_shared_ptr load_config(const std::string& filename);
     };
 }

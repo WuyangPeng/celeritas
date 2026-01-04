@@ -13,21 +13,21 @@ namespace celeritas
     {
     public:
         using class_type = logger_config_reader;
-        using const_logger_config_shared_ptr = std::shared_ptr<const logger_config>;
-        using logger_config_container = std::vector<const_logger_config_shared_ptr>;
-        using const_logger_level_config_shared_ptr = std::shared_ptr<const logger_level_config>;
-        using const_logger_config_container_shared_ptr = std::shared_ptr<const logger_config_container>;
+        using const_logger_level_shared_ptr = std::shared_ptr<const logger_level_config>;
+        using const_logger_shared_ptr = std::shared_ptr<const logger_config>;
+        using logger_container = std::vector<const_logger_shared_ptr>;
+        using const_container_shared_ptr = std::shared_ptr<const logger_container>;
 
         explicit logger_config_reader(std::string filename);
 
-        [[nodiscard]] const_logger_level_config_shared_ptr get_logger_level_config() const;
+        [[nodiscard]] const_logger_level_shared_ptr get_logger_level_config() const;
 
-        [[nodiscard]] const_logger_config_container_shared_ptr get_logger_config_container() const;
+        [[nodiscard]] const_container_shared_ptr get_logger_config_container() const;
 
     private:
         using node_type = boost::property_tree::basic_ptree<std::string, std::string>;
-        using logger_level_config_shared_ptr = std::shared_ptr<logger_level_config>;
-        using logger_config_container_shared_ptr = std::shared_ptr<logger_config_container>;
+        using logger_level_shared_ptr = std::shared_ptr<logger_level_config>;
+        using container_shared_ptr = std::shared_ptr<logger_container>;
 
         void load_config();
 
@@ -36,7 +36,7 @@ namespace celeritas
         void load_node(const node_type& node);
 
         std::string filename_;
-        logger_config_container_shared_ptr logger_;
-        logger_level_config_shared_ptr logger_level_;
+        container_shared_ptr logger_;
+        logger_level_shared_ptr logger_level_;
     };
 }

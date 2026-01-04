@@ -12,9 +12,9 @@ namespace celeritas
     {
     public:
         using class_type = service_registry_config_reader;
-        using const_config_shared_ptr = std::shared_ptr<const service_registry_config>;
-        using registry_container = std::vector<const_config_shared_ptr>;
-        using const_container_shared_ptr = std::shared_ptr<const registry_container>;
+        using const_service_registry_shared_ptr = std::shared_ptr<const service_registry_config>;
+        using service_registry_container = std::vector<const_service_registry_shared_ptr>;
+        using const_container_shared_ptr = std::shared_ptr<const service_registry_container>;
 
         explicit service_registry_config_reader(std::string filename);
 
@@ -22,7 +22,7 @@ namespace celeritas
 
     private:
         using node_type = boost::property_tree::basic_ptree<std::string, std::string>;
-        using container_shared_ptr = std::shared_ptr<registry_container>;
+        using container_shared_ptr = std::shared_ptr<service_registry_container>;
 
         void load_config();
 

@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_SUITE(server_config_suite)
         const std::string instance_id{ "server_01" };
         const std::string service_name{ "game_service" };
 
-        celeritas::server_config::server_network_config_container_type networks{};
+        celeritas::server_config::server_network_container networks{};
         networks.emplace_back(celeritas::server_network_type::http, 8080);
         networks.emplace_back(celeritas::server_network_type::tcp, 9090);
 

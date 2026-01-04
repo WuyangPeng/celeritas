@@ -1,12 +1,11 @@
 ﻿#include "service_registry_config_reader.h"
 
-#include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
 #include <ranges>
 
 celeritas::service_registry_config_reader::service_registry_config_reader(std::string filename)
-    : filename_{ std::move(filename) }, service_registry_{ std::make_shared<registry_container>() }
+    : filename_{ std::move(filename) }, service_registry_{ std::make_shared<service_registry_container>() }
 {
     load_config();
 }
@@ -35,8 +34,6 @@ void celeritas::service_registry_config_reader::load_node(const node_type& node)
     const auto host = node.get<std::string>("host", default_service_registry_host.data());
     const auto port = node.get("port", default_service_registry_port);
 
-    auto config = std::make_shared<service_registry_config>(server_name, host, port);
-
-    service_registry_->emplace_back(std::move(config));
+    service_registry_->emplace_back(std::make_shared<service_registry_config>(server_name, host, port));
 }
 
