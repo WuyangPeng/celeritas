@@ -24,7 +24,7 @@ bool celeritas::refund_http_message_handler::handle(const http_handle_parameter_
         return false;
     }
 
-    boost::asio::co_spawn(handle_parameter->get_io_context(),
+    boost::asio::co_spawn(handle_parameter->get_any_io_executor(),
                           response(sdk_payment_providers_key_, handle_parameter),
                           boost::asio::detached);
 

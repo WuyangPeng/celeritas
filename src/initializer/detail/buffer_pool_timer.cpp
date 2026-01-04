@@ -2,8 +2,8 @@
 #include "common/buffer/buffer_pool.h"
 #include "service_registry/detail/service_registry_internal_fwd.h"
 
-celeritas::buffer_pool_timer::buffer_pool_timer(io_context_type& io_context, const duration_type interval)
-    : base_type{ io_context, interval }
+celeritas::buffer_pool_timer::buffer_pool_timer(const any_io_executor& any_io_executor, const duration_type interval)
+    : base_type{ any_io_executor, interval }
 {
 }
 

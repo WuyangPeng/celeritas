@@ -27,7 +27,7 @@ bool celeritas::guest_login_http_message_handler::handle(const http_handle_param
         return false;
     }
 
-    co_spawn(handle_parameter->get_io_context(),
+    co_spawn(handle_parameter->get_any_io_executor(),
              response(handle_parameter),
              boost::asio::detached);
 

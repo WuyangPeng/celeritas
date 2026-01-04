@@ -22,7 +22,7 @@ namespace celeritas
         using database_session_guard_type = database_session_guard<SessionType>;
         using database_session_guard_awaitable_type = boost::asio::awaitable<database_session_guard_type>;
 
-        connection_pool(io_context_type& io_context,
+        connection_pool(const any_io_executor& any_io_executor,
                         std::string host,
                         int port,
                         std::string user,
@@ -31,7 +31,7 @@ namespace celeritas
                         int min_connections,
                         int max_connections);
 
-        connection_pool(io_context_type& io_context,
+        connection_pool(const any_io_executor& any_io_executor,
                         std::string host,
                         int port,
                         std::string user,
@@ -41,7 +41,7 @@ namespace celeritas
                         int max_connections,
                         int expire_seconds);
 
-        connection_pool(io_context_type& io_context,
+        connection_pool(const any_io_executor& any_io_executor,
                         std::string uri,
                         std::string db_name,
                         int min_connections,
@@ -79,7 +79,7 @@ namespace celeritas
 
         [[nodiscard]] session_awaitable_type async_initiate_session();
 
-        io_context_type& io_context_;
+        any_io_executor any_io_executor_;
         std::string host_;
         int port_;
         std::string user_;

@@ -15,14 +15,15 @@ namespace celeritas
         using class_type = app_sms_providers;
         using io_context_type = boost::asio::io_context;
         using void_awaitable_type = boost::asio::awaitable<void>;
+        using any_io_executor = boost::asio::any_io_executor;
 
         [[nodiscard]] static app_sms_providers& get_instance();
 
         [[nodiscard]] sms_providers get_sms_providers(int64_t provider_id);
 
-        void reload_from_db(io_context_type& io_context, int64_t provider_id);
+        void reload_from_db(const any_io_executor& any_io_executor, int64_t provider_id);
 
-        void load_from_db(io_context_type& io_context);
+        void load_from_db(const any_io_executor& any_io_executor);
 
     private:
         using sms_providers_type = std::unordered_map<int64_t, sms_providers>;

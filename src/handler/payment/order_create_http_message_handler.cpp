@@ -20,7 +20,7 @@ bool celeritas::order_create_http_message_handler::handle(const http_handle_para
         return false;
     }
 
-    boost::asio::co_spawn(handle_parameter->get_io_context(),
+    boost::asio::co_spawn(handle_parameter->get_any_io_executor(),
                           response(handle_parameter),
                           boost::asio::detached);
 

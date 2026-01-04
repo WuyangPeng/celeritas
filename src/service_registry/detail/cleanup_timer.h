@@ -12,7 +12,7 @@ namespace celeritas
         using base_type = timer_base;
         using service_registry_impl_weak_ptr = std::weak_ptr<service_registry_impl>;
 
-        cleanup_timer(io_context_type& io_context, duration_type interval, service_registry_impl_weak_ptr service_registry);
+        cleanup_timer(const any_io_executor& any_io_executor, duration_type interval, service_registry_impl_weak_ptr service_registry);
 
     private:
         void execute_timer_task() override;

@@ -15,6 +15,7 @@ namespace celeritas
     public:
         using class_type = protobuf_handle_parameter;
         using io_context_type = boost::asio::io_context;
+        using any_io_executor = boost::asio::any_io_executor;
         using protobuf_message = google::protobuf::Message;
         using protobuf_message_shared_ptr = std::shared_ptr<protobuf_message>;
         using session_shared_ptr = std::shared_ptr<session>;
@@ -65,6 +66,8 @@ namespace celeritas
         [[nodiscard]] std::string get_instance_id() const;
 
         void check_client(const std::string& server_type, const service_info_container& container) const;
+
+        [[nodiscard]] any_io_executor get_any_io_executor() const;
 
     private:
         using session_weak_ptr = std::weak_ptr<session>;

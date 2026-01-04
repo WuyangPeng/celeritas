@@ -12,13 +12,13 @@ namespace celeritas
         using base_type = timer_base;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
 
-        explicit check_tcp_clients_timer(io_context_type& io_context, duration_type interval, resource_loader_weak_ptr resource_loader);
+        explicit check_tcp_clients_timer(const any_io_executor& any_io_executor, duration_type interval, resource_loader_weak_ptr resource_loader);
 
     private:
         void execute_timer_task() override;
 
         resource_loader_weak_ptr resource_loader_;
-        io_context_type& io_context_;
+        any_io_executor any_io_executor_;
     };
 }
 

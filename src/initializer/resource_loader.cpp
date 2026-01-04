@@ -45,19 +45,19 @@ std::string_view celeritas::resource_loader::get_server_type() const
     return server_type_;
 }
 
-void celeritas::resource_loader::initialize(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
+void celeritas::resource_loader::initialize(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback)
 {
     network_message_callback_ = network_message_callback;
 
     initialize_logger_resource();
-    initialize_server_resource(io_context, network_message_callback);
-    initialize_database_resource(io_context);
-    initialize_service_registry_resource(io_context, network_message_callback);
-    start_check_tcp_clients_timer(io_context);
-    start_service_registry_timer(io_context);
-    start_buffer_pool_timer(io_context);
+    initialize_server_resource(any_io_executor, network_message_callback);
+    initialize_database_resource(any_io_executor);
+    initialize_service_registry_resource(any_io_executor, network_message_callback);
+    start_check_tcp_clients_timer(any_io_executor);
+    start_service_registry_timer(any_io_executor);
+    start_buffer_pool_timer(any_io_executor);
     initialize_game_config();
-    service_initialize_resource(io_context, network_message_callback);
+    service_initialize_resource(any_io_executor, network_message_callback);
 }
 
 void celeritas::resource_loader::release_resource()
@@ -206,7 +206,7 @@ bool celeritas::resource_loader::write_to_user(const std::string& server_type, i
     return false;
 }
 
-void celeritas::resource_loader::process_check_tcp_clients_by_duration(io_context_type& io_context)
+void celeritas::resource_loader::process_check_tcp_clients_by_duration(const any_io_executor& any_io_executor)
 {
     std::vector<tcp_client_shared_ptr> no_open_clients;
     {
@@ -224,11 +224,11 @@ void celeritas::resource_loader::process_check_tcp_clients_by_duration(io_contex
     {
         if (!is_service_registry_ && tcp_client->get_server_type() == service_registry_type)
         {
-            modify_service_registry_resource(io_context, tcp_client->get_network_message_callback(), tcp_client->get_instance_id());
+            modify_service_registry_resource(any_io_executor, tcp_client->get_network_message_callback(), tcp_client->get_instance_id());
         }
         else
         {
-            boost::asio::co_spawn(io_context,
+            boost::asio::co_spawn(any_io_executor,
                                   tcp_client->connect(),
                                   boost::asio::detached);
         }
@@ -371,17 +371,17 @@ void celeritas::resource_loader::initialize_logger_resource()
     }
 }
 
-void celeritas::resource_loader::initialize_database_resource(io_context_type& io_context)
+void celeritas::resource_loader::initialize_database_resource(const any_io_executor& any_io_executor)
 {
     const auto database = app_config_->get_database_config();
     for (const auto& element : *database | std::views::values)
     {
-        database_resource_loader::loader_database(io_context, *element);
+        database_resource_loader::loader_database(any_io_executor, *element);
     }
 
     if (!database->empty())
     {
-        database_pool_manager::get_instance().start_cleanup_timer(io_context);
+        database_pool_manager::get_instance().start_cleanup_timer(any_io_executor);
     }
 }
 

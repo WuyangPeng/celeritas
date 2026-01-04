@@ -3,7 +3,7 @@
 #include "common/logging/logger.h"
 #include "config/basic/server_network_type.h"
 
-celeritas::http_client::http_client(io_context_type& io_context,
+celeritas::http_client::http_client(const any_io_executor& any_io_executor,
                                     network_message_callback_weak_ptr callback,
                                     std::string game_server_id,
                                     std::string host,
@@ -11,7 +11,7 @@ celeritas::http_client::http_client(io_context_type& io_context,
                                     std::string server_type,
                                     std::string path)
     : base_type{},
-      io_context_{ io_context },
+      any_io_executor_{ any_io_executor },
       network_message_callback_{ std::move(callback) },
       game_server_id_{ std::move(game_server_id) },
       host_{ std::move(host) },
@@ -99,7 +99,7 @@ void celeritas::http_client::stop()
 
 celeritas::http_client::basic_resolver_results_waitable_type celeritas::http_client::get_end_points() const
 {
-    boost::asio::ip::tcp::resolver resolver{ io_context_ };
+    boost::asio::ip::tcp::resolver resolver{ any_io_executor_ };
 
     // 异步解析主机名
     auto result = co_await resolver.async_resolve(host_, std::to_string(port_), boost::asio::as_tuple(boost::asio::use_awaitable));
@@ -115,7 +115,7 @@ celeritas::http_client::void_waitable_type celeritas::http_client::do_connect()
 {
     const auto endpoints = co_await get_end_points();
 
-    socket_type socket{ io_context_ };
+    socket_type socket{ any_io_executor_ };
 
     // 异步连接到解析出的端点
     co_await boost::asio::async_connect(socket, endpoints, boost::asio::use_awaitable);

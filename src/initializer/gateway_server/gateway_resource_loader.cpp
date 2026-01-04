@@ -13,9 +13,9 @@ celeritas::gateway_resource_loader::gateway_resource_loader(const std::string_vi
 {
 }
 
-void celeritas::gateway_resource_loader::service_initialize_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
+void celeritas::gateway_resource_loader::service_initialize_resource(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback)
 {
-    start_player_check_timer(io_context, network_message_callback);
+    start_player_check_timer(any_io_executor, network_message_callback);
 }
 
 void celeritas::gateway_resource_loader::send_player_check()
@@ -30,9 +30,9 @@ void celeritas::gateway_resource_loader::send_player_check()
     }
 }
 
-void celeritas::gateway_resource_loader::start_player_check_timer(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
+void celeritas::gateway_resource_loader::start_player_check_timer(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback)
 {
-    player_check_timer_ = std::make_unique<player_check_timer>(io_context,
+    player_check_timer_ = std::make_unique<player_check_timer>(any_io_executor,
                                                                player_check_time,
                                                                boost::polymorphic_pointer_downcast<class_type>(shared_from_this()),
                                                                network_message_callback);

@@ -1,7 +1,7 @@
 ﻿#include "mock_timer.h"
 
-celeritas::mock_timer::mock_timer(io_context_type& io_context, const duration_type interval, const bool disposable)
-    : base_type{ io_context, interval, disposable }
+celeritas::mock_timer::mock_timer(const any_io_executor& any_io_executor, const duration_type interval, const bool disposable)
+    : base_type{ any_io_executor, interval, disposable }
 {
 }
 

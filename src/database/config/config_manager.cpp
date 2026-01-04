@@ -10,22 +10,22 @@ celeritas::config_manager& celeritas::config_manager::get_instance()
     return instance;
 }
 
-void celeritas::config_manager::reload_from_db(io_context_type& io_context, const std::string& db_name, int64_t id)
+void celeritas::config_manager::reload_from_db(const any_io_executor& any_io_executor, const std::string& db_name, int64_t id)
 {
     if (db_name.empty() && id == 0)
     {
-        load_from_db(io_context);
+        load_from_db(any_io_executor);
     }
 
-    boost::asio::co_spawn(io_context,
+    boost::asio::co_spawn(any_io_executor,
                           [db_name,id,this] {
                               return this->load_from_db(db_name, id);
                           }, boost::asio::detached);
 }
 
-void celeritas::config_manager::load_from_db(io_context_type& io_context)
+void celeritas::config_manager::load_from_db(const any_io_executor& any_io_executor)
 {
-    boost::asio::co_spawn(io_context,
+    boost::asio::co_spawn(any_io_executor,
                           [this] {
                               return this->load_from_db();
                           }, boost::asio::detached);

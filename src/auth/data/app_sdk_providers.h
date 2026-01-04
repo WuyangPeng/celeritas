@@ -16,14 +16,15 @@ namespace celeritas
         using class_type = app_sdk_providers;
         using io_context_type = boost::asio::io_context;
         using void_awaitable_type = boost::asio::awaitable<void>;
+        using any_io_executor = boost::asio::any_io_executor;
 
         [[nodiscard]] static app_sdk_providers& get_instance();
 
         [[nodiscard]] sdk_providers get_sdk_providers(const sdk_providers_key& sdk_providers_key);
 
-        void reload_from_db(io_context_type& io_context, int64_t sdk_id);
+        void reload_from_db(const any_io_executor& any_io_executor, int64_t sdk_id);
 
-        void load_from_db(io_context_type& io_context);
+        void load_from_db(const any_io_executor& any_io_executor);
 
     private:
         using sdk_providers_type = std::unordered_map<sdk_providers_key, sdk_providers>;

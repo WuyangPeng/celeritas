@@ -14,7 +14,7 @@ bool celeritas::offline_request_message_handler::handle_concrete(const protobuf_
 
     if (player != nullptr)
     {
-        boost::asio::co_spawn(player->get_strand(),
+        boost::asio::co_spawn(player->get_any_io_executor(),
                               player_manager::get_instance().offline_player(user_id),
                               boost::asio::detached);
     }

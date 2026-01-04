@@ -96,7 +96,7 @@ void celeritas::player_time_scheduler::init_player_timer()
     {
         const auto current_milliseconds = time_helper::get_current_milliseconds();
         std::chrono::milliseconds duration{ next_refresh_time_ - current_milliseconds };
-        player_timer_ = std::make_unique<player_timer>(player_state_->get_io_context(), duration, boost::polymorphic_pointer_cast<player_time_component>(time_component_->shared_from_this()));
+        player_timer_ = std::make_unique<player_timer>(player_state_->get_any_io_executor(), duration, boost::polymorphic_pointer_cast<player_time_component>(time_component_->shared_from_this()));
 
         player_timer_->start();
     }

@@ -17,7 +17,7 @@ std::string celeritas::health_check_request_http_message_handler::get_supported_
 bool celeritas::health_check_request_http_message_handler::handle(const http_handle_parameter_shared_ptr& handle_parameter,
                                                                   const http_message_registry_weak_ptr& message_registry)
 {
-    co_spawn(handle_parameter->get_io_context(),
+    co_spawn(handle_parameter->get_any_io_executor(),
              health_check_result(handle_parameter),
              boost::asio::detached);
 

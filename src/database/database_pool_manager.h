@@ -14,6 +14,7 @@ namespace celeritas
     {
     public:
         using class_type = database_pool_manager;
+        using any_io_executor = boost::asio::any_io_executor;
         using io_context_type = boost::asio::io_context;
         using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
         using bool_awaitable_type = boost::asio::awaitable<bool>;
@@ -28,7 +29,7 @@ namespace celeritas
 
         [[nodiscard]] database_pool_shared_ptr create_pool(const std::string& name,
                                                            database_type database_type,
-                                                           io_context_type& io_context,
+                                                           const any_io_executor& any_io_executor,
                                                            const std::string& host,
                                                            int port,
                                                            const std::string& user,
@@ -40,7 +41,7 @@ namespace celeritas
 
         [[nodiscard]] database_pool_shared_ptr get_pool(const std::string& name);
 
-        void start_cleanup_timer(io_context_type& io_context);
+        void start_cleanup_timer(const any_io_executor& any_io_executor);
 
         void release_pool();
 
@@ -54,7 +55,7 @@ namespace celeritas
         database_pool_manager() noexcept = default;
 
         [[nodiscard]] database_pool_shared_ptr create_mysql_pool(const std::string& name,
-                                                                 io_context_type& io_context,
+                                                                 const any_io_executor& any_io_executor,
                                                                  const std::string& host,
                                                                  int port,
                                                                  const std::string& user,
@@ -64,7 +65,7 @@ namespace celeritas
                                                                  int max_connections);
 
         [[nodiscard]] database_pool_shared_ptr create_mongo_pool(const std::string& name,
-                                                                 io_context_type& io_context,
+                                                                 const any_io_executor& any_io_executor,
                                                                  const std::string& host,
                                                                  int port,
                                                                  const std::string& user,
@@ -74,7 +75,7 @@ namespace celeritas
                                                                  int max_connections);
 
         [[nodiscard]] database_pool_shared_ptr create_redis_pool(const std::string& name,
-                                                                 io_context_type& io_context,
+                                                                 const any_io_executor& any_io_executor,
                                                                  const std::string& host,
                                                                  int port,
                                                                  const std::string& user,

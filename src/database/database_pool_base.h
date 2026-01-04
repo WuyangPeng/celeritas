@@ -20,6 +20,7 @@ namespace celeritas
         using optional_database_entity_change = std::optional<database_entity_change>;
         using optional_database_entity_change_awaitable_type = boost::asio::awaitable<optional_database_entity_change>;
         using result_container_awaitable_type = boost::asio::awaitable<result_container>;
+        using any_io_executor = boost::asio::any_io_executor;
 
         database_pool_base() noexcept = default;
 
@@ -35,7 +36,7 @@ namespace celeritas
 
         [[nodiscard]] virtual void_awaitable_type async_initialize() = 0;
 
-        void start_cleanup_timer(io_context_type& io_context);
+        void start_cleanup_timer(const any_io_executor& any_io_executor);
 
         void stop_cleanup_timer();
 

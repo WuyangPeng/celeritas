@@ -24,9 +24,9 @@ celeritas::mysql_database_session::mysql_database_session(const std::string& hos
                                                           const std::string& uri,
                                                           const std::string& db_name,
                                                           int expire_seconds,
-                                                          io_context_type& io_context,
+                                                          const any_io_executor& any_io_executor,
                                                           ssl_io_context_type* ssl_context)
-    : connection_{ get_any_connection(io_context, ssl_context) },
+    : connection_{ get_any_connection(any_io_executor, ssl_context) },
       mysql_parameter_{ host, port, user, password, db_name }
 {
 }
@@ -156,17 +156,17 @@ celeritas::database_session::result_container_awaitable_type celeritas::mysql_da
     co_return container;
 }
 
-celeritas::mysql_database_session::connection_type celeritas::mysql_database_session::get_any_connection(io_context_type& io_context, ssl_io_context_type* ssl_context)
+celeritas::mysql_database_session::connection_type celeritas::mysql_database_session::get_any_connection(const any_io_executor& any_io_executor, ssl_io_context_type* ssl_context)
 {
     if (ssl_context == nullptr)
     {
-        return { io_context };
+        return { any_io_executor };
     }
 
     boost::mysql::any_connection_params any_connection_params{};
     any_connection_params.ssl_context = ssl_context;
 
-    return { io_context, any_connection_params };
+    return { any_io_executor, any_connection_params };
 }
 
 celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_database_session::async_execute_query(const std::string& sql)

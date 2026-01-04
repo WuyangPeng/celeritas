@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(timer_base_suite)
     BOOST_AUTO_TEST_CASE(test_timer_execution)
     {
         boost::asio::io_context io_context{};
-        const auto timer = std::make_shared<celeritas::mock_timer>(io_context, std::chrono::milliseconds(100), false);
+        const auto timer = std::make_shared<celeritas::mock_timer>(boost::asio::make_strand(io_context), std::chrono::milliseconds(100), false);
 
         timer->start();
 
@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_SUITE(timer_base_suite)
     BOOST_AUTO_TEST_CASE(test_timer_stop)
     {
         boost::asio::io_context io_context{};
-        const auto timer = std::make_shared<celeritas::mock_timer>(io_context, std::chrono::milliseconds(10), false);
+        const auto timer = std::make_shared<celeritas::mock_timer>(boost::asio::make_strand(io_context), std::chrono::milliseconds(10), false);
 
         timer->start();
         io_context.poll();
@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_SUITE(timer_base_suite)
     BOOST_AUTO_TEST_CASE(test_disposable_timer)
     {
         boost::asio::io_context io_context{};
-        const auto timer = std::make_shared<celeritas::mock_timer>(io_context, std::chrono::milliseconds(10), true);
+        const auto timer = std::make_shared<celeritas::mock_timer>(boost::asio::make_strand(io_context), std::chrono::milliseconds(10), true);
 
         timer->start();
 
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_SUITE(timer_base_suite)
     BOOST_AUTO_TEST_CASE(test_start_with_immediate_execution)
     {
         boost::asio::io_context io_context{};
-        const auto timer = std::make_shared<celeritas::mock_timer>(io_context, std::chrono::milliseconds(10), false);
+        const auto timer = std::make_shared<celeritas::mock_timer>(boost::asio::make_strand(io_context), std::chrono::milliseconds(10), false);
 
         BOOST_CHECK_EQUAL(timer->get_execution_count(), 0);
         timer->start(true);

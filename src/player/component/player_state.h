@@ -26,6 +26,7 @@ namespace celeritas
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
         using protobuf_message = google::protobuf::Message;
         using io_context_type = boost::asio::io_context;
+        using any_io_executor = boost::asio::any_io_executor;
         using service_login_request_type = proto::service::service_login_request;
 
         player_state(const user& user,
@@ -96,7 +97,7 @@ namespace celeritas
 
         void set_login(const service_login_request_type& login);
 
-        [[nodiscard]] boost::asio::strand<boost::asio::io_context::executor_type>& get_strand();
+        [[nodiscard]] any_io_executor get_any_io_executor();
 
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;

@@ -18,13 +18,13 @@ namespace celeritas
         using player_state_check_timer_shared_ptr = std::shared_ptr<player_state_check_timer>;
         using player_default_timer_shared_ptr = std::shared_ptr<player_default_timer>;
 
-        void service_initialize_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback) override;
+        void service_initialize_resource(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback) override;
 
-        void start_health_check_timer(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
+        void start_health_check_timer(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback);
 
-        void start_player_default_timer(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
+        void start_player_default_timer(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback);
 
-        void load_database_config(io_context_type& io_context);
+        void load_database_config(const any_io_executor& any_io_executor);
 
         player_state_check_timer_shared_ptr player_state_check_timer_;
         player_default_timer_shared_ptr player_default_timer_;

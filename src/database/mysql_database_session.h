@@ -26,7 +26,7 @@ namespace celeritas
                                const std::string& uri,
                                const std::string& db_name,
                                int expire_seconds,
-                               io_context_type& io_context,
+                               const any_io_executor& any_io_executor,
                                ssl_io_context_type* ssl_context = nullptr);
 
         ~mysql_database_session() noexcept override;
@@ -59,7 +59,7 @@ namespace celeritas
         using field_view_type = boost::mysql::field_view;
         using row_view_type = boost::mysql::row_view;
 
-        [[nodiscard]] static connection_type get_any_connection(io_context_type& io_context, ssl_io_context_type* ssl_context);
+        [[nodiscard]] static connection_type get_any_connection(const any_io_executor& any_io_executor, ssl_io_context_type* ssl_context);
 
         [[nodiscard]] results_awaitable_type async_execute_query(const std::string& sql);
 

@@ -43,22 +43,22 @@ celeritas::sdk_payment_providers celeritas::app_sdk_payment_providers::get_sdk_p
     throw celeritas_error{ "sdk providers not registered,sdk id = {}", sdk_id };
 }
 
-void celeritas::app_sdk_payment_providers::reload_from_db(io_context_type& io_context, int64_t sdk_id)
+void celeritas::app_sdk_payment_providers::reload_from_db(const any_io_executor& any_io_executor, int64_t sdk_id)
 {
     if (sdk_id == 0)
     {
-        load_from_db(io_context);
+        load_from_db(any_io_executor);
     }
 
-    boost::asio::co_spawn(io_context,
+    boost::asio::co_spawn(any_io_executor,
                           [sdk_id,this] {
                               return this->load_from_db(sdk_id);
                           }, boost::asio::detached);
 }
 
-void celeritas::app_sdk_payment_providers::load_from_db(io_context_type& io_context)
+void celeritas::app_sdk_payment_providers::load_from_db(const any_io_executor& any_io_executor)
 {
-    boost::asio::co_spawn(io_context,
+    boost::asio::co_spawn(any_io_executor,
                           [this] {
                               return this->load_from_db();
                           }, boost::asio::detached);

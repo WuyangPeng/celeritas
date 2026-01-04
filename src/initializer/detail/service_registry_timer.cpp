@@ -1,8 +1,8 @@
 ﻿#include "service_registry_timer.h"
 #include "initializer/resource_loader.h"
 
-celeritas::service_registry_timer::service_registry_timer(io_context_type& io_context, const duration_type interval, resource_loader_weak_ptr resource_loader)
-    : base_type{ io_context, interval }, resource_loader_{ std::move(resource_loader) }
+celeritas::service_registry_timer::service_registry_timer(const any_io_executor& any_io_executor, const duration_type interval, resource_loader_weak_ptr resource_loader)
+    : base_type{ any_io_executor, interval }, resource_loader_{ std::move(resource_loader) }
 {
 }
 

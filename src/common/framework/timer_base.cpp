@@ -2,8 +2,8 @@
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 
-celeritas::timer_base::timer_base(io_context_type& io_context, const duration_type interval, const bool disposable)
-    : timer_{ io_context }, interval_{ interval }, disposable_{ disposable }
+celeritas::timer_base::timer_base(const any_io_executor& any_io_executor, const duration_type interval, const bool disposable)
+    : timer_{ any_io_executor }, interval_{ interval }, disposable_{ disposable }
 {
 }
 

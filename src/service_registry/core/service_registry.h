@@ -16,6 +16,7 @@ namespace celeritas
         using service_info_container_type = std::vector<service_info>;
         using registry_type = std::unordered_map<std::string, service_info>;
         using optional_service_info = std::optional<service_info>;
+        using any_io_executor = boost::asio::any_io_executor;
 
         static void register_service(const service_info& info);
 
@@ -29,7 +30,7 @@ namespace celeritas
 
         [[nodiscard]] static optional_service_info get_services_by_instance_id(const std::string& instance_id);
 
-        static void start_cleanup_timer(io_context_type& io_context);
+        static void start_cleanup_timer(const any_io_executor& any_io_executor);
 
         static void remove_instance(const std::string& instance_id);
 

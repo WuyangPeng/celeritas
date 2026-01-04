@@ -1,8 +1,8 @@
 ﻿#include "cleanup_timer.h"
 #include "service_registry_impl.h"
 
-celeritas::cleanup_timer::cleanup_timer(io_context_type& io_context, const duration_type interval, service_registry_impl_weak_ptr service_registry)
-    : base_type{ io_context, interval }, service_registry_{ std::move(service_registry) }
+celeritas::cleanup_timer::cleanup_timer(const any_io_executor& any_io_executor, const duration_type interval, service_registry_impl_weak_ptr service_registry)
+    : base_type{ any_io_executor, interval }, service_registry_{ std::move(service_registry) }
 {
 }
 

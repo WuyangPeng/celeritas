@@ -18,9 +18,9 @@ namespace celeritas
     private:
         using player_check_timer_shared_ptr = std::shared_ptr<player_check_timer>;
 
-        void service_initialize_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback) override;
+        void service_initialize_resource(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback) override;
 
-        void start_player_check_timer(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
+        void start_player_check_timer(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback);
 
         player_check_timer_shared_ptr player_check_timer_;
     };

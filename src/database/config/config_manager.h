@@ -15,12 +15,13 @@ namespace celeritas
         using io_context_type = boost::asio::io_context;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using optional_time_refresh = std::optional<time_refresh>;
+        using any_io_executor = boost::asio::any_io_executor;
 
         [[nodiscard]] static config_manager& get_instance();
 
-        void reload_from_db(io_context_type& io_context, const std::string& db_name, int64_t id);
+        void reload_from_db(const any_io_executor& any_io_executor, const std::string& db_name, int64_t id);
 
-        void load_from_db(io_context_type& io_context);
+        void load_from_db(const any_io_executor& any_io_executor);
 
         [[nodiscard]] optional_time_refresh get_time_refresh(int64_t id);
 

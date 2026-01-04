@@ -28,7 +28,7 @@ namespace celeritas
                                         const std::string& uri,
                                         const std::string& db_name,
                                         int expire_seconds,
-                                        io_context_type& io_context);
+                                        const any_io_executor& any_io_executor);
 
         [[nodiscard]] void_awaitable_type async_connect();
 
@@ -75,7 +75,7 @@ namespace celeritas
 
         [[nodiscard]] collection_type get_collection(std::string_view collection_name) const;
 
-        io_context_type& io_context_;
+        any_io_executor any_io_executor_;
         mongo_client_unique_ptr client_;
         mongo_database_unique_ptr database_;
 

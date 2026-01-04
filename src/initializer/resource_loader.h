@@ -36,7 +36,7 @@ namespace celeritas
 
         [[nodiscard]] std::string_view get_server_type() const override;
 
-        void initialize(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback);
+        void initialize(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback);
 
         void release_resource();
 
@@ -56,7 +56,7 @@ namespace celeritas
 
         [[nodiscard]] bool write_to_user(const std::string& server_type, int64_t session_id, const header& header_message, const protobuf_message& message) override;
 
-        void process_check_tcp_clients_by_duration(io_context_type& io_context) override;
+        void process_check_tcp_clients_by_duration(const any_io_executor& any_io_executor) override;
 
         void process_service_registry_by_duration() override;
 
@@ -73,6 +73,7 @@ namespace celeritas
     protected:
         using tcp_client_shared_ptr = std::shared_ptr<tcp_client>;
         using tcp_client_container_type = std::map<std::string, tcp_client_shared_ptr>;
+        using any_io_executor = boost::asio::any_io_executor;
 
     private:
         using listener_shared_ptr = std::shared_ptr<listener>;
@@ -91,28 +92,28 @@ namespace celeritas
 
         void initialize_logger_resource();
 
-        void initialize_database_resource(io_context_type& io_context);
+        void initialize_database_resource(const any_io_executor& any_io_executor);
 
-        void initialize_server_resource(io_context_type& io_context,
+        void initialize_server_resource(const any_io_executor& any_io_executor,
                                         const network_message_callback_weak_ptr& network_message_callback);
 
-        void initialize_service_registry_resource(io_context_type& io_context,
+        void initialize_service_registry_resource(const any_io_executor& any_io_executor,
                                                   const network_message_callback_weak_ptr& network_message_callback);
 
-        void modify_service_registry_resource(io_context_type& io_context,
+        void modify_service_registry_resource(const any_io_executor& any_io_executor,
                                               const network_message_callback_weak_ptr& network_message_callback,
                                               const std::string& instance_id);
 
-        virtual void service_initialize_resource(io_context_type& io_context,
+        virtual void service_initialize_resource(const any_io_executor& any_io_executor,
                                                  const network_message_callback_weak_ptr& network_message_callback) = 0;
 
-        void start_check_tcp_clients_timer(io_context_type& io_context);
+        void start_check_tcp_clients_timer(const any_io_executor& any_io_executor);
 
-        void start_service_registry_timer(io_context_type& io_context);
+        void start_service_registry_timer(const any_io_executor& any_io_executor);
 
-        void start_buffer_pool_timer(io_context_type& io_context);
+        void start_buffer_pool_timer(const any_io_executor& any_io_executor);
 
-        [[nodiscard]] tcp_client_shared_ptr get_random_client(io_context_type& io_context,
+        [[nodiscard]] tcp_client_shared_ptr get_random_client(const any_io_executor& any_io_executor,
                                                               const network_message_callback_weak_ptr&
                                                               network_message_callback,
                                                               const service_registry_config_container& service_registry) const;

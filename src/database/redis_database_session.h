@@ -47,7 +47,7 @@ namespace celeritas
                                std::string_view uri,
                                std::string_view db_name,
                                int expire_seconds,
-                               io_context_type& io_context);
+                               const any_io_executor& any_io_executor);
 
         // 异步连接到Redis
         [[nodiscard]] void_awaitable_type async_connect();
@@ -119,7 +119,7 @@ namespace celeritas
 
         [[nodiscard]] database_entity_change_awaitable_type select_one(const std::string& key, const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) const;
 
-        io_context_type& io_context_;
+        any_io_executor any_io_executor_;
         redis_context_unique_ptr redis_context_;
 
         redis_parameter redis_parameter_;

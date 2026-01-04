@@ -112,11 +112,11 @@ celeritas::service_registry_impl::optional_service_info celeritas::service_regis
     return std::nullopt;
 }
 
-void celeritas::service_registry_impl::start_cleanup_timer(io_context_type& io_context)
+void celeritas::service_registry_impl::start_cleanup_timer(const any_io_executor& any_io_executor)
 {
     std::lock_guard lock{ cleanup_timer_mutex_ };
 
-    cleanup_timer_ = std::make_shared<cleanup_timer>(io_context, cleanup_seconds, shared_from_this());
+    cleanup_timer_ = std::make_shared<cleanup_timer>(any_io_executor, cleanup_seconds, shared_from_this());
 
     cleanup_timer_->start();
 }

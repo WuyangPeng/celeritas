@@ -12,7 +12,7 @@ namespace celeritas
         using base_type = timer_base;
         using database_pool_weak_ptr = std::weak_ptr<database_pool_base>;
 
-        explicit cleanup_database_session_timer(io_context_type& io_context, duration_type interval, database_pool_weak_ptr database_pool);
+        explicit cleanup_database_session_timer(const any_io_executor& any_io_executor, duration_type interval, database_pool_weak_ptr database_pool);
 
     private:
         void execute_timer_task() override;

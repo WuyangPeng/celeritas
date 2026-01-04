@@ -18,12 +18,13 @@ namespace celeritas
         using optional_server_cell_type = std::optional<server_cell>;
         using server_cell_container_type = std::vector<server_cell>;
         using optional_string = std::optional<std::string>;
+        using any_io_executor = boost::asio::any_io_executor;
 
         [[nodiscard]] static server_cell_repository& get_instance();
 
-        void reload_from_db(io_context_type& io_context, int64_t cell_id);
+        void reload_from_db(const any_io_executor& any_io_executor, int64_t cell_id);
 
-        void load_from_db(io_context_type& io_context);
+        void load_from_db(const any_io_executor& any_io_executor);
 
         [[nodiscard]] optional_server_cell_type get_server_cell(const std::string& game_server_id);
 

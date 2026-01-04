@@ -10,21 +10,21 @@ celeritas::player_resource_loader::player_resource_loader(const std::string_view
 {
 }
 
-void celeritas::player_resource_loader::service_initialize_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
+void celeritas::player_resource_loader::service_initialize_resource(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback)
 {
-    load_database_config(io_context);
-    start_health_check_timer(io_context, network_message_callback);
-    start_player_default_timer(io_context, network_message_callback);
+    load_database_config(any_io_executor);
+    start_health_check_timer(any_io_executor, network_message_callback);
+    start_player_default_timer(any_io_executor, network_message_callback);
 }
 
-void celeritas::player_resource_loader::start_health_check_timer(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
+void celeritas::player_resource_loader::start_health_check_timer(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback)
 {
-    player_state_check_timer_ = std::make_unique<player_state_check_timer>(io_context, player_state_check_seconds);
+    player_state_check_timer_ = std::make_unique<player_state_check_timer>(any_io_executor, player_state_check_seconds);
 
     player_state_check_timer_->start();
 }
 
-void celeritas::player_resource_loader::start_player_default_timer(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback)
+void celeritas::player_resource_loader::start_player_default_timer(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback)
 {
     const auto now = std::chrono::system_clock::now();
 
@@ -48,12 +48,12 @@ void celeritas::player_resource_loader::start_player_default_timer(io_context_ty
 
     const auto local_hours = duration_cast<std::chrono::hours>(time_of_day_duration).count();
 
-    player_default_timer_ = std::make_unique<player_default_timer>(io_context, milliseconds_to_next_hour, local_hours);
+    player_default_timer_ = std::make_unique<player_default_timer>(any_io_executor, milliseconds_to_next_hour, local_hours);
 
     player_default_timer_->start();
 }
 
-void celeritas::player_resource_loader::load_database_config(io_context_type& io_context)
+void celeritas::player_resource_loader::load_database_config(const any_io_executor& any_io_executor)
 {
-    config_manager::get_instance().load_from_db(io_context);
+    config_manager::get_instance().load_from_db(any_io_executor);
 }

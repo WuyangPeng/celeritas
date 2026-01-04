@@ -21,6 +21,7 @@ namespace celeritas
         using database_entity_change_const_shared_ptr = std::shared_ptr<const database_entity_change>;
         using database_entity_change_awaitable_type = boost::asio::awaitable<optional_database_entity_change>;
         using result_container_awaitable_type = boost::asio::awaitable<result_container>;
+        using any_io_executor = boost::asio::any_io_executor;
 
         database_session() noexcept = default;
 

@@ -11,7 +11,7 @@ namespace celeritas
         using class_type = player_default_timer;
         using base_type = timer_base;
 
-        explicit player_default_timer(io_context_type& io_context, duration_type interval, int local_hours);
+        explicit player_default_timer(const any_io_executor& any_io_executor, duration_type interval, int local_hours);
 
     private:
         using time_point_type = std::chrono::time_point<std::chrono::local_t, std::chrono::days>;
@@ -24,7 +24,7 @@ namespace celeritas
 
         void execute_month_timer_task(const time_point_type& today_local);
 
-        io_context_type& io_context_;
+        any_io_executor any_io_executor_;
         int local_hours_;
     };
 }

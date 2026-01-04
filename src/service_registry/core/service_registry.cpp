@@ -31,9 +31,9 @@ celeritas::service_registry::optional_service_info celeritas::service_registry::
     return get_service_registry_impl().get_services_by_instance_id(instance_id);
 }
 
-void celeritas::service_registry::start_cleanup_timer(io_context_type& io_context)
+void celeritas::service_registry::start_cleanup_timer(const any_io_executor& any_io_executor)
 {
-    return get_service_registry_impl().start_cleanup_timer(io_context);
+    return get_service_registry_impl().start_cleanup_timer(any_io_executor);
 }
 
 void celeritas::service_registry::remove_instance(const std::string& instance_id)

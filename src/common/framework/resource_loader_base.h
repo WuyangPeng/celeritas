@@ -21,6 +21,7 @@ namespace celeritas
         using app_config_shared_ptr = std::shared_ptr<app_config>;
         using health_check_level_awaitable_type = boost::asio::awaitable<health_check_level_type>;
         using service_info_container = std::map<std::string, service_info>;
+        using any_io_executor = boost::asio::any_io_executor;
 
         resource_loader_base() noexcept = default;
 
@@ -36,7 +37,7 @@ namespace celeritas
 
         [[nodiscard]] virtual std::string_view get_server_type() const = 0;
 
-        virtual void process_check_tcp_clients_by_duration(io_context_type& io_context) = 0;
+        virtual void process_check_tcp_clients_by_duration(const any_io_executor& any_io_executor) = 0;
 
         virtual void process_service_registry_by_duration() = 0;
 

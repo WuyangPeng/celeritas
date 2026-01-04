@@ -4,14 +4,14 @@
 #include "player/component/player_manager.h"
 #include "player/time/time_refresh_type.h"
 
-celeritas::player_default_timer::player_default_timer(io_context_type& io_context, const duration_type interval, const int local_hours)
-    : base_type{ io_context, interval }, io_context_{ io_context }, local_hours_{ local_hours }
+celeritas::player_default_timer::player_default_timer(const any_io_executor& any_io_executor, const duration_type interval, const int local_hours)
+    : base_type{ any_io_executor, interval }, any_io_executor_{ any_io_executor }, local_hours_{ local_hours }
 {
 }
 
 void celeritas::player_default_timer::execute_timer_task()
 {
-    boost::asio::co_spawn(io_context_,
+    boost::asio::co_spawn(any_io_executor_,
                           player_manager::get_instance().time_callback(time_refresh_type::daily, (hour_seconds * local_hours_) * milliseconds),
                           boost::asio::detached);
 
@@ -46,14 +46,14 @@ void celeritas::player_default_timer::execute_week_timer_task(const time_point_t
     {
         case 0:
         {
-            boost::asio::co_spawn(io_context_,
+            boost::asio::co_spawn(any_io_executor_,
                                   player_manager::get_instance().time_callback(time_refresh_type::weekly, ((day_seconds * 0) + (hour_seconds * 0)) * milliseconds),
                                   boost::asio::detached);
             break;
         }
         case 1:
         {
-            boost::asio::co_spawn(io_context_,
+            boost::asio::co_spawn(any_io_executor_,
                                   player_manager::get_instance().time_callback(time_refresh_type::weekly, ((day_seconds * 1) + (hour_seconds * 0)) * milliseconds),
                                   boost::asio::detached);
             break;
@@ -72,7 +72,7 @@ void celeritas::player_default_timer::execute_month_timer_task(const time_point_
     {
         case 1:
         {
-            boost::asio::co_spawn(io_context_,
+            boost::asio::co_spawn(any_io_executor_,
                                   player_manager::get_instance().time_callback(time_refresh_type::monthly, ((day_seconds * 0) + (hour_seconds * 0)) * milliseconds),
                                   boost::asio::detached);
             break;

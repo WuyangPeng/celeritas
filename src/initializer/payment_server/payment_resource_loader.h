@@ -13,6 +13,6 @@ namespace celeritas
         explicit payment_resource_loader(std::string_view server_type, app_config_shared_ptr app_config);
 
     private:
-        void service_initialize_resource(io_context_type& io_context, const network_message_callback_weak_ptr& network_message_callback) override;
+        void service_initialize_resource(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback) override;
     };
 }

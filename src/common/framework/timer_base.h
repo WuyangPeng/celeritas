@@ -11,11 +11,10 @@ namespace celeritas
     {
     public:
         using class_type = timer_base;
-
-        using io_context_type = boost::asio::io_context;
+        using any_io_executor = boost::asio::any_io_executor;
         using duration_type = std::chrono::milliseconds;
 
-        timer_base(io_context_type& io_context, duration_type interval, bool disposable = false);
+        timer_base(const any_io_executor& any_io_executor, duration_type interval, bool disposable = false);
 
         virtual ~timer_base() noexcept;
 

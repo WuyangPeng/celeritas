@@ -182,5 +182,16 @@ void celeritas::protobuf_handle_parameter::check_client(const std::string& serve
     return get_resource_loader()->check_client(io_context_, server_type, container);
 }
 
+celeritas::protobuf_handle_parameter::any_io_executor celeritas::protobuf_handle_parameter::get_any_io_executor() const
+{
+    if (const auto session_shared_ptr = session_.lock();
+        session_shared_ptr != nullptr)
+    {
+        return session_shared_ptr->get_any_io_executor();
+    }
+
+    throw celeritas_error{ "session is null." };
+}
+
 
 

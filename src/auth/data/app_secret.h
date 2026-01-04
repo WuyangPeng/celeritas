@@ -15,6 +15,7 @@ namespace celeritas
         using class_type = app_secret;
         using io_context_type = boost::asio::io_context;
         using void_awaitable_type = boost::asio::awaitable<void>;
+        using any_io_executor = boost::asio::any_io_executor;
 
         [[nodiscard]] static app_secret& get_instance();
 
@@ -22,9 +23,9 @@ namespace celeritas
 
         [[nodiscard]] apps get_apps(int64_t app_id);
 
-        void reload_from_db(io_context_type& io_context, int64_t app_id);
+        void reload_from_db(const any_io_executor& any_io_executor, int64_t app_id);
 
-        void load_from_db(io_context_type& io_context);
+        void load_from_db(const any_io_executor& any_io_executor);
 
     private:
         using apps_type = std::unordered_map<int64_t, apps>;

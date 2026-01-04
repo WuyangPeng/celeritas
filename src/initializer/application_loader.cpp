@@ -45,12 +45,12 @@ bool celeritas::application_loader::dispatch(io_context_type& io_context, const 
 
 bool celeritas::application_loader::dispatch(io_context_type& io_context, const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
 {
-    return http_message_registry_->dispatch(std::make_shared<http_handle_parameter>(io_context, path, params, session, resource_loader, shared_from_this()));
+    return http_message_registry_->dispatch(std::make_shared<http_handle_parameter>(path, params, session, resource_loader, shared_from_this()));
 }
 
 bool celeritas::application_loader::dispatch(io_context_type& io_context, const std::string& path, const std::string& params, const session_shared_ptr& session, const resource_loader_shared_ptr& resource_loader)
 {
-    return http_message_registry_->dispatch(std::make_shared<http_handle_parameter>(io_context, path, params, session, resource_loader, shared_from_this()));
+    return http_message_registry_->dispatch(std::make_shared<http_handle_parameter>(path, params, session, resource_loader, shared_from_this()));
 }
 
 celeritas::application_loader::message_registry_weak_ptr celeritas::application_loader::get_message_registry()

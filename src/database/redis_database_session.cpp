@@ -17,8 +17,8 @@ celeritas::redis_database_session::redis_database_session(const std::string_view
                                                           const std::string_view uri,
                                                           const std::string_view db_name,
                                                           const int expire_seconds,
-                                                          io_context_type& io_context)
-    : io_context_{ io_context },
+                                                          const any_io_executor& any_io_executor)
+    : any_io_executor_{ any_io_executor },
       redis_context_{},
       redis_parameter_{ host, port, user, password, db_name, expire_seconds },
       redis_key_commands_{ *this },
@@ -32,7 +32,7 @@ celeritas::redis_database_session::redis_database_session(const std::string_view
 
 celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::async_connect()
 {
-    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
+    co_await boost::asio::post(any_io_executor_, boost::asio::use_awaitable);
 
     redis_context_ = std::make_unique<redis_context>(redis_parameter_.get_host(), redis_parameter_.get_port());
 
@@ -45,7 +45,7 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
 
 celeritas::database_session::bool_awaitable_type celeritas::redis_database_session::is_health()
 {
-    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
+    co_await boost::asio::post(any_io_executor_, boost::asio::use_awaitable);
 
     try
     {
@@ -259,7 +259,7 @@ celeritas::redis_database_session::redis_reply_awaitable_type celeritas::redis_d
 {
     check_initialized();
 
-    co_await boost::asio::post(io_context_, boost::asio::use_awaitable);
+    co_await boost::asio::post(any_io_executor_, boost::asio::use_awaitable);
 
     co_return std::make_unique<redis_reply>(*redis_context_.get(), command);
 }

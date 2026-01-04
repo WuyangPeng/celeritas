@@ -204,7 +204,7 @@ void celeritas::player_state::set_login(const service_login_request_type& login)
     get_component<player_role_component>()->set_login(login);
 }
 
-boost::asio::strand<boost::asio::io_context::executor_type>& celeritas::player_state::get_strand()
+celeritas::player_state::any_io_executor celeritas::player_state::get_any_io_executor()
 {
     return strand_;
 }

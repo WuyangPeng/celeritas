@@ -10,7 +10,7 @@
 
 bool celeritas::reload_sdk_payment_providers_db_message_handler::handle_concrete(const protobuf_handle_parameter_shared_ptr& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
 {
-    app_sdk_payment_providers::get_instance().reload_from_db(handle_parameter->get_io_context(), current_message.sdk_id());
+    app_sdk_payment_providers::get_instance().reload_from_db(handle_parameter->get_any_io_executor(), current_message.sdk_id());
 
     const auto sdk_payment_provider = app_sdk_payment_providers::get_instance().get_sdk_payment_providers(current_message.sdk_id());
 

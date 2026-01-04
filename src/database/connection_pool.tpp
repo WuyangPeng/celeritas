@@ -8,7 +8,7 @@
 #include <boost/polymorphic_pointer_cast.hpp>
 
 template <typename SessionType>
-celeritas::connection_pool<SessionType>::connection_pool(io_context_type& io_context,
+celeritas::connection_pool<SessionType>::connection_pool(const any_io_executor& any_io_executor,
                                                          std::string host,
                                                          const int port,
                                                          std::string user,
@@ -16,7 +16,7 @@ celeritas::connection_pool<SessionType>::connection_pool(io_context_type& io_con
                                                          std::string db_name,
                                                          const int min_connections,
                                                          const int max_connections)
-    : io_context_{ io_context },
+    : any_io_executor_{ any_io_executor },
       host_{ std::move(host) },
       port_{ port },
       user_{ std::move(user) },
@@ -31,7 +31,7 @@ celeritas::connection_pool<SessionType>::connection_pool(io_context_type& io_con
 }
 
 template <typename SessionType>
-celeritas::connection_pool<SessionType>::connection_pool(io_context_type& io_context,
+celeritas::connection_pool<SessionType>::connection_pool(const any_io_executor& any_io_executor,
                                                          std::string host,
                                                          const int port,
                                                          std::string user,
@@ -40,7 +40,7 @@ celeritas::connection_pool<SessionType>::connection_pool(io_context_type& io_con
                                                          const int min_connections,
                                                          const int max_connections,
                                                          const int expire_seconds)
-    : io_context_{ io_context },
+    : any_io_executor_{ any_io_executor },
       host_{ std::move(host) },
       port_{ port },
       user_{ std::move(user) },
@@ -55,12 +55,12 @@ celeritas::connection_pool<SessionType>::connection_pool(io_context_type& io_con
 }
 
 template <typename SessionType>
-celeritas::connection_pool<SessionType>::connection_pool(io_context_type& io_context,
+celeritas::connection_pool<SessionType>::connection_pool(const any_io_executor& any_io_executor,
                                                          std::string uri,
                                                          std::string db_name,
                                                          const int min_connections,
                                                          const int max_connections)
-    : io_context_{ io_context },
+    : any_io_executor_{ any_io_executor },
       host_{},
       port_{},
       user_{},
@@ -226,7 +226,7 @@ celeritas::connection_pool<SessionType>::void_awaitable_type celeritas::connecti
 template <typename SessionType>
 celeritas::connection_pool<SessionType>::void_awaitable_type celeritas::connection_pool<SessionType>::do_async_one_initialize()
 {
-    auto session = std::make_shared<SessionType>(host_, port_, user_, password_, uri_, db_name_, expire_seconds_, io_context_);
+    auto session = std::make_shared<SessionType>(host_, port_, user_, password_, uri_, db_name_, expire_seconds_, any_io_executor_);
     co_await session->async_connect();
 
     LOG_CHANNEL(database_channel, info) << "connect host:" << host_ << ",port:" << port_ << " success.";
