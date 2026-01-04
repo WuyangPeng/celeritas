@@ -3,6 +3,7 @@
 #include "ByteBuf.h"
 #include "config/config_fwd.h"
 
+#include <filesystem>
 #include <memory>
 #include <shared_mutex>
 
@@ -23,7 +24,14 @@ namespace celeritas
         static void load_tables();
 
     private:
+        using filesystem_type = std::filesystem::path;
+        using luban_byte_buf = luban::ByteBuf;
+
         game_config();
+
+        static void do_load_tables();
+
+        static bool load_tables_from_file(luban_byte_buf& buffer, const filesystem_type& full_path);
 
         std::shared_mutex shared_mutex_;
         const_game_tables_shared_ptr game_tables_;

@@ -15,7 +15,7 @@ bool celeritas::reload_game_config_message_handler::handle_concrete(const protob
         return true;
     }
 
-    game_config::load_tables();
+    game_config::get_instance().load_tables();
 
     proto::celeritas response{};
     response.mutable_celeritas_response()->mutable_service()->mutable_player()->mutable_reload_game_config();

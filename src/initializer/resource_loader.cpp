@@ -498,7 +498,7 @@ void celeritas::resource_loader::initialize_game_config()
         return;
     }
 
-    game_config::load_tables();
+    game_config::get_instance().load_tables();
 }
 
 void celeritas::resource_loader::send_service_heartbeat()
