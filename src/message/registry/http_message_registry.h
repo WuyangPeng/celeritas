@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "message/message_fwd.h"
-#include "network/network_fwd.h"
 
 #include <optional>
 #include <shared_mutex>
@@ -14,7 +13,6 @@ namespace celeritas
     public:
         using class_type = http_message_registry;
         using http_base_message_handler_shared_ptr = std::shared_ptr<http_base_message_handler>;
-        using session_shared_ptr = std::shared_ptr<session_base>;
         using http_handle_parameter_shared_ptr = std::shared_ptr<http_handle_parameter>;
 
         void register_handler(const http_base_message_handler_shared_ptr& handler);

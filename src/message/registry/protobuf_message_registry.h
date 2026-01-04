@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "message/message_fwd.h"
-#include "network/network_fwd.h"
 
 #include <google/protobuf/message.h>
 #include <shared_mutex>
@@ -15,7 +14,6 @@ namespace celeritas
         using class_type = protobuf_message_registry;
         using protobuf_message = google::protobuf::Message;
         using protobuf_message_shared_ptr = std::shared_ptr<protobuf_message>;
-        using session_shared_ptr = std::shared_ptr<session_base>;
         using base_message_handler_shared_ptr = std::shared_ptr<protobuf_base_message_handler>;
         using protobuf_handle_parameter_shared_ptr = std::shared_ptr<protobuf_handle_parameter>;
 
