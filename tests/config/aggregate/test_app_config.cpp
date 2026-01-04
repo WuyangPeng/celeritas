@@ -176,4 +176,36 @@ BOOST_AUTO_TEST_SUITE(app_config_suite)
         test_server_config(config);
     }
 
+    BOOST_AUTO_TEST_CASE(test_load_server_config_invalid_datacenter_id)
+    {
+        const auto fixture = celeritas::config_file_fixture::get_server_invalid_datacenter_id();
+
+        celeritas::app_config config{};
+        BOOST_CHECK_THROW(config.load_server_config(fixture.get_filename()), celeritas::celeritas_error);
+    }
+
+    BOOST_AUTO_TEST_CASE(test_load_server_config_invalid_worker_id)
+    {
+        const auto fixture = celeritas::config_file_fixture::get_server_invalid_worker_id();
+
+        celeritas::app_config config{};
+        BOOST_CHECK_THROW(config.load_server_config(fixture.get_filename()), celeritas::celeritas_error);
+    }
+
+    BOOST_AUTO_TEST_CASE(test_load_server_config_invalid_network_type)
+    {
+        const auto fixture = celeritas::config_file_fixture::get_server_invalid_network_type();
+
+        celeritas::app_config config{};
+        BOOST_CHECK_THROW(config.load_server_config(fixture.get_filename()), celeritas::celeritas_error);
+    }
+
+    BOOST_AUTO_TEST_CASE(test_load_databases_config_redis_invalid_expire)
+    {
+        const auto fixture = celeritas::config_file_fixture::get_databases_redis_invalid_expire();
+
+        celeritas::app_config config{};
+        BOOST_CHECK_THROW(config.load_databases_config(fixture.get_filename()), celeritas::celeritas_error);
+    }
+
 BOOST_AUTO_TEST_SUITE_END()

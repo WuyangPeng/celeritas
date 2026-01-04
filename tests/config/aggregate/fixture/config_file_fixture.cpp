@@ -121,6 +121,70 @@ celeritas::config_file_fixture celeritas::config_file_fixture::get_server()
     return config_file_fixture{ filename, content };
 }
 
+celeritas::config_file_fixture celeritas::config_file_fixture::get_server_invalid_datacenter_id()
+{
+    const std::string content{ R"(<?xml version="1.0" encoding="utf-8"?>
+<server>
+    <instance_id>server_1</instance_id>
+    <service_name>game</service_name>
+    <host>0.0.0.0</host>
+    <datacenter_id>100</datacenter_id>
+    <worker_id>2</worker_id>
+</server>)" };
+    const std::string filename{ "test_server_invalid_dc.xml" };
+
+    return config_file_fixture{ filename, content };
+}
+
+celeritas::config_file_fixture celeritas::config_file_fixture::get_server_invalid_worker_id()
+{
+    const std::string content{ R"(<?xml version="1.0" encoding="utf-8"?>
+<server>
+    <instance_id>server_1</instance_id>
+    <service_name>game</service_name>
+    <host>0.0.0.0</host>
+    <datacenter_id>1</datacenter_id>
+    <worker_id>300</worker_id>
+</server>)" };
+    const std::string filename{ "test_server_invalid_worker.xml" };
+
+    return config_file_fixture{ filename, content };
+}
+
+celeritas::config_file_fixture celeritas::config_file_fixture::get_server_invalid_network_type()
+{
+    const std::string content{ R"(<?xml version="1.0" encoding="utf-8"?>
+<server>
+    <instance_id>server_1</instance_id>
+    <service_name>game</service_name>
+    <host>0.0.0.0</host>
+    <datacenter_id>1</datacenter_id>
+    <worker_id>2</worker_id>
+    <network>
+        <network_type>invalid_type</network_type>
+        <port>8080</port>
+    </network>
+</server>)" };
+    const std::string filename{ "test_server_invalid_network.xml" };
+    return config_file_fixture{ filename, content };
+}
+
+celeritas::config_file_fixture celeritas::config_file_fixture::get_databases_redis_invalid_expire()
+{
+    const std::string content{ R"(<?xml version="1.0" encoding="utf-8"?>
+<databases>
+    <database name="test_redis">
+        <database_type>redis</database_type>
+        <host>localhost</host>
+        <port>6379</port>
+        <expire_seconds>0</expire_seconds>
+    </database>
+</databases>)" };
+    const std::string filename{ "test_databases_invalid_redis.xml" };
+
+    return config_file_fixture{ filename, content };
+}
+
 std::string celeritas::config_file_fixture::get_filename() const
 {
     return filename_;

@@ -25,6 +25,14 @@ namespace celeritas
 
         [[nodiscard]] static config_file_fixture get_server();
 
+        [[nodiscard]] static config_file_fixture get_server_invalid_datacenter_id();
+
+        [[nodiscard]] static config_file_fixture get_server_invalid_worker_id();
+
+        [[nodiscard]] static config_file_fixture get_server_invalid_network_type();
+
+        [[nodiscard]] static config_file_fixture get_databases_redis_invalid_expire();
+
         [[nodiscard]] std::string get_filename() const;
 
     private:
