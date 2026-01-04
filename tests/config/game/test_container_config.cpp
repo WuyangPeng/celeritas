@@ -7,6 +7,18 @@
 #include <memory>
 #include <string>
 
+namespace
+{
+    void test_get(const celeritas::container_config<celeritas::mock_config_element>& container,
+                  const int id,
+                  const std::string& result)
+    {
+        const auto optional_result = container.get(id);
+        BOOST_CHECK(optional_result.has_value());
+        BOOST_CHECK_EQUAL((*optional_result)->get_value(), result);
+    }
+}
+
 BOOST_AUTO_TEST_SUITE(container_config_suite)
 
     BOOST_AUTO_TEST_CASE(test_add_and_get)
@@ -19,13 +31,8 @@ BOOST_AUTO_TEST_SUITE(container_config_suite)
         container.add_config(element1);
         container.add_config(element2);
 
-        const auto result1 = container.get(1);
-        BOOST_CHECK(result1.has_value());
-        BOOST_CHECK_EQUAL((*result1)->get_value(), "one");
-
-        const auto result2 = container.get(2);
-        BOOST_CHECK(result2.has_value());
-        BOOST_CHECK_EQUAL((*result2)->get_value(), "two");
+        test_get(container, 1, "one");
+        test_get(container, 2, "two");
 
         const auto result3 = container.get(3);
         BOOST_CHECK(!result3.has_value());
@@ -47,8 +54,8 @@ BOOST_AUTO_TEST_SUITE(container_config_suite)
     {
         celeritas::container_config<celeritas::mock_config_element> container{};
 
-        const auto element1 = std::make_shared<celeritas::mock_config_element>(10, "ten");
-        container.add_config(element1);
+        const auto element = std::make_shared<celeritas::mock_config_element>(10, "ten");
+        container.add_config(element);
 
         const auto& container_config = container.get_container();
         BOOST_CHECK_EQUAL(container_config.size(), 1);

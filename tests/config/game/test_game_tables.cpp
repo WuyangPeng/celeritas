@@ -9,6 +9,8 @@
 
 namespace
 {
+    constexpr auto random_count = 10;
+
     [[nodiscard]] std::shared_ptr<const celeritas::config::tables> create_test_tables()
     {
         // 创建 tables 对象并加载
@@ -81,7 +83,7 @@ BOOST_AUTO_TEST_SUITE(game_tables_suite)
 
         BOOST_CHECK(game_tables.get_tables() == tables_data);
 
-        for (auto i = 0; i < 10; ++i)
+        for (auto i = 0; i < random_count; ++i)
         {
             const auto surname = game_tables.get_surname();
             BOOST_CHECK(surname == "Zhao" || surname == "Qian");
@@ -93,19 +95,19 @@ BOOST_AUTO_TEST_SUITE(game_tables_suite)
         const auto tables_data = create_test_tables();
         const celeritas::game_tables game_tables{ tables_data };
 
-        for (auto i = 0; i < 10; ++i)
+        for (auto i = 0; i < random_count; ++i)
         {
             const auto name = game_tables.get_name(celeritas::game_tables::sex_type::male);
             BOOST_CHECK(name == "MaleName" || name == "AnyName");
         }
 
-        for (auto i = 0; i < 10; ++i)
+        for (auto i = 0; i < random_count; ++i)
         {
             const auto name = game_tables.get_name(celeritas::game_tables::sex_type::female);
             BOOST_CHECK(name == "FemaleName" || name == "AnyName");
         }
 
-        for (auto i = 0; i < 10; ++i)
+        for (auto i = 0; i < random_count; ++i)
         {
             const auto name = game_tables.get_name(celeritas::game_tables::sex_type::none);
             BOOST_CHECK(name == "MaleName" || name == "FemaleName" || name == "AnyName");
