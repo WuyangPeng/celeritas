@@ -126,7 +126,7 @@ void celeritas::http_handle_parameter::submit_task(task_type task) const
     throw celeritas_error{ "application loader is null." };
 }
 
-celeritas::http_handle_parameter::const_resource_loader_shared_ptr celeritas::http_handle_parameter::get_resource_loader() const
+celeritas::http_handle_parameter::resource_loader_shared_ptr celeritas::http_handle_parameter::get_resource_loader() const
 {
     if (const auto resource_loader_shared_ptr = resource_loader_.lock();
         resource_loader_shared_ptr != nullptr)

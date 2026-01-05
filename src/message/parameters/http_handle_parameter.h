@@ -73,9 +73,8 @@ namespace celeritas
         using session_weak_ptr = std::weak_ptr<session>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
         using application_loader_weak_ptr = std::weak_ptr<application_loader_base>;
-        using const_resource_loader_shared_ptr = std::shared_ptr<const resource_loader_base>;
 
-        [[nodiscard]] const_resource_loader_shared_ptr get_resource_loader() const;
+        [[nodiscard]] resource_loader_shared_ptr get_resource_loader() const;
 
         [[nodiscard]] session_shared_ptr get_session() const;
 

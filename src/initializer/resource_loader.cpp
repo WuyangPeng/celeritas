@@ -268,7 +268,7 @@ celeritas::resource_loader::app_config_shared_ptr celeritas::resource_loader::ge
     return app_config_;
 }
 
-celeritas::resource_loader::health_check_level_awaitable_type celeritas::resource_loader::get_health_check_level() const
+celeritas::resource_loader::health_check_level_awaitable_type celeritas::resource_loader::get_health_check_level()
 {
     if (const auto is_health = co_await database_pool_manager::get_instance().is_health();
         !is_health)

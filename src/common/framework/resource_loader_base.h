@@ -43,7 +43,7 @@ namespace celeritas
 
         [[nodiscard]] virtual app_config_shared_ptr get_app_config() const = 0;
 
-        [[nodiscard]] virtual health_check_level_awaitable_type get_health_check_level() const = 0;
+        [[nodiscard]] virtual health_check_level_awaitable_type get_health_check_level() = 0;
 
         [[nodiscard]] virtual bool write_to_server(const std::string& server_type, const header& header, const protobuf_message& request) = 0;
 
