@@ -1,12 +1,11 @@
-﻿#include "common/framework/mock/mock_framework_application_loader.h"
+﻿#include "common/core/celeritas_error.h"
+#include "common/framework/mock/mock_framework_application_loader.h"
 #include "common/framework/mock/mock_framework_resource_loader.h"
 #include "common/framework/mock/mock_framework_session.h"
 #include "message/parameters/http_handle_parameter.h"
-#include "common/core/celeritas_error.h"
 
-#include <boost/test/unit_test.hpp>
 #include <boost/url.hpp>
-#include <tuple>
+#include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(http_handle_parameter_suite)
 
@@ -38,17 +37,13 @@ BOOST_AUTO_TEST_SUITE(http_handle_parameter_suite)
         const auto application_loader = std::make_shared<celeritas::mock_framework_application_loader>();
 
         const auto parameter = std::make_shared<celeritas::http_handle_parameter>("/test", "", session, resource_loader, application_loader);
-
-        // Test session delegation
-        // Note: mock_framework_session::get_any_io_executor throws "io executor not support"
         BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_any_io_executor(); }(), celeritas::celeritas_error);
 
-        // Test resource loader delegation
         BOOST_CHECK_EQUAL(parameter->get_server_type(), "mock_server");
 
-        // Test application loader delegation
         BOOST_CHECK(!application_loader->get_task_submitted());
-        parameter->submit_task([]{});
+        parameter->submit_task([] {
+        });
         BOOST_CHECK(application_loader->get_task_submitted());
     }
 
@@ -56,15 +51,11 @@ BOOST_AUTO_TEST_SUITE(http_handle_parameter_suite)
     {
         const auto parameter = std::make_shared<celeritas::http_handle_parameter>("", "", nullptr, nullptr, nullptr);
 
-        // Session dependency
         BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_any_io_executor(); }(), celeritas::celeritas_error);
-
-        // Resource loader dependency
         BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_app_config(); }(), celeritas::celeritas_error);
         BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_server_type(); }(), celeritas::celeritas_error);
         BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_database_config("db"); }(), celeritas::celeritas_error);
 
-        // Application loader dependency
         BOOST_CHECK_THROW([&parameter] { parameter->submit_task([]{}); }(), celeritas::celeritas_error);
     }
 
