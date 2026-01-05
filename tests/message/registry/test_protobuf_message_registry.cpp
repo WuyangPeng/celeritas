@@ -1,4 +1,4 @@
-﻿#include "message/handler_base/detail/test_protobuf_message_handler.h"
+﻿#include "message/handler_base/mock/mock_protobuf_message_handler.h"
 #include "message/parameters/protobuf_handle_parameter.h"
 #include "message/registry/protobuf_message_registry.h"
 
@@ -10,7 +10,7 @@ BOOST_AUTO_TEST_SUITE(protobuf_message_registry_suite)
     BOOST_AUTO_TEST_CASE(test_protobuf_message_registry_register_and_dispatch)
     {
         const auto registry = std::make_shared<celeritas::protobuf_message_registry>();
-        const auto handler = std::make_shared<celeritas::test_protobuf_message_handler>();
+        const auto handler = std::make_shared<celeritas::mock_protobuf_message_handler>();
         const auto handle_parameter = std::make_shared<celeritas::protobuf_handle_parameter>(celeritas::header{}, nullptr, nullptr, nullptr, nullptr);
         const google::protobuf::Any any{};
 

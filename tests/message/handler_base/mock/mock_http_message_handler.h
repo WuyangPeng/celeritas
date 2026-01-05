@@ -4,10 +4,10 @@
 
 namespace celeritas
 {
-    class test_http_message_handler final : public http_base_message_handler
+    class mock_http_message_handler final : public http_base_message_handler
     {
     public:
-        using class_type = test_http_message_handler;
+        using class_type = mock_http_message_handler;
         using base_Type = http_base_message_handler;
 
         [[nodiscard]] std::string get_supported_type_name() const override;

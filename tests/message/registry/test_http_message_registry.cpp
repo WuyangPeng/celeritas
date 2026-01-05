@@ -1,4 +1,4 @@
-﻿#include "message/handler_base/detail/test_http_message_handler.h"
+﻿#include "message/handler_base/mock/mock_http_message_handler.h"
 #include "message/parameters/http_handle_parameter.h"
 #include "message/registry/http_message_registry.h"
 
@@ -9,7 +9,7 @@ BOOST_AUTO_TEST_SUITE(http_message_registry_suite)
     BOOST_AUTO_TEST_CASE(test_http_message_registry_register_and_dispatch)
     {
         const auto registry = std::make_shared<celeritas::http_message_registry>();
-        const auto handler = std::make_shared<celeritas::test_http_message_handler>();
+        const auto handler = std::make_shared<celeritas::mock_http_message_handler>();
         const auto handle_parameter = std::make_shared<celeritas::http_handle_parameter>("test_handler", "", nullptr, nullptr, nullptr);
 
         registry->register_handler(handler);

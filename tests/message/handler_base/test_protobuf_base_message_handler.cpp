@@ -1,4 +1,4 @@
-﻿#include "detail/test_protobuf_message_handler.h"
+﻿#include "mock/mock_protobuf_message_handler.h"
 
 #include <boost/test/unit_test.hpp>
 #include <google/protobuf/any.pb.h>
@@ -7,7 +7,7 @@ BOOST_AUTO_TEST_SUITE(protobuf_base_message_handler_suite)
 
     BOOST_AUTO_TEST_CASE(test_protobuf_base_message_handler_creation_and_handle)
     {
-        celeritas::test_protobuf_message_handler handler{};
+        celeritas::mock_protobuf_message_handler handler{};
         const google::protobuf::Any any{};
 
         BOOST_CHECK_EQUAL(handler.get_supported_type_name(), "google.protobuf.Any");

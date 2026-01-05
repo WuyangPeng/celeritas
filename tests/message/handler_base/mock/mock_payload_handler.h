@@ -8,10 +8,10 @@ namespace celeritas
 {
     using test_message_type = google::protobuf::StringValue;
 
-    class test_payload_handler final : public concrete_message_handler<test_message_type>
+    class mock_payload_handler final : public concrete_message_handler<test_message_type>
     {
     public:
-        using class_type = test_payload_handler;
+        using class_type = mock_payload_handler;
         using base_type = concrete_message_handler;
 
         using base_type::add_handler_function;
