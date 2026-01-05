@@ -81,17 +81,13 @@ celeritas::http_handle_parameter::optional_string celeritas::http_handle_paramet
 
 celeritas::http_handle_parameter::void_waitable_type celeritas::http_handle_parameter::write_immediately(const std::string& response) const
 {
-    if (const auto session_shared_ptr = session_.lock();
-        session_shared_ptr != nullptr)
-    {
-        LOG_CHANNEL(message_channel, debug) << "http start response " << response;
+    const auto session_shared_ptr = get_session();
 
-        co_await session_shared_ptr->write_immediately(response);
+    LOG_CHANNEL(message_channel, debug) << "http start response " << response;
 
-        co_return session_shared_ptr->remove_session();
-    }
+    co_await session_shared_ptr->write_immediately(response);
 
-    LOG_CHANNEL(message_channel, debug) << "http session is close.";
+    co_return session_shared_ptr->remove_session();
 }
 
 celeritas::http_handle_parameter::const_app_config_shared_ptr celeritas::http_handle_parameter::get_app_config() const
@@ -101,24 +97,12 @@ celeritas::http_handle_parameter::const_app_config_shared_ptr celeritas::http_ha
 
 celeritas::http_handle_parameter::health_check_level_awaitable_type celeritas::http_handle_parameter::get_health_check_level() const
 {
-    if (const auto resource_loader_shared_ptr = resource_loader_.lock();
-        resource_loader_shared_ptr != nullptr)
-    {
-        co_return co_await resource_loader_shared_ptr->get_health_check_level();
-    }
-
-    throw celeritas_error{ "resource loader is null." };
+    co_return co_await get_resource_loader()->get_health_check_level();
 }
 
 celeritas::http_handle_parameter::any_io_executor celeritas::http_handle_parameter::get_any_io_executor() const
 {
-    if (const auto session_shared_ptr = session_.lock();
-        session_shared_ptr != nullptr)
-    {
-        return session_shared_ptr->get_any_io_executor();
-    }
-
-    throw celeritas_error{ "session is null." };
+    return get_session()->get_any_io_executor();
 }
 
 std::string_view celeritas::http_handle_parameter::get_server_type() const
@@ -128,9 +112,7 @@ std::string_view celeritas::http_handle_parameter::get_server_type() const
 
 celeritas::http_handle_parameter::const_database_config_shared_ptr celeritas::http_handle_parameter::get_database_config(const std::string& db_name) const
 {
-    const auto app_config = get_resource_loader()->get_app_config();
-
-    return app_config->get_database_config(db_name);
+    return get_resource_loader()->get_app_config()->get_database_config(db_name);
 }
 
 void celeritas::http_handle_parameter::submit_task(task_type task) const
@@ -153,4 +135,15 @@ celeritas::http_handle_parameter::const_resource_loader_shared_ptr celeritas::ht
     }
 
     throw celeritas_error{ "resource loader is null." };
+}
+
+celeritas::http_handle_parameter::session_shared_ptr celeritas::http_handle_parameter::get_session() const
+{
+    if (const auto session_shared_ptr = session_.lock();
+        session_shared_ptr != nullptr)
+    {
+        return session_shared_ptr;
+    }
+
+    throw celeritas_error{ "http session is close." };
 }

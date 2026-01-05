@@ -77,6 +77,8 @@ namespace celeritas
 
         [[nodiscard]] const_resource_loader_shared_ptr get_resource_loader() const;
 
+        [[nodiscard]] session_shared_ptr get_session() const;
+
         std::string path_;
         urls_params_view_type params_;
         std::string response_;

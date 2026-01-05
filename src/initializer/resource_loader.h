@@ -62,7 +62,7 @@ namespace celeritas
 
         [[nodiscard]] app_config_shared_ptr get_app_config() const override;
 
-        [[nodiscard]] health_check_level_awaitable_type get_health_check_level() override;
+        [[nodiscard]] health_check_level_awaitable_type get_health_check_level() const override;
 
         void add_session_route(int64_t user_id, session_route session_route) override;
 

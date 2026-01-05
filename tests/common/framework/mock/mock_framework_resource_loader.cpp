@@ -24,7 +24,7 @@ celeritas::resource_loader_base::app_config_shared_ptr celeritas::mock_framework
     return nullptr;
 }
 
-celeritas::resource_loader_base::health_check_level_awaitable_type celeritas::mock_framework_resource_loader::get_health_check_level()
+celeritas::resource_loader_base::health_check_level_awaitable_type celeritas::mock_framework_resource_loader::get_health_check_level() const
 {
     co_return health_check_level_type::health;
 }
