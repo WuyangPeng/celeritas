@@ -90,7 +90,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
 
         // 应该发送了成功消息
         // 我们可以通过 mock_session_ 检查最后发送的消息
-        BOOST_CHECK_EQUAL(mock_session_->get_code(), static_cast<int>(celeritas::game_error_type::success));
+        BOOST_CHECK(mock_session_->get_code() == celeritas::game_error_type::success);
 
         boost::asio::co_spawn(io_context_,
                               [&]() -> boost::asio::awaitable<void> {
@@ -126,7 +126,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
         BOOST_CHECK_GT(mock_pool_->get_select_one_call_count(), 1);
         BOOST_CHECK_EQUAL(mock_pool_->get_execute_changes_call_count(), 1);
 
-        BOOST_CHECK_EQUAL(mock_session_->get_code(), static_cast<int>(celeritas::game_error_type::success));
+        BOOST_CHECK(mock_session_->get_code() == celeritas::game_error_type::success);
 
         boost::asio::co_spawn(io_context_,
                               [&]() -> boost::asio::awaitable<void> {
@@ -157,7 +157,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
         run_io_context();
 
         // 应该在 create_account 步骤失败
-        BOOST_CHECK_EQUAL(mock_session_->get_code(), static_cast<int>(celeritas::game_error_type::create_account_error));
+        BOOST_CHECK(mock_session_->get_code() == celeritas::game_error_type::create_account_error);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

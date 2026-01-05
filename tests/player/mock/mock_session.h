@@ -30,7 +30,7 @@ namespace celeritas
 
         [[nodiscard]] std::string get_instance_id() const override;
 
-        [[nodiscard]] int32_t get_code() const;
+        [[nodiscard]] game_error_type get_code() const;
 
         [[nodiscard]] any_io_executor get_any_io_executor() override;
 

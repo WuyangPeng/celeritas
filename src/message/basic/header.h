@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "game_error_type.h"
 #include "proto/common/common.pb.h"
 
 namespace celeritas
@@ -17,11 +18,11 @@ namespace celeritas
 
         header() noexcept = default;
 
-        header(int32_t rpc, int32_t code);
+        header(int32_t rpc, game_error_type code);
 
         header(int32_t rpc, int64_t user_id);
 
-        header(int32_t rpc, int64_t user_id, int32_t code);
+        header(int32_t rpc, int64_t user_id, game_error_type code);
 
         explicit header(int64_t user_id);
 
@@ -41,7 +42,7 @@ namespace celeritas
 
         [[nodiscard]] int64_t get_user_id() const;
 
-        [[nodiscard]] int32_t get_code() const;
+        [[nodiscard]] game_error_type get_code() const;
 
     private:
         [[nodiscard]] message_shared_ptr get_to_gateway_message() const;
@@ -56,6 +57,6 @@ namespace celeritas
 
         int32_t rpc_ = 0;
         int64_t user_id_ = 0;
-        int32_t code_ = 0;
+        game_error_type code_ = game_error_type::unknown;
     };
 }

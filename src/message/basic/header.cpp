@@ -1,23 +1,24 @@
 ﻿#include "game_error_type.h"
 #include "header.h"
+#include "common/core/enum_cast.h"
 
-celeritas::header::header(const int32_t rpc, const int32_t code)
+celeritas::header::header(const int32_t rpc, const game_error_type code)
     : rpc_{ rpc }, user_id_{}, code_{ code }
 {
 }
 
 celeritas::header::header(const int32_t rpc, const int64_t user_id)
-    : rpc_{ rpc }, user_id_{ user_id }, code_{ static_cast<int>(game_error_type::success) }
+    : rpc_{ rpc }, user_id_{ user_id }, code_{ game_error_type::success }
 {
 }
 
-celeritas::header::header(const int32_t rpc, const int64_t user_id, const int32_t code)
+celeritas::header::header(const int32_t rpc, const int64_t user_id, const game_error_type code)
     : rpc_{ rpc }, user_id_{ user_id }, code_{ code }
 {
 }
 
 celeritas::header::header(const int64_t user_id)
-    : rpc_{ 0 }, user_id_{ user_id }, code_{ static_cast<int>(game_error_type::success) }
+    : rpc_{ 0 }, user_id_{ user_id }, code_{ game_error_type::success }
 {
 }
 
@@ -42,13 +43,13 @@ celeritas::header::header(const gateway_message_header_type& gateway_message_hea
 }
 
 celeritas::header::header(const to_gateway_message_header_type& to_gateway_message_header)
-    : rpc_{ to_gateway_message_header.rpc() }, user_id_{ to_gateway_message_header.user_id() }, code_{ to_gateway_message_header.code() }
+    : rpc_{ to_gateway_message_header.rpc() }, user_id_{ to_gateway_message_header.user_id() }, code_{ underlying_cast_enum<game_error_type>(to_gateway_message_header.code()) }
 {
 }
 
 celeritas::header::message_shared_ptr celeritas::header::get_message() const
 {
-    if (code_ > 0)
+    if (code_ != game_error_type::unknown)
     {
         return get_to_gateway_message();
     }
@@ -81,7 +82,7 @@ int64_t celeritas::header::get_user_id() const
     return user_id_;
 }
 
-int32_t celeritas::header::get_code() const
+celeritas::game_error_type celeritas::header::get_code() const
 {
     return code_;
 }
@@ -93,7 +94,7 @@ celeritas::header::message_shared_ptr celeritas::header::get_to_gateway_message(
 
     to_gateway_message_header->set_user_id(user_id_);
     to_gateway_message_header->set_rpc(rpc_);
-    to_gateway_message_header->set_code(code_);
+    to_gateway_message_header->set_code(enum_cast_underlying(code_));
 
     return header;
 }

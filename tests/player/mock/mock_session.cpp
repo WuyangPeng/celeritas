@@ -49,7 +49,7 @@ std::string celeritas::mock_session::get_instance_id() const
     return instance_id_;
 }
 
-int32_t celeritas::mock_session::get_code() const
+celeritas::game_error_type celeritas::mock_session::get_code() const
 {
     return last_header_.get_code();
 }

@@ -52,7 +52,7 @@ celeritas::service_login::int64_awaitable_type celeritas::service_login::send_me
 
 void celeritas::service_login::send_error_message(game_error_type game_error_type) const
 {
-    const header header{ protobuf_handle_parameter_->get_rpc(), static_cast<int>(game_error_type) };
+    const header header{ protobuf_handle_parameter_->get_rpc(), game_error_type };
 
     proto::celeritas response{};
     response.mutable_celeritas_response()->mutable_service()->mutable_player()->mutable_service_login();
@@ -62,7 +62,7 @@ void celeritas::service_login::send_error_message(game_error_type game_error_typ
 
 void celeritas::service_login::send_success_message(const int64_t user_id) const
 {
-    const header header{ protobuf_handle_parameter_->get_rpc(), user_id, static_cast<int>(game_error_type::success) };
+    const header header{ protobuf_handle_parameter_->get_rpc(), user_id, game_error_type::success };
 
     proto::celeritas response{};
     auto* login = response.mutable_celeritas_response()->mutable_service()->mutable_player()->mutable_service_login();

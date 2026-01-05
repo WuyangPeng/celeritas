@@ -28,7 +28,7 @@ celeritas::http_message_registry::http_base_message_handler_optional_type celeri
     std::shared_lock lock{ mutex_ };
 
     if (const auto iter = registry_.find(type_name);
-        iter != registry_.end())
+        iter != registry_.cend())
     {
         return iter->second;
     }
