@@ -22,7 +22,7 @@ bool celeritas::reload_sdk_payment_providers_db_message_handler::handle_concrete
 
     proto::celeritas response{};
     response.mutable_celeritas_response()->mutable_service()->mutable_payment()->mutable_reload_sdk_payment_providers_db();
-    handle_parameter->write(response);
+    handle_parameter->write_to_response(response);
 
     return true;
 }

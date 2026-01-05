@@ -11,7 +11,7 @@ bool celeritas::reload_app_db_message_handler::handle_concrete(const protobuf_ha
 
     proto::celeritas response{};
     response.mutable_celeritas_response()->mutable_service()->mutable_auth()->mutable_reload_app_db();
-    handle_parameter->write(response);
+    handle_parameter->write_to_response(response);
 
     return true;
 }

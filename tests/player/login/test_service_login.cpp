@@ -23,7 +23,7 @@ namespace
         service_login_fixture()
             : io_context_{},
               mock_pool_{ std::make_shared<celeritas::mock_database_pool>() },
-              mock_session_{ std::make_shared<celeritas::mock_session>() },
+              mock_session_{ std::make_shared<celeritas::mock_session>(boost::asio::make_strand(io_context_)) },
               mock_resource_loader_{ std::make_shared<celeritas::mock_resource_loader>() },
               mock_application_loader_{ std::make_shared<celeritas::mock_application_loader>() }
         {
@@ -31,8 +31,7 @@ namespace
 
             celeritas::header header{};
             auto request_message = std::make_shared<celeritas::proto::celeritas>();
-            parameter_ = std::make_shared<celeritas::protobuf_handle_parameter>(io_context_,
-                                                                                header,
+            parameter_ = std::make_shared<celeritas::protobuf_handle_parameter>(header,
                                                                                 request_message,
                                                                                 mock_session_,
                                                                                 mock_resource_loader_,

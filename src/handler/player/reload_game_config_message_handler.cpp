@@ -19,7 +19,7 @@ bool celeritas::reload_game_config_message_handler::handle_concrete(const protob
 
     proto::celeritas response{};
     response.mutable_celeritas_response()->mutable_service()->mutable_player()->mutable_reload_game_config();
-    handle_parameter->write(response);
+    handle_parameter->write_to_response(response);
 
     return true;
 }

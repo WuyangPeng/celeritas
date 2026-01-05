@@ -20,7 +20,7 @@ bool celeritas::client_heartbeat_request_message_handler::handle_concrete(const 
     proto::celeritas response{};
 
     response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_heartbeat()->set_server_time(time_helper::get_current_milliseconds());
-    handle_parameter->write(response);
+    handle_parameter->write_to_response(response);
 
     return true;
 }

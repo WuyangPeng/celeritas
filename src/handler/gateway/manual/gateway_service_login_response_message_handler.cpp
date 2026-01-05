@@ -13,9 +13,7 @@ bool celeritas::gateway_service_login_response_message_handler::handle_concrete(
 {
     session_route session_route{ static_cast<server_network_type>(current_message.protocol()), current_message.session_id(), current_message.instance_id() };
 
-    const auto resource_loader = handle_parameter->get_resource_loader();
-
-    resource_loader->add_session_route(handle_parameter->get_user_id(), std::move(session_route));
+    handle_parameter->add_session_route(handle_parameter->get_user_id(), std::move(session_route));
 
     proto::celeritas response{};
     auto* login = response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_login()->mutable_login();

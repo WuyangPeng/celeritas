@@ -9,7 +9,7 @@ celeritas::gateway_login_request_message_handler::gateway_login_request_message_
 
 bool celeritas::gateway_login_request_message_handler::handle_concrete(const protobuf_handle_parameter_shared_ptr& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
 {
-    boost::asio::co_spawn(handle_parameter->get_io_context(),
+    boost::asio::co_spawn(handle_parameter->get_any_io_executor(),
                           response(handle_parameter, current_message),
                           boost::asio::detached);
     return true;

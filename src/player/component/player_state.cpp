@@ -23,7 +23,7 @@
 
 celeritas::player_state::player_state(const user& user,
                                       const resource_loader_shared_ptr& resource_loader,
-                                      io_context_type& io_context,
+                                      const any_io_executor& any_io_executor,
                                       std::string instance_id,
                                       const service_login_request_type& login)
     : dirty_{ false },
@@ -44,9 +44,8 @@ celeritas::player_state::player_state(const user& user,
                    std::make_shared<player_finish_component>(this),
                    std::make_shared<player_null_component>(this) },
       resource_loader_{ resource_loader },
-      io_context_{ io_context },
       instance_id_{ std::move(instance_id) },
-      strand_{ boost::asio::make_strand(io_context_) }
+      strand_{ boost::asio::make_strand(any_io_executor) }
 {
     check();
 }
@@ -189,10 +188,6 @@ celeritas::player_state::void_awaitable_type celeritas::player_state::time_callb
     co_await get_component<player_time_component>()->time_callback(player_time_refresh_key, is_login);
 }
 
-celeritas::player_state::io_context_type& celeritas::player_state::get_io_context()
-{
-    return io_context_;
-}
 
 void celeritas::player_state::set_mock_player_component(const player_component_shared_ptr& mock)
 {

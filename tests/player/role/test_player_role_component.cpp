@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_SUITE(player_role_component_suite)
     {
         test_fixture()
             : io_context_{},
-              player_state_{ io_context_ },
+              player_state_{ boost::asio::make_strand(io_context_) },
               mock_pool_{ std::make_shared<celeritas::mock_database_pool>() },
               login_request_{}
         {

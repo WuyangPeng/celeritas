@@ -31,7 +31,7 @@ namespace celeritas
 
         player_state(const user& user,
                      const resource_loader_shared_ptr& resource_loader,
-                     io_context_type& io_context,
+                     const any_io_executor& any_io_executor,
                      std::string instance_id,
                      const service_login_request_type& login);
 
@@ -91,8 +91,6 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type time_callback(const player_time_refresh_key& player_time_refresh_key, bool is_login) const;
 
-        [[nodiscard]] io_context_type& get_io_context();
-
         void set_mock_player_component(const player_component_shared_ptr& mock);
 
         void set_login(const service_login_request_type& login);
@@ -109,8 +107,7 @@ namespace celeritas
         player_state_type player_state_;
         component_container_type components_;
         resource_loader_weak_ptr resource_loader_;
-        io_context_type& io_context_;
         std::string instance_id_;
-        boost::asio::strand<boost::asio::io_context::executor_type> strand_;
+        any_io_executor strand_;
     };
 }

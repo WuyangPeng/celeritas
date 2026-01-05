@@ -20,7 +20,7 @@ void celeritas::gateway_login::send_error_message(game_error_type game_error_typ
     proto::celeritas response{};
     response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_login()->mutable_login();
 
-    protobuf_handle_parameter_->write(header{ protobuf_handle_parameter_->get_rpc(), static_cast<int>(game_error_type) }, response);
+    protobuf_handle_parameter_->write_to_response(header{ protobuf_handle_parameter_->get_rpc(), static_cast<int>(game_error_type) }, response);
 }
 
 void celeritas::gateway_login::write_to_server(const session_token& session_token, const std::string& instance_id, const bool new_game_server_id) const

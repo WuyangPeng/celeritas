@@ -76,7 +76,7 @@ void celeritas::initializer::call_back(const message_header& message_header, buf
         return;
     }
 
-    if (!application_loader_->dispatch(io_context_, header, *request, request, session, resource_loader_))
+    if (!application_loader_->dispatch(header, *request, request, session, resource_loader_))
     {
         LOG_CHANNEL(initializer_channel, error) << "Failed to dispatch celeritas message.";
     }
@@ -84,7 +84,7 @@ void celeritas::initializer::call_back(const message_header& message_header, buf
 
 void celeritas::initializer::call_back(const std::string& path, const urls_params_view_type& params, const session_shared_ptr& session)
 {
-    if (!application_loader_->dispatch(io_context_, path, params, session, resource_loader_))
+    if (!application_loader_->dispatch(path, params, session, resource_loader_))
     {
         LOG_CHANNEL(initializer_channel, warning) << "Failed to dispatch http message.";
     }
@@ -92,7 +92,7 @@ void celeritas::initializer::call_back(const std::string& path, const urls_param
 
 void celeritas::initializer::call_back(const std::string& path, const std::string& params, const session_shared_ptr& session)
 {
-    if (!application_loader_->dispatch(io_context_, path, params, session, resource_loader_))
+    if (!application_loader_->dispatch(path, params, session, resource_loader_))
     {
         LOG_CHANNEL(initializer_channel, warning) << "Failed to dispatch http message.";
     }
@@ -193,7 +193,8 @@ void celeritas::initializer::setup_signal_handler()
         [this](const boost::system::error_code& error, const int signal_number) {
             if (!error)
             {
-                LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop! signal_number = " << signal_number << ",error = " << error.message();
+                LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop! signal_number = " <<
+                        signal_number << ",error = " << error.message();
 
                 stop();
             }

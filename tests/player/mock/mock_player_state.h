@@ -10,6 +10,6 @@ namespace celeritas
         using class_type = mock_player_state;
         using base_type = player_state;
 
-        explicit mock_player_state(io_context_type& io_context);
+        explicit mock_player_state(const any_io_executor& any_io_executor);
     };
 }

@@ -21,7 +21,7 @@ namespace
               mock_pool_{ std::make_shared<celeritas::mock_database_pool>() },
               // 使用一个有效的构造函数来创建 user 对象
               test_user_{ celeritas::database_type::mysql, 12345 },
-              mock_player_state_{ io_context_ }
+              mock_player_state_{ boost::asio::make_strand(io_context_) }
         {
             celeritas::database_pool_manager::get_instance().set_mock_pool(mock_pool_);
         }

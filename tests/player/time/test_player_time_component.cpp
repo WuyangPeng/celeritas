@@ -17,7 +17,7 @@ namespace
     {
         player_time_component_fixture()
             : io_context_{},
-              mock_player_state_{ io_context_ },
+              mock_player_state_{ boost::asio::make_strand(io_context_) },
               mock_pool_{ std::make_shared<celeritas::mock_database_pool>() },
               component_{ std::make_shared<celeritas::player_time_component>(&mock_player_state_) },
               mock_player_component_{ std::make_shared<celeritas::mock_player_component>(&mock_player_state_) }

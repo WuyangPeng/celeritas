@@ -10,6 +10,8 @@ namespace celeritas
     class mock_session final : public session
     {
     public:
+        explicit mock_session(const any_io_executor& any_io_executor);
+
         void stop() override;
 
         void write(const header& header, const protobuf_message_type& response) override;
@@ -36,5 +38,6 @@ namespace celeritas
         int64_t session_id_ = 1;
         std::string instance_id_;
         header last_header_;
+        any_io_executor any_io_executor_;
     };
 }

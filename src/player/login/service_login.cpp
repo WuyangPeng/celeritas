@@ -41,7 +41,7 @@ celeritas::service_login::int64_awaitable_type celeritas::service_login::send_me
 
     LOG_CHANNEL(player_channel, debug) << "login add player = " << login_.account_id() << ",bind id = " << login_.account_bind_id();
 
-    const auto player = player_manager::get_instance().add_player(*user, protobuf_handle_parameter_->get_resource_loader(), protobuf_handle_parameter_->get_io_context(), protobuf_handle_parameter_->get_instance_id(), login_);
+    const auto player = player_manager::get_instance().add_player(*user, protobuf_handle_parameter_->get_resource_loader(), protobuf_handle_parameter_->get_any_io_executor(), protobuf_handle_parameter_->get_instance_id(), login_);
 
     send_success_message(user->get_user_id());
 
@@ -57,7 +57,7 @@ void celeritas::service_login::send_error_message(game_error_type game_error_typ
     proto::celeritas response{};
     response.mutable_celeritas_response()->mutable_service()->mutable_player()->mutable_service_login();
 
-    protobuf_handle_parameter_->write(header, response);
+    protobuf_handle_parameter_->write_to_response(header, response);
 }
 
 void celeritas::service_login::send_success_message(const int64_t user_id) const
@@ -71,7 +71,7 @@ void celeritas::service_login::send_success_message(const int64_t user_id) const
     login->set_protocol(login_.protocol());
     login->set_instance_id(protobuf_handle_parameter_->get_app_config()->get_server_config()->get_instance_id());
 
-    protobuf_handle_parameter_->write(header, response);
+    protobuf_handle_parameter_->write_to_response(header, response);
 }
 
 celeritas::service_login::optional_user_awaitable_type celeritas::service_login::get_user() const

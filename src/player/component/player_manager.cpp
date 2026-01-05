@@ -19,7 +19,7 @@ celeritas::player_manager& celeritas::player_manager::get_instance()
 
 celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::add_player(const user& user,
                                                                                          const resource_loader_shared_ptr& resource_loader,
-                                                                                         io_context_type& io_context,
+                                                                                         const any_io_executor& any_io_executor,
                                                                                          const std::string& instance_id,
                                                                                          const service_login_request_type& login)
 {
@@ -43,7 +43,7 @@ celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::ad
         }
     }
 
-    return container_.emplace(user.get_user_id(), std::make_shared<player_state>(user, resource_loader, io_context, instance_id, login)).first->second;
+    return container_.emplace(user.get_user_id(), std::make_shared<player_state>(user, resource_loader, any_io_executor, instance_id, login)).first->second;
 }
 
 celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::get_player(const int64_t user_id)
