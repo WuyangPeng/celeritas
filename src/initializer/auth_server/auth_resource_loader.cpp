@@ -15,7 +15,7 @@
 #include <boost/polymorphic_pointer_cast.hpp>
 
 celeritas::auth_resource_loader::auth_resource_loader(const std::string_view server_type,
-                                                      app_config_shared_ptr app_config)
+                                                      const_app_config_shared_ptr app_config)
     : base_type{ server_type, std::move(app_config) }, gateway_check_timer_{}, health_check_timer_{}
 {
 }

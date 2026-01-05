@@ -18,7 +18,7 @@ namespace celeritas
         using class_type = resource_loader_base;
         using io_context_type = boost::asio::io_context;
         using protobuf_message = google::protobuf::Message;
-        using app_config_shared_ptr = std::shared_ptr<app_config>;
+        using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
         using health_check_level_awaitable_type = boost::asio::awaitable<health_check_level_type>;
         using service_info_container = std::map<std::string, service_info>;
         using any_io_executor = boost::asio::any_io_executor;
@@ -41,7 +41,7 @@ namespace celeritas
 
         virtual void process_service_registry_by_duration() = 0;
 
-        [[nodiscard]] virtual app_config_shared_ptr get_app_config() const = 0;
+        [[nodiscard]] virtual const_app_config_shared_ptr get_app_config() const = 0;
 
         [[nodiscard]] virtual health_check_level_awaitable_type get_health_check_level() = 0;
 

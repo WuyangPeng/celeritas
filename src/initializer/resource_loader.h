@@ -18,11 +18,10 @@ namespace celeritas
     public:
         using class_type = resource_loader;
         using base_type = resource_loader_base;
-        using app_config_shared_ptr = std::shared_ptr<app_config>;
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
         using health_check_level_awaitable_type = boost::asio::awaitable<health_check_level_type>;
 
-        explicit resource_loader(std::string_view server_type, app_config_shared_ptr app_config);
+        explicit resource_loader(std::string_view server_type, const_app_config_shared_ptr app_config);
 
         ~resource_loader() noexcept override = default;
 
@@ -60,7 +59,7 @@ namespace celeritas
 
         void process_service_registry_by_duration() override;
 
-        [[nodiscard]] app_config_shared_ptr get_app_config() const override;
+        [[nodiscard]] const_app_config_shared_ptr get_app_config() const override;
 
         [[nodiscard]] health_check_level_awaitable_type get_health_check_level() override;
 
@@ -122,7 +121,7 @@ namespace celeritas
 
         void send_service_heartbeat();
 
-        app_config_shared_ptr app_config_;
+        const_app_config_shared_ptr app_config_;
         listener_container_type listener_;
         tcp_client_container_type tcp_clients_;
         bool is_service_registry_;

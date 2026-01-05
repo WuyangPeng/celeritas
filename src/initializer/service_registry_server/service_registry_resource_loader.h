@@ -11,7 +11,7 @@ namespace celeritas
         using class_type = service_registry_resource_loader;
         using base_type = resource_loader;
 
-        explicit service_registry_resource_loader(std::string_view server_type, app_config_shared_ptr app_config);
+        explicit service_registry_resource_loader(std::string_view server_type, const_app_config_shared_ptr app_config);
 
         void send_health_check(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback);
 

@@ -23,7 +23,7 @@
 
 #include <ranges>
 
-celeritas::resource_loader::resource_loader(const std::string_view server_type, app_config_shared_ptr app_config)
+celeritas::resource_loader::resource_loader(const std::string_view server_type, const_app_config_shared_ptr app_config)
     : app_config_{ std::move(app_config) },
       listener_{},
       tcp_clients_{},
@@ -263,7 +263,7 @@ void celeritas::resource_loader::process_service_registry_by_duration()
     send_service_heartbeat();
 }
 
-celeritas::resource_loader::app_config_shared_ptr celeritas::resource_loader::get_app_config() const
+celeritas::resource_loader::const_app_config_shared_ptr celeritas::resource_loader::get_app_config() const
 {
     return app_config_;
 }

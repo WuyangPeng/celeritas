@@ -12,7 +12,7 @@ namespace celeritas
         using class_type = player_resource_loader;
         using base_type = resource_loader;
 
-        explicit player_resource_loader(std::string_view server_type, app_config_shared_ptr app_config);
+        explicit player_resource_loader(std::string_view server_type, const_app_config_shared_ptr app_config);
 
     private:
         using player_state_check_timer_shared_ptr = std::shared_ptr<player_state_check_timer>;

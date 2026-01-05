@@ -1,6 +1,6 @@
 ﻿#include "battle_resource_loader.h"
 
-celeritas::battle_resource_loader::battle_resource_loader(const std::string_view server_type, app_config_shared_ptr app_config)
+celeritas::battle_resource_loader::battle_resource_loader(const std::string_view server_type, const_app_config_shared_ptr app_config)
     : base_type{ server_type, std::move(app_config) }
 {
 }

@@ -10,7 +10,7 @@ namespace celeritas
         using class_type = game_resource_loader;
         using base_type = resource_loader;
 
-        explicit game_resource_loader(std::string_view server_type, app_config_shared_ptr app_config);
+        explicit game_resource_loader(std::string_view server_type, const_app_config_shared_ptr app_config);
 
     private:
         void service_initialize_resource(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback) override;

@@ -20,7 +20,7 @@ namespace celeritas
 
         void process_service_registry_by_duration() override;
 
-        [[nodiscard]] app_config_shared_ptr get_app_config() const override;
+        [[nodiscard]] const_app_config_shared_ptr get_app_config() const override;
 
         [[nodiscard]] health_check_level_awaitable_type get_health_check_level() override;
 
@@ -37,6 +37,6 @@ namespace celeritas
         void check_client(const any_io_executor& any_io_executor, const std::string& server_type, const service_info_container& container) override;
 
     private:
-        app_config_shared_ptr app_config_;
+        const_app_config_shared_ptr app_config_;
     };
 }

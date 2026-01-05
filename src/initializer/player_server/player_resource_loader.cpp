@@ -5,7 +5,7 @@
 
 #include <chrono>
 
-celeritas::player_resource_loader::player_resource_loader(const std::string_view server_type, app_config_shared_ptr app_config)
+celeritas::player_resource_loader::player_resource_loader(const std::string_view server_type, const_app_config_shared_ptr app_config)
     : base_type{ server_type, std::move(app_config) }, player_state_check_timer_{}, player_default_timer_{}
 {
 }

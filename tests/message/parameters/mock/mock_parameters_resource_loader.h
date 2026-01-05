@@ -4,13 +4,13 @@
 
 namespace celeritas
 {
-    class mock_framework_resource_loader final : public resource_loader_base
+    class mock_parameters_resource_loader final : public resource_loader_base
     {
     public:
-        using class_type = mock_framework_resource_loader;
+        using class_type = mock_parameters_resource_loader;
         using base_type = resource_loader_base;
 
-        mock_framework_resource_loader();
+        mock_parameters_resource_loader();
 
         [[nodiscard]] std::string_view get_server_type() const override;
 
@@ -33,5 +33,10 @@ namespace celeritas
         void add_session_route(int64_t user_id, session_route session_route) override;
 
         void check_client(const any_io_executor& any_io_executor, const std::string& server_type, const service_info_container& container) override;
+
+    private:
+        [[nodiscard]] static const_app_config_shared_ptr create_app_config();
+
+        const_app_config_shared_ptr app_config_;
     };
 }

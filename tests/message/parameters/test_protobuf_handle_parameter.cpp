@@ -1,11 +1,11 @@
 ﻿#include "common/core/celeritas_error.h"
 #include "common/core/session_route.h"
-#include "common/framework/mock/mock_framework_application_loader.h"
-#include "common/framework/mock/mock_framework_resource_loader.h"
-#include "common/framework/mock/mock_framework_session.h"
 #include "config/basic/server_network_type.h"
 #include "message/basic/header.h"
 #include "message/parameters/protobuf_handle_parameter.h"
+#include "mock/mock_parameters_application_loader.h"
+#include "mock/mock_parameters_resource_loader.h"
+#include "mock/mock_parameters_session.h"
 
 #include <boost/test/unit_test.hpp>
 #include <google/protobuf/any.pb.h>
@@ -25,9 +25,9 @@ BOOST_AUTO_TEST_SUITE(protobuf_handle_parameter_suite)
     BOOST_AUTO_TEST_CASE(test_protobuf_handle_parameter_with_mocks)
     {
         const celeritas::header header{ 123, 456 };
-        const auto session = std::make_shared<celeritas::mock_framework_session>();
-        const auto resource_loader = std::make_shared<celeritas::mock_framework_resource_loader>();
-        const auto application_loader = std::make_shared<celeritas::mock_framework_application_loader>();
+        const auto session = std::make_shared<celeritas::mock_parameters_session>();
+        const auto resource_loader = std::make_shared<celeritas::mock_parameters_resource_loader>();
+        const auto application_loader = std::make_shared<celeritas::mock_parameters_application_loader>();
         const auto message = std::make_shared<google::protobuf::Any>();
 
         const auto parameter = std::make_shared<celeritas::protobuf_handle_parameter>(header, message, session, resource_loader, application_loader);

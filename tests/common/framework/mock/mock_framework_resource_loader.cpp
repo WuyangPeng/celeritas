@@ -19,7 +19,7 @@ void celeritas::mock_framework_resource_loader::process_service_registry_by_dura
 {
 }
 
-celeritas::resource_loader_base::app_config_shared_ptr celeritas::mock_framework_resource_loader::get_app_config() const
+celeritas::resource_loader_base::const_app_config_shared_ptr celeritas::mock_framework_resource_loader::get_app_config() const
 {
     return nullptr;
 }

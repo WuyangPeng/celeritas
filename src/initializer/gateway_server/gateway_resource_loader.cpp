@@ -8,7 +8,7 @@
 
 #include <boost/polymorphic_pointer_cast.hpp>
 
-celeritas::gateway_resource_loader::gateway_resource_loader(const std::string_view server_type, app_config_shared_ptr app_config)
+celeritas::gateway_resource_loader::gateway_resource_loader(const std::string_view server_type, const_app_config_shared_ptr app_config)
     : base_type{ server_type, std::move(app_config) }, player_check_timer_{}
 {
 }

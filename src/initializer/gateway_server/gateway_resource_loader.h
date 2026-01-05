@@ -11,7 +11,7 @@ namespace celeritas
         using class_type = gateway_resource_loader;
         using base_type = resource_loader;
 
-        explicit gateway_resource_loader(std::string_view server_type, app_config_shared_ptr app_config);
+        explicit gateway_resource_loader(std::string_view server_type, const_app_config_shared_ptr app_config);
 
         void send_player_check();
 
