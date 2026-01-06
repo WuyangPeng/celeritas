@@ -2,7 +2,7 @@
 #include "player_item_internal_fwd.h"
 #include "common/core/time_helper.h"
 #include "config/basic/database_type.h"
-#include "database/database_pool_base.h"
+#include "database/pool/database_pool_base.h"
 #include "player/component/player_state.h"
 #include "player/item/player_item_component.h"
 #include "player/user/player_user_component.h"

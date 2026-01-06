@@ -1,9 +1,9 @@
 ﻿#include "connection_pool.tpp"
 #include "database_pool_manager.h"
-#include "mongo_database_session.h"
-#include "mysql_database_session.h"
-#include "redis_database_session.h"
-#include "../common/core/celeritas_error.h"
+#include "database/session/mongo_database_session.h"
+#include "database/session/mysql_database_session.h"
+#include "database/session/redis_database_session.h"
+#include "common/core/celeritas_error.h"
 
 #include <ranges>
 

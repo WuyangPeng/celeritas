@@ -6,7 +6,7 @@
 #include "config/game/game_config.h"
 #include "config/local/service_registry_config.h"
 #include "config/luban/generated/schema.h"
-#include "database/database_pool_manager.h"
+#include "database/pool/database_pool_manager.h"
 #include "detail/buffer_pool_timer.h"
 #include "detail/check_tcp_clients_timer.h"
 #include "detail/database_resource_loader.h"

@@ -5,7 +5,7 @@
 #include "common/core/snowflake_generator.h"
 #include "common/core/time_helper.h"
 #include "config/aggregate/app_config.h"
-#include "database/database_pool_base.h"
+#include "database/pool/database_pool_base.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "initializer/account_status_type.h"
 

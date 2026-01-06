@@ -2,7 +2,7 @@
 #include "auth/core/app_status_type.h"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
-#include "database/database_pool_manager.h"
+#include "database/pool/database_pool_manager.h"
 
 celeritas::app_secret& celeritas::app_secret::get_instance()
 {

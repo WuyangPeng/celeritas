@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "database_data_type.h"
-#include "database_fwd.h"
+#include "database/database_fwd.h"
 
 #include <boost/call_traits.hpp>
 

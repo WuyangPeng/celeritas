@@ -7,7 +7,7 @@
 #include "config/game/container_config.tpp"
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
-#include "database/basis_database.tpp"
+#include "database/basic/basis_database.tpp"
 
 #include <ranges>
 

@@ -1,5 +1,5 @@
 ﻿#include "redis_string_commands.h"
-#include "../common/core/celeritas_error.h"
+#include "common/core/celeritas_error.h"
 
 celeritas::redis_string_commands::redis_string_commands(redis_database_session& session) noexcept
     : base_type{ session }

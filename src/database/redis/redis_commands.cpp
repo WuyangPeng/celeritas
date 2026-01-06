@@ -1,5 +1,5 @@
 ﻿#include "redis_commands.h"
-#include "redis_database_session.h"
+#include "database/session/redis_database_session.h"
 
 celeritas::redis_commands::redis_commands(redis_database_session& session) noexcept
     : session_{ session }

@@ -6,7 +6,7 @@
 #include "common/logging/logger.h"
 #include "common/core/snowflake_generator.h"
 #include "config/aggregate/app_config.h"
-#include "database/database_pool_manager.h"
+#include "database/pool/database_pool_manager.h"
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "initializer/account_type.h"

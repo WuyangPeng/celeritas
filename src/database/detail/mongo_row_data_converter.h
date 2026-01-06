@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "database/basis_database.h"
-#include "database/database_field.h"
+#include "database/basic/basis_database.h"
+#include "database/basic/database_field.h"
 
 #include <bsoncxx/builder/basic/document.hpp>
 #include <bsoncxx/document/element.hpp>

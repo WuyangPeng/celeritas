@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "config/config_fwd.h"
-#include "database/database_data_type_traits.h"
+#include "database/basic/database_data_type_traits.h"
 #include "database/document/develop_data.h"
 #include "message/message_fwd.h"
 #include "player/develop/develop_data_key.h"

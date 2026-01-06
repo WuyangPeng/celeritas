@@ -5,7 +5,7 @@
 #include "auth/detail/phone/send_sms_parameter.h"
 #include "auth/detail/phone/send_sms_to_providers.h"
 #include "common/core/random_helper.h"
-#include "database/database_pool_manager.h"
+#include "database/pool/database_pool_manager.h"
 #include "database/generated/redis/auth/sms_code.h"
 #include "database/generated/redis/auth/sms_limit.h"
 #include "message/basic/game_error_type.h"

@@ -2,7 +2,7 @@
 
 #include "auth/auth_fwd.h"
 #include "auth/core/auth_login.h"
-#include "database/database_pool_base.h"
+#include "database/pool/database_pool_base.h"
 #include "database/generated/mysql/auth/account.h"
 #include "message/parameters/http_handle_parameter.h"
 

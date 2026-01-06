@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "database/database_pool_base.h"
+#include "database/pool/database_pool_base.h"
 
 namespace celeritas
 {

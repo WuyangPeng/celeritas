@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "basis_database_container.h"
-#include "database_entity_change.h"
+#include "database/basic/basis_database_container.h"
+#include "database/basic/database_entity_change.h"
 #include "config/config_fwd.h"
 
 namespace celeritas

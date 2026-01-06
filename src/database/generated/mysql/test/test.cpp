@@ -2,10 +2,10 @@
 
 #include "test.h"
 #include "config/basic/database_type.h"
-#include "database/database_change_type.h"
-#include "database/database_entity_change.tpp"
-#include "database/database_entity.tpp"
-#include "database/entity.tpp"
+#include "database/basic/database_change_type.h"
+#include "database/basic/database_entity_change.tpp"
+#include "database/entity/database_entity.tpp"
+#include "database/entity/entity.tpp"
 
 celeritas::test::test(const database_entity_change& entity)
     : base_type{ entity },

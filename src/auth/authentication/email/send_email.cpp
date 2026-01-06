@@ -6,7 +6,7 @@
 #include "auth/detail/email/send_email_parameter.h"
 #include "auth/detail/email/send_email_to_providers.h"
 #include "common/core/random_helper.h"
-#include "database/database_pool_manager.h"
+#include "database/pool/database_pool_manager.h"
 #include "database/generated/redis/auth/email_code.h"
 #include "database/generated/redis/auth/email_limit.h"
 #include "message/basic/game_error_type.h"

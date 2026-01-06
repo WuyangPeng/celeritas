@@ -5,7 +5,7 @@
 #include "common/core/time_helper.h"
 #include "config/aggregate/app_config.h"
 #include "database/database_fwd.h"
-#include "database/database_pool_manager.h"
+#include "database/pool/database_pool_manager.h"
 #include "database/generated/mysql/player/user.h"
 #include "message/basic/game_error_type.h"
 #include "message/parameters/protobuf_handle_parameter.h"

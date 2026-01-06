@@ -2,7 +2,7 @@
 #include "common/core/hmac_sha_256.h"
 #include "common/core/snowflake_generator.h"
 #include "config/aggregate/app_config.h"
-#include "database/database_pool_base.h"
+#include "database/pool/database_pool_base.h"
 #include "database/generated/mysql/auth/account_bind.h"
 
 celeritas::auth_bind::auth_bind(http_handle_parameter_shared_ptr handle_parameter)

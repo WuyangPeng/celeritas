@@ -1,12 +1,12 @@
-﻿#include "basis_database.tpp"
-#include "database_change_type.h"
-#include "database_entity_change.h"
+﻿#include "database/basic/basis_database.tpp"
+#include "database/basic/database_change_type.h"
+#include "database/basic/database_entity_change.h"
 #include "mysql_database_session.h"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
 #include "common/core/noexcept_safe_call_and_log.h"
-#include "detail/mysql_row_data_converter.h"
-#include "detail/mysql_statement_generator.h"
+#include "database/detail/mysql_row_data_converter.h"
+#include "database/detail/mysql_statement_generator.h"
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/classification.hpp>

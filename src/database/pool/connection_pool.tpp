@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "connection_pool.h"
-#include "database_entity_change.h"
+#include "database/basic/database_entity_change.h"
 #include "database_session_guard.tpp"
 #include "common/logging/logger.h"
 

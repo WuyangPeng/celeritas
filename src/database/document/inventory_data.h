@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "custom_data.h"
-#include "database/database_data_type_traits.h"
+#include "database/basic/database_data_type_traits.h"
 
 #include <cstdint>
 #include <string>

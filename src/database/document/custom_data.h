@@ -2,7 +2,7 @@
 
 #include "consumable_data.h"
 #include "equipment_data.h"
-#include "database/database_data_type_traits.h"
+#include "database/basic/database_data_type_traits.h"
 
 #include <bsoncxx/builder/basic/document.hpp>
 #include <variant>

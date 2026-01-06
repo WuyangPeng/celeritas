@@ -1,5 +1,5 @@
 ﻿#include "cleanup_database_session_timer.h"
-#include "database/database_pool_base.h"
+#include "database/pool/database_pool_base.h"
 
 celeritas::cleanup_database_session_timer::cleanup_database_session_timer(const any_io_executor& any_io_executor, const duration_type interval, database_pool_weak_ptr database_pool)
     : base_type{ any_io_executor, interval }, database_pool_{ std::move(database_pool) }

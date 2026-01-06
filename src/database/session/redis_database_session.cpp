@@ -1,12 +1,12 @@
-﻿#include "basis_database.tpp"
-#include "database_change_type.h"
-#include "database_entity_change.h"
-#include "database_field.h"
+﻿#include "database/basic/basis_database.tpp"
+#include "database/basic/database_change_type.h"
+#include "database/basic/database_entity_change.h"
+#include "database/basic/database_field.h"
 #include "redis_database_session.h"
 #include "common/core/celeritas_error.h"
 #include "common/common_fwd.h"
 #include "common/logging/logger.h"
-#include "detail/redis_key_data_converter.h"
+#include "database/detail/redis_key_data_converter.h"
 
 using namespace std::literals;
 

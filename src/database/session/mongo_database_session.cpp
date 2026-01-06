@@ -1,11 +1,11 @@
-#include "basis_database.tpp"
-#include "database_change_type.h"
-#include "database_data_type.h"
-#include "database_entity_change.h"
+#include "database/basic/basis_database.tpp"
+#include "database/basic/database_change_type.h"
+#include "database/basic/database_data_type.h"
+#include "database/basic/database_entity_change.h"
 #include "mongo_database_session.h"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
-#include "detail/mongo_row_data_converter.h"
+#include "database/detail/mongo_row_data_converter.h"
 
 #include <boost/asio/use_awaitable.hpp>
 #include <mongocxx/exception/operation_exception.hpp>

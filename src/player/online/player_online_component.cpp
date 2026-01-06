@@ -1,6 +1,6 @@
 ﻿#include "player_online_component.h"
 #include "common/core/time_helper.h"
-#include "database/database_pool_manager.h"
+#include "database/pool/database_pool_manager.h"
 #include "player/component/player_state.h"
 
 celeritas::player_online_component::player_online_component(player_state* player_state) noexcept

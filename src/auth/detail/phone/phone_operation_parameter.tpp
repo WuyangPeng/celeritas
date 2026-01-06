@@ -2,7 +2,7 @@
 
 #include "phone_operation_parameter.h"
 #include "auth/core/auth_service_base.h"
-#include "database/database_pool_base.h"
+#include "database/pool/database_pool_base.h"
 
 template <typename ResponseType>
 celeritas::phone_operation_parameter::optional_sms_code_awaitable_type celeritas::phone_operation_parameter::check_code(const database_pool_shared_ptr& redis_pool, auth_service_base& auth_service_base) const

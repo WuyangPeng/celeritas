@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "database/database_data_type_traits.h"
+#include "database/basic/database_data_type_traits.h"
 #include "database/document/red_dots.h"
 
 #include <map>

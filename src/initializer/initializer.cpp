@@ -4,7 +4,7 @@
 #include "common/core/celeritas_error.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
-#include "database/database_pool_manager.h"
+#include "database/pool/database_pool_manager.h"
 #include "message/basic/header.h"
 #include "network/message_header.h"
 #include "player/component/player_manager.h"

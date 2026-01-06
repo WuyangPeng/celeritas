@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "redis_context.h"
-#include "database/scan_result.h"
+#include "database/redis/scan_result.h"
 
 #include <map>
 #include <optional>

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "database_fwd.h"
+#include "database/database_fwd.h"
 #include "database_index_type.h"
 
 namespace celeritas

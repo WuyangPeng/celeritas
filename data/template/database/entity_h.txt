@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include "database/database_data_type_traits.h"
-#include "database/database_entity.h"
-#include "database/database_entity_change.h"
-#include "database/database_index_type.h"
-#include "database/entity.h"
+#include "database/basic/database_data_type_traits.h"
+#include "database/basic/database_entity_change.h"
+#include "database/basic/database_index_type.h"
+#include "database/entity/database_entity.h"
+#include "database/entity/entity.h"
 
 namespace celeritas
 {

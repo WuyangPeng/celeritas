@@ -1,5 +1,5 @@
 ﻿#include "inventory_data.h"
-#include "database/basis_database.tpp"
+#include "database/basic/basis_database.tpp"
 
 #include <bsoncxx/json.hpp>
 #include <bsoncxx/builder/basic/array.hpp>

@@ -1,6 +1,6 @@
 ﻿#include "redis_sorted_set_commands.h"
 #include "sorted_set_member_score.h"
-#include "../common/core/celeritas_error.h"
+#include "common/core/celeritas_error.h"
 
 #include <string>
 

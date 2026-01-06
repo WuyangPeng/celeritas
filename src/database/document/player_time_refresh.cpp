@@ -2,7 +2,7 @@
 #include "common/common_constant.h"
 #include "common/core/enum_cast.h"
 #include "common/core/time_helper.h"
-#include "database/basis_database.tpp"
+#include "database/basic/basis_database.tpp"
 #include "player/time/time_refresh_type.h"
 
 celeritas::player_time_refresh::player_time_refresh() noexcept

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "database/basis_database.h"
-#include "database/database_entity_change.h"
+#include "database/basic/basis_database.h"
+#include "database/basic/database_entity_change.h"
 
 #include <memory>
 #include <string>

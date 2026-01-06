@@ -1,6 +1,6 @@
 ﻿#include "database_attribute.h"
-#include "../../common/core/celeritas_error.h"
-#include "database/entity.h"
+#include "common/core/celeritas_error.h"
+#include "database/entity/entity.h"
 
 celeritas::database_attribute::database_attribute()
     : class_name_{},

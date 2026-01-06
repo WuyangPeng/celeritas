@@ -1,6 +1,6 @@
 ﻿#include "config_manager.h"
 #include "common/logging/logger.h"
-#include "database/database_pool_manager.h"
+#include "database/pool/database_pool_manager.h"
 #include "database/generated/mysql/player/user.h"
 
 celeritas::config_manager& celeritas::config_manager::get_instance()

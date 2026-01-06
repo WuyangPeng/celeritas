@@ -1,8 +1,8 @@
 ﻿#include "redis_key_data_converter.tpp"
 #include "common/core/celeritas_error.h"
-#include "database/basis_database.tpp"
-#include "database/database_data_type.h"
-#include "database/database_field.h"
+#include "database/basic/basis_database.tpp"
+#include "database/basic/database_data_type.h"
+#include "database/basic/database_field.h"
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/classification.hpp>

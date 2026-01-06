@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "database_fwd.h"
+#include "database/database_fwd.h"
 #include "scan_result.h"
 
 #include <boost/asio/awaitable.hpp>

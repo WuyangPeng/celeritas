@@ -2,7 +2,7 @@
 #include "config/game/container_config.tpp"
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
-#include "database/database_pool_manager.h"
+#include "database/pool/database_pool_manager.h"
 #include "player/item/player_item_component.h"
 #include "player/mock/mock_database_pool.h"
 #include "player/mock/mock_player_state.h"

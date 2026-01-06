@@ -2,7 +2,7 @@
 
 #include "config/config_fwd.h"
 #include "config/luban/generated/schema.h"
-#include "database/database_data_type_traits.h"
+#include "database/basic/database_data_type_traits.h"
 
 #include <cstdint>
 #include <string>

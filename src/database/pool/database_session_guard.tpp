@@ -2,7 +2,7 @@
 
 #include "database_session_guard.h"
 #include "common/common_fwd.h"
-#include "../common/core/noexcept_safe_call_and_log.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 
 template <typename SessionType>
 celeritas::database_session_guard<SessionType>::database_session_guard(const session_shared_ptr& session, const connection_pool_shared_ptr& pool)

@@ -5,7 +5,7 @@
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
 #include "config/luban/generated/schema.h"
-#include "database/database_pool_base.h"
+#include "database/pool/database_pool_base.h"
 #include "database/generated/mongo/auth/user_server_roles.h"
 #include "initializer/initializer_constant.h"
 #include "initializer/initializer_fwd.h"

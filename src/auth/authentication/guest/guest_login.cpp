@@ -4,7 +4,7 @@
 #include "auth/detail/guest/guest_login_parameter.h"
 #include "common/core/celeritas_error.h"
 #include "config/aggregate/app_config.h"
-#include "database/database_pool_manager.h"
+#include "database/pool/database_pool_manager.h"
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/redis/auth/session_token.h"
 #include "message/basic/game_error_type.h"

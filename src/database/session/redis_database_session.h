@@ -1,16 +1,16 @@
 ﻿#pragma once
 
 #include "database_session.h"
-#include "redis_hash_commands.h"
-#include "redis_key_commands.h"
-#include "redis_list_commands.h"
-#include "redis_set_commands.h"
-#include "redis_sorted_set_commands.h"
-#include "redis_string_commands.h"
-#include "scan_result.h"
-#include "detail/redis_context.h"
-#include "detail/redis_parameter.h"
-#include "detail/redis_reply.h"
+#include "database/redis/redis_hash_commands.h"
+#include "database/redis/redis_key_commands.h"
+#include "database/redis/redis_list_commands.h"
+#include "database/redis/redis_set_commands.h"
+#include "database/redis/redis_sorted_set_commands.h"
+#include "database/redis/redis_string_commands.h"
+#include "database/redis/scan_result.h"
+#include "database/detail/redis_context.h"
+#include "database/detail/redis_parameter.h"
+#include "database/detail/redis_reply.h"
 
 #include <boost/asio.hpp>
 #include <boost/asio/awaitable.hpp>

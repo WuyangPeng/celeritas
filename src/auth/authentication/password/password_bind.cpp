@@ -4,7 +4,7 @@
 #include "auth/data/app_secret.h"
 #include "auth/detail/password/password_bind_parameter.h"
 #include "config/aggregate/app_config.h"
-#include "database/database_pool_manager.h"
+#include "database/pool/database_pool_manager.h"
 #include "initializer/account_type.h"
 #include "message/basic/game_error_type.h"
 

@@ -1,6 +1,6 @@
 ﻿#include "consumable_data.h"
 #include "common/core/celeritas_error.h"
-#include "database/basis_database.tpp"
+#include "database/basic/basis_database.tpp"
 
 #include <bsoncxx/types.hpp>
 #include <bsoncxx/builder/basic/kvp.hpp>

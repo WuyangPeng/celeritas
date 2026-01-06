@@ -1,7 +1,7 @@
 #include "mysql_row_data_converter.tpp"
-#include "database/basis_database.tpp"
-#include "database/database_data_type.h"
-#include "database/database_field.h"
+#include "database/basic/basis_database.tpp"
+#include "database/basic/database_data_type.h"
+#include "database/basic/database_field.h"
 
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
