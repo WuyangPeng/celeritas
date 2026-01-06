@@ -40,6 +40,6 @@ namespace celeritas
         mock_parameters_session_shared_ptr session_;
         mock_parameters_resource_loader_shared_ptr resource_loader_;
         mock_parameters_application_loader_shared_ptr application_loader_;
-        std::shared_ptr<protobuf_handle_parameter> parameter_;
+        protobuf_handle_parameter_shared_ptr parameter_;
     };
 }

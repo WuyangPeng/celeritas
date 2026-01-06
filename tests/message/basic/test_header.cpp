@@ -151,48 +151,58 @@ BOOST_AUTO_TEST_SUITE(header_suite)
 
     BOOST_AUTO_TEST_CASE(test_header_server_message_constructor)
     {
+        constexpr auto user_id = 666;
+
         celeritas::header::server_message_header_type server_header{};
-        server_header.set_user_id(666);
+        server_header.set_user_id(user_id);
 
         const celeritas::header header{ server_header };
         BOOST_CHECK_EQUAL(header.get_rpc(), 0);
-        BOOST_CHECK_EQUAL(header.get_user_id(), 666);
+        BOOST_CHECK_EQUAL(header.get_user_id(), user_id);
         BOOST_CHECK(header.get_code() == celeritas::game_error_type::unknown);
     }
 
     BOOST_AUTO_TEST_CASE(test_header_client_message_constructor)
     {
+        constexpr auto rpc = 600;
+
         celeritas::header::client_message_header_type client_header{};
-        client_header.set_rpc(600);
+        client_header.set_rpc(rpc);
 
         const celeritas::header header{ client_header };
-        BOOST_CHECK_EQUAL(header.get_rpc(), 600);
+        BOOST_CHECK_EQUAL(header.get_rpc(), rpc);
         BOOST_CHECK_EQUAL(header.get_user_id(), 0);
         BOOST_CHECK(header.get_code() == celeritas::game_error_type::unknown);
     }
 
     BOOST_AUTO_TEST_CASE(test_header_gateway_message_constructor)
     {
+        constexpr auto rpc = 700;
+        constexpr auto user_id = 888;
+
         celeritas::header::gateway_message_header_type gateway_header{};
-        gateway_header.set_rpc(700);
-        gateway_header.set_user_id(888);
+        gateway_header.set_rpc(rpc);
+        gateway_header.set_user_id(user_id);
 
         const celeritas::header header{ gateway_header };
-        BOOST_CHECK_EQUAL(header.get_rpc(), 700);
-        BOOST_CHECK_EQUAL(header.get_user_id(), 888);
+        BOOST_CHECK_EQUAL(header.get_rpc(), rpc);
+        BOOST_CHECK_EQUAL(header.get_user_id(), user_id);
         BOOST_CHECK(header.get_code() == celeritas::game_error_type::unknown);
     }
 
     BOOST_AUTO_TEST_CASE(test_header_to_gateway_message_constructor)
     {
+        constexpr auto rpc = 800;
+        constexpr auto user_id = 999;
+
         celeritas::header::to_gateway_message_header_type to_gateway_header{};
-        to_gateway_header.set_rpc(800);
-        to_gateway_header.set_user_id(999);
-        to_gateway_header.set_code(static_cast<int32_t>(celeritas::game_error_type::success));
+        to_gateway_header.set_rpc(rpc);
+        to_gateway_header.set_user_id(user_id);
+        to_gateway_header.set_code(enum_cast_underlying(celeritas::game_error_type::success));
 
         const celeritas::header header{ to_gateway_header };
-        BOOST_CHECK_EQUAL(header.get_rpc(), 800);
-        BOOST_CHECK_EQUAL(header.get_user_id(), 999);
+        BOOST_CHECK_EQUAL(header.get_rpc(), rpc);
+        BOOST_CHECK_EQUAL(header.get_user_id(), user_id);
         BOOST_CHECK(header.get_code() == celeritas::game_error_type::success);
     }
 

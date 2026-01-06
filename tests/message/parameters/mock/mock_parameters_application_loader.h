@@ -15,6 +15,6 @@ namespace celeritas
         [[nodiscard]] bool get_task_submitted() const;
 
     private:
-        std::atomic<bool> task_submitted_{ false };
+        std::atomic_bool task_submitted_{ false };
     };
 }
