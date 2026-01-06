@@ -10,10 +10,6 @@ void celeritas::mock_framework_session::write(const header& header, const protob
 {
 }
 
-void celeritas::mock_framework_session::write(const std::string& response)
-{
-}
-
 celeritas::session::void_awaitable_type celeritas::mock_framework_session::write_immediately(const std::string& response)
 {
     co_return;

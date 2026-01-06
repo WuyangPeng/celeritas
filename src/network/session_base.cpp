@@ -18,17 +18,6 @@ void celeritas::session_base::write(const header& header, const protobuf_message
     }
 }
 
-void celeritas::session_base::write(const std::string& response)
-{
-    const auto total_size = response.size();
-
-    buffer_guard buffer_guard{ buffer_pool::acquire(total_size), total_size };
-
-    buffer_guard.set(response);
-
-    do_write(std::move(buffer_guard));
-}
-
 celeritas::session_base::void_awaitable_type celeritas::session_base::write_immediately(const std::string& response)
 {
     const auto total_size = response.size();

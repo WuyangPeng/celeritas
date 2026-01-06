@@ -3,9 +3,6 @@
 #include "common/framework/session.h"
 #include "message/basic/header.h"
 
-#include <boost/asio/awaitable.hpp>
-#include <google/protobuf/message.h>
-
 namespace celeritas
 {
     class mock_parameters_session final : public session
@@ -13,12 +10,15 @@ namespace celeritas
     public:
         using class_type = mock_parameters_session;
         using base_type = session;
+        using io_context_type = boost::asio::io_context;
+
+        mock_parameters_session();
+
+        explicit mock_parameters_session(io_context_type& io_context);
 
         void stop() override;
 
         void write(const header& header, const protobuf_message_type& response) override;
-
-        void write(const std::string& response) override;
 
         [[nodiscard]] void_awaitable_type write_immediately(const std::string& response) override;
 
@@ -40,19 +40,14 @@ namespace celeritas
 
         [[nodiscard]] int get_write_with_header_count() const;
 
-        [[nodiscard]] int get_write_with_string_count() const;
-
         [[nodiscard]] header get_last_header() const;
-
-        [[nodiscard]] std::string get_last_string_response() const;
 
     private:
         int write_with_header_count = 0;
         header last_header;
-        int write_with_string_count = 0;
-        std::string last_string_response;
         bool write_immediately_call_ = false;
         bool remove_session_call_ = false;
         std::string instance_id_;
+        boost::asio::any_io_executor executor_;
     };
 }

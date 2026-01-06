@@ -16,10 +16,6 @@ void celeritas::mock_session::write(const header& header, const protobuf_message
     last_header_ = header;
 }
 
-void celeritas::mock_session::write(const std::string& response)
-{
-}
-
 celeritas::session::void_awaitable_type celeritas::mock_session::write_immediately(const std::string& response)
 {
     co_return;

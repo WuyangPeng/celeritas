@@ -17,8 +17,6 @@ namespace celeritas
 
         void write(const header& header, const protobuf_message_type& response) override;
 
-        void write(const std::string& response) override;
-
         [[nodiscard]] void_awaitable_type write_immediately(const std::string& response) override;
 
         [[nodiscard]] int64_t get_session_id() const noexcept override;

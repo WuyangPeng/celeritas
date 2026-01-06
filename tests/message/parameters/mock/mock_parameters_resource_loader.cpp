@@ -33,21 +33,29 @@ celeritas::resource_loader_base::health_check_level_awaitable_type celeritas::mo
 
 bool celeritas::mock_parameters_resource_loader::write_to_server(const std::string& server_type, const header& header, const protobuf_message& request)
 {
+    ++write_to_server_count_;
+    last_write_to_server_type_ = server_type;
     return true;
 }
 
 bool celeritas::mock_parameters_resource_loader::write_to_server(const std::string& server_type, const std::string& instance_id, const header& header_message, const protobuf_message& request)
 {
+    ++write_to_server_count_;
+    last_write_to_server_type_ = server_type;
+    last_write_to_server_instance_id_ = instance_id;
     return true;
 }
 
 bool celeritas::mock_parameters_resource_loader::write_to_client(const header& header, const protobuf_message& response)
 {
+    ++write_to_client_count_;
     return true;
 }
 
 bool celeritas::mock_parameters_resource_loader::write_to_user(const std::string& server_type, int64_t session_id, const header& header, const protobuf_message& message)
 {
+    ++write_to_user_count_;
+    last_write_to_user_server_type_ = server_type;
     return true;
 }
 
@@ -57,6 +65,48 @@ void celeritas::mock_parameters_resource_loader::add_session_route(int64_t user_
 
 void celeritas::mock_parameters_resource_loader::check_client(const any_io_executor& any_io_executor, const std::string& server_type, const service_info_container& container)
 {
+    ++check_client_count_;
+    last_check_client_server_type_ = server_type;
+}
+
+int celeritas::mock_parameters_resource_loader::get_write_to_server_count() const
+{
+    return write_to_server_count_;
+}
+
+std::string celeritas::mock_parameters_resource_loader::get_last_write_to_server_type() const
+{
+    return last_write_to_server_type_;
+}
+
+std::string celeritas::mock_parameters_resource_loader::get_last_write_to_server_instance_id() const
+{
+    return last_write_to_server_instance_id_;
+}
+
+int celeritas::mock_parameters_resource_loader::get_write_to_user_count() const
+{
+    return write_to_user_count_;
+}
+
+std::string celeritas::mock_parameters_resource_loader::get_last_write_to_user_server_type() const
+{
+    return last_write_to_user_server_type_;
+}
+
+int celeritas::mock_parameters_resource_loader::get_write_to_client_count() const
+{
+    return write_to_client_count_;
+}
+
+int celeritas::mock_parameters_resource_loader::get_check_client_count() const
+{
+    return check_client_count_;
+}
+
+std::string celeritas::mock_parameters_resource_loader::get_last_check_client_server_type() const
+{
+    return last_check_client_server_type_;
 }
 
 celeritas::resource_loader_base::const_app_config_shared_ptr celeritas::mock_parameters_resource_loader::create_app_config()
@@ -70,4 +120,3 @@ celeritas::resource_loader_base::const_app_config_shared_ptr celeritas::mock_par
 
     return config;
 }
-

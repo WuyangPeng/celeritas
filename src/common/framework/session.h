@@ -34,8 +34,6 @@ namespace celeritas
 
         virtual void write(const header& header, const protobuf_message_type& response) = 0;
 
-        virtual void write(const std::string& response) = 0;
-
         [[nodiscard]] virtual void_awaitable_type write_immediately(const std::string& response) = 0;
 
         [[nodiscard]] virtual int64_t get_session_id() const noexcept = 0;

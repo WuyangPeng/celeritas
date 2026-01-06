@@ -34,9 +34,34 @@ namespace celeritas
 
         void check_client(const any_io_executor& any_io_executor, const std::string& server_type, const service_info_container& container) override;
 
+        [[nodiscard]] int get_write_to_server_count() const;
+
+        [[nodiscard]] std::string get_last_write_to_server_type() const;
+
+        [[nodiscard]] std::string get_last_write_to_server_instance_id() const;
+
+        [[nodiscard]] int get_write_to_user_count() const;
+
+        [[nodiscard]] std::string get_last_write_to_user_server_type() const;
+
+        [[nodiscard]] int get_write_to_client_count() const;
+
+        [[nodiscard]] int get_check_client_count() const;
+
+        [[nodiscard]] std::string get_last_check_client_server_type() const;
+
     private:
         [[nodiscard]] static const_app_config_shared_ptr create_app_config();
 
         const_app_config_shared_ptr app_config_;
+
+        int write_to_server_count_ = 0;
+        std::string last_write_to_server_type_;
+        std::string last_write_to_server_instance_id_;
+        int write_to_user_count_ = 0;
+        std::string last_write_to_user_server_type_;
+        int write_to_client_count_ = 0;
+        int check_client_count_ = 0;
+        std::string last_check_client_server_type_;
     };
 }
