@@ -1,9 +1,13 @@
 ﻿#pragma once
 
-#include "database_data_type.h"
 #include "database/database_fwd.h"
+#include "database_data_type.h"
 
 #include <boost/call_traits.hpp>
+
+#include <cstdint>
+#include <string>
+#include <vector>
 
 namespace celeritas
 {

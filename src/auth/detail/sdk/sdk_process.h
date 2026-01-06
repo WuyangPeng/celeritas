@@ -4,6 +4,8 @@
 
 #include <boost/asio/awaitable.hpp>
 
+#include <optional>
+
 namespace celeritas
 {
     class sdk_process

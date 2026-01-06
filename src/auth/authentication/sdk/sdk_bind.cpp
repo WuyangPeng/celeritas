@@ -5,6 +5,7 @@
 #include "auth/detail/sdk/sdk_bind_parameter.h"
 #include "auth/detail/sdk/sdk_process.h"
 #include "auth/detail/sdk/sdk_process_parameter.h"
+#include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "initializer/account_type.h"

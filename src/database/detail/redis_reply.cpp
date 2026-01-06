@@ -1,6 +1,7 @@
 ﻿#include "redis_reply.h"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
+#include "database/database_constant.h"
 #include "database/database_fwd.h"
 
 using namespace std::literals;

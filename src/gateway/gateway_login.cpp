@@ -1,5 +1,6 @@
 ﻿#include "gateway_login.h"
 #include "common/logging/logger.h"
+#include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"
 #include "database/generated/redis/auth/character_session.h"
 #include "database/generated/redis/auth/session_token.h"

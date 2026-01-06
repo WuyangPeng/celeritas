@@ -1,4 +1,5 @@
 ﻿#include "player_component.h"
+#include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"
 
 celeritas::player_component::player_component(const player_component_type player_component_type, player_state* player_state) noexcept

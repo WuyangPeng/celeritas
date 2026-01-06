@@ -1,6 +1,7 @@
 ﻿#include "app_sdk_providers.h"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
+#include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"
 
 celeritas::app_sdk_providers& celeritas::app_sdk_providers::get_instance()

@@ -5,6 +5,8 @@
 
 #include <boost/asio/awaitable.hpp>
 
+#include <optional>
+
 namespace celeritas
 {
     class player_item_database

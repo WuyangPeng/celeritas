@@ -4,6 +4,7 @@
 #include "common/logging/logger.h"
 #include "common/core/time_helper.h"
 #include "config/aggregate/app_config.h"
+#include "database/database_constant.h"
 #include "database/database_fwd.h"
 #include "database/pool/database_pool_manager.h"
 #include "database/generated/mysql/player/user.h"
