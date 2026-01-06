@@ -29,8 +29,7 @@ void celeritas::protobuf_handle_parameter::write_to_response(const header& heade
 
 void celeritas::protobuf_handle_parameter::write_to_user(const std::string& server_type) const
 {
-    if (const auto resource_loader_shared_ptr = get_resource_loader();
-        resource_loader_shared_ptr->write_to_user(server_type, get_session_id(), header_, *request_message_))
+    if (get_resource_loader()->write_to_user(server_type, get_session_id(), header_, *request_message_))
     {
         LOG_CHANNEL(initializer_channel, trace) << "write message to server_type: " << server_type;
     }

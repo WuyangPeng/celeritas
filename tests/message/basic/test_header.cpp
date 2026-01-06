@@ -21,8 +21,10 @@ BOOST_AUTO_TEST_SUITE(header_suite)
 
     BOOST_AUTO_TEST_CASE(test_header_rpc_code_constructor)
     {
-        const celeritas::header header{ 100, celeritas::game_error_type::success };
-        BOOST_CHECK_EQUAL(header.get_rpc(), 100);
+        constexpr auto rpc = 100;
+
+        const celeritas::header header{ rpc, celeritas::game_error_type::success };
+        BOOST_CHECK_EQUAL(header.get_rpc(), rpc);
         BOOST_CHECK_EQUAL(header.get_user_id(), 0);
         BOOST_CHECK(header.get_code() == celeritas::game_error_type::success);
 
@@ -30,20 +32,23 @@ BOOST_AUTO_TEST_SUITE(header_suite)
         const auto header_message = std::dynamic_pointer_cast<celeritas::proto::common::header>(message);
         BOOST_REQUIRE(header_message);
         BOOST_CHECK(header_message->has_to_gateway());
-        BOOST_CHECK_EQUAL(header_message->to_gateway().rpc(), 100);
+        BOOST_CHECK_EQUAL(header_message->to_gateway().rpc(), rpc);
         BOOST_CHECK_EQUAL(header_message->to_gateway().code(), celeritas::enum_cast_underlying(celeritas::game_error_type::success));
     }
 
-    BOOST_AUTO_TEST_CASE(test_header_rpc_userid_constructor)
+    BOOST_AUTO_TEST_CASE(test_header_rpc_user_id_constructor)
     {
-        const celeritas::header header{ 200, 123456789 };
-        BOOST_CHECK_EQUAL(header.get_rpc(), 200);
-        BOOST_CHECK_EQUAL(header.get_user_id(), 123456789);
+        constexpr auto rpc = 200;
+        constexpr auto user_id = 123456789;
+
+        const celeritas::header header{ rpc, user_id };
+        BOOST_CHECK_EQUAL(header.get_rpc(), rpc);
+        BOOST_CHECK_EQUAL(header.get_user_id(), user_id);
 
         BOOST_CHECK(header.get_code() == celeritas::game_error_type::success);
     }
 
-    BOOST_AUTO_TEST_CASE(test_header_rpc_userid_constructor_check_code)
+    BOOST_AUTO_TEST_CASE(test_header_rpc_user_id_constructor_check_code)
     {
         const celeritas::header header{ 200, 123456789 };
         BOOST_CHECK(header.get_code() == celeritas::game_error_type::success);
@@ -56,9 +61,12 @@ BOOST_AUTO_TEST_SUITE(header_suite)
 
     BOOST_AUTO_TEST_CASE(test_header_rpc_userid_code_constructor)
     {
-        const celeritas::header header{ 300, 987654321, celeritas::game_error_type::server_error };
-        BOOST_CHECK_EQUAL(header.get_rpc(), 300);
-        BOOST_CHECK_EQUAL(header.get_user_id(), 987654321);
+        constexpr auto rpc = 300;
+        constexpr auto user_id = 987654321;
+
+        const celeritas::header header{ rpc, user_id, celeritas::game_error_type::server_error };
+        BOOST_CHECK_EQUAL(header.get_rpc(), rpc);
+        BOOST_CHECK_EQUAL(header.get_user_id(), user_id);
         BOOST_CHECK(header.get_code() == celeritas::game_error_type::server_error);
 
         const auto message = header.get_message();
@@ -69,9 +77,11 @@ BOOST_AUTO_TEST_SUITE(header_suite)
 
     BOOST_AUTO_TEST_CASE(test_header_userid_constructor)
     {
-        const celeritas::header header{ 111222333 };
+        constexpr auto user_id = 111222333;
+
+        const celeritas::header header{ user_id };
         BOOST_CHECK_EQUAL(header.get_rpc(), 0);
-        BOOST_CHECK_EQUAL(header.get_user_id(), 111222333);
+        BOOST_CHECK_EQUAL(header.get_user_id(), user_id);
         BOOST_CHECK(header.get_code() == celeritas::game_error_type::success);
 
         const auto message = header.get_message();
@@ -82,39 +92,46 @@ BOOST_AUTO_TEST_SUITE(header_suite)
 
     BOOST_AUTO_TEST_CASE(test_header_logic_gateway_message)
     {
-        const celeritas::header header{ 123, 456, celeritas::game_error_type::unknown };
-        BOOST_CHECK_EQUAL(header.get_rpc(), 123);
-        BOOST_CHECK_EQUAL(header.get_user_id(), 456);
+        constexpr auto rpc = 123;
+        constexpr auto user_id = 456;
+
+        const celeritas::header header{ rpc, user_id, celeritas::game_error_type::unknown };
+        BOOST_CHECK_EQUAL(header.get_rpc(), rpc);
+        BOOST_CHECK_EQUAL(header.get_user_id(), user_id);
         BOOST_CHECK(header.get_code() == celeritas::game_error_type::unknown);
 
         const auto message = header.get_message();
         const auto header_message = std::dynamic_pointer_cast<celeritas::proto::common::header>(message);
         BOOST_REQUIRE(header_message);
         BOOST_CHECK(header_message->has_gateway());
-        BOOST_CHECK_EQUAL(header_message->gateway().user_id(), 456);
-        BOOST_CHECK_EQUAL(header_message->gateway().rpc(), 123);
+        BOOST_CHECK_EQUAL(header_message->gateway().user_id(), user_id);
+        BOOST_CHECK_EQUAL(header_message->gateway().rpc(), rpc);
     }
 
     BOOST_AUTO_TEST_CASE(test_header_logic_server_message)
     {
-        const celeritas::header header{ 0, 456, celeritas::game_error_type::unknown };
+        constexpr auto user_id = 456;
+
+        const celeritas::header header{ 0, user_id, celeritas::game_error_type::unknown };
 
         const auto message = header.get_message();
         const auto header_message = std::dynamic_pointer_cast<celeritas::proto::common::header>(message);
         BOOST_REQUIRE(header_message);
         BOOST_CHECK(header_message->has_server());
-        BOOST_CHECK_EQUAL(header_message->server().user_id(), 456);
+        BOOST_CHECK_EQUAL(header_message->server().user_id(), user_id);
     }
 
     BOOST_AUTO_TEST_CASE(test_header_logic_client_message)
     {
-        const celeritas::header header{ 123, 0, celeritas::game_error_type::unknown };
+        constexpr auto rpc = 123;
+
+        const celeritas::header header{ rpc, 0, celeritas::game_error_type::unknown };
 
         const auto message = header.get_message();
         const auto header_message = std::dynamic_pointer_cast<celeritas::proto::common::header>(message);
         BOOST_REQUIRE(header_message);
         BOOST_CHECK(header_message->has_client());
-        BOOST_CHECK_EQUAL(header_message->client().rpc(), 123);
+        BOOST_CHECK_EQUAL(header_message->client().rpc(), rpc);
     }
 
     BOOST_AUTO_TEST_CASE(test_header_empty_message_constructor)
