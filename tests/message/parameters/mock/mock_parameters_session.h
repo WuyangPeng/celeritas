@@ -4,6 +4,7 @@
 #include "message/basic/header.h"
 
 #include <boost/asio/awaitable.hpp>
+#include <google/protobuf/message.h>
 
 namespace celeritas
 {
@@ -37,7 +38,19 @@ namespace celeritas
 
         [[nodiscard]] bool is_remove_session_call() const;
 
+        [[nodiscard]] int get_write_with_header_count() const;
+
+        [[nodiscard]] int get_write_with_string_count() const;
+
+        [[nodiscard]] header get_last_header() const;
+
+        [[nodiscard]] std::string get_last_string_response() const;
+
     private:
+        int write_with_header_count = 0;
+        header last_header;
+        int write_with_string_count = 0;
+        std::string last_string_response;
         bool write_immediately_call_ = false;
         bool remove_session_call_ = false;
         std::string instance_id_;
