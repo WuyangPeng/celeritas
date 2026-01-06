@@ -60,13 +60,19 @@ BOOST_AUTO_TEST_SUITE(http_handle_parameter_suite)
         test_http_handle_parameter(moved);
     }
 
-    BOOST_FIXTURE_TEST_CASE(test_http_handle_parameter_with_mocks, celeritas::http_handle_parameter_fixture)
+    BOOST_FIXTURE_TEST_CASE(test_http_handle_parameter_get_any_io_executor, celeritas::http_handle_parameter_fixture)
     {
         BOOST_CHECK_NO_THROW([this] { std::ignore = get_parameter()->get_any_io_executor(); }());
         BOOST_CHECK(get_parameter()->get_any_io_executor().target<boost::asio::io_context::executor_type>());
+    }
 
+    BOOST_FIXTURE_TEST_CASE(test_http_handle_parameter_get_server_type, celeritas::http_handle_parameter_fixture)
+    {
         BOOST_CHECK_EQUAL(get_parameter()->get_server_type(), "mock_server");
+    }
 
+    BOOST_FIXTURE_TEST_CASE(test_http_handle_parameter_get_health_check_level, celeritas::http_handle_parameter_fixture)
+    {
         boost::asio::co_spawn(
             get_io_context(),
             [this]() -> boost::asio::awaitable<void> {
@@ -76,15 +82,24 @@ BOOST_AUTO_TEST_SUITE(http_handle_parameter_suite)
             boost::asio::detached);
 
         get_io_context().run();
+    }
 
+    BOOST_FIXTURE_TEST_CASE(test_http_handle_parameter_submit_task, celeritas::http_handle_parameter_fixture)
+    {
         BOOST_CHECK(!get_application_loader()->get_task_submitted());
         get_parameter()->submit_task([] {
         });
         BOOST_CHECK(get_application_loader()->get_task_submitted());
+    }
 
+    BOOST_FIXTURE_TEST_CASE(test_http_handle_parameter_get_app_config, celeritas::http_handle_parameter_fixture)
+    {
         const auto app_config = get_parameter()->get_app_config();
         BOOST_CHECK_EQUAL(app_config->get_external_host(), "192.168.1.100");
+    }
 
+    BOOST_FIXTURE_TEST_CASE(test_http_handle_parameter_get_database_config, celeritas::http_handle_parameter_fixture)
+    {
         const auto database_config = get_parameter()->get_database_config("test_db");
         BOOST_CHECK(database_config->get_database_type() == celeritas::database_type::mysql);
         BOOST_CHECK_EQUAL(database_config->get_name(), "test_db");
