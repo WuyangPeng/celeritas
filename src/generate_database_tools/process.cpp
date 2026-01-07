@@ -1,8 +1,9 @@
 ﻿#include "generate_database.h"
-#include "generate_mysql.h"
 #include "generate_database_tools_fwd.h"
+#include "generate_mongo.h"
+#include "generate_mysql.h"
 #include "process.h"
-#include "../common/core/celeritas_error.h"
+#include "common/core/celeritas_error.h"
 
 #include <filesystem>
 
@@ -21,6 +22,10 @@ celeritas::process::process_unique_ptr celeritas::process::create_process(const 
     else if (process_name == process_generate_mysql)
     {
         return std::make_unique<generate_mysql>(command_line_config);
+    }
+    else if (process_name == process_generate_mongo)
+    {
+        return std::make_unique<generate_mongo>(command_line_config);
     }
 
     throw celeritas_error("unable to create generate database");

@@ -288,6 +288,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(INITIALIZER_GENERATED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/initializer/generated")
     set(DATABASE_GENERATED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/database/generated")
     set(MYSQL_GENERATED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data/mysql")
+    set(MONGO_GENERATED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data/mongo")
 
     # 用于生成所有与handler相关的代码
     add_custom_target(generate_handler_code
@@ -329,6 +330,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             # 确保输出目录存在
             COMMAND ${CMAKE_COMMAND} -E make_directory ${DATABASE_GENERATED_DIR}
             COMMAND ${CMAKE_COMMAND} -E make_directory ${MYSQL_GENERATED_DIR}
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${MONGO_GENERATED_DIR}
 
             # 生成 database 源文件
             COMMAND $<TARGET_FILE:generate_database_tools>
@@ -342,6 +344,12 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             --process=generate_mysql
             --database_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/database/mysql
             --output_directory=${MYSQL_GENERATED_DIR}
+
+            # 生成 mongo 语句
+            COMMAND $<TARGET_FILE:generate_database_tools>
+            --process=generate_mongo
+            --database_directory=${CMAKE_CURRENT_SOURCE_DIR}/data/database/mongo
+            --output_directory=${MONGO_GENERATED_DIR}
 
             # 依赖于工具目标，确保在执行此目标前已构建好工具
             DEPENDS generate_database_tools

@@ -8,11 +8,13 @@ namespace celeritas
     class process;
     class generate_database;
     class generate_mysql;
+    class generate_mongo;
 
     constexpr std::string_view process_command_line{ "process" };
     constexpr std::string_view process_description{ "database procedure for tool usage." };
     constexpr std::string_view process_generate_database{ "generate_database" };
     constexpr std::string_view process_generate_mysql{ "generate_mysql" };
+    constexpr std::string_view process_generate_mongo{ "generate_mongo" };
     constexpr std::string_view database_directory_command_line{ "database_directory" };
     constexpr std::string_view database_directory_description{ "database directory path for program execution." };
     constexpr std::string_view output_directory_command_line{ "output_directory" };

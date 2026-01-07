@@ -12,4 +12,6 @@ namespace celeritas
     class database_source;
     class generate_mysql_file;
     class save_mysql_file;
+    class generate_mongo_file;
+    class save_mongo_file;
 }
