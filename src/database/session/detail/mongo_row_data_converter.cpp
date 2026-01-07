@@ -290,8 +290,7 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
             {
                 return basis_database{ row_view.key().data(), basis_database::int32_array{} };
             }
-            const auto sub_type = row_view_array.begin()->type();
-            switch (sub_type)
+            switch (row_view_array.begin()->type())
             {
                 case bsoncxx::type::k_double:
                 {
@@ -317,8 +316,8 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
                     for (const auto& element : row_view_array)
                     {
                         basis_database::document_type document_type{};
-                        const auto& doc = element.get_document().value;
-                        for (const auto& value : doc)
+                        for (const auto& doc = element.get_document().value; const auto& value :
+                             doc)
                         {
                             document_type.emplace_back(get_basis_database(value));
                         }

@@ -8,12 +8,13 @@
 #include "database/redis/redis_sorted_set_commands.h"
 #include "database/redis/redis_string_commands.h"
 #include "database/redis/scan_result.h"
-#include "../redis/detail/redis_context.h"
-#include "../redis/detail/redis_parameter.h"
-#include "../redis/detail/redis_reply.h"
+#include "database/redis/detail/redis_context.h"
+#include "database/redis/detail/redis_parameter.h"
+#include "database/redis/detail/redis_reply.h"
 
 #include <boost/asio.hpp>
 #include <boost/asio/awaitable.hpp>
+
 #include <memory>
 #include <string>
 
@@ -96,11 +97,11 @@ namespace celeritas
 
         [[nodiscard]] scan_result_awaitable_type async_execute_command_return_scan_result(const array_type& command) const;
 
-        [[nodiscard]] void_awaitable_type execute_changes(const database_entity_change_const_shared_ptr& database, int expiration_time) override;
+        [[nodiscard]] void_awaitable_type execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time) override;
 
-        [[nodiscard]] database_entity_change_awaitable_type select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) override;
+        [[nodiscard]] database_entity_change_awaitable_type select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) override;
 
-        [[nodiscard]] result_container_awaitable_type select_all(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) override;
+        [[nodiscard]] result_container_awaitable_type select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) override;
 
     private:
         using redis_context_unique_ptr = std::unique_ptr<redis_context>;
@@ -113,11 +114,11 @@ namespace celeritas
 
         [[nodiscard]] redis_reply_awaitable_type async_execute_command_return_reply(const array_type& command) const;
 
-        [[nodiscard]] void_awaitable_type save_database(const database_entity_change_const_shared_ptr& database, int expiration_time) const;
+        [[nodiscard]] void_awaitable_type save_database(const const_database_entity_change_shared_ptr& database, int expiration_time) const;
 
-        [[nodiscard]] void_awaitable_type delete_database(const database_entity_change_const_shared_ptr& database) const;
+        [[nodiscard]] void_awaitable_type delete_database(const const_database_entity_change_shared_ptr& database) const;
 
-        [[nodiscard]] database_entity_change_awaitable_type select_one(const std::string& key, const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) const;
+        [[nodiscard]] database_entity_change_awaitable_type select_one(const std::string& key, const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) const;
 
         any_io_executor any_io_executor_;
         redis_context_unique_ptr redis_context_;

@@ -18,7 +18,7 @@ namespace celeritas
         using result_container = std::vector<database_entity_change>;
         using database_field_container = std::vector<database_field>;
         using optional_database_entity_change = std::optional<database_entity_change>;
-        using database_entity_change_const_shared_ptr = std::shared_ptr<const database_entity_change>;
+        using const_database_entity_change_shared_ptr = std::shared_ptr<const database_entity_change>;
         using database_entity_change_awaitable_type = boost::asio::awaitable<optional_database_entity_change>;
         using result_container_awaitable_type = boost::asio::awaitable<result_container>;
         using any_io_executor = boost::asio::any_io_executor;
@@ -41,11 +41,11 @@ namespace celeritas
 
         [[nodiscard]] virtual bool_awaitable_type is_health() = 0;
 
-        [[nodiscard]] virtual void_awaitable_type execute_changes(const database_entity_change_const_shared_ptr& database, int expiration_time) = 0;
+        [[nodiscard]] virtual void_awaitable_type execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time) = 0;
 
-        [[nodiscard]] virtual database_entity_change_awaitable_type select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) = 0;
+        [[nodiscard]] virtual database_entity_change_awaitable_type select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) = 0;
 
-        [[nodiscard]] virtual result_container_awaitable_type select_all(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container) = 0;
+        [[nodiscard]] virtual result_container_awaitable_type select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) = 0;
 
     private:
         time_point_type last_heartbeat;

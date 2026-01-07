@@ -1,10 +1,10 @@
-﻿#include "database/basic/basis_database.tpp"
+﻿#include "mysql_database_session.h"
+#include "common/core/celeritas_error.h"
+#include "common/core/noexcept_safe_call_and_log.h"
+#include "common/logging/logger.h"
+#include "database/basic/basis_database.tpp"
 #include "database/basic/database_change_type.h"
 #include "database/basic/database_entity_change.h"
-#include "mysql_database_session.h"
-#include "common/core/celeritas_error.h"
-#include "common/logging/logger.h"
-#include "common/core/noexcept_safe_call_and_log.h"
 #include "detail/mysql_row_data_converter.h"
 #include "detail/mysql_statement_generator.h"
 
@@ -100,7 +100,7 @@ celeritas::database_session::bool_awaitable_type celeritas::mysql_database_sessi
     }
 }
 
-celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::execute_changes(const database_entity_change_const_shared_ptr& database, int expiration_time)
+celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time)
 {
     switch (database->get_change_type())
     {
@@ -129,7 +129,7 @@ celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database
     co_return;
 }
 
-celeritas::database_session::database_entity_change_awaitable_type celeritas::mysql_database_session::select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container)
+celeritas::database_session::database_entity_change_awaitable_type celeritas::mysql_database_session::select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container)
 {
     const auto result = co_await async_query(mysql_statement_generator::generate_select_statement(field_name_container, database) + " LIMIT 1;");
 
@@ -142,7 +142,7 @@ celeritas::database_session::database_entity_change_awaitable_type celeritas::my
     co_return std::nullopt;
 }
 
-celeritas::database_session::result_container_awaitable_type celeritas::mysql_database_session::select_all(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container)
+celeritas::database_session::result_container_awaitable_type celeritas::mysql_database_session::select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container)
 {
     const auto result = co_await async_query(mysql_statement_generator::generate_select_statement(field_name_container, database) + ";");
 
@@ -205,7 +205,7 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
     throw celeritas_error("async query exception.");
 }
 
-celeritas::database_entity_change celeritas::mysql_database_session::populate_database_from_row(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container, const row_view_type& row)
+celeritas::database_entity_change celeritas::mysql_database_session::populate_database_from_row(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container, const row_view_type& row)
 {
     auto select = database->get_select();
     auto index = 0;

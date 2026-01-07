@@ -28,7 +28,7 @@ namespace celeritas
                                         const std::string& uri,
                                         const std::string& db_name,
                                         int expire_seconds,
-                                        const any_io_executor& any_io_executor);
+                                        any_io_executor any_io_executor);
 
         [[nodiscard]] void_awaitable_type async_connect();
 
@@ -37,13 +37,13 @@ namespace celeritas
 
         [[nodiscard]] bool_awaitable_type is_health() override;
 
-        [[nodiscard]] void_awaitable_type execute_changes(const database_entity_change_const_shared_ptr& database,
+        [[nodiscard]] void_awaitable_type execute_changes(const const_database_entity_change_shared_ptr& database,
                                                           int expiration_time) override;
 
-        [[nodiscard]] database_entity_change_awaitable_type select_one(const database_entity_change_const_shared_ptr& database,
+        [[nodiscard]] database_entity_change_awaitable_type select_one(const const_database_entity_change_shared_ptr& database,
                                                                        const database_field_container& field_name_container) override;
 
-        [[nodiscard]] result_container_awaitable_type select_all(const database_entity_change_const_shared_ptr& database,
+        [[nodiscard]] result_container_awaitable_type select_all(const const_database_entity_change_shared_ptr& database,
                                                                  const database_field_container& field_name_container) override;
 
     private:
@@ -55,11 +55,11 @@ namespace celeritas
 
         [[nodiscard]] bool do_is_health() const;
 
-        void update_document(const database_entity_change_const_shared_ptr& database) const;
+        void update_document(const const_database_entity_change_shared_ptr& database) const;
 
-        void insert_document(const database_entity_change_const_shared_ptr& database) const;
+        void insert_document(const const_database_entity_change_shared_ptr& database) const;
 
-        void delete_document(const database_entity_change_const_shared_ptr& database) const;
+        void delete_document(const const_database_entity_change_shared_ptr& database) const;
 
         [[nodiscard]] cursor_awaitable_type async_execute_query(std::string_view collection_name,
                                                                 const document_view_type& filter) const;
@@ -69,7 +69,7 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type do_async_connect();
 
-        [[nodiscard]] static database_entity_change to_database_entity_change(const database_entity_change_const_shared_ptr& database,
+        [[nodiscard]] static database_entity_change to_database_entity_change(const const_database_entity_change_shared_ptr& database,
                                                                               const database_field_container& field_name_container,
                                                                               const document_view_type& view);
 
