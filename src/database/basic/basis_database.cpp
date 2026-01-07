@@ -205,7 +205,7 @@ void celeritas::basis_database::append_value(std::ostringstream& os, const basis
     }
 }
 
-void celeritas::basis_database::append_value(std::ostringstream& os, database_data_type_traits<database_data_type::document_type>::param_type value, const bool is_last)
+void celeritas::basis_database::append_value(std::ostringstream& os, const document_type& value, const bool is_last)
 {
     const basis_database doc{ "", database_data_type::document_type, value };
     os << doc.get_string();

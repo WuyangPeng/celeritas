@@ -76,7 +76,7 @@ namespace celeritas
         [[nodiscard]] database_data_type get_data_type() const noexcept;
 
         template <database_data_type Type>
-        [[nodiscard]] database_data_type_traits<Type>::type get_value() const;
+        [[nodiscard]] const database_data_type_traits<Type>::type& get_value() const;
 
         template <database_data_type Type>
         [[nodiscard]] std::string get_array_string_value() const;
@@ -101,7 +101,7 @@ namespace celeritas
 
         static void append_value(std::ostringstream& os, const basis_database& value, bool is_last);
 
-        static void append_value(std::ostringstream& os, database_data_type_traits<database_data_type::document_type>::param_type value, bool is_last);
+        static void append_value(std::ostringstream& os, const document_type& value, bool is_last);
 
         std::string_view field_name_;
         database_data_type data_type_ = database_data_type::null_type;

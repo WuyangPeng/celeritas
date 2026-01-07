@@ -4,6 +4,7 @@
 #include <boost/numeric/conversion/cast.hpp>
 
 #include <algorithm>
+#include <unordered_set>
 
 celeritas::basis_database_container::basis_database_container(const basis_database& basisDatabase)
     : container_{ basisDatabase }
@@ -13,6 +14,14 @@ celeritas::basis_database_container::basis_database_container(const basis_databa
 celeritas::basis_database_container::basis_database_container(object_container container)
     : container_{ std::move(container) }
 {
+    std::unordered_set<std::string_view> field_names{};
+    for (const auto& db : container_)
+    {
+        if (!field_names.emplace(db.get_field_name()).second)
+        {
+            throw celeritas_error{ "duplicate field name in basis_database_container" };
+        }
+    }
 }
 
 void celeritas::basis_database_container::modify(const basis_database& basis_database)
@@ -24,11 +33,6 @@ void celeritas::basis_database_container::modify(const basis_database& basis_dat
     container_.erase(result.begin(), result.end());
 
     container_.emplace_back(basis_database);
-}
-
-void celeritas::basis_database_container::set(const object_container& container)
-{
-    container_ = container;
 }
 
 void celeritas::basis_database_container::clear()

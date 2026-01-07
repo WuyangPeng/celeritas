@@ -4,6 +4,17 @@
 
 BOOST_AUTO_TEST_SUITE(basis_database_suite)
 
+    BOOST_AUTO_TEST_CASE(test_basis_database_null_constructor)
+    {
+        const std::string field_name{ "null_field" };
+        const celeritas::basis_database db{ field_name };
+
+        BOOST_CHECK_EQUAL(db.get_field_name(), field_name);
+        BOOST_CHECK(db.get_data_type() == celeritas::database_data_type::null_type);
+        BOOST_CHECK(std::holds_alternative<std::monostate>(db.get_variant_value()));
+        BOOST_CHECK_EQUAL(db.get_string(), "");
+    }
+
     BOOST_AUTO_TEST_CASE(test_basis_database_string_constructor)
     {
         const std::string field_name{ "name" };
@@ -13,7 +24,7 @@ BOOST_AUTO_TEST_SUITE(basis_database_suite)
         BOOST_CHECK_EQUAL(db.get_field_name(), field_name);
         BOOST_CHECK(db.get_data_type() == celeritas::database_data_type::string_type);
         BOOST_CHECK_EQUAL(db.get_value<celeritas::database_data_type::string_type>(), value);
-        BOOST_CHECK_EQUAL(db.get_string(), "'test_name'");
+        BOOST_CHECK_EQUAL(db.get_string(), "test_name");
     }
 
     BOOST_AUTO_TEST_CASE(test_basis_database_const_char_ptr_constructor)
@@ -62,16 +73,26 @@ BOOST_AUTO_TEST_SUITE(basis_database_suite)
         BOOST_CHECK_EQUAL(db.get_value<celeritas::database_data_type::int64_type>(), value);
     }
 
-    BOOST_AUTO_TEST_CASE(test_basis_database_bool_constructor)
+    BOOST_AUTO_TEST_CASE(test_basis_database_bool_true_constructor)
     {
         const std::string field_name{ "is_active" };
-        constexpr auto value = true;
-        const celeritas::basis_database db{ field_name, value };
+        const celeritas::basis_database db{ field_name, true };
 
         BOOST_CHECK_EQUAL(db.get_field_name(), field_name);
         BOOST_CHECK(db.get_data_type() == celeritas::database_data_type::bool_type);
-        BOOST_CHECK_EQUAL(db.get_value<celeritas::database_data_type::bool_type>(), value);
-        BOOST_CHECK_EQUAL(db.get_string(), "1");
+        BOOST_CHECK_EQUAL(db.get_value<celeritas::database_data_type::bool_type>(), true);
+        BOOST_CHECK_EQUAL(db.get_string(), "true");
+    }
+
+    BOOST_AUTO_TEST_CASE(test_basis_database_bool_false_constructor)
+    {
+        const std::string field_name{ "is_active" };
+        const celeritas::basis_database db{ field_name, false };
+
+        BOOST_CHECK_EQUAL(db.get_field_name(), field_name);
+        BOOST_CHECK(db.get_data_type() == celeritas::database_data_type::bool_type);
+        BOOST_CHECK_EQUAL(db.get_value<celeritas::database_data_type::bool_type>(), false);
+        BOOST_CHECK_EQUAL(db.get_string(), "false");
     }
 
     BOOST_AUTO_TEST_CASE(test_basis_database_double_constructor)
@@ -83,7 +104,7 @@ BOOST_AUTO_TEST_SUITE(basis_database_suite)
         BOOST_CHECK_EQUAL(db.get_field_name(), field_name);
         BOOST_CHECK(db.get_data_type() == celeritas::database_data_type::double_type);
         BOOST_CHECK_CLOSE(db.get_value<celeritas::database_data_type::double_type>(), value, 0.001);
-        BOOST_CHECK_EQUAL(db.get_string(), "99.9");
+        BOOST_CHECK_EQUAL(db.get_string(), std::to_string(value));
     }
 
     BOOST_AUTO_TEST_CASE(test_basis_database_byte_array_constructor)
@@ -94,8 +115,9 @@ BOOST_AUTO_TEST_SUITE(basis_database_suite)
 
         BOOST_CHECK_EQUAL(db.get_field_name(), field_name);
         BOOST_CHECK(db.get_data_type() == celeritas::database_data_type::byte_array_type);
-        const auto& arr = db.get_value<celeritas::database_data_type::byte_array_type>();
-        BOOST_CHECK_EQUAL_COLLECTIONS(arr.begin(), arr.end(), value.begin(), value.end());
+        const auto& value_from_db = db.get_value<celeritas::database_data_type::byte_array_type>();
+        BOOST_CHECK_EQUAL_COLLECTIONS(value_from_db.begin(), value_from_db.end(), value.begin(), value.end());
+        BOOST_CHECK_EQUAL(db.get_string(), "abc");
     }
 
     BOOST_AUTO_TEST_CASE(test_basis_database_string_array_constructor)
@@ -106,9 +128,9 @@ BOOST_AUTO_TEST_SUITE(basis_database_suite)
 
         BOOST_CHECK_EQUAL(db.get_field_name(), field_name);
         BOOST_CHECK(db.get_data_type() == celeritas::database_data_type::string_array_type);
-        const auto& arr = db.get_value<celeritas::database_data_type::string_array_type>();
-        BOOST_CHECK_EQUAL_COLLECTIONS(arr.begin(), arr.end(), value.begin(), value.end());
-        BOOST_CHECK_EQUAL(db.get_array_string_value<celeritas::database_data_type::string_array_type>(), "'tag1','tag2'");
+        const auto& value_from_db = db.get_value<celeritas::database_data_type::string_array_type>();
+        BOOST_CHECK_EQUAL_COLLECTIONS(value_from_db.begin(), value_from_db.end(), value.begin(), value.end());
+        BOOST_CHECK_EQUAL(db.get_string(), "[\"tag1\",\"tag2\"]");
     }
 
     BOOST_AUTO_TEST_CASE(test_basis_database_int32_array_constructor)
@@ -119,9 +141,9 @@ BOOST_AUTO_TEST_SUITE(basis_database_suite)
 
         BOOST_CHECK_EQUAL(db.get_field_name(), field_name);
         BOOST_CHECK(db.get_data_type() == celeritas::database_data_type::int32_array_type);
-        const auto& arr = db.get_value<celeritas::database_data_type::int32_array_type>();
-        BOOST_CHECK_EQUAL_COLLECTIONS(arr.begin(), arr.end(), value.begin(), value.end());
-        BOOST_CHECK_EQUAL(db.get_array_string_value<celeritas::database_data_type::int32_array_type>(), "1,2,3");
+        const auto& value_from_db = db.get_value<celeritas::database_data_type::int32_array_type>();
+        BOOST_CHECK_EQUAL_COLLECTIONS(value_from_db.begin(), value_from_db.end(), value.begin(), value.end());
+        BOOST_CHECK_EQUAL(db.get_string(), "[1,2,3]");
     }
 
     BOOST_AUTO_TEST_CASE(test_basis_database_int64_array_constructor)
@@ -132,9 +154,9 @@ BOOST_AUTO_TEST_SUITE(basis_database_suite)
 
         BOOST_CHECK_EQUAL(db.get_field_name(), field_name);
         BOOST_CHECK(db.get_data_type() == celeritas::database_data_type::int64_array_type);
-        const auto& arr = db.get_value<celeritas::database_data_type::int64_array_type>();
-        BOOST_CHECK_EQUAL_COLLECTIONS(arr.begin(), arr.end(), value.begin(), value.end());
-        BOOST_CHECK_EQUAL(db.get_array_string_value<celeritas::database_data_type::int64_array_type>(), "100,200,300");
+        const auto& value_from_db = db.get_value<celeritas::database_data_type::int64_array_type>();
+        BOOST_CHECK_EQUAL_COLLECTIONS(value_from_db.begin(), value_from_db.end(), value.begin(), value.end());
+        BOOST_CHECK_EQUAL(db.get_string(), "[100,200,300]");
     }
 
     BOOST_AUTO_TEST_CASE(test_basis_database_double_array_constructor)
@@ -145,17 +167,16 @@ BOOST_AUTO_TEST_SUITE(basis_database_suite)
 
         BOOST_CHECK_EQUAL(db.get_field_name(), field_name);
         BOOST_CHECK(db.get_data_type() == celeritas::database_data_type::double_array_type);
-        const auto& arr = db.get_value<celeritas::database_data_type::double_array_type>();
-        BOOST_CHECK_EQUAL_COLLECTIONS(arr.begin(), arr.end(), value.begin(), value.end());
+        const auto& value_from_db = db.get_value<celeritas::database_data_type::double_array_type>();
+        BOOST_CHECK_EQUAL_COLLECTIONS(value_from_db.begin(), value_from_db.end(), value.begin(), value.end());
+        BOOST_CHECK_EQUAL(db.get_string(), "[99.9,88.8,77.7]");
     }
 
-    BOOST_AUTO_TEST_CASE(test_basis_database_document_constructor)
+    BOOST_AUTO_TEST_CASE(test_basis_database_document_non_empty_constructor)
     {
         const std::string field_name{ "doc" };
-        const celeritas::basis_database::document_type value{
-            { "field1", "value1" },
-            { "field2", 123 }
-        };
+        const celeritas::basis_database::document_type value{ { "field1", "value1" },
+                                                              { "field2", 123 } };
         const celeritas::basis_database db{ field_name, value };
 
         BOOST_CHECK_EQUAL(db.get_field_name(), field_name);
@@ -163,17 +184,21 @@ BOOST_AUTO_TEST_SUITE(basis_database_suite)
         BOOST_CHECK_EQUAL(db.get_string(), "{\"field1\":\"value1\",\"field2\":123}");
     }
 
-    BOOST_AUTO_TEST_CASE(test_basis_database_document_array_constructor)
+    BOOST_AUTO_TEST_CASE(test_basis_database_document_empty_constructor)
+    {
+        const std::string field_name{ "doc" };
+        const celeritas::basis_database db{ field_name, celeritas::basis_database::document_type{} };
+
+        BOOST_CHECK_EQUAL(db.get_field_name(), field_name);
+        BOOST_CHECK(db.get_data_type() == celeritas::database_data_type::document_type);
+        BOOST_CHECK_EQUAL(db.get_string(), "{}");
+    }
+
+    BOOST_AUTO_TEST_CASE(test_basis_database_document_array_non_empty_constructor)
     {
         const std::string field_name{ "docs" };
-        const celeritas::basis_database::document_array value{
-            {
-                { "field1", "value1" }
-            },
-            {
-                { "field2", 123 }
-            }
-        };
+        const celeritas::basis_database::document_array value{ { { "field1", "value1" } },
+                                                               { { "field2", 123 } } };
         const celeritas::basis_database db{ field_name, value };
 
         BOOST_CHECK_EQUAL(db.get_field_name(), field_name);
@@ -181,10 +206,32 @@ BOOST_AUTO_TEST_SUITE(basis_database_suite)
         BOOST_CHECK_EQUAL(db.get_string(), "[{\"field1\":\"value1\"},{\"field2\":123}]");
     }
 
+    BOOST_AUTO_TEST_CASE(test_basis_database_document_array_empty_constructor)
+    {
+        const std::string field_name{ "docs" };
+        const celeritas::basis_database db{ field_name, celeritas::basis_database::document_array{} };
+
+        BOOST_CHECK_EQUAL(db.get_field_name(), field_name);
+        BOOST_CHECK(db.get_data_type() == celeritas::database_data_type::document_array_type);
+        BOOST_CHECK_EQUAL(db.get_string(), "[]");
+    }
+
     BOOST_AUTO_TEST_CASE(test_basis_database_get_sql_field_string)
     {
-        const celeritas::basis_database db{ "name", "test" };
-        BOOST_CHECK_EQUAL(db.get_sql_field_string(), "name='test'");
+        const celeritas::basis_database db_string{ "name", "test" };
+        BOOST_CHECK_EQUAL(db_string.get_sql_field_string(), "`test`");
+
+        const celeritas::basis_database db_int{ "age", 30 };
+        BOOST_CHECK_EQUAL(db_int.get_sql_field_string(), "30");
+    }
+
+    BOOST_AUTO_TEST_CASE(test_get_quotation_mark_string)
+    {
+        const celeritas::basis_database db_string{ "name", "test" };
+        BOOST_CHECK_EQUAL(db_string.get_quotation_mark_string(), "\"test\"");
+
+        const celeritas::basis_database db_int{ "age", 30 };
+        BOOST_CHECK_EQUAL(db_int.get_quotation_mark_string(), "30");
     }
 
     BOOST_AUTO_TEST_CASE(test_basis_database_operators)

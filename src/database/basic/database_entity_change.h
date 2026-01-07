@@ -2,7 +2,6 @@
 
 #include "basis_database.h"
 #include "basis_database_container.h"
-#include "boost/call_traits.hpp"
 #include "config/config_fwd.h"
 
 namespace celeritas
@@ -52,6 +51,9 @@ namespace celeritas
         using value_variant = basis_database::value_variant;
 
         [[nodiscard]] const value_variant& get_variant_value(std::string_view field_name) const;
+
+        template <database_data_type Type>
+        [[nodiscard]] database_data_type_traits<Type>::type do_get_value(const value_variant& variant, boost::call_traits<typename database_data_type_traits<Type>::type>::param_type default_value) const;
 
         database_type database_type_;
         std::string_view database_name_;

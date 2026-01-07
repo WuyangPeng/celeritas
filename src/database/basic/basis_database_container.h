@@ -22,8 +22,6 @@ namespace celeritas
 
         void modify(const basis_database& basis_database);
 
-        void set(const object_container& container);
-
         void clear();
 
         [[nodiscard]] const value_variant& get_variant_value(std::string_view field_name) const;

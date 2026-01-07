@@ -1,17 +1,28 @@
 ﻿#include "database/basic/basis_database_container.h"
+#include "common/core/celeritas_error.h"
 
 #include <boost/test/unit_test.hpp>
 
+namespace
+{
+    template <celeritas::database_data_type Type>
+    const auto& get_value(const celeritas::basis_database_container& container, const std::string& field_name)
+    {
+        const auto& value = container.get_variant_value(field_name);
+        return std::get<typename celeritas::database_data_type_traits<Type>::type>(value);
+    }
+}
+
 BOOST_AUTO_TEST_SUITE(basis_database_container_suite)
 
-    BOOST_AUTO_TEST_CASE(test_basis_database_container_default_constructor)
+    BOOST_AUTO_TEST_CASE(test_default_constructor)
     {
         const celeritas::basis_database_container container{};
         BOOST_CHECK_EQUAL(container.get_size(), 0);
         BOOST_CHECK(container.begin() == container.end());
     }
 
-    BOOST_AUTO_TEST_CASE(test_basis_database_container_single_element_constructor)
+    BOOST_AUTO_TEST_CASE(test_single_element_constructor)
     {
         const celeritas::basis_database db{ "name", "test" };
         const celeritas::basis_database_container container{ db };
@@ -21,12 +32,12 @@ BOOST_AUTO_TEST_SUITE(basis_database_container_suite)
         BOOST_CHECK(*container.begin() == db);
     }
 
-    BOOST_AUTO_TEST_CASE(test_basis_database_container_vector_constructor)
+    BOOST_AUTO_TEST_CASE(test_vector_constructor)
     {
         const celeritas::basis_database db1{ "name", "test" };
         const celeritas::basis_database db2{ "age", 30 };
-        const std::vector vec{ db1, db2 };
-        const celeritas::basis_database_container container{ vec };
+        const std::vector db_container{ db1, db2 };
+        const celeritas::basis_database_container container{ db_container };
 
         BOOST_CHECK_EQUAL(container.get_size(), 2);
         auto iter = container.begin();
@@ -35,55 +46,72 @@ BOOST_AUTO_TEST_SUITE(basis_database_container_suite)
         BOOST_CHECK(*iter == db2);
     }
 
-    BOOST_AUTO_TEST_CASE(test_basis_database_container_modify)
+    BOOST_AUTO_TEST_CASE(test_vector_constructor_with_duplicates_throws)
     {
-        const celeritas::basis_database db1{ "name", "test" };
-        celeritas::basis_database_container container{ db1 };
+        const std::vector<celeritas::basis_database> dbs_with_duplicates{ { "name", "test1" },
+                                                                          { "age", 30 },
+                                                                          { "name", "test2" } };
 
-        const celeritas::basis_database db2{ "name", "modified" };
-        container.modify(db2);
+        BOOST_CHECK_THROW(celeritas::basis_database_container{ dbs_with_duplicates }, celeritas::celeritas_error);
+    }
+
+    BOOST_AUTO_TEST_CASE(test_modify_existing_element)
+    {
+        celeritas::basis_database_container container{ celeritas::basis_database{ "name", "test" } };
+        const celeritas::basis_database db_modified{ "name", "modified" };
+        container.modify(db_modified);
 
         BOOST_CHECK_EQUAL(container.get_size(), 1);
-        BOOST_CHECK(*container.begin() == db2);
+        BOOST_CHECK_EQUAL(get_value<celeritas::database_data_type::string_type>(container, "name"), "modified");
+    }
 
-        const celeritas::basis_database db3{ "age", 30 };
-        container.modify(db3);
+    BOOST_AUTO_TEST_CASE(test_modify_add_new_element)
+    {
+        celeritas::basis_database_container container{ celeritas::basis_database{ "name", "test" } };
+        const celeritas::basis_database db_new{ "age", 30 };
+        container.modify(db_new);
+
         BOOST_CHECK_EQUAL(container.get_size(), 2);
+        BOOST_CHECK_EQUAL(get_value<celeritas::database_data_type::int32_type>(container, "age"), 30);
     }
 
-    BOOST_AUTO_TEST_CASE(test_basis_database_container_set)
+    BOOST_AUTO_TEST_CASE(test_clear)
     {
-        const celeritas::basis_database db1{ "name", "test" };
-        celeritas::basis_database_container container{ db1 };
-
-        const celeritas::basis_database db2{ "age", 30 };
-        const std::vector vec{ db2 };
-        container.set(vec);
-
-        BOOST_CHECK_EQUAL(container.get_size(), 1);
-        BOOST_CHECK(*container.begin() == db2);
-    }
-
-    BOOST_AUTO_TEST_CASE(test_basis_database_container_clear)
-    {
-        const celeritas::basis_database db1{ "name", "test" };
-        celeritas::basis_database_container container{ db1 };
-
+        celeritas::basis_database_container container{ celeritas::basis_database{ "name", "test" } };
         container.clear();
         BOOST_CHECK_EQUAL(container.get_size(), 0);
     }
 
-    BOOST_AUTO_TEST_CASE(test_basis_database_container_get_variant_value)
+    BOOST_AUTO_TEST_CASE(test_get_variant_value_string)
     {
-        const celeritas::basis_database db1{ "name", "test" };
-        const celeritas::basis_database_container container{ db1 };
-
+        const celeritas::basis_database_container container{ celeritas::basis_database_container::object_container{ { "name", "test" } } };
         const auto& value = container.get_variant_value("name");
         BOOST_CHECK(std::holds_alternative<std::string>(value));
         BOOST_CHECK_EQUAL(std::get<std::string>(value), "test");
+    }
 
-        const auto& value_missing = container.get_variant_value("missing");
-        BOOST_CHECK(std::holds_alternative<std::monostate>(value_missing));
+    BOOST_AUTO_TEST_CASE(test_get_variant_value_int)
+    {
+        const celeritas::basis_database_container container{ celeritas::basis_database_container::object_container{ { "age", 30 } } };
+        const auto& value = container.get_variant_value("age");
+        BOOST_CHECK(std::holds_alternative<int32_t>(value));
+        BOOST_CHECK_EQUAL(std::get<int32_t>(value), 30);
+    }
+
+    BOOST_AUTO_TEST_CASE(test_get_variant_value_missing)
+    {
+        const celeritas::basis_database_container container{ celeritas::basis_database_container::object_container{} };
+        const auto& value = container.get_variant_value("missing");
+        BOOST_CHECK(std::holds_alternative<std::monostate>(value));
+    }
+
+    BOOST_AUTO_TEST_CASE(test_get_value)
+    {
+        const celeritas::basis_database_container container{ celeritas::basis_database_container::object_container{ { "name", "test" }, { "age", 30 } } };
+
+        BOOST_CHECK_EQUAL(get_value<celeritas::database_data_type::string_type>(container, "name"), "test");
+        BOOST_CHECK_EQUAL(get_value<celeritas::database_data_type::int32_type>(container, "age"), 30);
+        BOOST_CHECK_THROW(get_value<celeritas::database_data_type::string_type>(container, "missing"), std::bad_variant_access);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

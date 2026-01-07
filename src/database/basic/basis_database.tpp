@@ -17,7 +17,7 @@ celeritas::basis_database::basis_database(const std::string_view field_name, T v
 }
 
 template <celeritas::database_data_type Type>
-celeritas::database_data_type_traits<Type>::type celeritas::basis_database::get_value() const
+const celeritas::database_data_type_traits<Type>::type& celeritas::basis_database::get_value() const
 {
     using target_type = database_data_type_traits<Type>::type;
     if (auto* value = std::get_if<target_type>(&value_))
@@ -25,13 +25,16 @@ celeritas::database_data_type_traits<Type>::type celeritas::basis_database::get_
         return *value;
     }
 
-    return target_type{};
+    static const target_type default_value{};
+
+    return default_value;
 }
 
 template <celeritas::database_data_type Type>
 std::string celeritas::basis_database::get_array_string_value() const
 {
-    const auto value = get_value<Type>();
+    const auto& value = get_value<Type>();
+
     std::ostringstream os{};
     os << "[";
     for (auto iter = value.cbegin(); iter != value.cend(); ++iter)
@@ -39,6 +42,7 @@ std::string celeritas::basis_database::get_array_string_value() const
         append_value<Type>(os, *iter, std::next(iter) == value.cend());
     }
     os << "]";
+
     return os.str();
 }
 
