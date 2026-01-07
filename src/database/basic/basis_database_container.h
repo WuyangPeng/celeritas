@@ -10,7 +10,7 @@ namespace celeritas
     {
     public:
         using class_type = basis_database_container;
-
+        using value_variant = basis_database::value_variant;
         using object_container = std::vector<basis_database>;
         using object_container_const_iter = object_container::const_iterator;
 
@@ -26,7 +26,7 @@ namespace celeritas
 
         void clear();
 
-        [[nodiscard]] std::any get_any_value(std::string_view field_name) const;
+        [[nodiscard]] const value_variant& get_variant_value(std::string_view field_name) const;
 
         [[nodiscard]] object_container_const_iter begin() const noexcept;
 

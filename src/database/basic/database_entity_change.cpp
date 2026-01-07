@@ -4,7 +4,7 @@
 celeritas::database_entity_change::database_entity_change(const database_type database_type,
                                                           const std::string_view database_name,
                                                           const database_change_type change_type,
-                                                          basis_database_container_const_shared_ptr key)
+                                                          const_basis_database_container_shared_ptr key)
     : database_type_{ database_type },
       database_name_{ database_name },
       change_type_{ change_type },
@@ -39,12 +39,12 @@ celeritas::database_change_type celeritas::database_entity_change::get_change_ty
     return change_type_;
 }
 
-celeritas::database_entity_change::basis_database_container_const_shared_ptr celeritas::database_entity_change::get_key() const noexcept
+celeritas::database_entity_change::const_basis_database_container_shared_ptr celeritas::database_entity_change::get_key() const noexcept
 {
     return key_;
 }
 
-celeritas::database_entity_change::basis_database_container_const_shared_ptr celeritas::database_entity_change::get_database() const noexcept
+celeritas::database_entity_change::const_basis_database_container_shared_ptr celeritas::database_entity_change::get_database() const noexcept
 {
     return database_;
 }
@@ -54,7 +54,7 @@ celeritas::database_entity_change celeritas::database_entity_change::get_select(
     return database_entity_change{ database_type_, database_name_, database_change_type::select_type, key_ };
 }
 
-celeritas::database_entity_change celeritas::database_entity_change::get_select(const basis_database_container_const_shared_ptr& key) const
+celeritas::database_entity_change celeritas::database_entity_change::get_select(const const_basis_database_container_shared_ptr& key) const
 {
     return database_entity_change{ database_type_, database_name_, database_change_type::select_type, key };
 }
@@ -93,7 +93,7 @@ bool celeritas::database_entity_change::is_must_save() const
     return true;
 }
 
-std::any celeritas::database_entity_change::get_any_value(const std::string_view field_name) const
+const celeritas::database_entity_change::value_variant& celeritas::database_entity_change::get_variant_value(const std::string_view field_name) const
 {
-    return database_->get_any_value(field_name);
+    return database_->get_variant_value(field_name);
 }

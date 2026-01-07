@@ -4,9 +4,9 @@
 #include "database_data_type_traits.h"
 #include "database/database_fwd.h"
 
-#include <any>
 #include <memory>
 #include <string>
+#include <variant>
 #include <vector>
 
 namespace celeritas
@@ -23,6 +23,19 @@ namespace celeritas
         using double_array = database_data_type_traits<database_data_type::double_array_type>::type;
         using document_type = database_data_type_traits<database_data_type::document_type>::type;
         using document_array = database_data_type_traits<database_data_type::document_array_type>::type;
+        using value_variant = std::variant<std::monostate,
+                                           std::string,
+                                           string_array,
+                                           int32_t,
+                                           int32_array,
+                                           int64_t,
+                                           int64_array,
+                                           double,
+                                           double_array,
+                                           bool,
+                                           byte_array,
+                                           document_type,
+                                           document_array>;
 
         explicit basis_database(std::string_view field_name);
 
@@ -66,7 +79,7 @@ namespace celeritas
         template <database_data_type Type>
         [[nodiscard]] std::string get_array_string_value() const;
 
-        [[nodiscard]] std::any get_any_value() const;
+        [[nodiscard]] const value_variant& get_variant_value() const;
 
         [[nodiscard]] std::string get_sql_field_string() const;
 
@@ -75,7 +88,7 @@ namespace celeritas
         [[nodiscard]] std::string get_quotation_mark_string() const;
 
     private:
-        basis_database(std::string_view field_name, database_data_type dataType, std::any value);
+        basis_database(std::string_view field_name, database_data_type dataType, value_variant value);
 
         [[nodiscard]] std::string get_document_string() const;
 
@@ -83,7 +96,7 @@ namespace celeritas
 
         std::string_view field_name_;
         database_data_type data_type_ = database_data_type::null_type;
-        std::any value_;
+        value_variant value_;
     };
 
     [[nodiscard]] bool operator==(const basis_database& lhs, const basis_database& rhs);

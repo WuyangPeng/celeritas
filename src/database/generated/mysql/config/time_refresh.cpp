@@ -4,7 +4,7 @@
 #include "config/basic/database_type.h"
 #include "database/basic/database_change_type.h"
 #include "database/basic/database_entity_change.tpp"
-#include "database/entity/database_entity.tpp"
+#include "database/entity/database_entity.h"
 #include "database/entity/entity.tpp"
 
 celeritas::time_refresh::time_refresh(const database_entity_change& entity)
@@ -92,7 +92,7 @@ const celeritas::database_entity::database_field_container& celeritas::time_refr
     return field_name_container;
 }
 
-celeritas::time_refresh::database_entity_change_const_shared_ptr celeritas::time_refresh::get_select(const database_type database_type)
+celeritas::time_refresh::const_database_entity_change_shared_ptr celeritas::time_refresh::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
                                                                         database_name,
@@ -101,7 +101,7 @@ celeritas::time_refresh::database_entity_change_const_shared_ptr celeritas::time
     return result;
 }
 
-celeritas::time_refresh::database_entity_change_const_shared_ptr celeritas::time_refresh::get_select(const database_type database_type, traits::param_type::int64_type id)
+celeritas::time_refresh::const_database_entity_change_shared_ptr celeritas::time_refresh::get_select(const database_type database_type, traits::param_type::int64_type id)
 {
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
@@ -109,7 +109,7 @@ celeritas::time_refresh::database_entity_change_const_shared_ptr celeritas::time
                                                     get_key_basis_database_container(id));
 }
 
-celeritas::time_refresh::database_entity_change_const_shared_ptr celeritas::time_refresh::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
+celeritas::time_refresh::const_database_entity_change_shared_ptr celeritas::time_refresh::get_select(const database_type database_type, const const_basis_database_container_shared_ptr& key)
 {
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
@@ -117,7 +117,7 @@ celeritas::time_refresh::database_entity_change_const_shared_ptr celeritas::time
                                                     key);
 }
 
-celeritas::time_refresh::basis_database_container_const_shared_ptr celeritas::time_refresh::get_key_basis_database_container(traits::param_type::int64_type id)
+celeritas::time_refresh::const_basis_database_container_shared_ptr celeritas::time_refresh::get_key_basis_database_container(traits::param_type::int64_type id)
 {
     return std::make_shared<basis_database_container>(basis_database{ id_describe, id });
 }

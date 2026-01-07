@@ -38,11 +38,11 @@ namespace celeritas
 
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
-        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type);
+        [[nodiscard]] static const_database_entity_change_shared_ptr get_select(database_type database_type);
 
-        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, traits::param_type::int64_type user_id);
+        [[nodiscard]] static const_database_entity_change_shared_ptr get_select(database_type database_type, traits::param_type::int64_type user_id);
 
-        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, const basis_database_container_const_shared_ptr& key);
+        [[nodiscard]] static const_database_entity_change_shared_ptr get_select(database_type database_type, const const_basis_database_container_shared_ptr& key);
 
         static constexpr std::string_view database_name{ "user_time_refresh" };
 
@@ -50,7 +50,7 @@ namespace celeritas
         static constexpr std::string_view player_time_refresh_describe{ "player_time_refresh" };
 
     private:
-        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(traits::param_type::int64_type user_id);
+        [[nodiscard]] static const_basis_database_container_shared_ptr get_key_basis_database_container(traits::param_type::int64_type user_id);
 
         entity<user_id_describe, database_data_type::int64_type, database_index_type::key> user_id_;
         entity<player_time_refresh_describe, database_data_type::document_array_type> player_time_refresh_;

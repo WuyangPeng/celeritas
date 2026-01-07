@@ -11,12 +11,12 @@ namespace celeritas
     {
     public:
         using class_type = database_entity_change;
-        using basis_database_container_const_shared_ptr = std::shared_ptr<const basis_database_container>;
+        using const_basis_database_container_shared_ptr = std::shared_ptr<const basis_database_container>;
 
         database_entity_change(database_type database_type,
                                std::string_view database_name,
                                database_change_type change_type,
-                               basis_database_container_const_shared_ptr key);
+                               const_basis_database_container_shared_ptr key);
 
         database_entity_change(database_type database_type,
                                std::string_view database_name,
@@ -28,13 +28,13 @@ namespace celeritas
 
         [[nodiscard]] database_change_type get_change_type() const noexcept;
 
-        [[nodiscard]] basis_database_container_const_shared_ptr get_key() const noexcept;
+        [[nodiscard]] const_basis_database_container_shared_ptr get_key() const noexcept;
 
-        [[nodiscard]] basis_database_container_const_shared_ptr get_database() const noexcept;
+        [[nodiscard]] const_basis_database_container_shared_ptr get_database() const noexcept;
 
         [[nodiscard]] database_entity_change get_select() const;
 
-        [[nodiscard]] database_entity_change get_select(const basis_database_container_const_shared_ptr& key) const;
+        [[nodiscard]] database_entity_change get_select(const const_basis_database_container_shared_ptr& key) const;
 
         void modify(const basis_database& basis_database);
 
@@ -49,13 +49,14 @@ namespace celeritas
 
     private:
         using basis_database_container_shared_ptr = std::shared_ptr<basis_database_container>;
+        using value_variant = basis_database::value_variant;
 
-        [[nodiscard]] std::any get_any_value(std::string_view field_name) const;
+        [[nodiscard]] const value_variant& get_variant_value(std::string_view field_name) const;
 
         database_type database_type_;
         std::string_view database_name_;
         database_change_type change_type_;
-        basis_database_container_const_shared_ptr key_;
+        const_basis_database_container_shared_ptr key_;
         basis_database_container_shared_ptr database_;
     };
 }

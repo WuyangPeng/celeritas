@@ -4,7 +4,7 @@
 #include "config/basic/database_type.h"
 #include "database/basic/database_change_type.h"
 #include "database/basic/database_entity_change.tpp"
-#include "database/entity/database_entity.tpp"
+#include "database/entity/database_entity.h"
 #include "database/entity/entity.tpp"
 
 celeritas::user_server_roles::user_server_roles(const database_entity_change& entity)
@@ -114,7 +114,7 @@ const celeritas::database_entity::database_field_container& celeritas::user_serv
     return field_name_container;
 }
 
-celeritas::user_server_roles::database_entity_change_const_shared_ptr celeritas::user_server_roles::get_select(const database_type database_type)
+celeritas::user_server_roles::const_database_entity_change_shared_ptr celeritas::user_server_roles::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
                                                                         database_name,
@@ -123,7 +123,7 @@ celeritas::user_server_roles::database_entity_change_const_shared_ptr celeritas:
     return result;
 }
 
-celeritas::user_server_roles::database_entity_change_const_shared_ptr celeritas::user_server_roles::get_select(const database_type database_type, traits::param_type::int64_type id)
+celeritas::user_server_roles::const_database_entity_change_shared_ptr celeritas::user_server_roles::get_select(const database_type database_type, traits::param_type::int64_type id)
 {
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
@@ -131,7 +131,7 @@ celeritas::user_server_roles::database_entity_change_const_shared_ptr celeritas:
                                                     get_key_basis_database_container(id));
 }
 
-celeritas::user_server_roles::database_entity_change_const_shared_ptr celeritas::user_server_roles::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
+celeritas::user_server_roles::const_database_entity_change_shared_ptr celeritas::user_server_roles::get_select(const database_type database_type, const const_basis_database_container_shared_ptr& key)
 {
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
@@ -139,7 +139,7 @@ celeritas::user_server_roles::database_entity_change_const_shared_ptr celeritas:
                                                     key);
 }
 
-celeritas::user_server_roles::basis_database_container_const_shared_ptr celeritas::user_server_roles::get_key_basis_database_container(traits::param_type::int64_type id)
+celeritas::user_server_roles::const_basis_database_container_shared_ptr celeritas::user_server_roles::get_key_basis_database_container(traits::param_type::int64_type id)
 {
     return std::make_shared<basis_database_container>(basis_database{ id_describe, id });
 }

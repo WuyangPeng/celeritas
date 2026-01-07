@@ -166,4 +166,10 @@ namespace celeritas
             using document_array_element_type = boost::call_traits<document_array_element_type>::param_type;
         }
     }
+
+    template <class... Ts>
+    struct overloaded : Ts...
+    {
+        using Ts::operator()...;
+    };
 }

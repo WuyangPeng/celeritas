@@ -1,12 +1,11 @@
 ﻿#include "basis_database.tpp"
 
 #include <boost/numeric/conversion/cast.hpp>
-#include <functional>
-#include <map>
+
 #include <sstream>
 
 celeritas::basis_database::basis_database(const std::string_view field_name)
-    : class_type{ field_name, database_data_type::null_type, nullptr }
+    : class_type{ field_name, database_data_type::null_type, std::monostate{} }
 {
 }
 
@@ -80,7 +79,7 @@ celeritas::database_data_type celeritas::basis_database::get_data_type() const n
     return data_type_;
 }
 
-std::any celeritas::basis_database::get_any_value() const
+const celeritas::basis_database::value_variant& celeritas::basis_database::get_variant_value() const
 {
     return value_;
 }
@@ -97,65 +96,47 @@ std::string celeritas::basis_database::get_sql_field_string() const
 
 std::string celeritas::basis_database::get_string() const
 {
-    if (!value_.has_value())
-    {
-        return "";
-    }
-
-    using converter_function = std::function<std::string(const basis_database*)>;
-    static const std::map<database_data_type, converter_function> converters{
-        { database_data_type::string_type, [](const basis_database* db) {
-            return db->get_value<database_data_type::string_type>();
-        } },
-        { database_data_type::int32_type, [](const basis_database* db) {
-            return std::to_string(db->get_value<database_data_type::int32_type>());
-        } },
-        { database_data_type::int32_count_type, [](const basis_database* db) {
-            return std::to_string(db->get_value<database_data_type::int32_count_type>());
-        } },
-        { database_data_type::int64_type, [](const basis_database* db) {
-            return std::to_string(db->get_value<database_data_type::int64_type>());
-        } },
-        { database_data_type::int64_count_type, [](const basis_database* db) {
-            return std::to_string(db->get_value<database_data_type::int64_count_type>());
-        } },
-        { database_data_type::double_type, [](const basis_database* db) {
-            return std::to_string(db->get_value<database_data_type::double_type>());
-        } },
-        { database_data_type::bool_type, [](const basis_database* db) {
-            return db->get_value<database_data_type::bool_type>() ? "true" : "false";
-        } },
-        { database_data_type::string_array_type, [](const basis_database* db) {
-            return db->get_array_string_value<database_data_type::string_array_type>();
-        } },
-        { database_data_type::int32_array_type, [](const basis_database* db) {
-            return db->get_array_string_value<database_data_type::int32_array_type>();
-        } },
-        { database_data_type::int64_array_type, [](const basis_database* db) {
-            return db->get_array_string_value<database_data_type::int64_array_type>();
-        } },
-        { database_data_type::double_array_type, [](const basis_database* db) {
-            return db->get_array_string_value<database_data_type::double_array_type>();
-        } },
-        { database_data_type::byte_array_type, [](const basis_database* db) {
-            const auto& byteArray = db->get_value<database_data_type::byte_array_type>();
-            return std::string{ byteArray.begin(), byteArray.end() };
-        } },
-        { database_data_type::document_type, [](const basis_database* db) {
-            return db->get_document_string();
-        } },
-        { database_data_type::document_array_type, [](const basis_database* db) {
-            return db->get_document_array_string();
-        } }
-    };
-
-    if (const auto iter = converters.find(data_type_);
-        iter != converters.end())
-    {
-        return iter->second(this);
-    }
-
-    return "";
+    return std::visit(overloaded{
+                          [](std::monostate) {
+                              return std::string{};
+                          },
+                          [](const std::string& value) {
+                              return value;
+                          },
+                          [](const int32_t value) {
+                              return std::to_string(value);
+                          },
+                          [](const int64_t value) {
+                              return std::to_string(value);
+                          },
+                          [](const double value) {
+                              return std::to_string(value);
+                          },
+                          [](const bool value) {
+                              return std::string{ value ? "true" : "false" };
+                          },
+                          [](const byte_array& value) {
+                              return std::string{ value.begin(), value.end() };
+                          },
+                          [this](const string_array& value) {
+                              return get_array_string_value<database_data_type::string_array_type>();
+                          },
+                          [this](const int32_array& value) {
+                              return get_array_string_value<database_data_type::int32_array_type>();
+                          },
+                          [this](const int64_array& value) {
+                              return get_array_string_value<database_data_type::int64_array_type>();
+                          },
+                          [this](const double_array& value) {
+                              return get_array_string_value<database_data_type::double_array_type>();
+                          },
+                          [this](const document_type& value) {
+                              return get_document_string();
+                          },
+                          [this](const document_array& value) {
+                              return get_document_array_string();
+                          }
+                      }, value_);
 }
 
 std::string celeritas::basis_database::get_quotation_mark_string() const
@@ -168,7 +149,7 @@ std::string celeritas::basis_database::get_quotation_mark_string() const
     return get_string();
 }
 
-celeritas::basis_database::basis_database(const std::string_view field_name, const database_data_type dataType, std::any value)
+celeritas::basis_database::basis_database(const std::string_view field_name, const database_data_type dataType, value_variant value)
     : field_name_{ field_name }, data_type_{ dataType }, value_{ std::move(value) }
 {
 }
@@ -221,67 +202,17 @@ std::string celeritas::basis_database::get_document_array_string() const
 
 bool celeritas::operator==(const basis_database& lhs, const basis_database& rhs)
 {
-    if (lhs.get_data_type() != rhs.get_data_type() || lhs.get_field_name() != rhs.get_field_name())
+    if (lhs.get_data_type() != rhs.get_data_type())
     {
         return false;
     }
 
-    using comparator_function = std::function<bool(const basis_database&, const basis_database&)>;
-    static const std::map<database_data_type, comparator_function> comparators{
-        { database_data_type::null_type, [](const basis_database& l, const basis_database& r) {
-            return true;
-        } },
-        { database_data_type::string_type, [](const basis_database& l, const basis_database& r) {
-            return l.get_value<database_data_type::string_type>() == r.get_value<database_data_type::string_type>();
-        } },
-        { database_data_type::string_array_type, [](const basis_database& l, const basis_database& r) {
-            return l.get_value<database_data_type::string_array_type>() == r.get_value<database_data_type::string_array_type>();
-        } },
-        { database_data_type::int32_type, [](const basis_database& l, const basis_database& r) {
-            return l.get_value<database_data_type::int32_type>() == r.get_value<database_data_type::int32_type>();
-        } },
-        { database_data_type::int32_count_type, [](const basis_database& l, const basis_database& r) {
-            return l.get_value<database_data_type::int32_count_type>() == r.get_value<database_data_type::int32_count_type>();
-        } },
-        { database_data_type::int32_array_type, [](const basis_database& l, const basis_database& r) {
-            return l.get_value<database_data_type::int32_array_type>() == r.get_value<database_data_type::int32_array_type>();
-        } },
-        { database_data_type::int64_type, [](const basis_database& l, const basis_database& r) {
-            return l.get_value<database_data_type::int64_type>() == r.get_value<database_data_type::int64_type>();
-        } },
-        { database_data_type::int64_count_type, [](const basis_database& l, const basis_database& r) {
-            return l.get_value<database_data_type::int64_count_type>() == r.get_value<database_data_type::int64_count_type>();
-        } },
-        { database_data_type::int64_array_type, [](const basis_database& l, const basis_database& r) {
-            return l.get_value<database_data_type::int64_array_type>() == r.get_value<database_data_type::int64_array_type>();
-        } },
-        { database_data_type::double_type, [](const basis_database& l, const basis_database& r) {
-            return l.get_value<database_data_type::double_type>() == r.get_value<database_data_type::double_type>();
-        } },
-        { database_data_type::double_array_type, [](const basis_database& l, const basis_database& r) {
-            return l.get_value<database_data_type::double_array_type>() == r.get_value<database_data_type::double_array_type>();
-        } },
-        { database_data_type::bool_type, [](const basis_database& l, const basis_database& r) {
-            return l.get_value<database_data_type::bool_type>() == r.get_value<database_data_type::bool_type>();
-        } },
-        { database_data_type::byte_array_type, [](const basis_database& l, const basis_database& r) {
-            return l.get_value<database_data_type::byte_array_type>() == r.get_value<database_data_type::byte_array_type>();
-        } },
-        { database_data_type::document_type, [](const basis_database& l, const basis_database& r) {
-            return l.get_value<database_data_type::document_type>() == r.get_value<database_data_type::document_type>();
-        } },
-        { database_data_type::document_array_type, [](const basis_database& l, const basis_database& r) {
-            return l.get_value<database_data_type::document_array_type>() == r.get_value<database_data_type::document_array_type>();
-        } }
-    };
-
-    if (const auto iter = comparators.find(lhs.get_data_type());
-        iter != comparators.end())
+    if (lhs.get_field_name() != rhs.get_field_name())
     {
-        return iter->second(lhs, rhs);
+        return false;
     }
 
-    return false;
+    return lhs.get_variant_value() == rhs.get_variant_value();
 }
 
 bool celeritas::operator!=(const basis_database& lhs, const basis_database& rhs)

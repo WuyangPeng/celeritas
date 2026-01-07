@@ -56,11 +56,11 @@ namespace celeritas
 
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
-        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type);
+        [[nodiscard]] static const_database_entity_change_shared_ptr get_select(database_type database_type);
 
-        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, traits::param_type::int64_type cell_id);
+        [[nodiscard]] static const_database_entity_change_shared_ptr get_select(database_type database_type, traits::param_type::int64_type cell_id);
 
-        [[nodiscard]] static database_entity_change_const_shared_ptr get_select(database_type database_type, const basis_database_container_const_shared_ptr& key);
+        [[nodiscard]] static const_database_entity_change_shared_ptr get_select(database_type database_type, const const_basis_database_container_shared_ptr& key);
 
         static constexpr std::string_view database_name{ "server_cell" };
 
@@ -74,7 +74,7 @@ namespace celeritas
         static constexpr std::string_view status_describe{ "status" };
 
     private:
-        [[nodiscard]] static basis_database_container_const_shared_ptr get_key_basis_database_container(traits::param_type::int64_type cell_id);
+        [[nodiscard]] static const_basis_database_container_shared_ptr get_key_basis_database_container(traits::param_type::int64_type cell_id);
 
         entity<cell_id_describe, database_data_type::int64_type, database_index_type::key> cell_id_;
         entity<game_server_id_describe, database_data_type::string_type, database_index_type::unique_index> game_server_id_;

@@ -4,7 +4,7 @@
 #include "config/basic/database_type.h"
 #include "database/basic/database_change_type.h"
 #include "database/basic/database_entity_change.tpp"
-#include "database/entity/database_entity.tpp"
+#include "database/entity/database_entity.h"
 #include "database/entity/entity.tpp"
 
 celeritas::orders::orders(const database_entity_change& entity)
@@ -412,7 +412,7 @@ const celeritas::database_entity::database_field_container& celeritas::orders::g
     return field_name_container;
 }
 
-celeritas::orders::database_entity_change_const_shared_ptr celeritas::orders::get_select(const database_type database_type)
+celeritas::orders::const_database_entity_change_shared_ptr celeritas::orders::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
                                                                         database_name,
@@ -421,7 +421,7 @@ celeritas::orders::database_entity_change_const_shared_ptr celeritas::orders::ge
     return result;
 }
 
-celeritas::orders::database_entity_change_const_shared_ptr celeritas::orders::get_select(const database_type database_type, traits::param_type::int64_type id)
+celeritas::orders::const_database_entity_change_shared_ptr celeritas::orders::get_select(const database_type database_type, traits::param_type::int64_type id)
 {
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
@@ -429,7 +429,7 @@ celeritas::orders::database_entity_change_const_shared_ptr celeritas::orders::ge
                                                     get_key_basis_database_container(id));
 }
 
-celeritas::orders::database_entity_change_const_shared_ptr celeritas::orders::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
+celeritas::orders::const_database_entity_change_shared_ptr celeritas::orders::get_select(const database_type database_type, const const_basis_database_container_shared_ptr& key)
 {
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
@@ -437,7 +437,7 @@ celeritas::orders::database_entity_change_const_shared_ptr celeritas::orders::ge
                                                     key);
 }
 
-celeritas::orders::basis_database_container_const_shared_ptr celeritas::orders::get_key_basis_database_container(traits::param_type::int64_type id)
+celeritas::orders::const_basis_database_container_shared_ptr celeritas::orders::get_key_basis_database_container(traits::param_type::int64_type id)
 {
     return std::make_shared<basis_database_container>(basis_database{ id_describe, id });
 }

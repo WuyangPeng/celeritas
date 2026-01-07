@@ -36,14 +36,14 @@ void celeritas::basis_database_container::clear()
     container_.clear();
 }
 
-std::any celeritas::basis_database_container::get_any_value(std::string_view field_name) const
+const celeritas::basis_database::value_variant& celeritas::basis_database_container::get_variant_value(std::string_view field_name) const
 {
     if (const auto result = std::ranges::find_if(container_, [&field_name](const auto& element) {
             return element.get_field_name() == field_name;
         });
         result != container_.cend())
     {
-        return result->get_any_value();
+        return result->get_variant_value();
     }
 
     throw celeritas_error{ "field name does not exist" };

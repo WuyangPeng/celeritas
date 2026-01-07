@@ -4,7 +4,7 @@
 #include "config/basic/database_type.h"
 #include "database/basic/database_change_type.h"
 #include "database/basic/database_entity_change.tpp"
-#include "database/entity/database_entity.tpp"
+#include "database/entity/database_entity.h"
 #include "database/entity/entity.tpp"
 
 celeritas::sms_limit::sms_limit(const database_entity_change& entity)
@@ -72,7 +72,7 @@ const celeritas::database_entity::database_field_container& celeritas::sms_limit
     return field_name_container;
 }
 
-celeritas::sms_limit::database_entity_change_const_shared_ptr celeritas::sms_limit::get_select(const database_type database_type)
+celeritas::sms_limit::const_database_entity_change_shared_ptr celeritas::sms_limit::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
                                                                         database_name,
@@ -81,7 +81,7 @@ celeritas::sms_limit::database_entity_change_const_shared_ptr celeritas::sms_lim
     return result;
 }
 
-celeritas::sms_limit::database_entity_change_const_shared_ptr celeritas::sms_limit::get_select(const database_type database_type, traits::param_type::string_type phone)
+celeritas::sms_limit::const_database_entity_change_shared_ptr celeritas::sms_limit::get_select(const database_type database_type, traits::param_type::string_type phone)
 {
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
@@ -89,7 +89,7 @@ celeritas::sms_limit::database_entity_change_const_shared_ptr celeritas::sms_lim
                                                     get_key_basis_database_container(phone));
 }
 
-celeritas::sms_limit::database_entity_change_const_shared_ptr celeritas::sms_limit::get_select(const database_type database_type, const basis_database_container_const_shared_ptr& key)
+celeritas::sms_limit::const_database_entity_change_shared_ptr celeritas::sms_limit::get_select(const database_type database_type, const const_basis_database_container_shared_ptr& key)
 {
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
@@ -97,7 +97,7 @@ celeritas::sms_limit::database_entity_change_const_shared_ptr celeritas::sms_lim
                                                     key);
 }
 
-celeritas::sms_limit::basis_database_container_const_shared_ptr celeritas::sms_limit::get_key_basis_database_container(traits::param_type::string_type phone)
+celeritas::sms_limit::const_basis_database_container_shared_ptr celeritas::sms_limit::get_key_basis_database_container(traits::param_type::string_type phone)
 {
     return std::make_shared<basis_database_container>(basis_database{ phone_describe, phone });
 }
