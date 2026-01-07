@@ -5,8 +5,8 @@
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
 #include "common/core/noexcept_safe_call_and_log.h"
-#include "database/detail/mysql_row_data_converter.h"
-#include "database/detail/mysql_statement_generator.h"
+#include "detail/mysql_row_data_converter.h"
+#include "detail/mysql_statement_generator.h"
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/classification.hpp>

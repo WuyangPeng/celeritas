@@ -1,4 +1,4 @@
-﻿#include "mysql_parameter.h"
+﻿#include "../../detail/mysql_parameter.h"
 
 celeritas::mysql_parameter::mysql_parameter(const std::string_view host, const int port, const std::string_view user, const std::string_view password, const std::string_view db_name)
     : host_{ host }, port_{ port }, user_{ user }, password_{ password }, db_name_{ db_name }

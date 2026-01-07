@@ -5,7 +5,7 @@
 #include "mongo_database_session.h"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
-#include "database/detail/mongo_row_data_converter.h"
+#include "detail/mongo_row_data_converter.h"
 
 #include <boost/asio/use_awaitable.hpp>
 #include <mongocxx/exception/operation_exception.hpp>

@@ -8,9 +8,9 @@
 #include "database/redis/redis_sorted_set_commands.h"
 #include "database/redis/redis_string_commands.h"
 #include "database/redis/scan_result.h"
-#include "database/detail/redis_context.h"
-#include "database/detail/redis_parameter.h"
-#include "database/detail/redis_reply.h"
+#include "../redis/detail/redis_context.h"
+#include "../redis/detail/redis_parameter.h"
+#include "../redis/detail/redis_reply.h"
 
 #include <boost/asio.hpp>
 #include <boost/asio/awaitable.hpp>

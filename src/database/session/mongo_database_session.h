@@ -1,7 +1,7 @@
 #pragma once
 
 #include "database_session.h"
-#include "database/detail/mongo_parameter.h"
+#include "detail/mongo_parameter.h"
 
 #include <boost/asio/awaitable.hpp>
 #include <boost/asio/io_context.hpp>

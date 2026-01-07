@@ -6,7 +6,7 @@
 #include "common/core/celeritas_error.h"
 #include "common/common_fwd.h"
 #include "common/logging/logger.h"
-#include "database/detail/redis_key_data_converter.h"
+#include "../redis/detail/redis_key_data_converter.h"
 
 using namespace std::literals;
 

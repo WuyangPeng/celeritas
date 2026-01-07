@@ -1,7 +1,7 @@
 #pragma once
 
 #include "database_session.h"
-#include "database/detail/mysql_parameter.h"
+#include "detail/mysql_parameter.h"
 
 #include <boost/mysql.hpp>
 #include <boost/asio/awaitable.hpp>
