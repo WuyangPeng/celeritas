@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "database/database_fwd.h"
 #include "database_index_type.h"
+#include "database/database_fwd.h"
 
 namespace celeritas
 {

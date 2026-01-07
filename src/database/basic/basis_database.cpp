@@ -1,8 +1,7 @@
 ﻿#include "basis_database.tpp"
-#include "database_data_type.h"
-#include "database_data_type_traits.h"
 
 #include <boost/numeric/conversion/cast.hpp>
+#include <sstream>
 
 celeritas::basis_database::basis_database(const std::string_view field_name)
     : class_type{ field_name, database_data_type::null_type, nullptr }
@@ -203,12 +202,48 @@ celeritas::basis_database::basis_database(const std::string_view field_name, con
 
 std::string celeritas::basis_database::get_document_string() const
 {
-    return "";
+    const auto& document = get_value<database_data_type::document_type>();
+    if (document.empty())
+    {
+        return "{}";
+    }
+
+    std::stringstream ss{};
+    ss << "{";
+    for (auto iter = document.cbegin(); iter != document.cend(); ++iter)
+    {
+        ss << "\"" << iter->get_field_name() << "\":" << iter->get_quotation_mark_string();
+        if (std::next(iter) != document.cend())
+        {
+            ss << ",";
+        }
+    }
+    ss << "}";
+
+    return ss.str();
 }
 
 std::string celeritas::basis_database::get_document_array_string() const
 {
-    return "";
+    const auto& doc_array = get_value<database_data_type::document_array_type>();
+    if (doc_array.empty())
+    {
+        return "[]";
+    }
+
+    std::stringstream ss{};
+    ss << "[";
+    for (auto iter = doc_array.cbegin(); iter != doc_array.cend(); ++iter)
+    {
+        basis_database doc{ "", database_data_type::document_type, *iter };
+        ss << doc.get_string();
+        if (std::next(iter) != doc_array.cend())
+        {
+            ss << ",";
+        }
+    }
+    ss << "]";
+    return ss.str();
 }
 
 bool celeritas::operator==(const basis_database& lhs, const basis_database& rhs)
@@ -222,6 +257,7 @@ bool celeritas::operator==(const basis_database& lhs, const basis_database& rhs)
     {
         return false;
     }
+
     switch (lhs.get_data_type())
     {
         case database_data_type::null_type:

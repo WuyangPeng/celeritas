@@ -94,7 +94,7 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
             {
                 document.emplace_back(get_basis_database(element));
             }
-            return basis_database{ iter->get_field_name(), database_data_type::document_type, document };
+            return basis_database{ iter->get_field_name(), document };
         }
 
         case database_data_type::document_array_type:
@@ -112,7 +112,7 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
                 result.emplace_back(document);
             }
 
-            return basis_database{ iter->get_field_name(), database_data_type::document_array_type, result };
+            return basis_database{ iter->get_field_name(), result };
         }
         default:
         {

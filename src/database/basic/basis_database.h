@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "database_data_type.h"
+#include "database_data_type_traits.h"
 #include "database/database_fwd.h"
 
 #include <any>
@@ -15,13 +16,13 @@ namespace celeritas
     public:
         using class_type = basis_database;
 
-        using byte_array = std::vector<uint8_t>;
-        using string_array = std::vector<std::string>;
-        using int32_array = std::vector<int32_t>;
-        using int64_array = std::vector<int64_t>;
-        using double_array = std::vector<double>;
-        using document_type = std::vector<basis_database>;
-        using document_array = std::vector<document_type>;
+        using byte_array = database_data_type_traits<database_data_type::byte_array_type>::type;
+        using string_array = database_data_type_traits<database_data_type::string_array_type>::type;
+        using int32_array = database_data_type_traits<database_data_type::int32_array_type>::type;
+        using int64_array = database_data_type_traits<database_data_type::int64_array_type>::type;
+        using double_array = database_data_type_traits<database_data_type::double_array_type>::type;
+        using document_type = database_data_type_traits<database_data_type::document_type>::type;
+        using document_array = database_data_type_traits<database_data_type::document_array_type>::type;
 
         explicit basis_database(std::string_view field_name);
 
@@ -60,7 +61,7 @@ namespace celeritas
         [[nodiscard]] database_data_type get_data_type() const noexcept;
 
         template <database_data_type Type>
-        [[nodiscard]] database_data_Type_traits<Type>::type get_value() const;
+        [[nodiscard]] database_data_type_traits<Type>::type get_value() const;
 
         template <database_data_type Type>
         [[nodiscard]] std::string get_array_string_value() const;
@@ -73,9 +74,9 @@ namespace celeritas
 
         [[nodiscard]] std::string get_quotation_mark_string() const;
 
+    private:
         basis_database(std::string_view field_name, database_data_type dataType, std::any value);
 
-    private:
         [[nodiscard]] std::string get_document_string() const;
 
         [[nodiscard]] std::string get_document_array_string() const;

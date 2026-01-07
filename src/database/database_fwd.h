@@ -9,7 +9,7 @@ namespace celeritas
     enum class database_change_type;
 
     template <database_data_type Type>
-    struct database_data_Type_traits;
+    struct database_data_type_traits;
 
     class database_field;
     class basis_database;

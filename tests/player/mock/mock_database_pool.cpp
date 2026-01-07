@@ -129,7 +129,7 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_tim
     traits::document_array_type document_array{};
     document_array.emplace_back(refresh_data.to_document_type());
 
-    const basis_database player_time{ user_time_refresh::player_time_refresh_describe, database_data_type::document_array_type, document_array };
+    const basis_database player_time{ user_time_refresh::player_time_refresh_describe, document_array };
 
     database_entity_change database_entity_change{ database_type::mongo,
                                                    user_time_refresh::database_name,
@@ -186,7 +186,7 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_ser
     traits::document_array_type document_array{};
     document_array.emplace_back(server_role.to_document_type());
 
-    const basis_database servers{ user_server_roles::servers_describe, database_data_type::document_array_type, document_array };
+    const basis_database servers{ user_server_roles::servers_describe, document_array };
 
     database_entity_change database_entity_change{ database_type::mongo,
                                                    user_server_roles::database_name,
@@ -229,7 +229,7 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_user_red
 
     traits::document_array_type document_array{};
     document_array.emplace_back(red_dot.to_document_type());
-    const basis_database red_dots{ user_red_dots::red_dots_describe, database_data_type::document_array_type, document_array };
+    const basis_database red_dots{ user_red_dots::red_dots_describe, document_array };
 
     database_entity_change database_entity_change{ database_type::mongo,
                                                    user_red_dots::database_name,
@@ -325,7 +325,7 @@ celeritas::database_entity_change celeritas::mock_database_pool::select_mock_use
     traits::document_array_type document_array{};
     document_array.emplace_back(data.to_document_type());
 
-    const basis_database inventory_data{ user_item::inventory_data_describe, database_data_type::document_array_type, document_array };
+    const basis_database inventory_data{ user_item::inventory_data_describe, document_array };
 
     database_entity_change database_entity_change{ database_type::mongo,
                                                    user_item::database_name,

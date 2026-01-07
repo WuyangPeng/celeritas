@@ -41,7 +41,7 @@ namespace celeritas
         void clear();
 
         template <database_data_type Type>
-        [[nodiscard]] database_data_Type_traits<Type>::type get_value(std::string_view field_name, boost::call_traits<typename database_data_Type_traits<Type>::type>::param_type default_value = typename database_data_Type_traits<Type>::type{}) const;
+        [[nodiscard]] database_data_type_traits<Type>::type get_value(std::string_view field_name, boost::call_traits<typename database_data_type_traits<Type>::type>::param_type default_value = typename database_data_type_traits<Type>::type{}) const;
 
         [[nodiscard]] bool is_modify() const;
 

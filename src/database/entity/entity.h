@@ -14,8 +14,8 @@ namespace celeritas
     {
     public:
         using class_type = entity;
-        using entity_type = database_data_Type_traits<Type>::type;
-        using element_type = database_data_Type_traits<Type>::element_type;
+        using entity_type = database_data_type_traits<Type>::type;
+        using element_type = database_data_type_traits<Type>::element_type;
 
         explicit entity(boost::call_traits<entity_type>::param_type entity) noexcept(std::is_arithmetic_v<entity_type>);
 
