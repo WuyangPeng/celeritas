@@ -27,13 +27,13 @@ celeritas::database_data_type_traits<Type>::type celeritas::database_entity_chan
     catch (const std::bad_variant_access& error)
     {
         LOG_CHANNEL(database_channel, error)
-        << "database entity change get value error, field_name: "
+        << "database entity change get value error, field name: "
         << field_name
         << ", actual type index: "
         << result.index()
         << ", expected type: "
         << boost::core::demangle(typeid(target_type).name())
-        << ", what: "
+        << ", error: "
         << error.what();
 
         throw;
