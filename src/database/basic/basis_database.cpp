@@ -167,19 +167,15 @@ std::string celeritas::basis_database::get_document_string() const
         return "{}";
     }
 
-    std::stringstream ss{};
-    ss << "{";
+    std::ostringstream os{};
+    os << "{";
     for (auto iter = document.cbegin(); iter != document.cend(); ++iter)
     {
-        ss << "\"" << iter->get_field_name() << "\":" << iter->get_quotation_mark_string();
-        if (std::next(iter) != document.cend())
-        {
-            ss << ",";
-        }
+        append_value(os, *iter, std::next(iter) == document.cend());
     }
-    ss << "}";
+    os << "}";
 
-    return ss.str();
+    return os.str();
 }
 
 std::string celeritas::basis_database::get_document_array_string() const
@@ -190,19 +186,33 @@ std::string celeritas::basis_database::get_document_array_string() const
         return "[]";
     }
 
-    std::stringstream ss{};
-    ss << "[";
+    std::ostringstream os{};
+    os << "[";
     for (auto iter = doc_array.cbegin(); iter != doc_array.cend(); ++iter)
     {
-        basis_database doc{ "", database_data_type::document_type, *iter };
-        ss << doc.get_string();
-        if (std::next(iter) != doc_array.cend())
-        {
-            ss << ",";
-        }
+        append_value(os, *iter, std::next(iter) == doc_array.cend());
     }
-    ss << "]";
-    return ss.str();
+    os << "]";
+    return os.str();
+}
+
+void celeritas::basis_database::append_value(std::ostringstream& os, const basis_database& value, const bool is_last)
+{
+    os << "\"" << value.get_field_name() << "\":" << value.get_quotation_mark_string();
+    if (!is_last)
+    {
+        os << ",";
+    }
+}
+
+void celeritas::basis_database::append_value(std::ostringstream& os, database_data_type_traits<database_data_type::document_type>::param_type value, const bool is_last)
+{
+    const basis_database doc{ "", database_data_type::document_type, value };
+    os << doc.get_string();
+    if (!is_last)
+    {
+        os << ",";
+    }
 }
 
 bool celeritas::operator==(const basis_database& lhs, const basis_database& rhs)

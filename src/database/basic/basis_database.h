@@ -96,6 +96,13 @@ namespace celeritas
 
         [[nodiscard]] std::string get_document_array_string() const;
 
+        template <database_data_type Type>
+        static void append_value(std::ostringstream& os, database_data_type_traits<Type>::element_param_type value, bool is_last);
+
+        static void append_value(std::ostringstream& os, const basis_database& value, bool is_last);
+
+        static void append_value(std::ostringstream& os, database_data_type_traits<database_data_type::document_type>::param_type value, bool is_last);
+
         std::string_view field_name_;
         database_data_type data_type_ = database_data_type::null_type;
         value_variant value_;

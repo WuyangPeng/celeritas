@@ -19,6 +19,8 @@ namespace celeritas
     {
         using type = decltype(nullptr);
         using element_type = type;
+        using param_type = boost::call_traits<type>::param_type;
+        using element_param_type = boost::call_traits<element_type>::param_type;
     };
 
     template <>
@@ -26,6 +28,8 @@ namespace celeritas
     {
         using type = std::string;
         using element_type = type;
+        using param_type = boost::call_traits<type>::param_type;
+        using element_param_type = boost::call_traits<element_type>::param_type;
     };
 
     template <>
@@ -33,6 +37,8 @@ namespace celeritas
     {
         using type = std::vector<std::string>;
         using element_type = type::value_type;
+        using param_type = boost::call_traits<type>::param_type;
+        using element_param_type = boost::call_traits<element_type>::param_type;
     };
 
     template <>
@@ -40,6 +46,8 @@ namespace celeritas
     {
         using type = int32_t;
         using element_type = type;
+        using param_type = boost::call_traits<type>::param_type;
+        using element_param_type = boost::call_traits<element_type>::param_type;
     };
 
     template <>
@@ -47,6 +55,8 @@ namespace celeritas
     {
         using type = int32_t;
         using element_type = type;
+        using param_type = boost::call_traits<type>::param_type;
+        using element_param_type = boost::call_traits<element_type>::param_type;
     };
 
     template <>
@@ -54,6 +64,8 @@ namespace celeritas
     {
         using type = std::vector<int32_t>;
         using element_type = type::value_type;
+        using param_type = boost::call_traits<type>::param_type;
+        using element_param_type = boost::call_traits<element_type>::param_type;
     };
 
     template <>
@@ -61,6 +73,8 @@ namespace celeritas
     {
         using type = int64_t;
         using element_type = type;
+        using param_type = boost::call_traits<type>::param_type;
+        using element_param_type = boost::call_traits<element_type>::param_type;
     };
 
     template <>
@@ -68,6 +82,8 @@ namespace celeritas
     {
         using type = int64_t;
         using element_type = type;
+        using param_type = boost::call_traits<type>::param_type;
+        using element_param_type = boost::call_traits<element_type>::param_type;
     };
 
     template <>
@@ -75,6 +91,8 @@ namespace celeritas
     {
         using type = std::vector<int64_t>;
         using element_type = type::value_type;
+        using param_type = boost::call_traits<type>::param_type;
+        using element_param_type = boost::call_traits<element_type>::param_type;
     };
 
     template <>
@@ -82,6 +100,8 @@ namespace celeritas
     {
         using type = double;
         using element_type = type;
+        using param_type = boost::call_traits<type>::param_type;
+        using element_param_type = boost::call_traits<element_type>::param_type;
     };
 
     template <>
@@ -89,6 +109,8 @@ namespace celeritas
     {
         using type = std::vector<double>;
         using element_type = type::value_type;
+        using param_type = boost::call_traits<type>::param_type;
+        using element_param_type = boost::call_traits<element_type>::param_type;
     };
 
     template <>
@@ -96,6 +118,8 @@ namespace celeritas
     {
         using type = bool;
         using element_type = type;
+        using param_type = boost::call_traits<type>::param_type;
+        using element_param_type = boost::call_traits<element_type>::param_type;
     };
 
     template <>
@@ -103,6 +127,8 @@ namespace celeritas
     {
         using type = std::vector<uint8_t>;
         using element_type = type::value_type;
+        using param_type = boost::call_traits<type>::param_type;
+        using element_param_type = boost::call_traits<element_type>::param_type;
     };
 
     template <>
@@ -110,6 +136,8 @@ namespace celeritas
     {
         using type = std::vector<basis_database>;
         using element_type = type;
+        using param_type = boost::call_traits<type>::param_type;
+        using element_param_type = boost::call_traits<element_type>::param_type;
     };
 
     template <>
@@ -117,6 +145,8 @@ namespace celeritas
     {
         using type = std::vector<std::vector<basis_database> >;
         using element_type = type::value_type;
+        using param_type = boost::call_traits<type>::param_type;
+        using element_param_type = boost::call_traits<element_type>::param_type;
     };
 
     namespace traits
