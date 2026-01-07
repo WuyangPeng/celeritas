@@ -1,6 +1,8 @@
 ﻿#include "basis_database.tpp"
 
 #include <boost/numeric/conversion/cast.hpp>
+#include <functional>
+#include <map>
 #include <sstream>
 
 celeritas::basis_database::basis_database(const std::string_view field_name)
@@ -95,91 +97,62 @@ std::string celeritas::basis_database::get_sql_field_string() const
 
 std::string celeritas::basis_database::get_string() const
 {
-    if (value_.has_value())
+    if (!value_.has_value())
     {
-        switch (data_type_)
-        {
-            case database_data_type::string_type:
-            {
-                return get_value<database_data_type::string_type>();
-            }
+        return "";
+    }
 
-            case database_data_type::int32_type:
-            {
-                return std::to_string(get_value<database_data_type::int32_type>());
-            }
+    using converter_function = std::function<std::string(const basis_database*)>;
+    static const std::map<database_data_type, converter_function> converters{
+        { database_data_type::string_type, [](const basis_database* db) {
+            return db->get_value<database_data_type::string_type>();
+        } },
+        { database_data_type::int32_type, [](const basis_database* db) {
+            return std::to_string(db->get_value<database_data_type::int32_type>());
+        } },
+        { database_data_type::int32_count_type, [](const basis_database* db) {
+            return std::to_string(db->get_value<database_data_type::int32_count_type>());
+        } },
+        { database_data_type::int64_type, [](const basis_database* db) {
+            return std::to_string(db->get_value<database_data_type::int64_type>());
+        } },
+        { database_data_type::int64_count_type, [](const basis_database* db) {
+            return std::to_string(db->get_value<database_data_type::int64_count_type>());
+        } },
+        { database_data_type::double_type, [](const basis_database* db) {
+            return std::to_string(db->get_value<database_data_type::double_type>());
+        } },
+        { database_data_type::bool_type, [](const basis_database* db) {
+            return db->get_value<database_data_type::bool_type>() ? "true" : "false";
+        } },
+        { database_data_type::string_array_type, [](const basis_database* db) {
+            return db->get_array_string_value<database_data_type::string_array_type>();
+        } },
+        { database_data_type::int32_array_type, [](const basis_database* db) {
+            return db->get_array_string_value<database_data_type::int32_array_type>();
+        } },
+        { database_data_type::int64_array_type, [](const basis_database* db) {
+            return db->get_array_string_value<database_data_type::int64_array_type>();
+        } },
+        { database_data_type::double_array_type, [](const basis_database* db) {
+            return db->get_array_string_value<database_data_type::double_array_type>();
+        } },
+        { database_data_type::byte_array_type, [](const basis_database* db) {
+            const auto& byteArray = db->get_value<database_data_type::byte_array_type>();
+            return std::string{ byteArray.begin(), byteArray.end() };
+        } },
+        { database_data_type::document_type, [](const basis_database* db) {
+            return db->get_document_string();
+        } },
+        { database_data_type::document_array_type, [](const basis_database* db) {
+            return db->get_document_array_string();
+        } }
+    };
 
-            case database_data_type::int32_count_type:
-            {
-                return std::to_string(get_value<database_data_type::int32_count_type>());
-            }
-
-            case database_data_type::int64_type:
-            {
-                return std::to_string(get_value<database_data_type::int64_type>());
-            }
-
-            case database_data_type::int64_count_type:
-            {
-                return std::to_string(get_value<database_data_type::int64_count_type>());
-            }
-
-            case database_data_type::double_type:
-            {
-                return std::to_string(get_value<database_data_type::double_type>());
-            }
-
-            case database_data_type::bool_type:
-            {
-                if (const auto result = get_value<database_data_type::bool_type>();
-                    result)
-                {
-                    return "true";
-                }
-                return "false";
-            }
-
-            case database_data_type::string_array_type:
-            {
-                return get_array_string_value<database_data_type::string_array_type>();
-            }
-
-            case database_data_type::int32_array_type:
-            {
-                return get_array_string_value<database_data_type::int32_array_type>();
-            }
-
-            case database_data_type::int64_array_type:
-            {
-                return get_array_string_value<database_data_type::int64_array_type>();
-            }
-
-            case database_data_type::double_array_type:
-            {
-                return get_array_string_value<database_data_type::double_array_type>();
-            }
-
-            case database_data_type::byte_array_type:
-            {
-                const auto& byteArray = get_value<database_data_type::byte_array_type>();
-                return std::string{ byteArray.begin(), byteArray.end() };
-            }
-
-            case database_data_type::document_type:
-            {
-                return get_document_string();
-            }
-
-            case database_data_type::document_array_type:
-            {
-                return get_document_array_string();
-            }
-
-            default:
-            {
-                return "";
-            }
-        }
+    if (const auto iter = converters.find(data_type_);
+        iter != converters.end())
+    {
+        return iter->second(this);
     }
 
     return "";
@@ -248,78 +221,64 @@ std::string celeritas::basis_database::get_document_array_string() const
 
 bool celeritas::operator==(const basis_database& lhs, const basis_database& rhs)
 {
-    if (lhs.get_data_type() != rhs.get_data_type())
+    if (lhs.get_data_type() != rhs.get_data_type() || lhs.get_field_name() != rhs.get_field_name())
     {
         return false;
     }
 
-    if (lhs.get_field_name() != rhs.get_field_name())
-    {
-        return false;
-    }
-
-    switch (lhs.get_data_type())
-    {
-        case database_data_type::null_type:
-        {
+    using comparator_function = std::function<bool(const basis_database&, const basis_database&)>;
+    static const std::map<database_data_type, comparator_function> comparators{
+        { database_data_type::null_type, [](const basis_database& l, const basis_database& r) {
             return true;
-        }
-        case database_data_type::string_type:
-        {
-            return lhs.get_value<database_data_type::string_type>() == rhs.get_value<database_data_type::string_type>();
-        }
-        case database_data_type::string_array_type:
-        {
-            return lhs.get_value<database_data_type::string_array_type>() == rhs.get_value<database_data_type::string_array_type>();
-        }
-        case database_data_type::int32_type:
-        {
-            return lhs.get_value<database_data_type::int32_type>() == rhs.get_value<database_data_type::int32_type>();
-        }
-        case database_data_type::int32_count_type:
-        {
-            return lhs.get_value<database_data_type::int32_count_type>() == rhs.get_value<database_data_type::int32_count_type>();
-        }
-        case database_data_type::int32_array_type:
-        {
-            return lhs.get_value<database_data_type::int32_array_type>() == rhs.get_value<database_data_type::int32_array_type>();
-        }
-        case database_data_type::int64_type:
-        {
-            return lhs.get_value<database_data_type::int64_type>() == rhs.get_value<database_data_type::int64_type>();
-        }
-        case database_data_type::int64_count_type:
-        {
-            return lhs.get_value<database_data_type::int64_count_type>() == rhs.get_value<database_data_type::int64_count_type>();
-        }
-        case database_data_type::int64_array_type:
-        {
-            return lhs.get_value<database_data_type::int64_array_type>() == rhs.get_value<database_data_type::int64_array_type>();
-        }
-        case database_data_type::double_type:
-        {
-            return lhs.get_value<database_data_type::double_type>() == rhs.get_value<database_data_type::double_type>();
-        }
-        case database_data_type::double_array_type:
-        {
-            return lhs.get_value<database_data_type::double_array_type>() == rhs.get_value<database_data_type::double_array_type>();
-        }
-        case database_data_type::bool_type:
-        {
-            return lhs.get_value<database_data_type::bool_type>() == rhs.get_value<database_data_type::bool_type>();
-        }
-        case database_data_type::byte_array_type:
-        {
-            return lhs.get_value<database_data_type::byte_array_type>() == rhs.get_value<database_data_type::byte_array_type>();
-        }
-        case database_data_type::document_type:
-        {
-            return lhs.get_value<database_data_type::document_type>() == rhs.get_value<database_data_type::document_type>();
-        }
-        case database_data_type::document_array_type:
-        {
-            return lhs.get_value<database_data_type::document_array_type>() == rhs.get_value<database_data_type::document_array_type>();
-        }
+        } },
+        { database_data_type::string_type, [](const basis_database& l, const basis_database& r) {
+            return l.get_value<database_data_type::string_type>() == r.get_value<database_data_type::string_type>();
+        } },
+        { database_data_type::string_array_type, [](const basis_database& l, const basis_database& r) {
+            return l.get_value<database_data_type::string_array_type>() == r.get_value<database_data_type::string_array_type>();
+        } },
+        { database_data_type::int32_type, [](const basis_database& l, const basis_database& r) {
+            return l.get_value<database_data_type::int32_type>() == r.get_value<database_data_type::int32_type>();
+        } },
+        { database_data_type::int32_count_type, [](const basis_database& l, const basis_database& r) {
+            return l.get_value<database_data_type::int32_count_type>() == r.get_value<database_data_type::int32_count_type>();
+        } },
+        { database_data_type::int32_array_type, [](const basis_database& l, const basis_database& r) {
+            return l.get_value<database_data_type::int32_array_type>() == r.get_value<database_data_type::int32_array_type>();
+        } },
+        { database_data_type::int64_type, [](const basis_database& l, const basis_database& r) {
+            return l.get_value<database_data_type::int64_type>() == r.get_value<database_data_type::int64_type>();
+        } },
+        { database_data_type::int64_count_type, [](const basis_database& l, const basis_database& r) {
+            return l.get_value<database_data_type::int64_count_type>() == r.get_value<database_data_type::int64_count_type>();
+        } },
+        { database_data_type::int64_array_type, [](const basis_database& l, const basis_database& r) {
+            return l.get_value<database_data_type::int64_array_type>() == r.get_value<database_data_type::int64_array_type>();
+        } },
+        { database_data_type::double_type, [](const basis_database& l, const basis_database& r) {
+            return l.get_value<database_data_type::double_type>() == r.get_value<database_data_type::double_type>();
+        } },
+        { database_data_type::double_array_type, [](const basis_database& l, const basis_database& r) {
+            return l.get_value<database_data_type::double_array_type>() == r.get_value<database_data_type::double_array_type>();
+        } },
+        { database_data_type::bool_type, [](const basis_database& l, const basis_database& r) {
+            return l.get_value<database_data_type::bool_type>() == r.get_value<database_data_type::bool_type>();
+        } },
+        { database_data_type::byte_array_type, [](const basis_database& l, const basis_database& r) {
+            return l.get_value<database_data_type::byte_array_type>() == r.get_value<database_data_type::byte_array_type>();
+        } },
+        { database_data_type::document_type, [](const basis_database& l, const basis_database& r) {
+            return l.get_value<database_data_type::document_type>() == r.get_value<database_data_type::document_type>();
+        } },
+        { database_data_type::document_array_type, [](const basis_database& l, const basis_database& r) {
+            return l.get_value<database_data_type::document_array_type>() == r.get_value<database_data_type::document_array_type>();
+        } }
+    };
+
+    if (const auto iter = comparators.find(lhs.get_data_type());
+        iter != comparators.end())
+    {
+        return iter->second(lhs, rhs);
     }
 
     return false;
