@@ -10,6 +10,11 @@ template <celeritas::database_data_type Type>
 celeritas::database_data_type_traits<Type>::type celeritas::database_entity_change::get_value(const std::string_view field_name, typename boost::call_traits<typename database_data_type_traits<Type>::type>::param_type default_value) const
 {
     const auto& result = get_variant_value(field_name);
+    if (result.index() == 0)
+    {
+        return default_value;
+    }
+
     using target_type = database_data_type_traits<Type>::type;
 
     try

@@ -46,7 +46,8 @@ const celeritas::basis_database::value_variant& celeritas::basis_database_contai
         return result->get_variant_value();
     }
 
-    throw celeritas_error{ "field name does not exist" };
+    static constexpr value_variant default_value{};
+    return default_value;
 }
 
 celeritas::basis_database_container::object_container_const_iter celeritas::basis_database_container::begin() const noexcept

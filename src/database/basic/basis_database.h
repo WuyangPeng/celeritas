@@ -39,6 +39,8 @@ namespace celeritas
 
         explicit basis_database(std::string_view field_name);
 
+        basis_database(std::string_view field_name, const char* value);
+
         basis_database(std::string_view field_name, const std::string& value);
 
         basis_database(std::string_view field_name, int32_t value);

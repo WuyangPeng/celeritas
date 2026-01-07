@@ -9,6 +9,11 @@ celeritas::basis_database::basis_database(const std::string_view field_name)
 {
 }
 
+celeritas::basis_database::basis_database(const std::string_view field_name, const char* value)
+    : class_type{ field_name, database_data_type::string_type, value }
+{
+}
+
 celeritas::basis_database::basis_database(const std::string_view field_name, const std::string& value)
     : class_type{ field_name, database_data_type::string_type, value }
 {
