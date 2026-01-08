@@ -205,14 +205,7 @@ celeritas::database_session::database_entity_change_awaitable_type celeritas::re
 
     auto select = database->get_select();
 
-    for (const auto& element : field_name_container)
-    {
-        if (const auto iter = result.find(element.get_field_name().data());
-            iter != result.cend())
-        {
-            select.modify(redis_key_data_converter::get_basis_database(element, iter->second));
-        }
-    }
+    modify_select(field_name_container, result, select);
 
     co_return select;
 }
@@ -297,6 +290,13 @@ celeritas::database_session::database_entity_change_awaitable_type celeritas::re
 
     auto select = database->get_select(redis_key_data_converter::get_key(key, database));
 
+    modify_select(field_name_container, result, select);
+
+    co_return select;
+}
+
+void celeritas::redis_database_session::modify_select(const database_field_container& field_name_container, const map_type& result, database_entity_change& select)
+{
     for (const auto& field : field_name_container)
     {
         if (const auto iter = result.find(field.get_field_name().data());
@@ -305,8 +305,6 @@ celeritas::database_session::database_entity_change_awaitable_type celeritas::re
             select.modify(redis_key_data_converter::get_basis_database(field, iter->second));
         }
     }
-
-    co_return select;
 }
 
 

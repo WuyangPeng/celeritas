@@ -19,7 +19,10 @@ celeritas::mongo_database_session::mongo_database_session(const std::string& hos
                                                           const std::string& db_name,
                                                           int expire_seconds,
                                                           const any_io_executor& any_io_executor)
-    : any_io_executor_{ boost::asio::make_strand(any_io_executor) }, client_{}, database_{}, mongo_parameter_{ uri, db_name }
+    : any_io_executor_{ boost::asio::make_strand(any_io_executor) },
+      client_{},
+      database_{},
+      mongo_parameter_{ uri, db_name }
 {
 }
 

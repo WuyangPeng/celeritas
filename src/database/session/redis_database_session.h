@@ -121,6 +121,10 @@ namespace celeritas
                                                                        const const_database_entity_change_shared_ptr& database,
                                                                        const database_field_container& field_name_container) const;
 
+        static void modify_select(const database_field_container& field_name_container,
+                                  const map_type& result,
+                                  database_entity_change& select);
+
         any_io_executor any_io_executor_;
         redis_context_unique_ptr redis_context_;
 

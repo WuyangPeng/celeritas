@@ -36,7 +36,7 @@ celeritas::mysql_database_session::~mysql_database_session() noexcept
     noexcept_safe_call_and_log([this] {
                                    connection_.close();
                                },
-                               common_channel,
+                               database_channel,
                                "unexpected error during mysql connection close: ");
 }
 
@@ -210,9 +210,9 @@ celeritas::database_entity_change celeritas::mysql_database_session::populate_da
     auto select = database->get_select();
     auto index = 0;
 
-    for (const auto& value : row)
+    for (const auto& field_view : row)
     {
-        select.modify(mysql_row_data_converter::get_basis_database(field_name_container.at(index), value));
+        select.modify(mysql_row_data_converter::get_basis_database(field_name_container.at(index), field_view));
         ++index;
     }
     return select;
