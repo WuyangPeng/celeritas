@@ -50,5 +50,9 @@ namespace celeritas
         [[nodiscard]] static basis_database get_document_array_basis_database(const document_element_type& row_view);
         
         [[nodiscard]] static basis_database get_array_basis_database_from_view(const document_element_type& row_view);
+
+        static void append_document_item(document_type& document, const basis_database& basis_database);
+
+        static void append_document_array_item(document_type& document, const basis_database& basis_database);
     };
 }

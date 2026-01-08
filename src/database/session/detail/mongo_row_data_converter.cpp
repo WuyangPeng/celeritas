@@ -229,29 +229,12 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
         }
         case database_data_type::document_type:
         {
-            bsoncxx::builder::basic::document current_document{};
-            for (const auto& element : basis_database.get_value<database_data_type::document_type>())
-            {
-                append_document(current_document, element);
-            }
-            document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, current_document));
-
+            append_document_item(document, basis_database);
             break;
         }
         case database_data_type::document_array_type:
         {
-            bsoncxx::builder::basic::array current_document{};
-            for (const auto& element : basis_database.get_value<database_data_type::document_array_type>())
-            {
-                bsoncxx::builder::basic::document current{};
-                for (const auto& value : element)
-                {
-                    append_document(current, value);
-                }
-
-                current_document.append(current);
-            }
-            document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, current_document));
+            append_document_array_item(document, basis_database);
             break;
         }
         default:
@@ -343,4 +326,30 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_array_basis_d
             throw celeritas_error{ "Unsupported type in mongo row data." };
         }
     }
+}
+
+void celeritas::mongo_row_data_converter::append_document_item(document_type& document, const basis_database& basis_database)
+{
+    bsoncxx::builder::basic::document current_document{};
+    for (const auto& element : basis_database.get_value<database_data_type::document_type>())
+    {
+        append_document(current_document, element);
+    }
+    document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, current_document));
+}
+
+void celeritas::mongo_row_data_converter::append_document_array_item(document_type& document, const basis_database& basis_database)
+{
+    bsoncxx::builder::basic::array current_document{};
+    for (const auto& element : basis_database.get_value<database_data_type::document_array_type>())
+    {
+        bsoncxx::builder::basic::document current{};
+        for (const auto& value : element)
+        {
+            append_document(current, value);
+        }
+
+        current_document.append(current);
+    }
+    document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, current_document));
 }
