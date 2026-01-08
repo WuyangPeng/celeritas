@@ -1,4 +1,5 @@
 ﻿#include "mongo_row_data_converter.tpp"
+#include "mongo_to_basis_converter.tpp"
 #include "common/core/celeritas_error.h"
 #include "database/basic/basis_database.tpp"
 #include "database/basic/basis_database_container.h"
@@ -29,65 +30,7 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
         throw celeritas_error{ "field name is error,name ={}", row_view.key() };
     }
 
-    using get_basis_from_field_function = std::function<basis_database(const document_element_type&)>;
-    using container_type = std::map<database_data_type, get_basis_from_field_function>;
-
-    static const container_type container{
-        { database_data_type::string_type,
-          [](const document_element_type& row) {
-              return basis_database{ row.key(), std::string{ row.get_string().value } };
-          } },
-        { database_data_type::int32_type,
-          [](const document_element_type& row) {
-              return basis_database{ row.key(), row.get_int32() };
-          } },
-        { database_data_type::int32_count_type,
-          [](const document_element_type& row) {
-              return basis_database{ row.key(), row.get_int32() };
-          } },
-        { database_data_type::int64_type,
-          [](const document_element_type& row) {
-              return basis_database{ row.key(), row.type() == bsoncxx::type::k_int32 ? row.get_int32() : row.get_int64() };
-          } },
-        { database_data_type::int64_count_type,
-          [](const document_element_type& row) {
-              return basis_database{ row.key(), row.type() == bsoncxx::type::k_int32 ? row.get_int32() : row.get_int64() };
-          } },
-        { database_data_type::double_type,
-          [](const document_element_type& row) {
-              return basis_database{ row.key(), row.get_double().value };
-          } },
-        { database_data_type::bool_type,
-          [](const document_element_type& row) {
-              return basis_database{ row.key(), row.get_bool() };
-          } },
-        { database_data_type::string_array_type,
-          [](const document_element_type& row) {
-              return basis_database{ row.key(), get_numeric_array<std::string>(row.get_array().value) };
-          } },
-        { database_data_type::int32_array_type,
-          [](const document_element_type& row) {
-              return basis_database{ row.key(), get_numeric_array<int32_t>(row.get_array().value) };
-          } },
-        { database_data_type::int64_array_type,
-          [](const document_element_type& row) {
-              return basis_database{ row.key(), get_numeric_array<int64_t>(row.get_array().value) };
-          } },
-        { database_data_type::double_array_type,
-          [](const document_element_type& row) {
-              return basis_database{ row.key(), get_numeric_array<double>(row.get_array().value) };
-          } },
-        { database_data_type::byte_array_type,
-          [](const document_element_type& row) {
-              const auto binary = row.get_binary();
-              const basis_database::byte_array result{ binary.bytes, binary.bytes + binary.size };
-              return basis_database{ row.key(), result };
-          } },
-        { database_data_type::document_type,
-          get_document_basis_database },
-        { database_data_type::document_array_type,
-          get_document_array_basis_database },
-    };
+    const auto& container = mongo_to_basis_converter::get_basis_from_field();
 
     if (const auto database = container.find(iter->get_data_type());
         database != container.cend())
@@ -206,35 +149,6 @@ celeritas::mongo_row_data_converter::document_array celeritas::mongo_row_data_co
     }
 
     return database_array;
-}
-
-celeritas::basis_database celeritas::mongo_row_data_converter::get_document_basis_database(const document_element_type& row_view)
-{
-    const bsoncxx::document::value doc_value{ row_view.get_document().value };
-    basis_database::document_type document{};
-    for (const auto& element : doc_value)
-    {
-        document.emplace_back(get_basis_database(element));
-    }
-    return basis_database{ row_view.key().data(), document };
-}
-
-celeritas::basis_database celeritas::mongo_row_data_converter::get_document_array_basis_database(const document_element_type& row_view)
-{
-    const bsoncxx::document::value doc_value{ row_view.get_array().value };
-    basis_database::document_array result{};
-    for (const auto& element : doc_value)
-    {
-        basis_database::document_type document{};
-        for (const auto& value : element.get_document().value)
-        {
-            document.emplace_back(get_basis_database(value));
-        }
-
-        result.emplace_back(document);
-    }
-
-    return basis_database{ row_view.key().data(), result };
 }
 
 celeritas::basis_database celeritas::mongo_row_data_converter::get_array_basis_database_from_view(const document_element_type& row_view)
