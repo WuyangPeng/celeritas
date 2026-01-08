@@ -1,5 +1,6 @@
 ﻿#include "database_change_type.h"
 #include "database_entity_change.h"
+#include "common/core/celeritas_error.h"
 
 celeritas::database_entity_change::database_entity_change(const database_type database_type,
                                                           const std::string_view database_name,
@@ -22,6 +23,10 @@ celeritas::database_entity_change::database_entity_change(const database_type da
       key_{ std::make_shared<basis_database_container>() },
       database_{ std::make_shared<basis_database_container>() }
 {
+    if (change_type != database_change_type::select_type)
+    {
+        throw celeritas_error{ "The key cannot be empty when the change type is not select_type." };
+    }
 }
 
 celeritas::database_type celeritas::database_entity_change::get_database_type() const noexcept
