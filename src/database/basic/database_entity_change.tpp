@@ -43,10 +43,5 @@ celeritas::database_data_type_traits<Type>::type celeritas::database_entity_chan
         return default_value;
     }
 
-    if (const auto* value = std::get_if<target_type>(&variant))
-    {
-        return *value;
-    }
-
-    return default_value;
+    return std::get<target_type>(variant);
 }
