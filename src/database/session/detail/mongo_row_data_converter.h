@@ -25,6 +25,7 @@ namespace celeritas
 
     private:
         using array_type = bsoncxx::array::view;
+        using document_array = basis_database::document_array;
 
         [[nodiscard]] static basis_database get_basis_database(const document_element_type& row_view);
 
@@ -32,5 +33,13 @@ namespace celeritas
         [[nodiscard]] static std::vector<T> get_numeric_array(const array_type& array_view);
 
         static void append_document(document_type& document, const basis_database& basis_database);
+
+        template <database_data_type T>
+        static void append_array_document(document_type& document, const basis_database& basis_database);
+
+        template <typename T>
+        [[nodiscard]] static auto get_array_from_view(const array_type& row_view_array);
+
+        [[nodiscard]] static document_array get_document_array_from_view(const array_type& row_view_array);
     };
 }

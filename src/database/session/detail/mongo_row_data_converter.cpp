@@ -127,124 +127,7 @@ celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_con
 
     for (const auto& value : *container)
     {
-        std::string fieldName{ value.get_field_name() };
-        switch (value.get_data_type())
-        {
-            case database_data_type::string_type:
-            {
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::string_type>()));
-                break;
-            }
-
-            case database_data_type::int32_type:
-            case database_data_type::int32_count_type:
-            {
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::int32_type>()));
-                break;
-            }
-
-            case database_data_type::int64_type:
-            case database_data_type::int64_count_type:
-            {
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::int64_type>()));
-                break;
-            }
-
-            case database_data_type::double_type:
-            {
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::double_type>()));
-                break;
-            }
-
-            case database_data_type::bool_type:
-            {
-                document.append(bsoncxx::builder::basic::kvp(fieldName, value.get_value<database_data_type::bool_type>()));
-                break;
-            }
-
-            case database_data_type::string_array_type:
-            {
-                bsoncxx::builder::basic::array basic{};
-                for (const auto& element : value.get_value<database_data_type::string_array_type>())
-                {
-                    basic.append(element);
-                }
-                document.append(bsoncxx::builder::basic::kvp(fieldName, basic));
-                break;
-            }
-
-            case database_data_type::int32_array_type:
-            {
-                bsoncxx::builder::basic::array basic{};
-                for (const auto& element : value.get_value<database_data_type::int32_array_type>())
-                {
-                    basic.append(element);
-                }
-                document.append(bsoncxx::builder::basic::kvp(fieldName, basic));
-                break;
-            }
-
-            case database_data_type::int64_array_type:
-            {
-                bsoncxx::builder::basic::array basic{};
-                for (const auto& element : value.get_value<database_data_type::int64_array_type>())
-                {
-                    basic.append(element);
-                }
-                document.append(bsoncxx::builder::basic::kvp(fieldName, basic));
-                break;
-            }
-
-            case database_data_type::double_array_type:
-            {
-                bsoncxx::builder::basic::array basic{};
-                for (const auto& element : value.get_value<database_data_type::double_array_type>())
-                {
-                    basic.append(element);
-                }
-                document.append(bsoncxx::builder::basic::kvp(fieldName, basic));
-                break;
-            }
-
-            case database_data_type::byte_array_type:
-            {
-                const auto& byteArray = value.get_value<database_data_type::byte_array_type>();
-                document.append(bsoncxx::builder::basic::kvp(fieldName, bsoncxx::types::b_binary{ bsoncxx::binary_sub_type::k_binary, static_cast<uint32_t>(byteArray.size()), byteArray.data() }));
-                break;
-            }
-
-            case database_data_type::document_type:
-            {
-                bsoncxx::builder::basic::document current_document{};
-                for (const auto& document_type = value.get_value<database_data_type::document_type>();
-                     const auto& element : document_type)
-                {
-                    append_document(current_document, element);
-                }
-
-                document.append(bsoncxx::builder::basic::kvp(fieldName, current_document));
-                break;
-            }
-            case database_data_type::document_array_type:
-            {
-                const auto& document_type = value.get_value<database_data_type::document_array_type>();
-                bsoncxx::builder::basic::array basic{};
-                for (const auto& element : document_type)
-                {
-                    bsoncxx::builder::basic::document current_document{};
-                    for (const auto& database_data : element)
-                    {
-                        append_document(current_document, database_data);
-                    }
-                    basic.append(current_document);
-                }
-
-                document.append(bsoncxx::builder::basic::kvp(fieldName, basic));
-                break;
-            }
-            default:
-                break;
-        }
+        append_document(document, value);
     }
 
     return document;
@@ -256,15 +139,15 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
     {
         case bsoncxx::type::k_double:
         {
-            return basis_database{ row_view.key().data(), row_view.get_double().value };
+            return { row_view.key().data(), row_view.get_double().value };
         }
         case bsoncxx::type::k_string:
         {
-            return basis_database{ row_view.key().data(), std::string{ row_view.get_string().value } };
+            return { row_view.key().data(), std::string{ row_view.get_string().value } };
         }
         case bsoncxx::type::k_bool:
         {
-            return basis_database{ row_view.key().data(), row_view.get_bool().value };
+            return { row_view.key().data(), row_view.get_bool().value };
         }
         case bsoncxx::type::k_document:
         {
@@ -273,75 +156,44 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
             {
                 document.emplace_back(get_basis_database(element));
             }
-            return basis_database{ row_view.key().data(), document };
+            return { row_view.key().data(), document };
         }
         case bsoncxx::type::k_int32:
         {
-            return basis_database{ row_view.key().data(), row_view.get_int32().value };
+            return { row_view.key().data(), row_view.get_int32().value };
         }
         case bsoncxx::type::k_int64:
         {
-            return basis_database{ row_view.key().data(), row_view.get_int64().value };
+            return { row_view.key().data(), row_view.get_int64().value };
         }
         case bsoncxx::type::k_array:
         {
             const auto row_view_array = row_view.get_array().value;
             if (row_view_array.empty())
             {
-                return basis_database{ row_view.key().data(), basis_database::int32_array{} };
+                return { row_view.key().data(), basis_database::int32_array{} };
             }
             switch (row_view_array.begin()->type())
             {
                 case bsoncxx::type::k_double:
                 {
-                    basis_database::double_array database_array{};
-                    for (const auto& element : row_view_array)
-                    {
-                        database_array.emplace_back(element.get_double().value);
-                    }
-                    return basis_database{ row_view.key().data(), database_array };
+                    return { row_view.key().data(), get_array_from_view<double>(row_view_array) };
                 }
                 case bsoncxx::type::k_string:
                 {
-                    basis_database::string_array database_array{};
-                    for (const auto& element : row_view_array)
-                    {
-                        database_array.emplace_back(element.get_string().value);
-                    }
-                    return basis_database{ row_view.key().data(), database_array };
+                    return { row_view.key().data(), get_array_from_view<std::string>(row_view_array) };
                 }
                 case bsoncxx::type::k_document:
                 {
-                    basis_database::document_array database_array{};
-                    for (const auto& element : row_view_array)
-                    {
-                        basis_database::document_type document_type{};
-                        for (const auto& doc = element.get_document().value; const auto& value :
-                             doc)
-                        {
-                            document_type.emplace_back(get_basis_database(value));
-                        }
-                        database_array.emplace_back(document_type);
-                    }
-                    return basis_database{ row_view.key().data(), database_array };
+                    return { row_view.key().data(), get_document_array_from_view(row_view_array) };
                 }
                 case bsoncxx::type::k_int32:
                 {
-                    basis_database::int32_array database_array{};
-                    for (const auto& element : row_view_array)
-                    {
-                        database_array.emplace_back(element.get_int32().value);
-                    }
-                    return basis_database{ row_view.key().data(), database_array };
+                    return { row_view.key().data(), get_array_from_view<int32_t>(row_view_array) };
                 }
                 case bsoncxx::type::k_int64:
                 {
-                    basis_database::int64_array database_array{};
-                    for (const auto& element : row_view_array)
-                    {
-                        database_array.emplace_back(element.get_int64().value);
-                    }
-                    return basis_database{ row_view.key().data(), database_array };
+                    return { row_view.key().data(), get_array_from_view<int64_t>(row_view_array) };
                 }
                 default:
                 {
@@ -372,12 +224,7 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
         }
         case database_data_type::string_array_type:
         {
-            bsoncxx::builder::basic::array basic{};
-            for (const auto& element : basis_database.get_value<database_data_type::string_array_type>())
-            {
-                basic.append(element);
-            }
-            document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, basic));
+            append_array_document<database_data_type::string_array_type>(document, basis_database);
             break;
         }
         case database_data_type::int32_type:
@@ -392,12 +239,7 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
         }
         case database_data_type::int32_array_type:
         {
-            bsoncxx::builder::basic::array basic{};
-            for (const auto& element : basis_database.get_value<database_data_type::int32_array_type>())
-            {
-                basic.append(element);
-            }
-            document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, basic));
+            append_array_document<database_data_type::int32_array_type>(document, basis_database);
             break;
         }
         case database_data_type::int64_type:
@@ -412,12 +254,7 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
         }
         case database_data_type::int64_array_type:
         {
-            bsoncxx::builder::basic::array basic{};
-            for (const auto& element : basis_database.get_value<database_data_type::int64_array_type>())
-            {
-                basic.append(element);
-            }
-            document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, basic));
+            append_array_document<database_data_type::int64_array_type>(document, basis_database);
             break;
         }
         case database_data_type::double_type:
@@ -427,12 +264,7 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
         }
         case database_data_type::double_array_type:
         {
-            bsoncxx::builder::basic::array basic{};
-            for (const auto& element : basis_database.get_value<database_data_type::double_array_type>())
-            {
-                basic.append(element);
-            }
-            document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, basic));
+            append_array_document<database_data_type::double_array_type>(document, basis_database);
             break;
         }
         case database_data_type::bool_type:
@@ -480,4 +312,22 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
             throw celeritas_error{ "Unsupported type in mongo row data." };
         }
     }
+}
+
+celeritas::mongo_row_data_converter::document_array celeritas::mongo_row_data_converter::get_document_array_from_view(const array_type& row_view_array)
+{
+    document_array database_array{};
+
+    for (const auto& element : row_view_array)
+    {
+        basis_database::document_type document_type{};
+        for (const auto& doc = element.get_document().value;
+             const auto& value : doc)
+        {
+            document_type.emplace_back(get_basis_database(value));
+        }
+        database_array.emplace_back(document_type);
+    }
+
+    return database_array;
 }
