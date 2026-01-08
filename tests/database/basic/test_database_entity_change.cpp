@@ -83,13 +83,13 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
     BOOST_AUTO_TEST_CASE(test_database_entity_change_get_select_with_key)
     {
         const celeritas::database_entity_change original_change{ celeritas::database_type::mysql, "test_db", celeritas::database_change_type::select_type };
-        const auto new_key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 2 });
-        const auto select_change = original_change.get_select(new_key);
+        const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 2 });
+        const auto select_change = original_change.get_select(key);
 
         BOOST_CHECK(select_change.get_database_type() == original_change.get_database_type());
         BOOST_CHECK_EQUAL(select_change.get_database_name(), original_change.get_database_name());
         BOOST_CHECK(select_change.get_change_type() == celeritas::database_change_type::select_type);
-        BOOST_CHECK(select_change.get_key() == new_key);
+        BOOST_CHECK(select_change.get_key() == key);
     }
 
     BOOST_AUTO_TEST_CASE(test_database_entity_change_modify)
@@ -200,29 +200,39 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
         BOOST_CHECK(delete_change.is_modify());
     }
 
-    BOOST_AUTO_TEST_CASE(test_database_entity_change_is_must_save)
+    BOOST_AUTO_TEST_CASE(test_database_entity_change_is_must_save_for_select)
     {
         const celeritas::database_entity_change change_select{ celeritas::database_type::mysql, "test", celeritas::database_change_type::select_type };
         BOOST_CHECK(!change_select.is_must_save());
+    }
 
+    BOOST_AUTO_TEST_CASE(test_database_entity_change_is_must_save_for_insert)
+    {
         const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change change_insert{ celeritas::database_type::mysql, "test", celeritas::database_change_type::insert_type, key };
+        celeritas::database_entity_change change_insert{ celeritas::database_type::mysql, "test", celeritas::database_change_type::insert_type, key };
         BOOST_CHECK(!change_insert.is_must_save());
 
+        change_insert.modify(celeritas::basis_database{ "id", 1 });
+        BOOST_CHECK(!change_insert.is_must_save());
+
+        change_insert.modify(celeritas::basis_database{ "f", 1 });
+        BOOST_CHECK(change_insert.is_must_save());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_database_entity_change_is_must_save_for_update)
+    {
+        const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change change_update{ celeritas::database_type::mysql, "test", celeritas::database_change_type::update_type, key };
         BOOST_CHECK(!change_update.is_must_save());
         change_update.modify(celeritas::basis_database{ "f", 1 });
         BOOST_CHECK(change_update.is_must_save());
+    }
 
+    BOOST_AUTO_TEST_CASE(test_database_entity_change_is_must_save_for_delete)
+    {
+        const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         const celeritas::database_entity_change change_delete{ celeritas::database_type::mysql, "test", celeritas::database_change_type::delete_type, key };
         BOOST_CHECK(change_delete.is_must_save());
-
-        celeritas::database_entity_change change_insert_modified{ celeritas::database_type::mysql, "test", celeritas::database_change_type::insert_type, key };
-        change_insert_modified.modify(celeritas::basis_database{ "id", 1 });
-        BOOST_CHECK(!change_insert_modified.is_must_save());
-
-        change_insert_modified.modify(celeritas::basis_database{ "f", 1 });
-        BOOST_CHECK(change_insert_modified.is_must_save());
     }
 
     BOOST_AUTO_TEST_CASE(test_database_entity_change_get_select_from_update_type)

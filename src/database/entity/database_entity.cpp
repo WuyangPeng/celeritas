@@ -24,8 +24,7 @@ celeritas::database_entity::database_entity(database_type database_type, const d
     : modify_{ std::make_shared<database_entity_change>(database_type,
                                                         entity.get_database_name(),
                                                         database_type == entity.get_database_type() ? database_change_type::update_type : database_change_type::insert_type,
-                                                        entity.get_key())
-    }
+                                                        entity.get_key()) }
 {
 }
 
