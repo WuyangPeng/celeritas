@@ -136,6 +136,23 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
         BOOST_CHECK(change.get_change_type() == celeritas::database_change_type::update_type);
     }
 
+    BOOST_AUTO_TEST_CASE(test_database_entity_change_clear_on_insert_state_transition)
+    {
+        const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
+        celeritas::database_entity_change change{ celeritas::database_type::mysql, "test", celeritas::database_change_type::insert_type, key };
+
+        change.modify(celeritas::basis_database{ "id", 1 });
+        BOOST_CHECK(change.get_change_type() == celeritas::database_change_type::insert_type);
+        BOOST_CHECK(change.is_modify());
+        BOOST_CHECK(!change.is_must_save());
+
+        change.clear();
+
+        BOOST_CHECK(change.get_change_type() == celeritas::database_change_type::update_type);
+        BOOST_CHECK(!change.is_modify());
+        BOOST_CHECK(!change.is_must_save());
+    }
+
     BOOST_AUTO_TEST_CASE(test_database_entity_change_get_value)
     {
         const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
