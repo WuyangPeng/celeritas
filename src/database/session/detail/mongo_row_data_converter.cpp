@@ -19,73 +19,88 @@ using namespace std::literals;
 celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_database(const database_field_container& field_name_container,
                                                                                   const document_element_type& row_view)
 {
-    const auto iter = std::ranges::find_if(field_name_container, [key = row_view.key()](const auto& value) {
-        return key == value.get_field_name();
-    });
+    const auto iter = std::ranges::find_if(field_name_container,
+                                           [key = row_view.key()](const auto& value) {
+                                               return key == value.get_field_name();
+                                           });
 
     if (iter == field_name_container.cend())
     {
-        throw celeritas_error{ "field name is error,name ="s + row_view.key().data() };
+        throw celeritas_error{ "field name is error,name ={}", row_view.key() };
     }
 
     using get_basis_from_field_function = std::function<basis_database(const document_element_type&)>;
     using container_type = std::map<database_data_type, get_basis_from_field_function>;
 
     static const container_type container{
-        { database_data_type::string_type, [](const document_element_type& row) {
-            return basis_database{ row.key(), std::string{ row.get_string().value } };
-        } },
-        { database_data_type::int32_type, [](const document_element_type& row) {
-            return basis_database{ row.key(), row.get_int32() };
-        } },
-        { database_data_type::int32_count_type, [](const document_element_type& row) {
-            return basis_database{ row.key(), row.get_int32() };
-        } },
-        { database_data_type::int64_type, [](const document_element_type& row) {
-            if (row.type() == bsoncxx::type::k_int32)
-            {
-                return basis_database{ row.key(), row.get_int32() };
-            }
-            return basis_database{ row.key(), row.get_int64() };
-        } },
-        { database_data_type::int64_count_type, [](const document_element_type& row) {
-            if (row.type() == bsoncxx::type::k_int32)
-            {
-                return basis_database{ row.key(), row.get_int32() };
-            }
-            return basis_database{ row.key(), row.get_int64() };
-        } },
-        { database_data_type::double_type, [](const document_element_type& row) {
-            return basis_database{ row.key(), row.get_double().value };
-        } },
-        { database_data_type::bool_type, [](const document_element_type& row) {
-            return basis_database{ row.key(), row.get_bool() };
-        } },
-        { database_data_type::string_array_type, [](const document_element_type& row) {
-            return basis_database{ row.key(), get_numeric_array<std::string>(row.get_array().value) };
-        } },
-        { database_data_type::int32_array_type, [](const document_element_type& row) {
-            return basis_database{ row.key(), get_numeric_array<int32_t>(row.get_array().value) };
-        } },
-        { database_data_type::int64_array_type, [](const document_element_type& row) {
-            return basis_database{ row.key(), get_numeric_array<int64_t>(row.get_array().value) };
-        } },
-        { database_data_type::double_array_type, [](const document_element_type& row) {
-            return basis_database{ row.key(), get_numeric_array<double>(row.get_array().value) };
-        } },
-        { database_data_type::byte_array_type, [](const document_element_type& row) {
-            const auto binary = row.get_binary();
-            const basis_database::byte_array result{ binary.bytes, binary.bytes + binary.size };
-            return basis_database{ row.key(), result };
-        } },
-        { database_data_type::document_type, get_document_basis_database },
-        { database_data_type::document_array_type, get_document_array_basis_database },
+        { database_data_type::string_type,
+          [](const document_element_type& row) {
+              return basis_database{ row.key(), std::string{ row.get_string().value } };
+          } },
+        { database_data_type::int32_type,
+          [](const document_element_type& row) {
+              return basis_database{ row.key(), row.get_int32() };
+          } },
+        { database_data_type::int32_count_type,
+          [](const document_element_type& row) {
+              return basis_database{ row.key(), row.get_int32() };
+          } },
+        { database_data_type::int64_type,
+          [](const document_element_type& row) {
+              if (row.type() == bsoncxx::type::k_int32)
+              {
+                  return basis_database{ row.key(), row.get_int32() };
+              }
+              return basis_database{ row.key(), row.get_int64() };
+          } },
+        { database_data_type::int64_count_type,
+          [](const document_element_type& row) {
+              if (row.type() == bsoncxx::type::k_int32)
+              {
+                  return basis_database{ row.key(), row.get_int32() };
+              }
+              return basis_database{ row.key(), row.get_int64() };
+          } },
+        { database_data_type::double_type,
+          [](const document_element_type& row) {
+              return basis_database{ row.key(), row.get_double().value };
+          } },
+        { database_data_type::bool_type,
+          [](const document_element_type& row) {
+              return basis_database{ row.key(), row.get_bool() };
+          } },
+        { database_data_type::string_array_type,
+          [](const document_element_type& row) {
+              return basis_database{ row.key(), get_numeric_array<std::string>(row.get_array().value) };
+          } },
+        { database_data_type::int32_array_type,
+          [](const document_element_type& row) {
+              return basis_database{ row.key(), get_numeric_array<int32_t>(row.get_array().value) };
+          } },
+        { database_data_type::int64_array_type,
+          [](const document_element_type& row) {
+              return basis_database{ row.key(), get_numeric_array<int64_t>(row.get_array().value) };
+          } },
+        { database_data_type::double_array_type,
+          [](const document_element_type& row) {
+              return basis_database{ row.key(), get_numeric_array<double>(row.get_array().value) };
+          } },
+        { database_data_type::byte_array_type,
+          [](const document_element_type& row) {
+              const auto binary = row.get_binary();
+              const basis_database::byte_array result{ binary.bytes, binary.bytes + binary.size };
+              return basis_database{ row.key(), result };
+          } },
+        { database_data_type::document_type,
+          get_document_basis_database },
+        { database_data_type::document_array_type,
+          get_document_array_basis_database },
     };
 
-    if (const auto it = container.find(iter->get_data_type());
-        it != container.end())
+    if (const auto database = container.find(iter->get_data_type());
+        database != container.cend())
     {
-        return it->second(row_view);
+        return database->second(row_view);
     }
 
     return basis_database{ iter->get_field_name(), std::string{} };
@@ -109,34 +124,41 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
     using container_type = std::map<bsoncxx::type, get_basis_from_element_function>;
 
     static const container_type container{
-        { bsoncxx::type::k_double, [](const document_element_type& row) {
-            return basis_database{ row.key().data(), row.get_double().value };
-        } },
-        { bsoncxx::type::k_string, [](const document_element_type& row) {
-            return basis_database{ row.key().data(), std::string{ row.get_string().value } };
-        } },
-        { bsoncxx::type::k_bool, [](const document_element_type& row) {
-            return basis_database{ row.key().data(), row.get_bool().value };
-        } },
-        { bsoncxx::type::k_document, [](const document_element_type& row) {
-            basis_database::document_type document{};
-            for (const auto& element : row.get_document().value)
-            {
-                document.emplace_back(get_basis_database(element));
-            }
-            return basis_database{ row.key().data(), document };
-        } },
-        { bsoncxx::type::k_int32, [](const document_element_type& row) {
-            return basis_database{ row.key().data(), row.get_int32().value };
-        } },
-        { bsoncxx::type::k_int64, [](const document_element_type& row) {
-            return basis_database{ row.key().data(), row.get_int64().value };
-        } },
-        { bsoncxx::type::k_array, get_array_basis_database_from_view },
+        { bsoncxx::type::k_double,
+          [](const document_element_type& row) {
+              return basis_database{ row.key().data(), row.get_double().value };
+          } },
+        { bsoncxx::type::k_string,
+          [](const document_element_type& row) {
+              return basis_database{ row.key().data(), std::string{ row.get_string().value } };
+          } },
+        { bsoncxx::type::k_bool,
+          [](const document_element_type& row) {
+              return basis_database{ row.key().data(), row.get_bool().value };
+          } },
+        { bsoncxx::type::k_document,
+          [](const document_element_type& row) {
+              basis_database::document_type document{};
+              for (const auto& element : row.get_document().value)
+              {
+                  document.emplace_back(get_basis_database(element));
+              }
+              return basis_database{ row.key().data(), document };
+          } },
+        { bsoncxx::type::k_int32,
+          [](const document_element_type& row) {
+              return basis_database{ row.key().data(), row.get_int32().value };
+          } },
+        { bsoncxx::type::k_int64,
+          [](const document_element_type& row) {
+              return basis_database{ row.key().data(), row.get_int64().value };
+          } },
+        { bsoncxx::type::k_array,
+          get_array_basis_database_from_view },
     };
 
     if (const auto iter = container.find(row_view.type());
-        iter != container.end())
+        iter != container.cend())
     {
         return iter->second(row_view);
     }
@@ -161,16 +183,19 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
         { database_data_type::double_type, append_basic_type<database_data_type::double_type> },
         { database_data_type::double_array_type, append_array_document<database_data_type::double_array_type> },
         { database_data_type::bool_type, append_basic_type<database_data_type::bool_type> },
-        { database_data_type::byte_array_type, [](document_type& document, const basis_database& basis_database) {
+        { database_data_type::byte_array_type, [](document_type& current_document, const basis_database& basis_database) {
             const auto& byteArray = basis_database.get_value<database_data_type::byte_array_type>();
-            document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, bsoncxx::types::b_binary{ bsoncxx::binary_sub_type::k_binary, static_cast<uint32_t>(byteArray.size()), byteArray.data() }));
+            current_document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() },
+                                                                 bsoncxx::types::b_binary{ bsoncxx::binary_sub_type::k_binary,
+                                                                                           static_cast<uint32_t>(byteArray.size()),
+                                                                                           byteArray.data() }));
         } },
         { database_data_type::document_type, append_document_item },
         { database_data_type::document_array_type, append_document_array_item },
     };
 
     if (const auto iter = container.find(database.get_data_type());
-        iter != container.end())
+        iter != container.cend())
     {
         iter->second(document, database);
     }
