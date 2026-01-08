@@ -32,7 +32,7 @@ namespace celeritas
         template <typename T>
         [[nodiscard]] static std::vector<T> get_numeric_array(const array_type& array_view);
 
-        static void append_document(document_type& document, const basis_database& basis_database);
+        static void append_document(document_type& document, const basis_database& database);
 
         template <database_data_type T>
         static void append_basic_type(document_type& document, const basis_database& basis_database);
@@ -48,7 +48,7 @@ namespace celeritas
         [[nodiscard]] static basis_database get_document_basis_database(const document_element_type& row_view);
 
         [[nodiscard]] static basis_database get_document_array_basis_database(const document_element_type& row_view);
-        
+
         [[nodiscard]] static basis_database get_array_basis_database_from_view(const document_element_type& row_view);
 
         static void append_document_item(document_type& document, const basis_database& basis_database);
