@@ -88,31 +88,12 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
 
         case database_data_type::document_type:
         {
-            const bsoncxx::document::value doc_value{ row_view.get_document().value };
-            basis_database::document_type document{};
-            for (const auto& element : doc_value)
-            {
-                document.emplace_back(get_basis_database(element));
-            }
-            return basis_database{ iter->get_field_name(), document };
+            return get_document_basis_database(row_view);
         }
 
         case database_data_type::document_array_type:
         {
-            const bsoncxx::document::value doc_value{ row_view.get_array().value };
-            basis_database::document_array result{};
-            for (const auto& element : doc_value)
-            {
-                basis_database::document_type document{};
-                for (const auto& value : element.get_document().value)
-                {
-                    document.emplace_back(get_basis_database(value));
-                }
-
-                result.emplace_back(document);
-            }
-
-            return basis_database{ iter->get_field_name(), result };
+            return get_document_array_basis_database(row_view);
         }
         default:
         {
@@ -168,38 +149,7 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
         }
         case bsoncxx::type::k_array:
         {
-            const auto row_view_array = row_view.get_array().value;
-            if (row_view_array.empty())
-            {
-                return { row_view.key().data(), basis_database::int32_array{} };
-            }
-            switch (row_view_array.begin()->type())
-            {
-                case bsoncxx::type::k_double:
-                {
-                    return { row_view.key().data(), get_array_from_view<double>(row_view_array) };
-                }
-                case bsoncxx::type::k_string:
-                {
-                    return { row_view.key().data(), get_array_from_view<std::string>(row_view_array) };
-                }
-                case bsoncxx::type::k_document:
-                {
-                    return { row_view.key().data(), get_document_array_from_view(row_view_array) };
-                }
-                case bsoncxx::type::k_int32:
-                {
-                    return { row_view.key().data(), get_array_from_view<int32_t>(row_view_array) };
-                }
-                case bsoncxx::type::k_int64:
-                {
-                    return { row_view.key().data(), get_array_from_view<int64_t>(row_view_array) };
-                }
-                default:
-                {
-                    throw celeritas_error{ "Unsupported type in mongo row data." };
-                }
-            }
+            return get_array_basis_database_from_view(row_view);
         }
         default:
         {
@@ -216,10 +166,9 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
         {
             break;
         }
-
         case database_data_type::string_type:
         {
-            document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, basis_database.get_value<database_data_type::string_type>()));
+            append_basic_type<database_data_type::string_type>(document, basis_database);
             break;
         }
         case database_data_type::string_array_type:
@@ -229,12 +178,12 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
         }
         case database_data_type::int32_type:
         {
-            document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, basis_database.get_value<database_data_type::int32_type>()));
+            append_basic_type<database_data_type::int32_type>(document, basis_database);
             break;
         }
         case database_data_type::int32_count_type:
         {
-            document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, basis_database.get_value<database_data_type::int32_count_type>()));
+            append_basic_type<database_data_type::int32_count_type>(document, basis_database);
             break;
         }
         case database_data_type::int32_array_type:
@@ -244,12 +193,12 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
         }
         case database_data_type::int64_type:
         {
-            document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, basis_database.get_value<database_data_type::int64_type>()));
+            append_basic_type<database_data_type::int64_type>(document, basis_database);
             break;
         }
         case database_data_type::int64_count_type:
         {
-            document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, basis_database.get_value<database_data_type::int64_count_type>()));
+            append_basic_type<database_data_type::int64_count_type>(document, basis_database);
             break;
         }
         case database_data_type::int64_array_type:
@@ -259,7 +208,7 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
         }
         case database_data_type::double_type:
         {
-            document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, basis_database.get_value<database_data_type::double_type>()));
+            append_basic_type<database_data_type::double_type>(document, basis_database);
             break;
         }
         case database_data_type::double_array_type:
@@ -269,7 +218,7 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
         }
         case database_data_type::bool_type:
         {
-            document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, basis_database.get_value<database_data_type::bool_type>()));
+            append_basic_type<database_data_type::bool_type>(document, basis_database);
             break;
         }
         case database_data_type::byte_array_type:
@@ -289,7 +238,6 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
 
             break;
         }
-
         case database_data_type::document_array_type:
         {
             bsoncxx::builder::basic::array current_document{};
@@ -306,7 +254,6 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
             document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, current_document));
             break;
         }
-
         default:
         {
             throw celeritas_error{ "Unsupported type in mongo row data." };
@@ -330,4 +277,70 @@ celeritas::mongo_row_data_converter::document_array celeritas::mongo_row_data_co
     }
 
     return database_array;
+}
+
+celeritas::basis_database celeritas::mongo_row_data_converter::get_document_basis_database(const document_element_type& row_view)
+{
+    const bsoncxx::document::value doc_value{ row_view.get_document().value };
+    basis_database::document_type document{};
+    for (const auto& element : doc_value)
+    {
+        document.emplace_back(get_basis_database(element));
+    }
+    return basis_database{ row_view.key().data(), document };
+}
+
+celeritas::basis_database celeritas::mongo_row_data_converter::get_document_array_basis_database(const document_element_type& row_view)
+{
+    const bsoncxx::document::value doc_value{ row_view.get_array().value };
+    basis_database::document_array result{};
+    for (const auto& element : doc_value)
+    {
+        basis_database::document_type document{};
+        for (const auto& value : element.get_document().value)
+        {
+            document.emplace_back(get_basis_database(value));
+        }
+
+        result.emplace_back(document);
+    }
+
+    return basis_database{ row_view.key().data(), result };
+}
+
+celeritas::basis_database celeritas::mongo_row_data_converter::get_array_basis_database_from_view(const document_element_type& row_view)
+{
+    const auto row_view_array = row_view.get_array().value;
+    if (row_view_array.empty())
+    {
+        return { row_view.key().data(), basis_database::int32_array{} };
+    }
+
+    switch (row_view_array.begin()->type())
+    {
+        case bsoncxx::type::k_double:
+        {
+            return { row_view.key().data(), get_array_from_view<double>(row_view_array) };
+        }
+        case bsoncxx::type::k_string:
+        {
+            return { row_view.key().data(), get_array_from_view<std::string>(row_view_array) };
+        }
+        case bsoncxx::type::k_document:
+        {
+            return { row_view.key().data(), get_document_array_from_view(row_view_array) };
+        }
+        case bsoncxx::type::k_int32:
+        {
+            return { row_view.key().data(), get_array_from_view<int32_t>(row_view_array) };
+        }
+        case bsoncxx::type::k_int64:
+        {
+            return { row_view.key().data(), get_array_from_view<int64_t>(row_view_array) };
+        }
+        default:
+        {
+            throw celeritas_error{ "Unsupported type in mongo row data." };
+        }
+    }
 }

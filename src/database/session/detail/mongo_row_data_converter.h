@@ -35,11 +35,20 @@ namespace celeritas
         static void append_document(document_type& document, const basis_database& basis_database);
 
         template <database_data_type T>
+        static void append_basic_type(document_type& document, const basis_database& basis_database);
+
+        template <database_data_type T>
         static void append_array_document(document_type& document, const basis_database& basis_database);
 
         template <typename T>
         [[nodiscard]] static auto get_array_from_view(const array_type& row_view_array);
 
         [[nodiscard]] static document_array get_document_array_from_view(const array_type& row_view_array);
+
+        [[nodiscard]] static basis_database get_document_basis_database(const document_element_type& row_view);
+
+        [[nodiscard]] static basis_database get_document_array_basis_database(const document_element_type& row_view);
+        
+        [[nodiscard]] static basis_database get_array_basis_database_from_view(const document_element_type& row_view);
     };
 }

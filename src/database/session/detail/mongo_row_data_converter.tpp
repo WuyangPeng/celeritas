@@ -38,6 +38,12 @@ std::vector<T> celeritas::mongo_row_data_converter::get_numeric_array(const arra
 }
 
 template <celeritas::database_data_type T>
+void celeritas::mongo_row_data_converter::append_basic_type(document_type& document, const basis_database& basis_database)
+{
+    document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, basis_database.get_value<T>()));
+}
+
+template <celeritas::database_data_type T>
 void celeritas::mongo_row_data_converter::append_array_document(document_type& document, const basis_database& basis_database)
 {
     bsoncxx::builder::basic::array basic{};
