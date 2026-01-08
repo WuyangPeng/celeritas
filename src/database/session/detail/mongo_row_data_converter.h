@@ -54,5 +54,7 @@ namespace celeritas
         static void append_document_item(document_type& document, const basis_database& basis_database);
 
         static void append_document_array_item(document_type& document, const basis_database& basis_database);
+
+        static void append_byte_array(document_type& document, const basis_database& basis_database);
     };
 }

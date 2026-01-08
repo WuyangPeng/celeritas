@@ -47,19 +47,11 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
           } },
         { database_data_type::int64_type,
           [](const document_element_type& row) {
-              if (row.type() == bsoncxx::type::k_int32)
-              {
-                  return basis_database{ row.key(), row.get_int32() };
-              }
-              return basis_database{ row.key(), row.get_int64() };
+              return basis_database{ row.key(), row.type() == bsoncxx::type::k_int32 ? row.get_int32() : row.get_int64() };
           } },
         { database_data_type::int64_count_type,
           [](const document_element_type& row) {
-              if (row.type() == bsoncxx::type::k_int32)
-              {
-                  return basis_database{ row.key(), row.get_int32() };
-              }
-              return basis_database{ row.key(), row.get_int64() };
+              return basis_database{ row.key(), row.type() == bsoncxx::type::k_int32 ? row.get_int32() : row.get_int64() };
           } },
         { database_data_type::double_type,
           [](const document_element_type& row) {
@@ -171,27 +163,20 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
     using append_function = std::function<void(document_type&, const basis_database&)>;
     using container_type = std::map<database_data_type, append_function>;
 
-    static const container_type container{
-        { database_data_type::string_type, append_basic_type<database_data_type::string_type> },
-        { database_data_type::string_array_type, append_array_document<database_data_type::string_array_type> },
-        { database_data_type::int32_type, append_basic_type<database_data_type::int32_type> },
-        { database_data_type::int32_count_type, append_basic_type<database_data_type::int32_count_type> },
-        { database_data_type::int32_array_type, append_array_document<database_data_type::int32_array_type> },
-        { database_data_type::int64_type, append_basic_type<database_data_type::int64_type> },
-        { database_data_type::int64_count_type, append_basic_type<database_data_type::int64_count_type> },
-        { database_data_type::int64_array_type, append_array_document<database_data_type::int64_array_type> },
-        { database_data_type::double_type, append_basic_type<database_data_type::double_type> },
-        { database_data_type::double_array_type, append_array_document<database_data_type::double_array_type> },
-        { database_data_type::bool_type, append_basic_type<database_data_type::bool_type> },
-        { database_data_type::byte_array_type, [](document_type& current_document, const basis_database& basis_database) {
-            const auto& byteArray = basis_database.get_value<database_data_type::byte_array_type>();
-            current_document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() },
-                                                                 bsoncxx::types::b_binary{ bsoncxx::binary_sub_type::k_binary,
-                                                                                           static_cast<uint32_t>(byteArray.size()),
-                                                                                           byteArray.data() }));
-        } },
-        { database_data_type::document_type, append_document_item },
-        { database_data_type::document_array_type, append_document_array_item },
+    static const container_type container{ { database_data_type::string_type, append_basic_type<database_data_type::string_type> },
+                                           { database_data_type::string_array_type, append_array_document<database_data_type::string_array_type> },
+                                           { database_data_type::int32_type, append_basic_type<database_data_type::int32_type> },
+                                           { database_data_type::int32_count_type, append_basic_type<database_data_type::int32_count_type> },
+                                           { database_data_type::int32_array_type, append_array_document<database_data_type::int32_array_type> },
+                                           { database_data_type::int64_type, append_basic_type<database_data_type::int64_type> },
+                                           { database_data_type::int64_count_type, append_basic_type<database_data_type::int64_count_type> },
+                                           { database_data_type::int64_array_type, append_array_document<database_data_type::int64_array_type> },
+                                           { database_data_type::double_type, append_basic_type<database_data_type::double_type> },
+                                           { database_data_type::double_array_type, append_array_document<database_data_type::double_array_type> },
+                                           { database_data_type::bool_type, append_basic_type<database_data_type::bool_type> },
+                                           { database_data_type::byte_array_type, append_byte_array },
+                                           { database_data_type::document_type, append_document_item },
+                                           { database_data_type::document_array_type, append_document_array_item },
     };
 
     if (const auto iter = container.find(database.get_data_type());
@@ -313,4 +298,14 @@ void celeritas::mongo_row_data_converter::append_document_array_item(document_ty
         current_document.append(current);
     }
     document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, current_document));
+}
+
+void celeritas::mongo_row_data_converter::append_byte_array(document_type& document, const basis_database& basis_database)
+{
+    const auto& byte_array = basis_database.get_value<database_data_type::byte_array_type>();
+    document.append(bsoncxx::builder::basic::kvp(
+        std::string{ basis_database.get_field_name() },
+        bsoncxx::types::b_binary{ bsoncxx::binary_sub_type::k_binary,
+                                  static_cast<uint32_t>(byte_array.size()),
+                                  byte_array.data() }));
 }
