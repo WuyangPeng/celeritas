@@ -15,7 +15,7 @@ celeritas::test::test(const database_entity_change& entity)
       chance_winning_{ entity.get_value<database_data_type::double_type>(chance_winning_describe) },
       winning_{ entity.get_value<database_data_type::bool_type>(winning_describe) },
       currency_{ entity.get_value<database_data_type::int64_count_type>(currency_describe) },
-      count_{ entity.get_value<database_data_type::int32_count_type>(count_describe) }
+      count_{ entity.get_value<database_data_type::int32_count_type>(count_describe, 1) }
 {
 }
 
@@ -27,7 +27,7 @@ celeritas::test::test(const database_type database_type, const database_entity_c
       chance_winning_{ entity.get_value<database_data_type::double_type>(chance_winning_describe) },
       winning_{ entity.get_value<database_data_type::bool_type>(winning_describe) },
       currency_{ entity.get_value<database_data_type::int64_count_type>(currency_describe) },
-      count_{ entity.get_value<database_data_type::int32_count_type>(count_describe) }
+      count_{ entity.get_value<database_data_type::int32_count_type>(count_describe, 1) }
 {
     if (database_type != entity.get_database_type())
     {
@@ -49,7 +49,7 @@ celeritas::test::test(const database_type database_type, traits::param_type::int
       chance_winning_{ traits::double_type{} },
       winning_{ traits::bool_type{} },
       currency_{ traits::int64_count_type{} },
-      count_{ traits::int32_count_type{} }
+      count_{ traits::int32_count_type{ 1 } }
 {
     add_modify(user_id_describe, user_id);
 }

@@ -71,6 +71,25 @@ std::string celeritas::generate_mysql_file::get_mysql_data_type(const std::strin
 
 std::string celeritas::generate_mysql_file::get_mysql_default_type(const std::string& data_type, const std::string& default_value)
 {
+    if (!default_value.empty())
+    {
+        if (data_type == "string")
+        {
+            return "\"" + default_value + "\"";
+        }
+
+        if (data_type == "bool")
+        {
+            if (default_value == "true")
+            {
+                return "1";
+            }
+            return "0";
+        }
+
+        return default_value;
+    }
+
     if (data_type == "int32" || data_type == "int32_count")
     {
         return "0";

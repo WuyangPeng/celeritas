@@ -1,1 +1,1 @@
-      ${entity}_{ entity.get_value<database_data_type::${entity_type}>(${entity}_describe) }${field_is_end}
+      ${entity}_{ entity.get_value<database_data_type::${entity_type}>(${entity}_describe${default_value}) }${field_is_end}

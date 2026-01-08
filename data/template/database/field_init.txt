@@ -1,1 +1,1 @@
-      ${entity}_{ traits::${entity_type}{} }${field_is_end}
+      ${entity}_{ traits::${entity_type}{${default_value}} }${field_is_end}

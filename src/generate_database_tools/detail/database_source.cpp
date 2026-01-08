@@ -157,6 +157,22 @@ std::string celeritas::database_source::create_field_assignment_content(const in
         boost::replace_all(field_assignment_content, "${field_is_end}", ",");
     }
 
+    if (const auto default_value = entity_attribute.get_default_value())
+    {
+        if (entity_attribute.is_string_type())
+        {
+            boost::replace_all(field_assignment_content, "${default_value}", ", \"" + *default_value + "\"");
+        }
+        else
+        {
+            boost::replace_all(field_assignment_content, "${default_value}", ", " + *default_value);
+        }
+    }
+    else
+    {
+        boost::replace_all(field_assignment_content, "${default_value}", "");
+    }
+
     return field_assignment_content;
 }
 
@@ -174,6 +190,22 @@ std::string celeritas::database_source::create_field_init_content(const int inde
     else
     {
         boost::replace_all(field_init_content, "${field_is_end}", ",");
+    }
+
+    if (const auto default_value = entity_attribute.get_default_value())
+    {
+        if (entity_attribute.is_string_type())
+        {
+            boost::replace_all(field_init_content, "${default_value}", " \"" + *default_value + "\" ");
+        }
+        else
+        {
+            boost::replace_all(field_init_content, "${default_value}", " " + *default_value + " ");
+        }
+    }
+    else
+    {
+        boost::replace_all(field_init_content, "${default_value}", "");
     }
 
     return field_init_content;

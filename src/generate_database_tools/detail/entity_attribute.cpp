@@ -21,9 +21,19 @@ celeritas::entity_attribute::optional_string celeritas::entity_attribute::get_in
     return index_type_;
 }
 
+celeritas::entity_attribute::optional_string celeritas::entity_attribute::get_default_value() const
+{
+    return default_value_;
+}
+
 bool celeritas::entity_attribute::is_bool_type() const
 {
     return data_type_ == "bool";
+}
+
+bool celeritas::entity_attribute::is_string_type() const
+{
+    return data_type_ == "string";
 }
 
 bool celeritas::entity_attribute::is_noexcept_type() const
@@ -56,19 +66,24 @@ bool celeritas::entity_attribute::is_array_type() const
     return false;
 }
 
-void celeritas::entity_attribute::set_entity_name(const std::string& entityName)
+void celeritas::entity_attribute::set_entity_name(const std::string& entity_name)
 {
-    entity_name_ = entityName;
+    entity_name_ = entity_name;
 }
 
-void celeritas::entity_attribute::set_data_type(const std::string& dataType)
+void celeritas::entity_attribute::set_data_type(const std::string& data_type)
 {
-    data_type_ = dataType;
+    data_type_ = data_type;
 }
 
-void celeritas::entity_attribute::set_index_type(const std::string& indexType)
+void celeritas::entity_attribute::set_index_type(const std::string& index_type)
 {
-    index_type_ = indexType;
+    index_type_ = index_type;
+}
+
+void celeritas::entity_attribute::set_default_value(const std::string& default_value)
+{
+    default_value_ = default_value;
 }
 
 celeritas::entity_attribute celeritas::tag_invoke(boost::json::value_to_tag<entity_attribute>, boost::json::value const& value)
@@ -97,6 +112,11 @@ celeritas::entity_attribute celeritas::tag_invoke(boost::json::value_to_tag<enti
     if (object.contains("index_type"))
     {
         attribute.set_index_type(boost::json::value_to<std::string>(object.at("index_type")));
+    }
+
+    if (object.contains("default_value"))
+    {
+        attribute.set_default_value(boost::json::value_to<std::string>(object.at("default_value")));
     }
 
     return attribute;
