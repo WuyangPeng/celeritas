@@ -212,10 +212,6 @@ celeritas::database_session::database_entity_change_awaitable_type celeritas::re
         {
             select.modify(redis_key_data_converter::get_basis_database(element, iter->second));
         }
-        else
-        {
-            select.modify(redis_key_data_converter::get_basis_database(element));
-        }
     }
 
     co_return select;
