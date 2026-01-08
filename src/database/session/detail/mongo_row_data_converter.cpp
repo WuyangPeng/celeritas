@@ -216,7 +216,7 @@ celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_con
             case database_data_type::document_type:
             {
                 bsoncxx::builder::basic::document current_document{};
-                for (const auto document_type = value.get_value<database_data_type::document_type>();
+                for (const auto& document_type = value.get_value<database_data_type::document_type>();
                      const auto& element : document_type)
                 {
                     append_document(current_document, element);
@@ -227,7 +227,7 @@ celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_con
             }
             case database_data_type::document_array_type:
             {
-                const auto document_type = value.get_value<database_data_type::document_array_type>();
+                const auto& document_type = value.get_value<database_data_type::document_array_type>();
                 bsoncxx::builder::basic::array basic{};
                 for (const auto& element : document_type)
                 {
