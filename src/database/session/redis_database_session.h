@@ -25,7 +25,6 @@ namespace celeritas
     public:
         using class_type = redis_database_session;
         using base_type = database_session;
-        using io_context_type = boost::asio::io_context;
         using int_awaitable_type = boost::asio::awaitable<int>;
         using optional_int = std::optional<int>;
         using optional_int_awaitable_type = boost::asio::awaitable<optional_int>;

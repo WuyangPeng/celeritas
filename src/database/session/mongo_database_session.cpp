@@ -185,11 +185,11 @@ bool celeritas::mongo_database_session::do_is_health() const
 
 void celeritas::mongo_database_session::update_document(const const_database_entity_change_shared_ptr& database) const
 {
-    auto keyDocument = mongo_row_data_converter::get_document(database->get_key());
-    auto updateDocument = mongo_row_data_converter::get_document(database->get_database());
+    auto key_document = mongo_row_data_converter::get_document(database->get_key());
+    auto update_document = mongo_row_data_converter::get_document(database->get_database());
 
     auto collection = get_collection(database->get_database_name());
-    collection.update_one(keyDocument.extract(), updateDocument.extract());
+    collection.update_one(key_document.extract(), update_document.extract());
 }
 
 void celeritas::mongo_database_session::insert_document(const const_database_entity_change_shared_ptr& database) const

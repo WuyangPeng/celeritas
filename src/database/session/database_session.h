@@ -48,6 +48,6 @@ namespace celeritas
         [[nodiscard]] virtual result_container_awaitable_type select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) = 0;
 
     private:
-        time_point_type last_heartbeat;
+        time_point_type last_heartbeat_;
     };
 }
