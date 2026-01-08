@@ -7,6 +7,7 @@
 #include "database/basic/database_entity_change.h"
 #include "detail/mongo_row_data_converter.h"
 
+#include <boost/asio/strand.hpp>
 #include <boost/asio/use_awaitable.hpp>
 #include <mongocxx/exception/operation_exception.hpp>
 
@@ -17,8 +18,8 @@ celeritas::mongo_database_session::mongo_database_session(const std::string& hos
                                                           const std::string& uri,
                                                           const std::string& db_name,
                                                           int expire_seconds,
-                                                          any_io_executor any_io_executor)
-    : any_io_executor_{ std::move(any_io_executor) }, client_{}, database_{}, mongo_parameter_{ uri, db_name }
+                                                          const any_io_executor& any_io_executor)
+    : any_io_executor_{ boost::asio::make_strand(any_io_executor) }, client_{}, database_{}, mongo_parameter_{ uri, db_name }
 {
 }
 

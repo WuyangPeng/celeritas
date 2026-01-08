@@ -28,7 +28,7 @@ namespace celeritas
                                         const std::string& uri,
                                         const std::string& db_name,
                                         int expire_seconds,
-                                        any_io_executor any_io_executor);
+                                        const any_io_executor& any_io_executor);
 
         [[nodiscard]] void_awaitable_type async_connect();
 

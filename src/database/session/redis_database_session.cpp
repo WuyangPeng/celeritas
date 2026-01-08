@@ -17,7 +17,7 @@ celeritas::redis_database_session::redis_database_session(const std::string_view
                                                           const std::string_view db_name,
                                                           const int expire_seconds,
                                                           const any_io_executor& any_io_executor)
-    : any_io_executor_{ any_io_executor },
+    : any_io_executor_{ boost::asio::make_strand(any_io_executor) },
       redis_context_{},
       redis_parameter_{ host, port, user, password, db_name, expire_seconds },
       redis_key_commands_{ *this },

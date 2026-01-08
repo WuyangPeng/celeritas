@@ -178,7 +178,7 @@ void celeritas::initializer::initialize_config()
 
 void celeritas::initializer::initialize_resource()
 {
-    resource_loader_->initialize(boost::asio::make_strand(io_context_), shared_from_this());
+    resource_loader_->initialize(io_context_.get_executor(), shared_from_this());
 }
 
 void celeritas::initializer::initialize_application()

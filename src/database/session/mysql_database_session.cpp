@@ -26,7 +26,7 @@ celeritas::mysql_database_session::mysql_database_session(const std::string& hos
                                                           int expire_seconds,
                                                           const any_io_executor& any_io_executor,
                                                           ssl_io_context_type* ssl_context)
-    : connection_{ get_any_connection(any_io_executor, ssl_context) },
+    : connection_{ get_any_connection(boost::asio::make_strand(any_io_executor), ssl_context) },
       mysql_parameter_{ host, port, user, password, db_name }
 {
 }
