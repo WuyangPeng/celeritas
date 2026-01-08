@@ -5,7 +5,7 @@
 #include "database/basic/database_change_type.h"
 #include "database/basic/database_entity_change.h"
 #include "database/basic/database_field.h"
-#include "database/redis/detail/redis_key_data_converter.h"
+#include "detail/redis_key_data_converter.h"
 
 using namespace std::literals;
 

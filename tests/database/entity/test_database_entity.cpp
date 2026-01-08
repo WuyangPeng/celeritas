@@ -173,7 +173,8 @@ BOOST_AUTO_TEST_SUITE(database_entity_suite)
         celeritas::test_entity entity{ get_db_type(), get_db_name(), get_key() };
         BOOST_CHECK(!entity.is_must_save());
 
-        entity.add_modify("field", 1);
+        entity.add_modify("field1", 1);
+        entity.add_modify("field2", 2);
         BOOST_CHECK(entity.is_must_save());
 
         entity.clear_modify();
