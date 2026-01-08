@@ -21,7 +21,7 @@ namespace celeritas
 
         [[nodiscard]] static std::string get_mysql_data_type(const std::string& data_type);
 
-        [[nodiscard]] static std::string get_mysql_default_type(const std::string& data_type);
+        [[nodiscard]] static std::string get_mysql_default_type(const std::string& data_type, const std::string& default_value);
 
         [[nodiscard]] json_value_type get_json_value() const;
 

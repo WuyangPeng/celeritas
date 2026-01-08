@@ -69,7 +69,7 @@ std::string celeritas::generate_mysql_file::get_mysql_data_type(const std::strin
     return "TEXT";
 }
 
-std::string celeritas::generate_mysql_file::get_mysql_default_type(const std::string& data_type)
+std::string celeritas::generate_mysql_file::get_mysql_default_type(const std::string& data_type, const std::string& default_value)
 {
     if (data_type == "int32" || data_type == "int32_count")
     {
@@ -139,6 +139,7 @@ std::string celeritas::generate_mysql_file::get_mysql_statement(const json_value
         const auto data_type = boost::json::value_to<std::string>(entity_object.at("data_type"));
         const auto comment = entity_object.count("comment") ? boost::json::value_to<std::string>(entity_object.at("comment")) : "";
         const auto index_type = entity_object.count("index_type") ? boost::json::value_to<std::string>(entity_object.at("index_type")) : "";
+        const auto default_value = entity_object.count("default_value") ? boost::json::value_to<std::string>(entity_object.at("default_value")) : "";
 
         sql_output << "  `" << entity_name << "` " << get_mysql_data_type(data_type);
 
@@ -172,7 +173,7 @@ std::string celeritas::generate_mysql_file::get_mysql_statement(const json_value
 
         if (data_type != "binary" && index_type != "key" && index_type != "unique_index" && index_type != "composite_unique_index" && index_type != "composite_unique_key_and_index")
         {
-            sql_output << " DEFAULT " << get_mysql_default_type(data_type);
+            sql_output << " DEFAULT " << get_mysql_default_type(data_type, default_value);
         }
 
         if (!comment.empty())
