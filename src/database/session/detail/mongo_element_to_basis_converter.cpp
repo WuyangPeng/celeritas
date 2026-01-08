@@ -1,5 +1,5 @@
 ﻿#include "mongo_element_to_basis_converter.tpp"
-#include "mongo_row_data_converter.tpp"
+#include "mongo_row_data_converter.h"
 #include "common/core/celeritas_error.h"
 
 const celeritas::mongo_element_to_basis_converter::container_type& celeritas::mongo_element_to_basis_converter::get_element_converters()
@@ -18,17 +18,17 @@ const celeritas::mongo_element_to_basis_converter::container_type& celeritas::mo
 
 celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_double_from_element(const document_element_type& row)
 {
-    return { row.key().data(), row.get_double().value };
+    return { row.key(), row.get_double().value };
 }
 
 celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_string_from_element(const document_element_type& row)
 {
-    return { row.key().data(), std::string{ row.get_string().value } };
+    return { row.key(), std::string{ row.get_string().value } };
 }
 
 celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_bool_from_element(const document_element_type& row)
 {
-    return { row.key().data(), row.get_bool().value };
+    return { row.key(), row.get_bool().value };
 }
 
 celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_document_from_element(const document_element_type& row)
@@ -38,17 +38,17 @@ celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_docum
     {
         document.emplace_back(mongo_row_data_converter::get_basis_database(element));
     }
-    return { row.key().data(), document };
+    return { row.key(), document };
 }
 
 celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_int32_from_element(const document_element_type& row)
 {
-    return { row.key().data(), row.get_int32().value };
+    return { row.key(), row.get_int32().value };
 }
 
 celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_int64_from_element(const document_element_type& row)
 {
-    return { row.key().data(), row.get_int64().value };
+    return { row.key(), row.get_int64().value };
 }
 
 celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_array_basis_database_from_view(const document_element_type& row_view)
@@ -56,30 +56,30 @@ celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_array
     const auto row_view_array = row_view.get_array().value;
     if (row_view_array.empty())
     {
-        return { row_view.key().data(), basis_database::int32_array{} };
+        return { row_view.key(), basis_database::int32_array{} };
     }
 
     switch (row_view_array.begin()->type())
     {
         case bsoncxx::type::k_double:
         {
-            return { row_view.key().data(), get_array_from_view<double>(row_view_array) };
+            return { row_view.key(), get_array_from_view<double>(row_view_array) };
         }
         case bsoncxx::type::k_string:
         {
-            return { row_view.key().data(), get_array_from_view<std::string>(row_view_array) };
+            return { row_view.key(), get_array_from_view<std::string>(row_view_array) };
         }
         case bsoncxx::type::k_document:
         {
-            return { row_view.key().data(), get_document_array_from_view(row_view_array) };
+            return { row_view.key(), get_document_array_from_view(row_view_array) };
         }
         case bsoncxx::type::k_int32:
         {
-            return { row_view.key().data(), get_array_from_view<int32_t>(row_view_array) };
+            return { row_view.key(), get_array_from_view<int32_t>(row_view_array) };
         }
         case bsoncxx::type::k_int64:
         {
-            return { row_view.key().data(), get_array_from_view<int64_t>(row_view_array) };
+            return { row_view.key(), get_array_from_view<int64_t>(row_view_array) };
         }
         default:
         {

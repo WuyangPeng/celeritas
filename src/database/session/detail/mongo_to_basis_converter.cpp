@@ -1,6 +1,5 @@
 ﻿#include "mongo_to_basis_converter.tpp"
-#include "mongo_row_data_converter.tpp"
-#include "database/basic/basis_database.tpp"
+#include "mongo_row_data_converter.h"
 
 #include <bsoncxx/types.hpp>
 
@@ -85,7 +84,7 @@ celeritas::basis_database celeritas::mongo_to_basis_converter::get_document_basi
     {
         document.emplace_back(mongo_row_data_converter::get_basis_database(element));
     }
-    return basis_database{ row_view.key().data(), document };
+    return basis_database{ row_view.key(), document };
 }
 
 celeritas::basis_database celeritas::mongo_to_basis_converter::get_document_array_basis_database(const document_element_type& row_view)
@@ -103,6 +102,6 @@ celeritas::basis_database celeritas::mongo_to_basis_converter::get_document_arra
         result.emplace_back(document);
     }
 
-    return basis_database{ row_view.key().data(), result };
+    return basis_database{ row_view.key(), result };
 }
 

@@ -24,23 +24,5 @@ namespace celeritas
         [[nodiscard]] static document_type get_document(const basis_database_container_const_shared_ptr& container);
 
         [[nodiscard]] static basis_database get_basis_database(const document_element_type& row_view);
-
-    private:
-        using array_type = bsoncxx::array::view;
-        using document_array = basis_database::document_array;
-
-        static void append_document(document_type& document, const basis_database& database);
-
-        template <database_data_type T>
-        static void append_basic_type(document_type& document, const basis_database& basis_database);
-
-        template <database_data_type T>
-        static void append_array_document(document_type& document, const basis_database& basis_database);
-
-        static void append_document_item(document_type& document, const basis_database& basis_database);
-
-        static void append_document_array_item(document_type& document, const basis_database& basis_database);
-
-        static void append_byte_array(document_type& document, const basis_database& basis_database);
     };
 }
