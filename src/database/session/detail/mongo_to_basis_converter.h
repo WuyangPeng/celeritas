@@ -20,6 +20,9 @@ namespace celeritas
 
         [[nodiscard]] static const container_type& get_basis_from_field();
 
+    private:
+        using array_type = bsoncxx::array::view;
+
         [[nodiscard]] static basis_database get_string_basis(const document_element_type& row_view);
 
         [[nodiscard]] static basis_database get_int32_basis(const document_element_type& row_view);
@@ -43,9 +46,6 @@ namespace celeritas
         [[nodiscard]] static basis_database get_document_basis_database(const document_element_type& row_view);
 
         [[nodiscard]] static basis_database get_document_array_basis_database(const document_element_type& row_view);
-
-    private:
-        using array_type = bsoncxx::array::view;
 
         template <typename T>
         [[nodiscard]] static std::vector<T> get_numeric_array(const array_type& array_view);

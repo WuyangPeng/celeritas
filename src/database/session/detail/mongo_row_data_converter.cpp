@@ -1,5 +1,6 @@
 ﻿#include "mongo_row_data_converter.tpp"
 #include "mongo_to_basis_converter.tpp"
+#include "mongo_element_to_basis_converter.h"
 #include "common/core/celeritas_error.h"
 #include "database/basic/basis_database.tpp"
 #include "database/basic/basis_database_container.h"
@@ -55,42 +56,7 @@ celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_con
 
 celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_database(const document_element_type& row_view)
 {
-    using get_basis_from_element_function = std::function<basis_database(const document_element_type&)>;
-    using container_type = std::map<bsoncxx::type, get_basis_from_element_function>;
-
-    static const container_type container{
-        { bsoncxx::type::k_double,
-          [](const document_element_type& row) {
-              return basis_database{ row.key().data(), row.get_double().value };
-          } },
-        { bsoncxx::type::k_string,
-          [](const document_element_type& row) {
-              return basis_database{ row.key().data(), std::string{ row.get_string().value } };
-          } },
-        { bsoncxx::type::k_bool,
-          [](const document_element_type& row) {
-              return basis_database{ row.key().data(), row.get_bool().value };
-          } },
-        { bsoncxx::type::k_document,
-          [](const document_element_type& row) {
-              basis_database::document_type document{};
-              for (const auto& element : row.get_document().value)
-              {
-                  document.emplace_back(get_basis_database(element));
-              }
-              return basis_database{ row.key().data(), document };
-          } },
-        { bsoncxx::type::k_int32,
-          [](const document_element_type& row) {
-              return basis_database{ row.key().data(), row.get_int32().value };
-          } },
-        { bsoncxx::type::k_int64,
-          [](const document_element_type& row) {
-              return basis_database{ row.key().data(), row.get_int64().value };
-          } },
-        { bsoncxx::type::k_array,
-          get_array_basis_database_from_view },
-    };
+    const auto& container = mongo_element_to_basis_converter::get_element_converters();
 
     if (const auto iter = container.find(row_view.type());
         iter != container.cend())
@@ -130,61 +96,6 @@ void celeritas::mongo_row_data_converter::append_document(document_type& documen
     else
     {
         throw celeritas_error{ "Unsupported type in mongo row data." };
-    }
-}
-
-celeritas::mongo_row_data_converter::document_array celeritas::mongo_row_data_converter::get_document_array_from_view(const array_type& row_view_array)
-{
-    document_array database_array{};
-
-    for (const auto& element : row_view_array)
-    {
-        basis_database::document_type document_type{};
-        for (const auto& doc = element.get_document().value;
-             const auto& value : doc)
-        {
-            document_type.emplace_back(get_basis_database(value));
-        }
-        database_array.emplace_back(document_type);
-    }
-
-    return database_array;
-}
-
-celeritas::basis_database celeritas::mongo_row_data_converter::get_array_basis_database_from_view(const document_element_type& row_view)
-{
-    const auto row_view_array = row_view.get_array().value;
-    if (row_view_array.empty())
-    {
-        return { row_view.key().data(), basis_database::int32_array{} };
-    }
-
-    switch (row_view_array.begin()->type())
-    {
-        case bsoncxx::type::k_double:
-        {
-            return { row_view.key().data(), get_array_from_view<double>(row_view_array) };
-        }
-        case bsoncxx::type::k_string:
-        {
-            return { row_view.key().data(), get_array_from_view<std::string>(row_view_array) };
-        }
-        case bsoncxx::type::k_document:
-        {
-            return { row_view.key().data(), get_document_array_from_view(row_view_array) };
-        }
-        case bsoncxx::type::k_int32:
-        {
-            return { row_view.key().data(), get_array_from_view<int32_t>(row_view_array) };
-        }
-        case bsoncxx::type::k_int64:
-        {
-            return { row_view.key().data(), get_array_from_view<int64_t>(row_view_array) };
-        }
-        default:
-        {
-            throw celeritas_error{ "Unsupported type in mongo row data." };
-        }
     }
 }
 
