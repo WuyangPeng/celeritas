@@ -73,6 +73,7 @@ celeritas::basis_database celeritas::mongo_to_basis_converter::get_byte_array_ba
 {
     const auto binary = row_view.get_binary();
     const basis_database::byte_array result{ binary.bytes, binary.bytes + binary.size };
+
     return basis_database{ row_view.key(), result };
 }
 

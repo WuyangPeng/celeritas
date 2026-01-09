@@ -1,9 +1,9 @@
 ﻿#pragma once
 
-#include "mongo_element_to_basis_converter.h"
+#include "mongo_array_to_basis_converter.h"
 
 template <typename T>
-auto celeritas::mongo_element_to_basis_converter::get_array_from_view(const array_type& row_view_array)
+auto celeritas::mongo_array_to_basis_converter::get_array_from_view(const array_type& row_view_array)
 {
     std::vector<T> database_array{};
     for (const auto& element : row_view_array)
@@ -25,5 +25,6 @@ auto celeritas::mongo_element_to_basis_converter::get_array_from_view(const arra
             database_array.emplace_back(element.get_int64().value);
         }
     }
+
     return database_array;
 }

@@ -4,6 +4,7 @@ namespace celeritas
 {
     class mongo_parameter;
     class mongo_to_basis_converter;
+    class mongo_array_to_basis_converter;
     class mongo_element_to_basis_converter;
     class basis_to_mongo_appender;
     class mongo_row_data_converter;

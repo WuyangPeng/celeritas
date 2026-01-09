@@ -4,7 +4,7 @@
 #include <bsoncxx/builder/basic/array.hpp>
 #include <bsoncxx/types.hpp>
 
-const celeritas::basis_to_mongo_appender::container_type& celeritas::basis_to_mongo_appender::get_appenders()
+const celeritas::basis_to_mongo_appender::container_type& celeritas::basis_to_mongo_appender::get_appender()
 {
     static const container_type container{ { database_data_type::string_type, append_basic_type<database_data_type::string_type> },
                                            { database_data_type::string_array_type, append_array_document<database_data_type::string_array_type> },
@@ -19,15 +19,15 @@ const celeritas::basis_to_mongo_appender::container_type& celeritas::basis_to_mo
                                            { database_data_type::bool_type, append_basic_type<database_data_type::bool_type> },
                                            { database_data_type::byte_array_type, append_byte_array },
                                            { database_data_type::document_type, append_document_item },
-                                           { database_data_type::document_array_type, append_document_array_item },
-    };
+                                           { database_data_type::document_array_type, append_document_array_item } };
 
     return container;
 }
 
 void celeritas::basis_to_mongo_appender::append_document(document_type& document, const basis_database& database)
 {
-    const auto& container = get_appenders();
+    const auto& container = get_appender();
+
     if (const auto iter = container.find(database.get_data_type());
         iter != container.cend())
     {

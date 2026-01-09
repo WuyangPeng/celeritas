@@ -17,7 +17,8 @@ namespace celeritas
         using append_function = std::function<void(document_type&, const basis_database&)>;
         using container_type = std::map<database_data_type, append_function>;
 
-        [[nodiscard]] static const container_type& get_appenders();
+        [[nodiscard]] static const container_type& get_appender();
+
         static void append_document(document_type& document, const basis_database& database);
 
     private:
