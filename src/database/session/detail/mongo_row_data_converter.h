@@ -18,10 +18,11 @@ namespace celeritas
         using database_field_container = std::vector<database_field>;
         using document_type = bsoncxx::builder::basic::document;
         using basis_database_container_const_shared_ptr = std::shared_ptr<const basis_database_container>;
+        using document_shared_ptr = std::shared_ptr<document_type>;
 
         [[nodiscard]] static basis_database get_basis_database(const database_field_container& field_name_container, const document_element_type& row_view);
 
-        [[nodiscard]] static document_type get_document(const basis_database_container_const_shared_ptr& container);
+        [[nodiscard]] static document_shared_ptr get_document(const basis_database_container_const_shared_ptr& container);
 
         [[nodiscard]] static basis_database get_basis_database(const document_element_type& row_view);
     };

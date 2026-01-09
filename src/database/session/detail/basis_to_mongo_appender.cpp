@@ -4,6 +4,11 @@
 #include <bsoncxx/builder/basic/array.hpp>
 #include <bsoncxx/types.hpp>
 
+celeritas::basis_to_mongo_appender::basis_to_mongo_appender()
+    : document_{ std::make_shared<document_type>() }
+{
+}
+
 const celeritas::basis_to_mongo_appender::container_type& celeritas::basis_to_mongo_appender::get_appender()
 {
     static const container_type container{ { database_data_type::string_type, append_basic_type<database_data_type::string_type> },
@@ -24,14 +29,14 @@ const celeritas::basis_to_mongo_appender::container_type& celeritas::basis_to_mo
     return container;
 }
 
-void celeritas::basis_to_mongo_appender::append_document(document_type& document, const basis_database& database)
+void celeritas::basis_to_mongo_appender::append_document(const basis_database& database)
 {
     const auto& container = get_appender();
 
     if (const auto iter = container.find(database.get_data_type());
         iter != container.cend())
     {
-        iter->second(document, database);
+        iter->second(*document_, database);
     }
     else
     {
@@ -39,14 +44,20 @@ void celeritas::basis_to_mongo_appender::append_document(document_type& document
     }
 }
 
+celeritas::basis_to_mongo_appender::document_shared_ptr celeritas::basis_to_mongo_appender::get_document() const
+{
+    return document_;
+}
+
 void celeritas::basis_to_mongo_appender::append_document_item(document_type& document, const basis_database& basis_database)
 {
-    bsoncxx::builder::basic::document current_document{};
+    basis_to_mongo_appender appender{};
     for (const auto& element : basis_database.get_value<database_data_type::document_type>())
     {
-        append_document(current_document, element);
+        appender.append_document(element);
     }
-    document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, current_document));
+
+    document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, *appender.get_document()));
 }
 
 void celeritas::basis_to_mongo_appender::append_document_array_item(document_type& document, const basis_database& basis_database)
@@ -54,13 +65,13 @@ void celeritas::basis_to_mongo_appender::append_document_array_item(document_typ
     bsoncxx::builder::basic::array current_document{};
     for (const auto& element : basis_database.get_value<database_data_type::document_array_type>())
     {
-        bsoncxx::builder::basic::document current{};
+        basis_to_mongo_appender appender{};
         for (const auto& value : element)
         {
-            append_document(current, value);
+            appender.append_document(value);
         }
 
-        current_document.append(current);
+        current_document.append(*appender.get_document());
     }
     document.append(bsoncxx::builder::basic::kvp(std::string{ basis_database.get_field_name() }, current_document));
 }

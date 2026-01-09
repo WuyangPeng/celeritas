@@ -144,7 +144,7 @@ celeritas::database_session::database_entity_change_awaitable_type celeritas::mo
 
     auto key_document = mongo_row_data_converter::get_document(database->get_key());
 
-    if (const auto result = collection.find_one(key_document.extract()))
+    if (const auto result = collection.find_one(key_document->extract()))
     {
         co_return to_database_entity_change(database, field_name_container, result.value());
     }
@@ -160,7 +160,7 @@ celeritas::database_session::result_container_awaitable_type celeritas::mongo_da
 
     auto key_document = mongo_row_data_converter::get_document(database->get_key());
 
-    auto result = collection.find(key_document.extract());
+    auto result = collection.find(key_document->extract());
 
     result_container result_container{};
     for (const auto& entity : result)
@@ -192,7 +192,7 @@ void celeritas::mongo_database_session::update_document(const const_database_ent
     auto update_document = mongo_row_data_converter::get_document(database->get_database());
 
     auto collection = get_collection(database->get_database_name());
-    collection.update_one(key_document.extract(), update_document.extract());
+    collection.update_one(key_document->extract(), update_document->extract());
 }
 
 void celeritas::mongo_database_session::insert_document(const const_database_entity_change_shared_ptr& database) const
@@ -201,7 +201,7 @@ void celeritas::mongo_database_session::insert_document(const const_database_ent
 
     auto document = mongo_row_data_converter::get_document(database->get_database());
 
-    collection.insert_one(document.extract());
+    collection.insert_one(document->extract());
 }
 
 void celeritas::mongo_database_session::delete_document(const const_database_entity_change_shared_ptr& database) const
@@ -210,7 +210,7 @@ void celeritas::mongo_database_session::delete_document(const const_database_ent
 
     auto document = mongo_row_data_converter::get_document(database->get_key());
 
-    collection.delete_one(document.extract());
+    collection.delete_one(document->extract());
 }
 
 celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_execute_query(const std::string_view collection_name, const document_view_type& filter) const

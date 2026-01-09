@@ -38,16 +38,16 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
     return basis_database{ iter->get_field_name(), std::string{} };
 }
 
-celeritas::mongo_row_data_converter::document_type celeritas::mongo_row_data_converter::get_document(const basis_database_container_const_shared_ptr& container)
+celeritas::mongo_row_data_converter::document_shared_ptr celeritas::mongo_row_data_converter::get_document(const basis_database_container_const_shared_ptr& container)
 {
-    document_type document{};
+    basis_to_mongo_appender appender{};
 
     for (const auto& value : *container)
     {
-        basis_to_mongo_appender::append_document(document, value);
+        appender.append_document(value);
     }
 
-    return document;
+    return appender.get_document();
 }
 
 celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_database(const document_element_type& row_view)
