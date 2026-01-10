@@ -43,13 +43,13 @@ celeritas::mongo_array_to_basis_converter::document_array celeritas::mongo_array
 
     for (const auto& element : row_view_array)
     {
-        basis_database::document_type document_type{};
+        basis_database::document_type document{};
         for (const auto& doc = element.get_document().value;
              const auto& value : doc)
         {
-            document_type.emplace_back(mongo_row_data_converter::get_basis_database(value));
+            document.emplace_back(mongo_row_data_converter::get_basis_database(value));
         }
-        database_array.emplace_back(document_type);
+        database_array.emplace_back(document);
     }
 
     return database_array;

@@ -5,7 +5,6 @@
 
 #include <bsoncxx/builder/basic/document.hpp>
 
-#include <functional>
 #include <map>
 
 namespace celeritas
@@ -16,29 +15,30 @@ namespace celeritas
         using class_type = basis_to_mongo_appender;
         using document_type = bsoncxx::builder::basic::document;
         using document_shared_ptr = std::shared_ptr<document_type>;
-        using append_function = std::function<void(document_type&, const basis_database&)>;
-        using container_type = std::map<database_data_type, append_function>;
 
         basis_to_mongo_appender();
-
-        [[nodiscard]] static const container_type& get_appender();
 
         void append_document(const basis_database& database);
 
         [[nodiscard]] document_shared_ptr get_document() const;
 
     private:
-        template <database_data_type T>
-        static void append_basic_type(document_type& document, const basis_database& basis_database);
+        using append_function = void (class_type::*)(const basis_database&);
+        using container_type = std::map<database_data_type, append_function>;
+
+        [[nodiscard]] static const container_type& get_appender();
 
         template <database_data_type T>
-        static void append_array_document(document_type& document, const basis_database& basis_database);
+        void append_basic_type(const basis_database& basis_database);
 
-        static void append_document_item(document_type& document, const basis_database& basis_database);
+        template <database_data_type T>
+        void append_array_document(const basis_database& basis_database);
 
-        static void append_document_array_item(document_type& document, const basis_database& basis_database);
+        void append_document_item(const basis_database& basis_database);
 
-        static void append_byte_array(document_type& document, const basis_database& basis_database);
+        void append_document_array_item(const basis_database& basis_database);
+
+        void append_byte_array(const basis_database& basis_database);
 
         document_shared_ptr document_;
     };

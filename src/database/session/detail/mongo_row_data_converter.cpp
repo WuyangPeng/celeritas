@@ -38,7 +38,7 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
     return basis_database{ iter->get_field_name(), std::string{} };
 }
 
-celeritas::mongo_row_data_converter::document_shared_ptr celeritas::mongo_row_data_converter::get_document(const basis_database_container_const_shared_ptr& container)
+celeritas::mongo_row_data_converter::document_shared_ptr celeritas::mongo_row_data_converter::get_document(const const_basis_database_container_shared_ptr& container)
 {
     basis_to_mongo_appender appender{};
 

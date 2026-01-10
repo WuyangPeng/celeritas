@@ -142,7 +142,7 @@ celeritas::database_session::database_entity_change_awaitable_type celeritas::mo
 
     auto collection = get_collection(database->get_database_name());
 
-    auto key_document = mongo_row_data_converter::get_document(database->get_key());
+    const auto key_document = mongo_row_data_converter::get_document(database->get_key());
 
     if (const auto result = collection.find_one(key_document->extract()))
     {
@@ -158,7 +158,7 @@ celeritas::database_session::result_container_awaitable_type celeritas::mongo_da
 
     auto collection = get_collection(database->get_database_name());
 
-    auto key_document = mongo_row_data_converter::get_document(database->get_key());
+    const auto key_document = mongo_row_data_converter::get_document(database->get_key());
 
     auto result = collection.find(key_document->extract());
 
@@ -188,8 +188,8 @@ bool celeritas::mongo_database_session::do_is_health() const
 
 void celeritas::mongo_database_session::update_document(const const_database_entity_change_shared_ptr& database) const
 {
-    auto key_document = mongo_row_data_converter::get_document(database->get_key());
-    auto update_document = mongo_row_data_converter::get_document(database->get_database());
+    const auto key_document = mongo_row_data_converter::get_document(database->get_key());
+    const auto update_document = mongo_row_data_converter::get_document(database->get_database());
 
     auto collection = get_collection(database->get_database_name());
     collection.update_one(key_document->extract(), update_document->extract());
@@ -199,7 +199,7 @@ void celeritas::mongo_database_session::insert_document(const const_database_ent
 {
     auto collection = get_collection(database->get_database_name());
 
-    auto document = mongo_row_data_converter::get_document(database->get_database());
+    const auto document = mongo_row_data_converter::get_document(database->get_database());
 
     collection.insert_one(document->extract());
 }
@@ -208,7 +208,7 @@ void celeritas::mongo_database_session::delete_document(const const_database_ent
 {
     auto collection = get_collection(database->get_database_name());
 
-    auto document = mongo_row_data_converter::get_document(database->get_key());
+    const auto document = mongo_row_data_converter::get_document(database->get_key());
 
     collection.delete_one(document->extract());
 }
