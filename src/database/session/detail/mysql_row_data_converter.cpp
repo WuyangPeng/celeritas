@@ -6,7 +6,6 @@
 
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
-#include <boost/json.hpp>
 
 #include <ranges>
 
@@ -210,30 +209,10 @@ celeritas::basis_database celeritas::mysql_row_data_converter::get_basis_databas
                 return basis_database{ field_name.get_field_name(), basis_database::string_array{} };
             }
 
-            try
-            {
-                auto jv = boost::json::parse(value);
-                if (jv.is_array())
-                {
-                    basis_database::string_array result{};
-                    const auto& arr = jv.get_array();
-                    result.reserve(arr.size());
-                    for (const auto& el : arr)
-                    {
-                        if (el.is_string())
-                        {
-                            result.emplace_back(el.get_string());
-                        }
-                    }
-                    return basis_database{ field_name.get_field_name(), result };
-                }
-            }
-            catch (const std::exception& exception)
-            {
-                LOG_CHANNEL(database_channel, error) << "database data json error:" << exception.what();
-            }
+            const auto json = boost::json::parse(value);
+            const auto result = boost::json::value_to<basis_database::string_array>(json);
 
-            return basis_database{ field_name.get_field_name(), basis_database::string_array{} };
+            return basis_database{ field_name.get_field_name(), result };
         }
 
         case database_data_type::document_array_type:

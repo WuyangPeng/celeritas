@@ -2,7 +2,7 @@
 
 using namespace std::literals;
 
-std::string celeritas::mysql_statement_generator::generate_insert_statement(const database_entity_change_const_shared_ptr& database)
+std::string celeritas::mysql_statement_generator::generate_insert_statement(const const_database_entity_change_shared_ptr& database)
 {
     std::string result{};
 
@@ -26,7 +26,7 @@ std::string celeritas::mysql_statement_generator::generate_insert_statement(cons
     return result;
 }
 
-std::string celeritas::mysql_statement_generator::generate_update_statement(const database_entity_change_const_shared_ptr& database)
+std::string celeritas::mysql_statement_generator::generate_update_statement(const const_database_entity_change_shared_ptr& database)
 {
     std::string result{};
 
@@ -53,7 +53,7 @@ std::string celeritas::mysql_statement_generator::generate_update_statement(cons
     return result;
 }
 
-std::string celeritas::mysql_statement_generator::generate_delete_statement(const database_entity_change_const_shared_ptr& database)
+std::string celeritas::mysql_statement_generator::generate_delete_statement(const const_database_entity_change_shared_ptr& database)
 {
     std::string result{};
 
@@ -75,7 +75,7 @@ std::string celeritas::mysql_statement_generator::generate_delete_statement(cons
     return result;
 }
 
-std::string celeritas::mysql_statement_generator::generate_select_statement(const database_field_container& field_name_container, const database_entity_change_const_shared_ptr& database)
+std::string celeritas::mysql_statement_generator::generate_select_statement(const database_field_container& field_name_container, const const_database_entity_change_shared_ptr& database)
 {
     std::string result{};
 
