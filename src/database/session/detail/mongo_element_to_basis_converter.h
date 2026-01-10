@@ -12,6 +12,7 @@ namespace celeritas
     class mongo_element_to_basis_converter
     {
     public:
+        using class_type = mongo_element_to_basis_converter;
         using document_element_type = bsoncxx::document::element;
         using get_basis_from_element_function = std::function<basis_database(const document_element_type&)>;
         using container_type = std::map<bsoncxx::type, get_basis_from_element_function>;

@@ -3,142 +3,12 @@
 #include "database/basic/basis_database.tpp"
 #include "database/basic/database_data_type.h"
 #include "database/basic/database_field.h"
+#include "json_value_to_basis_converter.h"
 
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 
 #include <ranges>
-
-namespace
-{
-    celeritas::basis_database json_value_to_basis(std::string_view key, const boost::json::value& jv)
-    {
-        switch (jv.kind())
-        {
-            case boost::json::kind::object:
-            {
-                celeritas::basis_database::document_type doc;
-                const auto& obj = jv.get_object();
-                doc.reserve(obj.size());
-                for (const auto& kv : obj)
-                {
-                    doc.emplace_back(json_value_to_basis(kv.key(), kv.value()));
-                }
-                return celeritas::basis_database{ key, doc };
-            }
-            case boost::json::kind::array:
-            {
-                const auto& arr = jv.get_array();
-                if (arr.empty())
-                {
-                    return celeritas::basis_database{ key, celeritas::basis_database::string_array{} };
-                }
-
-                const auto& first = arr.front();
-                if (first.is_string())
-                {
-                    celeritas::basis_database::string_array result{};
-                    result.reserve(arr.size());
-                    for (const auto& el : arr)
-                    {
-                        if (el.is_string())
-                        {
-                            result.emplace_back(el.get_string());
-                        }
-                    }
-                    return celeritas::basis_database{ key, result };
-                }
-
-                if (first.is_int64())
-                {
-                    celeritas::basis_database::int64_array result{};
-                    result.reserve(arr.size());
-                    for (const auto& el : arr)
-                    {
-                        if (el.is_int64())
-                        {
-                            result.emplace_back(el.get_int64());
-                        }
-                    }
-                    return celeritas::basis_database{ key, result };
-                }
-
-                if (first.is_uint64())
-                {
-                    celeritas::basis_database::int64_array result{};
-                    result.reserve(arr.size());
-                    for (const auto& el : arr)
-                    {
-                        result.emplace_back(boost::numeric_cast<int64_t>(el.get_uint64()));
-                    }
-                    return celeritas::basis_database{ key, result };
-                }
-
-                if (first.is_double())
-                {
-                    celeritas::basis_database::double_array result{};
-                    result.reserve(arr.size());
-                    for (const auto& el : arr)
-                    {
-                        if (el.is_double())
-                        {
-                            result.push_back(el.get_double());
-                        }
-                    }
-                    return celeritas::basis_database{ key, result };
-                }
-
-                if (first.is_object())
-                {
-                    celeritas::basis_database::document_array result{};
-                    result.reserve(arr.size());
-                    for (const auto& el : arr)
-                    {
-                        if (el.is_object())
-                        {
-                            celeritas::basis_database::document_type doc;
-                            const auto& obj = el.get_object();
-                            doc.reserve(obj.size());
-                            for (const auto& kv : obj)
-                            {
-                                doc.emplace_back(json_value_to_basis(kv.key(), kv.value()));
-                            }
-                            result.emplace_back(std::move(doc));
-                        }
-                    }
-                    return celeritas::basis_database{ key, result };
-                }
-
-                return celeritas::basis_database{ key, celeritas::basis_database::string_array{} };
-            }
-            case boost::json::kind::string:
-            {
-                return celeritas::basis_database{ key, std::string(jv.get_string()) };
-            }
-            case boost::json::kind::int64:
-            {
-                return celeritas::basis_database{ key, jv.get_int64() };
-            }
-            case boost::json::kind::uint64:
-            {
-                return celeritas::basis_database{ key, boost::numeric_cast<int64_t>(jv.get_uint64()) };
-            }
-            case boost::json::kind::double_:
-            {
-                return celeritas::basis_database{ key, jv.get_double() };
-            }
-            case boost::json::kind::bool_:
-            {
-                return celeritas::basis_database{ key, jv.get_bool() };
-            }
-            case boost::json::kind::null:
-            default:
-            {
-                return celeritas::basis_database{ key };
-            }
-        }
-    }
-}
 
 celeritas::basis_database celeritas::mysql_row_data_converter::get_basis_database(const database_field& field_name, const field_view_type& row_view)
 {
@@ -167,7 +37,7 @@ celeritas::basis_database celeritas::mysql_row_data_converter::get_basis_databas
                     doc.reserve(obj.size());
                     for (const auto& kv : obj)
                     {
-                        doc.emplace_back(json_value_to_basis(kv.key(), kv.value()));
+                        doc.emplace_back(json_value_to_basis_converter::convert(kv.key(), kv.value()));
                     }
                     return basis_database{ field_name.get_field_name(), doc };
                 }
@@ -240,7 +110,7 @@ celeritas::basis_database celeritas::mysql_row_data_converter::get_basis_databas
                             doc.reserve(obj.size());
                             for (const auto& kv : obj)
                             {
-                                doc.push_back(json_value_to_basis(kv.key(), kv.value()));
+                                doc.emplace_back(json_value_to_basis_converter::convert(kv.key(), kv.value()));
                             }
                             result.emplace_back(std::move(doc));
                         }

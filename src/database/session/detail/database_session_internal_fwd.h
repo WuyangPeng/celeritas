@@ -9,6 +9,7 @@ namespace celeritas
     class basis_to_mongo_appender;
     class mongo_row_data_converter;
 
+    class json_value_to_basis_converter;
     class mysql_parameter;
     class mysql_row_data_converter;
     class mysql_statement_generator;

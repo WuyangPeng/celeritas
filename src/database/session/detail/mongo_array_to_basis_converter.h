@@ -14,6 +14,7 @@ namespace celeritas
     class mongo_array_to_basis_converter
     {
     public:
+        using class_type = mongo_array_to_basis_converter;
         using array_type = bsoncxx::array::view;
         using get_basis_from_array_function = std::function<basis_database(std::string_view, const array_type&)>;
         using container_type = std::map<bsoncxx::type, get_basis_from_array_function>;

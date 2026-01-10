@@ -6,8 +6,6 @@
 
 #include <boost/json.hpp>
 
-#include <ranges>
-
 template <typename ArrayType>
 celeritas::basis_database celeritas::mysql_row_data_converter::to_numeric_array_basis(const database_field& field_name, const field_view_type& row_view)
 {
