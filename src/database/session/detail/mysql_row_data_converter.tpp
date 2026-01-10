@@ -10,14 +10,25 @@
 template <typename ArrayType>
 celeritas::basis_database celeritas::mysql_row_data_converter::to_numeric_array_basis(const database_field& field_name, const field_view_type& row_view)
 {
-    const std::string value{ row_view.as_string() };
-    auto split_view = value | std::views::split('|');
+    std::string value{ row_view.as_string() };
+
+    if (value.starts_with("[") && value.ends_with("]"))
+    {
+        value = value.substr(1, value.length() - 2);
+    }
+
+    if (value.empty())
+    {
+        return basis_database{ field_name.get_field_name(), ArrayType{} };
+    }
+
+    auto split_view = value | std::views::split(',');
 
     auto int_view = split_view | std::views::transform([](const auto& subrange) {
         const std::string result{ subrange.begin(), subrange.end() };
         return boost::lexical_cast<typename ArrayType::value_type>(result);
     });
-    const basis_database::int32_array result{ int_view.begin(), int_view.end() };
+    const ArrayType result{ int_view.begin(), int_view.end() };
 
     return basis_database{ field_name.get_field_name(), result };
 }

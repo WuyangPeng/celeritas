@@ -42,8 +42,30 @@ celeritas::basis_database celeritas::mysql_row_data_converter::get_basis_databas
         case database_data_type::string_array_type:
         case database_data_type::document_array_type:
         {
+            std::string value{ row_view.as_string() };
+            if (value.starts_with("[") && value.ends_with("]"))
+            {
+                value = value.substr(1, value.length() - 2);
+            }
+
             basis_database::string_array result{};
-            split(result, row_view.as_string(), boost::is_any_of("|"), boost::token_compress_off);
+            if (!value.empty())
+            {
+                basis_database::string_array tokens{};
+                split(tokens, value, boost::is_any_of(","), boost::token_compress_off);
+                result.reserve(tokens.size());
+                for (const auto& token : tokens)
+                {
+                    if (token.starts_with("\"") && token.ends_with("\"") && token.length() >= 2)
+                    {
+                        result.emplace_back(token.substr(1, token.length() - 2));
+                    }
+                    else
+                    {
+                        result.emplace_back(token);
+                    }
+                }
+            }
 
             return basis_database{ field_name.get_field_name(), result };
         }
