@@ -17,7 +17,7 @@ celeritas::database_type celeritas::database_entity_fixture::get_db_type() const
     return db_type_;
 }
 
-std::string celeritas::database_entity_fixture::get_db_name() const
+std::string_view celeritas::database_entity_fixture::get_db_name() const
 {
     return db_name_;
 }

@@ -16,11 +16,11 @@ namespace celeritas
 
         [[nodiscard]] database_type get_db_type() const;
 
-        [[nodiscard]] std::string get_db_name() const;
+        [[nodiscard]] std::string_view get_db_name() const;
 
     private:
         basis_database_container_shared_ptr key_;
         database_type db_type_;
-        std::string db_name_;
+        std::string_view db_name_;
     };
 }
