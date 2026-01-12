@@ -66,17 +66,17 @@ std::string celeritas::generate_mysql_file::get_mysql_data_type(const std::strin
 
     if (data_type == "document")
     {
-        return "TEXT";
+        return "VARCHAR(255)";
     }
 
     if (data_type.find("array") != std::string::npos)
     {
-        return "TEXT";
+        return "VARCHAR(255)";
     }
 
     LOG_CHANNEL(celeritas::default_channel, error) << "Unknown data type: " << data_type;
 
-    return "TEXT";
+    return "VARCHAR(255)";
 }
 
 std::string celeritas::generate_mysql_file::get_mysql_default_type(const std::string& data_type, const std::string& default_value)

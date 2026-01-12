@@ -37,9 +37,9 @@ namespace celeritas
 
         [[nodiscard]] traits::string_array_type get_tags() const;
 
-        [[nodiscard]] traits::int32_array_type get_category_ids() const;
+        [[nodiscard]] traits::int32_array_type get_category_index() const;
 
-        [[nodiscard]] traits::int64_array_type get_related_ids() const;
+        [[nodiscard]] traits::int64_array_type get_related_index() const;
 
         [[nodiscard]] traits::double_array_type get_ratios() const;
 
@@ -65,9 +65,9 @@ namespace celeritas
 
         void set_tags(traits::param_type::string_array_type tags);
 
-        void set_category_ids(traits::param_type::int32_array_type category_ids);
+        void set_category_index(traits::param_type::int32_array_type category_index);
 
-        void set_related_ids(traits::param_type::int64_array_type related_ids);
+        void set_related_index(traits::param_type::int64_array_type related_index);
 
         void set_ratios(traits::param_type::double_array_type ratios);
 
@@ -87,17 +87,17 @@ namespace celeritas
 
         void remove_tags(int index);
 
-        void set_category_ids(int index, traits::param_type::int32_array_element_type category_ids);
+        void set_category_index(int index, traits::param_type::int32_array_element_type category_index);
 
-        void add_category_ids(traits::param_type::int32_array_element_type category_ids);
+        void add_category_index(traits::param_type::int32_array_element_type category_index);
 
-        void remove_category_ids(int index);
+        void remove_category_index(int index);
 
-        void set_related_ids(int index, traits::param_type::int64_array_element_type related_ids);
+        void set_related_index(int index, traits::param_type::int64_array_element_type related_index);
 
-        void add_related_ids(traits::param_type::int64_array_element_type related_ids);
+        void add_related_index(traits::param_type::int64_array_element_type related_index);
 
-        void remove_related_ids(int index);
+        void remove_related_index(int index);
 
         void set_ratios(int index, traits::param_type::double_array_element_type ratios);
 
@@ -135,8 +135,8 @@ namespace celeritas
         static constexpr std::string_view currency_describe{ "currency" };
         static constexpr std::string_view count_describe{ "count" };
         static constexpr std::string_view tags_describe{ "tags" };
-        static constexpr std::string_view category_ids_describe{ "category_ids" };
-        static constexpr std::string_view related_ids_describe{ "related_ids" };
+        static constexpr std::string_view category_index_describe{ "category_index" };
+        static constexpr std::string_view related_index_describe{ "related_index" };
         static constexpr std::string_view ratios_describe{ "ratios" };
         static constexpr std::string_view attachment_describe{ "attachment" };
         static constexpr std::string_view properties_describe{ "properties" };
@@ -153,8 +153,8 @@ namespace celeritas
         entity<currency_describe, database_data_type::int64_count_type> currency_;
         entity<count_describe, database_data_type::int32_count_type> count_;
         entity<tags_describe, database_data_type::string_array_type> tags_;
-        entity<category_ids_describe, database_data_type::int32_array_type> category_ids_;
-        entity<related_ids_describe, database_data_type::int64_array_type> related_ids_;
+        entity<category_index_describe, database_data_type::int32_array_type> category_index_;
+        entity<related_index_describe, database_data_type::int64_array_type> related_index_;
         entity<ratios_describe, database_data_type::double_array_type> ratios_;
         entity<attachment_describe, database_data_type::byte_array_type> attachment_;
         entity<properties_describe, database_data_type::document_type> properties_;

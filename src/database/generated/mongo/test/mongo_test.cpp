@@ -18,8 +18,8 @@ celeritas::mongo_test::mongo_test(const database_entity_change& entity)
       currency_{ entity.get_value<database_data_type::int64_count_type>(currency_describe) },
       count_{ entity.get_value<database_data_type::int32_count_type>(count_describe, 1) },
       tags_{ entity.get_value<database_data_type::string_array_type>(tags_describe) },
-      category_ids_{ entity.get_value<database_data_type::int32_array_type>(category_ids_describe) },
-      related_ids_{ entity.get_value<database_data_type::int64_array_type>(related_ids_describe) },
+      category_index_{ entity.get_value<database_data_type::int32_array_type>(category_index_describe) },
+      related_index_{ entity.get_value<database_data_type::int64_array_type>(related_index_describe) },
       ratios_{ entity.get_value<database_data_type::double_array_type>(ratios_describe) },
       attachment_{ entity.get_value<database_data_type::byte_array_type>(attachment_describe) },
       properties_{ entity.get_value<database_data_type::document_type>(properties_describe) },
@@ -37,8 +37,8 @@ celeritas::mongo_test::mongo_test(const database_type database_type, const datab
       currency_{ entity.get_value<database_data_type::int64_count_type>(currency_describe) },
       count_{ entity.get_value<database_data_type::int32_count_type>(count_describe, 1) },
       tags_{ entity.get_value<database_data_type::string_array_type>(tags_describe) },
-      category_ids_{ entity.get_value<database_data_type::int32_array_type>(category_ids_describe) },
-      related_ids_{ entity.get_value<database_data_type::int64_array_type>(related_ids_describe) },
+      category_index_{ entity.get_value<database_data_type::int32_array_type>(category_index_describe) },
+      related_index_{ entity.get_value<database_data_type::int64_array_type>(related_index_describe) },
       ratios_{ entity.get_value<database_data_type::double_array_type>(ratios_describe) },
       attachment_{ entity.get_value<database_data_type::byte_array_type>(attachment_describe) },
       properties_{ entity.get_value<database_data_type::document_type>(properties_describe) },
@@ -54,8 +54,8 @@ celeritas::mongo_test::mongo_test(const database_type database_type, const datab
         add_modify(currency_describe, get_currency());
         add_modify(count_describe, get_count());
         add_modify(tags_describe, get_tags());
-        add_modify(category_ids_describe, get_category_ids());
-        add_modify(related_ids_describe, get_related_ids());
+        add_modify(category_index_describe, get_category_index());
+        add_modify(related_index_describe, get_related_index());
         add_modify(ratios_describe, get_ratios());
         add_modify(attachment_describe, get_attachment());
         add_modify(properties_describe, get_properties());
@@ -73,8 +73,8 @@ celeritas::mongo_test::mongo_test(const database_type database_type, traits::par
       currency_{ traits::int64_count_type{} },
       count_{ traits::int32_count_type{ 1 } },
       tags_{ traits::string_array_type{} },
-      category_ids_{ traits::int32_array_type{} },
-      related_ids_{ traits::int64_array_type{} },
+      category_index_{ traits::int32_array_type{} },
+      related_index_{ traits::int64_array_type{} },
       ratios_{ traits::double_array_type{} },
       attachment_{ traits::byte_array_type{} },
       properties_{ traits::document_type{} },
@@ -123,14 +123,14 @@ celeritas::traits::string_array_type celeritas::mongo_test::get_tags() const
     return tags_.get_value();
 }
 
-celeritas::traits::int32_array_type celeritas::mongo_test::get_category_ids() const
+celeritas::traits::int32_array_type celeritas::mongo_test::get_category_index() const
 {
-    return category_ids_.get_value();
+    return category_index_.get_value();
 }
 
-celeritas::traits::int64_array_type celeritas::mongo_test::get_related_ids() const
+celeritas::traits::int64_array_type celeritas::mongo_test::get_related_index() const
 {
-    return related_ids_.get_value();
+    return related_index_.get_value();
 }
 
 celeritas::traits::double_array_type celeritas::mongo_test::get_ratios() const
@@ -233,23 +233,23 @@ void celeritas::mongo_test::set_tags(traits::param_type::string_array_type tags)
     }
 }
 
-void celeritas::mongo_test::set_category_ids(traits::param_type::int32_array_type category_ids)
+void celeritas::mongo_test::set_category_index(traits::param_type::int32_array_type category_index)
 {
-    if (category_ids != get_category_ids())
+    if (category_index != get_category_index())
     {
-        category_ids_.set_value(category_ids);
+        category_index_.set_value(category_index);
 
-        add_modify(category_ids_describe, get_category_ids());
+        add_modify(category_index_describe, get_category_index());
     }
 }
 
-void celeritas::mongo_test::set_related_ids(traits::param_type::int64_array_type related_ids)
+void celeritas::mongo_test::set_related_index(traits::param_type::int64_array_type related_index)
 {
-    if (related_ids != get_related_ids())
+    if (related_index != get_related_index())
     {
-        related_ids_.set_value(related_ids);
+        related_index_.set_value(related_index);
 
-        add_modify(related_ids_describe, get_related_ids());
+        add_modify(related_index_describe, get_related_index());
     }
 }
 
@@ -329,48 +329,48 @@ void celeritas::mongo_test::remove_tags(const int index)
     add_modify(tags_describe, get_tags());
 }
 
-void celeritas::mongo_test::set_category_ids(const int index, traits::param_type::int32_array_element_type category_ids)
+void celeritas::mongo_test::set_category_index(const int index, traits::param_type::int32_array_element_type category_index)
 {
-    if (category_ids_.set_value(index, category_ids))
+    if (category_index_.set_value(index, category_index))
     {
-        add_modify(category_ids_describe, get_category_ids());
+        add_modify(category_index_describe, get_category_index());
     }
 }
 
-void celeritas::mongo_test::add_category_ids(traits::param_type::int32_array_element_type category_ids)
+void celeritas::mongo_test::add_category_index(traits::param_type::int32_array_element_type category_index)
 {
-    category_ids_.add_value(category_ids);
+    category_index_.add_value(category_index);
 
-    add_modify(category_ids_describe, get_category_ids());
+    add_modify(category_index_describe, get_category_index());
 }
 
-void celeritas::mongo_test::remove_category_ids(const int index)
+void celeritas::mongo_test::remove_category_index(const int index)
 {
-    category_ids_.remove_value(index);
+    category_index_.remove_value(index);
 
-    add_modify(category_ids_describe, get_category_ids());
+    add_modify(category_index_describe, get_category_index());
 }
 
-void celeritas::mongo_test::set_related_ids(const int index, traits::param_type::int64_array_element_type related_ids)
+void celeritas::mongo_test::set_related_index(const int index, traits::param_type::int64_array_element_type related_index)
 {
-    if (related_ids_.set_value(index, related_ids))
+    if (related_index_.set_value(index, related_index))
     {
-        add_modify(related_ids_describe, get_related_ids());
+        add_modify(related_index_describe, get_related_index());
     }
 }
 
-void celeritas::mongo_test::add_related_ids(traits::param_type::int64_array_element_type related_ids)
+void celeritas::mongo_test::add_related_index(traits::param_type::int64_array_element_type related_index)
 {
-    related_ids_.add_value(related_ids);
+    related_index_.add_value(related_index);
 
-    add_modify(related_ids_describe, get_related_ids());
+    add_modify(related_index_describe, get_related_index());
 }
 
-void celeritas::mongo_test::remove_related_ids(const int index)
+void celeritas::mongo_test::remove_related_index(const int index)
 {
-    related_ids_.remove_value(index);
+    related_index_.remove_value(index);
 
-    add_modify(related_ids_describe, get_related_ids());
+    add_modify(related_index_describe, get_related_index());
 }
 
 void celeritas::mongo_test::set_ratios(const int index, traits::param_type::double_array_element_type ratios)
@@ -449,8 +449,8 @@ const celeritas::database_entity::database_field_container& celeritas::mongo_tes
                                                                 decltype(currency_)::get_database_field(),
                                                                 decltype(count_)::get_database_field(),
                                                                 decltype(tags_)::get_database_field(),
-                                                                decltype(category_ids_)::get_database_field(),
-                                                                decltype(related_ids_)::get_database_field(),
+                                                                decltype(category_index_)::get_database_field(),
+                                                                decltype(related_index_)::get_database_field(),
                                                                 decltype(ratios_)::get_database_field(),
                                                                 decltype(attachment_)::get_database_field(),
                                                                 decltype(properties_)::get_database_field(),

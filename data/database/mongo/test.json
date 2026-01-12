@@ -38,11 +38,11 @@
         "data_type": "string_array"
       },
       {
-        "entity_name": "category_ids",
+        "entity_name": "category_index",
         "data_type": "int32_array"
       },
       {
-        "entity_name": "related_ids",
+        "entity_name": "related_index",
         "data_type": "int64_array"
       },
       {
@@ -55,11 +55,13 @@
       },
       {
         "entity_name": "properties",
-        "data_type": "document"
+        "data_type": "document",
+        "document_type": "properties_data"
       },
       {
         "entity_name": "logs",
-        "data_type": "document_array"
+        "data_type": "document_array",
+        "document_type": "logs_data"
       }
     ]
   }
