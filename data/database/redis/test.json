@@ -1,7 +1,7 @@
 [
   {
-    "class_name": "mysql_test",
-    "database_name": "mysql_test",
+    "class_name": "redis_test",
+    "database_name": "redis_test",
     "entity": [
       {
         "entity_name": "user_id",

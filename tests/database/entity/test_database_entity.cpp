@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_SUITE(database_entity_suite)
         BOOST_CHECK(modify->get_change_type() == celeritas::database_change_type::insert_type);
         BOOST_CHECK(modify->get_key() == get_key());
         BOOST_CHECK(modify->get_database_type() == get_db_type());
-        BOOST_CHECK(modify->get_database_name() == get_db_name());
+        BOOST_CHECK_EQUAL(modify->get_database_name(), get_db_name());
     }
 
     BOOST_FIXTURE_TEST_CASE(test_database_entity_get_delete, celeritas::database_entity_fixture)
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_SUITE(database_entity_suite)
         BOOST_CHECK(database_entity_change->get_change_type() == celeritas::database_change_type::delete_type);
         BOOST_CHECK(database_entity_change->get_key() == get_key());
         BOOST_CHECK(database_entity_change->get_database_type() == get_db_type());
-        BOOST_CHECK(database_entity_change->get_database_name() == get_db_name());
+        BOOST_CHECK_EQUAL(database_entity_change->get_database_name(), get_db_name());
     }
 
     BOOST_FIXTURE_TEST_CASE(test_database_entity_clear_modify, celeritas::database_entity_fixture)
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_SUITE(database_entity_suite)
 
         const auto modify = entity.get_modify();
         BOOST_CHECK(modify->get_database_type() == get_db_type());
-        BOOST_CHECK(modify->get_database_name() == get_db_name());
+        BOOST_CHECK_EQUAL(modify->get_database_name(), get_db_name());
         BOOST_CHECK(modify->get_change_type() == celeritas::database_change_type::update_type);
         BOOST_CHECK(modify->get_key() == get_key());
     }

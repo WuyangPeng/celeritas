@@ -1,6 +1,6 @@
 // 此文件是自动生成，请勿手动修改。
 
-#include "test.h"
+#include "mongo_test.h"
 #include "config/basic/database_type.h"
 #include "database/basic/basis_database.tpp"
 #include "database/basic/database_change_type.h"
@@ -8,7 +8,7 @@
 #include "database/entity/database_entity.h"
 #include "database/entity/entity.tpp"
 
-celeritas::test::test(const database_entity_change& entity)
+celeritas::mongo_test::mongo_test(const database_entity_change& entity)
     : base_type{ entity },
       user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       chapter_id_{ entity.get_value<database_data_type::int32_type>(chapter_id_describe) },
@@ -20,7 +20,7 @@ celeritas::test::test(const database_entity_change& entity)
 {
 }
 
-celeritas::test::test(const database_type database_type, const database_entity_change& entity)
+celeritas::mongo_test::mongo_test(const database_type database_type, const database_entity_change& entity)
     : base_type{ database_type, entity },
       user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       chapter_id_{ entity.get_value<database_data_type::int32_type>(chapter_id_describe) },
@@ -42,7 +42,7 @@ celeritas::test::test(const database_type database_type, const database_entity_c
     }
 }
 
-celeritas::test::test(const database_type database_type, traits::param_type::int64_type user_id)
+celeritas::mongo_test::mongo_test(const database_type database_type, traits::param_type::int64_type user_id)
     : base_type{ database_type, database_name, get_key_basis_database_container(user_id) },
       user_id_{ user_id },
       chapter_id_{ traits::int32_type{} },
@@ -55,42 +55,42 @@ celeritas::test::test(const database_type database_type, traits::param_type::int
     add_modify(user_id_describe, user_id);
 }
 
-celeritas::traits::int64_type celeritas::test::get_user_id() const noexcept
+celeritas::traits::int64_type celeritas::mongo_test::get_user_id() const noexcept
 {
     return user_id_.get_value();
 }
 
-celeritas::traits::int32_type celeritas::test::get_chapter_id() const noexcept
+celeritas::traits::int32_type celeritas::mongo_test::get_chapter_id() const noexcept
 {
     return chapter_id_.get_value();
 }
 
-celeritas::traits::string_type celeritas::test::get_chapter_name() const
+celeritas::traits::string_type celeritas::mongo_test::get_chapter_name() const
 {
     return chapter_name_.get_value();
 }
 
-celeritas::traits::double_type celeritas::test::get_chance_winning() const noexcept
+celeritas::traits::double_type celeritas::mongo_test::get_chance_winning() const noexcept
 {
     return chance_winning_.get_value();
 }
 
-celeritas::traits::bool_type celeritas::test::is_winning() const noexcept
+celeritas::traits::bool_type celeritas::mongo_test::is_winning() const noexcept
 {
     return winning_.get_value();
 }
 
-celeritas::traits::int64_count_type celeritas::test::get_currency() const noexcept
+celeritas::traits::int64_count_type celeritas::mongo_test::get_currency() const noexcept
 {
     return currency_.get_value();
 }
 
-celeritas::traits::int32_count_type celeritas::test::get_count() const noexcept
+celeritas::traits::int32_count_type celeritas::mongo_test::get_count() const noexcept
 {
     return count_.get_value();
 }
 
-void celeritas::test::set_user_id(traits::param_type::int64_type user_id)
+void celeritas::mongo_test::set_user_id(traits::param_type::int64_type user_id)
 {
     if (user_id != get_user_id())
     {
@@ -100,7 +100,7 @@ void celeritas::test::set_user_id(traits::param_type::int64_type user_id)
     }
 }
 
-void celeritas::test::set_chapter_id(traits::param_type::int32_type chapter_id)
+void celeritas::mongo_test::set_chapter_id(traits::param_type::int32_type chapter_id)
 {
     if (chapter_id != get_chapter_id())
     {
@@ -110,7 +110,7 @@ void celeritas::test::set_chapter_id(traits::param_type::int32_type chapter_id)
     }
 }
 
-void celeritas::test::set_chapter_name(traits::param_type::string_type chapter_name)
+void celeritas::mongo_test::set_chapter_name(traits::param_type::string_type chapter_name)
 {
     if (chapter_name != get_chapter_name())
     {
@@ -120,7 +120,7 @@ void celeritas::test::set_chapter_name(traits::param_type::string_type chapter_n
     }
 }
 
-void celeritas::test::set_chance_winning(traits::param_type::double_type chance_winning)
+void celeritas::mongo_test::set_chance_winning(traits::param_type::double_type chance_winning)
 {
     if (chance_winning != get_chance_winning())
     {
@@ -130,7 +130,7 @@ void celeritas::test::set_chance_winning(traits::param_type::double_type chance_
     }
 }
 
-void celeritas::test::set_winning(traits::param_type::bool_type winning)
+void celeritas::mongo_test::set_winning(traits::param_type::bool_type winning)
 {
     if (winning != is_winning())
     {
@@ -140,7 +140,7 @@ void celeritas::test::set_winning(traits::param_type::bool_type winning)
     }
 }
 
-void celeritas::test::set_currency(traits::param_type::int64_count_type currency)
+void celeritas::mongo_test::set_currency(traits::param_type::int64_count_type currency)
 {
     if (currency != get_currency())
     {
@@ -150,7 +150,7 @@ void celeritas::test::set_currency(traits::param_type::int64_count_type currency
     }
 }
 
-void celeritas::test::set_count(traits::param_type::int32_count_type count)
+void celeritas::mongo_test::set_count(traits::param_type::int32_count_type count)
 {
     if (count != get_count())
     {
@@ -160,21 +160,21 @@ void celeritas::test::set_count(traits::param_type::int32_count_type count)
     }
 }
 
-void celeritas::test::modify_currency(traits::param_type::int64_count_type currency)
+void celeritas::mongo_test::modify_currency(traits::param_type::int64_count_type currency)
 {
     currency_.modify_value(currency);
 
     add_modify(currency_describe, get_currency());
 }
 
-void celeritas::test::modify_count(traits::param_type::int32_count_type count)
+void celeritas::mongo_test::modify_count(traits::param_type::int32_count_type count)
 {
     count_.modify_value(count);
 
     add_modify(count_describe, get_count());
 }
 
-const celeritas::database_entity::database_field_container& celeritas::test::get_database_field_container()
+const celeritas::database_entity::database_field_container& celeritas::mongo_test::get_database_field_container()
 {
     static const database_field_container field_name_container{ decltype(user_id_)::get_database_field(),
                                                                 decltype(chapter_id_)::get_database_field(),
@@ -187,7 +187,7 @@ const celeritas::database_entity::database_field_container& celeritas::test::get
     return field_name_container;
 }
 
-celeritas::test::const_database_entity_change_shared_ptr celeritas::test::get_select(const database_type database_type)
+celeritas::mongo_test::const_database_entity_change_shared_ptr celeritas::mongo_test::get_select(const database_type database_type)
 {
     static const auto result = std::make_shared<database_entity_change>(database_type,
                                                                         database_name,
@@ -196,7 +196,7 @@ celeritas::test::const_database_entity_change_shared_ptr celeritas::test::get_se
     return result;
 }
 
-celeritas::test::const_database_entity_change_shared_ptr celeritas::test::get_select(const database_type database_type, traits::param_type::int64_type user_id)
+celeritas::mongo_test::const_database_entity_change_shared_ptr celeritas::mongo_test::get_select(const database_type database_type, traits::param_type::int64_type user_id)
 {
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
@@ -204,7 +204,7 @@ celeritas::test::const_database_entity_change_shared_ptr celeritas::test::get_se
                                                     get_key_basis_database_container(user_id));
 }
 
-celeritas::test::const_database_entity_change_shared_ptr celeritas::test::get_select(const database_type database_type, const const_basis_database_container_shared_ptr& key)
+celeritas::mongo_test::const_database_entity_change_shared_ptr celeritas::mongo_test::get_select(const database_type database_type, const const_basis_database_container_shared_ptr& key)
 {
     return std::make_shared<database_entity_change>(database_type,
                                                     database_name,
@@ -212,7 +212,7 @@ celeritas::test::const_database_entity_change_shared_ptr celeritas::test::get_se
                                                     key);
 }
 
-celeritas::test::const_basis_database_container_shared_ptr celeritas::test::get_key_basis_database_container(traits::param_type::int64_type user_id)
+celeritas::mongo_test::const_basis_database_container_shared_ptr celeritas::mongo_test::get_key_basis_database_container(traits::param_type::int64_type user_id)
 {
     return std::make_shared<basis_database_container>(basis_database{ user_id_describe, user_id });
 }

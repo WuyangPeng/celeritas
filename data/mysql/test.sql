@@ -1,4 +1,4 @@
-CREATE TABLE `test` (
+CREATE TABLE `mysql_test` (
   `user_id` BIGINT NOT NULL,
   `chapter_id` INT NOT NULL DEFAULT 0,
   `chapter_name` VARCHAR(255) NOT NULL DEFAULT '',

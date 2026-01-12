@@ -9,17 +9,17 @@
 
 namespace celeritas
 {
-    class test final : public database_entity
+    class mongo_test final : public database_entity
     {
     public:
-        using class_type = test;
+        using class_type = mongo_test;
         using base_type = database_entity;
 
-        explicit test(const database_entity_change& entity);
+        explicit mongo_test(const database_entity_change& entity);
 
-        test(database_type database_type, const database_entity_change& entity);
+        mongo_test(database_type database_type, const database_entity_change& entity);
 
-        test(database_type database_type, traits::param_type::int64_type user_id);
+        mongo_test(database_type database_type, traits::param_type::int64_type user_id);
 
         [[nodiscard]] traits::int64_type get_user_id() const noexcept;
 
@@ -61,9 +61,9 @@ namespace celeritas
 
         [[nodiscard]] static const_database_entity_change_shared_ptr get_select(database_type database_type, const const_basis_database_container_shared_ptr& key);
 
-        static constexpr std::string_view database_name{ "test" };
+        static constexpr std::string_view database_name{ "mongo_test" };
 
-        static constexpr std::string_view user_id_describe{ "user_id" };
+        static constexpr std::string_view user_id_describe{ "_id" };
         static constexpr std::string_view chapter_id_describe{ "chapter_id" };
         static constexpr std::string_view chapter_name_describe{ "chapter_name" };
         static constexpr std::string_view chance_winning_describe{ "chance_winning" };
