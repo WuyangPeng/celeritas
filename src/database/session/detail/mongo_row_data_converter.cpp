@@ -24,7 +24,7 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
 
     if (iter == field_name_container.cend())
     {
-        throw celeritas_error{ "field name is error,name ={}", row_view.key() };
+        throw celeritas_error{ "field name is error,name ={}", row_view.key().data() };
     }
 
     const auto& container = mongo_to_basis_converter::get_basis_from_field();
