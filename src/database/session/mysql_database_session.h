@@ -14,6 +14,7 @@ namespace celeritas
     public:
         using class_type = mysql_database_session;
         using base_type = database_session;
+        using any_io_executor = boost::asio::any_io_executor;
         using ssl_io_context_type = boost::asio::ssl::context;
         using results_type = boost::mysql::results;
         using results_awaitable_type = boost::asio::awaitable<results_type>;

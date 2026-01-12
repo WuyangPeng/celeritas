@@ -15,7 +15,7 @@ namespace celeritas
     public:
         using class_type = mongo_database_session;
         using base_type = database_session;
-        using io_context_type = boost::asio::io_context;
+        using any_io_executor = boost::asio::any_io_executor;
         using optional_document_value = std::optional<bsoncxx::document::value>;
         using document_awaitable_type = boost::asio::awaitable<optional_document_value>;
         using cursor_awaitable_type = boost::asio::awaitable<mongocxx::cursor>;
