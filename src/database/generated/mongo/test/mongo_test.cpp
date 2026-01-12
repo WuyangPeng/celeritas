@@ -16,7 +16,14 @@ celeritas::mongo_test::mongo_test(const database_entity_change& entity)
       chance_winning_{ entity.get_value<database_data_type::double_type>(chance_winning_describe) },
       winning_{ entity.get_value<database_data_type::bool_type>(winning_describe) },
       currency_{ entity.get_value<database_data_type::int64_count_type>(currency_describe) },
-      count_{ entity.get_value<database_data_type::int32_count_type>(count_describe, 1) }
+      count_{ entity.get_value<database_data_type::int32_count_type>(count_describe, 1) },
+      tags_{ entity.get_value<database_data_type::string_array_type>(tags_describe) },
+      category_ids_{ entity.get_value<database_data_type::int32_array_type>(category_ids_describe) },
+      related_ids_{ entity.get_value<database_data_type::int64_array_type>(related_ids_describe) },
+      ratios_{ entity.get_value<database_data_type::double_array_type>(ratios_describe) },
+      attachment_{ entity.get_value<database_data_type::byte_array_type>(attachment_describe) },
+      properties_{ entity.get_value<database_data_type::document_type>(properties_describe) },
+      logs_{ entity.get_value<database_data_type::document_array_type>(logs_describe) }
 {
 }
 
@@ -28,7 +35,14 @@ celeritas::mongo_test::mongo_test(const database_type database_type, const datab
       chance_winning_{ entity.get_value<database_data_type::double_type>(chance_winning_describe) },
       winning_{ entity.get_value<database_data_type::bool_type>(winning_describe) },
       currency_{ entity.get_value<database_data_type::int64_count_type>(currency_describe) },
-      count_{ entity.get_value<database_data_type::int32_count_type>(count_describe, 1) }
+      count_{ entity.get_value<database_data_type::int32_count_type>(count_describe, 1) },
+      tags_{ entity.get_value<database_data_type::string_array_type>(tags_describe) },
+      category_ids_{ entity.get_value<database_data_type::int32_array_type>(category_ids_describe) },
+      related_ids_{ entity.get_value<database_data_type::int64_array_type>(related_ids_describe) },
+      ratios_{ entity.get_value<database_data_type::double_array_type>(ratios_describe) },
+      attachment_{ entity.get_value<database_data_type::byte_array_type>(attachment_describe) },
+      properties_{ entity.get_value<database_data_type::document_type>(properties_describe) },
+      logs_{ entity.get_value<database_data_type::document_array_type>(logs_describe) }
 {
     if (database_type != entity.get_database_type())
     {
@@ -39,6 +53,13 @@ celeritas::mongo_test::mongo_test(const database_type database_type, const datab
         add_modify(winning_describe, is_winning());
         add_modify(currency_describe, get_currency());
         add_modify(count_describe, get_count());
+        add_modify(tags_describe, get_tags());
+        add_modify(category_ids_describe, get_category_ids());
+        add_modify(related_ids_describe, get_related_ids());
+        add_modify(ratios_describe, get_ratios());
+        add_modify(attachment_describe, get_attachment());
+        add_modify(properties_describe, get_properties());
+        add_modify(logs_describe, get_logs());
     }
 }
 
@@ -50,7 +71,14 @@ celeritas::mongo_test::mongo_test(const database_type database_type, traits::par
       chance_winning_{ traits::double_type{} },
       winning_{ traits::bool_type{} },
       currency_{ traits::int64_count_type{} },
-      count_{ traits::int32_count_type{ 1 } }
+      count_{ traits::int32_count_type{ 1 } },
+      tags_{ traits::string_array_type{} },
+      category_ids_{ traits::int32_array_type{} },
+      related_ids_{ traits::int64_array_type{} },
+      ratios_{ traits::double_array_type{} },
+      attachment_{ traits::byte_array_type{} },
+      properties_{ traits::document_type{} },
+      logs_{ traits::document_array_type{} }
 {
     add_modify(user_id_describe, user_id);
 }
@@ -88,6 +116,41 @@ celeritas::traits::int64_count_type celeritas::mongo_test::get_currency() const 
 celeritas::traits::int32_count_type celeritas::mongo_test::get_count() const noexcept
 {
     return count_.get_value();
+}
+
+celeritas::traits::string_array_type celeritas::mongo_test::get_tags() const
+{
+    return tags_.get_value();
+}
+
+celeritas::traits::int32_array_type celeritas::mongo_test::get_category_ids() const
+{
+    return category_ids_.get_value();
+}
+
+celeritas::traits::int64_array_type celeritas::mongo_test::get_related_ids() const
+{
+    return related_ids_.get_value();
+}
+
+celeritas::traits::double_array_type celeritas::mongo_test::get_ratios() const
+{
+    return ratios_.get_value();
+}
+
+celeritas::traits::byte_array_type celeritas::mongo_test::get_attachment() const
+{
+    return attachment_.get_value();
+}
+
+celeritas::traits::document_type celeritas::mongo_test::get_properties() const
+{
+    return properties_.get_value();
+}
+
+celeritas::traits::document_array_type celeritas::mongo_test::get_logs() const
+{
+    return logs_.get_value();
 }
 
 void celeritas::mongo_test::set_user_id(traits::param_type::int64_type user_id)
@@ -160,6 +223,76 @@ void celeritas::mongo_test::set_count(traits::param_type::int32_count_type count
     }
 }
 
+void celeritas::mongo_test::set_tags(traits::param_type::string_array_type tags)
+{
+    if (tags != get_tags())
+    {
+        tags_.set_value(tags);
+
+        add_modify(tags_describe, get_tags());
+    }
+}
+
+void celeritas::mongo_test::set_category_ids(traits::param_type::int32_array_type category_ids)
+{
+    if (category_ids != get_category_ids())
+    {
+        category_ids_.set_value(category_ids);
+
+        add_modify(category_ids_describe, get_category_ids());
+    }
+}
+
+void celeritas::mongo_test::set_related_ids(traits::param_type::int64_array_type related_ids)
+{
+    if (related_ids != get_related_ids())
+    {
+        related_ids_.set_value(related_ids);
+
+        add_modify(related_ids_describe, get_related_ids());
+    }
+}
+
+void celeritas::mongo_test::set_ratios(traits::param_type::double_array_type ratios)
+{
+    if (ratios != get_ratios())
+    {
+        ratios_.set_value(ratios);
+
+        add_modify(ratios_describe, get_ratios());
+    }
+}
+
+void celeritas::mongo_test::set_attachment(traits::param_type::byte_array_type attachment)
+{
+    if (attachment != get_attachment())
+    {
+        attachment_.set_value(attachment);
+
+        add_modify(attachment_describe, get_attachment());
+    }
+}
+
+void celeritas::mongo_test::set_properties(traits::param_type::document_type properties)
+{
+    if (properties != get_properties())
+    {
+        properties_.set_value(properties);
+
+        add_modify(properties_describe, get_properties());
+    }
+}
+
+void celeritas::mongo_test::set_logs(traits::param_type::document_array_type logs)
+{
+    if (logs != get_logs())
+    {
+        logs_.set_value(logs);
+
+        add_modify(logs_describe, get_logs());
+    }
+}
+
 void celeritas::mongo_test::modify_currency(traits::param_type::int64_count_type currency)
 {
     currency_.modify_value(currency);
@@ -174,6 +307,138 @@ void celeritas::mongo_test::modify_count(traits::param_type::int32_count_type co
     add_modify(count_describe, get_count());
 }
 
+void celeritas::mongo_test::set_tags(const int index, traits::param_type::string_array_element_type tags)
+{
+    if (tags_.set_value(index, tags))
+    {
+        add_modify(tags_describe, get_tags());
+    }
+}
+
+void celeritas::mongo_test::add_tags(traits::param_type::string_array_element_type tags)
+{
+    tags_.add_value(tags);
+
+    add_modify(tags_describe, get_tags());
+}
+
+void celeritas::mongo_test::remove_tags(const int index)
+{
+    tags_.remove_value(index);
+
+    add_modify(tags_describe, get_tags());
+}
+
+void celeritas::mongo_test::set_category_ids(const int index, traits::param_type::int32_array_element_type category_ids)
+{
+    if (category_ids_.set_value(index, category_ids))
+    {
+        add_modify(category_ids_describe, get_category_ids());
+    }
+}
+
+void celeritas::mongo_test::add_category_ids(traits::param_type::int32_array_element_type category_ids)
+{
+    category_ids_.add_value(category_ids);
+
+    add_modify(category_ids_describe, get_category_ids());
+}
+
+void celeritas::mongo_test::remove_category_ids(const int index)
+{
+    category_ids_.remove_value(index);
+
+    add_modify(category_ids_describe, get_category_ids());
+}
+
+void celeritas::mongo_test::set_related_ids(const int index, traits::param_type::int64_array_element_type related_ids)
+{
+    if (related_ids_.set_value(index, related_ids))
+    {
+        add_modify(related_ids_describe, get_related_ids());
+    }
+}
+
+void celeritas::mongo_test::add_related_ids(traits::param_type::int64_array_element_type related_ids)
+{
+    related_ids_.add_value(related_ids);
+
+    add_modify(related_ids_describe, get_related_ids());
+}
+
+void celeritas::mongo_test::remove_related_ids(const int index)
+{
+    related_ids_.remove_value(index);
+
+    add_modify(related_ids_describe, get_related_ids());
+}
+
+void celeritas::mongo_test::set_ratios(const int index, traits::param_type::double_array_element_type ratios)
+{
+    if (ratios_.set_value(index, ratios))
+    {
+        add_modify(ratios_describe, get_ratios());
+    }
+}
+
+void celeritas::mongo_test::add_ratios(traits::param_type::double_array_element_type ratios)
+{
+    ratios_.add_value(ratios);
+
+    add_modify(ratios_describe, get_ratios());
+}
+
+void celeritas::mongo_test::remove_ratios(const int index)
+{
+    ratios_.remove_value(index);
+
+    add_modify(ratios_describe, get_ratios());
+}
+
+void celeritas::mongo_test::set_attachment(const int index, traits::param_type::byte_array_element_type attachment)
+{
+    if (attachment_.set_value(index, attachment))
+    {
+        add_modify(attachment_describe, get_attachment());
+    }
+}
+
+void celeritas::mongo_test::add_attachment(traits::param_type::byte_array_element_type attachment)
+{
+    attachment_.add_value(attachment);
+
+    add_modify(attachment_describe, get_attachment());
+}
+
+void celeritas::mongo_test::remove_attachment(const int index)
+{
+    attachment_.remove_value(index);
+
+    add_modify(attachment_describe, get_attachment());
+}
+
+void celeritas::mongo_test::set_logs(const int index, traits::param_type::document_array_element_type logs)
+{
+    if (logs_.set_value(index, logs))
+    {
+        add_modify(logs_describe, get_logs());
+    }
+}
+
+void celeritas::mongo_test::add_logs(traits::param_type::document_array_element_type logs)
+{
+    logs_.add_value(logs);
+
+    add_modify(logs_describe, get_logs());
+}
+
+void celeritas::mongo_test::remove_logs(const int index)
+{
+    logs_.remove_value(index);
+
+    add_modify(logs_describe, get_logs());
+}
+
 const celeritas::database_entity::database_field_container& celeritas::mongo_test::get_database_field_container()
 {
     static const database_field_container field_name_container{ decltype(user_id_)::get_database_field(),
@@ -182,7 +447,14 @@ const celeritas::database_entity::database_field_container& celeritas::mongo_tes
                                                                 decltype(chance_winning_)::get_database_field(),
                                                                 decltype(winning_)::get_database_field(),
                                                                 decltype(currency_)::get_database_field(),
-                                                                decltype(count_)::get_database_field() };
+                                                                decltype(count_)::get_database_field(),
+                                                                decltype(tags_)::get_database_field(),
+                                                                decltype(category_ids_)::get_database_field(),
+                                                                decltype(related_ids_)::get_database_field(),
+                                                                decltype(ratios_)::get_database_field(),
+                                                                decltype(attachment_)::get_database_field(),
+                                                                decltype(properties_)::get_database_field(),
+                                                                decltype(logs_)::get_database_field() };
 
     return field_name_container;
 }

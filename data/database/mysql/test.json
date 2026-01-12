@@ -32,6 +32,34 @@
         "entity_name": "count",
         "data_type": "int32_count",
         "default_value": "1"
+      },
+      {
+        "entity_name": "tags",
+        "data_type": "string_array"
+      },
+      {
+        "entity_name": "category_ids",
+        "data_type": "int32_array"
+      },
+      {
+        "entity_name": "related_ids",
+        "data_type": "int64_array"
+      },
+      {
+        "entity_name": "ratios",
+        "data_type": "double_array"
+      },
+      {
+        "entity_name": "attachment",
+        "data_type": "byte_array"
+      },
+      {
+        "entity_name": "properties",
+        "data_type": "document"
+      },
+      {
+        "entity_name": "logs",
+        "data_type": "document_array"
       }
     ]
   }

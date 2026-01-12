@@ -64,6 +64,16 @@ std::string celeritas::generate_mysql_file::get_mysql_data_type(const std::strin
         return "BLOB";
     }
 
+    if (data_type == "document")
+    {
+        return "TEXT";
+    }
+
+    if (data_type.find("array") != std::string::npos)
+    {
+        return "TEXT";
+    }
+
     LOG_CHANNEL(celeritas::default_channel, error) << "Unknown data type: " << data_type;
 
     return "TEXT";
@@ -113,6 +123,16 @@ std::string celeritas::generate_mysql_file::get_mysql_default_type(const std::st
     if (data_type == "bool")
     {
         return "0";
+    }
+
+    if (data_type == "document")
+    {
+        return "''";
+    }
+
+    if (data_type.find("array") != std::string::npos)
+    {
+        return "''";
     }
 
     LOG_CHANNEL(celeritas::default_channel, error) << "Unknown data type: " << data_type;

@@ -6,6 +6,13 @@ CREATE TABLE `mysql_test` (
   `winning` TINYINT(1) NOT NULL DEFAULT 0,
   `currency` BIGINT NOT NULL DEFAULT 0,
   `count` INT NOT NULL DEFAULT 1,
+  `tags` TEXT NOT NULL DEFAULT '',
+  `category_ids` TEXT NOT NULL DEFAULT '',
+  `related_ids` TEXT NOT NULL DEFAULT '',
+  `ratios` TEXT NOT NULL DEFAULT '',
+  `attachment` TEXT NOT NULL DEFAULT '',
+  `properties` TEXT NOT NULL DEFAULT '',
+  `logs` TEXT NOT NULL DEFAULT '',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
