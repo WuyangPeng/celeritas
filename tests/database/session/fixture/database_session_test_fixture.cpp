@@ -8,8 +8,13 @@
 celeritas::database_session_test_fixture::database_session_test_fixture()
     : io_context_{},
       session_{},
-      select_change_{ std::make_shared<const database_entity_change>(database_type::unknown, "test", database_change_type::select_type) },
-      update_change_{ std::make_shared<const database_entity_change>(database_type::unknown, "test", database_change_type::update_type, std::make_shared<const basis_database_container>()) },
+      select_change_{ std::make_shared<const database_entity_change>(database_type::unknown,
+                                                                     "test",
+                                                                     database_change_type::select_type) },
+      update_change_{ std::make_shared<const database_entity_change>(database_type::unknown,
+                                                                     "test",
+                                                                     database_change_type::update_type,
+                                                                     std::make_shared<const basis_database_container>()) },
       fields_{}
 {
 }
