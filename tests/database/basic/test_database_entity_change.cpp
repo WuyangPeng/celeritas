@@ -1,6 +1,7 @@
 ﻿#include "common/core/celeritas_error.h"
 #include "config/basic/database_type.h"
 #include "database/database_constant.h"
+#include "database/basic/basis_database.tpp"
 #include "database/basic/database_change_type.h"
 #include "database/basic/database_entity_change.h"
 
