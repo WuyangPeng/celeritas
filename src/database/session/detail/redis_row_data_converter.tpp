@@ -3,20 +3,18 @@
 #include "redis_row_data_converter.h"
 #include "database/basic/database_field.h"
 
-#include <boost/lexical_cast.hpp>
-
-#include <ranges>
+#include <boost/json.hpp>
 
 template <typename ArrayType>
 celeritas::basis_database celeritas::redis_row_data_converter::to_numeric_array_basis(const database_field& field_name, const std::string& value)
 {
-    auto split_view = value | std::views::split('|');
+    if (value.empty())
+    {
+        return basis_database{ field_name.get_field_name(), ArrayType{} };
+    }
 
-    auto int_view = split_view | std::views::transform([](const auto& subrange) {
-        const std::string result{ subrange.begin(), subrange.end() };
-        return boost::lexical_cast<typename ArrayType::value_type>(result);
-    });
-    const basis_database::int32_array result{ int_view.begin(), int_view.end() };
+    const auto json = boost::json::parse(value);
+    const auto result = boost::json::value_to<ArrayType>(json);
 
     return basis_database{ field_name.get_field_name(), result };
 }

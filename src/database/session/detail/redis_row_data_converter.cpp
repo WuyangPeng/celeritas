@@ -1,14 +1,14 @@
-﻿#include "redis_row_data_converter.tpp"
+﻿#include "json_value_to_basis_converter.h"
+#include "redis_row_data_converter.tpp"
 #include "common/core/celeritas_error.h"
 #include "database/basic/basis_database.tpp"
 #include "database/basic/database_data_type.h"
 #include "database/basic/database_field.h"
 
+#include <boost/json.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
-
-#include <ranges>
 
 std::string celeritas::redis_row_data_converter::generate_key(const database_entity_change_const_shared_ptr& database)
 {
@@ -35,9 +35,27 @@ celeritas::basis_database celeritas::redis_row_data_converter::get_basis_databas
     switch (field_name.get_data_type())
     {
         case database_data_type::string_type:
-        case database_data_type::document_type:
         {
             return basis_database{ field_name.get_field_name(), value };
+        }
+
+        case database_data_type::document_type:
+        {
+            if (value.empty())
+            {
+                return basis_database{ field_name.get_field_name(), basis_database::document_type{} };
+            }
+
+            auto json_value = boost::json::parse(value);
+
+            basis_database::document_type document{};
+            const auto& object = json_value.get_object();
+            document.reserve(object.size());
+            for (const auto& element : object)
+            {
+                document.emplace_back(json_value_to_basis_converter::convert(element.key(), element.value()));
+            }
+            return basis_database{ field_name.get_field_name(), document };
         }
 
         case database_data_type::int32_type:
@@ -63,10 +81,42 @@ celeritas::basis_database celeritas::redis_row_data_converter::get_basis_databas
         }
 
         case database_data_type::string_array_type:
+        {
+            if (value.empty())
+            {
+                return basis_database{ field_name.get_field_name(), basis_database::string_array{} };
+            }
+
+            const auto json = boost::json::parse(value);
+            const auto result = boost::json::value_to<basis_database::string_array>(json);
+
+            return basis_database{ field_name.get_field_name(), result };
+        }
+
         case database_data_type::document_array_type:
         {
-            basis_database::string_array result{};
-            split(result, value, boost::is_any_of("|"), boost::token_compress_off);
+            if (value.empty())
+            {
+                return basis_database{ field_name.get_field_name(), basis_database::document_array{} };
+            }
+
+            auto json_value = boost::json::parse(value);
+
+            basis_database::document_array result{};
+
+            const auto& array = json_value.get_array();
+            result.reserve(array.size());
+            for (const auto& element : array)
+            {
+                basis_database::document_type document{};
+                const auto& object = element.get_object();
+                document.reserve(object.size());
+                for (const auto& key_value : object)
+                {
+                    document.emplace_back(json_value_to_basis_converter::convert(key_value.key(), key_value.value()));
+                }
+                result.emplace_back(std::move(document));
+            }
 
             return basis_database{ field_name.get_field_name(), result };
         }
@@ -105,9 +155,13 @@ celeritas::basis_database celeritas::redis_row_data_converter::get_default_basis
     switch (field_name.get_data_type())
     {
         case database_data_type::string_type:
-        case database_data_type::document_type:
         {
             return basis_database{ field_name.get_field_name(), std::string{} };
+        }
+
+        case database_data_type::document_type:
+        {
+            return basis_database{ field_name.get_field_name(), basis_database::document_type{} };
         }
 
         case database_data_type::int32_type:
@@ -133,9 +187,13 @@ celeritas::basis_database celeritas::redis_row_data_converter::get_default_basis
         }
 
         case database_data_type::string_array_type:
-        case database_data_type::document_array_type:
         {
             return basis_database{ field_name.get_field_name(), basis_database::string_array{} };
+        }
+
+        case database_data_type::document_array_type:
+        {
+            return basis_database{ field_name.get_field_name(), basis_database::document_array{} };
         }
 
         case database_data_type::int32_array_type:
