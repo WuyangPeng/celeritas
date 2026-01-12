@@ -36,9 +36,9 @@ celeritas::redis_row_data_converter::basis_database_container_const_shared_ptr c
 
     basis_database_container::object_container objects{};
     auto index = 0;
-    for (const auto& value : key_type)
+    for (const auto& element : key_type)
     {
-        objects.emplace_back(value.get_field_name(), extracted_key_values.at(index));
+        objects.emplace_back(element.get_field_name(), extracted_key_values.at(index));
         ++index;
     }
 

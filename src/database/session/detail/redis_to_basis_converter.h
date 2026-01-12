@@ -25,6 +25,8 @@ namespace celeritas
 
         [[nodiscard]] static basis_database get_document_basis(const database_field& field_name, const std::string& value);
 
+        [[nodiscard]] static basis_database do_get_document_basis(const database_field& field_name, const std::string& value);
+
         [[nodiscard]] static basis_database get_int32_basis(const database_field& field_name, const std::string& value);
 
         [[nodiscard]] static basis_database get_int64_basis(const database_field& field_name, const std::string& value);
@@ -36,6 +38,8 @@ namespace celeritas
         [[nodiscard]] static basis_database get_string_array_basis(const database_field& field_name, const std::string& value);
 
         [[nodiscard]] static basis_database get_document_array_basis(const database_field& field_name, const std::string& value);
+
+        [[nodiscard]] static basis_database do_get_document_array_basis(const database_field& field_name, const std::string& value);
 
         [[nodiscard]] static basis_database get_int32_array_basis(const database_field& field_name, const std::string& value);
 

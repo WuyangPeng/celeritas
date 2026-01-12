@@ -50,7 +50,12 @@ celeritas::basis_database celeritas::redis_to_basis_converter::get_document_basi
         return basis_database{ field_name.get_field_name(), basis_database::document_type{} };
     }
 
-    auto json_value = boost::json::parse(value);
+    return do_get_document_basis(field_name, value);
+}
+
+celeritas::basis_database celeritas::redis_to_basis_converter::do_get_document_basis(const database_field& field_name, const std::string& value)
+{
+    const auto json_value = boost::json::parse(value);
 
     basis_database::document_type document{};
     const auto& object = json_value.get_object();
@@ -59,6 +64,7 @@ celeritas::basis_database celeritas::redis_to_basis_converter::get_document_basi
     {
         document.emplace_back(json_value_to_basis_converter::convert(element.key(), element.value()));
     }
+
     return basis_database{ field_name.get_field_name(), document };
 }
 
@@ -102,6 +108,11 @@ celeritas::basis_database celeritas::redis_to_basis_converter::get_document_arra
         return basis_database{ field_name.get_field_name(), basis_database::document_array{} };
     }
 
+    return do_get_document_array_basis(field_name, value);
+}
+
+celeritas::basis_database celeritas::redis_to_basis_converter::do_get_document_array_basis(const database_field& field_name, const std::string& value)
+{
     auto json_value = boost::json::parse(value);
 
     basis_database::document_array result{};
