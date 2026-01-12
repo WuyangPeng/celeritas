@@ -1,4 +1,4 @@
-﻿#include "json_value_to_basis_converter.h"
+﻿#include "json_value_to_basis_converter.tpp"
 #include "common/core/celeritas_error.h"
 
 #include <boost/numeric/conversion/cast.hpp>

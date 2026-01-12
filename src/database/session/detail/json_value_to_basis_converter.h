@@ -56,15 +56,6 @@ namespace celeritas
         [[nodiscard]] static basis_database convert_array_unsupported(std::string_view key, const boost::json::array& array);
 
         template <typename Container, typename UnaryOperation>
-        [[nodiscard]] static basis_database convert_array_impl(std::string_view key, const boost::json::array& array, UnaryOperation op)
-        {
-            Container result{};
-            result.reserve(array.size());
-            for (const auto& element : array)
-            {
-                result.emplace_back(op(element));
-            }
-            return basis_database{ key, result };
-        }
+        [[nodiscard]] static basis_database convert_array_impl(std::string_view key, const boost::json::array& array, UnaryOperation op);
     };
 }
