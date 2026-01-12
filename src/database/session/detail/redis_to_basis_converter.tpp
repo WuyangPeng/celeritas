@@ -1,12 +1,12 @@
 ﻿#pragma once
 
-#include "redis_row_data_converter.h"
+#include "redis_to_basis_converter.h"
 #include "database/basic/database_field.h"
 
 #include <boost/json.hpp>
 
 template <typename ArrayType>
-celeritas::basis_database celeritas::redis_row_data_converter::to_numeric_array_basis(const database_field& field_name, const std::string& value)
+celeritas::basis_database celeritas::redis_to_basis_converter::to_numeric_array_basis(const database_field& field_name, const std::string& value)
 {
     if (value.empty())
     {

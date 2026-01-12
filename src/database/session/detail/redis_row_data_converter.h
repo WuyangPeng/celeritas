@@ -18,18 +18,11 @@ namespace celeritas
 
         [[nodiscard]] static std::string generate_key(const database_entity_change_const_shared_ptr& database);
 
-        [[nodiscard]] static basis_database get_basis_database(const database_field& field_name, const std::string& value);
-
-        [[nodiscard]] static basis_database get_default_basis_database(const database_field& field_name);
-
         [[nodiscard]] static basis_database_container_const_shared_ptr get_key(const std::string& key, const database_entity_change_const_shared_ptr& database);
 
     private:
         using array_type = std::vector<std::string>;
 
         [[nodiscard]] static array_type get_key_value(const std::string& key);
-
-        template <typename ArrayType>
-        [[nodiscard]] static basis_database to_numeric_array_basis(const database_field& field_name, const std::string& value);
     };
 }

@@ -6,6 +6,7 @@
 #include "database/basic/database_entity_change.h"
 #include "database/basic/database_field.h"
 #include "detail/redis_row_data_converter.h"
+#include "detail/redis_to_basis_converter.tpp"
 
 using namespace std::literals;
 
@@ -302,7 +303,7 @@ void celeritas::redis_database_session::modify_select(const database_field_conta
         if (const auto iter = result.find(field.get_field_name().data());
             iter != result.cend())
         {
-            select.modify(redis_row_data_converter::get_basis_database(field, iter->second));
+            select.modify(redis_to_basis_converter::get_basis_database(field, iter->second));
         }
     }
 }
