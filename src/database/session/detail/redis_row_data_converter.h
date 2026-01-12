@@ -9,10 +9,10 @@
 
 namespace celeritas
 {
-    class redis_key_data_converter
+    class redis_row_data_converter
     {
     public:
-        using class_type = redis_key_data_converter;
+        using class_type = redis_row_data_converter;
         using database_entity_change_const_shared_ptr = std::shared_ptr<const database_entity_change>;
         using basis_database_container_const_shared_ptr = std::shared_ptr<const basis_database_container>;
 
@@ -20,7 +20,7 @@ namespace celeritas
 
         [[nodiscard]] static basis_database get_basis_database(const database_field& field_name, const std::string& value);
 
-        [[nodiscard]] static basis_database get_basis_database(const database_field& field_name);
+        [[nodiscard]] static basis_database get_default_basis_database(const database_field& field_name);
 
         [[nodiscard]] static basis_database_container_const_shared_ptr get_key(const std::string& key, const database_entity_change_const_shared_ptr& database);
 

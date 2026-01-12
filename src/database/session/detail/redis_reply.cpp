@@ -4,16 +4,24 @@
 #include "database/database_constant.h"
 #include "database/database_fwd.h"
 
+#include <boost/numeric/conversion/cast.hpp>
+
 using namespace std::literals;
 
 celeritas::redis_reply::redis_reply(redis_context& redis_context, const std::string& command)
-    : command_{ command }, argv_{}, argv_length_{}, redis_reply_{ static_cast<redisReply*>(redisCommand(redis_context.get_redis_context(), command.c_str())) }
+    : command_{ command },
+      argv_{},
+      argv_length_{},
+      redis_reply_{ static_cast<redisReply*>(redisCommand(redis_context.get_redis_context(), command.c_str())) }
 {
     init(redis_context, command);
 }
 
 celeritas::redis_reply::redis_reply(redis_context& redis_context, const array_type& command)
-    : command_{ command }, argv_{ generate_argv(command) }, argv_length_{ generate_argv_length(command) }, redis_reply_{ static_cast<redisReply*>(redisCommandArgv(redis_context.get_redis_context(), command.size(), argv_.data(), argv_length_.data())) }
+    : command_{ command },
+      argv_{ generate_argv(command) },
+      argv_length_{ generate_argv_length(command) },
+      redis_reply_{ static_cast<redisReply*>(redisCommandArgv(redis_context.get_redis_context(), boost::numeric_cast<int>(command.size()), argv_.data(), argv_length_.data())) }
 {
     init(redis_context);
 }

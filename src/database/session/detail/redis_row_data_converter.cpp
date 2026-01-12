@@ -1,4 +1,4 @@
-﻿#include "redis_key_data_converter.tpp"
+﻿#include "redis_row_data_converter.tpp"
 #include "common/core/celeritas_error.h"
 #include "database/basic/basis_database.tpp"
 #include "database/basic/database_data_type.h"
@@ -10,7 +10,7 @@
 
 #include <ranges>
 
-std::string celeritas::redis_key_data_converter::generate_key(const database_entity_change_const_shared_ptr& database)
+std::string celeritas::redis_row_data_converter::generate_key(const database_entity_change_const_shared_ptr& database)
 {
     std::string result{};
     result += database->get_database_name();
@@ -19,7 +19,7 @@ std::string celeritas::redis_key_data_converter::generate_key(const database_ent
     const auto& keys = *database->get_key();
     for (auto iter = keys.begin(); iter != keys.end(); ++iter)
     {
-        result += iter->get_quotation_mark_string();
+        result += iter->get_string();
 
         if (std::next(iter) != keys.end())
         {
@@ -30,7 +30,7 @@ std::string celeritas::redis_key_data_converter::generate_key(const database_ent
     return result;
 }
 
-celeritas::basis_database celeritas::redis_key_data_converter::get_basis_database(const database_field& field_name, const std::string& value)
+celeritas::basis_database celeritas::redis_row_data_converter::get_basis_database(const database_field& field_name, const std::string& value)
 {
     switch (field_name.get_data_type())
     {
@@ -100,7 +100,7 @@ celeritas::basis_database celeritas::redis_key_data_converter::get_basis_databas
     }
 }
 
-celeritas::basis_database celeritas::redis_key_data_converter::get_basis_database(const database_field& field_name)
+celeritas::basis_database celeritas::redis_row_data_converter::get_default_basis_database(const database_field& field_name)
 {
     switch (field_name.get_data_type())
     {
@@ -165,7 +165,7 @@ celeritas::basis_database celeritas::redis_key_data_converter::get_basis_databas
     }
 }
 
-celeritas::redis_key_data_converter::basis_database_container_const_shared_ptr celeritas::redis_key_data_converter::get_key(const std::string& key, const database_entity_change_const_shared_ptr& database)
+celeritas::redis_row_data_converter::basis_database_container_const_shared_ptr celeritas::redis_row_data_converter::get_key(const std::string& key, const database_entity_change_const_shared_ptr& database)
 {
     const auto extracted_key_values = get_key_value(key);
 
@@ -186,7 +186,7 @@ celeritas::redis_key_data_converter::basis_database_container_const_shared_ptr c
     return std::make_shared<basis_database_container>(objects);
 }
 
-celeritas::redis_key_data_converter::array_type celeritas::redis_key_data_converter::get_key_value(const std::string& key)
+celeritas::redis_row_data_converter::array_type celeritas::redis_row_data_converter::get_key_value(const std::string& key)
 {
     array_type parts{};
     boost::split(parts, key, boost::is_any_of(":"), boost::token_compress_off);

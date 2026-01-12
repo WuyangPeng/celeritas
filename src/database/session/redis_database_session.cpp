@@ -5,7 +5,7 @@
 #include "database/basic/database_change_type.h"
 #include "database/basic/database_entity_change.h"
 #include "database/basic/database_field.h"
-#include "detail/redis_key_data_converter.h"
+#include "detail/redis_row_data_converter.h"
 
 using namespace std::literals;
 
@@ -195,7 +195,7 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
 
 celeritas::database_session::database_entity_change_awaitable_type celeritas::redis_database_session::select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container)
 {
-    const auto optional_result = co_await redis_hash_commands_.async_get_all(redis_key_data_converter::generate_key(database));
+    const auto optional_result = co_await redis_hash_commands_.async_get_all(redis_row_data_converter::generate_key(database));
     if (!optional_result)
     {
         co_return std::nullopt;
@@ -265,7 +265,7 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
         expiration_time = redis_parameter_.get_expire_seconds();
     }
 
-    const auto key = redis_key_data_converter::generate_key(database);
+    const auto key = redis_row_data_converter::generate_key(database);
     co_await redis_hash_commands_.async_set_many(key, field_value);
     co_await redis_key_commands_.async_set_expire_seconds(key, expiration_time);
 
@@ -274,7 +274,7 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
 
 celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::delete_database(const const_database_entity_change_shared_ptr& database) const
 {
-    co_await redis_key_commands_.async_delete(redis_key_data_converter::generate_key(database));
+    co_await redis_key_commands_.async_delete(redis_row_data_converter::generate_key(database));
     co_return;
 }
 
@@ -288,7 +288,7 @@ celeritas::database_session::database_entity_change_awaitable_type celeritas::re
 
     const auto& result = *optional_result;
 
-    auto select = database->get_select(redis_key_data_converter::get_key(key, database));
+    auto select = database->get_select(redis_row_data_converter::get_key(key, database));
 
     modify_select(field_name_container, result, select);
 
@@ -302,7 +302,7 @@ void celeritas::redis_database_session::modify_select(const database_field_conta
         if (const auto iter = result.find(field.get_field_name().data());
             iter != result.cend())
         {
-            select.modify(redis_key_data_converter::get_basis_database(field, iter->second));
+            select.modify(redis_row_data_converter::get_basis_database(field, iter->second));
         }
     }
 }
