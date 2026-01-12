@@ -1,7 +1,8 @@
-﻿#include "database/session/mongo_database_session.h"
-#include "database/basic/database_entity_change.h"
-#include <boost/test/unit_test.hpp>
+﻿#include "database/basic/database_entity_change.h"
+#include "database/session/mongo_database_session.h"
+
 #include <boost/asio.hpp>
+#include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(mongo_database_session_suite)
 
@@ -18,7 +19,7 @@ BOOST_AUTO_TEST_SUITE(mongo_database_session_suite)
 
         BOOST_CHECK_NO_THROW(
             celeritas::mongo_database_session(host, port, user, password, uri, db_name, expire_seconds, io_context.get_executor())
-        );
+            );
     }
 
 BOOST_AUTO_TEST_SUITE_END()
