@@ -2,6 +2,7 @@
 #include "mysql_row_data_converter.h"
 #include "mysql_row_data_converter.tpp"
 #include "common/logging/logger.h"
+#include "database/basic/basis_database.tpp"
 #include "database/basic/database_data_type.h"
 #include "database/basic/database_field.h"
 
