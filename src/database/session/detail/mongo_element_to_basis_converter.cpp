@@ -23,12 +23,12 @@ celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_doubl
 
 celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_string_from_element(const document_element_type& row_view)
 {
-    return { row_view.key(), std::string{ row_view.get_string().value } };
+    return { row_view.key().data(), std::string{ row_view.get_string().value } };
 }
 
 celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_bool_from_element(const document_element_type& row_view)
 {
-    return { row_view.key(), row_view.get_bool().value };
+    return { row_view.key().data(), row_view.get_bool().value };
 }
 
 celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_document_from_element(const document_element_type& row_view)
@@ -38,17 +38,17 @@ celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_docum
     {
         document.emplace_back(mongo_row_data_converter::get_basis_database(element));
     }
-    return { row_view.key(), document };
+    return { row_view.key().data(), document };
 }
 
 celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_int32_from_element(const document_element_type& row_view)
 {
-    return { row_view.key(), row_view.get_int32().value };
+    return { row_view.key().data(), row_view.get_int32().value };
 }
 
 celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_int64_from_element(const document_element_type& row_view)
 {
-    return { row_view.key(), row_view.get_int64().value };
+    return { row_view.key().data(), row_view.get_int64().value };
 }
 
 celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_array_basis_database_from_view(const document_element_type& row_view)
@@ -57,14 +57,14 @@ celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_array
 
     if (row_view_array.empty())
     {
-        return { row_view.key(), basis_database::int32_array{} };
+        return { row_view.key().data(), basis_database::int32_array{} };
     }
 
     const auto& converters = mongo_array_to_basis_converter::get_converters();
     if (const auto iter = converters.find(row_view_array.begin()->type());
         iter != converters.end())
     {
-        return iter->second(row_view.key(), row_view_array);
+        return iter->second(row_view.key().data(), row_view_array);
     }
 
     throw celeritas_error{ "Unsupported type in mongo row data." };
