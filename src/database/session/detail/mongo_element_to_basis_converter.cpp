@@ -18,7 +18,7 @@ const celeritas::mongo_element_to_basis_converter::container_type& celeritas::mo
 
 celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_double_from_element(const document_element_type& row_view)
 {
-    return { row_view.key(), row_view.get_double().value };
+    return basis_database{ row_view.key(), row_view.get_double().value };
 }
 
 celeritas::basis_database celeritas::mongo_element_to_basis_converter::get_string_from_element(const document_element_type& row_view)
