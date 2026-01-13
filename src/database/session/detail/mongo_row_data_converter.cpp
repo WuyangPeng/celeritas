@@ -3,6 +3,7 @@
 #include "mongo_row_data_converter.h"
 #include "mongo_to_basis_converter.tpp"
 #include "common/core/celeritas_error.h"
+#include "common/core/enum_cast.h"
 #include "database/basic/basis_database_container.h"
 #include "database/basic/database_field.h"
 
@@ -69,5 +70,5 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
         return iter->second(row_view);
     }
 
-    throw celeritas_error{ "Unsupported type in mongo row data." };
+    throw celeritas_error{ "Unsupported type in mongo row data.type = {}", enum_cast_underlying(row_view.type()) };
 }

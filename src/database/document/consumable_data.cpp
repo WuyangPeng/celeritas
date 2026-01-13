@@ -2,9 +2,6 @@
 #include "common/core/celeritas_error.h"
 #include "database/basic/basis_database.tpp"
 
-#include <bsoncxx/types.hpp>
-#include <bsoncxx/builder/basic/kvp.hpp>
-
 celeritas::consumable_data::consumable_data()
     : expire_time_{ 0 }
 {

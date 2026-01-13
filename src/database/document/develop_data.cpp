@@ -2,10 +2,6 @@
 #include "common/core/time_helper.h"
 #include "database/basic/basis_database.tpp"
 
-#include <bsoncxx/json.hpp>
-#include <bsoncxx/builder/basic/array.hpp>
-#include <bsoncxx/builder/basic/document.hpp>
-
 celeritas::develop_data::develop_data(const int system_id, const int64_t instance_id)
     : system_id_{ system_id }, instance_id_{ instance_id }, level_{ 1 }, exp_{ 0 }, updated_time_{ time_helper::get_current_milliseconds() }
 {

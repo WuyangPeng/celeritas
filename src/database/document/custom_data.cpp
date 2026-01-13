@@ -2,9 +2,6 @@
 #include "develop_data.h"
 #include "database/basic/basis_database.tpp"
 
-#include <bsoncxx/types.hpp>
-#include <bsoncxx/builder/basic/kvp.hpp>
-
 celeritas::custom_data::custom_data()
     : detail_{ std::monostate{} }
 {

@@ -2,10 +2,6 @@
 #include "common/core/time_helper.h"
 #include "database/basic/basis_database.tpp"
 
-#include <bsoncxx/json.hpp>
-#include <bsoncxx/builder/basic/document.hpp>
-#include <utility>
-
 celeritas::server_role::server_role()
     : game_server_id_{}, role_surname_{}, role_name_{}, last_login_time_{}
 {

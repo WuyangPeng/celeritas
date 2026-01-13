@@ -1,10 +1,6 @@
 ﻿#include "inventory_data.h"
 #include "database/basic/basis_database.tpp"
 
-#include <bsoncxx/json.hpp>
-#include <bsoncxx/builder/basic/array.hpp>
-#include <bsoncxx/builder/basic/document.hpp>
-
 celeritas::inventory_data::inventory_data(const int64_t item_id, const int template_id, const int64_t count, const int position)
     : item_id_{ item_id }, template_id_{ template_id }, count_{ count }, position_{ position }
 {

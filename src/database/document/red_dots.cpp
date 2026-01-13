@@ -3,9 +3,6 @@
 #include "common/core/time_helper.h"
 #include "database/basic/basis_database.tpp"
 
-#include <bsoncxx/json.hpp>
-#include <bsoncxx/builder/basic/document.hpp>
-
 celeritas::red_dots::red_dots()
     : node_id_{}, state_{}, last_value_{}, update_time_{}
 {

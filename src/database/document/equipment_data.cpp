@@ -1,9 +1,6 @@
 ﻿#include "equipment_data.h"
 #include "database/basic/basis_database.tpp"
 
-#include <bsoncxx/builder/basic/kvp.hpp>
-#include <bsoncxx/types.hpp>
-
 celeritas::equipment_data::equipment_data()
     : strength_{ 0 }, durability_{ 0 }
 {
