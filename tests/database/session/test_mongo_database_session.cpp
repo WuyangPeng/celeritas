@@ -3,11 +3,19 @@
 #include "database/generated/mongo/test/mongo_test.h"
 #include "database/session/mongo_database_session.h"
 #include "fixture/mongo_database_session_fixture.h"
+#include "database/basic/basis_database.h"
+#include "database/basic/database_data_type_traits.h"
+#include "database/document/test/properties_data.h"
+#include "database/document/test/logs_data.h"
 
 #include <boost/asio.hpp>
 #include <boost/test/unit_test.hpp>
-#include <bsoncxx/builder/basic/document.hpp>
 #include <bsoncxx/json.hpp>
+#include <bsoncxx/builder/basic/document.hpp>
+
+#include <map>
+#include <vector>
+#include <memory>
 
 namespace
 {
@@ -127,7 +135,24 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
         });
     }
 
-    BOOST_AUTO_TEST_CASE(test_crud)
+    BOOST_AUTO_TEST_CASE(test_is_health)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            try
+            {
+                co_await get_session()->async_connect();
+                BOOST_CHECK(co_await get_session()->is_health());
+            }
+            catch (const std::exception& error)
+            {
+                BOOST_ERROR("is_health failed: " << error.what());
+            }
+
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_insert_and_select_one)
     {
         run([this]() -> boost::asio::awaitable<void> {
             try
@@ -136,21 +161,69 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
                 co_await session->async_connect();
                 if (!co_await session->is_health())
                 {
-                    BOOST_ERROR("MongoDB not reachable, skipping CRUD tests.");
+                    BOOST_ERROR("MongoDB not reachable, skipping test.");
                     co_return;
                 }
 
                 auto entity = get_mongo_test();
-
                 co_await test_delete(*this, entity);
-
                 co_await test_insert(*this, entity);
                 co_await test_select_one(*this, "Test Chapter", 1000);
+                co_await test_delete(*this, entity);
 
+                set_test_end(true);
+            }
+            catch (const std::exception& error)
+            {
+                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
+            }
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_update_and_select_one)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            try
+            {
+                const auto session = get_session();
+                co_await session->async_connect();
+                if (!co_await session->is_health())
+                {
+                    BOOST_ERROR("MongoDB not reachable, skipping test.");
+                    co_return;
+                }
+
+                auto entity = get_mongo_test();
+                co_await test_delete(*this, entity);
+                co_await test_insert(*this, entity);
                 co_await test_update(*this, entity);
                 co_await test_select_one(*this, "Updated Chapter", 1500);
-                co_await test_select_all(*this);
+                co_await test_delete(*this, entity);
 
+                set_test_end(true);
+            }
+            catch (const std::exception& error)
+            {
+                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
+            }
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_delete_and_verify)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            try
+            {
+                const auto session = get_session();
+                co_await session->async_connect();
+                if (!co_await session->is_health())
+                {
+                    BOOST_ERROR("MongoDB not reachable, skipping test.");
+                    co_return;
+                }
+
+                auto entity = get_mongo_test();
+                co_await test_insert(*this, entity);
                 co_await test_delete(*this, entity);
                 co_await test_verify_delete(*this);
 
@@ -158,7 +231,35 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
             }
             catch (const std::exception& error)
             {
-                BOOST_ERROR(std::string{"Exception in CRUD test: "} + error.what());
+                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
+            }
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_select_all_functionality)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            try
+            {
+                const auto session = get_session();
+                co_await session->async_connect();
+                if (!co_await session->is_health())
+                {
+                    BOOST_ERROR("MongoDB not reachable, skipping test.");
+                    co_return;
+                }
+
+                auto entity = get_mongo_test();
+                co_await test_delete(*this, entity);
+                co_await test_insert(*this, entity);
+                co_await test_select_all(*this);
+                co_await test_delete(*this, entity);
+
+                set_test_end(true);
+            }
+            catch (const std::exception& error)
+            {
+                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
             }
         });
     }
@@ -187,7 +288,7 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
                 auto count = 0;
                 for (const auto& doc : cursor)
                 {
-                    BOOST_CHECK(doc["user_id"].get_int32() == user_id);
+                    BOOST_CHECK(doc["_id"].get_int64() == user_id);
                     count++;
                 }
                 BOOST_CHECK_EQUAL(count, 1);
@@ -198,6 +299,124 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
             catch (const std::exception& error)
             {
                 BOOST_ERROR(std::string{"Exception in async_find test: "} + error.what());
+            }
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_execute_changes_with_empty_change)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            try
+            {
+                const auto session = get_session();
+                co_await session->async_connect();
+                if (!co_await session->is_health())
+                {
+                    BOOST_ERROR("MongoDB not reachable, skipping test.");
+                    co_return;
+                }
+
+                auto entity = get_mongo_test();
+                entity.clear_modify();
+                co_await session->execute_changes(entity.get_modify(), 10);
+
+                BOOST_CHECK(true);
+
+                set_test_end(true);
+            }
+            catch (const std::exception& error)
+            {
+                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
+            }
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_data_conversion_round_trip)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            try
+            {
+                const auto session = get_session();
+                co_await session->async_connect();
+                if (!co_await session->is_health())
+                {
+                    BOOST_ERROR("MongoDB not reachable, skipping test.");
+                    co_return;
+                }
+
+                celeritas::mongo_test entity{ celeritas::database_type::mongo, user_id };
+                entity.set_chapter_id(101);
+                entity.set_chapter_name("Conversion Test");
+                entity.set_chance_winning(0.5);
+                entity.set_winning(false);
+                entity.set_currency(2000);
+                entity.set_count(20);
+                entity.set_tags({ "a", "b", "c" });
+                entity.set_category_index({ 1, 2, 3 });
+                entity.set_related_index({ 10L, 20L, 30L });
+                entity.set_ratios({ 0.1, 0.2, 0.3 });
+                entity.set_attachment({ 'x', 'y', 'z' });
+
+                celeritas::properties_data properties(987654321L);
+                entity.set_properties(properties.to_document_type());
+
+                celeritas::traits::document_array_type logs;
+                celeritas::logs_data log1(123456789L);
+                logs.push_back(log1.to_document_type());
+                entity.set_logs(logs);
+
+                co_await test_delete(*this, entity);
+                co_await test_insert(*this, entity);
+
+                const auto select_change = celeritas::mongo_test::get_select(celeritas::database_type::mongo, user_id);
+                const auto optional_result = co_await session->select_one(select_change, celeritas::mongo_test::get_database_field_container());
+
+                BOOST_REQUIRE(optional_result.has_value());
+                const celeritas::mongo_test loaded{ celeritas::database_type::mongo, *optional_result };
+
+                BOOST_CHECK_EQUAL(loaded.get_user_id(), user_id);
+                BOOST_CHECK_EQUAL(loaded.get_chapter_id(), 101);
+                BOOST_CHECK_EQUAL(loaded.get_chapter_name(), "Conversion Test");
+                BOOST_CHECK_EQUAL(loaded.get_chance_winning(), 0.5);
+                BOOST_CHECK_EQUAL(loaded.is_winning(), false);
+                BOOST_CHECK_EQUAL(loaded.get_currency(), 2000);
+                BOOST_CHECK_EQUAL(loaded.get_count(), 20);
+
+                const auto& tags = loaded.get_tags();
+                BOOST_CHECK_EQUAL(tags.size(), 3);
+                BOOST_CHECK_EQUAL(tags[0], "a");
+
+                const auto& categories = loaded.get_category_index();
+                BOOST_CHECK_EQUAL(categories.size(), 3);
+                BOOST_CHECK_EQUAL(categories[1], 2);
+
+                const auto& related = loaded.get_related_index();
+                BOOST_CHECK_EQUAL(related.size(), 3);
+                BOOST_CHECK_EQUAL(related[2], 30L);
+
+                const auto& ratios = loaded.get_ratios();
+                BOOST_CHECK_EQUAL(ratios.size(), 3);
+                BOOST_CHECK_EQUAL(ratios[0], 0.1);
+
+                const auto& attachment = loaded.get_attachment();
+                BOOST_CHECK_EQUAL(attachment.size(), 3);
+                BOOST_CHECK_EQUAL(attachment[1], 'y');
+
+                const auto& loaded_properties_doc = loaded.get_properties();
+                const auto loaded_properties = celeritas::properties_data::from_document(loaded_properties_doc);
+                BOOST_CHECK_EQUAL(loaded_properties.get_expire_time(), 987654321L);
+
+                const auto& loaded_logs_doc = loaded.get_logs();
+                BOOST_REQUIRE_EQUAL(loaded_logs_doc.size(), 1);
+                const auto loaded_log1 = celeritas::logs_data::from_document(loaded_logs_doc.at(0));
+                BOOST_CHECK_EQUAL(loaded_log1.get_expire_time(), 123456789L);
+
+                co_await test_delete(*this, entity);
+                set_test_end(true);
+            }
+            catch (const std::exception& error)
+            {
+                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
             }
         });
     }
