@@ -32,7 +32,7 @@ celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_databas
     if (const auto database = container.find(iter->get_data_type());
         database != container.cend())
     {
-        return database->second(row_view);
+        return database->second(iter->get_field_name(), row_view);
     }
 
     return basis_database{ iter->get_field_name(), std::string{} };
@@ -48,6 +48,15 @@ celeritas::mongo_row_data_converter::document_shared_ptr celeritas::mongo_row_da
     }
 
     return appender.get_document();
+}
+
+celeritas::mongo_row_data_converter::document_shared_ptr celeritas::mongo_row_data_converter::get_update_document(const const_basis_database_container_shared_ptr& container)
+{
+    const auto document = get_document(container);
+
+    auto update_document = std::make_shared<document_type>();
+    update_document->append(bsoncxx::builder::basic::kvp("$set", document->view()));
+    return update_document;
 }
 
 celeritas::basis_database celeritas::mongo_row_data_converter::get_basis_database(const document_element_type& row_view)

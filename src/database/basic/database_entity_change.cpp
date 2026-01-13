@@ -71,11 +71,6 @@ void celeritas::database_entity_change::modify(const basis_database& basis_datab
         throw celeritas_error{ "delete type cannot be modified." };
     }
 
-    if (change_type_ == database_change_type::select_type)
-    {
-        throw celeritas_error{ "select type cannot be modified." };
-    }
-
     database_->modify(basis_database);
 }
 

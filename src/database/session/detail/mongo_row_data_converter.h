@@ -24,6 +24,8 @@ namespace celeritas
 
         [[nodiscard]] static document_shared_ptr get_document(const const_basis_database_container_shared_ptr& container);
 
+        [[nodiscard]] static document_shared_ptr get_update_document(const const_basis_database_container_shared_ptr& container);
+
         [[nodiscard]] static basis_database get_basis_database(const document_element_type& row_view);
     };
 }

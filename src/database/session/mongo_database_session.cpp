@@ -178,10 +178,10 @@ bool celeritas::mongo_database_session::do_is_health() const
         return false;
     }
 
-    bsoncxx::builder::basic::document ping_cmd{};
-    ping_cmd.append(bsoncxx::builder::basic::kvp("ping", 1));
+    bsoncxx::builder::basic::document ping_command{};
+    ping_command.append(bsoncxx::builder::basic::kvp("ping", 1));
 
-    database_->run_command(ping_cmd.view());
+    database_->run_command(ping_command.view());
 
     return true;
 }
@@ -189,7 +189,7 @@ bool celeritas::mongo_database_session::do_is_health() const
 void celeritas::mongo_database_session::update_document(const const_database_entity_change_shared_ptr& database) const
 {
     const auto key_document = mongo_row_data_converter::get_document(database->get_key());
-    const auto update_document = mongo_row_data_converter::get_document(database->get_database());
+    const auto update_document = mongo_row_data_converter::get_update_document(database->get_database());
 
     auto collection = get_collection(database->get_database_name());
     collection.update_one(key_document->extract(), update_document->extract());

@@ -281,13 +281,6 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
         BOOST_CHECK(change.is_must_save());
     }
 
-    BOOST_AUTO_TEST_CASE(test_database_entity_change_modify_on_select_type)
-    {
-        celeritas::database_entity_change change{ celeritas::database_type::mysql, "test", celeritas::database_change_type::select_type };
-
-        BOOST_CHECK_THROW(change.modify(celeritas::basis_database{ "field", "value" }), celeritas::celeritas_error);
-    }
-
     BOOST_AUTO_TEST_CASE(test_database_entity_change_clear_on_delete_type)
     {
         const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
