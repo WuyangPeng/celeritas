@@ -1,12 +1,11 @@
 ﻿#include "config/basic/database_type.h"
+#include "database/basic/database_data_type_traits.h"
 #include "database/basic/database_entity_change.tpp"
+#include "database/document/test/logs_data.h"
+#include "database/document/test/properties_data.h"
 #include "database/generated/mongo/test/mongo_test.h"
 #include "database/session/mongo_database_session.h"
 #include "fixture/mongo_database_session_fixture.h"
-#include "database/basic/basis_database.h"
-#include "database/basic/database_data_type_traits.h"
-#include "database/document/test/properties_data.h"
-#include "database/document/test/logs_data.h"
 
 #include <boost/asio.hpp>
 #include <boost/test/unit_test.hpp>
@@ -14,8 +13,8 @@
 #include <bsoncxx/builder/basic/document.hpp>
 
 #include <map>
-#include <vector>
 #include <memory>
+#include <vector>
 
 namespace
 {
@@ -357,12 +356,12 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
                 entity.set_ratios({ 0.1, 0.2, 0.3 });
                 entity.set_attachment({ 'x', 'y', 'z' });
 
-                celeritas::properties_data properties(987654321L);
+                const celeritas::properties_data properties{ 987654321LL };
                 entity.set_properties(properties.to_document_type());
 
-                celeritas::traits::document_array_type logs;
-                celeritas::logs_data log1(123456789L);
-                logs.push_back(log1.to_document_type());
+                celeritas::traits::document_array_type logs{};
+                const celeritas::logs_data log_data{ 123456789LL };
+                logs.emplace_back(log_data.to_document_type());
                 entity.set_logs(logs);
 
                 co_await test_delete(*this, entity);
@@ -408,8 +407,8 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
 
                 const auto& loaded_logs_doc = loaded.get_logs();
                 BOOST_REQUIRE_EQUAL(loaded_logs_doc.size(), 1);
-                const auto loaded_log1 = celeritas::logs_data::from_document(loaded_logs_doc.at(0));
-                BOOST_CHECK_EQUAL(loaded_log1.get_expire_time(), 123456789L);
+                const auto loaded_log = celeritas::logs_data::from_document(loaded_logs_doc.at(0));
+                BOOST_CHECK_EQUAL(loaded_log.get_expire_time(), 123456789L);
 
                 co_await test_delete(*this, entity);
                 set_test_end(true);

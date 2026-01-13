@@ -71,7 +71,7 @@ namespace celeritas
         template <typename T> requires(std::is_floating_point_v<T>)
         basis_database(std::string_view field_name, T value);
 
-        [[nodiscard]] std::string_view get_field_name() const noexcept;
+        [[nodiscard]] std::string get_field_name() const noexcept;
 
         [[nodiscard]] database_data_type get_data_type() const noexcept;
 
@@ -103,7 +103,7 @@ namespace celeritas
 
         static void append_value(std::ostringstream& os, const document_type& value, bool is_last);
 
-        std::string_view field_name_;
+        std::string field_name_;
         database_data_type data_type_ = database_data_type::null_type;
         value_variant value_;
     };

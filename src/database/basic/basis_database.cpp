@@ -74,7 +74,7 @@ celeritas::basis_database::basis_database(const std::string_view field_name, con
 {
 }
 
-std::string_view celeritas::basis_database::get_field_name() const noexcept
+std::string celeritas::basis_database::get_field_name() const noexcept
 {
     return field_name_;
 }
