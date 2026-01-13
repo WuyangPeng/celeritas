@@ -216,6 +216,26 @@ BOOST_AUTO_TEST_SUITE(basis_database_suite)
         BOOST_CHECK_EQUAL(db.get_string(), "[]");
     }
 
+    BOOST_AUTO_TEST_CASE(test_basis_database_has_value_string)
+    {
+        const celeritas::basis_database db_string{ "name", "test" };
+        BOOST_CHECK(db_string.has_value<celeritas::database_data_type::string_type>());
+        BOOST_CHECK(!db_string.has_value<celeritas::database_data_type::int32_type>());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_basis_database_has_value_int)
+    {
+        const celeritas::basis_database db_int{ "age", 30 };
+        BOOST_CHECK(db_int.has_value<celeritas::database_data_type::int32_type>());
+        BOOST_CHECK(!db_int.has_value<celeritas::database_data_type::string_type>());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_basis_database_has_value_null)
+    {
+        const celeritas::basis_database db_null{ "null_field" };
+        BOOST_CHECK(!db_null.has_value<celeritas::database_data_type::string_type>());
+    }
+
     BOOST_AUTO_TEST_CASE(test_basis_database_get_sql_field_string)
     {
         const celeritas::basis_database db_string{ "name", "test" };

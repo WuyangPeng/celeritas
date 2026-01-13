@@ -17,6 +17,13 @@ celeritas::basis_database::basis_database(const std::string_view field_name, T v
 }
 
 template <celeritas::database_data_type Type>
+bool celeritas::basis_database::has_value() const
+{
+    using target_type = database_data_type_traits<Type>::type;
+    return std::holds_alternative<target_type>(value_);
+}
+
+template <celeritas::database_data_type Type>
 const celeritas::database_data_type_traits<Type>::type& celeritas::basis_database::get_value() const
 {
     using target_type = database_data_type_traits<Type>::type;

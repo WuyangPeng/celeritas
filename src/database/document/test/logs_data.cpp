@@ -2,6 +2,8 @@
 #include "common/core/celeritas_error.h"
 #include "database/basic/basis_database.tpp"
 
+#include <boost/numeric/conversion/cast.hpp>
+
 celeritas::logs_data::logs_data()
     : expire_time_{ 0 }
       , int32_val_{ 0 }
@@ -193,15 +195,43 @@ celeritas::logs_data celeritas::logs_data::from_document(const document_type& do
         }
         else if (element.get_field_name() == int32_val_description)
         {
-            logs_data.set_int32_val(element.get_value<database_data_type::int32_type>());
+            if (element.has_value<database_data_type::int32_type>())
+            {
+                logs_data.set_int32_val(element.get_value<database_data_type::int32_type>());
+            }
+            else if (element.has_value<database_data_type::int64_type>())
+            {
+                logs_data.set_int32_val(boost::numeric_cast<int32_t>(element.get_value<database_data_type::int64_type>()));
+            }
         }
         else if (element.get_field_name() == int32_count_val_description)
         {
-            logs_data.set_int32_count_val(element.get_value<database_data_type::int32_count_type>());
+            if (element.has_value<database_data_type::int32_type>())
+            {
+                logs_data.set_int32_count_val(element.get_value<database_data_type::int32_count_type>());
+            }
+            else if (element.has_value<database_data_type::int64_type>())
+            {
+                logs_data.set_int32_count_val(boost::numeric_cast<int32_t>(element.get_value<database_data_type::int64_count_type>()));
+            }
         }
         else if (element.get_field_name() == int32_array_val_description)
         {
-            logs_data.set_int32_array_val(element.get_value<database_data_type::int32_array_type>());
+            if (element.has_value<database_data_type::int32_array_type>())
+            {
+                logs_data.set_int32_array_val(element.get_value<database_data_type::int32_array_type>());
+            }
+            else if (element.has_value<database_data_type::int64_array_type>())
+            {
+                const auto& array = element.get_value<database_data_type::int64_array_type>();
+                std::vector<int32_t> int32_array{};
+
+                for (const auto& int64_value : array)
+                {
+                    int32_array.emplace_back(boost::numeric_cast<int32_t>(int64_value));
+                }
+                logs_data.set_int32_array_val(int32_array);
+            }
         }
         else if (element.get_field_name() == int64_count_val_description)
         {

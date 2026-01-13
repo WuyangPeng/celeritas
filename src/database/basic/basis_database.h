@@ -76,6 +76,9 @@ namespace celeritas
         [[nodiscard]] database_data_type get_data_type() const noexcept;
 
         template <database_data_type Type>
+        [[nodiscard]] bool has_value() const;
+
+        template <database_data_type Type>
         [[nodiscard]] const database_data_type_traits<Type>::type& get_value() const;
 
         template <database_data_type Type>
