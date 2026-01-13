@@ -110,6 +110,8 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, mongo_database_session_fi
             {
                 BOOST_TEST_MESSAGE("Connection failed: " << e.what());
             }
+
+            test_end = true;
         });
     }
 

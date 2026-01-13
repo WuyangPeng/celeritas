@@ -252,7 +252,7 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
 
     database_->run_command(ping_cmd.view());
 
-    LOG_CHANNEL(database_channel, info) << "MongoDB session connected to: " << mongo_parameter_.get_uri() << "/" << mongo_parameter_.get_db_name();
+    LOG_CHANNEL(database_channel, info) << "MongoDB session connected to: " << mongo_parameter_.get_uri();
 
     co_return;
 }
