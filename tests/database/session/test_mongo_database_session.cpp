@@ -6,6 +6,8 @@
 
 #include <boost/asio.hpp>
 #include <boost/test/unit_test.hpp>
+#include <bsoncxx/builder/basic/document.hpp>
+#include <bsoncxx/json.hpp>
 
 namespace
 {
@@ -157,6 +159,45 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
             catch (const std::exception& error)
             {
                 BOOST_ERROR(std::string{"Exception in CRUD test: "} + error.what());
+            }
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_find)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            try
+            {
+                const auto session = get_session();
+                co_await session->async_connect();
+                if (!co_await session->is_health())
+                {
+                    BOOST_ERROR("MongoDB not reachable, skipping async_find test.");
+                    co_return;
+                }
+
+                auto entity = get_mongo_test();
+                co_await test_insert(*this, entity);
+
+                bsoncxx::builder::basic::document filter_builder{};
+                filter_builder.append(bsoncxx::builder::basic::kvp("user_id", static_cast<int64_t>(user_id)));
+
+                auto cursor = co_await session->async_find("mongo_test", filter_builder.view());
+
+                auto count = 0;
+                for (const auto& doc : cursor)
+                {
+                    BOOST_CHECK(doc["user_id"].get_int64() == user_id);
+                    count++;
+                }
+                BOOST_CHECK_EQUAL(count, 1);
+
+                co_await test_delete(*this, entity);
+                set_test_end(true);
+            }
+            catch (const std::exception& error)
+            {
+                BOOST_ERROR(std::string{"Exception in async_find test: "} + error.what());
             }
         });
     }
