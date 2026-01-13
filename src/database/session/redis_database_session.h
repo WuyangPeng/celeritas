@@ -118,9 +118,9 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type delete_database(const const_database_entity_change_shared_ptr& database) const;
 
-        [[nodiscard]] database_entity_change_awaitable_type select_one(const std::string& key,
-                                                                       const const_database_entity_change_shared_ptr& database,
-                                                                       const database_field_container& field_name_container) const;
+        [[nodiscard]] database_entity_change_awaitable_type select_one_by_real_key(const std::string& key,
+                                                                                   const const_database_entity_change_shared_ptr& database,
+                                                                                   const database_field_container& field_name_container) const;
 
         static void modify_select(const database_field_container& field_name_container,
                                   const map_type& result,

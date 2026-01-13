@@ -77,9 +77,9 @@ celeritas::redis_commands::scan_result_awaitable_type celeritas::redis_key_comma
 {
     const array_type scan_command{ "SCAN",
                                    std::to_string(cursor),
-                                   " MATCH",
+                                   "MATCH",
                                    get_prefixed_key(pattern),
-                                   " COUNT",
+                                   "COUNT",
                                    std::to_string(count) };
 
     co_return co_await async_execute_command_return_scan_result(scan_command);
@@ -88,15 +88,17 @@ celeritas::redis_commands::scan_result_awaitable_type celeritas::redis_key_comma
 celeritas::redis_commands::array_awaitable_type celeritas::redis_key_commands::async_scan_all(const std::string& pattern) const
 {
     auto scan = co_await async_scan(pattern, 0, redis_cursor_one_request_size);
+    auto scan_keys = scan.get_keys();
 
-    array_type keys{};
+    auto keys = scan_keys;
+
     while (scan.get_cursor() != "0")
     {
         scan = co_await async_scan(pattern, std::stoi(scan.get_cursor()), redis_cursor_one_request_size);
-        keys.insert(keys.cend(), scan.get_keys().cbegin(), scan.get_keys().cend());
+        scan_keys = scan.get_keys();
+        keys.insert(keys.cend(), scan_keys.cbegin(), scan_keys.cend());
     }
 
     co_return keys;
 }
-
 

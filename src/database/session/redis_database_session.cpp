@@ -184,7 +184,12 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
         case database_change_type::update_type:
         case database_change_type::insert_type:
         {
-            co_return co_await save_database(database, expiration_time);
+            if (database->is_modify())
+            {
+                co_return co_await save_database(database, expiration_time);
+            }
+
+            co_return;
         }
 
         case database_change_type::delete_type:
@@ -220,7 +225,7 @@ celeritas::database_session::result_container_awaitable_type celeritas::redis_da
     result_container container{};
     for (const auto& element : keys)
     {
-        if (const auto select = co_await select_one(element, database, field_name_container))
+        if (const auto select = co_await select_one_by_real_key(element, database, field_name_container))
         {
             container.emplace_back(*select);
         }
@@ -279,9 +284,9 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
     co_return;
 }
 
-celeritas::database_session::database_entity_change_awaitable_type celeritas::redis_database_session::select_one(const std::string& key, const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) const
+celeritas::database_session::database_entity_change_awaitable_type celeritas::redis_database_session::select_one_by_real_key(const std::string& key, const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) const
 {
-    const auto optional_result = co_await redis_hash_commands_.async_get_all(key);
+    const auto optional_result = co_await redis_hash_commands_.async_get_all_by_real_key(key);
     if (!optional_result)
     {
         co_return std::nullopt;
@@ -289,7 +294,7 @@ celeritas::database_session::database_entity_change_awaitable_type celeritas::re
 
     const auto& result = *optional_result;
 
-    auto select = database->get_select(redis_row_data_converter::get_key(key, database));
+    auto select = database->get_select();
 
     modify_select(field_name_container, result, select);
 
