@@ -180,14 +180,14 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
                 co_await test_insert(*this, entity);
 
                 bsoncxx::builder::basic::document filter_builder{};
-                filter_builder.append(bsoncxx::builder::basic::kvp("user_id", static_cast<int64_t>(user_id)));
+                filter_builder.append(bsoncxx::builder::basic::kvp("_id", static_cast<int64_t>(user_id)));
 
                 auto cursor = co_await session->async_find("mongo_test", filter_builder.view());
 
                 auto count = 0;
                 for (const auto& doc : cursor)
                 {
-                    BOOST_CHECK(doc["user_id"].get_int64() == user_id);
+                    BOOST_CHECK(doc["user_id"].get_int32() == user_id);
                     count++;
                 }
                 BOOST_CHECK_EQUAL(count, 1);
