@@ -19,7 +19,7 @@ struct mongo_database_session_fixture
     boost::asio::io_context io_context;
     std::shared_ptr<mongo_database_session> session;
     std::shared_ptr<const database_config> config;
-    bool test_end;
+    bool test_end = false;
 
     mongo_database_session_fixture()
     {
