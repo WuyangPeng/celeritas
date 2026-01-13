@@ -49,6 +49,8 @@ namespace celeritas
 
         void set_mock_pool(const database_pool_shared_ptr& mock_pool);
 
+        static void create_mongo_instance();
+
     private:
         using database_pool_container = std::map<std::string, database_pool_shared_ptr>;
 

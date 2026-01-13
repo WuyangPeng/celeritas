@@ -3,6 +3,7 @@
 #include "database/generated/mongo/test/mongo_test.h"
 #include "config/basic/database_type.h"
 #include "config/aggregate/detail/database_config_reader.h"
+#include "database/pool/database_pool_manager.h"
 
 #include <boost/asio.hpp>
 #include <boost/asio/co_spawn.hpp>
@@ -10,25 +11,22 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/filesystem.hpp>
 #include <iostream>
-#include <mongocxx/instance.hpp>
 
 // Global fixture for mongocxx initialization and cleanup
-struct MongoGlobalFixture
+struct mongo_global_fixture
 {
-    MongoGlobalFixture()
+    mongo_global_fixture()
     {
-        // The constructor of mongocxx::instance calls mongoc_init().
+        celeritas::database_pool_manager::create_mongo_instance();
     }
 
-    ~MongoGlobalFixture()
+    ~mongo_global_fixture()
     {
         // The destructor of mongocxx::instance calls mongoc_cleanup().
     }
-
-    mongocxx::instance instance{};
 };
 
-BOOST_GLOBAL_FIXTURE(MongoGlobalFixture);
+BOOST_GLOBAL_FIXTURE(mongo_global_fixture);
 
 using namespace celeritas;
 
@@ -37,6 +35,7 @@ struct mongo_database_session_fixture
     boost::asio::io_context io_context;
     std::shared_ptr<mongo_database_session> session;
     std::shared_ptr<const database_config> config;
+    bool test_end;
 
     mongo_database_session_fixture()
     {
@@ -86,6 +85,11 @@ struct mongo_database_session_fixture
             BOOST_TEST_MESSAGE("Failed to load database config: " << e.what());
             // Allow tests to proceed, they will likely fail on session creation or connect.
         }
+    }
+
+    ~mongo_database_session_fixture()
+    {
+        BOOST_CHECK(test_end);
     }
 
     void run(std::function<boost::asio::awaitable<void>()> func)
@@ -204,6 +208,8 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, mongo_database_session_fi
 
                 result_opt = co_await session->select_one(select_change, mongo_test::get_database_field_container());
                 BOOST_CHECK(!result_opt.has_value());
+
+                test_end = true;
             }
             catch (const std::exception& e)
             {

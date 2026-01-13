@@ -109,6 +109,11 @@ void celeritas::database_pool_manager::set_mock_pool(const database_pool_shared_
     mock_pool_ = mock_pool;
 }
 
+void celeritas::database_pool_manager::create_mongo_instance()
+{
+    static auto mongo_instance = std::make_unique<mongocxx::instance>();
+}
+
 celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_mysql_pool(const std::string& name,
                                                                                                                const any_io_executor& any_io_executor,
                                                                                                                const std::string& host,
@@ -138,7 +143,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
                                                                                                                const int min_connections,
                                                                                                                const int max_connections)
 {
-    static auto mongo_instance = std::make_unique<mongocxx::instance>();
+    create_mongo_instance();
 
     const auto url = "mongodb://" + user + ":" + password + "@" + host + ":" + std::to_string(port) + "/" + db_name;
 
