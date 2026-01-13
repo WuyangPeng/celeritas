@@ -12,22 +12,6 @@
 #include <boost/filesystem.hpp>
 #include <iostream>
 
-// Global fixture for mongocxx initialization and cleanup
-struct mongo_global_fixture
-{
-    mongo_global_fixture()
-    {
-        celeritas::database_pool_manager::create_mongo_instance();
-    }
-
-    ~mongo_global_fixture()
-    {
-        // The destructor of mongocxx::instance calls mongoc_cleanup().
-    }
-};
-
-BOOST_GLOBAL_FIXTURE(mongo_global_fixture);
-
 using namespace celeritas;
 
 struct mongo_database_session_fixture
@@ -39,6 +23,7 @@ struct mongo_database_session_fixture
 
     mongo_database_session_fixture()
     {
+        celeritas::database_pool_manager::create_mongo_instance();
         try
         {
             boost::filesystem::path config_path = boost::filesystem::current_path();
