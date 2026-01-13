@@ -74,7 +74,7 @@ struct mongo_database_session_fixture
 
     ~mongo_database_session_fixture()
     {
-        BOOST_CHECK(test_end);
+
     }
 
     void run(std::function<boost::asio::awaitable<void>()> func)
@@ -87,6 +87,7 @@ struct mongo_database_session_fixture
         boost::asio::co_spawn(io_context, func, boost::asio::detached);
         io_context.run();
         io_context.restart();
+        BOOST_CHECK(test_end);
     }
 };
 
