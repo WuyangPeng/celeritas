@@ -21,7 +21,6 @@ celeritas::mysql_test::mysql_test(const database_entity_change& entity)
       category_index_{ entity.get_value<database_data_type::int32_array_type>(category_index_describe) },
       related_index_{ entity.get_value<database_data_type::int64_array_type>(related_index_describe) },
       ratios_{ entity.get_value<database_data_type::double_array_type>(ratios_describe) },
-      attachment_{ entity.get_value<database_data_type::byte_array_type>(attachment_describe) },
       properties_{ entity.get_value<database_data_type::document_type>(properties_describe) },
       logs_{ entity.get_value<database_data_type::document_array_type>(logs_describe) }
 {
@@ -40,7 +39,6 @@ celeritas::mysql_test::mysql_test(const database_type database_type, const datab
       category_index_{ entity.get_value<database_data_type::int32_array_type>(category_index_describe) },
       related_index_{ entity.get_value<database_data_type::int64_array_type>(related_index_describe) },
       ratios_{ entity.get_value<database_data_type::double_array_type>(ratios_describe) },
-      attachment_{ entity.get_value<database_data_type::byte_array_type>(attachment_describe) },
       properties_{ entity.get_value<database_data_type::document_type>(properties_describe) },
       logs_{ entity.get_value<database_data_type::document_array_type>(logs_describe) }
 {
@@ -57,7 +55,6 @@ celeritas::mysql_test::mysql_test(const database_type database_type, const datab
         add_modify(category_index_describe, get_category_index());
         add_modify(related_index_describe, get_related_index());
         add_modify(ratios_describe, get_ratios());
-        add_modify(attachment_describe, get_attachment());
         add_modify(properties_describe, get_properties());
         add_modify(logs_describe, get_logs());
     }
@@ -76,7 +73,6 @@ celeritas::mysql_test::mysql_test(const database_type database_type, traits::par
       category_index_{ traits::int32_array_type{} },
       related_index_{ traits::int64_array_type{} },
       ratios_{ traits::double_array_type{} },
-      attachment_{ traits::byte_array_type{} },
       properties_{ traits::document_type{} },
       logs_{ traits::document_array_type{} }
 {
@@ -136,11 +132,6 @@ celeritas::traits::int64_array_type celeritas::mysql_test::get_related_index() c
 celeritas::traits::double_array_type celeritas::mysql_test::get_ratios() const
 {
     return ratios_.get_value();
-}
-
-celeritas::traits::byte_array_type celeritas::mysql_test::get_attachment() const
-{
-    return attachment_.get_value();
 }
 
 celeritas::traits::document_type celeritas::mysql_test::get_properties() const
@@ -260,16 +251,6 @@ void celeritas::mysql_test::set_ratios(traits::param_type::double_array_type rat
         ratios_.set_value(ratios);
 
         add_modify(ratios_describe, get_ratios());
-    }
-}
-
-void celeritas::mysql_test::set_attachment(traits::param_type::byte_array_type attachment)
-{
-    if (attachment != get_attachment())
-    {
-        attachment_.set_value(attachment);
-
-        add_modify(attachment_describe, get_attachment());
     }
 }
 
@@ -395,28 +376,6 @@ void celeritas::mysql_test::remove_ratios(const int index)
     add_modify(ratios_describe, get_ratios());
 }
 
-void celeritas::mysql_test::set_attachment(const int index, traits::param_type::byte_array_element_type attachment)
-{
-    if (attachment_.set_value(index, attachment))
-    {
-        add_modify(attachment_describe, get_attachment());
-    }
-}
-
-void celeritas::mysql_test::add_attachment(traits::param_type::byte_array_element_type attachment)
-{
-    attachment_.add_value(attachment);
-
-    add_modify(attachment_describe, get_attachment());
-}
-
-void celeritas::mysql_test::remove_attachment(const int index)
-{
-    attachment_.remove_value(index);
-
-    add_modify(attachment_describe, get_attachment());
-}
-
 void celeritas::mysql_test::set_logs(const int index, traits::param_type::document_array_element_type logs)
 {
     if (logs_.set_value(index, logs))
@@ -452,7 +411,6 @@ const celeritas::database_entity::database_field_container& celeritas::mysql_tes
                                                                 decltype(category_index_)::get_database_field(),
                                                                 decltype(related_index_)::get_database_field(),
                                                                 decltype(ratios_)::get_database_field(),
-                                                                decltype(attachment_)::get_database_field(),
                                                                 decltype(properties_)::get_database_field(),
                                                                 decltype(logs_)::get_database_field() };
 

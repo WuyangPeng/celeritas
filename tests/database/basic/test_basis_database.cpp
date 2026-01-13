@@ -236,15 +236,6 @@ BOOST_AUTO_TEST_SUITE(basis_database_suite)
         BOOST_CHECK(!db_null.has_value<celeritas::database_data_type::string_type>());
     }
 
-    BOOST_AUTO_TEST_CASE(test_basis_database_get_sql_field_string)
-    {
-        const celeritas::basis_database db_string{ "name", "test" };
-        BOOST_CHECK_EQUAL(db_string.get_sql_field_string(), "`test`");
-
-        const celeritas::basis_database db_int{ "age", 30 };
-        BOOST_CHECK_EQUAL(db_int.get_sql_field_string(), "`age`");
-    }
-
     BOOST_AUTO_TEST_CASE(test_get_sql_value_string)
     {
         const celeritas::basis_database db_string{ "name", "test" };

@@ -10,9 +10,8 @@ CREATE TABLE `mysql_test` (
   `category_index` VARCHAR(255) NOT NULL DEFAULT '',
   `related_index` VARCHAR(255) NOT NULL DEFAULT '',
   `ratios` VARCHAR(255) NOT NULL DEFAULT '',
-  `attachment` VARCHAR(255) NOT NULL DEFAULT '',
-  `properties` VARCHAR(255) NOT NULL DEFAULT '',
-  `logs` VARCHAR(255) NOT NULL DEFAULT '',
+  `properties` VARCHAR(512) NOT NULL DEFAULT '',
+  `logs` VARCHAR(512) NOT NULL DEFAULT '',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

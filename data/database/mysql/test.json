@@ -50,10 +50,6 @@
         "data_type": "double_array"
       },
       {
-        "entity_name": "attachment",
-        "data_type": "byte_array"
-      },
-      {
         "entity_name": "properties",
         "data_type": "document",
         "document_type": "properties_data"

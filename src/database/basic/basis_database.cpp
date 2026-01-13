@@ -89,16 +89,6 @@ const celeritas::basis_database::value_variant& celeritas::basis_database::get_v
     return value_;
 }
 
-std::string celeritas::basis_database::get_sql_field_string() const
-{
-    if (data_type_ == database_data_type::string_type)
-    {
-        return "`" + get_value<database_data_type::string_type>() + "`";
-    }
-
-    return get_string();
-}
-
 std::string celeritas::basis_database::get_string() const
 {
     return std::visit(overloaded{
@@ -164,7 +154,7 @@ std::string celeritas::basis_database::get_sql_value_string() const
         data_type_ == database_data_type::document_type ||
         data_type_ == database_data_type::document_array_type)
     {
-        return "'" + get_value<database_data_type::string_type>() + "'";
+        return "'" + get_string() + "'";
     }
 
     return get_string();

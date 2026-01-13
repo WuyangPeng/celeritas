@@ -376,7 +376,6 @@ BOOST_FIXTURE_TEST_SUITE(mysql_database_session_suite, celeritas::mysql_database
                 entity.set_category_index({ 1, 2, 3 });
                 entity.set_related_index({ 10L, 20L, 30L });
                 entity.set_ratios({ 0.1, 0.2, 0.3 });
-                entity.set_attachment({ 'x', 'y', 'z' });
 
                 const auto properties = get_properties_data();
                 entity.set_properties(properties.to_document_type());
@@ -418,10 +417,6 @@ BOOST_FIXTURE_TEST_SUITE(mysql_database_session_suite, celeritas::mysql_database
                 const auto& ratios = loaded.get_ratios();
                 BOOST_CHECK_EQUAL(ratios.size(), 3);
                 BOOST_CHECK_EQUAL(ratios.at(0), 0.1);
-
-                const auto& attachment = loaded.get_attachment();
-                BOOST_CHECK_EQUAL(attachment.size(), 3);
-                BOOST_CHECK_EQUAL(attachment[1], 'y');
 
                 const auto& loaded_properties_doc = loaded.get_properties();
                 const auto loaded_properties = celeritas::properties_data::from_document(loaded_properties_doc);

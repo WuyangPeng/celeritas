@@ -43,8 +43,6 @@ namespace celeritas
 
         [[nodiscard]] traits::double_array_type get_ratios() const;
 
-        [[nodiscard]] traits::byte_array_type get_attachment() const;
-
         [[nodiscard]] traits::document_type get_properties() const;
 
         [[nodiscard]] traits::document_array_type get_logs() const;
@@ -70,8 +68,6 @@ namespace celeritas
         void set_related_index(traits::param_type::int64_array_type related_index);
 
         void set_ratios(traits::param_type::double_array_type ratios);
-
-        void set_attachment(traits::param_type::byte_array_type attachment);
 
         void set_properties(traits::param_type::document_type properties);
 
@@ -105,12 +101,6 @@ namespace celeritas
 
         void remove_ratios(int index);
 
-        void set_attachment(int index, traits::param_type::byte_array_element_type attachment);
-
-        void add_attachment(traits::param_type::byte_array_element_type attachment);
-
-        void remove_attachment(int index);
-
         void set_logs(int index, traits::param_type::document_array_element_type logs);
 
         void add_logs(traits::param_type::document_array_element_type logs);
@@ -138,7 +128,6 @@ namespace celeritas
         static constexpr std::string_view category_index_describe{ "category_index" };
         static constexpr std::string_view related_index_describe{ "related_index" };
         static constexpr std::string_view ratios_describe{ "ratios" };
-        static constexpr std::string_view attachment_describe{ "attachment" };
         static constexpr std::string_view properties_describe{ "properties" };
         static constexpr std::string_view logs_describe{ "logs" };
 
@@ -156,7 +145,6 @@ namespace celeritas
         entity<category_index_describe, database_data_type::int32_array_type> category_index_;
         entity<related_index_describe, database_data_type::int64_array_type> related_index_;
         entity<ratios_describe, database_data_type::double_array_type> ratios_;
-        entity<attachment_describe, database_data_type::byte_array_type> attachment_;
         entity<properties_describe, database_data_type::document_type> properties_;
         entity<logs_describe, database_data_type::document_array_type> logs_;
     };

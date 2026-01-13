@@ -59,14 +59,19 @@ std::string celeritas::generate_mysql_file::get_mysql_data_type(const std::strin
         return "TINYINT(1)";
     }
 
-    if (data_type == "binary")
+    if (data_type == "byte_array")
     {
         return "BLOB";
     }
 
     if (data_type == "document")
     {
-        return "VARCHAR(255)";
+        return "VARCHAR(512)";
+    }
+
+    if (data_type == "document_array")
+    {
+        return "VARCHAR(512)";
     }
 
     if (data_type.find("array") != std::string::npos)
@@ -210,7 +215,7 @@ std::string celeritas::generate_mysql_file::get_mysql_statement(const json_value
             composite_unique_indexes.emplace_back(entity_name);
         }
 
-        if (data_type != "binary" && index_type != "key" && index_type != "unique_index" && index_type != "composite_unique_index" && index_type != "composite_unique_key_and_index")
+        if (data_type != "byte_array" && index_type != "key" && index_type != "unique_index" && index_type != "composite_unique_index" && index_type != "composite_unique_key_and_index")
         {
             sql_output << " DEFAULT " << get_mysql_default_type(data_type, default_value);
         }

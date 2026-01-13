@@ -86,8 +86,6 @@ namespace celeritas
 
         [[nodiscard]] const value_variant& get_variant_value() const;
 
-        [[nodiscard]] std::string get_sql_field_string() const;
-
         [[nodiscard]] std::string get_string() const;
 
         [[nodiscard]] std::string get_quotation_mark_string() const;
