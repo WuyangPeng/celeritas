@@ -125,17 +125,18 @@ namespace
 
     [[nodiscard]] celeritas::logs_data get_logs_data()
     {
-        celeritas::logs_data log_data{ 123456789LL };
-        log_data.set_string_val("log_string");
-        log_data.set_string_array_val({ "l1", "l2" });
-        log_data.set_int32_val(321);
-        log_data.set_int32_count_val(654);
-        log_data.set_int32_array_val({ 3, 4 });
-        log_data.set_int64_count_val(987LL);
-        log_data.set_int64_array_val({ 30LL, 40LL });
-        log_data.set_double_val(3.21);
-        log_data.set_double_array_val({ 3.3, 4.4 });
-        log_data.set_bool_val(false);
+        celeritas::logs_data log_data{};
+        log_data.set_int64_value(123456789LL);
+        log_data.set_string_value("log_string");
+        log_data.set_string_array_value({ "l1", "l2" });
+        log_data.set_int32_value(321);
+        log_data.set_int32_count_value(654);
+        log_data.set_int32_array_value({ 3, 4 });
+        log_data.set_int64_count_value(987LL);
+        log_data.set_int64_array_value({ 30LL, 40LL });
+        log_data.set_double_value(3.21);
+        log_data.set_double_array_value({ 3.3, 4.4 });
+        log_data.set_bool_value(false);
         return log_data;
     }
 }
@@ -413,21 +414,21 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                 const auto& loaded_logs_doc = loaded.get_logs();
                 BOOST_REQUIRE_EQUAL(loaded_logs_doc.size(), 1);
                 const auto loaded_log = celeritas::logs_data::from_document(loaded_logs_doc.at(0));
-                BOOST_CHECK_EQUAL(loaded_log.get_expire_time(), 123456789L);
-                BOOST_CHECK_EQUAL(loaded_log.get_string_val(), "log_string");
-                BOOST_CHECK_EQUAL(loaded_log.get_string_array_val().size(), 2);
-                BOOST_CHECK_EQUAL(loaded_log.get_string_array_val().at(0), "l1");
-                BOOST_CHECK_EQUAL(loaded_log.get_int32_val(), 321);
-                BOOST_CHECK_EQUAL(loaded_log.get_int32_count_val(), 654);
-                BOOST_CHECK_EQUAL(loaded_log.get_int32_array_val().size(), 2);
-                BOOST_CHECK_EQUAL(loaded_log.get_int32_array_val().at(0), 3);
-                BOOST_CHECK_EQUAL(loaded_log.get_int64_count_val(), 987LL);
-                BOOST_CHECK_EQUAL(loaded_log.get_int64_array_val().size(), 2);
-                BOOST_CHECK_EQUAL(loaded_log.get_int64_array_val().at(0), 30LL);
-                BOOST_CHECK_EQUAL(loaded_log.get_double_val(), 3.21);
-                BOOST_CHECK_EQUAL(loaded_log.get_double_array_val().size(), 2);
-                BOOST_CHECK_EQUAL(loaded_log.get_double_array_val().at(0), 3.3);
-                BOOST_CHECK_EQUAL(loaded_log.get_bool_val(), false);
+                BOOST_CHECK_EQUAL(loaded_log.get_int64_value(), 123456789L);
+                BOOST_CHECK_EQUAL(loaded_log.get_string_value(), "log_string");
+                BOOST_CHECK_EQUAL(loaded_log.get_string_array_value().size(), 2);
+                BOOST_CHECK_EQUAL(loaded_log.get_string_array_value().at(0), "l1");
+                BOOST_CHECK_EQUAL(loaded_log.get_int32_value(), 321);
+                BOOST_CHECK_EQUAL(loaded_log.get_int32_count_value(), 654);
+                BOOST_CHECK_EQUAL(loaded_log.get_int32_array_value().size(), 2);
+                BOOST_CHECK_EQUAL(loaded_log.get_int32_array_value().at(0), 3);
+                BOOST_CHECK_EQUAL(loaded_log.get_int64_count_value(), 987LL);
+                BOOST_CHECK_EQUAL(loaded_log.get_int64_array_value().size(), 2);
+                BOOST_CHECK_EQUAL(loaded_log.get_int64_array_value().at(0), 30LL);
+                BOOST_CHECK_EQUAL(loaded_log.get_double_value(), 3.21);
+                BOOST_CHECK_EQUAL(loaded_log.get_double_array_value().size(), 2);
+                BOOST_CHECK_EQUAL(loaded_log.get_double_array_value().at(0), 3.3);
+                BOOST_CHECK_EQUAL(loaded_log.get_bool_value(), false);
 
                 co_await test_delete(*this, entity);
                 set_test_end(true);

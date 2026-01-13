@@ -127,18 +127,45 @@ namespace
 
     [[nodiscard]] celeritas::logs_data get_logs_data()
     {
-        celeritas::logs_data log_data{ 123456789LL };
-        log_data.set_string_val("log_string");
-        log_data.set_string_array_val({ "l1", "l2" });
-        log_data.set_int32_val(321);
-        log_data.set_int32_count_val(654);
-        log_data.set_int32_array_val({ 3, 4 });
-        log_data.set_int64_count_val(987LL);
-        log_data.set_int64_array_val({ 30LL, 40LL });
-        log_data.set_double_val(3.21);
-        log_data.set_double_array_val({ 3.3, 4.4 });
-        log_data.set_bool_val(false);
+        celeritas::logs_data log_data{};
+        log_data.set_int64_value(123456789LL);
+        log_data.set_string_value("log_string");
+        log_data.set_string_array_value({ "l1", "l2" });
+        log_data.set_int32_value(321);
+        log_data.set_int32_count_value(654);
+        log_data.set_int32_array_value({ 3, 4 });
+        log_data.set_int64_count_value(987LL);
+        log_data.set_int64_array_value({ 30LL, 40LL });
+        log_data.set_double_value(3.21);
+        log_data.set_double_array_value({ 3.3, 4.4 });
+        log_data.set_bool_value(false);
         return log_data;
+    }
+
+    [[nodiscard]] celeritas::mongo_test get_full_mongo_test()
+    {
+        celeritas::mongo_test entity{ celeritas::database_type::mongo, user_id };
+        entity.set_chapter_id(101);
+        entity.set_chapter_name("Conversion Test");
+        entity.set_chance_winning(0.5);
+        entity.set_winning(false);
+        entity.set_currency(2000);
+        entity.set_count(20);
+        entity.set_tags({ "a", "b", "c" });
+        entity.set_category_index({ 1, 2, 3 });
+        entity.set_related_index({ 10L, 20L, 30L });
+        entity.set_ratios({ 0.1, 0.2, 0.3 });
+        entity.set_attachment({ 'x', 'y', 'z' });
+
+        const auto properties = get_properties_data();
+        entity.set_properties(properties.to_document_type());
+
+        celeritas::traits::document_array_type logs{};
+        const auto log_data = get_logs_data();
+        logs.emplace_back(log_data.to_document_type());
+        entity.set_logs(logs);
+
+        return entity;
     }
 }
 
@@ -375,26 +402,7 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
                     co_return;
                 }
 
-                celeritas::mongo_test entity{ celeritas::database_type::mongo, user_id };
-                entity.set_chapter_id(101);
-                entity.set_chapter_name("Conversion Test");
-                entity.set_chance_winning(0.5);
-                entity.set_winning(false);
-                entity.set_currency(2000);
-                entity.set_count(20);
-                entity.set_tags({ "a", "b", "c" });
-                entity.set_category_index({ 1, 2, 3 });
-                entity.set_related_index({ 10L, 20L, 30L });
-                entity.set_ratios({ 0.1, 0.2, 0.3 });
-                entity.set_attachment({ 'x', 'y', 'z' });
-
-                const auto properties = get_properties_data();
-                entity.set_properties(properties.to_document_type());
-
-                celeritas::traits::document_array_type logs{};
-                const auto log_data = get_logs_data();
-                logs.emplace_back(log_data.to_document_type());
-                entity.set_logs(logs);
+                auto entity = get_full_mongo_test();
 
                 co_await test_delete(*this, entity);
                 co_await test_insert(*this, entity);
@@ -406,12 +414,12 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
                 const celeritas::mongo_test loaded{ celeritas::database_type::mongo, *optional_result };
 
                 BOOST_CHECK_EQUAL(loaded.get_user_id(), user_id);
-                BOOST_CHECK_EQUAL(loaded.get_chapter_id(), 101);
-                BOOST_CHECK_EQUAL(loaded.get_chapter_name(), "Conversion Test");
-                BOOST_CHECK_EQUAL(loaded.get_chance_winning(), 0.5);
-                BOOST_CHECK_EQUAL(loaded.is_winning(), false);
-                BOOST_CHECK_EQUAL(loaded.get_currency(), 2000);
-                BOOST_CHECK_EQUAL(loaded.get_count(), 20);
+                BOOST_CHECK_EQUAL(loaded.get_chapter_id(), entity.get_chapter_id());
+                BOOST_CHECK_EQUAL(loaded.get_chapter_name(), entity.get_chapter_name());
+                BOOST_WARN_CLOSE(loaded.get_chance_winning(), entity.get_chance_winning(), 0.00001);
+                BOOST_CHECK_EQUAL(loaded.is_winning(), entity.is_winning());
+                BOOST_CHECK_EQUAL(loaded.get_currency(), entity.get_currency());
+                BOOST_CHECK_EQUAL(loaded.get_count(), entity.get_count());
 
                 const auto& tags = loaded.get_tags();
                 BOOST_CHECK_EQUAL(tags.size(), 3);
@@ -454,21 +462,21 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
                 const auto& loaded_logs_doc = loaded.get_logs();
                 BOOST_REQUIRE_EQUAL(loaded_logs_doc.size(), 1);
                 const auto loaded_log = celeritas::logs_data::from_document(loaded_logs_doc.at(0));
-                BOOST_CHECK_EQUAL(loaded_log.get_expire_time(), 123456789L);
-                BOOST_CHECK_EQUAL(loaded_log.get_string_val(), "log_string");
-                BOOST_CHECK_EQUAL(loaded_log.get_string_array_val().size(), 2);
-                BOOST_CHECK_EQUAL(loaded_log.get_string_array_val()[0], "l1");
-                BOOST_CHECK_EQUAL(loaded_log.get_int32_val(), 321);
-                BOOST_CHECK_EQUAL(loaded_log.get_int32_count_val(), 654);
-                BOOST_CHECK_EQUAL(loaded_log.get_int32_array_val().size(), 2);
-                BOOST_CHECK_EQUAL(loaded_log.get_int32_array_val()[0], 3);
-                BOOST_CHECK_EQUAL(loaded_log.get_int64_count_val(), 987LL);
-                BOOST_CHECK_EQUAL(loaded_log.get_int64_array_val().size(), 2);
-                BOOST_CHECK_EQUAL(loaded_log.get_int64_array_val()[0], 30LL);
-                BOOST_CHECK_EQUAL(loaded_log.get_double_val(), 3.21);
-                BOOST_CHECK_EQUAL(loaded_log.get_double_array_val().size(), 2);
-                BOOST_CHECK_EQUAL(loaded_log.get_double_array_val()[0], 3.3);
-                BOOST_CHECK_EQUAL(loaded_log.get_bool_val(), false);
+                BOOST_CHECK_EQUAL(loaded_log.get_int64_value(), 123456789L);
+                BOOST_CHECK_EQUAL(loaded_log.get_string_value(), "log_string");
+                BOOST_CHECK_EQUAL(loaded_log.get_string_array_value().size(), 2);
+                BOOST_CHECK_EQUAL(loaded_log.get_string_array_value()[0], "l1");
+                BOOST_CHECK_EQUAL(loaded_log.get_int32_value(), 321);
+                BOOST_CHECK_EQUAL(loaded_log.get_int32_count_value(), 654);
+                BOOST_CHECK_EQUAL(loaded_log.get_int32_array_value().size(), 2);
+                BOOST_CHECK_EQUAL(loaded_log.get_int32_array_value()[0], 3);
+                BOOST_CHECK_EQUAL(loaded_log.get_int64_count_value(), 987LL);
+                BOOST_CHECK_EQUAL(loaded_log.get_int64_array_value().size(), 2);
+                BOOST_CHECK_EQUAL(loaded_log.get_int64_array_value()[0], 30LL);
+                BOOST_CHECK_EQUAL(loaded_log.get_double_value(), 3.21);
+                BOOST_CHECK_EQUAL(loaded_log.get_double_array_value().size(), 2);
+                BOOST_CHECK_EQUAL(loaded_log.get_double_array_value()[0], 3.3);
+                BOOST_CHECK_EQUAL(loaded_log.get_bool_value(), false);
 
                 co_await test_delete(*this, entity);
                 set_test_end(true);

@@ -76,11 +76,11 @@ void celeritas::redis_database_session_fixture::init_config()
     const auto current_path = boost::filesystem::current_path() / "config/tests/databases.xml";
 
     for (const auto configs = database_config_reader::load_config(current_path.string());
-         const auto& cfg : *configs)
+         const auto& config : *configs)
     {
-        if (cfg->get_database_type() == database_type::redis)
+        if (config->get_database_type() == database_type::redis)
         {
-            config_ = cfg;
+            config_ = config;
             break;
         }
     }
