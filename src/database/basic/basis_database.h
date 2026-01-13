@@ -92,6 +92,8 @@ namespace celeritas
 
         [[nodiscard]] std::string get_quotation_mark_string() const;
 
+        [[nodiscard]] std::string get_sql_value_string() const;
+
     private:
         basis_database(std::string_view field_name, database_data_type dataType, value_variant value);
 

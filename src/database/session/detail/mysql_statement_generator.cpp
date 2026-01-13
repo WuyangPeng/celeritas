@@ -18,7 +18,7 @@ std::string celeritas::mysql_statement_generator::generate_insert_statement(cons
     result += ") VALUES(";
 
     result += join_container(container, " , ", "", [](const auto& value) {
-        return value.get_quotation_mark_string();
+        return value.get_sql_value_string();
     });
 
     result += ");";
@@ -37,7 +37,7 @@ std::string celeritas::mysql_statement_generator::generate_update_statement(cons
     const auto container = *database->get_database();
 
     result += join_container(container, " , ", "", [](const auto& value) {
-        return "`"s + value.get_field_name() + "` = " + value.get_quotation_mark_string();
+        return "`"s + value.get_field_name() + "` = " + value.get_sql_value_string();
     });
 
     result += " WHERE ";
@@ -45,7 +45,7 @@ std::string celeritas::mysql_statement_generator::generate_update_statement(cons
     const auto& key = *database->get_key();
 
     result += join_container(key, " AND ", "", [](const auto& value) {
-        return "`"s + value.get_field_name() + "` = " + value.get_quotation_mark_string();
+        return "`"s + value.get_field_name() + "` = " + value.get_sql_value_string();
     });
 
     result += " LIMIT 1;";
@@ -67,7 +67,7 @@ std::string celeritas::mysql_statement_generator::generate_delete_statement(cons
     }
 
     result += join_container(key, " AND ", "", [](const auto& value) {
-        return "`"s + value.get_field_name() + "` = " + value.get_quotation_mark_string();
+        return "`"s + value.get_field_name() + "` = " + value.get_sql_value_string();
     });
 
     result += " LIMIT 1;";
@@ -100,7 +100,7 @@ std::string celeritas::mysql_statement_generator::generate_select_statement(cons
     }
 
     result += join_container(key, " AND ", "", [](const auto& value) {
-        return "`"s + value.get_field_name() + "` = " + value.get_quotation_mark_string();
+        return "`"s + value.get_field_name() + "` = " + value.get_sql_value_string();
     });
 
     return result;

@@ -154,6 +154,26 @@ std::string celeritas::basis_database::get_quotation_mark_string() const
     return get_string();
 }
 
+std::string celeritas::basis_database::get_sql_value_string() const
+{
+    if (data_type_ == database_data_type::string_type)
+    {
+        return "\"" + get_value<database_data_type::string_type>() + "\"";
+    }
+
+    if (data_type_ == database_data_type::string_array_type ||
+        data_type_ == database_data_type::int32_array_type ||
+        data_type_ == database_data_type::int64_array_type ||
+        data_type_ == database_data_type::double_array_type ||
+        data_type_ == database_data_type::document_type ||
+        data_type_ == database_data_type::document_array_type)
+    {
+        return "'" + get_value<database_data_type::string_type>() + "'";
+    }
+
+    return get_string();
+}
+
 celeritas::basis_database::basis_database(const std::string_view field_name, const database_data_type dataType, value_variant value)
     : field_name_{ field_name }, data_type_{ dataType }, value_{ std::move(value) }
 {
