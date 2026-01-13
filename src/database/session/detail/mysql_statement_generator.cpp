@@ -40,7 +40,7 @@ std::string celeritas::mysql_statement_generator::generate_update_statement(cons
         return "`"s + value.get_field_name().data() + "` = " + value.get_sql_field_string();
     });
 
-    result += "WHERE ";
+    result += " WHERE ";
 
     const auto& key = *database->get_key();
 
