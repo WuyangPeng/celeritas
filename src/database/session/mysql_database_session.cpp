@@ -111,7 +111,11 @@ celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database
 
         case database_change_type::update_type:
         {
-            co_await async_query(mysql_statement_generator::generate_update_statement(database));
+            if (database->is_modify())
+            {
+                co_await async_query(mysql_statement_generator::generate_update_statement(database));
+            }
+
             co_return;
         }
         case database_change_type::insert_type:
