@@ -108,6 +108,38 @@ namespace
 
         return entity;
     }
+
+    [[nodiscard]] celeritas::properties_data get_properties_data()
+    {
+        celeritas::properties_data properties{ 987654321LL };
+        properties.set_string_val("prop_string");
+        properties.set_string_array_val({ "p1", "p2" });
+        properties.set_int32_val(123);
+        properties.set_int32_count_val(456);
+        properties.set_int32_array_val({ 1, 2 });
+        properties.set_int64_count_val(789LL);
+        properties.set_int64_array_val({ 10LL, 20LL });
+        properties.set_double_val(1.23);
+        properties.set_double_array_val({ 1.1, 2.2 });
+        properties.set_bool_val(true);
+        return properties;
+    }
+
+    [[nodiscard]] celeritas::logs_data get_logs_data()
+    {
+        celeritas::logs_data log_data{ 123456789LL };
+        log_data.set_string_val("log_string");
+        log_data.set_string_array_val({ "l1", "l2" });
+        log_data.set_int32_val(321);
+        log_data.set_int32_count_val(654);
+        log_data.set_int32_array_val({ 3, 4 });
+        log_data.set_int64_count_val(987LL);
+        log_data.set_int64_array_val({ 30LL, 40LL });
+        log_data.set_double_val(3.21);
+        log_data.set_double_array_val({ 3.3, 4.4 });
+        log_data.set_bool_val(false);
+        return log_data;
+    }
 }
 
 BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database_session_fixture)
@@ -356,31 +388,11 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
                 entity.set_ratios({ 0.1, 0.2, 0.3 });
                 entity.set_attachment({ 'x', 'y', 'z' });
 
-                celeritas::properties_data properties{ 987654321LL };
-                properties.set_string_val("prop_string");
-                properties.set_string_array_val({ "p1", "p2" });
-                properties.set_int32_val(123);
-                properties.set_int32_count_val(456);
-                properties.set_int32_array_val({ 1, 2 });
-                properties.set_int64_count_val(789LL);
-                properties.set_int64_array_val({ 10LL, 20LL });
-                properties.set_double_val(1.23);
-                properties.set_double_array_val({ 1.1, 2.2 });
-                properties.set_bool_val(true);
+                const auto properties = get_properties_data();
                 entity.set_properties(properties.to_document_type());
 
                 celeritas::traits::document_array_type logs{};
-                celeritas::logs_data log_data{ 123456789LL };
-                log_data.set_string_val("log_string");
-                log_data.set_string_array_val({ "l1", "l2" });
-                log_data.set_int32_val(321);
-                log_data.set_int32_count_val(654);
-                log_data.set_int32_array_val({ 3, 4 });
-                log_data.set_int64_count_val(987LL);
-                log_data.set_int64_array_val({ 30LL, 40LL });
-                log_data.set_double_val(3.21);
-                log_data.set_double_array_val({ 3.3, 4.4 });
-                log_data.set_bool_val(false);
+                const auto log_data = get_logs_data();
                 logs.emplace_back(log_data.to_document_type());
                 entity.set_logs(logs);
 
