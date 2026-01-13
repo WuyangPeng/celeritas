@@ -1,101 +1,111 @@
-﻿#include "database/basic/database_entity_change.h"
-#include "database/session/mongo_database_session.h"
+﻿#include "config/basic/database_type.h"
+#include "database/basic/database_entity_change.tpp"
 #include "database/generated/mongo/test/mongo_test.h"
-#include "config/basic/database_type.h"
-#include "config/aggregate/detail/database_config_reader.h"
-#include "database/pool/database_pool_manager.h"
+#include "database/session/mongo_database_session.h"
+#include "fixture/mongo_database_session_fixture.h"
 
 #include <boost/asio.hpp>
-#include <boost/asio/co_spawn.hpp>
-#include <boost/asio/detached.hpp>
 #include <boost/test/unit_test.hpp>
-#include <boost/filesystem.hpp>
-#include <iostream>
 
-using namespace celeritas;
-
-struct mongo_database_session_fixture
+namespace
 {
-    boost::asio::io_context io_context;
-    std::shared_ptr<mongo_database_session> session;
-    std::shared_ptr<const database_config> config;
-    bool test_end = false;
+    constexpr auto user_id = 123456789;
 
-    mongo_database_session_fixture()
+    [[nodiscard]] boost::asio::awaitable<void> test_insert(const celeritas::mongo_database_session_fixture& fixture, celeritas::mongo_test& entity)
     {
-        celeritas::database_pool_manager::create_mongo_instance();
-        try
-        {
-            boost::filesystem::path config_path = boost::filesystem::current_path();
-            while (!boost::filesystem::exists(config_path / "config"))
-            {
-                config_path = config_path.parent_path();
-                if (config_path.empty() || !boost::filesystem::exists(config_path))
-                {
-                    throw std::runtime_error("Could not find project root containing 'config' directory.");
-                }
-            }
-            config_path /= "config/tests/databases.xml";
+        const auto session = fixture.get_session();
+        const auto config = fixture.get_config();
 
-            auto configs = database_config_reader::load_config(config_path.string());
-            for (const auto& cfg : *configs)
-            {
-                if (cfg->get_database_type() == database_type::mongo)
-                {
-                    config = cfg;
-                    break;
-                }
-            }
-
-            if (!config)
-            {
-                throw std::runtime_error("Mongo config not found in " + config_path.string());
-            }
-
-            std::string uri = "mongodb://" + config->get_user() + ":" + config->get_password() + "@" + config->get_host() + ":" + std::to_string(config->get_port()) + "/" + config->get_db_name();
-
-            session = std::make_shared<mongo_database_session>(
-                config->get_host(),
-                config->get_port(),
-                config->get_user(),
-                config->get_password(),
-                uri,
-                config->get_db_name(),
-                config->get_expire_seconds(),
-                io_context.get_executor()
-                );
-        }
-        catch (const std::exception& e)
-        {
-            BOOST_TEST_MESSAGE("Failed to load database config: " << e.what());
-            // Allow tests to proceed, they will likely fail on session creation or connect.
-        }
+        co_await session->execute_changes(entity.get_modify(), config->get_expire_seconds());
+        entity.clear_modify();
     }
 
-    ~mongo_database_session_fixture()
+    [[nodiscard]] boost::asio::awaitable<void> test_select_one(const celeritas::mongo_database_session_fixture& fixture, const std::string& expected_chapter_name, const int64_t expected_currency)
     {
+        const auto session = fixture.get_session();
+        const auto select_change = celeritas::mongo_test::get_select(celeritas::database_type::mongo, user_id);
+        const auto optional_result = co_await session->select_one(select_change, celeritas::mongo_test::get_database_field_container());
 
-    }
-
-    void run(std::function<boost::asio::awaitable<void>()> func)
-    {
-        if (!session)
+        if (!optional_result)
         {
-            BOOST_FAIL("Session is not initialized, cannot run test.");
-            return;
+            BOOST_ERROR("Failed to select document");
+            co_return;
         }
-        boost::asio::co_spawn(io_context, func, boost::asio::detached);
-        io_context.run();
-        io_context.restart();
-        BOOST_CHECK(test_end);
-    }
-};
 
-BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, mongo_database_session_fixture)
+        const celeritas::mongo_test loaded{ celeritas::database_type::mongo, *optional_result };
+        BOOST_CHECK_EQUAL(loaded.get_user_id(), user_id);
+        BOOST_CHECK_EQUAL(loaded.get_chapter_id(), 10);
+        BOOST_CHECK_EQUAL(loaded.get_chapter_name(), expected_chapter_name);
+        BOOST_CHECK_EQUAL(loaded.get_currency(), expected_currency);
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> test_update(const celeritas::mongo_database_session_fixture& fixture, celeritas::mongo_test& entity)
+    {
+        const auto session = fixture.get_session();
+        const auto config = fixture.get_config();
+
+        entity.set_chapter_name("Updated Chapter");
+        entity.modify_currency(500);
+
+        co_await session->execute_changes(entity.get_modify(), config->get_expire_seconds());
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> test_select_all(const celeritas::mongo_database_session_fixture& fixture)
+    {
+        const auto session = fixture.get_session();
+        const auto select_all_change = celeritas::mongo_test::get_select(celeritas::database_type::mongo);
+        const auto results = co_await session->select_all(select_all_change, celeritas::mongo_test::get_database_field_container());
+
+        auto found = false;
+        for (const auto& element : results)
+        {
+            if (const celeritas::mongo_test test{ celeritas::database_type::mongo, element };
+                test.get_user_id() == user_id)
+            {
+                found = true;
+                break;
+            }
+        }
+
+        BOOST_CHECK(found);
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> test_delete(const celeritas::mongo_database_session_fixture& fixture, const celeritas::mongo_test& entity)
+    {
+        const auto session = fixture.get_session();
+        const auto config = fixture.get_config();
+
+        co_await session->execute_changes(entity.get_delete(), config->get_expire_seconds());
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> test_verify_delete(const celeritas::mongo_database_session_fixture& fixture)
+    {
+        const auto session = fixture.get_session();
+        const auto select_change = celeritas::mongo_test::get_select(celeritas::database_type::mongo, user_id);
+        const auto optional_result = co_await session->select_one(select_change, celeritas::mongo_test::get_database_field_container());
+
+        BOOST_CHECK(!optional_result.has_value());
+    }
+
+    [[nodiscard]] celeritas::mongo_test get_mongo_test()
+    {
+        celeritas::mongo_test entity{ celeritas::database_type::mongo, user_id };
+        entity.set_chapter_id(10);
+        entity.set_chapter_name("Test Chapter");
+        entity.set_chance_winning(0.99);
+        entity.set_winning(true);
+        entity.set_currency(1000);
+        entity.set_count(5);
+
+        return entity;
+    }
+}
+
+BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database_session_fixture)
 
     BOOST_AUTO_TEST_CASE(test_mongo_database_session_constructor)
     {
-        BOOST_CHECK(session);
+        BOOST_CHECK(get_session());
     }
 
     BOOST_AUTO_TEST_CASE(test_connect)
@@ -103,16 +113,15 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, mongo_database_session_fi
         run([this]() -> boost::asio::awaitable<void> {
             try
             {
-                co_await session->async_connect();
-                bool health = co_await session->is_health();
-                BOOST_TEST_MESSAGE("Database health: " << (health ? "UP" : "DOWN"));
+                co_await get_session()->async_connect();
+                BOOST_CHECK(co_await get_session()->is_health());
             }
-            catch (const std::exception& e)
+            catch (const std::exception& error)
             {
-                BOOST_TEST_MESSAGE("Connection failed: " << e.what());
+                BOOST_ERROR("Connection failed: " << error.what());
             }
 
-            test_end = true;
+            set_test_end(true);
         });
     }
 
@@ -121,87 +130,33 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, mongo_database_session_fi
         run([this]() -> boost::asio::awaitable<void> {
             try
             {
+                const auto session = get_session();
                 co_await session->async_connect();
                 if (!co_await session->is_health())
                 {
-                    BOOST_TEST_MESSAGE("MongoDB not reachable, skipping CRUD tests.");
+                    BOOST_ERROR("MongoDB not reachable, skipping CRUD tests.");
                     co_return;
                 }
 
-                int64_t user_id = 123456789;
-                mongo_test entity(database_type::mongo, user_id);
-                entity.set_chapter_id(10);
-                entity.set_chapter_name("Test Chapter");
-                entity.set_chance_winning(0.99);
-                entity.set_winning(true);
-                entity.set_currency(1000);
-                entity.set_count(5);
+                auto entity = get_mongo_test();
 
-                co_await session->execute_changes(entity.get_delete(), config->get_expire_seconds());
+                co_await test_delete(*this, entity);
 
-                // 1. Insert (or Upsert)
-                co_await session->execute_changes(entity.get_modify(), config->get_expire_seconds());
-                entity.clear_modify();
+                co_await test_insert(*this, entity);
+                co_await test_select_one(*this, "Test Chapter", 1000);
 
-                // 2. Select One
-                auto select_change = mongo_test::get_select(database_type::mongo, user_id);
-                auto result_opt = co_await session->select_one(select_change, mongo_test::get_database_field_container());
+                co_await test_update(*this, entity);
+                co_await test_select_one(*this, "Updated Chapter", 1500);
+                co_await test_select_all(*this);
 
-                if (!result_opt)
-                {
-                    BOOST_ERROR("Failed to select inserted document");
-                    co_return;
-                }
+                co_await test_delete(*this, entity);
+                co_await test_verify_delete(*this);
 
-                mongo_test loaded(database_type::mongo, *result_opt);
-                BOOST_CHECK_EQUAL(loaded.get_user_id(), user_id);
-                BOOST_CHECK_EQUAL(loaded.get_chapter_id(), 10);
-                BOOST_CHECK_EQUAL(loaded.get_chapter_name(), "Test Chapter");
-                BOOST_CHECK_EQUAL(loaded.get_currency(), 1000);
-
-                // 3. Update
-                entity.set_chapter_name("Updated Chapter");
-                entity.modify_currency(500); // 1000 + 500 = 1500
-                co_await session->execute_changes(entity.get_modify(), config->get_expire_seconds());
-
-                result_opt = co_await session->select_one(select_change, mongo_test::get_database_field_container());
-                if (!result_opt)
-                {
-                    BOOST_ERROR("Failed to select updated document");
-                    co_return;
-                }
-
-                mongo_test updated(database_type::mongo, *result_opt);
-                BOOST_CHECK_EQUAL(updated.get_chapter_name(), "Updated Chapter");
-                BOOST_CHECK_EQUAL(updated.get_currency(), 1500);
-
-                // 4. Select All
-                auto select_all_change = mongo_test::get_select(database_type::mongo);
-                auto results = co_await session->select_all(select_all_change, mongo_test::get_database_field_container());
-
-                bool found = false;
-                for (const auto& res : results)
-                {
-                    mongo_test t(database_type::mongo, res);
-                    if (t.get_user_id() == user_id)
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-                BOOST_CHECK(found);
-
-                // 5. Delete
-                co_await session->execute_changes(entity.get_delete(), config->get_expire_seconds());
-
-                result_opt = co_await session->select_one(select_change, mongo_test::get_database_field_container());
-                BOOST_CHECK(!result_opt.has_value());
-
-                test_end = true;
+                set_test_end(true);
             }
-            catch (const std::exception& e)
+            catch (const std::exception& error)
             {
-                BOOST_ERROR(std::string("Exception in CRUD test: ") + e.what());
+                BOOST_ERROR(std::string{"Exception in CRUD test: "} + error.what());
             }
         });
     }
