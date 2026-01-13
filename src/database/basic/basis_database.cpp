@@ -156,12 +156,8 @@ std::string celeritas::basis_database::get_quotation_mark_string() const
 
 std::string celeritas::basis_database::get_sql_value_string() const
 {
-    if (data_type_ == database_data_type::string_type)
-    {
-        return "\"" + get_value<database_data_type::string_type>() + "\"";
-    }
-
-    if (data_type_ == database_data_type::string_array_type ||
+    if (data_type_ == database_data_type::string_type ||
+        data_type_ == database_data_type::string_array_type ||
         data_type_ == database_data_type::int32_array_type ||
         data_type_ == database_data_type::int64_array_type ||
         data_type_ == database_data_type::double_array_type ||
