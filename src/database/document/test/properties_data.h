@@ -2,8 +2,6 @@
 
 #include "database/basic/database_data_type_traits.h"
 
-#include <bsoncxx/builder/basic/document.hpp>
-
 namespace celeritas
 {
     class properties_data
