@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "database/basic/database_data_type_traits.h"
+#include "database/basic/basis_database.h"
 
 namespace celeritas
 {
