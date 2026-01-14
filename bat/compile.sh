@@ -9,7 +9,7 @@ cd build-debug
 cmake ..
 cmake -DCMAKE_BUILD_TYPE=Debug ..
 make
-ctest -V
+make test
 cmake --install . 
 
 cd ../build-release
