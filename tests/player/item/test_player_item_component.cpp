@@ -27,6 +27,11 @@ namespace
             init_item_config();
         }
 
+        ~player_item_component_fixture()
+        {
+            celeritas::database_pool_manager::get_instance().set_mock_pool(nullptr);
+        }
+
         static void init_item_config()
         {
             const auto tables = std::make_shared<celeritas::config::tables>();

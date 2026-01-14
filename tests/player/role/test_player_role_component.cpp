@@ -25,6 +25,11 @@ BOOST_AUTO_TEST_SUITE(player_role_component_suite)
             celeritas::database_pool_manager::get_instance().set_mock_pool(mock_pool_);
         }
 
+        ~test_fixture()
+        {
+            celeritas::database_pool_manager::get_instance().set_mock_pool(nullptr);
+        }
+
         void run_io_context()
         {
             io_context_.restart();

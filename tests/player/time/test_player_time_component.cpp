@@ -27,6 +27,11 @@ namespace
             mock_player_state_.set_mock_player_component(mock_player_component_);
         }
 
+        ~player_time_component_fixture()
+        {
+            celeritas::database_pool_manager::get_instance().set_mock_pool(nullptr);
+        }
+
         void run_io_context()
         {
             io_context_.restart();

@@ -38,6 +38,11 @@ namespace
                                                                                 mock_application_loader_);
         }
 
+        ~service_login_fixture()
+        {
+            celeritas::database_pool_manager::get_instance().set_mock_pool(nullptr);
+        }
+
         void run_io_context()
         {
             io_context_.restart();

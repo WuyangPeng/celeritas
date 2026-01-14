@@ -164,7 +164,6 @@ BOOST_AUTO_TEST_SUITE(connection_pool_suite)
                               boost::asio::detached);
 
         io_context.run();
-        io_context.run();
     }
 
 BOOST_AUTO_TEST_SUITE_END()

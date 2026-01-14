@@ -24,6 +24,11 @@ namespace
             init_game_config();
         }
 
+        ~player_red_dot_component_fixture()
+        {
+            celeritas::database_pool_manager::get_instance().set_mock_pool(nullptr);
+        }
+
         void run_io_context()
         {
             io_context_.restart();

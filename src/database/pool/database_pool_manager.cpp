@@ -86,6 +86,12 @@ void celeritas::database_pool_manager::release_pool()
     }
 
     pools_.clear();
+
+    if (mock_pool_ != nullptr)
+    {
+        mock_pool_->stop_cleanup_timer();
+        mock_pool_ = nullptr;
+    }
 }
 
 celeritas::database_pool_manager::bool_awaitable_type celeritas::database_pool_manager::is_health()
