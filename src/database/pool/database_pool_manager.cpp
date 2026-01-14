@@ -1,9 +1,10 @@
 ﻿#include "connection_pool.tpp"
 #include "database_pool_manager.h"
+#include "common/core/celeritas_error.h"
+#include "common/core/enum_cast.h"
 #include "database/session/mongo_database_session.h"
 #include "database/session/mysql_database_session.h"
 #include "database/session/redis_database_session.h"
-#include "common/core/celeritas_error.h"
 
 #include <ranges>
 
@@ -42,7 +43,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
         }
         default:
         {
-            throw celeritas_error("create pool ,name = " + name + ",database_type =" + std::to_string(static_cast<int>(database_type)) + " is  not exist.");
+            throw celeritas_error{ "create pool ,name = {}, database_type ={} is not exist.", name, enum_cast_underlying(database_type) };
         }
     }
 }
@@ -62,7 +63,7 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
         return pool->second;
     }
 
-    throw celeritas_error{ "get pool name = " + name + " is  not exist." };
+    throw celeritas_error{ "get pool name = {} is  not exist.", name };
 }
 
 void celeritas::database_pool_manager::start_cleanup_timer(const any_io_executor& any_io_executor)

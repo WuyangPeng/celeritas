@@ -12,6 +12,7 @@ namespace celeritas
     {
     public:
         using class_type = database_session;
+        using any_io_executor = boost::asio::any_io_executor;
         using time_point_type = std::chrono::steady_clock::time_point;
         using bool_awaitable_type = boost::asio::awaitable<bool>;
         using void_awaitable_type = boost::asio::awaitable<void>;
@@ -22,7 +23,7 @@ namespace celeritas
         using database_entity_change_awaitable_type = boost::asio::awaitable<optional_database_entity_change>;
         using result_container_awaitable_type = boost::asio::awaitable<result_container>;
 
-        database_session() noexcept = default;
+        explicit database_session(const any_io_executor& any_io_executor);
 
         virtual ~database_session() noexcept = default;
 
@@ -46,7 +47,11 @@ namespace celeritas
 
         [[nodiscard]] virtual result_container_awaitable_type select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) = 0;
 
+    protected:
+        [[nodiscard]] any_io_executor get_any_io_executor() const;
+
     private:
         time_point_type last_heartbeat_;
+        any_io_executor any_io_executor_;
     };
 }

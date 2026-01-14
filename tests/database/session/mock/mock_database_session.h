@@ -10,7 +10,7 @@ namespace celeritas
         using class_type = mock_database_session;
         using base_type = database_session;
 
-        mock_database_session();
+        explicit mock_database_session(const any_io_executor& any_io_executor);
 
         [[nodiscard]] bool_awaitable_type is_health() override;
 

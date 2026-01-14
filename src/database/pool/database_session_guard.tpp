@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "database_session_guard.h"
-#include "common/common_fwd.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 
 template <typename SessionType>

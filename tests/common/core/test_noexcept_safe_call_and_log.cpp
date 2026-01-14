@@ -1,6 +1,10 @@
 ﻿#include "common/core/celeritas_error.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 
+#include <boost/asio/awaitable.hpp>
+#include <boost/asio/co_spawn.hpp>
+#include <boost/asio/detached.hpp>
+#include <boost/asio/io_context.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <atomic>
@@ -100,6 +104,61 @@ BOOST_AUTO_TEST_SUITE(noexcept_safe_call_and_log_suite)
 
         const auto result = celeritas::noexcept_safe_call_and_log(func, "test_channel", "error message", -1);
         BOOST_CHECK_EQUAL(result, -1);
+    }
+
+    BOOST_AUTO_TEST_CASE(test_awaitable_no_exception)
+    {
+        boost::asio::io_context io_context;
+        std::atomic called{ false };
+
+        auto func = [&]() -> boost::asio::awaitable<void> {
+            called = true;
+            co_return;
+        };
+
+        boost::asio::co_spawn(io_context,
+                              celeritas::noexcept_safe_call_and_log_awaitable(func, "test_channel", "error message"),
+                              boost::asio::detached);
+
+        io_context.run();
+        BOOST_CHECK(called);
+    }
+
+    BOOST_AUTO_TEST_CASE(test_awaitable_std_exception)
+    {
+        boost::asio::io_context io_context;
+        std::atomic called{ false };
+
+        auto func = [&]() -> boost::asio::awaitable<void> {
+            called = true;
+            throw std::runtime_error("runtime error from awaitable func");
+        };
+
+        boost::asio::co_spawn(io_context,
+                              celeritas::noexcept_safe_call_and_log_awaitable(func, "test_channel", "error message"),
+                              boost::asio::detached);
+
+        io_context.run();
+        BOOST_CHECK(called);
+    }
+
+    // 测试：awaitable 版本 - 抛出未知异常
+    BOOST_AUTO_TEST_CASE(test_awaitable_unknown_exception)
+    {
+        boost::asio::io_context io_context;
+        std::atomic called{ false };
+
+        auto func = [&]() -> boost::asio::awaitable<void> {
+            called = true;
+            throw 123;
+        };
+
+        boost::asio::co_spawn(io_context,
+                              celeritas::noexcept_safe_call_and_log_awaitable(func, "test_channel", "error message"),
+                              boost::asio::detached);
+
+        io_context.run();
+        BOOST_CHECK(called);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -10,7 +10,7 @@ namespace celeritas
     {
     public:
         using class_type = database_pool_base;
-        using io_context_type = boost::asio::io_context;
+        using any_io_executor = boost::asio::any_io_executor;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using bool_awaitable_type = boost::asio::awaitable<bool>;
         using error_code_type = boost::system::error_code;
@@ -20,7 +20,6 @@ namespace celeritas
         using optional_database_entity_change = std::optional<database_entity_change>;
         using optional_database_entity_change_awaitable_type = boost::asio::awaitable<optional_database_entity_change>;
         using result_container_awaitable_type = boost::asio::awaitable<result_container>;
-        using any_io_executor = boost::asio::any_io_executor;
 
         database_pool_base() noexcept = default;
 

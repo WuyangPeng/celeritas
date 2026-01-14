@@ -7,7 +7,7 @@
 
 celeritas::database_session_test_fixture::database_session_test_fixture()
     : io_context_{},
-      session_{},
+      session_{ io_context_.get_executor() },
       select_change_{ std::make_shared<const database_entity_change>(database_type::unknown,
                                                                      "test",
                                                                      database_change_type::select_type) },

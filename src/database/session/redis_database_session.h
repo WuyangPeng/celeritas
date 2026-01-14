@@ -25,7 +25,6 @@ namespace celeritas
     public:
         using class_type = redis_database_session;
         using base_type = database_session;
-        using any_io_executor = boost::asio::any_io_executor;
         using int_awaitable_type = boost::asio::awaitable<int>;
         using optional_int = std::optional<int>;
         using optional_int_awaitable_type = boost::asio::awaitable<optional_int>;
@@ -126,7 +125,8 @@ namespace celeritas
                                   const map_type& result,
                                   database_entity_change& select);
 
-        any_io_executor any_io_executor_;
+        void to_resp3();
+
         redis_context_unique_ptr redis_context_;
 
         redis_parameter redis_parameter_;

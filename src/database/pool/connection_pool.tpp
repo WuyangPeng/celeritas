@@ -1,14 +1,14 @@
 ﻿#pragma once
 
 #include "connection_pool.h"
-#include "database/basic/database_entity_change.h"
 #include "database_session_guard.tpp"
 #include "common/logging/logger.h"
+#include "database/basic/database_entity_change.h"
 
 #include <boost/polymorphic_pointer_cast.hpp>
 
 template <typename SessionType>
-celeritas::connection_pool<SessionType>::connection_pool(const any_io_executor& any_io_executor,
+celeritas::connection_pool<SessionType>::connection_pool(any_io_executor any_io_executor,
                                                          std::string host,
                                                          const int port,
                                                          std::string user,
@@ -16,7 +16,7 @@ celeritas::connection_pool<SessionType>::connection_pool(const any_io_executor& 
                                                          std::string db_name,
                                                          const int min_connections,
                                                          const int max_connections)
-    : any_io_executor_{ any_io_executor },
+    : any_io_executor_{ std::move(any_io_executor) },
       host_{ std::move(host) },
       port_{ port },
       user_{ std::move(user) },
@@ -31,7 +31,7 @@ celeritas::connection_pool<SessionType>::connection_pool(const any_io_executor& 
 }
 
 template <typename SessionType>
-celeritas::connection_pool<SessionType>::connection_pool(const any_io_executor& any_io_executor,
+celeritas::connection_pool<SessionType>::connection_pool(any_io_executor any_io_executor,
                                                          std::string host,
                                                          const int port,
                                                          std::string user,
@@ -40,7 +40,7 @@ celeritas::connection_pool<SessionType>::connection_pool(const any_io_executor& 
                                                          const int min_connections,
                                                          const int max_connections,
                                                          const int expire_seconds)
-    : any_io_executor_{ any_io_executor },
+    : any_io_executor_{ std::move(any_io_executor) },
       host_{ std::move(host) },
       port_{ port },
       user_{ std::move(user) },
@@ -55,12 +55,12 @@ celeritas::connection_pool<SessionType>::connection_pool(const any_io_executor& 
 }
 
 template <typename SessionType>
-celeritas::connection_pool<SessionType>::connection_pool(const any_io_executor& any_io_executor,
+celeritas::connection_pool<SessionType>::connection_pool(any_io_executor any_io_executor,
                                                          std::string uri,
                                                          std::string db_name,
                                                          const int min_connections,
                                                          const int max_connections)
-    : any_io_executor_{ any_io_executor },
+    : any_io_executor_{ std::move(any_io_executor) },
       host_{},
       port_{},
       user_{},

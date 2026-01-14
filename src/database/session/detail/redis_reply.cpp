@@ -70,7 +70,7 @@ celeritas::redis_reply::optional_double celeritas::redis_reply::to_optional_doub
 
     if (redis_reply_->type == REDIS_REPLY_DOUBLE)
     {
-        return static_cast<int>(redis_reply_->dval);
+        return redis_reply_->dval;
     }
 
     throw celeritas_error{ "Redis reply type mismatch: expected DOUBLE" };
@@ -114,7 +114,7 @@ celeritas::redis_reply::array_type celeritas::redis_reply::to_array() const
 
 celeritas::redis_reply::map_type celeritas::redis_reply::to_map() const
 {
-    if (redis_reply_->type != REDIS_REPLY_ARRAY)
+    if (redis_reply_->type != REDIS_REPLY_ARRAY && redis_reply_->type != REDIS_REPLY_MAP)
     {
         throw celeritas_error{ "reply type mismatch: Expected ARRAY for map conversion." };
     }
@@ -142,6 +142,13 @@ celeritas::redis_reply::map_type celeritas::redis_reply::to_map() const
         {
             throw celeritas_error{ "map Key element is not a string." };
         }
+
+        if (value_element->type == REDIS_REPLY_ARRAY)
+        {
+            // 数组暂时不实现
+            continue;
+        }
+
         std::string key{ key_element->str, key_element->len };
 
         auto value = to_string_from_element(value_element);
@@ -159,7 +166,7 @@ celeritas::redis_reply::optional_map_type celeritas::redis_reply::to_optional_ma
         return std::nullopt;
     }
 
-    if (redis_reply_->type != REDIS_REPLY_ARRAY)
+    if (redis_reply_->type != REDIS_REPLY_ARRAY && redis_reply_->type != REDIS_REPLY_MAP)
     {
         throw celeritas_error{ "reply type mismatch: expected array for map conversion." };
     }
@@ -187,6 +194,13 @@ celeritas::redis_reply::optional_map_type celeritas::redis_reply::to_optional_ma
         {
             throw celeritas_error{ "map key element is not a string." };
         }
+
+        if (value_element->type == REDIS_REPLY_ARRAY)
+        {
+            // 数组暂时不实现
+            continue;
+        }
+
         std::string key{ key_element->str, key_element->len };
 
         auto value = to_string_from_element(value_element);

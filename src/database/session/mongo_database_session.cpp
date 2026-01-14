@@ -19,7 +19,7 @@ celeritas::mongo_database_session::mongo_database_session(const std::string& hos
                                                           const std::string& db_name,
                                                           int expire_seconds,
                                                           const any_io_executor& any_io_executor)
-    : any_io_executor_{ boost::asio::make_strand(any_io_executor) },
+    : base_type{ any_io_executor },
       client_{},
       database_{},
       mongo_parameter_{ uri, db_name }
@@ -28,7 +28,7 @@ celeritas::mongo_database_session::mongo_database_session(const std::string& hos
 
 celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database_session::async_connect()
 {
-    co_await boost::asio::post(any_io_executor_, boost::asio::use_awaitable);
+    co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
 
     try
     {
@@ -79,7 +79,7 @@ celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_databa
 
 celeritas::database_session::bool_awaitable_type celeritas::mongo_database_session::is_health()
 {
-    co_await boost::asio::post(any_io_executor_, boost::asio::use_awaitable);
+    co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
 
     try
     {
@@ -104,7 +104,7 @@ celeritas::database_session::bool_awaitable_type celeritas::mongo_database_sessi
 
 celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database_session::execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time)
 {
-    co_await boost::asio::post(any_io_executor_, boost::asio::use_awaitable);
+    co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
 
     switch (database->get_change_type())
     {
@@ -138,7 +138,7 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
 
 celeritas::database_session::database_entity_change_awaitable_type celeritas::mongo_database_session::select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container)
 {
-    co_await boost::asio::post(any_io_executor_, boost::asio::use_awaitable);
+    co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
 
     auto collection = get_collection(database->get_database_name());
 
@@ -154,7 +154,7 @@ celeritas::database_session::database_entity_change_awaitable_type celeritas::mo
 
 celeritas::database_session::result_container_awaitable_type celeritas::mongo_database_session::select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container)
 {
-    co_await boost::asio::post(any_io_executor_, boost::asio::use_awaitable);
+    co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
 
     auto collection = get_collection(database->get_database_name());
 
@@ -215,7 +215,7 @@ void celeritas::mongo_database_session::delete_document(const const_database_ent
 
 celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_execute_query(const std::string_view collection_name, const document_view_type& filter) const
 {
-    co_await boost::asio::post(any_io_executor_, boost::asio::use_awaitable);
+    co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
 
     auto collection = get_collection(collection_name);
 

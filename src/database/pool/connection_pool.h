@@ -4,6 +4,7 @@
 
 #include <boost/asio.hpp>
 #include <boost/asio/awaitable.hpp>
+
 #include <deque>
 
 namespace celeritas
@@ -15,14 +16,13 @@ namespace celeritas
         using class_type = connection_pool;
         using base_type = database_pool_base;
 
-        using io_context_type = boost::asio::io_context;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using session_shared_ptr = std::shared_ptr<SessionType>;
         using session_awaitable_type = boost::asio::awaitable<session_shared_ptr>;
         using database_session_guard_type = database_session_guard<SessionType>;
         using database_session_guard_awaitable_type = boost::asio::awaitable<database_session_guard_type>;
 
-        connection_pool(const any_io_executor& any_io_executor,
+        connection_pool(any_io_executor any_io_executor,
                         std::string host,
                         int port,
                         std::string user,
@@ -31,7 +31,7 @@ namespace celeritas
                         int min_connections,
                         int max_connections);
 
-        connection_pool(const any_io_executor& any_io_executor,
+        connection_pool(any_io_executor any_io_executor,
                         std::string host,
                         int port,
                         std::string user,
@@ -41,7 +41,7 @@ namespace celeritas
                         int max_connections,
                         int expire_seconds);
 
-        connection_pool(const any_io_executor& any_io_executor,
+        connection_pool(any_io_executor any_io_executor,
                         std::string uri,
                         std::string db_name,
                         int min_connections,
@@ -70,6 +70,7 @@ namespace celeritas
         using session_container_type = std::vector<session_shared_ptr>;
         using waiter_type = boost::asio::any_completion_handler<void(session_shared_ptr)>;
         using self_shared_ptr = std::shared_ptr<base_type>;
+        using waiter_container = std::deque<waiter_type>;
 
         [[nodiscard]] void_awaitable_type async_one_initialize();
 
@@ -90,7 +91,7 @@ namespace celeritas
 
         session_container_type sessions_;
         std::mutex mutex_;
-        std::deque<waiter_type> waiters_;
+        waiter_container waiters_;
         std::atomic_int connections_;
         int min_connections_;
         int max_connections_;

@@ -1,8 +1,9 @@
 ﻿#include "mock_database_session.h"
 #include "database/basic/database_entity_change.h"
 
-celeritas::mock_database_session::mock_database_session()
-    : is_health_called_{ false },
+celeritas::mock_database_session::mock_database_session(const any_io_executor& any_io_executor)
+    : base_type{ any_io_executor },
+      is_health_called_{ false },
       execute_changes_called_{ false },
       select_one_called_{ false },
       select_all_called_{ false }

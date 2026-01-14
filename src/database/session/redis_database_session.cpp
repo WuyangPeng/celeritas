@@ -18,7 +18,7 @@ celeritas::redis_database_session::redis_database_session(const std::string_view
                                                           const std::string_view db_name,
                                                           const int expire_seconds,
                                                           const any_io_executor& any_io_executor)
-    : any_io_executor_{ boost::asio::make_strand(any_io_executor) },
+    : base_type{ any_io_executor },
       redis_context_{},
       redis_parameter_{ host, port, user, password, db_name, expire_seconds },
       redis_key_commands_{ *this },
@@ -32,7 +32,7 @@ celeritas::redis_database_session::redis_database_session(const std::string_view
 
 celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::async_connect()
 {
-    co_await boost::asio::post(any_io_executor_, boost::asio::use_awaitable);
+    co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
 
     redis_context_ = std::make_unique<redis_context>(redis_parameter_.get_host(), redis_parameter_.get_port());
 
@@ -40,12 +40,14 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
 
     LOG_CHANNEL(database_channel, info) << "Authentication successful (AUTH: OK).";
 
+    to_resp3();
+
     co_return;
 }
 
 celeritas::database_session::bool_awaitable_type celeritas::redis_database_session::is_health()
 {
-    co_await boost::asio::post(any_io_executor_, boost::asio::use_awaitable);
+    co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
 
     try
     {
@@ -253,7 +255,7 @@ celeritas::redis_database_session::redis_reply_awaitable_type celeritas::redis_d
 {
     check_initialized();
 
-    co_await boost::asio::post(any_io_executor_, boost::asio::use_awaitable);
+    co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
 
     co_return std::make_unique<redis_reply>(*redis_context_.get(), command);
 }
@@ -310,6 +312,18 @@ void celeritas::redis_database_session::modify_select(const database_field_conta
         {
             select.modify(redis_to_basis_converter::get_basis_database(field, iter->second));
         }
+    }
+}
+
+void celeritas::redis_database_session::to_resp3()
+{
+    const redis_reply redis_reply{ *redis_context_.get(), "HELLO 3" };
+
+    LOG_CHANNEL(database_channel, info) << "to_resp3 result:";
+
+    for (const auto& [key, element] : redis_reply.to_map())
+    {
+        LOG_CHANNEL(database_channel, info) << key << ":" << element;
     }
 }
 

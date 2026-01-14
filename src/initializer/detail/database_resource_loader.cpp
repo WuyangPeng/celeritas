@@ -1,4 +1,6 @@
 ﻿#include "database_resource_loader.h"
+#include "common/common_constant.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "database/pool/database_pool_manager.h"
 
 #include <boost/asio/co_spawn.hpp>
@@ -19,6 +21,10 @@ void celeritas::database_resource_loader::loader_database(const any_io_executor&
                                                                         database_config.get_expire_seconds());
 
     boost::asio::co_spawn(any_io_executor,
-                          pool->async_initialize(),
+                          noexcept_safe_call_and_log_awaitable([pool]() -> boost::asio::awaitable<void> {
+                                                                   co_await pool->async_initialize();
+                                                               },
+                                                               initializer_channel,
+                                                               "error pool async initialize: "),
                           boost::asio::detached);
 }
