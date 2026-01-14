@@ -11,9 +11,9 @@
 #include <boost/asio.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <map>
 #include <memory>
 #include <vector>
-#include <map>
 
 namespace
 {
@@ -361,7 +361,6 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                     co_return;
                 }
 
-                // Clean up all known entities from other tests
                 co_await test_delete(*this, get_redis_test_for_user(user_id));
                 co_await test_delete(*this, get_redis_test_for_user(user_id + 1));
                 co_await test_delete(*this, get_redis_test_for_user(user_id + 2));
@@ -396,20 +395,17 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                 auto entity1 = get_redis_test_for_user(user_id + 1);
                 auto entity2 = get_redis_test_for_user(user_id + 2);
 
-                // Cleanup before test
                 co_await test_delete(*this, entity1);
                 co_await test_delete(*this, entity2);
 
-                // Insert
                 co_await test_insert(*this, entity1);
                 co_await test_insert(*this, entity2);
 
-                // Select all
                 const auto select_all_change = celeritas::redis_test::get_select(celeritas::database_type::redis);
                 const auto results = co_await session->select_all(select_all_change, celeritas::redis_test::get_database_field_container());
 
-                bool found1 = false;
-                bool found2 = false;
+                auto found1 = false;
+                auto found2 = false;
                 for (const auto& element : results)
                 {
                     const celeritas::redis_test test{ celeritas::database_type::redis, element };
@@ -425,7 +421,6 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                 BOOST_CHECK(found1);
                 BOOST_CHECK(found2);
 
-                // Cleanup after test
                 co_await test_delete(*this, entity1);
                 co_await test_delete(*this, entity2);
 
@@ -502,7 +497,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
         });
     }
 
-    BOOST_AUTO_TEST_CASE(test_all_async_execute_variants)
+    BOOST_AUTO_TEST_CASE(test_async_execute_command_return_void)
     {
         run([this]() -> boost::asio::awaitable<void> {
             try
@@ -515,107 +510,287 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                     co_return;
                 }
 
-                // 1. async_execute_command_return_void (SET)
-                const std::string void_key = session->get_prefixed_key("test_void_key");
-                std::vector<std::string> set_command = { "SET", void_key, "void_val" };
+                const auto void_key = session->get_prefixed_key("test_void_key");
+                const std::vector<std::string> set_command{ "SET", void_key, "void_value" };
                 co_await session->async_execute_command_return_void(set_command);
 
-                // Verify with GET
-                std::vector<std::string> get_command = { "GET", void_key };
-                auto verify_void = co_await session->async_execute_command_return_optional_string(get_command);
+                const std::vector<std::string> get_command{ "GET", void_key };
+                const auto verify_void = co_await session->async_execute_command_return_optional_string(get_command);
                 BOOST_REQUIRE(verify_void.has_value());
-                BOOST_CHECK_EQUAL(*verify_void, "void_val");
-                std::vector<std::string> del_command = { "DEL", void_key };
-                co_await session->async_execute_command_return_int(del_command);
+                BOOST_CHECK_EQUAL(*verify_void, "void_value");
+                const std::vector<std::string> delete_command{ "DEL", void_key };
+                co_await session->async_execute_command_return_int(delete_command);
 
-                // 2. async_execute_command_return_int (INCR)
-                const std::string int_key = session->get_prefixed_key("test_int_key");
-                std::vector<std::string> set_int_command = { "SET", int_key, "10" };
+                set_test_end(true);
+            }
+            catch (const std::exception& error)
+            {
+                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
+            }
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_execute_command_return_int)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            try
+            {
+                const auto session = get_session();
+                co_await session->async_connect();
+                if (!co_await session->is_health())
+                {
+                    BOOST_ERROR("Redis not reachable, skipping test.");
+                    co_return;
+                }
+
+                const auto int_key = session->get_prefixed_key("test_int_key");
+                const std::vector<std::string> set_int_command{ "SET", int_key, "10" };
                 co_await session->async_execute_command_return_void(set_int_command);
-                std::vector<std::string> incr_command = { "INCR", int_key };
-                auto int_res = co_await session->async_execute_command_return_int(incr_command);
+                const std::vector<std::string> incr_command{ "INCR", int_key };
+                const auto int_res = co_await session->async_execute_command_return_int(incr_command);
                 BOOST_CHECK_EQUAL(int_res, 11);
-                std::vector<std::string> del_int_command = { "DEL", int_key };
-                co_await session->async_execute_command_return_int(del_int_command);
+                const std::vector<std::string> delete_int_command{ "DEL", int_key };
+                co_await session->async_execute_command_return_int(delete_int_command);
 
-                // 3. async_execute_command_return_optional_string (GET)
-                const std::string str_key = session->get_prefixed_key("test_str_key");
-                std::vector<std::string> set_str_command = { "SET", str_key, "hello" };
+                set_test_end(true);
+            }
+            catch (const std::exception& error)
+            {
+                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
+            }
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_execute_command_return_optional_string)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            try
+            {
+                const auto session = get_session();
+                co_await session->async_connect();
+                if (!co_await session->is_health())
+                {
+                    BOOST_ERROR("Redis not reachable, skipping test.");
+                    co_return;
+                }
+
+                const auto str_key = session->get_prefixed_key("test_str_key");
+                const std::vector<std::string> set_str_command{ "SET", str_key, "hello" };
                 co_await session->async_execute_command_return_void(set_str_command);
-                std::vector<std::string> get_str_command = { "GET", str_key };
-                auto str_res = co_await session->async_execute_command_return_optional_string(get_str_command);
+                const std::vector<std::string> get_str_command{ "GET", str_key };
+                const auto str_res = co_await session->async_execute_command_return_optional_string(get_str_command);
                 BOOST_REQUIRE(str_res.has_value());
                 BOOST_CHECK_EQUAL(*str_res, "hello");
 
-                std::vector<std::string> get_str_none_command = { "GET", str_key + "_none" };
-                auto str_res_none = co_await session->async_execute_command_return_optional_string(get_str_none_command);
+                std::vector<std::string> get_str_none_command{ "GET", str_key + "_none" };
+                const auto str_res_none = co_await session->async_execute_command_return_optional_string(get_str_none_command);
                 BOOST_CHECK(!str_res_none.has_value());
-                std::vector<std::string> del_str_command = { "DEL", str_key };
-                co_await session->async_execute_command_return_int(del_str_command);
+                const std::vector<std::string> delete_str_command{ "DEL", str_key };
+                co_await session->async_execute_command_return_int(delete_str_command);
 
-                // 4. async_execute_command_return_array_type (LRANGE)
-                const std::string list_key = session->get_prefixed_key("test_list_key");
-                std::vector<std::string> rpush_command = { "RPUSH", list_key, "a", "b", "c" };
-                co_await session->async_execute_command_return_int(rpush_command);
-                std::vector<std::string> lrange_command = { "LRANGE", list_key, "0", "-1" };
-                auto array_res = co_await session->async_execute_command_return_array_type(lrange_command);
+                set_test_end(true);
+            }
+            catch (const std::exception& error)
+            {
+                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
+            }
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_execute_command_return_array_type)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            try
+            {
+                const auto session = get_session();
+                co_await session->async_connect();
+                if (!co_await session->is_health())
+                {
+                    BOOST_ERROR("Redis not reachable, skipping test.");
+                    co_return;
+                }
+
+                const auto list_key = session->get_prefixed_key("test_list_key");
+                const std::vector<std::string> r_push_command{ "RPUSH", list_key, "a", "b", "c" };
+                co_await session->async_execute_command_return_int(r_push_command);
+                const std::vector<std::string> l_range_command{ "LRANGE", list_key, "0", "-1" };
+                const auto array_res = co_await session->async_execute_command_return_array_type(l_range_command);
                 BOOST_REQUIRE_EQUAL(array_res.size(), 3);
                 BOOST_CHECK_EQUAL(array_res[0], "a");
                 BOOST_CHECK_EQUAL(array_res[1], "b");
                 BOOST_CHECK_EQUAL(array_res[2], "c");
-                std::vector<std::string> del_list_command = { "DEL", list_key };
-                co_await session->async_execute_command_return_int(del_list_command);
+                const std::vector<std::string> delete_list_command{ "DEL", list_key };
+                co_await session->async_execute_command_return_int(delete_list_command);
 
-                // 5. async_execute_command_return_map_type (HGETALL)
-                const std::string hash_key = session->get_prefixed_key("test_hash_key");
-                std::vector<std::string> hset_command = { "HSET", hash_key, "f1", "v1", "f2", "v2" };
-                co_await session->async_execute_command_return_int(hset_command);
-                std::vector<std::string> hgetall_command = { "HGETALL", hash_key };
-                auto map_res = co_await session->async_execute_command_return_map_type(hgetall_command);
+                set_test_end(true);
+            }
+            catch (const std::exception& error)
+            {
+                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
+            }
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_execute_command_return_map_type)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            try
+            {
+                const auto session = get_session();
+                co_await session->async_connect();
+                if (!co_await session->is_health())
+                {
+                    BOOST_ERROR("Redis not reachable, skipping test.");
+                    co_return;
+                }
+
+                const auto hash_key = session->get_prefixed_key("test_hash_key");
+                const std::vector<std::string> h_set_command = { "HSET", hash_key, "f1", "v1", "f2", "v2" };
+                co_await session->async_execute_command_return_int(h_set_command);
+                const std::vector<std::string> h_get_all_command = { "HGETALL", hash_key };
+                auto map_res = co_await session->async_execute_command_return_map_type(h_get_all_command);
                 BOOST_CHECK_EQUAL(map_res.size(), 2);
                 BOOST_CHECK_EQUAL(map_res["f1"], "v1");
                 BOOST_CHECK_EQUAL(map_res["f2"], "v2");
-                std::vector<std::string> del_hash_command = { "DEL", hash_key };
+                const std::vector<std::string> del_hash_command = { "DEL", hash_key };
                 co_await session->async_execute_command_return_int(del_hash_command);
 
-                // 6. async_execute_command_return_optional_double (ZSCORE)
-                const std::string zset_key = session->get_prefixed_key("test_zset_key");
-                std::vector<std::string> zadd_command = { "ZADD", zset_key, "1.5", "m1" };
-                co_await session->async_execute_command_return_int(zadd_command);
-                std::vector<std::string> zscore_command = { "ZSCORE", zset_key, "m1" };
-                auto double_res = co_await session->async_execute_command_return_optional_double(zscore_command);
+                set_test_end(true);
+            }
+            catch (const std::exception& error)
+            {
+                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
+            }
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_execute_command_return_optional_map_type)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            try
+            {
+                const auto session = get_session();
+                co_await session->async_connect();
+                if (!co_await session->is_health())
+                {
+                    BOOST_ERROR("Redis not reachable, skipping test.");
+                    co_return;
+                }
+
+                const auto hash_key = session->get_prefixed_key("test_opt_hash_key");
+                const std::vector<std::string> h_set_command = { "HSET", hash_key, "f1", "v1", "f2", "v2" };
+                co_await session->async_execute_command_return_int(h_set_command);
+                const std::vector<std::string> h_get_all_command = { "HGETALL", hash_key };
+                auto map_res = co_await session->async_execute_command_return_optional_map_type(h_get_all_command);
+                BOOST_REQUIRE(map_res.has_value());
+                BOOST_CHECK_EQUAL(map_res->size(), 2);
+                BOOST_CHECK_EQUAL((*map_res)["f1"], "v1");
+                BOOST_CHECK_EQUAL((*map_res)["f2"], "v2");
+
+                const std::vector<std::string> h_get_all_none_command = { "HGETALL", hash_key + "_none" };
+                const auto map_res_none = co_await session->async_execute_command_return_optional_map_type(h_get_all_none_command);
+                BOOST_CHECK(!map_res_none.has_value());
+
+                const std::vector<std::string> del_hash_command = { "DEL", hash_key };
+                co_await session->async_execute_command_return_int(del_hash_command);
+
+                set_test_end(true);
+            }
+            catch (const std::exception& error)
+            {
+                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
+            }
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_execute_command_return_optional_double)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            try
+            {
+                const auto session = get_session();
+                co_await session->async_connect();
+                if (!co_await session->is_health())
+                {
+                    BOOST_ERROR("Redis not reachable, skipping test.");
+                    co_return;
+                }
+
+                const auto z_set_key = session->get_prefixed_key("test_zset_key");
+                const std::vector<std::string> z_add_command = { "ZADD", z_set_key, "1.5", "m1" };
+                co_await session->async_execute_command_return_int(z_add_command);
+                const std::vector<std::string> z_score_command = { "ZSCORE", z_set_key, "m1" };
+                const auto double_res = co_await session->async_execute_command_return_optional_double(z_score_command);
                 BOOST_REQUIRE(double_res.has_value());
                 BOOST_CHECK_CLOSE(*double_res, 1.5, 0.0001);
 
-                std::vector<std::string> zscore_none_command = { "ZSCORE", zset_key, "m_none" };
-                auto double_res_none = co_await session->async_execute_command_return_optional_double(zscore_none_command);
+                const std::vector<std::string> zscore_none_command = { "ZSCORE", z_set_key, "m_none" };
+                const auto double_res_none = co_await session->async_execute_command_return_optional_double(zscore_none_command);
                 BOOST_CHECK(!double_res_none.has_value());
-                std::vector<std::string> del_zset_command = { "DEL", zset_key };
-                co_await session->async_execute_command_return_int(del_zset_command);
+                const std::vector<std::string> delete_z_set_command = { "DEL", z_set_key };
+                co_await session->async_execute_command_return_int(delete_z_set_command);
 
-                // 7. async_execute_command_return_optional_int (ZRANK)
-                const std::string zrank_key = session->get_prefixed_key("test_zrank_key");
-                std::vector<std::string> zadd_rank_command = { "ZADD", zrank_key, "10", "m1", "20", "m2" };
-                co_await session->async_execute_command_return_int(zadd_rank_command);
-                std::vector<std::string> zrank_command = { "ZRANK", zrank_key, "m2" };
-                auto opt_int_res = co_await session->async_execute_command_return_optional_int(zrank_command);
+                set_test_end(true);
+            }
+            catch (const std::exception& error)
+            {
+                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
+            }
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_execute_command_return_optional_int)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            try
+            {
+                const auto session = get_session();
+                co_await session->async_connect();
+                if (!co_await session->is_health())
+                {
+                    BOOST_ERROR("Redis not reachable, skipping test.");
+                    co_return;
+                }
+
+                const auto z_rank_key = session->get_prefixed_key("test_zrank_key");
+                const std::vector<std::string> z_add_rank_command = { "ZADD", z_rank_key, "10", "m1", "20", "m2" };
+                co_await session->async_execute_command_return_int(z_add_rank_command);
+                const std::vector<std::string> z_rank_command = { "ZRANK", z_rank_key, "m2" };
+                const auto opt_int_res = co_await session->async_execute_command_return_optional_int(z_rank_command);
                 BOOST_REQUIRE(opt_int_res.has_value());
-                BOOST_CHECK_EQUAL(*opt_int_res, 1); // 0-based index
+                BOOST_CHECK_EQUAL(*opt_int_res, 1);
 
-                std::vector<std::string> zrank_none_command = { "ZRANK", zrank_key, "m_none" };
-                auto opt_int_res_none = co_await session->async_execute_command_return_optional_int(zrank_none_command);
+                const std::vector<std::string> z_rank_none_command = { "ZRANK", z_rank_key, "m_none" };
+                const auto opt_int_res_none = co_await session->async_execute_command_return_optional_int(z_rank_none_command);
                 BOOST_CHECK(!opt_int_res_none.has_value());
-                std::vector<std::string> del_zrank_command = { "DEL", zrank_key };
-                co_await session->async_execute_command_return_int(del_zrank_command);
+                const std::vector<std::string> delete_z_rank_command = { "DEL", z_rank_key };
+                co_await session->async_execute_command_return_int(delete_z_rank_command);
 
-                // 8. async_execute_command_return_scan_result (SCAN)
-                // Just check it returns something valid, hard to predict exact content without isolation
-                std::vector<std::string> scan_command = { "SCAN", "0", "COUNT", "1" };
-                auto scan_res = co_await session->async_execute_command_return_scan_result(scan_command);
-                // scan_res is a struct with cursor (string) and keys (vector<string>)
-                // We just check no exception thrown and cursor is not empty string (it's usually "0" or some number)
+                set_test_end(true);
+            }
+            catch (const std::exception& error)
+            {
+                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
+            }
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_execute_command_return_scan_result)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            try
+            {
+                const auto session = get_session();
+                co_await session->async_connect();
+                if (!co_await session->is_health())
+                {
+                    BOOST_ERROR("Redis not reachable, skipping test.");
+                    co_return;
+                }
+
+                const std::vector<std::string> scan_command{ "SCAN", "0", "COUNT", "1" };
+                const auto scan_res = co_await session->async_execute_command_return_scan_result(scan_command);
                 BOOST_CHECK(!scan_res.get_cursor().empty());
-                // keys might be empty or not depending on DB state
 
                 set_test_end(true);
             }
