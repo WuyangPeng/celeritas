@@ -140,7 +140,7 @@ celeritas::sorted_set_member_score celeritas::redis_sorted_set_commands::convert
     }
     catch (const std::exception& e)
     {
-        throw celeritas_error{ "ZRANGE/ZREVRANGE: failed to convert score string to double: " + score + ". Error: " + e.what() };
+        throw celeritas_error{ "ZRANGE/ZREVRANGE: failed to convert score string to Score: {}. Error:{}", score, e.what() };
     }
 }
 
