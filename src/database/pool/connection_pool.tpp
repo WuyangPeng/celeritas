@@ -7,6 +7,8 @@
 
 #include <boost/polymorphic_pointer_cast.hpp>
 
+#include <functional>
+
 template <typename SessionType>
 celeritas::connection_pool<SessionType>::connection_pool(any_io_executor any_io_executor,
                                                          std::string host,
@@ -111,19 +113,27 @@ celeritas::connection_pool<SessionType>::database_session_guard_awaitable_type c
 template <typename SessionType>
 void celeritas::connection_pool<SessionType>::release_session(const session_shared_ptr& session)
 {
-    std::lock_guard lock{ mutex_ };
+    waiter_type waiter{};
 
-    if (!waiters_.empty())
     {
-        // 如果有等待的协程，直接将会话给它
-        auto waiter = std::move(waiters_.front());
-        waiters_.pop_front();
-        session->set_last_heartbeat();
-        waiter(session);
+        std::lock_guard lock{ mutex_ };
+
+        if (!waiters_.empty())
+        {
+            // 如果有等待的协程，直接将会话给它
+            waiter = std::move(waiters_.front());
+            waiters_.pop_front();
+            session->set_last_heartbeat();
+        }
+        else
+        {
+            sessions_.emplace_back(session);
+        }
     }
-    else
+
+    if (waiter != nullptr)
     {
-        sessions_.emplace_back(session);
+        waiter(session);
     }
 }
 

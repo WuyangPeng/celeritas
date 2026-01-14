@@ -79,7 +79,7 @@ celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_loa
         container.emplace(time_refresh.get_id(), time_refresh);
     }
 
-    std::unique_lock lock{ shared_mutex_ };
+    std::lock_guard lock{ shared_mutex_ };
     time_refresh_ = std::move(container);
 }
 
@@ -124,7 +124,7 @@ celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_loa
     {
         const time_refresh time_refresh{ *optional_time_refresh };
 
-        std::unique_lock lock{ shared_mutex_ };
+        std::lock_guard lock{ shared_mutex_ };
         time_refresh_.emplace(time_refresh.get_id(), time_refresh);
     }
 }
