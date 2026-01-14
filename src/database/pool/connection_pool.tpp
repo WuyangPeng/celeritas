@@ -260,13 +260,14 @@ celeritas::connection_pool<SessionType>::session_awaitable_type celeritas::conne
     // 使用 async_initiate 创建一个自定义的异步操作。
     co_return co_await boost::asio::async_initiate<decltype(boost::asio::use_awaitable), void(session_shared_ptr)>(
         [&](auto handler) {
+            auto executor = handler.get_executor();
             std::lock_guard lock{ mutex_ };
 
             waiters_.emplace_back(
-                [handler = std::move(handler)](session_shared_ptr session) mutable {
+                [handler = std::move(handler), executor = std::move(executor)](session_shared_ptr session) mutable {
                     // 当会话被释放时，使用 dispatch 确保 handler 在其原始的执行器上运行，
                     // 这对于协程的正确恢复至关重要。
-                    boost::asio::dispatch(handler.get_executor(),
+                    boost::asio::dispatch(executor,
                                           [handler = std::move(handler), session = std::move(session)]() mutable {
                                               handler(std::move(session));
                                           });
