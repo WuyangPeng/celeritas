@@ -16,7 +16,7 @@ void celeritas::database_pool_base::stop_cleanup_timer()
     }
 }
 
-celeritas::database_pool_base::bool_awaitable_type celeritas::database_pool_base::execute_changes(const database_entity_change_const_shared_ptr& database)
+celeritas::database_pool_base::bool_awaitable_type celeritas::database_pool_base::execute_changes(const const_database_entity_change_shared_ptr& database)
 {
     co_return co_await execute_changes(database, 0);
 }

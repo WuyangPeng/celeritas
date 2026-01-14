@@ -13,12 +13,12 @@ namespace celeritas
     {
     public:
         using class_type = redis_row_data_converter;
-        using database_entity_change_const_shared_ptr = std::shared_ptr<const database_entity_change>;
-        using basis_database_container_const_shared_ptr = std::shared_ptr<const basis_database_container>;
+        using const_database_entity_change_shared_ptr = std::shared_ptr<const database_entity_change>;
+        using const_basis_database_container_shared_ptr = std::shared_ptr<const basis_database_container>;
 
-        [[nodiscard]] static std::string generate_key(const database_entity_change_const_shared_ptr& database);
+        [[nodiscard]] static std::string generate_key(const const_database_entity_change_shared_ptr& database);
 
-        [[nodiscard]] static basis_database_container_const_shared_ptr get_key(const std::string& key, const database_entity_change_const_shared_ptr& database);
+        [[nodiscard]] static const_basis_database_container_shared_ptr get_key(const std::string& key, const const_database_entity_change_shared_ptr& database);
 
     private:
         using array_type = std::vector<std::string>;

@@ -19,7 +19,7 @@
 #include "player/component/player_component_type.h"
 #include "player/time/time_refresh_type.h"
 
-celeritas::database_pool_base::bool_awaitable_type celeritas::mock_database_pool::execute_changes(const database_entity_change_const_shared_ptr& database, int expiration_time)
+celeritas::database_pool_base::bool_awaitable_type celeritas::mock_database_pool::execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time)
 {
     ++execute_changes_call_count_;
     co_return execute_changes_result_;
@@ -39,7 +39,7 @@ celeritas::database_pool_base::bool_awaitable_type celeritas::mock_database_pool
     co_return true;
 }
 
-celeritas::database_pool_base::optional_database_entity_change_awaitable_type celeritas::mock_database_pool::select_one(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container)
+celeritas::database_pool_base::optional_database_entity_change_awaitable_type celeritas::mock_database_pool::select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container)
 {
     ++select_one_call_count_;
     if (!select_one_result_)
@@ -90,7 +90,7 @@ celeritas::database_pool_base::optional_database_entity_change_awaitable_type ce
     co_return std::nullopt;
 }
 
-celeritas::database_pool_base::result_container_awaitable_type celeritas::mock_database_pool::select_all(const database_entity_change_const_shared_ptr& database, const database_field_container& field_name_container)
+celeritas::database_pool_base::result_container_awaitable_type celeritas::mock_database_pool::select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container)
 {
     co_return result_container{};
 }

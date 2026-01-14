@@ -4,7 +4,7 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 
-std::string celeritas::redis_row_data_converter::generate_key(const database_entity_change_const_shared_ptr& database)
+std::string celeritas::redis_row_data_converter::generate_key(const const_database_entity_change_shared_ptr& database)
 {
     std::string result{};
     result += database->get_database_name();
@@ -24,7 +24,7 @@ std::string celeritas::redis_row_data_converter::generate_key(const database_ent
     return result;
 }
 
-celeritas::redis_row_data_converter::basis_database_container_const_shared_ptr celeritas::redis_row_data_converter::get_key(const std::string& key, const database_entity_change_const_shared_ptr& database)
+celeritas::redis_row_data_converter::const_basis_database_container_shared_ptr celeritas::redis_row_data_converter::get_key(const std::string& key, const const_database_entity_change_shared_ptr& database)
 {
     const auto extracted_key_values = get_key_value(key);
 
