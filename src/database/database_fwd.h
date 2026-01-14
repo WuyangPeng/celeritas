@@ -26,14 +26,13 @@ namespace celeritas
     class mongo_database_session;
     class redis_database_session;
 
-    class database_pool_base;
-
     template <typename SessionType>
     class connection_pool;
 
     template <typename SessionType>
     class database_session_guard;
 
+    class database_pool_base;
     class database_pool_manager;
 
     class redis_commands;
