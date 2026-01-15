@@ -221,7 +221,7 @@ celeritas::properties_data celeritas::properties_data::from_document(const docum
             else if (element.has_value<database_data_type::int64_array_type>())
             {
                 const auto& array = element.get_value<database_data_type::int64_array_type>();
-                std::vector<int32_t> int32_array{};
+                int32_array_type int32_array{};
 
                 for (const auto& int64_value : array)
                 {

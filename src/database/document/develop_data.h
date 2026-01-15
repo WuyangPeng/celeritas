@@ -53,7 +53,7 @@ namespace celeritas
     private:
         int system_id_ = 0;
         int64_t instance_id_ = 0;
-        int level_ = 0;
+        int level_ = 1;
         int64_t exp_ = 0;
         int64_t updated_time_ = 0;
     };

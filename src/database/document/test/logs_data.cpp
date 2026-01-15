@@ -126,7 +126,7 @@ bool celeritas::logs_data::get_bool_value() const
     return bool_value_;
 }
 
-void celeritas::logs_data::set_bool_value(bool bool_value)
+void celeritas::logs_data::set_bool_value(const bool bool_value)
 {
     bool_value_ = bool_value;
 }

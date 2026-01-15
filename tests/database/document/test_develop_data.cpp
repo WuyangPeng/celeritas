@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_SUITE(develop_data_suite)
         BOOST_CHECK_EQUAL(data.get_system_id(), sys_id);
         BOOST_CHECK_EQUAL(data.get_instance_id(), inst_id);
         // 其他字段应为默认值
-        BOOST_CHECK_EQUAL(data.get_level(), 0);
+        BOOST_CHECK_EQUAL(data.get_level(), 1);
         BOOST_CHECK_EQUAL(data.get_exp(), 0);
         BOOST_CHECK_EQUAL(data.get_updated_time(), 0);
     }
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_SUITE(develop_data_suite)
 
         BOOST_CHECK_EQUAL(data.get_system_id(), 0);
         BOOST_CHECK_EQUAL(data.get_instance_id(), 0);
-        BOOST_CHECK_EQUAL(data.get_level(), 0);
+        BOOST_CHECK_EQUAL(data.get_level(), 1);
         BOOST_CHECK_EQUAL(data.get_exp(), 0);
         BOOST_CHECK_EQUAL(data.get_updated_time(), 0);
     }
