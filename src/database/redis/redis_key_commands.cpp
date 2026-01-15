@@ -20,7 +20,10 @@ celeritas::redis_key_commands::int_awaitable_type celeritas::redis_key_commands:
     }
 
     array_type del_command{ "DEL" };
-    del_command.insert(del_command.end(), keys.cbegin(), keys.cend());
+    for (const auto& element : keys)
+    {
+        del_command.emplace_back(get_prefixed_key(element));
+    }
 
     co_return co_await async_execute_command_return_int(del_command);
 }

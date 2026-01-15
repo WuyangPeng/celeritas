@@ -52,12 +52,12 @@ celeritas::redis_sorted_set_commands::optional_double_awaitable_type celeritas::
 
 celeritas::redis_sorted_set_commands::int_awaitable_type celeritas::redis_sorted_set_commands::async_sorted_set_cardinality(const std::string& key) const
 {
-    co_return co_await async_execute_command_return_int({ "ZCARD ", get_prefixed_key(key) });
+    co_return co_await async_execute_command_return_int({ "ZCARD", get_prefixed_key(key) });
 }
 
 celeritas::redis_sorted_set_commands::optional_double_awaitable_type celeritas::redis_sorted_set_commands::async_increment_by(const std::string& key, const double increment, const std::string& member) const
 {
-    co_return co_await async_execute_command_return_optional_double({ "ZINCRBY ", get_prefixed_key(key), std::to_string(increment), member });
+    co_return co_await async_execute_command_return_optional_double({ "ZINCRBY", get_prefixed_key(key), std::to_string(increment), member });
 }
 
 celeritas::redis_sorted_set_commands::sorted_set_member_score_awaitable_type celeritas::redis_sorted_set_commands::async_range(const std::string& key, const int start, const int end, const bool with_scores) const
@@ -68,9 +68,7 @@ celeritas::redis_sorted_set_commands::sorted_set_member_score_awaitable_type cel
         command.emplace_back("WITHSCORES");
     }
 
-    const auto array_result = co_await async_execute_command_return_array_type(command);
-
-    co_return convert_array_to_members(array_result, with_scores);
+    co_return co_await async_execute_command_return_sorted_set_member_score_type(command);
 }
 
 celeritas::redis_sorted_set_commands::sorted_set_member_score_awaitable_type celeritas::redis_sorted_set_commands::async_reverse_range(const std::string& key, const int start, const int end, const bool with_scores) const
@@ -81,9 +79,7 @@ celeritas::redis_sorted_set_commands::sorted_set_member_score_awaitable_type cel
         command.emplace_back("WITHSCORES");
     }
 
-    const auto array_result = co_await async_execute_command_return_array_type(command);
-
-    co_return convert_array_to_members(array_result, with_scores);
+    co_return co_await async_execute_command_return_sorted_set_member_score_type(command);
 }
 
 celeritas::redis_sorted_set_commands::optional_int_awaitable_type celeritas::redis_sorted_set_commands::async_rank(const std::string& key, const std::string& member) const
@@ -94,64 +90,4 @@ celeritas::redis_sorted_set_commands::optional_int_awaitable_type celeritas::red
 celeritas::redis_sorted_set_commands::optional_int_awaitable_type celeritas::redis_sorted_set_commands::async_reverse_rank(const std::string& key, const std::string& member) const
 {
     co_return co_await async_execute_command_return_optional_int({ "ZREVRANK", key, member });
-}
-
-celeritas::redis_sorted_set_commands::sorted_set_member_score_container celeritas::redis_sorted_set_commands::convert_array_to_members(const array_type& array_result, const bool with_scores)
-{
-    if (array_result.empty())
-    {
-        return sorted_set_member_score_container{};
-    }
-
-    if (!with_scores)
-    {
-        return convert_array_to_members_without_scores(array_result);
-    }
-
-    return convert_array_to_members_with_scores(array_result);
-}
-
-celeritas::redis_sorted_set_commands::sorted_set_member_score_container celeritas::redis_sorted_set_commands::convert_array_to_members_with_scores(const array_type& array_result)
-{
-    if (array_result.size() % 2 != 0)
-    {
-        throw celeritas_error{ "ZRANGE/ZREVRANGE with scores returned an array with odd number of elements." };
-    }
-
-    sorted_set_member_score_container result{};
-    result.reserve(array_result.size() / 2);
-
-    for (auto index = 0; index < array_result.size(); index += 2)
-    {
-        result.emplace_back(convert_array_to_members_with_scores(array_result, index));
-    }
-
-    return result;
-}
-
-celeritas::sorted_set_member_score celeritas::redis_sorted_set_commands::convert_array_to_members_with_scores(const array_type& array_result, const int index)
-{
-    const auto& member = array_result[index];
-    const auto& score = array_result[index + 1];
-
-    try
-    {
-        return sorted_set_member_score{ member, std::stod(score) };
-    }
-    catch (const std::exception& e)
-    {
-        throw celeritas_error{ "ZRANGE/ZREVRANGE: failed to convert score string to double: " + score + ". Error: " + e.what() };
-    }
-}
-
-celeritas::redis_sorted_set_commands::sorted_set_member_score_container celeritas::redis_sorted_set_commands::convert_array_to_members_without_scores(const array_type& array_result)
-{
-    sorted_set_member_score_container result{};
-    result.reserve(array_result.size());
-
-    for (const auto& member : array_result)
-    {
-        result.emplace_back(member, 0.0);
-    }
-    return result;
 }

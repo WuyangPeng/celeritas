@@ -174,6 +174,13 @@ celeritas::redis_database_session::scan_result_awaitable_type celeritas::redis_d
     co_return redis_reply->to_scan_result();
 }
 
+celeritas::redis_database_session::sorted_set_member_score_awaitable_type celeritas::redis_database_session::async_execute_command_return_sorted_set_member_score_type(const array_type& command) const
+{
+    const auto redis_reply = co_await async_execute_command_return_reply(command);
+
+    co_return redis_reply->to_sorted_set_member_score_container();
+}
+
 celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time)
 {
     switch (database->get_change_type())

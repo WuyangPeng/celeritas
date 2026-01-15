@@ -54,7 +54,10 @@ redis_set_commands::array_awaitable_type redis_set_commands::async_set_members(c
 redis_set_commands::array_awaitable_type redis_set_commands::async_set_union(const array_type& keys) const
 {
     array_type command{ "SUNION" };
-    command.insert(command.end(), keys.begin(), keys.end());
+    for (const auto& key : keys)
+    {
+        command.emplace_back(get_prefixed_key(key));
+    }
 
     co_return co_await async_execute_command_return_array_type(command);
 }
@@ -62,7 +65,10 @@ redis_set_commands::array_awaitable_type redis_set_commands::async_set_union(con
 redis_set_commands::array_awaitable_type redis_set_commands::async_set_inter(const array_type& keys) const
 {
     array_type command{ "SINTER" };
-    command.insert(command.end(), keys.begin(), keys.end());
+    for (const auto& key : keys)
+    {
+        command.emplace_back(get_prefixed_key(key));
+    }
 
     co_return co_await async_execute_command_return_array_type(command);
 }
@@ -70,7 +76,10 @@ redis_set_commands::array_awaitable_type redis_set_commands::async_set_inter(con
 redis_set_commands::array_awaitable_type redis_set_commands::async_set_diff(const array_type& keys) const
 {
     array_type command{ "SDIFF" };
-    command.insert(command.end(), keys.begin(), keys.end());
+    for (const auto& key : keys)
+    {
+        command.emplace_back(get_prefixed_key(key));
+    }
 
     co_return co_await async_execute_command_return_array_type(command);
 }

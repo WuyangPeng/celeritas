@@ -114,3 +114,8 @@ celeritas::redis_commands::bool_awaitable_type celeritas::redis_commands::async_
 
     co_return false;
 }
+
+celeritas::redis_commands::sorted_set_member_score_awaitable_type celeritas::redis_commands::async_execute_command_return_sorted_set_member_score_type(const array_type& command) const
+{
+    co_return co_await session_.async_execute_command_return_sorted_set_member_score_type(command);
+}

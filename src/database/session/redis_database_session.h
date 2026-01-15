@@ -39,6 +39,8 @@ namespace celeritas
         using optional_map_type = std::optional<map_type>;
         using optional_map_awaitable_type = boost::asio::awaitable<optional_map_type>;
         using scan_result_awaitable_type = boost::asio::awaitable<scan_result>;
+        using sorted_set_member_score_container = std::vector<sorted_set_member_score>;
+        using sorted_set_member_score_awaitable_type = boost::asio::awaitable<sorted_set_member_score_container>;
 
         redis_database_session(std::string_view host,
                                int port,
@@ -95,6 +97,8 @@ namespace celeritas
         [[nodiscard]] optional_map_awaitable_type async_execute_command_return_optional_map_type(const array_type& command) const;
 
         [[nodiscard]] scan_result_awaitable_type async_execute_command_return_scan_result(const array_type& command) const;
+
+        [[nodiscard]] sorted_set_member_score_awaitable_type async_execute_command_return_sorted_set_member_score_type(const array_type& command) const;
 
         [[nodiscard]] void_awaitable_type execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time) override;
 

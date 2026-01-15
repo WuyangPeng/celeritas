@@ -59,14 +59,5 @@ namespace celeritas
         // 返回有序集合中指定成员的排名 (降序，从 0 开始)。
         // 返回：成员的排名，如果成员不存在则返回 std::nullopt。
         [[nodiscard]] optional_int_awaitable_type async_reverse_rank(const std::string& key, const std::string& member) const;
-
-    private:
-        [[nodiscard]] static sorted_set_member_score_container convert_array_to_members(const array_type& array_result, bool with_scores);
-
-        [[nodiscard]] static sorted_set_member_score_container convert_array_to_members_with_scores(const array_type& array_result);
-
-        [[nodiscard]] static sorted_set_member_score convert_array_to_members_with_scores(const array_type& array_result, int index);
-
-        [[nodiscard]] static sorted_set_member_score_container convert_array_to_members_without_scores(const array_type& array_result);
     };
 }

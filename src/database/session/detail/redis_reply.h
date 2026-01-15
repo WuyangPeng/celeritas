@@ -2,6 +2,7 @@
 
 #include "redis_context.h"
 #include "database/redis/scan_result.h"
+#include "database/redis/sorted_set_member_score.h"
 
 #include <map>
 #include <optional>
@@ -20,6 +21,7 @@ namespace celeritas
         using optional_double = std::optional<double>;
         using optional_int = std::optional<int>;
         using optional_map_type = std::optional<map_type>;
+        using sorted_set_member_score_container = std::vector<sorted_set_member_score>;
 
         explicit redis_reply(redis_context& redis_context, const std::string& command);
 
@@ -52,6 +54,8 @@ namespace celeritas
         [[nodiscard]] optional_map_type to_optional_map() const;
 
         [[nodiscard]] scan_result to_scan_result() const;
+
+        [[nodiscard]] sorted_set_member_score_container to_sorted_set_member_score_container() const;
 
     private:
         using command_array_type = std::vector<const char*>;

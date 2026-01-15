@@ -93,7 +93,7 @@ celeritas::redis_reply::optional_string celeritas::redis_reply::to_optional_stri
 
 celeritas::redis_reply::array_type celeritas::redis_reply::to_array() const
 {
-    if (redis_reply_->type != REDIS_REPLY_ARRAY)
+    if (redis_reply_->type != REDIS_REPLY_ARRAY && redis_reply_->type != REDIS_REPLY_SET)
     {
         throw celeritas_error{ "reply type mismatch: Expected ARRAY, got type " + std::to_string(redis_reply_->type) };
     }
@@ -229,6 +229,52 @@ celeritas::scan_result celeritas::redis_reply::to_scan_result() const
     auto keys = get_keys();
 
     return scan_result{ std::move(cursor), std::move(keys) };
+}
+
+celeritas::redis_reply::sorted_set_member_score_container celeritas::redis_reply::to_sorted_set_member_score_container() const
+{
+    if (redis_reply_->type != REDIS_REPLY_ARRAY)
+    {
+        throw celeritas_error{ "reply type mismatch: expected array for sorted set member score result conversion." };
+    }
+
+    sorted_set_member_score_container result{};
+
+    result.reserve(redis_reply_->elements);
+
+    for (auto i = 0; i < redis_reply_->elements; ++i)
+    {
+        if (redis_reply_->element[i]->type != REDIS_REPLY_ARRAY)
+        {
+            throw celeritas_error{ "reply type mismatch: expected array for sorted set member score result conversion." };
+        }
+
+        if (redis_reply_->element[i]->elements != 2)
+        {
+            throw celeritas_error{ "reply type mismatch: expected array for sorted set member score result conversion." };
+        }
+
+        const auto key_element = redis_reply_->element[i]->element[0];
+        const auto value_element = redis_reply_->element[i]->element[1];
+
+        if (key_element->type != REDIS_REPLY_STRING)
+        {
+            throw celeritas_error{ "map key element is not a string." };
+        }
+
+        if (value_element->type != REDIS_REPLY_DOUBLE)
+        {
+            throw celeritas_error{ "map value element is not a double." };
+        }
+
+        std::string key{ key_element->str, key_element->len };
+
+        const auto value = value_element->dval;
+
+        result.emplace_back(std::move(key), value);
+    }
+
+    return result;
 }
 
 void celeritas::redis_reply::init(redis_context& redis_context, const std::string& command) const
