@@ -22,7 +22,8 @@ celeritas::redis_reply::redis_reply(redis_context& redis_context, const array_ty
       argv_{ generate_argv(command) },
       argv_length_{ generate_argv_length(command) },
       redis_reply_{ static_cast<redisReply*>(redisCommandArgv(redis_context.get_redis_context(),
-                                                              boost::numeric_cast<int>(command.size()), argv_.data(),
+                                                              boost::numeric_cast<int>(command.size()),
+                                                              argv_.data(),
                                                               argv_length_.data())) }
 {
     init(redis_context);
@@ -31,11 +32,6 @@ celeritas::redis_reply::redis_reply(redis_context& redis_context, const array_ty
 celeritas::redis_reply::~redis_reply() noexcept
 {
     freeReplyObject(redis_reply_);
-}
-
-redisReply* celeritas::redis_reply::GetRedisReply() noexcept
-{
-    return redis_reply_;
 }
 
 int celeritas::redis_reply::to_integer() const
@@ -121,23 +117,6 @@ celeritas::redis_reply::array_type celeritas::redis_reply::to_array() const
 
 celeritas::redis_reply::map_type celeritas::redis_reply::to_map() const
 {
-    const auto result = to_optional_map();
-
-    if (!result)
-    {
-        return map_type{};
-    }
-
-    return *result;
-}
-
-celeritas::redis_reply::optional_map_type celeritas::redis_reply::to_optional_map() const
-{
-    if (redis_reply_->type == REDIS_REPLY_NIL)
-    {
-        return std::nullopt;
-    }
-
     if (redis_reply_->type != REDIS_REPLY_ARRAY && redis_reply_->type != REDIS_REPLY_MAP)
     {
         throw celeritas_error{ "reply type mismatch: expected array for map conversion." };

@@ -55,12 +55,12 @@ celeritas::redis_hash_commands::array_awaitable_type celeritas::redis_hash_comma
     co_return co_await async_execute_command_return_array_type({ "HKEYS", get_prefixed_key(key) });
 }
 
-celeritas::redis_hash_commands::optional_map_awaitable_type celeritas::redis_hash_commands::async_get_all(const std::string& key) const
+celeritas::redis_hash_commands::map_awaitable_type celeritas::redis_hash_commands::async_get_all(const std::string& key) const
 {
-    co_return co_await async_execute_command_return_optional_map_type({ "HGETALL", get_prefixed_key(key) });
+    co_return co_await async_execute_command_return_map_type({ "HGETALL", get_prefixed_key(key) });
 }
 
-celeritas::redis_commands::optional_map_awaitable_type celeritas::redis_hash_commands::async_get_all_by_real_key(const std::string& key) const
+celeritas::redis_commands::map_awaitable_type celeritas::redis_hash_commands::async_get_all_by_real_key(const std::string& key) const
 {
-    co_return co_await async_execute_command_return_optional_map_type({ "HGETALL", key });
+    co_return co_await async_execute_command_return_map_type({ "HGETALL", key });
 }

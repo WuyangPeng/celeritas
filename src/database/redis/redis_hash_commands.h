@@ -44,10 +44,10 @@ namespace celeritas
 
         // 批量获取哈希表 key 中多个字段的值。
         // 返回：std::map<std::string, std::string>，其中不存在的字段不会被包含。
-        [[nodiscard]] optional_map_awaitable_type async_get_all(const std::string& key) const;
+        [[nodiscard]] map_awaitable_type async_get_all(const std::string& key) const;
 
         // 批量获取哈希表 key 中多个字段的值。
         // 使用最终的key
-        [[nodiscard]] optional_map_awaitable_type async_get_all_by_real_key(const std::string& key) const;
+        [[nodiscard]] map_awaitable_type async_get_all_by_real_key(const std::string& key) const;
     };
 }

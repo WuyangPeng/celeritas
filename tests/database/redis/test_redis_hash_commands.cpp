@@ -115,10 +115,10 @@ BOOST_FIXTURE_TEST_SUITE(redis_hash_commands_suite, celeritas::redis_database_se
             co_await hash_commands.async_set_many(key, fv);
 
             const auto all_values = co_await hash_commands.async_get_all(key);
-            BOOST_REQUIRE(all_values.has_value());
-            BOOST_REQUIRE_EQUAL(all_values->size(), 2);
-            BOOST_CHECK_EQUAL(all_values->at("f1"), "v1");
-            BOOST_CHECK_EQUAL(all_values->at("f2"), "v2");
+            BOOST_CHECK(!all_values.empty());
+            BOOST_REQUIRE_EQUAL(all_values.size(), 2);
+            BOOST_CHECK_EQUAL(all_values.at("f1"), "v1");
+            BOOST_CHECK_EQUAL(all_values.at("f2"), "v2");
 
             const auto all_fields = co_await hash_commands.async_get_fields(key);
             BOOST_REQUIRE_EQUAL(all_fields.size(), 2);
@@ -145,10 +145,10 @@ BOOST_FIXTURE_TEST_SUITE(redis_hash_commands_suite, celeritas::redis_database_se
             co_await hash_commands.async_set_many(key, fv);
 
             const auto all_values = co_await hash_commands.async_get_all_by_real_key(real_key);
-            BOOST_REQUIRE(all_values.has_value());
-            BOOST_REQUIRE_EQUAL(all_values->size(), 2);
-            BOOST_CHECK_EQUAL(all_values->at("f1"), "v1");
-            BOOST_CHECK_EQUAL(all_values->at("f2"), "v2");
+            BOOST_CHECK(!all_values.empty());
+            BOOST_REQUIRE_EQUAL(all_values.size(), 2);
+            BOOST_CHECK_EQUAL(all_values.at("f1"), "v1");
+            BOOST_CHECK_EQUAL(all_values.at("f2"), "v2");
 
             co_await session->get_redis_key_commands().async_delete(key);
             set_test_end(true);

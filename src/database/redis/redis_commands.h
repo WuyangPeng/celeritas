@@ -46,8 +46,6 @@ namespace celeritas
         using array_awaitable_type = boost::asio::awaitable<array_type>;
         using map_type = std::map<std::string, std::string>;
         using map_awaitable_type = boost::asio::awaitable<map_type>;
-        using optional_map_type = std::optional<map_type>;
-        using optional_map_awaitable_type = boost::asio::awaitable<optional_map_type>;
         using scan_result_awaitable_type = boost::asio::awaitable<scan_result>;
         using sorted_set_member_score_container = std::vector<sorted_set_member_score>;
         using sorted_set_member_score_awaitable_type = boost::asio::awaitable<sorted_set_member_score_container>;
@@ -77,8 +75,6 @@ namespace celeritas
         [[nodiscard]] optional_double_awaitable_type async_execute_command_return_optional_double(const array_type& command) const;
 
         [[nodiscard]] optional_int_awaitable_type async_execute_command_return_optional_int(const array_type& command) const;
-
-        [[nodiscard]] optional_map_awaitable_type async_execute_command_return_optional_map_type(const array_type& command) const;
 
         [[nodiscard]] scan_result_awaitable_type async_execute_command_return_scan_result(const array_type& command) const;
 

@@ -148,13 +148,6 @@ celeritas::redis_database_session::optional_int_awaitable_type celeritas::redis_
     co_return redis_reply->to_optional_int();
 }
 
-celeritas::redis_database_session::optional_map_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_map(const array_type& command) const
-{
-    const auto redis_reply = co_await async_execute_command_return_reply(command);
-
-    co_return redis_reply->to_optional_map();
-}
-
 celeritas::redis_database_session::scan_result_awaitable_type celeritas::redis_database_session::async_execute_command_return_scan_result(const array_type& command) const
 {
     const auto redis_reply = co_await async_execute_command_return_reply(command);
@@ -198,13 +191,11 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
 
 celeritas::database_session::database_entity_change_awaitable_type celeritas::redis_database_session::select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container)
 {
-    const auto optional_result = co_await redis_hash_commands_.async_get_all(redis_row_data_converter::generate_key(database));
-    if (!optional_result)
+    const auto result = co_await redis_hash_commands_.async_get_all(redis_row_data_converter::generate_key(database));
+    if (result.empty())
     {
         co_return std::nullopt;
     }
-
-    const auto& result = *optional_result;
 
     auto select = database->get_select();
 
@@ -283,13 +274,11 @@ celeritas::redis_database_session::void_awaitable_type celeritas::redis_database
 
 celeritas::database_session::database_entity_change_awaitable_type celeritas::redis_database_session::select_one_by_real_key(const std::string& key, const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) const
 {
-    const auto optional_result = co_await redis_hash_commands_.async_get_all_by_real_key(key);
-    if (!optional_result)
+    const auto result = co_await redis_hash_commands_.async_get_all_by_real_key(key);
+    if (result.empty())
     {
         co_return std::nullopt;
     }
-
-    const auto& result = *optional_result;
 
     auto select = database->get_select();
 

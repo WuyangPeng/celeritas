@@ -1,4 +1,4 @@
-﻿#include "config/basic/database_type.h"
+#include "config/basic/database_type.h"
 #include "database/basic/database_data_type_traits.h"
 #include "database/basic/database_entity_change.tpp"
 #include "database/document/test/logs_data.h"
@@ -652,45 +652,6 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                 BOOST_CHECK_EQUAL(map_res.size(), 2);
                 BOOST_CHECK_EQUAL(map_res["f1"], "v1");
                 BOOST_CHECK_EQUAL(map_res["f2"], "v2");
-                const std::vector<std::string> del_hash_command = { "DEL", hash_key };
-                co_await session->async_execute_command_return_int(del_hash_command);
-
-                set_test_end(true);
-            }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
-            }
-        });
-    }
-
-    BOOST_AUTO_TEST_CASE(test_async_execute_command_return_optional_map_type)
-    {
-        run([this]() -> boost::asio::awaitable<void> {
-            try
-            {
-                const auto session = get_session();
-                co_await session->async_connect();
-                if (!co_await session->is_health())
-                {
-                    BOOST_ERROR("Redis not reachable, skipping test.");
-                    co_return;
-                }
-
-                const auto hash_key = session->get_prefixed_key("test_opt_hash_key");
-                const std::vector<std::string> h_set_command = { "HSET", hash_key, "f1", "v1", "f2", "v2" };
-                co_await session->async_execute_command_return_int(h_set_command);
-                const std::vector<std::string> h_get_all_command = { "HGETALL", hash_key };
-                auto map_res = co_await session->async_execute_command_return_optional_map(h_get_all_command);
-                BOOST_REQUIRE(map_res.has_value());
-                BOOST_CHECK_EQUAL(map_res->size(), 2);
-                BOOST_CHECK_EQUAL((*map_res)["f1"], "v1");
-                BOOST_CHECK_EQUAL((*map_res)["f2"], "v2");
-
-                const std::vector<std::string> h_get_all_none_command = { "HGETALL", hash_key + "_none" };
-                const auto map_res_none = co_await session->async_execute_command_return_optional_map(h_get_all_none_command);
-                BOOST_CHECK(!map_res_none.has_value());
-
                 const std::vector<std::string> del_hash_command = { "DEL", hash_key };
                 co_await session->async_execute_command_return_int(del_hash_command);
 
