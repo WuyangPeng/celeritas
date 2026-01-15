@@ -3,20 +3,14 @@
 #include "database/basic/database_change_type.h"
 #include "database/generated/mysql/config/time_refresh.h"
 
-celeritas::database_pool_base::result_container_awaitable_type celeritas::mock_config_database_pool::select_all(const const_database_entity_change_shared_ptr&, const database_field_container&)
+celeritas::database_pool_base::result_container_awaitable_type celeritas::mock_config_database_pool::select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container)
 {
-    const basis_database id{ time_refresh::id_describe, int64_t{ 1 } };
-    const basis_database time_refresh{ time_refresh::time_refresh_type_describe, 1 };
-    const basis_database parameter{ time_refresh::parameter_describe, 2 };
+    if (const auto result = co_await select_one(database, field_name_container))
+    {
+        co_return result_container{ *result };
+    }
 
-    database_entity_change database_entity_change{ database_type::mysql,
-                                                   time_refresh::database_name,
-                                                   database_change_type::update_type,
-                                                   std::make_shared<basis_database_container>(basis_database_container::object_container{ id }) };
-    database_entity_change.modify(id);
-    database_entity_change.modify(time_refresh);
-    database_entity_change.modify(parameter);
-    co_return result_container{ database_entity_change };
+    co_return result_container{};
 }
 
 celeritas::database_pool_base::bool_awaitable_type celeritas::mock_config_database_pool::execute_changes(const const_database_entity_change_shared_ptr&, int)
@@ -40,5 +34,16 @@ celeritas::database_pool_base::bool_awaitable_type celeritas::mock_config_databa
 
 celeritas::database_pool_base::optional_database_entity_change_awaitable_type celeritas::mock_config_database_pool::select_one(const const_database_entity_change_shared_ptr&, const database_field_container&)
 {
-    co_return std::nullopt;
+    const basis_database id{ time_refresh::id_describe, int64_t{ 1 } };
+    const basis_database time_refresh{ time_refresh::time_refresh_type_describe, 1 };
+    const basis_database parameter{ time_refresh::parameter_describe, 2 };
+
+    database_entity_change database_entity_change{ database_type::mysql,
+                                                   time_refresh::database_name,
+                                                   database_change_type::update_type,
+                                                   std::make_shared<basis_database_container>(basis_database_container::object_container{ id }) };
+    database_entity_change.modify(id);
+    database_entity_change.modify(time_refresh);
+    database_entity_change.modify(parameter);
+    co_return database_entity_change;
 }

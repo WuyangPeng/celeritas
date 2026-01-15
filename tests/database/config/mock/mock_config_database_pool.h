@@ -10,7 +10,7 @@ namespace celeritas
         using class_type = mock_config_database_pool;
         using base_type = database_pool_base;
 
-        result_container_awaitable_type select_all(const const_database_entity_change_shared_ptr&, const database_field_container&) override;
+        result_container_awaitable_type select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) override;
 
         bool_awaitable_type execute_changes(const const_database_entity_change_shared_ptr&, int) override;
 
