@@ -1,108 +1,99 @@
 ﻿#include "mysql_statement_generator.tpp"
 
-using namespace std::literals;
-
 std::string celeritas::mysql_statement_generator::generate_insert_statement(const const_database_entity_change_shared_ptr& database)
 {
-    std::string result{};
+    std::stringstream result{};
 
-    result += "INSERT INTO `";
-    result += database->get_database_name();
-    result += "`(";
+    result << "INSERT INTO `" << database->get_database_name() << "`(";
 
     const auto& container = *database->get_database();
-    result += join_container(container, " , ", "", [](const auto& value) {
-        return "`"s + value.get_field_name() + "`";
+    join_container(result, container, " , ", "", [&result](const auto& value) {
+        result << "`" << value.get_field_name() << "`";
     });
 
-    result += ") VALUES(";
+    result << ") VALUES(";
 
-    result += join_container(container, " , ", "", [](const auto& value) {
-        return value.get_sql_value_string();
+    join_container(result, container, " , ", "", [&result](const auto& value) {
+        result << value.get_sql_value_string();
     });
 
-    result += ");";
+    result << ");";
 
-    return result;
+    return result.str();
 }
 
 std::string celeritas::mysql_statement_generator::generate_update_statement(const const_database_entity_change_shared_ptr& database)
 {
-    std::string result{};
+    std::stringstream result{};
 
-    result += "UPDATE `";
-    result += database->get_database_name();
-    result += "` SET ";
+    result << "UPDATE `" << database->get_database_name() << "` SET ";
 
-    const auto container = *database->get_database();
+    const auto& container = *database->get_database();
 
-    result += join_container(container, " , ", "", [](const auto& value) {
-        return "`"s + value.get_field_name() + "` = " + value.get_sql_value_string();
+    join_container(result, container, " , ", "", [&result](const auto& value) {
+        result << "`" << value.get_field_name() << "` = " << value.get_sql_value_string();
     });
 
-    result += " WHERE ";
+    result << " WHERE ";
 
     const auto& key = *database->get_key();
 
-    result += join_container(key, " AND ", "", [](const auto& value) {
-        return "`"s + value.get_field_name() + "` = " + value.get_sql_value_string();
+    join_container(result, key, " AND ", "", [&result](const auto& value) {
+        result << "`" << value.get_field_name() << "` = " << value.get_sql_value_string();
     });
 
-    result += " LIMIT 1;";
+    result << " LIMIT 1;";
 
-    return result;
+    return result.str();
 }
 
 std::string celeritas::mysql_statement_generator::generate_delete_statement(const const_database_entity_change_shared_ptr& database)
 {
-    std::string result{};
+    std::stringstream result{};
 
-    result += "DELETE FROM `";
-    result += database->get_database_name();
+    result << "DELETE FROM `" << database->get_database_name();
 
     const auto& key = *database->get_key();
     if (key.get_size() != 0)
     {
-        result += "` WHERE ";
+        result << "` WHERE ";
     }
 
-    result += join_container(key, " AND ", "", [](const auto& value) {
-        return "`"s + value.get_field_name() + "` = " + value.get_sql_value_string();
+    join_container(result, key, " AND ", "", [&result](const auto& value) {
+        result << "`" << value.get_field_name() << "` = " << value.get_sql_value_string();
     });
 
-    result += " LIMIT 1;";
+    result << " LIMIT 1;";
 
-    return result;
+    return result.str();
 }
 
 std::string celeritas::mysql_statement_generator::generate_select_statement(const database_field_container& field_name_container, const const_database_entity_change_shared_ptr& database)
 {
-    std::string result{};
+    std::stringstream result{};
 
-    result += "SELECT ";
+    result << "SELECT ";
 
-    result += join_container(field_name_container, " , ", " ", [](const auto& value) {
-        return "`"s + value.get_field_name().data() + "`";
+    join_container(result, field_name_container, " , ", " ", [&result](const auto& value) {
+        result << "`" << value.get_field_name() << "`";
     });
 
-    result += "FROM `";
-    result += database->get_database_name();
+    result << "FROM `" << database->get_database_name();
 
     const auto& key = *database->get_key();
 
     if (key.get_size() != 0)
     {
-        result += "` WHERE ";
+        result << "` WHERE ";
     }
     else
     {
-        result += "` ";
+        result << "` ";
     }
 
-    result += join_container(key, " AND ", "", [](const auto& value) {
-        return "`"s + value.get_field_name() + "` = " + value.get_sql_value_string();
+    join_container(result, key, " AND ", "", [&result](const auto& value) {
+        result << "`" << value.get_field_name() << "` = " << value.get_sql_value_string();
     });
 
-    return result;
+    return result.str();
 }
-

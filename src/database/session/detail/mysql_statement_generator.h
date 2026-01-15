@@ -25,6 +25,6 @@ namespace celeritas
 
     private:
         template <typename C, typename F>
-        [[nodiscard]] static std::string join_container(const C& container, std::string_view separator, std::string_view tail_separator, F&& func);
+        static void join_container(std::stringstream& ss, const C& container, std::string_view separator, std::string_view tail_separator, F&& func);
     };
 }
