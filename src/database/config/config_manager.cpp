@@ -32,7 +32,7 @@ void celeritas::config_manager::reload_from_db(const any_io_executor& any_io_exe
 void celeritas::config_manager::load_from_db(const any_io_executor& any_io_executor)
 {
     boost::asio::co_spawn(any_io_executor,
-                          noexcept_safe_call_and_log_awaitable([ this] {
+                          noexcept_safe_call_and_log_awaitable([this] {
                                                                    return this->load_from_db();
                                                                },
                                                                database_channel,
