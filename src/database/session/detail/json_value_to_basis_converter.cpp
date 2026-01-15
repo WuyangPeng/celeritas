@@ -103,35 +103,35 @@ celeritas::basis_database celeritas::json_value_to_basis_converter::convert_null
     return basis_database{ key };
 }
 
-celeritas::basis_database celeritas::json_value_to_basis_converter::convert_array_string(const std::string_view key, const boost::json::array& array)
+celeritas::basis_database celeritas::json_value_to_basis_converter::convert_array_string(const std::string_view key, const json_array_value& array)
 {
     return convert_array_impl<basis_database::string_array>(key, array, [](const auto& element) {
         return std::string{ element.get_string() };
     });
 }
 
-celeritas::basis_database celeritas::json_value_to_basis_converter::convert_array_int64(const std::string_view key, const boost::json::array& array)
+celeritas::basis_database celeritas::json_value_to_basis_converter::convert_array_int64(const std::string_view key, const json_array_value& array)
 {
     return convert_array_impl<basis_database::int64_array>(key, array, [](const auto& element) {
         return element.get_int64();
     });
 }
 
-celeritas::basis_database celeritas::json_value_to_basis_converter::convert_array_uint64(const std::string_view key, const boost::json::array& array)
+celeritas::basis_database celeritas::json_value_to_basis_converter::convert_array_uint64(const std::string_view key, const json_array_value& array)
 {
     return convert_array_impl<basis_database::int64_array>(key, array, [](const auto& element) {
         return boost::numeric_cast<int64_t>(element.get_uint64());
     });
 }
 
-celeritas::basis_database celeritas::json_value_to_basis_converter::convert_array_double(const std::string_view key, const boost::json::array& array)
+celeritas::basis_database celeritas::json_value_to_basis_converter::convert_array_double(const std::string_view key, const json_array_value& array)
 {
     return convert_array_impl<basis_database::double_array>(key, array, [](const auto& element) {
         return element.get_double();
     });
 }
 
-celeritas::basis_database celeritas::json_value_to_basis_converter::convert_array_object(const std::string_view key, const boost::json::array& array)
+celeritas::basis_database celeritas::json_value_to_basis_converter::convert_array_object(const std::string_view key, const json_array_value& array)
 {
     basis_database::document_array result{};
     result.reserve(array.size());
@@ -149,7 +149,7 @@ celeritas::basis_database celeritas::json_value_to_basis_converter::convert_arra
     return basis_database{ key, result };
 }
 
-celeritas::basis_database celeritas::json_value_to_basis_converter::convert_array_unsupported(const std::string_view key, const boost::json::array& array)
+celeritas::basis_database celeritas::json_value_to_basis_converter::convert_array_unsupported(const std::string_view key, const json_array_value& array)
 {
     throw celeritas_error{ "Unsupported type for json value to basis" };
 }

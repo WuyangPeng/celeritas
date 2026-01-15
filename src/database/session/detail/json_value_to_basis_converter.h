@@ -15,9 +15,10 @@ namespace celeritas
     public:
         using class_type = json_value_to_basis_converter;
         using json_value = boost::json::value;
-        using convert_function = std::function<basis_database(std::string_view, const boost::json::value&)>;
+        using json_array_value = boost::json::array;
+        using convert_function = std::function<basis_database(std::string_view, const json_value&)>;
         using container_type = std::map<boost::json::kind, convert_function>;
-        using array_convert_function = std::function<basis_database(std::string_view, const boost::json::array&)>;
+        using array_convert_function = std::function<basis_database(std::string_view, const json_array_value&)>;
         using array_container_type = std::map<boost::json::kind, array_convert_function>;
 
         [[nodiscard]] static basis_database convert(std::string_view key, const json_value& value);
@@ -43,19 +44,19 @@ namespace celeritas
 
         [[nodiscard]] static basis_database convert_null(std::string_view key, const json_value& value);
 
-        [[nodiscard]] static basis_database convert_array_string(std::string_view key, const boost::json::array& array);
+        [[nodiscard]] static basis_database convert_array_string(std::string_view key, const json_array_value& array);
 
-        [[nodiscard]] static basis_database convert_array_int64(std::string_view key, const boost::json::array& array);
+        [[nodiscard]] static basis_database convert_array_int64(std::string_view key, const json_array_value& array);
 
-        [[nodiscard]] static basis_database convert_array_uint64(std::string_view key, const boost::json::array& array);
+        [[nodiscard]] static basis_database convert_array_uint64(std::string_view key, const json_array_value& array);
 
-        [[nodiscard]] static basis_database convert_array_double(std::string_view key, const boost::json::array& array);
+        [[nodiscard]] static basis_database convert_array_double(std::string_view key, const json_array_value& array);
 
-        [[nodiscard]] static basis_database convert_array_object(std::string_view key, const boost::json::array& array);
+        [[nodiscard]] static basis_database convert_array_object(std::string_view key, const json_array_value& array);
 
-        [[nodiscard]] static basis_database convert_array_unsupported(std::string_view key, const boost::json::array& array);
+        [[nodiscard]] static basis_database convert_array_unsupported(std::string_view key, const json_array_value& array);
 
         template <typename Container, typename UnaryOperation>
-        [[nodiscard]] static basis_database convert_array_impl(std::string_view key, const boost::json::array& array, UnaryOperation op);
+        [[nodiscard]] static basis_database convert_array_impl(std::string_view key, const json_array_value& array, UnaryOperation op);
     };
 }

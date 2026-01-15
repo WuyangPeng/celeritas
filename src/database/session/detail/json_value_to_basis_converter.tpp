@@ -3,7 +3,7 @@
 #include "json_value_to_basis_converter.h"
 
 template <typename Container, typename UnaryOperation>
-celeritas::basis_database celeritas::json_value_to_basis_converter::convert_array_impl(std::string_view key, const boost::json::array& array, UnaryOperation op)
+celeritas::basis_database celeritas::json_value_to_basis_converter::convert_array_impl(std::string_view key, const json_array_value& array, UnaryOperation op)
 {
     Container result{};
     result.reserve(array.size());
