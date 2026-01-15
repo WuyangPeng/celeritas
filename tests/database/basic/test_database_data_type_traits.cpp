@@ -108,6 +108,7 @@ BOOST_AUTO_TEST_SUITE(database_data_type_traits_suite)
     BOOST_AUTO_TEST_CASE(test_traits_bool_type)
     {
         using bool_traits = database_data_type_traits<database_data_type::bool_type>;
+
         BOOST_CHECK((std::is_same_v<bool_traits::type, bool>));
         BOOST_CHECK((std::is_same_v<bool_traits::element_type, bool>));
         BOOST_CHECK((std::is_same_v<bool_traits::param_type, boost::call_traits<bool_traits::type>::param_type>));
