@@ -55,7 +55,7 @@ namespace celeritas
 
         [[nodiscard]] scan_result to_scan_result() const;
 
-        [[nodiscard]] sorted_set_member_score_container to_sorted_set_member_score_container() const;
+        [[nodiscard]] sorted_set_member_score_container to_sorted_set_member_score() const;
 
     private:
         using command_array_type = std::vector<const char*>;

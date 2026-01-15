@@ -1,5 +1,6 @@
 #include "mongo_database_session.h"
 #include "common/core/celeritas_error.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 #include "database/basic/basis_database.tpp"
 #include "database/basic/database_change_type.h"
@@ -81,25 +82,12 @@ celeritas::database_session::bool_awaitable_type celeritas::mongo_database_sessi
 {
     co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
 
-    try
-    {
-        co_return do_is_health();
-    }
-    catch (const mongocxx::exception& error)
-    {
-        LOG_CHANNEL(database_channel, warning) << "MongoDB health check failed: " << error.what();
-        co_return false;
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(database_channel, error) << "MongoDB health check failed: " << error.what();
-        co_return false;
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(database_channel, fatal) << "MongoDB health check unknown exception";
-        co_return false;
-    }
+    co_return noexcept_safe_call_and_log([this] {
+                                             return this->do_is_health();
+                                         },
+                                         database_channel,
+                                         "MongoDB health check failed: ",
+                                         false);
 }
 
 celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database_session::execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time)

@@ -53,8 +53,8 @@ namespace celeritas
         [[nodiscard]] result_container_awaitable_type select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) override;
 
     private:
+        using error_code_type = boost::system::error_code;
         using connection_type = boost::mysql::any_connection;
-        using error_code_type = boost::mysql::error_code;
         using field_view_type = boost::mysql::field_view;
         using row_view_type = boost::mysql::row_view;
 
@@ -64,7 +64,9 @@ namespace celeritas
 
         [[nodiscard]] results_awaitable_type async_handle_and_retry(const std::string& sql, const error_code_type& error_code);
 
-        [[nodiscard]] static database_entity_change populate_database_from_row(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container, const row_view_type& row);
+        [[nodiscard]] static database_entity_change populate_database_from_row(const const_database_entity_change_shared_ptr& database,
+                                                                               const database_field_container& field_name_container,
+                                                                               const row_view_type& row);
 
         connection_type connection_;
         mysql_parameter mysql_parameter_;

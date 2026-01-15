@@ -614,7 +614,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                 const std::vector<std::string> r_push_command{ "RPUSH", list_key, "a", "b", "c" };
                 co_await session->async_execute_command_return_int(r_push_command);
                 const std::vector<std::string> l_range_command{ "LRANGE", list_key, "0", "-1" };
-                const auto array_res = co_await session->async_execute_command_return_array_type(l_range_command);
+                const auto array_res = co_await session->async_execute_command_return_array(l_range_command);
                 BOOST_REQUIRE_EQUAL(array_res.size(), 3);
                 BOOST_CHECK_EQUAL(array_res[0], "a");
                 BOOST_CHECK_EQUAL(array_res[1], "b");
@@ -648,7 +648,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                 const std::vector<std::string> h_set_command = { "HSET", hash_key, "f1", "v1", "f2", "v2" };
                 co_await session->async_execute_command_return_int(h_set_command);
                 const std::vector<std::string> h_get_all_command = { "HGETALL", hash_key };
-                auto map_res = co_await session->async_execute_command_return_map_type(h_get_all_command);
+                auto map_res = co_await session->async_execute_command_return_map(h_get_all_command);
                 BOOST_CHECK_EQUAL(map_res.size(), 2);
                 BOOST_CHECK_EQUAL(map_res["f1"], "v1");
                 BOOST_CHECK_EQUAL(map_res["f2"], "v2");
@@ -681,14 +681,14 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                 const std::vector<std::string> h_set_command = { "HSET", hash_key, "f1", "v1", "f2", "v2" };
                 co_await session->async_execute_command_return_int(h_set_command);
                 const std::vector<std::string> h_get_all_command = { "HGETALL", hash_key };
-                auto map_res = co_await session->async_execute_command_return_optional_map_type(h_get_all_command);
+                auto map_res = co_await session->async_execute_command_return_optional_map(h_get_all_command);
                 BOOST_REQUIRE(map_res.has_value());
                 BOOST_CHECK_EQUAL(map_res->size(), 2);
                 BOOST_CHECK_EQUAL((*map_res)["f1"], "v1");
                 BOOST_CHECK_EQUAL((*map_res)["f2"], "v2");
 
                 const std::vector<std::string> h_get_all_none_command = { "HGETALL", hash_key + "_none" };
-                const auto map_res_none = co_await session->async_execute_command_return_optional_map_type(h_get_all_none_command);
+                const auto map_res_none = co_await session->async_execute_command_return_optional_map(h_get_all_none_command);
                 BOOST_CHECK(!map_res_none.has_value());
 
                 const std::vector<std::string> del_hash_command = { "DEL", hash_key };

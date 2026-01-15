@@ -1,5 +1,6 @@
 ﻿#include "redis_database_session.h"
 #include "common/core/celeritas_error.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 #include "database/basic/basis_database.tpp"
 #include "database/basic/database_change_type.h"
@@ -49,26 +50,13 @@ celeritas::database_session::bool_awaitable_type celeritas::redis_database_sessi
 {
     co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
 
-    try
-    {
-        do_is_health();
-
-        co_return true;
-    }
-    catch (const celeritas_error& error)
-    {
-        LOG_CHANNEL(database_channel, warning) << "Redis health check failed with celeritas error: " << error.what();
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(database_channel, error) << "Redis health check failed with exception: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(database_channel, fatal) << "Redis health check failed with unknown exception";
-    }
-
-    co_return false;
+    co_return noexcept_safe_call_and_log([this] {
+                                             this->do_is_health();
+                                             return true;
+                                         },
+                                         database_channel,
+                                         "Redis health check failed with celeritas error: ",
+                                         false);
 }
 
 celeritas::redis_key_commands& celeritas::redis_database_session::get_redis_key_commands()
@@ -132,14 +120,14 @@ celeritas::redis_database_session::optional_string_awaitable_type celeritas::red
     co_return redis_reply->to_optional_string();
 }
 
-celeritas::redis_database_session::array_awaitable_type celeritas::redis_database_session::async_execute_command_return_array_type(const array_type& command) const
+celeritas::redis_database_session::array_awaitable_type celeritas::redis_database_session::async_execute_command_return_array(const array_type& command) const
 {
     const auto redis_reply = co_await async_execute_command_return_reply(command);
 
     co_return redis_reply->to_array();
 }
 
-celeritas::redis_database_session::map_awaitable_type celeritas::redis_database_session::async_execute_command_return_map_type(const array_type& command) const
+celeritas::redis_database_session::map_awaitable_type celeritas::redis_database_session::async_execute_command_return_map(const array_type& command) const
 {
     const auto redis_reply = co_await async_execute_command_return_reply(command);
 
@@ -160,7 +148,7 @@ celeritas::redis_database_session::optional_int_awaitable_type celeritas::redis_
     co_return redis_reply->to_optional_int();
 }
 
-celeritas::redis_database_session::optional_map_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_map_type(const array_type& command) const
+celeritas::redis_database_session::optional_map_awaitable_type celeritas::redis_database_session::async_execute_command_return_optional_map(const array_type& command) const
 {
     const auto redis_reply = co_await async_execute_command_return_reply(command);
 
@@ -174,11 +162,11 @@ celeritas::redis_database_session::scan_result_awaitable_type celeritas::redis_d
     co_return redis_reply->to_scan_result();
 }
 
-celeritas::redis_database_session::sorted_set_member_score_awaitable_type celeritas::redis_database_session::async_execute_command_return_sorted_set_member_score_type(const array_type& command) const
+celeritas::redis_database_session::sorted_set_member_score_awaitable_type celeritas::redis_database_session::async_execute_command_return_sorted_set_member_score(const array_type& command) const
 {
     const auto redis_reply = co_await async_execute_command_return_reply(command);
 
-    co_return redis_reply->to_sorted_set_member_score_container();
+    co_return redis_reply->to_sorted_set_member_score();
 }
 
 celeritas::redis_database_session::void_awaitable_type celeritas::redis_database_session::execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time)

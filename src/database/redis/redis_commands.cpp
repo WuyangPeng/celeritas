@@ -76,12 +76,12 @@ celeritas::redis_commands::optional_string_awaitable_type celeritas::redis_comma
 
 celeritas::redis_commands::array_awaitable_type celeritas::redis_commands::async_execute_command_return_array_type(const array_type& command) const
 {
-    co_return co_await session_.async_execute_command_return_array_type(command);
+    co_return co_await session_.async_execute_command_return_array(command);
 }
 
 celeritas::redis_commands::map_awaitable_type celeritas::redis_commands::async_execute_command_return_map_type(const array_type& command) const
 {
-    co_return co_await session_.async_execute_command_return_map_type(command);
+    co_return co_await session_.async_execute_command_return_map(command);
 }
 
 celeritas::redis_commands::optional_double_awaitable_type celeritas::redis_commands::async_execute_command_return_optional_double(const array_type& command) const
@@ -96,7 +96,7 @@ celeritas::redis_commands::optional_int_awaitable_type celeritas::redis_commands
 
 celeritas::redis_commands::optional_map_awaitable_type celeritas::redis_commands::async_execute_command_return_optional_map_type(const array_type& command) const
 {
-    co_return co_await session_.async_execute_command_return_optional_map_type(command);
+    co_return co_await session_.async_execute_command_return_optional_map(command);
 }
 
 celeritas::redis_commands::scan_result_awaitable_type celeritas::redis_commands::async_execute_command_return_scan_result(const array_type& command) const
@@ -117,5 +117,5 @@ celeritas::redis_commands::bool_awaitable_type celeritas::redis_commands::async_
 
 celeritas::redis_commands::sorted_set_member_score_awaitable_type celeritas::redis_commands::async_execute_command_return_sorted_set_member_score_type(const array_type& command) const
 {
-    co_return co_await session_.async_execute_command_return_sorted_set_member_score_type(command);
+    co_return co_await session_.async_execute_command_return_sorted_set_member_score(command);
 }

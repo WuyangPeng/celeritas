@@ -1,4 +1,5 @@
 ﻿#include "config_manager.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 #include "database/database_constant.h"
 #include "database/generated/mysql/player/user.h"
@@ -19,17 +20,24 @@ void celeritas::config_manager::reload_from_db(const any_io_executor& any_io_exe
     }
 
     boost::asio::co_spawn(any_io_executor,
-                          [db_name,id,this] {
-                              return this->load_from_db(db_name, id);
-                          }, boost::asio::detached);
+                          noexcept_safe_call_and_log_awaitable([db_name,id,this] {
+                                                                   return this->load_from_db(db_name, id);
+                                                               },
+                                                               database_channel,
+                                                               "load config from db error: "),
+
+                          boost::asio::detached);
 }
 
 void celeritas::config_manager::load_from_db(const any_io_executor& any_io_executor)
 {
     boost::asio::co_spawn(any_io_executor,
-                          [this] {
-                              return this->load_from_db();
-                          }, boost::asio::detached);
+                          noexcept_safe_call_and_log_awaitable([ this] {
+                                                                   return this->load_from_db();
+                                                               },
+                                                               database_channel,
+                                                               "load config from db error: "),
+                          boost::asio::detached);
 }
 
 celeritas::config_manager::optional_time_refresh celeritas::config_manager::get_time_refresh(const int64_t id)
@@ -47,28 +55,12 @@ celeritas::config_manager::optional_time_refresh celeritas::config_manager::get_
 
 celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_from_db()
 {
-    try
-    {
-        co_return co_await do_load_from_db();
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(database_channel, error) << "load config from db error: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(database_channel, fatal) << "load config from db unknown error.";
-    }
-}
-
-celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_load_from_db()
-{
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_config_db_name.data());
 
-    co_await do_load_time_refresh_db(mysql_pool);
+    co_await load_time_refresh_db(mysql_pool);
 }
 
-celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_load_time_refresh_db(const database_pool_shared_ptr& mysql_pool)
+celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_time_refresh_db(const database_pool_shared_ptr& mysql_pool)
 {
     const auto time_refresh_result = co_await mysql_pool->select_all(time_refresh::get_select(database_type::mysql), time_refresh::get_database_field_container());
 
@@ -85,39 +77,23 @@ celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_loa
 
 celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_from_db(const std::string& db_name, const int64_t id)
 {
-    try
-    {
-        co_return co_await do_load_from_db(db_name, id);
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(auth_channel, error) << "load config from db error: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(auth_channel, fatal) << "load config from db unknown error.";
-    }
-}
-
-celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_load_from_db(const std::string& db_name, const int64_t id)
-{
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_config_db_name.data());
 
     if (db_name.empty())
     {
-        co_await do_load_time_refresh_db(mysql_pool, id);
+        co_await load_time_refresh_db(mysql_pool, id);
     }
     else if (db_name == time_refresh_db_name)
     {
-        co_await do_load_time_refresh_db(mysql_pool, id);
+        co_await load_time_refresh_db(mysql_pool, id);
     }
 }
 
-celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_load_time_refresh_db(const database_pool_shared_ptr& mysql_pool, const int64_t id)
+celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_time_refresh_db(const database_pool_shared_ptr& mysql_pool, const int64_t id)
 {
     if (id == 0)
     {
-        co_return co_await do_load_time_refresh_db(mysql_pool);
+        co_return co_await load_time_refresh_db(mysql_pool);
     }
 
     if (const auto optional_time_refresh = co_await mysql_pool->select_one(time_refresh::get_select(database_type::mysql, id), time_refresh::get_database_field_container()))

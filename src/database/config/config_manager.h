@@ -33,15 +33,11 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type load_from_db();
 
-        [[nodiscard]] void_awaitable_type do_load_from_db();
-
-        [[nodiscard]] void_awaitable_type do_load_time_refresh_db(const database_pool_shared_ptr& mysql_pool);
+        [[nodiscard]] void_awaitable_type load_time_refresh_db(const database_pool_shared_ptr& mysql_pool);
 
         [[nodiscard]] void_awaitable_type load_from_db(const std::string& db_name, int64_t id);
 
-        [[nodiscard]] void_awaitable_type do_load_from_db(const std::string& db_name, int64_t id);
-
-        [[nodiscard]] void_awaitable_type do_load_time_refresh_db(const database_pool_shared_ptr& mysql_pool, int64_t id);
+        [[nodiscard]] void_awaitable_type load_time_refresh_db(const database_pool_shared_ptr& mysql_pool, int64_t id);
 
         std::shared_mutex shared_mutex_;
         time_refresh_container_type time_refresh_;

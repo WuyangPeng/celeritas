@@ -161,4 +161,64 @@ BOOST_AUTO_TEST_SUITE(noexcept_safe_call_and_log_suite)
         BOOST_CHECK(called);
     }
 
+    // 测试：带返回值的 awaitable 重载 - 正常返回
+    BOOST_AUTO_TEST_CASE(test_awaitable_return_value_no_exception)
+    {
+        boost::asio::io_context io_context;
+        auto result = 0;
+
+        auto func = []() -> boost::asio::awaitable<int> {
+            co_return 42;
+        };
+
+        auto awaitable = [&]() -> boost::asio::awaitable<void> {
+            result = co_await celeritas::noexcept_safe_call_and_log_awaitable(func, "test_channel", "error message", -1);
+        };
+
+        boost::asio::co_spawn(io_context, awaitable, boost::asio::detached);
+        io_context.run();
+
+        BOOST_CHECK_EQUAL(result, 42);
+    }
+
+    // 测试：带返回值的 awaitable 重载 - 抛出 std::exception 时返回默认值
+    BOOST_AUTO_TEST_CASE(test_awaitable_return_value_std_exception)
+    {
+        boost::asio::io_context io_context;
+        auto result = 0;
+
+        auto func = []() -> boost::asio::awaitable<int> {
+            throw std::runtime_error("runtime error");
+        };
+
+        auto awaitable = [&]() -> boost::asio::awaitable<void> {
+            result = co_await celeritas::noexcept_safe_call_and_log_awaitable(func, "test_channel", "error message", -1);
+        };
+
+        boost::asio::co_spawn(io_context, awaitable, boost::asio::detached);
+        io_context.run();
+
+        BOOST_CHECK_EQUAL(result, -1);
+    }
+
+    // 测试：带返回值的 awaitable 重载 - 抛出未知异常时返回默认值
+    BOOST_AUTO_TEST_CASE(test_awaitable_return_value_unknown_exception)
+    {
+        boost::asio::io_context io_context;
+        int result = 0;
+
+        auto func = []() -> boost::asio::awaitable<int> {
+            throw 123;
+        };
+
+        auto awaitable = [&]() -> boost::asio::awaitable<void> {
+            result = co_await celeritas::noexcept_safe_call_and_log_awaitable(func, "test_channel", "error message", -1);
+        };
+
+        boost::asio::co_spawn(io_context, awaitable, boost::asio::detached);
+        io_context.run();
+
+        BOOST_CHECK_EQUAL(result, -1);
+    }
+
 BOOST_AUTO_TEST_SUITE_END()

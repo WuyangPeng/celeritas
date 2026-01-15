@@ -86,19 +86,19 @@ namespace celeritas
 
         [[nodiscard]] optional_string_awaitable_type async_execute_command_return_optional_string(const array_type& command) const;
 
-        [[nodiscard]] array_awaitable_type async_execute_command_return_array_type(const array_type& command) const;
+        [[nodiscard]] array_awaitable_type async_execute_command_return_array(const array_type& command) const;
 
-        [[nodiscard]] map_awaitable_type async_execute_command_return_map_type(const array_type& command) const;
+        [[nodiscard]] map_awaitable_type async_execute_command_return_map(const array_type& command) const;
 
         [[nodiscard]] optional_double_awaitable_type async_execute_command_return_optional_double(const array_type& command) const;
 
         [[nodiscard]] optional_int_awaitable_type async_execute_command_return_optional_int(const array_type& command) const;
 
-        [[nodiscard]] optional_map_awaitable_type async_execute_command_return_optional_map_type(const array_type& command) const;
+        [[nodiscard]] optional_map_awaitable_type async_execute_command_return_optional_map(const array_type& command) const;
 
         [[nodiscard]] scan_result_awaitable_type async_execute_command_return_scan_result(const array_type& command) const;
 
-        [[nodiscard]] sorted_set_member_score_awaitable_type async_execute_command_return_sorted_set_member_score_type(const array_type& command) const;
+        [[nodiscard]] sorted_set_member_score_awaitable_type async_execute_command_return_sorted_set_member_score(const array_type& command) const;
 
         [[nodiscard]] void_awaitable_type execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time) override;
 

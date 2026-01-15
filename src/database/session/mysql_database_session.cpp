@@ -51,7 +51,7 @@ celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database
 
 celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_database_session::async_query(const std::string& sql)
 {
-    std::optional<boost::system::error_code> retry_error{};
+    std::optional<error_code_type> retry_error{};
 
     try
     {
@@ -79,27 +79,14 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
 
 celeritas::database_session::bool_awaitable_type celeritas::mysql_database_session::is_health()
 {
-    try
-    {
-        co_await connection_.async_ping(boost::asio::use_awaitable);
+    co_return co_await noexcept_safe_call_and_log_awaitable([this]() -> boost::asio::awaitable<bool> {
+                                                                co_await connection_.async_ping(boost::asio::use_awaitable);
 
-        co_return true;
-    }
-    catch (const boost::system::system_error& error)
-    {
-        LOG_CHANNEL(database_channel, warning) << "mysql health check failed with error: " << error.what();
-        co_return false;
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(database_channel, error) << "mysql health check failed with unexpected exception: " << error.what();
-        co_return false;
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(database_channel, fatal) << "mysql health check failed with unknown exception";
-        co_return false;
-    }
+                                                                co_return true;
+                                                            },
+                                                            database_channel,
+                                                            "mysql health check failed with error: ",
+                                                            false);
 }
 
 celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time)

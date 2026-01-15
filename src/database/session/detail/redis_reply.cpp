@@ -236,7 +236,7 @@ celeritas::scan_result celeritas::redis_reply::to_scan_result() const
     return scan_result{ std::move(cursor), std::move(keys) };
 }
 
-celeritas::redis_reply::sorted_set_member_score_container celeritas::redis_reply::to_sorted_set_member_score_container() const
+celeritas::redis_reply::sorted_set_member_score_container celeritas::redis_reply::to_sorted_set_member_score() const
 {
     if (redis_reply_->type != REDIS_REPLY_ARRAY)
     {

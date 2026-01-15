@@ -38,7 +38,7 @@ namespace celeritas
     }
 
     template <typename Func, typename ReturnType>
-    [[nodiscard]] ReturnType noexcept_safe_call_and_log(Func f, const std::string_view channel_name, const std::string& error_message, const ReturnType& defaultValue) noexcept
+    [[nodiscard]] ReturnType noexcept_safe_call_and_log(Func f, const std::string_view channel_name, const std::string& error_message, const ReturnType& default_value) noexcept
     {
         try
         {
@@ -67,7 +67,7 @@ namespace celeritas
             }
         }
 
-        return defaultValue;
+        return default_value;
     }
 
     template <typename Func>
@@ -99,5 +99,38 @@ namespace celeritas
                 // 忽略日志记录失败。
             }
         }
+    }
+
+    template <typename Func, typename ReturnType>
+    [[nodiscard]] boost::asio::awaitable<ReturnType> noexcept_safe_call_and_log_awaitable(Func f, const std::string_view channel_name, const std::string& error_message, const ReturnType& default_value) noexcept
+    {
+        try
+        {
+            co_return co_await f();
+        }
+        catch (const std::exception& exception)
+        {
+            try
+            {
+                LOG_CHANNEL(channel_name, error) << error_message << exception.what();
+            }
+            catch (...)
+            {
+                // 忽略日志记录失败。
+            }
+        }
+        catch (...)
+        {
+            try
+            {
+                LOG_CHANNEL(channel_name, fatal) << "unknown error[" << error_message << "]";
+            }
+            catch (...)
+            {
+                // 忽略日志记录失败。
+            }
+        }
+
+        co_return default_value;
     }
 }
