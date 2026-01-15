@@ -38,6 +38,11 @@ celeritas::custom_data celeritas::custom_data::from_document(const document_type
 {
     const auto type = get_type(document);
 
+    if (type.empty())
+    {
+        return custom_data{};
+    }
+
     if (type == equipment_description)
     {
         return from_equipment_description(document);
@@ -61,7 +66,7 @@ std::string celeritas::custom_data::get_type(const document_type& document)
         }
     }
 
-    throw celeritas_error{ "custom_data::get_type() failed." };
+    return "";
 }
 
 celeritas::custom_data celeritas::custom_data::from_equipment_description(const document_type& document)
