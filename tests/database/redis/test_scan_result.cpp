@@ -1,4 +1,4 @@
-#include "database/redis/scan_result.h"
+﻿#include "database/redis/scan_result.h"
 
 #include <boost/test/unit_test.hpp>
 

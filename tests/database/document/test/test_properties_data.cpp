@@ -1,4 +1,4 @@
-#include "database/document/test/properties_data.h"
+﻿#include "database/document/test/properties_data.h"
 #include "database/basic/basis_database.h"
 
 #include <boost/test/unit_test.hpp>

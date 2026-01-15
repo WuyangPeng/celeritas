@@ -1,4 +1,4 @@
-#include "config/basic/database_type.h"
+﻿#include "config/basic/database_type.h"
 #include "database/generated/redis/test/redis_test.h"
 #include "database/entity/database_entity.h"
 #include "database/basic/basis_database.h"
