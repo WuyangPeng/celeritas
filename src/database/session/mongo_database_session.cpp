@@ -8,6 +8,7 @@
 #include "database/basic/database_entity_change.h"
 #include "detail/mongo_row_data_converter.h"
 
+#include <boost/polymorphic_pointer_cast.hpp>
 #include <boost/asio/strand.hpp>
 #include <boost/asio/use_awaitable.hpp>
 #include <mongocxx/exception/operation_exception.hpp>
@@ -82,8 +83,8 @@ celeritas::database_session::bool_awaitable_type celeritas::mongo_database_sessi
 {
     co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
 
-    co_return noexcept_safe_call_and_log([this] {
-                                             return this->do_is_health();
+    co_return noexcept_safe_call_and_log([self = boost::polymorphic_pointer_downcast<class_type>(shared_from_this())] {
+                                             return self->do_is_health();
                                          },
                                          database_channel,
                                          "MongoDB health check failed: ",

@@ -8,7 +8,7 @@
 namespace celeritas
 {
     // 数据库会话类，代表一个数据库连接
-    class database_session
+    class database_session : public std::enable_shared_from_this<database_session>
     {
     public:
         using class_type = database_session;

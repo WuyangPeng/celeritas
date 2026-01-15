@@ -33,11 +33,9 @@ void celeritas::timer_base::stop()
 
 void celeritas::timer_base::wait_for_next_tick()
 {
-    auto self = shared_from_this();
-
     timer_.expires_after(interval_);
     timer_.async_wait(
-        [self](const error_code_type& error_code) {
+        [self = shared_from_this()](const error_code_type& error_code) {
             self->next_tick(error_code);
         });
 }
@@ -49,8 +47,8 @@ void celeritas::timer_base::set_duration_type(duration_type interval)
 
 void celeritas::timer_base::on_timer_elapsed()
 {
-    noexcept_safe_call_and_log([this] {
-                                   this->execute_timer_task();
+    noexcept_safe_call_and_log([self = shared_from_this()] {
+                                   self->execute_timer_task();
                                },
                                common_channel,
                                "timer elapsed error: ");

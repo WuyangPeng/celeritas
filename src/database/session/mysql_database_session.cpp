@@ -9,6 +9,7 @@
 #include "detail/mysql_statement_generator.h"
 
 #include <boost/lexical_cast.hpp>
+#include <boost/polymorphic_pointer_cast.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/asio/use_awaitable.hpp>
@@ -79,8 +80,8 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
 
 celeritas::database_session::bool_awaitable_type celeritas::mysql_database_session::is_health()
 {
-    co_return co_await noexcept_safe_call_and_log_awaitable([this]() -> boost::asio::awaitable<bool> {
-                                                                co_await connection_.async_ping(boost::asio::use_awaitable);
+    co_return co_await noexcept_safe_call_and_log_awaitable([self = boost::polymorphic_pointer_downcast<class_type>(shared_from_this())]() -> boost::asio::awaitable<bool> {
+                                                                co_await self->connection_.async_ping(boost::asio::use_awaitable);
 
                                                                 co_return true;
                                                             },

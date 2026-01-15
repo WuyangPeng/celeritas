@@ -32,7 +32,7 @@ void celeritas::buffer_pool_impl::reclaim(const duration_type idle_seconds)
 
     const auto deadline = std::chrono::steady_clock::now() - idle_seconds;
 
-    std::erase_if(pool_, [&](auto& entry) {
+    std::erase_if(pool_, [deadline = deadline](auto& entry) {
         return entry.second.last_take() < deadline;
     });
 }

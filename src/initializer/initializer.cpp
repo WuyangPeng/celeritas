@@ -11,6 +11,8 @@
 #include "proto/celeritas.pb.h"
 #include "proto/common/common.pb.h"
 
+#include <boost/polymorphic_pointer_cast.hpp>
+
 using namespace std::literals;
 
 celeritas::initializer::initializer_shared_ptr celeritas::initializer::create(const std::string_view& server_type, std::string config_file_path)
@@ -190,13 +192,13 @@ void celeritas::initializer::setup_signal_handler()
 {
     // 异步等待信号
     signals_.async_wait(
-        [this](const boost::system::error_code& error, const int signal_number) {
+        [self = boost::polymorphic_pointer_downcast<class_type>(shared_from_this())](const boost::system::error_code& error, const int signal_number) {
             if (!error)
             {
-                LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop! signal_number = " <<
+                LOG_CHANNEL(initializer_channel, info) << self->get_server_type() << " server is stop! signal_number = " <<
                         signal_number << ",error = " << error.message();
 
-                stop();
+                self->stop();
             }
         });
 

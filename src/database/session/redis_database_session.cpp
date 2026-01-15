@@ -9,6 +9,8 @@
 #include "detail/redis_row_data_converter.h"
 #include "detail/redis_to_basis_converter.tpp"
 
+#include <boost/polymorphic_pointer_cast.hpp>
+
 using namespace std::literals;
 
 celeritas::redis_database_session::redis_database_session(const std::string_view host,
@@ -50,8 +52,8 @@ celeritas::database_session::bool_awaitable_type celeritas::redis_database_sessi
 {
     co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
 
-    co_return noexcept_safe_call_and_log([this] {
-                                             this->do_is_health();
+    co_return noexcept_safe_call_and_log([self = boost::polymorphic_pointer_downcast<class_type>(shared_from_this())] {
+                                             self->do_is_health();
                                              return true;
                                          },
                                          database_channel,

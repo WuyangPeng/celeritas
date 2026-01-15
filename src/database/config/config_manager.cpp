@@ -20,8 +20,8 @@ void celeritas::config_manager::reload_from_db(const any_io_executor& any_io_exe
     }
 
     boost::asio::co_spawn(any_io_executor,
-                          noexcept_safe_call_and_log_awaitable([db_name,id,this] {
-                                                                   return this->load_from_db(db_name, id);
+                          noexcept_safe_call_and_log_awaitable([db_name,id] {
+                                                                   return get_instance().load_from_db(db_name, id);
                                                                },
                                                                database_channel,
                                                                "load config from db error: "),
@@ -32,8 +32,8 @@ void celeritas::config_manager::reload_from_db(const any_io_executor& any_io_exe
 void celeritas::config_manager::load_from_db(const any_io_executor& any_io_executor)
 {
     boost::asio::co_spawn(any_io_executor,
-                          noexcept_safe_call_and_log_awaitable([this] {
-                                                                   return this->load_from_db();
+                          noexcept_safe_call_and_log_awaitable([] {
+                                                                   return get_instance().load_from_db();
                                                                },
                                                                database_channel,
                                                                "load config from db error: "),

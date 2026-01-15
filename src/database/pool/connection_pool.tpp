@@ -174,8 +174,10 @@ celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connecti
 template <typename SessionType>
 celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connection_pool<SessionType>::execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time)
 {
-    co_return co_await noexcept_safe_call_and_log_awaitable([this,database,expiration_time]() -> boost::asio::awaitable<bool> {
-                                                                co_return co_await this->do_execute_changes(database, expiration_time);
+    co_return co_await noexcept_safe_call_and_log_awaitable([self = boost::polymorphic_pointer_downcast<class_type>(shared_from_this()),
+                                                                database = database,
+                                                                expiration_time = expiration_time]() -> boost::asio::awaitable<bool> {
+                                                                co_return co_await self->do_execute_changes(database, expiration_time);
                                                             },
                                                             database_channel,
                                                             "execute changes error: ",
