@@ -141,12 +141,14 @@ celeritas::player_time_refresh::document_type celeritas::player_time_refresh::to
     document.emplace_back(time_refresh_type_description, enum_cast_underlying(time_refresh_type_));
     document.emplace_back(parameter_description, parameter_);
     document.emplace_back(time_id_description, time_id_);
+
     traits::int32_array_type basic{};
     for (const auto& element : component_)
     {
-        basic.emplace_back(static_cast<int32_t>(element));
+        basic.emplace_back(enum_cast_underlying(element));
     }
     document.emplace_back(component_description, basic);
+
     document.emplace_back(last_refresh_time_description, last_refresh_time_);
 
     return document;
@@ -172,9 +174,9 @@ celeritas::player_time_refresh celeritas::player_time_refresh::from_document(con
         }
         if (element.get_field_name() == component_description)
         {
-            const auto value = element.get_value<database_data_type::int32_array_type>();
+            const auto& result = element.get_value<database_data_type::int32_array_type>();
             component_container container{};
-            for (const auto& component_type : value)
+            for (const auto& component_type : result)
             {
                 container.emplace_back(underlying_cast_enum<player_component_type>(component_type));
             }

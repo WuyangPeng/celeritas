@@ -28,6 +28,12 @@ namespace celeritas
     private:
         using variant_type = std::variant<std::monostate, equipment_data, consumable_data>;
 
+        [[nodiscard]] static std::string get_type(const document_type& document);
+
+        [[nodiscard]] static custom_data from_equipment_description(const document_type& document);
+
+        [[nodiscard]] static custom_data from_consumable_description(const document_type& document);
+
         variant_type detail_;
     };
 }

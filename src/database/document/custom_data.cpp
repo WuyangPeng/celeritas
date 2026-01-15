@@ -1,5 +1,5 @@
 ﻿#include "custom_data.h"
-#include "develop_data.h"
+#include "common/core/celeritas_error.h"
 #include "database/basic/basis_database.tpp"
 
 celeritas::custom_data::custom_data()
@@ -36,40 +36,58 @@ celeritas::custom_data::document_type celeritas::custom_data::to_document_type()
 
 celeritas::custom_data celeritas::custom_data::from_document(const document_type& document)
 {
-    custom_data custom_data{};
+    const auto type = get_type(document);
 
-    std::string type{};
+    if (type == equipment_description)
+    {
+        return from_equipment_description(document);
+    }
+
+    if (type == consumable_description)
+    {
+        return from_consumable_description(document);
+    }
+
+    throw celeritas_error{ "custom_data::from_document() failed." };
+}
+
+std::string celeritas::custom_data::get_type(const document_type& document)
+{
     for (const auto& element : document)
     {
         if (element.get_field_name() == type_description)
         {
-            type = element.get_value<database_data_type::string_type>();
+            return element.get_value<database_data_type::string_type>();
+        }
+    }
+
+    throw celeritas_error{ "custom_data::get_type() failed." };
+}
+
+celeritas::custom_data celeritas::custom_data::from_equipment_description(const document_type& document)
+{
+    custom_data custom_data{};
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == data_description)
+        {
+            custom_data.detail_ = equipment_data::from_document(element.get_value<database_data_type::document_type>());
             break;
         }
     }
+    return custom_data;
+}
 
-    if (type == equipment_description)
+celeritas::custom_data celeritas::custom_data::from_consumable_description(const document_type& document)
+{
+    custom_data custom_data{};
+    for (const auto& element : document)
     {
-        for (const auto& element : document)
+        if (element.get_field_name() == data_description)
         {
-            if (element.get_field_name() == data_description)
-            {
-                custom_data.detail_ = equipment_data::from_document(element.get_value<database_data_type::document_type>());
-                break;
-            }
+            custom_data.detail_ = consumable_data::from_document(element.get_value<database_data_type::document_type>());
+            break;
         }
     }
-    else if (type == consumable_description)
-    {
-        for (const auto& element : document)
-        {
-            if (element.get_field_name() == data_description)
-            {
-                custom_data.detail_ = consumable_data::from_document(element.get_value<database_data_type::document_type>());
-                break;
-            }
-        }
-    }
-
     return custom_data;
 }

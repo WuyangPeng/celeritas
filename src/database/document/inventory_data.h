@@ -4,7 +4,6 @@
 #include "database/basic/database_data_type_traits.h"
 
 #include <cstdint>
-#include <string>
 
 namespace celeritas
 {

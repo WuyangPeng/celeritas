@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "boost/asio/execution/allocator.hpp"
 #include "database/basic/database_data_type_traits.h"
 
 #include <cstdint>
