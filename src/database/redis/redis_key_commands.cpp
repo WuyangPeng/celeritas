@@ -2,6 +2,8 @@
 #include "database/database_constant.h"
 #include "database/redis/redis_key_commands.h"
 
+#include <boost/lexical_cast.hpp>
+
 celeritas::redis_key_commands::redis_key_commands(redis_database_session& session) noexcept
     : base_type{ session }
 {
@@ -100,7 +102,7 @@ celeritas::redis_commands::array_awaitable_type celeritas::redis_key_commands::a
 
     while (scan.get_cursor() != "0")
     {
-        scan = co_await async_scan(pattern, std::stoi(scan.get_cursor()), redis_cursor_one_request_size);
+        scan = co_await async_scan(pattern, boost::lexical_cast<int>(scan.get_cursor()), redis_cursor_one_request_size);
         scan_keys = scan.get_keys();
         keys.insert(keys.cend(), scan_keys.cbegin(), scan_keys.cend());
     }
