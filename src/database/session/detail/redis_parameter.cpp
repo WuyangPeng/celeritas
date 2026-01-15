@@ -1,6 +1,11 @@
 ﻿#include "redis_parameter.h"
 
-celeritas::redis_parameter::redis_parameter(const std::string_view host, const int port, const std::string_view user, const std::string_view password, const std::string_view db_name, const int expire_seconds)
+celeritas::redis_parameter::redis_parameter(const std::string_view host,
+                                            const int port,
+                                            const std::string_view user,
+                                            const std::string_view password,
+                                            const std::string_view db_name,
+                                            const int expire_seconds)
     : host_{ host }, port_{ port }, user_{ user }, password_{ password }, db_name_{ db_name }, expire_seconds_{ expire_seconds }
 {
 }

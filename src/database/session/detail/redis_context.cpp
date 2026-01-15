@@ -1,8 +1,6 @@
 ﻿#include "redis_context.h"
 #include "common/core/celeritas_error.h"
 
-using namespace std::literals;
-
 celeritas::redis_context::redis_context(const std::string& host, const int port)
     : redis_context_{ redisConnect(host.c_str(), port) }
 {
@@ -13,7 +11,7 @@ celeritas::redis_context::redis_context(const std::string& host, const int port)
 
     if (redis_context_->err != REDIS_OK)
     {
-        throw celeritas_error{ "failed to connect to redis server: "s + redis_context_->errstr };
+        throw celeritas_error{ "failed to connect to redis server: {}", redis_context_->errstr };
     }
 }
 

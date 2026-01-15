@@ -6,15 +6,15 @@
 
 #include <boost/numeric/conversion/cast.hpp>
 
-using namespace std::literals;
-
 celeritas::redis_reply::redis_reply(redis_context& redis_context, const std::string& command)
     : command_{ command },
       argv_{},
       argv_length_{},
       redis_reply_{ static_cast<redisReply*>(redisCommand(redis_context.get_redis_context(), command.c_str())) }
 {
-    init(redis_context, command);
+    LOG_CHANNEL(database_channel, debug) << "redis command: " << command;
+
+    init(redis_context);
 }
 
 celeritas::redis_reply::redis_reply(redis_context& redis_context, const array_type& command)
@@ -91,11 +91,9 @@ celeritas::redis_reply::optional_string celeritas::redis_reply::to_optional_stri
 
 celeritas::redis_reply::array_type celeritas::redis_reply::to_array() const
 {
-    array_type result{};
-
     if (redis_reply_->type == REDIS_REPLY_NIL)
     {
-        return result;
+        return array_type{};
     }
 
     if (redis_reply_->type != REDIS_REPLY_ARRAY && redis_reply_->type != REDIS_REPLY_SET)
@@ -103,23 +101,14 @@ celeritas::redis_reply::array_type celeritas::redis_reply::to_array() const
         throw celeritas_error{ "reply type mismatch: Expected ARRAY, got type:{} ", redis_reply_->type };
     }
 
-    result.reserve(redis_reply_->elements);
-
-    for (auto i = 0; i < redis_reply_->elements; ++i)
-    {
-        const auto element = redis_reply_->element[i];
-
-        result.emplace_back(to_string_from_element(element));
-    }
-
-    return result;
+    return do_to_array();
 }
 
 celeritas::redis_reply::map_type celeritas::redis_reply::to_map() const
 {
-    if (redis_reply_->type != REDIS_REPLY_ARRAY && redis_reply_->type != REDIS_REPLY_MAP)
+    if (redis_reply_->type != REDIS_REPLY_MAP)
     {
-        throw celeritas_error{ "reply type mismatch: expected array for map conversion." };
+        throw celeritas_error{ "reply type mismatch: expected map for map conversion." };
     }
 
     const auto num_elements = redis_reply_->elements;
@@ -129,31 +118,12 @@ celeritas::redis_reply::map_type celeritas::redis_reply::to_map() const
         throw celeritas_error{ "map conversion failed: expected even number of elements for key-value map, got {}", num_elements };
     }
 
-    map_type result{};
-
     if (num_elements == 0)
     {
-        return result;
+        return map_type{};
     }
 
-    for (auto i = 0; i < num_elements; i += 2)
-    {
-        const auto key_element = redis_reply_->element[i];
-        const auto value_element = redis_reply_->element[i + 1];
-
-        if (key_element->type != REDIS_REPLY_STRING)
-        {
-            throw celeritas_error{ "map key element is not a string." };
-        }
-
-        std::string key{ key_element->str, key_element->len };
-
-        auto value = to_string_from_element(value_element);
-
-        result.emplace(std::move(key), std::move(value));
-    }
-
-    return result;
+    return do_to_map();
 }
 
 celeritas::scan_result celeritas::redis_reply::to_scan_result() const
@@ -189,71 +159,17 @@ celeritas::redis_reply::sorted_set_member_score_container celeritas::redis_reply
 
     for (auto i = 0; i < redis_reply_->elements; ++i)
     {
-        if (redis_reply_->element[i]->type != REDIS_REPLY_ARRAY)
-        {
-            throw celeritas_error{ "reply type mismatch: expected array for sorted set member score result conversion." };
-        }
-
-        if (redis_reply_->element[i]->elements != 2)
-        {
-            throw celeritas_error{ "reply type mismatch: expected array for sorted set member score result conversion." };
-        }
-
-        const auto key_element = redis_reply_->element[i]->element[0];
-        const auto value_element = redis_reply_->element[i]->element[1];
-
-        if (key_element->type != REDIS_REPLY_STRING)
-        {
-            throw celeritas_error{ "map key element is not a string." };
-        }
-
-        if (value_element->type != REDIS_REPLY_DOUBLE)
-        {
-            throw celeritas_error{ "map value element is not a double." };
-        }
-
-        std::string key{ key_element->str, key_element->len };
-
-        const auto value = value_element->dval;
-
-        result.emplace_back(std::move(key), value);
+        result.emplace_back(to_sorted_set_member_score(i));
     }
 
     return result;
-}
-
-void celeritas::redis_reply::init(redis_context& redis_context, const std::string& command) const
-{
-    LOG_CHANNEL(database_channel, debug) << "redis command: " << command;
-
-    if (redis_reply_ == nullptr)
-    {
-        throw celeritas_error{ "command failed (NULL reply):  "s + redis_context.get_redis_context()->errstr };
-    }
-
-    std::string result_message{};
-    if (redis_reply_->type == REDIS_REPLY_ERROR || redis_reply_->type == REDIS_REPLY_STATUS)
-    {
-        result_message = std::string{ redis_reply_->str, redis_reply_->len };
-    }
-
-    if (redis_reply_->type == REDIS_REPLY_ERROR)
-    {
-        throw celeritas_error{ "command failed (redis error reply):  " + result_message };
-    }
-
-    // 特殊处理 AUTH 命令，确保它是 OK (如果需要严格检查)
-    if (command.find("AUTH") == 0 && redis_reply_->type == REDIS_REPLY_STATUS && result_message != redis_ok)
-    {
-        throw celeritas_error{ "command failed (not ok):  " + result_message };
-    }
 }
 
 void celeritas::redis_reply::init(redis_context& redis_context) const
 {
     if (redis_reply_ == nullptr)
     {
-        throw celeritas_error{ "command failed (NULL reply):  "s + redis_context.get_redis_context()->errstr };
+        throw celeritas_error{ "command failed (NULL reply):  {}", redis_context.get_redis_context()->errstr };
     }
 
     std::string result_message{};
@@ -264,13 +180,13 @@ void celeritas::redis_reply::init(redis_context& redis_context) const
 
     if (redis_reply_->type == REDIS_REPLY_ERROR)
     {
-        throw celeritas_error{ "command failed (redis error reply):  " + result_message };
+        throw celeritas_error{ "command failed (redis error reply):  {}", result_message };
     }
 
     // 特殊处理 AUTH 命令，确保它是 OK (如果需要严格检查)
     if (!command_.empty() && command_.at(0).find("AUTH") == 0 && redis_reply_->type == REDIS_REPLY_STATUS && result_message != redis_ok)
     {
-        throw celeritas_error{ "command failed (not ok):  " + result_message };
+        throw celeritas_error{ "command failed (not ok):  {}", result_message };
     }
 }
 
@@ -296,30 +212,11 @@ std::string celeritas::redis_reply::to_string_from_element(const redisReply* ele
         }
         case REDIS_REPLY_ARRAY:
         {
-            std::string result{};
-            for (auto i = 0; i < element->elements; ++i)
-            {
-                result += to_string_from_element(element->element[i]);
-                result += " ";
-            }
-            return result;
+            return array_to_string(element);
         }
         case REDIS_REPLY_MAP:
         {
-            if (element->elements % 2 != 0)
-            {
-                throw celeritas_error{ "map conversion failed: expected even number of elements for key-value map, got {}", element->elements };
-            }
-
-            std::string result{};
-            for (auto i = 0; i < element->elements; i += 2)
-            {
-                result += to_string_from_element(element->element[i]);
-                result += ":";
-                result += to_string_from_element(element->element[i + 1]);
-                result += " ";
-            }
-            return result;
+            return map_to_string(element);
         }
         case REDIS_REPLY_ERROR:
         {
@@ -380,6 +277,116 @@ celeritas::redis_reply::command_length_array_type celeritas::redis_reply::genera
     for (const auto& element : command)
     {
         result.emplace_back(element.size());
+    }
+
+    return result;
+}
+
+celeritas::redis_reply::array_type celeritas::redis_reply::do_to_array() const
+{
+    array_type result{};
+
+    result.reserve(redis_reply_->elements);
+
+    for (auto i = 0; i < redis_reply_->elements; ++i)
+    {
+        const auto element = redis_reply_->element[i];
+
+        result.emplace_back(to_string_from_element(element));
+    }
+
+    return result;
+}
+
+celeritas::redis_reply::map_type celeritas::redis_reply::do_to_map() const
+{
+    map_type result{};
+
+    for (auto i = 0; i < redis_reply_->elements; i += 2)
+    {
+        const auto key_element = redis_reply_->element[i];
+        const auto value_element = redis_reply_->element[i + 1];
+
+        if (key_element->type != REDIS_REPLY_STRING)
+        {
+            throw celeritas_error{ "map key element is not a string." };
+        }
+
+        std::string key{ key_element->str, key_element->len };
+
+        auto value = to_string_from_element(value_element);
+
+        result.emplace(std::move(key), std::move(value));
+    }
+
+    return result;
+}
+
+celeritas::sorted_set_member_score celeritas::redis_reply::to_sorted_set_member_score(const int index) const
+{
+    if (redis_reply_->element[index]->type != REDIS_REPLY_ARRAY)
+    {
+        throw celeritas_error{ "reply type mismatch: expected array for sorted set member score result conversion." };
+    }
+
+    if (redis_reply_->element[index]->elements != 2)
+    {
+        throw celeritas_error{ "reply type mismatch: expected array for sorted set member score result conversion." };
+    }
+
+    const auto key_element = redis_reply_->element[index]->element[0];
+    const auto value_element = redis_reply_->element[index]->element[1];
+
+    if (key_element->type != REDIS_REPLY_STRING)
+    {
+        throw celeritas_error{ "map key element is not a string." };
+    }
+
+    if (value_element->type != REDIS_REPLY_DOUBLE)
+    {
+        throw celeritas_error{ "map value element is not a double." };
+    }
+
+    std::string key{ key_element->str, key_element->len };
+
+    const auto value = value_element->dval;
+
+    return sorted_set_member_score{ std::move(key), value };
+}
+
+std::string celeritas::redis_reply::array_to_string(const redisReply* element)
+{
+    std::string result{};
+    for (auto i = 0; i < element->elements; ++i)
+    {
+        result += to_string_from_element(element->element[i]);
+        result += " ";
+    }
+    return result;
+}
+
+std::string celeritas::redis_reply::map_to_string(const redisReply* element)
+{
+    if (element->elements % 2 != 0)
+    {
+        throw celeritas_error{ "map conversion failed: expected even number of elements for key-value map, got {}", element->elements };
+    }
+
+    std::string result{};
+    for (auto i = 0; i < element->elements; i += 2)
+    {
+        const auto key_element = element->element[i];
+        const auto value_element = element->element[i + 1];
+
+        if (key_element->type == REDIS_REPLY_STRING)
+        {
+            throw celeritas_error{ "Key element is not a string." };
+        }
+
+        result += to_string_from_element(key_element);
+        result += ":";
+        result += to_string_from_element(value_element);
+        result += " ";
     }
 
     return result;

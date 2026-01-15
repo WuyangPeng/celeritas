@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <hiredis.h>
+
 #include <string>
 
 namespace celeritas
@@ -22,10 +23,10 @@ namespace celeritas
 
         redis_context& operator=(redisContext&& rhs) noexcept = delete;
 
-        [[nodiscard]] ::redisContext* get_redis_context() noexcept;
+        [[nodiscard]] redisContext* get_redis_context() noexcept;
 
     private:
-        ::redisContext* redis_context_;
+        redisContext* redis_context_;
     };
 }
 

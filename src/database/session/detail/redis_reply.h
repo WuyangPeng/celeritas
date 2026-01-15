@@ -56,8 +56,6 @@ namespace celeritas
         using command_array_type = std::vector<const char*>;
         using command_length_array_type = std::vector<size_t>;
 
-        void init(redis_context& redis_context, const std::string& command) const;
-
         void init(redis_context& redis_context) const;
 
         [[nodiscard]] static std::string to_string_from_element(const redisReply* element);
@@ -69,6 +67,16 @@ namespace celeritas
         [[nodiscard]] static command_array_type generate_argv(const array_type& command);
 
         [[nodiscard]] static command_length_array_type generate_argv_length(const array_type& command);
+
+        [[nodiscard]] array_type do_to_array() const;
+
+        [[nodiscard]] map_type do_to_map() const;
+
+        [[nodiscard]] sorted_set_member_score to_sorted_set_member_score(int index) const;
+
+        [[nodiscard]] static std::string array_to_string(const redisReply* element);
+
+        [[nodiscard]] static std::string map_to_string(const redisReply* element);
 
         array_type command_;
         command_array_type argv_;
