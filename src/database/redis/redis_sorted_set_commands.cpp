@@ -89,5 +89,5 @@ celeritas::redis_sorted_set_commands::optional_int_awaitable_type celeritas::red
 
 celeritas::redis_sorted_set_commands::optional_int_awaitable_type celeritas::redis_sorted_set_commands::async_reverse_rank(const std::string& key, const std::string& member) const
 {
-    co_return co_await async_execute_command_return_optional_int({ "ZREVRANK", key, member });
+    co_return co_await async_execute_command_return_optional_int({ "ZREVRANK", get_prefixed_key(key), member });
 }
