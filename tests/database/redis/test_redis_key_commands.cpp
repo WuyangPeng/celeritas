@@ -6,9 +6,9 @@
 #include <boost/asio.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <set>
 #include <string>
 #include <vector>
-#include <set>
 
 BOOST_FIXTURE_TEST_SUITE(redis_key_commands_suite, celeritas::redis_database_session_fixture)
 
@@ -132,7 +132,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_key_commands_suite, celeritas::redis_database_ses
 
             const std::string key{ "test_key_expire" };
             const std::string value{ "test_value" };
-            constexpr int expire_seconds = 10;
+            constexpr auto expire_seconds = 10;
 
             // 设置一个键值对
             co_await string_commands.async_set(key, value);
@@ -160,7 +160,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_key_commands_suite, celeritas::redis_database_ses
             const std::string key1{ "test_key_ttl1" };
             const std::string key2{ "test_key_ttl2" };
             const std::string value{ "test_value" };
-            constexpr int expire_seconds = 10;
+            constexpr auto expire_seconds = 10;
 
             // 设置一个键值对
             co_await string_commands.async_set(key1, value, -1);
@@ -307,9 +307,9 @@ BOOST_FIXTURE_TEST_SUITE(redis_key_commands_suite, celeritas::redis_database_ses
             const auto& string_commands = session->get_redis_string_commands();
 
             // 设置一些测试键
-            for (int i = 0; i < 5; ++i)
+            for (auto i = 0; i < 5; ++i)
             {
-                const std::string key = "test_scan_key_" + std::to_string(i);
+                const auto key = "test_scan_key_" + std::to_string(i);
                 co_await string_commands.async_set(key, "value_" + std::to_string(i));
             }
 
@@ -321,11 +321,11 @@ BOOST_FIXTURE_TEST_SUITE(redis_key_commands_suite, celeritas::redis_database_ses
             BOOST_CHECK(result.size() >= 5);
 
             // 检查返回的键是否符合预期模式
-            std::set<std::string> result_set(result.begin(), result.end());
-            for (int i = 0; i < 5; ++i)
+            const std::set result_set(result.begin(), result.end());
+            for (auto i = 0; i < 5; ++i)
             {
-                const std::string expected_key = "test_scan_key_" + std::to_string(i);
-                BOOST_CHECK(result_set.count(session->get_prefixed_key(expected_key)) > 0);
+                const auto expected_key = "test_scan_key_" + std::to_string(i);
+                BOOST_CHECK(result_set.contains(session->get_prefixed_key(expected_key)));
             }
 
             set_test_end(true);
