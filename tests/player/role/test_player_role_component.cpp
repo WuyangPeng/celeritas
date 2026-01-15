@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_SUITE(player_role_component_suite)
         run_io_context();
 
         const std::string new_name{ "new_test_name" };
-        boost::asio::co_spawn(io_context_, role_component.change_name("new_test_name", "new_test_name"), boost::asio::detached);
+        boost::asio::co_spawn(io_context_, role_component.change_name(new_name, new_name), boost::asio::detached);
         run_io_context();
 
         BOOST_CHECK_EQUAL(role_component.get_name(), new_name);
