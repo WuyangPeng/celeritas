@@ -93,12 +93,17 @@ celeritas::redis_reply::optional_string celeritas::redis_reply::to_optional_stri
 
 celeritas::redis_reply::array_type celeritas::redis_reply::to_array() const
 {
+    array_type result{};
+
+    if (redis_reply_->type == REDIS_REPLY_NIL)
+    {
+        return result;
+    }
+
     if (redis_reply_->type != REDIS_REPLY_ARRAY && redis_reply_->type != REDIS_REPLY_SET)
     {
         throw celeritas_error{ "reply type mismatch: Expected ARRAY, got type " + std::to_string(redis_reply_->type) };
     }
-
-    array_type result{};
 
     result.reserve(redis_reply_->elements);
 

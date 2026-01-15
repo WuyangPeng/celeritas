@@ -75,7 +75,11 @@ celeritas::redis_list_commands::blocking_left_pop_awaitable_type celeritas::redi
     }
 
     array_type command{ "BLPOP" };
-    command.insert(command.end(), keys.begin(), keys.end());
+    for (const auto& key : keys)
+    {
+        command.emplace_back(get_prefixed_key(key));
+    }
+
     command.emplace_back(std::to_string(timeout_seconds));
 
     const auto array_result = co_await async_execute_command_return_array_type(command);

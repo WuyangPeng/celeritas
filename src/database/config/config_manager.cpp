@@ -1,8 +1,8 @@
 ﻿#include "config_manager.h"
 #include "common/logging/logger.h"
 #include "database/database_constant.h"
-#include "database/pool/database_pool_manager.h"
 #include "database/generated/mysql/player/user.h"
+#include "database/pool/database_pool_manager.h"
 
 celeritas::config_manager& celeritas::config_manager::get_instance()
 {
@@ -11,7 +11,8 @@ celeritas::config_manager& celeritas::config_manager::get_instance()
     return instance;
 }
 
-void celeritas::config_manager::reload_from_db(const any_io_executor& any_io_executor, const std::string& db_name, int64_t id)
+void celeritas::config_manager::reload_from_db(const any_io_executor& any_io_executor, const std::string& db_name,
+                                               int64_t id)
 {
     if (db_name.empty() && id == 0)
     {
@@ -68,9 +69,11 @@ celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_loa
     co_await do_load_time_refresh_db(mysql_pool);
 }
 
-celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_load_time_refresh_db(const database_pool_shared_ptr& mysql_pool)
+celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_load_time_refresh_db(
+    const database_pool_shared_ptr& mysql_pool)
 {
-    const auto time_refresh_result = co_await mysql_pool->select_all(time_refresh::get_select(database_type::mysql), time_refresh::get_database_field_container());
+    const auto time_refresh_result = co_await mysql_pool->select_all(time_refresh::get_select(database_type::mysql),
+                                                                     time_refresh::get_database_field_container());
 
     time_refresh_container_type container{};
     for (const auto& row : time_refresh_result)
@@ -83,7 +86,8 @@ celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_loa
     time_refresh_ = std::move(container);
 }
 
-celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_from_db(const std::string& db_name, const int64_t id)
+celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_from_db(
+    const std::string& db_name, const int64_t id)
 {
     try
     {
@@ -99,7 +103,8 @@ celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_f
     }
 }
 
-celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_load_from_db(const std::string& db_name, const int64_t id)
+celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_load_from_db(
+    const std::string& db_name, const int64_t id)
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_config_db_name.data());
 
@@ -113,14 +118,16 @@ celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_loa
     }
 }
 
-celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_load_time_refresh_db(const database_pool_shared_ptr& mysql_pool, const int64_t id)
+celeritas::config_manager::void_awaitable_type celeritas::config_manager::do_load_time_refresh_db(
+    const database_pool_shared_ptr& mysql_pool, const int64_t id)
 {
     if (id == 0)
     {
         co_return co_await do_load_time_refresh_db(mysql_pool);
     }
 
-    if (const auto optional_time_refresh = co_await mysql_pool->select_one(time_refresh::get_select(database_type::mysql, id), time_refresh::get_database_field_container()))
+    if (const auto optional_time_refresh = co_await mysql_pool->select_one(
+        time_refresh::get_select(database_type::mysql, id), time_refresh::get_database_field_container()))
     {
         const time_refresh time_refresh{ *optional_time_refresh };
 

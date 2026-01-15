@@ -55,7 +55,10 @@ celeritas::redis_key_commands::int_awaitable_type celeritas::redis_key_commands:
     }
 
     array_type exists_command{ "EXISTS" };
-    exists_command.insert(exists_command.end(), keys.cbegin(), keys.cend());
+    for (const auto& key : keys)
+    {
+        exists_command.emplace_back(get_prefixed_key(key));
+    }
 
     co_return co_await async_execute_command_return_int(exists_command);
 }
