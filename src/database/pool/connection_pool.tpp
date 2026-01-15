@@ -174,29 +174,12 @@ celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connecti
 template <typename SessionType>
 celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connection_pool<SessionType>::execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time)
 {
-    try
-    {
-        if (!database->is_modify())
-        {
-            co_return true;
-        }
-
-        auto session = co_await async_get_session();
-
-        co_await session.get_session()->execute_changes(database, expiration_time);
-
-        co_return true;
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(database_channel, error) << "execute changes error:" << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(database_channel, fatal) << "execute changes unknown exception";
-    }
-
-    co_return false;
+    co_return co_await noexcept_safe_call_and_log_awaitable([this,database,expiration_time]() -> boost::asio::awaitable<bool> {
+                                                                co_return co_await this->do_execute_changes(database, expiration_time);
+                                                            },
+                                                            database_channel,
+                                                            "execute changes error: ",
+                                                            false);
 }
 
 template <typename SessionType>
@@ -284,4 +267,19 @@ celeritas::connection_pool<SessionType>::session_awaitable_type celeritas::conne
                 });
         },
         boost::asio::use_awaitable);
+}
+
+template <typename SessionType>
+celeritas::database_pool_base::bool_awaitable_type celeritas::connection_pool<SessionType>::do_execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time)
+{
+    if (!database->is_modify())
+    {
+        co_return true;
+    }
+
+    auto session = co_await async_get_session();
+
+    co_await session.get_session()->execute_changes(database, expiration_time);
+
+    co_return true;
 }

@@ -16,7 +16,7 @@ celeritas::database_pool_manager& celeritas::database_pool_manager::get_instance
 }
 
 celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_pool_manager::create_pool(const std::string& name,
-                                                                                                         database_type database_type,
+                                                                                                         const database_type database_type,
                                                                                                          const any_io_executor& any_io_executor,
                                                                                                          const std::string& host,
                                                                                                          const int port,

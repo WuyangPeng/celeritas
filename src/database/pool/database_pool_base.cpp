@@ -1,5 +1,4 @@
 ﻿#include "database_pool_base.h"
-#include "database/database_constant.h"
 
 void celeritas::database_pool_base::start_cleanup_timer(const any_io_executor& any_io_executor, duration_type interval)
 {

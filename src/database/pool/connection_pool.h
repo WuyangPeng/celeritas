@@ -15,7 +15,6 @@ namespace celeritas
     public:
         using class_type = connection_pool;
         using base_type = database_pool_base;
-
         using void_awaitable_type = boost::asio::awaitable<void>;
         using session_shared_ptr = std::shared_ptr<SessionType>;
         using session_awaitable_type = boost::asio::awaitable<session_shared_ptr>;
@@ -79,6 +78,8 @@ namespace celeritas
         [[nodiscard]] session_shared_ptr try_get_existing_session();
 
         [[nodiscard]] session_awaitable_type async_initiate_session();
+
+        [[nodiscard]] bool_awaitable_type do_execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time);
 
         any_io_executor any_io_executor_;
         std::string host_;
