@@ -378,7 +378,7 @@ std::string celeritas::redis_reply::map_to_string(const redisReply* element)
         const auto key_element = element->element[i];
         const auto value_element = element->element[i + 1];
 
-        if (key_element->type == REDIS_REPLY_STRING)
+        if (key_element->type != REDIS_REPLY_STRING)
         {
             throw celeritas_error{ "Key element is not a string." };
         }
