@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 #include "config/basic/database_type.h"
 #include "database/basic/basis_database_container.h"
 

@@ -1,47 +1,22 @@
-﻿#include "database/document/custom_data.h"
-#include "database/document/equipment_data.h"
-#include "database/document/consumable_data.h"
+﻿#include "common/core/celeritas_error.h"
 #include "database/basic/basis_database.tpp"
-#include "common/core/celeritas_error.h"
+#include "database/document/consumable_data.h"
+#include "database/document/custom_data.h"
+#include "database/document/equipment_data.h"
 
 #include <boost/test/unit_test.hpp>
 
 #include <string>
 #include <vector>
 
-BOOST_AUTO_TEST_SUITE(custom_data_suite)
-
-    BOOST_AUTO_TEST_CASE(test_default_constructor)
+namespace
+{
+    void check_equipment(const celeritas::custom_data::document_type& document)
     {
-        celeritas::custom_data data;
-        // 默认构造的 custom_data 应该是空的 (monostate)
-        // 转换为文档应该为空
-        BOOST_CHECK(data.to_document_type().empty());
-    }
+        auto found_type = false;
+        auto found_data = false;
 
-    BOOST_AUTO_TEST_CASE(test_equipment_round_trip)
-    {
-        // 构造 equipment_data 的文档
-        celeritas::equipment_data::document_type equip_doc;
-        equip_doc.emplace_back(celeritas::equipment_data::strength_description, 10);
-        equip_doc.emplace_back(celeritas::equipment_data::durability_description, 100);
-
-        // 构造 custom_data 的文档
-        celeritas::custom_data::document_type custom_doc;
-        custom_doc.emplace_back(celeritas::custom_data::type_description, std::string(celeritas::custom_data::equipment_description));
-        custom_doc.emplace_back(celeritas::custom_data::data_description, equip_doc);
-
-        // 从文档创建 custom_data
-        auto data = celeritas::custom_data::from_document(custom_doc);
-
-        // 再转回文档
-        auto result_doc = data.to_document_type();
-
-        // 验证结果
-        bool found_type = false;
-        bool found_data = false;
-
-        for (const auto& element : result_doc)
+        for (const auto& element : document)
         {
             if (element.get_field_name() == celeritas::custom_data::type_description)
             {
@@ -50,17 +25,16 @@ BOOST_AUTO_TEST_SUITE(custom_data_suite)
             }
             else if (element.get_field_name() == celeritas::custom_data::data_description)
             {
-                auto inner_doc = element.get_value<celeritas::database_data_type::document_type>();
-                // 验证 inner_doc 内容
-                for (const auto& inner_elem : inner_doc)
+                for (const auto& inner_document = element.get_value<celeritas::database_data_type::document_type>();
+                     const auto& inner_element : inner_document)
                 {
-                    if (inner_elem.get_field_name() == celeritas::equipment_data::strength_description)
+                    if (inner_element.get_field_name() == celeritas::equipment_data::strength_description)
                     {
-                        BOOST_CHECK_EQUAL(inner_elem.get_value<celeritas::database_data_type::int32_type>(), 10);
+                        BOOST_CHECK_EQUAL(inner_element.get_value<celeritas::database_data_type::int32_type>(), 10);
                     }
-                    else if (inner_elem.get_field_name() == celeritas::equipment_data::durability_description)
+                    else if (inner_element.get_field_name() == celeritas::equipment_data::durability_description)
                     {
-                        BOOST_CHECK_EQUAL(inner_elem.get_value<celeritas::database_data_type::int32_type>(), 100);
+                        BOOST_CHECK_EQUAL(inner_element.get_value<celeritas::database_data_type::int32_type>(), 100);
                     }
                 }
                 found_data = true;
@@ -70,28 +44,12 @@ BOOST_AUTO_TEST_SUITE(custom_data_suite)
         BOOST_CHECK(found_data);
     }
 
-    BOOST_AUTO_TEST_CASE(test_consumable_round_trip)
+    void check_consumable(const celeritas::custom_data::document_type& document)
     {
-        // 构造 consumable_data 的文档
-        celeritas::consumable_data::document_type cons_doc;
-        cons_doc.emplace_back(celeritas::consumable_data::expire_time_description, 123456789LL);
+        auto found_type = false;
+        auto found_data = false;
 
-        // 构造 custom_data 的文档
-        celeritas::custom_data::document_type custom_doc;
-        custom_doc.emplace_back(celeritas::custom_data::type_description, std::string(celeritas::custom_data::consumable_description));
-        custom_doc.emplace_back(celeritas::custom_data::data_description, cons_doc);
-
-        // 从文档创建 custom_data
-        auto data = celeritas::custom_data::from_document(custom_doc);
-
-        // 再转回文档
-        auto result_doc = data.to_document_type();
-
-        // 验证结果
-        bool found_type = false;
-        bool found_data = false;
-
-        for (const auto& element : result_doc)
+        for (const auto& element : document)
         {
             if (element.get_field_name() == celeritas::custom_data::type_description)
             {
@@ -100,13 +58,12 @@ BOOST_AUTO_TEST_SUITE(custom_data_suite)
             }
             else if (element.get_field_name() == celeritas::custom_data::data_description)
             {
-                auto inner_doc = element.get_value<celeritas::database_data_type::document_type>();
-                // 验证 inner_doc 内容
-                for (const auto& inner_elem : inner_doc)
+                for (const auto& inner_document = element.get_value<celeritas::database_data_type::document_type>();
+                     const auto& inner_element : inner_document)
                 {
-                    if (inner_elem.get_field_name() == celeritas::consumable_data::expire_time_description)
+                    if (inner_element.get_field_name() == celeritas::consumable_data::expire_time_description)
                     {
-                        BOOST_CHECK_EQUAL(inner_elem.get_value<celeritas::database_data_type::int64_type>(), 123456789LL);
+                        BOOST_CHECK_EQUAL(inner_element.get_value<celeritas::database_data_type::int64_type>(), 123456789LL);
                     }
                 }
                 found_data = true;
@@ -115,21 +72,57 @@ BOOST_AUTO_TEST_SUITE(custom_data_suite)
         BOOST_CHECK(found_type);
         BOOST_CHECK(found_data);
     }
+}
+
+BOOST_AUTO_TEST_SUITE(custom_data_suite)
+
+    BOOST_AUTO_TEST_CASE(test_default_constructor)
+    {
+        const celeritas::custom_data data{};
+
+        BOOST_CHECK(data.to_document_type().empty());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_equipment_round_trip)
+    {
+        const celeritas::equipment_data::document_type equip_document{ celeritas::basis_database{ celeritas::equipment_data::strength_description, 10 },
+                                                                       celeritas::basis_database{ celeritas::equipment_data::durability_description, 100 } };
+
+        const celeritas::custom_data::document_type custom_document{ celeritas::basis_database{ celeritas::custom_data::type_description, std::string{ celeritas::custom_data::equipment_description } },
+                                                                     celeritas::basis_database{ celeritas::custom_data::data_description, equip_document } };
+
+        const auto data = celeritas::custom_data::from_document(custom_document);
+
+        const auto result_document = data.to_document_type();
+
+        check_equipment(result_document);
+    }
+
+    BOOST_AUTO_TEST_CASE(test_consumable_round_trip)
+    {
+        const celeritas::consumable_data::document_type consumable_document{ celeritas::basis_database{ celeritas::consumable_data::expire_time_description, 123456789LL } };
+
+        const celeritas::custom_data::document_type custom_document{ celeritas::basis_database{ celeritas::custom_data::type_description, std::string{ celeritas::custom_data::consumable_description } },
+                                                                     celeritas::basis_database{ celeritas::custom_data::data_description, consumable_document } };
+
+        const auto custom_data = celeritas::custom_data::from_document(custom_document);
+        const auto result_document = custom_data.to_document_type();
+
+        check_consumable(result_document);
+    }
 
     BOOST_AUTO_TEST_CASE(test_empty_document)
     {
-        celeritas::custom_data::document_type empty_doc;
-        auto data = celeritas::custom_data::from_document(empty_doc);
+        const celeritas::custom_data::document_type empty_document{};
+        const auto data = celeritas::custom_data::from_document(empty_document);
         BOOST_CHECK(data.to_document_type().empty());
     }
 
     BOOST_AUTO_TEST_CASE(test_unknown_type)
     {
-        celeritas::custom_data::document_type custom_doc;
-        custom_doc.emplace_back(celeritas::custom_data::type_description, std::string("unknown"));
+        celeritas::custom_data::document_type custom_document{ celeritas::basis_database{ celeritas::custom_data::type_description, std::string{ "unknown" } } };
 
-        // 应该抛出异常
-        BOOST_CHECK_THROW(static_cast<void>(celeritas::custom_data::from_document(custom_doc)), celeritas::celeritas_error);
+        BOOST_CHECK_THROW([custom_document = std::move(custom_document)] { std::ignore = celeritas::custom_data::from_document(custom_document) ; }(), celeritas::celeritas_error);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

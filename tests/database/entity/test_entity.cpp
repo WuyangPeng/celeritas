@@ -1,5 +1,5 @@
 ﻿#include "database/basic/database_data_type.h"
-#include "database/basic/database_entity_change.h"
+#include "database/basic/database_data_type_traits.h"
 #include "database/entity/entity.tpp"
 
 #include <boost/test/unit_test.hpp>
@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_SUITE(entity_suite)
 
     BOOST_AUTO_TEST_CASE(test_entity_array_add_value)
     {
-        const std::vector initial_value = { 1, 2, 3 };
+        const std::vector initial_value{ 1, 2, 3 };
         celeritas::entity<array_field_name, array_data_type> array_entity{ initial_value };
 
         array_entity.add_value(4);
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_SUITE(entity_suite)
 
     BOOST_AUTO_TEST_CASE(test_entity_array_set_value_by_index)
     {
-        const std::vector initial_value = { 1, 2, 3 };
+        const std::vector initial_value{ 1, 2, 3 };
         celeritas::entity<array_field_name, array_data_type> array_entity{ initial_value };
 
         const auto changed = array_entity.set_value(0, 10);
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_SUITE(entity_suite)
 
     BOOST_AUTO_TEST_CASE(test_entity_array_set_value_by_index_no_change)
     {
-        const std::vector initial_value = { 1, 2, 3 };
+        const std::vector initial_value{ 1, 2, 3 };
         celeritas::entity<array_field_name, array_data_type> array_entity{ initial_value };
 
         const auto changed = array_entity.set_value(0, 1);
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_SUITE(entity_suite)
 
     BOOST_AUTO_TEST_CASE(test_entity_array_remove_value)
     {
-        const std::vector initial_value = { 1, 2, 3 };
+        const std::vector initial_value{ 1, 2, 3 };
         celeritas::entity<array_field_name, array_data_type> array_entity{ initial_value };
 
         array_entity.remove_value(0);

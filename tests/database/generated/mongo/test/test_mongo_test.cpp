@@ -1,17 +1,14 @@
-﻿#include "config/basic/database_type.h"
-#include "database/generated/mongo/test/mongo_test.h"
-#include "database/entity/database_entity.h"
-#include "database/basic/basis_database.h"
-#include "database/basic/database_data_type.h"
-#include "database/basic/database_entity_change.h"
-#include "database/basic/basis_database_container.h"
+﻿#include "config/basic/database_type.h"#include "database/basic/basis_database_container.h"
 #include "database/basic/database_change_type.h"
+#include "database/basic/database_entity_change.h"
+#include "database/entity/database_entity.h"
+#include "database/generated/mongo/test/mongo_test.h"
 
 #include <boost/test/unit_test.hpp>
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
@@ -324,4 +321,4 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
         (void)is_must_save; // 验证方法可调用
     }
 
-BOOST_AUTO_TEST_SUITE_END()
+    BOOST_AUTO_TEST_SUITE_END()

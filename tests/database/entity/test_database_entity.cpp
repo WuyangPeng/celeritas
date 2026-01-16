@@ -114,12 +114,12 @@ BOOST_AUTO_TEST_SUITE(database_entity_suite)
 
     BOOST_FIXTURE_TEST_CASE(test_database_entity_copy_constructor, celeritas::database_entity_fixture)
     {
-        celeritas::test_entity entity1{ get_db_type(), get_db_name(), get_key() };
-        entity1.add_modify("field", 1);
+        celeritas::test_entity entity{ get_db_type(), get_db_name(), get_key() };
+        entity.add_modify("field", 1);
 
-        const auto entity2{ entity1 };
+        const auto entity2{ entity };
         BOOST_CHECK(entity2.is_modify());
-        BOOST_CHECK(entity2.get_modify() == entity1.get_modify());
+        BOOST_CHECK(entity2.get_modify() == entity.get_modify());
     }
 
     BOOST_FIXTURE_TEST_CASE(test_database_entity_copy_assignment, celeritas::database_entity_fixture)

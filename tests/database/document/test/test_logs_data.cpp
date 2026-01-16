@@ -55,11 +55,11 @@ namespace
 
     const celeritas::basis_database& get_field_value(const celeritas::logs_data::document_type& document, std::string_view field_name)
     {
-        const auto it = std::ranges::find_if(document, [field_name](const auto& field) {
+        const auto iter = std::ranges::find_if(document, [field_name](const auto& field) {
             return field.get_field_name() == field_name;
         });
-        BOOST_REQUIRE_MESSAGE(it != document.end(), "Field '" << field_name << "' not found");
-        return *it;
+        BOOST_REQUIRE_MESSAGE(iter != document.cend(), "Field '" << field_name << "' not found");
+        return *iter;
     }
 
     void verify_document_data(const celeritas::logs_data::document_type& document, const celeritas::logs_data& original_data)
