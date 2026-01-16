@@ -10,7 +10,7 @@
 
 namespace
 {
-    celeritas::logs_data get_test_logs_data()
+    [[nodiscard]] celeritas::logs_data get_test_logs_data()
     {
         celeritas::logs_data data{};
         data.set_int64_value(111111LL);
@@ -38,7 +38,7 @@ namespace
         return data;
     }
 
-    const celeritas::basis_database& get_field_value(const celeritas::logs_data::document_type& document, std::string_view field_name)
+    [[nodiscard]] const celeritas::basis_database& get_field_value(const celeritas::logs_data::document_type& document, std::string_view field_name)
     {
         const auto iter = std::ranges::find_if(document, [field_name](const auto& field) {
             return field.get_field_name() == field_name;
