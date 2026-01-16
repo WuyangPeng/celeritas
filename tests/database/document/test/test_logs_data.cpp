@@ -52,6 +52,43 @@ namespace
 
         return data;
     }
+
+    const celeritas::basis_database& get_field_value(const celeritas::logs_data::document_type& document, std::string_view field_name)
+    {
+        const auto it = std::ranges::find_if(document, [field_name](const auto& field) {
+            return field.get_field_name() == field_name;
+        });
+        BOOST_REQUIRE_MESSAGE(it != document.end(), "Field '" << field_name << "' not found");
+        return *it;
+    }
+
+    void verify_document_data(const celeritas::logs_data::document_type& document, const celeritas::logs_data& original_data)
+    {
+        BOOST_CHECK_EQUAL(get_field_value(document, celeritas::logs_data::int64_value_description).get_value<celeritas::database_data_type::int64_type>(),
+                          original_data.get_int64_value());
+        BOOST_CHECK_EQUAL(get_field_value(document, celeritas::logs_data::string_value_description).get_value<celeritas::database_data_type::string_type>(),
+                          original_data.get_string_value());
+        celeritas::verify_array_values(get_field_value(document, celeritas::logs_data::string_array_value_description).get_value<celeritas::database_data_type::string_array_type>(),
+                                       original_data.get_string_array_value());
+        BOOST_CHECK_EQUAL(get_field_value(document, celeritas::logs_data::int32_value_description).get_value<celeritas::database_data_type::int32_type>(),
+                          original_data.get_int32_value());
+        BOOST_CHECK_EQUAL(get_field_value(document, celeritas::logs_data::int32_count_value_description).get_value<celeritas::database_data_type::int32_count_type>(),
+                          original_data.get_int32_count_value());
+        celeritas::verify_array_values(get_field_value(document, celeritas::logs_data::int32_array_value_description).get_value<celeritas::database_data_type::int32_array_type>(),
+                                       original_data.get_int32_array_value());
+        BOOST_CHECK_EQUAL(get_field_value(document, celeritas::logs_data::int64_count_value_description).get_value<celeritas::database_data_type::int64_count_type>(),
+                          original_data.get_int64_count_value());
+        celeritas::verify_array_values(get_field_value(document, celeritas::logs_data::int64_array_value_description).get_value<celeritas::database_data_type::int64_array_type>(),
+                                       original_data.get_int64_array_value());
+        BOOST_CHECK_CLOSE(get_field_value(document, celeritas::logs_data::double_value_description).get_value<celeritas::database_data_type::double_type>(),
+                          original_data.get_double_value(), 0.001);
+        celeritas::verify_array_values(get_field_value(document, celeritas::logs_data::double_array_value_description).get_value<celeritas::database_data_type::double_array_type>(),
+                                       original_data.get_double_array_value());
+        BOOST_CHECK_EQUAL(get_field_value(document, celeritas::logs_data::bool_value_description).get_value<celeritas::database_data_type::bool_type>(),
+                          original_data.get_bool_value());
+        BOOST_CHECK(get_field_value(document, celeritas::logs_data::document_value_description).get_value<celeritas::database_data_type::document_type>() == original_data.get_document_value());
+        BOOST_CHECK(get_field_value(document, celeritas::logs_data::document_array_value_description).get_value<celeritas::database_data_type::document_array_type>() == original_data.get_document_array_value());
+    }
 }
 
 BOOST_AUTO_TEST_SUITE(logs_data_suite)
@@ -219,38 +256,7 @@ BOOST_AUTO_TEST_SUITE(logs_data_suite)
         const auto original_data = get_test_logs_data();
         const auto document = original_data.to_document_type();
 
-        auto get_field_value = [&document](std::string_view field_name) -> const celeritas::basis_database& {
-            const auto it = std::ranges::find_if(document, [field_name](const auto& field) {
-                return field.get_field_name() == field_name;
-            });
-            BOOST_REQUIRE_MESSAGE(it != document.end(), "Field '" << field_name << "' not found");
-            return *it;
-        };
-
-        BOOST_CHECK_EQUAL(get_field_value(celeritas::logs_data::int64_value_description).get_value<celeritas::database_data_type::int64_type>(),
-                          original_data.get_int64_value());
-        BOOST_CHECK_EQUAL(get_field_value(celeritas::logs_data::string_value_description).get_value<celeritas::database_data_type::string_type>(),
-                          original_data.get_string_value());
-        celeritas::verify_array_values(get_field_value(celeritas::logs_data::string_array_value_description).get_value<celeritas::database_data_type::string_array_type>(),
-                                       original_data.get_string_array_value());
-        BOOST_CHECK_EQUAL(get_field_value(celeritas::logs_data::int32_value_description).get_value<celeritas::database_data_type::int32_type>(),
-                          original_data.get_int32_value());
-        BOOST_CHECK_EQUAL(get_field_value(celeritas::logs_data::int32_count_value_description).get_value<celeritas::database_data_type::int32_count_type>(),
-                          original_data.get_int32_count_value());
-        celeritas::verify_array_values(get_field_value(celeritas::logs_data::int32_array_value_description).get_value<celeritas::database_data_type::int32_array_type>(),
-                                       original_data.get_int32_array_value());
-        BOOST_CHECK_EQUAL(get_field_value(celeritas::logs_data::int64_count_value_description).get_value<celeritas::database_data_type::int64_count_type>(),
-                          original_data.get_int64_count_value());
-        celeritas::verify_array_values(get_field_value(celeritas::logs_data::int64_array_value_description).get_value<celeritas::database_data_type::int64_array_type>(),
-                                       original_data.get_int64_array_value());
-        BOOST_CHECK_CLOSE(get_field_value(celeritas::logs_data::double_value_description).get_value<celeritas::database_data_type::double_type>(),
-                          original_data.get_double_value(), 0.001);
-        celeritas::verify_array_values(get_field_value(celeritas::logs_data::double_array_value_description).get_value<celeritas::database_data_type::double_array_type>(),
-                                       original_data.get_double_array_value());
-        BOOST_CHECK_EQUAL(get_field_value(celeritas::logs_data::bool_value_description).get_value<celeritas::database_data_type::bool_type>(),
-                          original_data.get_bool_value());
-        BOOST_CHECK(get_field_value(celeritas::logs_data::document_value_description).get_value<celeritas::database_data_type::document_type>() == original_data.get_document_value());
-        BOOST_CHECK(get_field_value(celeritas::logs_data::document_array_value_description).get_value<celeritas::database_data_type::document_array_type>() == original_data.get_document_array_value());
+        verify_document_data(document, original_data);
     }
 
     BOOST_AUTO_TEST_CASE(test_from_document)
