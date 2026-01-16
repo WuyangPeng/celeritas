@@ -1,97 +1,80 @@
 ﻿#include "config/basic/database_type.h"
-#include "database/generated/redis/test/redis_test.h"
-#include "database/entity/database_entity.h"
 #include "database/basic/basis_database.h"
-#include "database/basic/database_data_type.h"
-#include "database/basic/database_entity_change.h"
 #include "database/basic/basis_database_container.h"
 #include "database/basic/database_change_type.h"
+#include "database/basic/database_entity_change.h"
+#include "database/entity/database_entity.h"
+#include "database/generated/redis/test/redis_test.h"
 
 #include <boost/test/unit_test.hpp>
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_constructors)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::redis,
-            "redis_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
+                                                               "redis_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
-        // 测试不同的构造函数
-        celeritas::redis_test test_obj1(entity_change);
+        const celeritas::redis_test redis_test1{ entity_change };
+        const celeritas::redis_test redis_test2{ celeritas::database_type::redis, entity_change };
+        const celeritas::redis_test redis_test3{ celeritas::database_type::redis, 123456LL };
 
-        // 测试带数据库类型参数的构造函数
-        celeritas::redis_test test_obj2(celeritas::database_type::redis, entity_change);
-
-        // 测试带用户ID参数的构造函数
-        celeritas::redis_test test_obj3(celeritas::database_type::redis, 123456LL);
-
-        // 验证对象被正确构造
-        BOOST_CHECK_EQUAL(test_obj3.get_user_id(), 123456LL);
+        BOOST_CHECK_EQUAL(redis_test3.get_user_id(), 123456LL);
     }
 
     BOOST_AUTO_TEST_CASE(test_getters_and_setters)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::redis,
-            "redis_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
+                                                               "redis_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
-        celeritas::redis_test test_obj(entity_change);
+        celeritas::redis_test redis_test{ entity_change };
 
-        // 测试各种getter和setter方法
-        test_obj.set_user_id(111111LL);
-        BOOST_CHECK_EQUAL(test_obj.get_user_id(), 111111LL);
+        redis_test.set_user_id(111111LL);
+        BOOST_CHECK_EQUAL(redis_test.get_user_id(), 111111LL);
 
-        test_obj.set_chapter_id(222);
-        BOOST_CHECK_EQUAL(test_obj.get_chapter_id(), 222);
+        redis_test.set_chapter_id(222);
+        BOOST_CHECK_EQUAL(redis_test.get_chapter_id(), 222);
 
-        test_obj.set_chapter_name("test_chapter");
-        BOOST_CHECK_EQUAL(test_obj.get_chapter_name(), "test_chapter");
+        redis_test.set_chapter_name("test_chapter");
+        BOOST_CHECK_EQUAL(redis_test.get_chapter_name(), "test_chapter");
 
-        test_obj.set_chance_winning(0.75);
-        BOOST_CHECK_CLOSE(test_obj.get_chance_winning(), 0.75, 0.001);
+        redis_test.set_chance_winning(0.75);
+        BOOST_CHECK_CLOSE(redis_test.get_chance_winning(), 0.75, 0.001);
 
-        test_obj.set_winning(true);
-        BOOST_CHECK_EQUAL(test_obj.is_winning(), true);
+        redis_test.set_winning(true);
+        BOOST_CHECK_EQUAL(redis_test.is_winning(), true);
 
-        test_obj.set_currency(5000LL);
-        BOOST_CHECK_EQUAL(test_obj.get_currency(), 5000LL);
+        redis_test.set_currency(5000LL);
+        BOOST_CHECK_EQUAL(redis_test.get_currency(), 5000LL);
 
-        test_obj.set_count(100);
-        BOOST_CHECK_EQUAL(test_obj.get_count(), 100);
+        redis_test.set_count(100);
+        BOOST_CHECK_EQUAL(redis_test.get_count(), 100);
     }
 
     BOOST_AUTO_TEST_CASE(test_array_field_operations)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::redis,
-            "redis_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
+                                                               "redis_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
-        celeritas::redis_test test_obj(entity_change);
+        celeritas::redis_test redis_test{ entity_change };
 
         // 测试标签数组
         celeritas::traits::string_array_type tags = { "tag1", "tag2", "tag3" };
-        test_obj.set_tags(tags);
-        const auto& retrieved_tags = test_obj.get_tags();
+        redis_test.set_tags(tags);
+        const auto& retrieved_tags = redis_test.get_tags();
         BOOST_CHECK_EQUAL(retrieved_tags.size(), 3);
         BOOST_CHECK_EQUAL(retrieved_tags[0], "tag1");
         BOOST_CHECK_EQUAL(retrieved_tags[1], "tag2");
@@ -99,8 +82,8 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
         // 测试分类索引数组
         celeritas::traits::int32_array_type category_indices = { 1, 2, 3, 4 };
-        test_obj.set_category_index(category_indices);
-        const auto& retrieved_categories = test_obj.get_category_index();
+        redis_test.set_category_index(category_indices);
+        const auto& retrieved_categories = redis_test.get_category_index();
         BOOST_CHECK_EQUAL(retrieved_categories.size(), 4);
         BOOST_CHECK_EQUAL(retrieved_categories[0], 1);
         BOOST_CHECK_EQUAL(retrieved_categories[1], 2);
@@ -109,8 +92,8 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
         // 测试相关索引数组
         celeritas::traits::int64_array_type related_indices = { 100LL, 200LL, 300LL };
-        test_obj.set_related_index(related_indices);
-        const auto& retrieved_related = test_obj.get_related_index();
+        redis_test.set_related_index(related_indices);
+        const auto& retrieved_related = redis_test.get_related_index();
         BOOST_CHECK_EQUAL(retrieved_related.size(), 3);
         BOOST_CHECK_EQUAL(retrieved_related[0], 100LL);
         BOOST_CHECK_EQUAL(retrieved_related[1], 200LL);
@@ -118,8 +101,8 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
         // 测试比率数组
         celeritas::traits::double_array_type ratios = { 0.1, 0.2, 0.3 };
-        test_obj.set_ratios(ratios);
-        const auto& retrieved_ratios = test_obj.get_ratios();
+        redis_test.set_ratios(ratios);
+        const auto& retrieved_ratios = redis_test.get_ratios();
         BOOST_CHECK_EQUAL(retrieved_ratios.size(), 3);
         BOOST_CHECK_CLOSE(retrieved_ratios[0], 0.1, 0.001);
         BOOST_CHECK_CLOSE(retrieved_ratios[1], 0.2, 0.001);
@@ -128,21 +111,18 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_byte_array_operations)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::redis,
-            "redis_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
+                                                               "redis_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
-        celeritas::redis_test test_obj(entity_change);
+        celeritas::redis_test redis_test{ entity_change };
 
         // 测试字节数组（attachment字段）
         celeritas::traits::byte_array_type bytes = { 'h', 'e', 'l', 'l', 'o' };
-        test_obj.set_attachment(bytes);
-        const auto& retrieved_bytes = test_obj.get_attachment();
+        redis_test.set_attachment(bytes);
+        const auto& retrieved_bytes = redis_test.get_attachment();
         BOOST_CHECK_EQUAL(retrieved_bytes.size(), 5);
         BOOST_CHECK_EQUAL(retrieved_bytes[0], 'h');
         BOOST_CHECK_EQUAL(retrieved_bytes[1], 'e');
@@ -153,116 +133,104 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_document_field_operations)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::redis,
-            "redis_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
+                                                               "redis_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
-        celeritas::redis_test test_obj(entity_change);
+        celeritas::redis_test redis_test{ entity_change };
 
         // 由于文档类型的具体实现未知，我们只验证可以正常访问
         celeritas::traits::document_type properties_doc; // 默认构造
-        test_obj.set_properties(properties_doc);
-        const auto& retrieved_props = test_obj.get_properties();
+        redis_test.set_properties(properties_doc);
+        const auto& retrieved_props = redis_test.get_properties();
         (void)retrieved_props; // 避免未使用警告
 
         celeritas::traits::document_array_type logs_docs = {}; // 空数组
-        test_obj.set_logs(logs_docs);
-        const auto& retrieved_logs = test_obj.get_logs();
+        redis_test.set_logs(logs_docs);
+        const auto& retrieved_logs = redis_test.get_logs();
         BOOST_CHECK_EQUAL(retrieved_logs.size(), 0);
     }
 
     BOOST_AUTO_TEST_CASE(test_modifier_methods)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::redis,
-            "redis_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
+                                                               "redis_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
-        celeritas::redis_test test_obj(entity_change);
+        celeritas::redis_test redis_test{ entity_change };
 
         // 测试货币修改方法
-        test_obj.set_currency(1000LL);
-        test_obj.modify_currency(500LL);
+        redis_test.set_currency(1000LL);
+        redis_test.modify_currency(500LL);
         // 注意：modify_currency的具体行为取决于实现，这里只是测试方法存在
-        (void)test_obj.get_currency(); // 验证方法可调用
+        (void)redis_test.get_currency(); // 验证方法可调用
 
         // 测试计数修改方法
-        test_obj.set_count(50);
-        test_obj.modify_count(10);
+        redis_test.set_count(50);
+        redis_test.modify_count(10);
         // 注意：modify_count的具体行为取决于实现，这里只是测试方法存在
-        (void)test_obj.get_count(); // 验证方法可调用
+        (void)redis_test.get_count(); // 验证方法可调用
     }
 
     BOOST_AUTO_TEST_CASE(test_array_element_operations)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::redis,
-            "redis_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
+                                                               "redis_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
-        celeritas::redis_test test_obj(entity_change);
+        celeritas::redis_test redis_test{ entity_change };
 
         // 测试标签数组元素操作
-        test_obj.add_tags("new_tag");
-        test_obj.set_tags(0, "updated_tag");
+        redis_test.add_tags("new_tag");
+        redis_test.set_tags(0, "updated_tag");
         // 测试移除标签
-        // test_obj.remove_tags(0); // 如果需要，可以根据实际实现进行测试
+        // redis_test.remove_tags(0); // 如果需要，可以根据实际实现进行测试
 
         // 测试分类索引数组元素操作
-        test_obj.add_category_index(999);
-        test_obj.set_category_index(0, 888);
+        redis_test.add_category_index(999);
+        redis_test.set_category_index(0, 888);
         // 测试移除分类
-        // test_obj.remove_category_index(0); // 如果需要，可以根据实际实现进行测试
+        // redis_test.remove_category_index(0); // 如果需要，可以根据实际实现进行测试
 
         // 测试相关索引数组元素操作
-        test_obj.add_related_index(777777LL);
-        test_obj.set_related_index(0, 666666LL);
+        redis_test.add_related_index(777777LL);
+        redis_test.set_related_index(0, 666666LL);
         // 测试移除相关索引
-        // test_obj.remove_related_index(0); // 如果需要，可以根据实际实现进行测试
+        // redis_test.remove_related_index(0); // 如果需要，可以根据实际实现进行测试
 
         // 测试比率数组元素操作
-        test_obj.add_ratios(0.99);
-        test_obj.set_ratios(0, 0.88);
+        redis_test.add_ratios(0.99);
+        redis_test.set_ratios(0, 0.88);
         // 测试移除比率
-        // test_obj.remove_ratios(0); // 如果需要，可以根据实际实现进行测试
+        // redis_test.remove_ratios(0); // 如果需要，可以根据实际实现进行测试
 
         // 测试字节数组元素操作（redis_test特有，mysql_test没有）
-        test_obj.add_attachment('x');
-        test_obj.set_attachment(0, 'y');
+        redis_test.add_attachment('x');
+        redis_test.set_attachment(0, 'y');
         // 测试移除字节
-        // test_obj.remove_attachment(0); // 如果需要，可以根据实际实现进行测试
+        // redis_test.remove_attachment(0); // 如果需要，可以根据实际实现进行测试
 
         // 测试日志数组元素操作
         celeritas::traits::document_type doc; // 默认构造
-        test_obj.add_logs(doc);
-        test_obj.set_logs(0, doc);
+        redis_test.add_logs(doc);
+        redis_test.set_logs(0, doc);
         // 测试移除日志
-        // test_obj.remove_logs(0); // 如果需要，可以根据实际实现进行测试
+        // redis_test.remove_logs(0); // 如果需要，可以根据实际实现进行测试
     }
 
     BOOST_AUTO_TEST_CASE(test_static_methods)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::redis,
-            "redis_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
+                                                               "redis_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
         // 测试静态方法
         const auto& field_container = celeritas::redis_test::get_database_field_container();
@@ -278,7 +246,6 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_constants)
     {
-        // 测试常量值
         BOOST_CHECK_EQUAL(celeritas::redis_test::database_name, "redis_test");
         BOOST_CHECK_EQUAL(celeritas::redis_test::user_id_describe, "user_id");
         BOOST_CHECK_EQUAL(celeritas::redis_test::chapter_id_describe, "chapter_id");
@@ -298,43 +265,37 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_inheritance_modify)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::redis,
-            "redis_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
+                                                               "redis_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
-        celeritas::redis_test test_obj(entity_change);
+        celeritas::redis_test redis_test{ entity_change };
 
         // 测试继承自database_entity的方法
-        auto modify_ptr = test_obj.get_modify();
+        auto modify_ptr = redis_test.get_modify();
         (void)modify_ptr; // 验证方法可调用
 
-        test_obj.clear_modify();
-        bool is_modified = test_obj.is_modify();
+        redis_test.clear_modify();
+        bool is_modified = redis_test.is_modify();
         (void)is_modified; // 验证方法可调用
 
-        bool is_must_save = test_obj.is_must_save();
+        bool is_must_save = redis_test.is_must_save();
         (void)is_must_save; // 验证方法可调用
     }
 
     BOOST_AUTO_TEST_CASE(test_inheritance_delete)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::redis,
-            "redis_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
+                                                               "redis_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
-        celeritas::redis_test test_obj(entity_change);
+        celeritas::redis_test redis_test{ entity_change };
 
-        auto delete_ptr = test_obj.get_delete();
+        auto delete_ptr = redis_test.get_delete();
         (void)delete_ptr; // 验证方法可调用
     }
 

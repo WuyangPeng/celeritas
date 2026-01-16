@@ -300,14 +300,14 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
         logs_data1.set_string_value("log1");
         mongo_test.add_logs(logs_data1.to_document_type());
         BOOST_CHECK_EQUAL(mongo_test.get_logs().size(), 1);
-        auto retrieved_log1 = celeritas::logs_data::from_document(mongo_test.get_logs().at(0));
+        const auto retrieved_log1 = celeritas::logs_data::from_document(mongo_test.get_logs().at(0));
         BOOST_CHECK_EQUAL(retrieved_log1.get_string_value(), "log1");
 
         celeritas::logs_data logs_data2{};
         logs_data2.set_string_value("log2");
         mongo_test.set_logs(0, logs_data2.to_document_type());
         BOOST_CHECK_EQUAL(mongo_test.get_logs().size(), 1);
-        auto retrieved_log2 = celeritas::logs_data::from_document(mongo_test.get_logs().at(0));
+        const auto retrieved_log2 = celeritas::logs_data::from_document(mongo_test.get_logs().at(0));
         BOOST_CHECK_EQUAL(retrieved_log2.get_string_value(), "log2");
     }
 
@@ -383,7 +383,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
                                                                celeritas::database_change_type::insert_type,
                                                                key_container };
 
-        celeritas::mongo_test mongo_test{ entity_change };
+        const celeritas::mongo_test mongo_test{ entity_change };
 
         const auto delete_mongo = mongo_test.get_delete();
         BOOST_CHECK(delete_mongo);
