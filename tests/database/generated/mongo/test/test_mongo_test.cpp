@@ -321,21 +321,18 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
                                                                celeritas::database_change_type::insert_type,
                                                                key_container };
 
-        // 测试静态方法
         const auto& field_container = celeritas::mongo_test::get_database_field_container();
-        (void)field_container; // 验证方法可调用
+        BOOST_CHECK(!field_container.empty());
 
-        // 测试不同的select方法
-        auto select1 = celeritas::mongo_test::get_select(celeritas::database_type::mongo);
-        (void)select1; // 验证方法可调用
+        const auto select1 = celeritas::mongo_test::get_select(celeritas::database_type::mongo);
+        BOOST_CHECK_EQUAL(select1->get_database_name(), "mongo_test");
 
-        auto select2 = celeritas::mongo_test::get_select(celeritas::database_type::mongo, 123456LL);
-        (void)select2; // 验证方法可调用
+        const auto select2 = celeritas::mongo_test::get_select(celeritas::database_type::mongo, 123456LL);
+        BOOST_CHECK_EQUAL(select2->get_database_name(), "mongo_test");
     }
 
     BOOST_AUTO_TEST_CASE(test_constants)
     {
-        // 测试常量值
         BOOST_CHECK_EQUAL(celeritas::mongo_test::database_name, "mongo_test");
         BOOST_CHECK_EQUAL(celeritas::mongo_test::user_id_describe, "_id");
         BOOST_CHECK_EQUAL(celeritas::mongo_test::chapter_id_describe, "chapter_id");
@@ -363,19 +360,26 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
         celeritas::mongo_test mongo_test{ entity_change };
 
-        // 测试继承自database_entity的方法
-        auto modify_ptr = mongo_test.get_modify();
-        (void)modify_ptr; // 验证方法可调用
+        BOOST_CHECK(!mongo_test.is_modify());
+        BOOST_CHECK(!mongo_test.is_must_save());
+        mongo_test.set_chapter_name("new name");
 
-        auto delete_ptr = mongo_test.get_delete();
-        (void)delete_ptr; // 验证方法可调用
+        BOOST_CHECK(mongo_test.is_modify());
+        BOOST_CHECK(mongo_test.is_must_save());
+
+        const auto modify = mongo_test.get_modify();
+        BOOST_CHECK(modify);
+        BOOST_CHECK_EQUAL(modify->get_database_name(), "mongo_test");
+        BOOST_CHECK(modify->get_change_type() == celeritas::database_change_type::update_type);
 
         mongo_test.clear_modify();
-        bool is_modified = mongo_test.is_modify();
-        (void)is_modified; // 验证方法可调用
+        BOOST_CHECK(!mongo_test.is_modify());
 
-        bool is_must_save = mongo_test.is_must_save();
-        (void)is_must_save; // 验证方法可调用
+        BOOST_CHECK(!mongo_test.is_must_save());
+        const auto delete_mongo = mongo_test.get_delete();
+        BOOST_CHECK(delete_mongo);
+        BOOST_CHECK_EQUAL(delete_mongo->get_database_name(), "mongo_test");
+        BOOST_CHECK(delete_mongo->get_change_type() == celeritas::database_change_type::delete_type);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

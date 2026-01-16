@@ -266,14 +266,14 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
         // 测试静态方法
         const auto& field_container = celeritas::redis_test::get_database_field_container();
-        (void)field_container; // 验证方法可调用
+        BOOST_CHECK(!field_container.empty());
 
         // 测试不同的select方法
         auto select1 = celeritas::redis_test::get_select(celeritas::database_type::redis);
-        (void)select1; // 验证方法可调用
+        BOOST_CHECK_EQUAL(select1->get_database_name(), "redis_test");
 
         auto select2 = celeritas::redis_test::get_select(celeritas::database_type::redis, 123456LL);
-        (void)select2; // 验证方法可调用
+        BOOST_CHECK_EQUAL(select2->get_database_name(), "redis_test");
     }
 
     BOOST_AUTO_TEST_CASE(test_constants)
