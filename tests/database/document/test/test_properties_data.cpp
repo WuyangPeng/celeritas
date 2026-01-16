@@ -25,15 +25,15 @@ namespace
         data.set_double_array_value({ 6.7, 8.9, 10.11 });
         data.set_bool_value(true);
 
-        const celeritas::properties_data::document_type nested_doc{ celeritas::basis_database{ "nested_int", 100 },
-                                                                    celeritas::basis_database{ "nested_string", "hello" } };
+        const celeritas::properties_data::document_type nested_document{ celeritas::basis_database{ "nested_int", 100 },
+                                                                         celeritas::basis_database{ "nested_string", "hello" } };
 
-        data.set_document_value(nested_doc);
+        data.set_document_value(nested_document);
 
-        celeritas::properties_data::document_type doc_array_element1{ celeritas::basis_database{ "array_int1", 1 } };
-        celeritas::properties_data::document_type doc_array_element2{ celeritas::basis_database{ "array_string2", "world" } };
+        celeritas::properties_data::document_type document_array_element1{ celeritas::basis_database{ "array_int1", 1 } };
+        celeritas::properties_data::document_type document_array_element2{ celeritas::basis_database{ "array_string2", "world" } };
 
-        data.set_document_array_value({ doc_array_element1, doc_array_element2 });
+        data.set_document_array_value({ document_array_element1, document_array_element2 });
 
         return data;
     }

@@ -1,237 +1,258 @@
 ﻿#include "config/basic/database_type.h"
-#include "database/generated/mysql/test/mysql_test.h"
-#include "database/entity/database_entity.h"
 #include "database/basic/basis_database.h"
-#include "database/basic/database_data_type.h"
-#include "database/basic/database_entity_change.h"
 #include "database/basic/basis_database_container.h"
 #include "database/basic/database_change_type.h"
+#include "database/basic/database_entity_change.h"
+#include "database/detail/check_helper.h"
+#include "database/document/test/logs_data.h"
+#include "database/document/test/properties_data.h"
+#include "database/entity/database_entity.h"
+#include "database/generated/mysql/test/mysql_test.h"
 
 #include <boost/test/unit_test.hpp>
 
+#include <algorithm>
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
+
+namespace
+{
+    [[nodiscard]] celeritas::properties_data get_test_properties_data()
+    {
+        celeritas::properties_data data{};
+        data.set_int64_value(111111LL);
+        data.set_string_value("complete_test_string");
+        data.set_string_array_value({ "str1", "str2", "str3" });
+        data.set_int32_value(222);
+        data.set_int32_count_value(333);
+        data.set_int32_array_value({ 444, 555, 666 });
+        data.set_int64_count_value(777777LL);
+        data.set_int64_array_value({ 888888LL, 999999LL });
+        data.set_double_value(1.2345);
+        data.set_double_array_value({ 6.7, 8.9, 10.11 });
+        data.set_bool_value(true);
+
+        const celeritas::properties_data::document_type nested_doc{ celeritas::basis_database{ "nested_int", 100 },
+                                                                    celeritas::basis_database{ "nested_string", "hello" } };
+
+        data.set_document_value(nested_doc);
+
+        celeritas::properties_data::document_type doc_array_element1{ celeritas::basis_database{ "array_int1", 1 } };
+        celeritas::properties_data::document_type doc_array_element2{ celeritas::basis_database{ "array_string2", "world" } };
+
+        data.set_document_array_value({ doc_array_element1, doc_array_element2 });
+
+        return data;
+    }
+
+    [[nodiscard]] celeritas::logs_data get_test_logs_data()
+    {
+        celeritas::logs_data data{};
+        data.set_int64_value(111111LL);
+        data.set_string_value("complete_test_string");
+        data.set_string_array_value({ "str1", "str2", "str3" });
+        data.set_int32_value(222);
+        data.set_int32_count_value(333);
+        data.set_int32_array_value({ 444, 555, 666 });
+        data.set_int64_count_value(777777LL);
+        data.set_int64_array_value({ 888888LL, 999999LL });
+        data.set_double_value(1.2345);
+        data.set_double_array_value({ 6.7, 8.9, 10.11 });
+        data.set_bool_value(true);
+
+        const celeritas::logs_data::document_type nested_document{ celeritas::basis_database{ "nested_int", 100 },
+                                                                   celeritas::basis_database{ "nested_string", "hello" } };
+
+        data.set_document_value(nested_document);
+
+        celeritas::logs_data::document_type document_array_element1{ celeritas::basis_database{ "array_int1", 1 } };
+        celeritas::logs_data::document_type document_array_element2{ celeritas::basis_database{ "array_string2", "world" } };
+
+        data.set_document_array_value({ document_array_element1, document_array_element2 });
+
+        return data;
+    }
+}
 
 BOOST_AUTO_TEST_SUITE(mysql_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_constructors)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::mysql,
-            "mysql_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
+                                                               "mysql_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
-        // 测试不同的构造函数
-        celeritas::mysql_test test_obj1(entity_change);
+        const celeritas::mysql_test mysql_test1{ entity_change };
+        const celeritas::mysql_test mysql_test2{ celeritas::database_type::mysql, entity_change };
+        const celeritas::mysql_test mysql_test3{ celeritas::database_type::mysql, 123456LL };
 
-        // 测试带数据库类型参数的构造函数
-        celeritas::mysql_test test_obj2(celeritas::database_type::mysql, entity_change);
-
-        // 测试带用户ID参数的构造函数
-        celeritas::mysql_test test_obj3(celeritas::database_type::mysql, 123456LL);
-
-        // 验证对象被正确构造
-        BOOST_CHECK_EQUAL(test_obj3.get_user_id(), 123456LL);
+        BOOST_CHECK_EQUAL(mysql_test3.get_user_id(), 123456LL);
     }
 
     BOOST_AUTO_TEST_CASE(test_getters_and_setters)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::mysql,
-            "mysql_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
+                                                               "mysql_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
-        celeritas::mysql_test test_obj(entity_change);
+        celeritas::mysql_test mysql_test{ entity_change };
 
-        // 测试各种getter和setter方法
-        test_obj.set_user_id(111111LL);
-        BOOST_CHECK_EQUAL(test_obj.get_user_id(), 111111LL);
+        mysql_test.set_user_id(111111LL);
+        BOOST_CHECK_EQUAL(mysql_test.get_user_id(), 111111LL);
 
-        test_obj.set_chapter_id(222);
-        BOOST_CHECK_EQUAL(test_obj.get_chapter_id(), 222);
+        mysql_test.set_chapter_id(222);
+        BOOST_CHECK_EQUAL(mysql_test.get_chapter_id(), 222);
 
-        test_obj.set_chapter_name("test_chapter");
-        BOOST_CHECK_EQUAL(test_obj.get_chapter_name(), "test_chapter");
+        mysql_test.set_chapter_name("test_chapter");
+        BOOST_CHECK_EQUAL(mysql_test.get_chapter_name(), "test_chapter");
 
-        test_obj.set_chance_winning(0.75);
-        BOOST_CHECK_CLOSE(test_obj.get_chance_winning(), 0.75, 0.001);
+        mysql_test.set_chance_winning(0.75);
+        BOOST_CHECK_CLOSE(mysql_test.get_chance_winning(), 0.75, 0.001);
 
-        test_obj.set_winning(true);
-        BOOST_CHECK_EQUAL(test_obj.is_winning(), true);
+        mysql_test.set_winning(true);
+        BOOST_CHECK_EQUAL(mysql_test.is_winning(), true);
 
-        test_obj.set_currency(5000LL);
-        BOOST_CHECK_EQUAL(test_obj.get_currency(), 5000LL);
+        mysql_test.set_currency(5000LL);
+        BOOST_CHECK_EQUAL(mysql_test.get_currency(), 5000LL);
 
-        test_obj.set_count(100);
-        BOOST_CHECK_EQUAL(test_obj.get_count(), 100);
+        mysql_test.set_count(100);
+        BOOST_CHECK_EQUAL(mysql_test.get_count(), 100);
     }
 
     BOOST_AUTO_TEST_CASE(test_array_field_operations)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::mysql,
-            "mysql_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
+                                                               "mysql_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
-        celeritas::mysql_test test_obj(entity_change);
+        celeritas::mysql_test mysql_test{ entity_change };
 
-        // 测试标签数组
-        celeritas::traits::string_array_type tags = { "tag1", "tag2", "tag3" };
-        test_obj.set_tags(tags);
-        const auto& retrieved_tags = test_obj.get_tags();
-        BOOST_CHECK_EQUAL(retrieved_tags.size(), 3);
-        BOOST_CHECK_EQUAL(retrieved_tags[0], "tag1");
-        BOOST_CHECK_EQUAL(retrieved_tags[1], "tag2");
-        BOOST_CHECK_EQUAL(retrieved_tags[2], "tag3");
+        const celeritas::traits::string_array_type tags{ "tag1", "tag2", "tag3" };
+        mysql_test.set_tags(tags);
+        celeritas::check_array(tags, mysql_test.get_tags());
 
-        // 测试分类索引数组
-        celeritas::traits::int32_array_type category_indices = { 1, 2, 3, 4 };
-        test_obj.set_category_index(category_indices);
-        const auto& retrieved_categories = test_obj.get_category_index();
-        BOOST_CHECK_EQUAL(retrieved_categories.size(), 4);
-        BOOST_CHECK_EQUAL(retrieved_categories[0], 1);
-        BOOST_CHECK_EQUAL(retrieved_categories[1], 2);
-        BOOST_CHECK_EQUAL(retrieved_categories[2], 3);
-        BOOST_CHECK_EQUAL(retrieved_categories[3], 4);
+        const celeritas::traits::int32_array_type category_indices{ 1, 2, 3, 4 };
+        mysql_test.set_category_index(category_indices);
+        celeritas::check_array(category_indices, mysql_test.get_category_index());
 
-        // 测试相关索引数组
-        celeritas::traits::int64_array_type related_indices = { 100LL, 200LL, 300LL };
-        test_obj.set_related_index(related_indices);
-        const auto& retrieved_related = test_obj.get_related_index();
-        BOOST_CHECK_EQUAL(retrieved_related.size(), 3);
-        BOOST_CHECK_EQUAL(retrieved_related[0], 100LL);
-        BOOST_CHECK_EQUAL(retrieved_related[1], 200LL);
-        BOOST_CHECK_EQUAL(retrieved_related[2], 300LL);
+        const celeritas::traits::int64_array_type related_indices{ 100LL, 200LL, 300LL };
+        mysql_test.set_related_index(related_indices);
+        celeritas::check_array(related_indices, mysql_test.get_related_index());
 
-        // 测试比率数组
-        celeritas::traits::double_array_type ratios = { 0.1, 0.2, 0.3 };
-        test_obj.set_ratios(ratios);
-        const auto& retrieved_ratios = test_obj.get_ratios();
-        BOOST_CHECK_EQUAL(retrieved_ratios.size(), 3);
-        BOOST_CHECK_CLOSE(retrieved_ratios[0], 0.1, 0.001);
-        BOOST_CHECK_CLOSE(retrieved_ratios[1], 0.2, 0.001);
-        BOOST_CHECK_CLOSE(retrieved_ratios[2], 0.3, 0.001);
+        const celeritas::traits::double_array_type ratios{ 0.1, 0.2, 0.3 };
+        mysql_test.set_ratios(ratios);
+        celeritas::check_array(ratios, mysql_test.get_ratios());
     }
 
     BOOST_AUTO_TEST_CASE(test_document_field_operations)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::mysql,
-            "mysql_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
+                                                               "mysql_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
         celeritas::mysql_test test_obj(entity_change);
 
-        // 由于文档类型的具体实现未知，我们只验证可以正常访问
-        celeritas::traits::document_type properties_doc; // 默认构造
-        test_obj.set_properties(properties_doc);
-        const auto& retrieved_props = test_obj.get_properties();
-        (void)retrieved_props; // 避免未使用警告
+        const auto properties_data = get_test_properties_data();
+        test_obj.set_properties(properties_data.to_document_type());
+        check_properties_data(celeritas::properties_data::from_document(test_obj.get_properties()), properties_data);
 
-        celeritas::traits::document_array_type logs_docs = {}; // 空数组
-        test_obj.set_logs(logs_docs);
-        const auto& retrieved_logs = test_obj.get_logs();
-        BOOST_CHECK_EQUAL(retrieved_logs.size(), 0);
+        const auto logs_data = get_test_logs_data();
+        test_obj.add_logs(logs_data.to_document_type());
+        BOOST_CHECK_EQUAL(test_obj.get_logs().size(), 1);
+        check_logs_data(celeritas::logs_data::from_document(test_obj.get_logs().at(0)), logs_data);
     }
 
     BOOST_AUTO_TEST_CASE(test_modifier_methods)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::mysql,
-            "mysql_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
+                                                               "mysql_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
         celeritas::mysql_test test_obj(entity_change);
 
         // 测试货币修改方法
         test_obj.set_currency(1000LL);
         test_obj.modify_currency(500LL);
-        // 注意：modify_currency的具体行为取决于实现，这里只是测试方法存在
-        (void)test_obj.get_currency(); // 验证方法可调用
+        BOOST_CHECK_EQUAL(test_obj.get_currency(), 1500LL);
 
         // 测试计数修改方法
         test_obj.set_count(50);
         test_obj.modify_count(10);
-        // 注意：modify_count的具体行为取决于实现，这里只是测试方法存在
-        (void)test_obj.get_count(); // 验证方法可调用
+        BOOST_CHECK_EQUAL(test_obj.get_count(), 60);
     }
 
     BOOST_AUTO_TEST_CASE(test_array_element_operations)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::mysql,
-            "mysql_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
+                                                               "mysql_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
         celeritas::mysql_test test_obj(entity_change);
 
-        // 测试标签数组元素操作
+        // Test tags array element operations
         test_obj.add_tags("new_tag");
+        BOOST_CHECK_EQUAL(test_obj.get_tags().size(), 1);
+        BOOST_CHECK_EQUAL(test_obj.get_tags().at(0), "new_tag");
         test_obj.set_tags(0, "updated_tag");
-        // 测试移除标签
-        // test_obj.remove_tags(0); // 如果需要，可以根据实际实现进行测试
+        BOOST_CHECK_EQUAL(test_obj.get_tags().at(0), "updated_tag");
 
-        // 测试分类索引数组元素操作
+        // Test category_index array element operations
         test_obj.add_category_index(999);
+        BOOST_CHECK_EQUAL(test_obj.get_category_index().size(), 1);
+        BOOST_CHECK_EQUAL(test_obj.get_category_index().at(0), 999);
         test_obj.set_category_index(0, 888);
-        // 测试移除分类
-        // test_obj.remove_category_index(0); // 如果需要，可以根据实际实现进行测试
+        BOOST_CHECK_EQUAL(test_obj.get_category_index().at(0), 888);
 
-        // 测试相关索引数组元素操作
+        // Test related_index array element operations
         test_obj.add_related_index(777777LL);
+        BOOST_CHECK_EQUAL(test_obj.get_related_index().size(), 1);
+        BOOST_CHECK_EQUAL(test_obj.get_related_index().at(0), 777777LL);
         test_obj.set_related_index(0, 666666LL);
-        // 测试移除相关索引
-        // test_obj.remove_related_index(0); // 如果需要，可以根据实际实现进行测试
+        BOOST_CHECK_EQUAL(test_obj.get_related_index().at(0), 666666LL);
 
-        // 测试比率数组元素操作
+        // Test ratios array element operations
         test_obj.add_ratios(0.99);
+        BOOST_CHECK_EQUAL(test_obj.get_ratios().size(), 1);
+        BOOST_CHECK_CLOSE(test_obj.get_ratios().at(0), 0.99, 0.001);
         test_obj.set_ratios(0, 0.88);
-        // 测试移除比率
-        // test_obj.remove_ratios(0); // 如果需要，可以根据实际实现进行测试
+        BOOST_CHECK_CLOSE(test_obj.get_ratios().at(0), 0.88, 0.001);
 
-        // 测试日志数组元素操作
-        celeritas::traits::document_type doc; // 默认构造
-        test_obj.add_logs(doc);
-        test_obj.set_logs(0, doc);
-        // 测试移除日志
-        // test_obj.remove_logs(0); // 如果需要，可以根据实际实现进行测试
+        // Test logs array element operations
+        celeritas::logs_data logs_data1{};
+        logs_data1.set_string_value("log1");
+        test_obj.add_logs(logs_data1.to_document_type());
+        BOOST_CHECK_EQUAL(test_obj.get_logs().size(), 1);
+        auto retrieved_log1 = celeritas::logs_data::from_document(test_obj.get_logs().at(0));
+        BOOST_CHECK_EQUAL(retrieved_log1.get_string_value(), "log1");
+
+        celeritas::logs_data logs_data2{};
+        logs_data2.set_string_value("log2");
+        test_obj.set_logs(0, logs_data2.to_document_type());
+        BOOST_CHECK_EQUAL(test_obj.get_logs().size(), 1);
+        auto retrieved_log2 = celeritas::logs_data::from_document(test_obj.get_logs().at(0));
+        BOOST_CHECK_EQUAL(retrieved_log2.get_string_value(), "log2");
     }
 
     BOOST_AUTO_TEST_CASE(test_static_methods)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::mysql,
-            "mysql_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
+                                                               "mysql_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
         // 测试静态方法
         const auto& field_container = celeritas::mysql_test::get_database_field_container();
@@ -264,32 +285,47 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
         BOOST_CHECK_EQUAL(celeritas::mysql_test::logs_describe, "logs");
     }
 
-    BOOST_AUTO_TEST_CASE(test_inheritance_from_database_entity)
+    BOOST_AUTO_TEST_CASE(test_inheritance_modify)
     {
-        // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        celeritas::database_entity_change entity_change(
-            celeritas::database_type::mysql,
-            "mysql_test",
-            celeritas::database_change_type::insert_type,
-            key_container
-            );
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
+                                                               "mysql_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
         celeritas::mysql_test test_obj(entity_change);
 
-        // 测试继承自database_entity的方法
-        auto modify_ptr = test_obj.get_modify();
-        (void)modify_ptr; // 验证方法可调用
+        BOOST_CHECK(!test_obj.is_modify());
+        BOOST_CHECK(!test_obj.is_must_save());
+        test_obj.set_chapter_name("new name");
 
-        auto delete_ptr = test_obj.get_delete();
-        (void)delete_ptr; // 验证方法可调用
+        BOOST_CHECK(test_obj.is_modify());
+        BOOST_CHECK(test_obj.is_must_save());
+
+        const auto modify = test_obj.get_modify();
+        BOOST_CHECK(modify);
+        BOOST_CHECK_EQUAL(modify->get_database_name(), "mysql_test");
+        BOOST_CHECK(modify->get_change_type() == celeritas::database_change_type::update_type);
 
         test_obj.clear_modify();
-        bool is_modified = test_obj.is_modify();
-        (void)is_modified; // 验证方法可调用
+        BOOST_CHECK(!test_obj.is_modify());
+        BOOST_CHECK(!test_obj.is_must_save());
+    }
 
-        bool is_must_save = test_obj.is_must_save();
-        (void)is_must_save; // 验证方法可调用
+    BOOST_AUTO_TEST_CASE(test_inheritance_delete)
+    {
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
+                                                               "mysql_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
+
+        celeritas::mysql_test test_obj(entity_change);
+
+        const auto delete_mysql = test_obj.get_delete();
+        BOOST_CHECK(delete_mysql);
+        BOOST_CHECK_EQUAL(delete_mysql->get_database_name(), "mysql_test");
+        BOOST_CHECK(delete_mysql->get_change_type() == celeritas::database_change_type::delete_type);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -296,7 +296,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
         BOOST_CHECK_EQUAL(celeritas::redis_test::logs_describe, "logs");
     }
 
-    BOOST_AUTO_TEST_CASE(test_inheritance_from_database_entity)
+    BOOST_AUTO_TEST_CASE(test_inheritance_modify)
     {
         // 创建必要的参数来构造database_entity_change
         const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
@@ -313,15 +313,29 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
         auto modify_ptr = test_obj.get_modify();
         (void)modify_ptr; // 验证方法可调用
 
-        auto delete_ptr = test_obj.get_delete();
-        (void)delete_ptr; // 验证方法可调用
-
         test_obj.clear_modify();
         bool is_modified = test_obj.is_modify();
         (void)is_modified; // 验证方法可调用
 
         bool is_must_save = test_obj.is_must_save();
         (void)is_must_save; // 验证方法可调用
+    }
+
+    BOOST_AUTO_TEST_CASE(test_inheritance_delete)
+    {
+        // 创建必要的参数来构造database_entity_change
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
+        celeritas::database_entity_change entity_change(
+            celeritas::database_type::redis,
+            "redis_test",
+            celeritas::database_change_type::insert_type,
+            key_container
+            );
+
+        celeritas::redis_test test_obj(entity_change);
+
+        auto delete_ptr = test_obj.get_delete();
+        (void)delete_ptr; // 验证方法可调用
     }
 
 BOOST_AUTO_TEST_SUITE_END()
