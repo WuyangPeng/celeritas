@@ -1,6 +1,6 @@
 ﻿#include "database/basic/basis_database.tpp"
-#include "database/document/test/properties_data.h"
 #include "database/detail/check_helper.h"
+#include "database/document/test/properties_data.h"
 
 #include <boost/test/unit_test.hpp>
 

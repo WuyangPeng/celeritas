@@ -1,6 +1,6 @@
 ﻿#include "database/basic/basis_database.h"
-#include "database/document/test/logs_data.h"
 #include "database/detail/check_helper.h"
+#include "database/document/test/logs_data.h"
 
 #include <boost/test/unit_test.hpp>
 

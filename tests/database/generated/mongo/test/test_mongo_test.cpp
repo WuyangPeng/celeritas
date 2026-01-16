@@ -2,9 +2,9 @@
 #include "database/basic/basis_database_container.h"
 #include "database/basic/database_change_type.h"
 #include "database/basic/database_entity_change.h"
+#include "database/detail/check_helper.h"
 #include "database/entity/database_entity.h"
 #include "database/generated/mongo/test/mongo_test.h"
-#include "database/detail/check_helper.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -16,9 +16,11 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_constructors)
     {
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>();
         const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
                                                                "mongo_test",
-                                                               celeritas::database_change_type::insert_type };
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
         const celeritas::mongo_test mongo_test1{ entity_change };
 
@@ -31,9 +33,11 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_getters_and_setters)
     {
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>();
         const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
                                                                "mongo_test",
-                                                               celeritas::database_change_type::insert_type };
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
         celeritas::mongo_test mongo_test{ entity_change };
 
@@ -61,38 +65,38 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_array_field_operations)
     {
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>();
         const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
                                                                "mongo_test",
-                                                               celeritas::database_change_type::insert_type };
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
         celeritas::mongo_test mongo_test{ entity_change };
 
         const celeritas::traits::string_array_type tags{ "tag1", "tag2", "tag3" };
         mongo_test.set_tags(tags);
-        const auto& retrieved_tags = mongo_test.get_tags();
-        celeritas::check_array(tags, retrieved_tags);
+        celeritas::check_array(tags, mongo_test.get_tags());
 
         const celeritas::traits::int32_array_type category_indices{ 1, 2, 3, 4 };
         mongo_test.set_category_index(category_indices);
-        const auto& retrieved_categories = mongo_test.get_category_index();
-        celeritas::check_array(category_indices, retrieved_categories);
+        celeritas::check_array(category_indices, mongo_test.get_category_index());
 
         const celeritas::traits::int64_array_type related_indices{ 100LL, 200LL, 300LL };
         mongo_test.set_related_index(related_indices);
-        const auto& retrieved_related = mongo_test.get_related_index();
-        celeritas::check_array(related_indices, retrieved_related);
+        celeritas::check_array(related_indices, mongo_test.get_related_index());
 
         const celeritas::traits::double_array_type ratios{ 0.1, 0.2, 0.3 };
         mongo_test.set_ratios(ratios);
-        const auto& retrieved_ratios = mongo_test.get_ratios();
-        celeritas::check_array(ratios, retrieved_ratios);
+        celeritas::check_array(ratios, mongo_test.get_ratios());
     }
 
     BOOST_AUTO_TEST_CASE(test_byte_array_operations)
     {
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>();
         const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
                                                                "mongo_test",
-                                                               celeritas::database_change_type::insert_type };
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
         celeritas::mongo_test mongo_test{ entity_change };
 
@@ -104,9 +108,11 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_document_field_operations)
     {
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>();
         const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
                                                                "mongo_test",
-                                                               celeritas::database_change_type::insert_type };
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
 
         celeritas::mongo_test mongo_test{ entity_change };
 
