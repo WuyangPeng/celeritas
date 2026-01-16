@@ -1,4 +1,5 @@
-﻿#include "config/basic/database_type.h"#include "database/basic/basis_database_container.h"
+﻿#include "config/basic/database_type.h"
+#include "database/basic/basis_database_container.h"
 #include "database/basic/database_change_type.h"
 #include "database/basic/database_entity_change.h"
 #include "database/entity/database_entity.h"
@@ -321,4 +322,4 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
         (void)is_must_save; // 验证方法可调用
     }
 
-    BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END()
