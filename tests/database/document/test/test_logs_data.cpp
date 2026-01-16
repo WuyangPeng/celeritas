@@ -1,6 +1,8 @@
 ﻿#include "database/basic/basis_database.h"
 #include "database/document/test/logs_data.h"
-#include "detail/document_helper.h"
+#include "database/detail/check_helper.h"
+
+#include <boost/test/unit_test.hpp>
 
 #include <algorithm>
 #include <string>
@@ -8,23 +10,6 @@
 
 namespace
 {
-    void check_logs_data(const celeritas::logs_data& lhs, const celeritas::logs_data& rhs)
-    {
-        BOOST_CHECK_EQUAL(lhs.get_int64_value(), rhs.get_int64_value());
-        BOOST_CHECK_EQUAL(lhs.get_string_value(), rhs.get_string_value());
-        celeritas::verify_array_values(lhs.get_string_array_value(), rhs.get_string_array_value());
-        BOOST_CHECK_EQUAL(lhs.get_int32_value(), rhs.get_int32_value());
-        BOOST_CHECK_EQUAL(lhs.get_int32_count_value(), rhs.get_int32_count_value());
-        celeritas::verify_array_values(lhs.get_int32_array_value(), rhs.get_int32_array_value());
-        BOOST_CHECK_EQUAL(lhs.get_int64_count_value(), rhs.get_int64_count_value());
-        celeritas::verify_array_values(lhs.get_int64_array_value(), rhs.get_int64_array_value());
-        BOOST_CHECK_CLOSE(lhs.get_double_value(), rhs.get_double_value(), 0.001);
-        celeritas::verify_array_values(lhs.get_double_array_value(), rhs.get_double_array_value());
-        BOOST_CHECK_EQUAL(lhs.get_bool_value(), rhs.get_bool_value());
-        BOOST_CHECK(lhs.get_document_value() == rhs.get_document_value());
-        BOOST_CHECK(lhs.get_document_array_value() == rhs.get_document_array_value());
-    }
-
     celeritas::logs_data get_test_logs_data()
     {
         celeritas::logs_data data{};
@@ -68,22 +53,22 @@ namespace
                           original_data.get_int64_value());
         BOOST_CHECK_EQUAL(get_field_value(document, celeritas::logs_data::string_value_description).get_value<celeritas::database_data_type::string_type>(),
                           original_data.get_string_value());
-        celeritas::verify_array_values(get_field_value(document, celeritas::logs_data::string_array_value_description).get_value<celeritas::database_data_type::string_array_type>(),
-                                       original_data.get_string_array_value());
+        celeritas::check_array(get_field_value(document, celeritas::logs_data::string_array_value_description).get_value<celeritas::database_data_type::string_array_type>(),
+                               original_data.get_string_array_value());
         BOOST_CHECK_EQUAL(get_field_value(document, celeritas::logs_data::int32_value_description).get_value<celeritas::database_data_type::int32_type>(),
                           original_data.get_int32_value());
         BOOST_CHECK_EQUAL(get_field_value(document, celeritas::logs_data::int32_count_value_description).get_value<celeritas::database_data_type::int32_count_type>(),
                           original_data.get_int32_count_value());
-        celeritas::verify_array_values(get_field_value(document, celeritas::logs_data::int32_array_value_description).get_value<celeritas::database_data_type::int32_array_type>(),
-                                       original_data.get_int32_array_value());
+        celeritas::check_array(get_field_value(document, celeritas::logs_data::int32_array_value_description).get_value<celeritas::database_data_type::int32_array_type>(),
+                               original_data.get_int32_array_value());
         BOOST_CHECK_EQUAL(get_field_value(document, celeritas::logs_data::int64_count_value_description).get_value<celeritas::database_data_type::int64_count_type>(),
                           original_data.get_int64_count_value());
-        celeritas::verify_array_values(get_field_value(document, celeritas::logs_data::int64_array_value_description).get_value<celeritas::database_data_type::int64_array_type>(),
-                                       original_data.get_int64_array_value());
+        celeritas::check_array(get_field_value(document, celeritas::logs_data::int64_array_value_description).get_value<celeritas::database_data_type::int64_array_type>(),
+                               original_data.get_int64_array_value());
         BOOST_CHECK_CLOSE(get_field_value(document, celeritas::logs_data::double_value_description).get_value<celeritas::database_data_type::double_type>(),
                           original_data.get_double_value(), 0.001);
-        celeritas::verify_array_values(get_field_value(document, celeritas::logs_data::double_array_value_description).get_value<celeritas::database_data_type::double_array_type>(),
-                                       original_data.get_double_array_value());
+        celeritas::check_array(get_field_value(document, celeritas::logs_data::double_array_value_description).get_value<celeritas::database_data_type::double_array_type>(),
+                               original_data.get_double_array_value());
         BOOST_CHECK_EQUAL(get_field_value(document, celeritas::logs_data::bool_value_description).get_value<celeritas::database_data_type::bool_type>(),
                           original_data.get_bool_value());
         BOOST_CHECK(get_field_value(document, celeritas::logs_data::document_value_description).get_value<celeritas::database_data_type::document_type>() == original_data.get_document_value());
@@ -135,7 +120,7 @@ BOOST_AUTO_TEST_SUITE(logs_data_suite)
 
         data.set_string_array_value(test_value);
 
-        celeritas::verify_array_values(data.get_string_array_value(), test_value);
+        celeritas::check_array(data.get_string_array_value(), test_value);
     }
 
     BOOST_AUTO_TEST_CASE(test_int32_value_accessors)
@@ -165,7 +150,7 @@ BOOST_AUTO_TEST_SUITE(logs_data_suite)
 
         data.set_int32_array_value(test_value);
 
-        celeritas::verify_array_values(data.get_int32_array_value(), test_value);
+        celeritas::check_array(data.get_int32_array_value(), test_value);
     }
 
     BOOST_AUTO_TEST_CASE(test_int64_count_value_accessors)
@@ -185,7 +170,7 @@ BOOST_AUTO_TEST_SUITE(logs_data_suite)
 
         data.set_int64_array_value(test_value);
 
-        celeritas::verify_array_values(data.get_int64_array_value(), test_value);
+        celeritas::check_array(data.get_int64_array_value(), test_value);
     }
 
     BOOST_AUTO_TEST_CASE(test_double_value_accessors)
@@ -204,7 +189,7 @@ BOOST_AUTO_TEST_SUITE(logs_data_suite)
         const celeritas::logs_data::double_array_type test_value{ 1.1, 2.2, 3.3 };
 
         data.set_double_array_value(test_value);
-        celeritas::verify_array_values(data.get_double_array_value(), test_value);
+        celeritas::check_array(data.get_double_array_value(), test_value);
     }
 
     BOOST_AUTO_TEST_CASE(test_bool_value_accessors)

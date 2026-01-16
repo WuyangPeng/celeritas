@@ -21,6 +21,8 @@ void celeritas::check_properties_data(const properties_data& lhs, const properti
     BOOST_WARN_CLOSE(lhs.get_double_value(), rhs.get_double_value(), 0.000001);
     check_array(lhs.get_double_array_value(), rhs.get_double_array_value());
     BOOST_CHECK_EQUAL(lhs.get_bool_value(), rhs.get_bool_value());
+    BOOST_CHECK(lhs.get_document_value() == rhs.get_document_value());
+    BOOST_CHECK(lhs.get_document_array_value() == rhs.get_document_array_value());
 }
 
 void celeritas::check_logs_data(const traits::document_array_type& lhs, const traits::document_array_type& rhs)
@@ -29,7 +31,7 @@ void celeritas::check_logs_data(const traits::document_array_type& lhs, const tr
     for (auto i = 0; i < lhs.size(); ++i)
     {
         const auto lhs_loaded_log = logs_data::from_document(lhs.at(i));
-        const auto rhs_loaded_log = logs_data::from_document(lhs.at(i));
+        const auto rhs_loaded_log = logs_data::from_document(rhs.at(i));
 
         check_logs_data(lhs_loaded_log, rhs_loaded_log);
     }
@@ -48,4 +50,6 @@ void celeritas::check_logs_data(const logs_data& lhs, const logs_data& rhs)
     BOOST_WARN_CLOSE(lhs.get_double_value(), rhs.get_double_value(), 0.000001);
     check_array(lhs.get_double_array_value(), rhs.get_double_array_value());
     BOOST_CHECK_EQUAL(lhs.get_bool_value(), rhs.get_bool_value());
+    BOOST_CHECK(lhs.get_document_value() == rhs.get_document_value());
+    BOOST_CHECK(lhs.get_document_array_value() == rhs.get_document_array_value());
 }

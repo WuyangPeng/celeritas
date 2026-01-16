@@ -5,7 +5,7 @@
 #include "database/document/test/properties_data.h"
 #include "database/generated/mongo/test/mongo_test.h"
 #include "database/session/mongo_database_session.h"
-#include "detail/check_helper.h"
+#include "database/detail/check_helper.h"
 #include "fixture/mongo_database_session_fixture.h"
 
 #include <boost/asio.hpp>

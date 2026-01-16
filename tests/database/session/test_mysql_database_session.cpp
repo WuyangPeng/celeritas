@@ -5,7 +5,7 @@
 #include "database/document/test/properties_data.h"
 #include "database/generated/mysql/test/mysql_test.h"
 #include "database/session/mysql_database_session.h"
-#include "detail/check_helper.h"
+#include "database/detail/check_helper.h"
 #include "fixture/mysql_database_session_fixture.h"
 
 #include <boost/asio.hpp>

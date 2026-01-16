@@ -10,10 +10,22 @@ namespace celeritas
     template <typename T>
     void check_array(const T& lhs, const T& rhs)
     {
-        BOOST_CHECK_EQUAL(lhs.size(), lhs.size());
+        BOOST_CHECK_EQUAL(lhs.size(), rhs.size());
+        if (lhs.size() != rhs.size())
+        {
+            return;
+        }
+
         for (auto i = 0; i < lhs.size(); ++i)
         {
-            BOOST_CHECK_EQUAL(lhs.at(i), rhs.at(i));
+            if constexpr (std::is_floating_point_v<typename T::value_type>)
+            {
+                BOOST_CHECK_CLOSE(lhs.at(i), rhs.at(i), 0.001);
+            }
+            else
+            {
+                BOOST_CHECK_EQUAL(lhs.at(i), rhs.at(i));
+            }
         }
     }
 
