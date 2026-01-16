@@ -3,7 +3,7 @@
 #include "database/basic/basis_database.tpp"
 
 celeritas::develop_data::develop_data(const int system_id, const int64_t instance_id)
-    : system_id_{ system_id }, instance_id_{ instance_id }, level_{ 1 }, exp_{ 0 }, updated_time_{ time_helper::get_current_milliseconds() }
+    : system_id_{ system_id }, instance_id_{ instance_id }, level_{ default_level }, exp_{ 0 }, updated_time_{ time_helper::get_current_milliseconds() }
 {
 }
 
@@ -65,7 +65,7 @@ void celeritas::develop_data::set_updated_time(const int64_t updated_time)
 
 void celeritas::develop_data::clear()
 {
-    level_ = 0;
+    level_ = default_level;
     exp_ = 0;
     updated_time_ = time_helper::get_current_milliseconds();
 }

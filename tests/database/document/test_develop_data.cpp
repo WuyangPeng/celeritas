@@ -1,4 +1,5 @@
-﻿#include "database/document/develop_data.h"
+﻿#include "common/core/time_helper.h"
+#include "database/document/develop_data.h"
 #include "database/basic/basis_database.h"
 
 #include <boost/test/unit_test.hpp>
@@ -13,7 +14,7 @@ BOOST_AUTO_TEST_SUITE(develop_data_suite)
         celeritas::develop_data data;
         BOOST_CHECK_EQUAL(data.get_system_id(), 0);
         BOOST_CHECK_EQUAL(data.get_instance_id(), 0);
-        BOOST_CHECK_EQUAL(data.get_level(), 0);
+        BOOST_CHECK_EQUAL(data.get_level(), celeritas::develop_data::default_level);
         BOOST_CHECK_EQUAL(data.get_exp(), 0);
         BOOST_CHECK_EQUAL(data.get_updated_time(), 0);
     }
@@ -27,9 +28,9 @@ BOOST_AUTO_TEST_SUITE(develop_data_suite)
         BOOST_CHECK_EQUAL(data.get_system_id(), sys_id);
         BOOST_CHECK_EQUAL(data.get_instance_id(), inst_id);
         // 其他字段应为默认值
-        BOOST_CHECK_EQUAL(data.get_level(), 1);
+        BOOST_CHECK_EQUAL(data.get_level(), celeritas::develop_data::default_level);
         BOOST_CHECK_EQUAL(data.get_exp(), 0);
-        BOOST_CHECK_EQUAL(data.get_updated_time(), 0);
+        BOOST_CHECK_GE(data.get_updated_time(), celeritas::time_helper::get_current_milliseconds());
     }
 
     BOOST_AUTO_TEST_CASE(test_accessors)
@@ -69,11 +70,11 @@ BOOST_AUTO_TEST_SUITE(develop_data_suite)
 
         data.clear();
 
-        BOOST_CHECK_EQUAL(data.get_system_id(), 0);
-        BOOST_CHECK_EQUAL(data.get_instance_id(), 0);
-        BOOST_CHECK_EQUAL(data.get_level(), 1);
+        BOOST_CHECK_EQUAL(data.get_system_id(), 1);
+        BOOST_CHECK_EQUAL(data.get_instance_id(), 2);
+        BOOST_CHECK_EQUAL(data.get_level(), celeritas::develop_data::default_level);
         BOOST_CHECK_EQUAL(data.get_exp(), 0);
-        BOOST_CHECK_EQUAL(data.get_updated_time(), 0);
+        BOOST_CHECK_GE(data.get_updated_time(), celeritas::time_helper::get_current_milliseconds());
     }
 
     BOOST_AUTO_TEST_CASE(test_round_trip)

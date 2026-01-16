@@ -50,10 +50,12 @@ namespace celeritas
         static constexpr std::string_view exp_description = "exp";
         static constexpr std::string_view updated_time_description = "updated_time";
 
+        static constexpr auto default_level = 1;
+
     private:
         int system_id_ = 0;
         int64_t instance_id_ = 0;
-        int level_ = 1;
+        int level_ = default_level;
         int64_t exp_ = 0;
         int64_t updated_time_ = 0;
     };
