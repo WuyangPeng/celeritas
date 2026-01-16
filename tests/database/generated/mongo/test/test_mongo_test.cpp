@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_constructors)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
         const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
                                                                "mongo_test",
                                                                celeritas::database_change_type::insert_type,
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_getters_and_setters)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
         const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
                                                                "mongo_test",
                                                                celeritas::database_change_type::insert_type,
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_array_field_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
         const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
                                                                "mongo_test",
                                                                celeritas::database_change_type::insert_type,
@@ -151,7 +151,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_byte_array_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
         const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
                                                                "mongo_test",
                                                                celeritas::database_change_type::insert_type,
@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_document_field_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
         const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
                                                                "mongo_test",
                                                                celeritas::database_change_type::insert_type,
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_modifier_methods)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
         const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
                                                                "mongo_test",
                                                                celeritas::database_change_type::insert_type,
@@ -203,9 +203,9 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
         BOOST_CHECK_EQUAL(mongo_test.get_count(), 60);
     }
 
-    BOOST_AUTO_TEST_CASE(test_array_element_operations)
+    BOOST_AUTO_TEST_CASE(test_tags_array_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
         const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
                                                                "mongo_test",
                                                                celeritas::database_change_type::insert_type,
@@ -213,47 +213,109 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
         celeritas::mongo_test mongo_test{ entity_change };
 
-        // 测试标签数组元素操作
         mongo_test.add_tags("new_tag");
+        BOOST_CHECK_EQUAL(mongo_test.get_tags().size(), 1);
+        BOOST_CHECK_EQUAL(mongo_test.get_tags().at(0), "new_tag");
         mongo_test.set_tags(0, "updated_tag");
-        // 测试移除标签
-        // test_obj.remove_tags(0); // 如果需要，可以根据实际实现进行测试
+        BOOST_CHECK_EQUAL(mongo_test.get_tags().at(0), "updated_tag");
+    }
 
-        // 测试分类索引数组元素操作
+    BOOST_AUTO_TEST_CASE(test_category_index_array_element_operations)
+    {
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
+                                                               "mongo_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
+
+        celeritas::mongo_test mongo_test{ entity_change };
+
         mongo_test.add_category_index(999);
+        BOOST_CHECK_EQUAL(mongo_test.get_category_index().size(), 1);
+        BOOST_CHECK_EQUAL(mongo_test.get_category_index().at(0), 999);
         mongo_test.set_category_index(0, 888);
-        // 测试移除分类
-        // test_obj.remove_category_index(0); // 如果需要，可以根据实际实现进行测试
+        BOOST_CHECK_EQUAL(mongo_test.get_category_index().at(0), 888);
+    }
 
-        // 测试相关索引数组元素操作
+    BOOST_AUTO_TEST_CASE(test_related_index_array_element_operations)
+    {
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
+                                                               "mongo_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
+
+        celeritas::mongo_test mongo_test{ entity_change };
+
         mongo_test.add_related_index(777777LL);
+        BOOST_CHECK_EQUAL(mongo_test.get_related_index().size(), 1);
+        BOOST_CHECK_EQUAL(mongo_test.get_related_index().at(0), 777777LL);
         mongo_test.set_related_index(0, 666666LL);
-        // 测试移除相关索引
-        // test_obj.remove_related_index(0); // 如果需要，可以根据实际实现进行测试
+        BOOST_CHECK_EQUAL(mongo_test.get_related_index().at(0), 666666LL);
+    }
 
-        // 测试比率数组元素操作
+    BOOST_AUTO_TEST_CASE(test_ratios_array_element_operations)
+    {
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
+                                                               "mongo_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
+
+        celeritas::mongo_test mongo_test{ entity_change };
+
         mongo_test.add_ratios(0.99);
+        BOOST_CHECK_EQUAL(mongo_test.get_ratios().size(), 1);
+        BOOST_CHECK_CLOSE(mongo_test.get_ratios().at(0), 0.99, 0.001);
         mongo_test.set_ratios(0, 0.88);
-        // 测试移除比率
-        // test_obj.remove_ratios(0); // 如果需要，可以根据实际实现进行测试
+        BOOST_CHECK_CLOSE(mongo_test.get_ratios().at(0), 0.88, 0.001);
+    }
 
-        // 测试字节数组元素操作
+    BOOST_AUTO_TEST_CASE(test_attachment_array_element_operations)
+    {
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
+                                                               "mongo_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
+
+        celeritas::mongo_test mongo_test{ entity_change };
+
         mongo_test.add_attachment('x');
+        BOOST_CHECK_EQUAL(mongo_test.get_attachment().size(), 1);
+        BOOST_CHECK_EQUAL(mongo_test.get_attachment().at(0), 'x');
         mongo_test.set_attachment(0, 'y');
-        // 测试移除字节
-        // test_obj.remove_attachment(0); // 如果需要，可以根据实际实现进行测试
+        BOOST_CHECK_EQUAL(mongo_test.get_attachment().at(0), 'y');
+    }
 
-        // 测试日志数组元素操作
-        celeritas::traits::document_type doc; // 默认构造
-        mongo_test.add_logs(doc);
-        mongo_test.set_logs(0, doc);
-        // 测试移除日志
-        // test_obj.remove_logs(0); // 如果需要，可以根据实际实现进行测试
+    BOOST_AUTO_TEST_CASE(test_logs_array_element_operations)
+    {
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
+        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
+                                                               "mongo_test",
+                                                               celeritas::database_change_type::insert_type,
+                                                               key_container };
+
+        celeritas::mongo_test mongo_test{ entity_change };
+
+        celeritas::logs_data logs_data1{};
+        logs_data1.set_string_value("log1");
+        mongo_test.add_logs(logs_data1.to_document_type());
+        BOOST_CHECK_EQUAL(mongo_test.get_logs().size(), 1);
+        auto retrieved_log1 = celeritas::logs_data::from_document(mongo_test.get_logs().at(0));
+        BOOST_CHECK_EQUAL(retrieved_log1.get_string_value(), "log1");
+
+        celeritas::logs_data logs_data2{};
+        logs_data2.set_string_value("log2");
+        mongo_test.set_logs(0, logs_data2.to_document_type());
+        BOOST_CHECK_EQUAL(mongo_test.get_logs().size(), 1);
+        auto retrieved_log2 = celeritas::logs_data::from_document(mongo_test.get_logs().at(0));
+        BOOST_CHECK_EQUAL(retrieved_log2.get_string_value(), "log2");
     }
 
     BOOST_AUTO_TEST_CASE(test_static_methods)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
         const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
                                                                "mongo_test",
                                                                celeritas::database_change_type::insert_type,
@@ -293,26 +355,26 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_inheritance_from_database_entity)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
         const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
                                                                "mongo_test",
                                                                celeritas::database_change_type::insert_type,
                                                                key_container };
 
-        celeritas::mongo_test test_obj{ entity_change };
+        celeritas::mongo_test mongo_test{ entity_change };
 
         // 测试继承自database_entity的方法
-        auto modify_ptr = test_obj.get_modify();
+        auto modify_ptr = mongo_test.get_modify();
         (void)modify_ptr; // 验证方法可调用
 
-        auto delete_ptr = test_obj.get_delete();
+        auto delete_ptr = mongo_test.get_delete();
         (void)delete_ptr; // 验证方法可调用
 
-        test_obj.clear_modify();
-        bool is_modified = test_obj.is_modify();
+        mongo_test.clear_modify();
+        bool is_modified = mongo_test.is_modify();
         (void)is_modified; // 验证方法可调用
 
-        bool is_must_save = test_obj.is_must_save();
+        bool is_must_save = mongo_test.is_must_save();
         (void)is_must_save; // 验证方法可调用
     }
 

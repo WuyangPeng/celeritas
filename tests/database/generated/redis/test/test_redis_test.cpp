@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
     BOOST_AUTO_TEST_CASE(test_constructors)
     {
         // 创建必要的参数来构造database_entity_change
-        auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change entity_change(
             celeritas::database_type::redis,
             "redis_test",
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
     BOOST_AUTO_TEST_CASE(test_getters_and_setters)
     {
         // 创建必要的参数来构造database_entity_change
-        auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change entity_change(
             celeritas::database_type::redis,
             "redis_test",
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
     BOOST_AUTO_TEST_CASE(test_array_field_operations)
     {
         // 创建必要的参数来构造database_entity_change
-        auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change entity_change(
             celeritas::database_type::redis,
             "redis_test",
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
     BOOST_AUTO_TEST_CASE(test_byte_array_operations)
     {
         // 创建必要的参数来构造database_entity_change
-        auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change entity_change(
             celeritas::database_type::redis,
             "redis_test",
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
     BOOST_AUTO_TEST_CASE(test_document_field_operations)
     {
         // 创建必要的参数来构造database_entity_change
-        auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change entity_change(
             celeritas::database_type::redis,
             "redis_test",
@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
     BOOST_AUTO_TEST_CASE(test_modifier_methods)
     {
         // 创建必要的参数来构造database_entity_change
-        auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change entity_change(
             celeritas::database_type::redis,
             "redis_test",
@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
     BOOST_AUTO_TEST_CASE(test_array_element_operations)
     {
         // 创建必要的参数来构造database_entity_change
-        auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change entity_change(
             celeritas::database_type::redis,
             "redis_test",
@@ -256,7 +256,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
     BOOST_AUTO_TEST_CASE(test_static_methods)
     {
         // 创建必要的参数来构造database_entity_change
-        auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change entity_change(
             celeritas::database_type::redis,
             "redis_test",
@@ -299,7 +299,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
     BOOST_AUTO_TEST_CASE(test_inheritance_from_database_entity)
     {
         // 创建必要的参数来构造database_entity_change
-        auto key_container = std::make_shared<const celeritas::basis_database_container>();
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change entity_change(
             celeritas::database_type::redis,
             "redis_test",

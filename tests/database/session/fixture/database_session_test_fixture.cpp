@@ -14,7 +14,7 @@ celeritas::database_session_test_fixture::database_session_test_fixture()
       update_change_{ std::make_shared<const database_entity_change>(database_type::unknown,
                                                                      "test",
                                                                      database_change_type::update_type,
-                                                                     std::make_shared<const basis_database_container>()) },
+                                                                     std::make_shared<const basis_database_container>(basis_database{ "id", 1 })) },
       fields_{}
 {
 }
