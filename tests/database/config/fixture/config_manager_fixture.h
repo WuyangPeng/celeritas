@@ -23,6 +23,8 @@ namespace celeritas
 
         void set_test_end(bool test_end);
 
+        static void check_time_refresh_valid();
+
     private:
         io_context_type io_context_;
         bool test_end_;
