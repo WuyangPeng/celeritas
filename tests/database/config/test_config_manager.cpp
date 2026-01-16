@@ -17,10 +17,10 @@ BOOST_FIXTURE_TEST_SUITE(config_manager_suite, celeritas::config_manager_fixture
 
             co_await boost::asio::steady_timer(get_io_context(), std::chrono::milliseconds{ 100 }).async_wait(boost::asio::use_awaitable);
 
-            const auto time_refresh_opt = config_manager.get_time_refresh(1);
+            const auto time_refresh_opt = config_manager.get_time_refresh(celeritas::mock_config_database_pool::time_refresh_id);
             BOOST_REQUIRE(time_refresh_opt.has_value());
-            BOOST_CHECK_EQUAL(time_refresh_opt->get_time_refresh_type(), 1);
-            BOOST_CHECK_EQUAL(time_refresh_opt->get_parameter(), 2);
+            BOOST_CHECK_EQUAL(time_refresh_opt->get_time_refresh_type(), 2);
+            BOOST_CHECK_EQUAL(time_refresh_opt->get_parameter(), 3);
 
             const auto non_existent = config_manager.get_time_refresh(999);
             BOOST_CHECK(!non_existent.has_value());
@@ -43,14 +43,14 @@ BOOST_FIXTURE_TEST_SUITE(config_manager_suite, celeritas::config_manager_fixture
         run([this]() -> boost::asio::awaitable<void> {
             auto& config_manager = celeritas::config_manager::get_instance();
 
-            config_manager.reload_from_db(get_io_context().get_executor(), "time_refresh_db", 1);
+            config_manager.reload_from_db(get_io_context().get_executor(), "time_refresh_db", celeritas::mock_config_database_pool::time_refresh_id);
 
             co_await boost::asio::steady_timer(get_io_context(), std::chrono::milliseconds(100)).async_wait(boost::asio::use_awaitable);
 
-            const auto time_refresh_opt = config_manager.get_time_refresh(1);
+            const auto time_refresh_opt = config_manager.get_time_refresh(celeritas::mock_config_database_pool::time_refresh_id);
             BOOST_REQUIRE(time_refresh_opt.has_value());
-            BOOST_CHECK_EQUAL(time_refresh_opt->get_time_refresh_type(), 1);
-            BOOST_CHECK_EQUAL(time_refresh_opt->get_parameter(), 2);
+            BOOST_CHECK_EQUAL(time_refresh_opt->get_time_refresh_type(), 2);
+            BOOST_CHECK_EQUAL(time_refresh_opt->get_parameter(), 3);
 
             set_test_end(true);
         });
@@ -81,10 +81,10 @@ BOOST_FIXTURE_TEST_SUITE(config_manager_suite, celeritas::config_manager_fixture
             for (auto i = 0; i < 10; ++i)
             {
                 tasks.emplace_back([&config_manager]() -> boost::asio::awaitable<void> {
-                    if (const auto time_refresh_opt = config_manager.get_time_refresh(1);
+                    if (const auto time_refresh_opt = config_manager.get_time_refresh(celeritas::mock_config_database_pool::time_refresh_id);
                         time_refresh_opt.has_value())
                     {
-                        BOOST_CHECK_EQUAL(time_refresh_opt->get_time_refresh_type(), 1);
+                        BOOST_CHECK_EQUAL(time_refresh_opt->get_time_refresh_type(), 2);
                     }
                     else
                     {

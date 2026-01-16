@@ -31,11 +31,11 @@ celeritas::initializer::initializer(const std::string_view& server_type, std::st
       daemon_{ std::make_unique<daemon>(server_type) },
       signals_{ io_context_, SIGINT, SIGTERM }
 {
-    setup_signal_handler();
 }
 
 void celeritas::initializer::initialize()
 {
+    setup_signal_handler();
     initialize_default_logger();
     initialize_config();
     initialize_resource();

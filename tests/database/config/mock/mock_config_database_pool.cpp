@@ -34,9 +34,9 @@ celeritas::database_pool_base::bool_awaitable_type celeritas::mock_config_databa
 
 celeritas::database_pool_base::optional_database_entity_change_awaitable_type celeritas::mock_config_database_pool::select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container)
 {
-    const basis_database id{ time_refresh::id_describe, int64_t{ 1 } };
-    const basis_database time_refresh{ time_refresh::time_refresh_type_describe, 1 };
-    const basis_database parameter{ time_refresh::parameter_describe, 2 };
+    const basis_database id{ time_refresh::id_describe, time_refresh_id };
+    const basis_database time_refresh{ time_refresh::time_refresh_type_describe, 2 };
+    const basis_database parameter{ time_refresh::parameter_describe, 3 };
 
     database_entity_change database_entity_change{ database_type::mysql,
                                                    time_refresh::database_name,
