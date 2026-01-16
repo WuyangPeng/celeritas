@@ -4,8 +4,8 @@
 
 namespace celeritas
 {
-    constexpr auto cleanup_database_timer = std::chrono::minutes(30);
-    constexpr auto cleanup_database_expired_timer = std::chrono::hours(1);
+    constexpr auto cleanup_database_timer = std::chrono::minutes{ 30 };
+    constexpr auto cleanup_database_expired_timer = std::chrono::hours{ 1 };
 
     constexpr auto redis_cursor_one_request_size = 100;
 

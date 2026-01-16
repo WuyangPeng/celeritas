@@ -10,8 +10,8 @@ namespace celeritas
     {
     public:
         using class_type = config_manager_fixture;
-        using awaitable_function = std::function<boost::asio::awaitable<void>()>;
         using io_context_type = boost::asio::io_context;
+        using awaitable_function = std::function<boost::asio::awaitable<void>()>;
 
         config_manager_fixture();
 
@@ -24,7 +24,7 @@ namespace celeritas
         void set_test_end(bool test_end);
 
     private:
-        io_context_type io_context_{};
-        bool test_end_ = false;
+        io_context_type io_context_;
+        bool test_end_;
     };
 }

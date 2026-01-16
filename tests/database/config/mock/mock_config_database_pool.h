@@ -12,7 +12,7 @@ namespace celeritas
 
         result_container_awaitable_type select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) override;
 
-        bool_awaitable_type execute_changes(const const_database_entity_change_shared_ptr&, int) override;
+        bool_awaitable_type execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time) override;
 
         void_awaitable_type async_initialize() override;
 
@@ -20,6 +20,6 @@ namespace celeritas
 
         bool_awaitable_type is_health() override;
 
-        optional_database_entity_change_awaitable_type select_one(const const_database_entity_change_shared_ptr&, const database_field_container&) override;
+        optional_database_entity_change_awaitable_type select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) override;
     };
 }

@@ -1,7 +1,7 @@
 ﻿#include "database/document/player_time_refresh.h"
 #include "player/time/time_refresh_type.h"
 #include "player/component/player_component_type.h"
-#include "database/basic/basis_database.h"
+#include "database/basic/basis_database.tpp"
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(player_time_refresh_suite)

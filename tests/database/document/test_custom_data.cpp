@@ -1,7 +1,7 @@
 ﻿#include "database/document/custom_data.h"
 #include "database/document/equipment_data.h"
 #include "database/document/consumable_data.h"
-#include "database/basic/basis_database.h"
+#include "database/basic/basis_database.tpp"
 #include "common/core/celeritas_error.h"
 
 #include <boost/test/unit_test.hpp>

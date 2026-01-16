@@ -1,7 +1,7 @@
 ﻿#include "database/document/inventory_data.h"
 #include "database/document/custom_data.h"
 #include "database/document/equipment_data.h"
-#include "database/basic/basis_database.h"
+#include "database/basic/basis_database.tpp"
 
 #include <boost/test/unit_test.hpp>
 
@@ -60,8 +60,10 @@ BOOST_AUTO_TEST_SUITE(inventory_data_suite)
 
         // 简单验证 custom_data 非空且包含正确类型
         bool found_type = false;
-        for(const auto& elem : restored_custom_doc) {
-            if(elem.get_field_name() == celeritas::custom_data::type_description) {
+        for (const auto& elem : restored_custom_doc)
+        {
+            if (elem.get_field_name() == celeritas::custom_data::type_description)
+            {
                 BOOST_CHECK_EQUAL(elem.get_value<celeritas::database_data_type::string_type>(), celeritas::custom_data::equipment_description);
                 found_type = true;
             }

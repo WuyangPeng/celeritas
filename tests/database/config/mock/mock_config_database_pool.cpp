@@ -13,7 +13,7 @@ celeritas::database_pool_base::result_container_awaitable_type celeritas::mock_c
     co_return result_container{};
 }
 
-celeritas::database_pool_base::bool_awaitable_type celeritas::mock_config_database_pool::execute_changes(const const_database_entity_change_shared_ptr&, int)
+celeritas::database_pool_base::bool_awaitable_type celeritas::mock_config_database_pool::execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time)
 {
     co_return true;
 }
@@ -32,7 +32,7 @@ celeritas::database_pool_base::bool_awaitable_type celeritas::mock_config_databa
     co_return true;
 }
 
-celeritas::database_pool_base::optional_database_entity_change_awaitable_type celeritas::mock_config_database_pool::select_one(const const_database_entity_change_shared_ptr&, const database_field_container&)
+celeritas::database_pool_base::optional_database_entity_change_awaitable_type celeritas::mock_config_database_pool::select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container)
 {
     const basis_database id{ time_refresh::id_describe, int64_t{ 1 } };
     const basis_database time_refresh{ time_refresh::time_refresh_type_describe, 1 };
@@ -45,5 +45,6 @@ celeritas::database_pool_base::optional_database_entity_change_awaitable_type ce
     database_entity_change.modify(id);
     database_entity_change.modify(time_refresh);
     database_entity_change.modify(parameter);
+
     co_return database_entity_change;
 }

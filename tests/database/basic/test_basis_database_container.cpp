@@ -1,5 +1,5 @@
-﻿#include "database/basic/basis_database_container.h"
-#include "common/core/celeritas_error.h"
+﻿#include "common/core/celeritas_error.h"
+#include "database/basic/basis_database_container.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -48,9 +48,9 @@ BOOST_AUTO_TEST_SUITE(basis_database_container_suite)
 
     BOOST_AUTO_TEST_CASE(test_vector_constructor_with_duplicates_throws)
     {
-        const std::vector<celeritas::basis_database> dbs_with_duplicates{ { "name", "test1" },
-                                                                          { "age", 30 },
-                                                                          { "name", "test2" } };
+        const celeritas::basis_database_container::object_container dbs_with_duplicates{ { "name", "test1" },
+                                                                                         { "age", 30 },
+                                                                                         { "name", "test2" } };
 
         BOOST_CHECK_THROW(celeritas::basis_database_container{ dbs_with_duplicates }, celeritas::celeritas_error);
     }

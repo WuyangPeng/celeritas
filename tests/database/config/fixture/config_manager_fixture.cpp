@@ -1,4 +1,5 @@
 ﻿#include "config_manager_fixture.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "database/config/mock/mock_config_database_pool.h"
 #include "database/pool/database_pool_manager.h"
 
@@ -16,7 +17,11 @@ celeritas::config_manager_fixture::~config_manager_fixture()
 
 void celeritas::config_manager_fixture::run(awaitable_function func)
 {
-    boost::asio::co_spawn(io_context_, std::move(func), boost::asio::detached);
+    boost::asio::co_spawn(io_context_,
+                          noexcept_safe_call_and_log_awaitable(std::move(func),
+                                                               database_channel,
+                                                               "config manager fixture run error: "),
+                          boost::asio::detached);
     io_context_.run();
     io_context_.restart();
     BOOST_CHECK(test_end_);

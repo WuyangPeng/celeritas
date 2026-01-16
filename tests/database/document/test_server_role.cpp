@@ -1,5 +1,6 @@
 ﻿#include "database/document/server_role.h"
-#include "database/basic/basis_database.h"
+#include "database/basic/basis_database.tpp"
+
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(server_role_suite)

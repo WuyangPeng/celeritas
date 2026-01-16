@@ -170,7 +170,7 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
         celeritas::database_entity_change change{ celeritas::database_type::mysql, "test", celeritas::database_change_type::update_type, key };
         change.modify(celeritas::basis_database{ "int_field", 100 });
 
-        BOOST_CHECK_THROW([&change]{ std::ignore = change.get_value<celeritas::database_data_type::string_type>("int_field"); }(), std::bad_variant_access);
+        BOOST_CHECK_THROW([change = std::move(change)]{ std::ignore = change.get_value<celeritas::database_data_type::string_type>("int_field"); }(), std::bad_variant_access);
     }
 
     BOOST_AUTO_TEST_CASE(test_database_entity_change_get_database_content)

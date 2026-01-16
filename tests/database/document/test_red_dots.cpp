@@ -1,6 +1,7 @@
 ﻿#include "database/document/red_dots.h"
 #include "config/luban/generated/schema.h"
-#include "database/basic/basis_database.h"
+#include "database/basic/basis_database.tpp"
+
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(red_dots_suite)

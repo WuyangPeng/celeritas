@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_SUITE(develop_data_suite)
         // 其他字段应为默认值
         BOOST_CHECK_EQUAL(data.get_level(), celeritas::develop_data::default_level);
         BOOST_CHECK_EQUAL(data.get_exp(), 0);
-        BOOST_CHECK_GE(data.get_updated_time(), celeritas::time_helper::get_current_milliseconds());
+        BOOST_CHECK_LE(data.get_updated_time(), celeritas::time_helper::get_current_milliseconds());
     }
 
     BOOST_AUTO_TEST_CASE(test_accessors)
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_SUITE(develop_data_suite)
         BOOST_CHECK_EQUAL(data.get_instance_id(), 2);
         BOOST_CHECK_EQUAL(data.get_level(), celeritas::develop_data::default_level);
         BOOST_CHECK_EQUAL(data.get_exp(), 0);
-        BOOST_CHECK_GE(data.get_updated_time(), celeritas::time_helper::get_current_milliseconds());
+        BOOST_CHECK_LE(data.get_updated_time(), celeritas::time_helper::get_current_milliseconds());
     }
 
     BOOST_AUTO_TEST_CASE(test_round_trip)
