@@ -65,7 +65,7 @@ namespace celeritas
 
         basis_database(std::string_view field_name, const document_array& value);
 
-        template <typename T> requires(std::is_integral_v<T>)
+        template <typename T> requires(std::is_integral_v<T> && sizeof(T) <= sizeof(int32_t))
         basis_database(std::string_view field_name, T value);
 
         template <typename T> requires(std::is_floating_point_v<T>)
