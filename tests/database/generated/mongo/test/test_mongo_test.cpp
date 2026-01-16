@@ -17,27 +17,27 @@ namespace
     [[nodiscard]] celeritas::properties_data get_test_properties_data()
     {
         celeritas::properties_data data{};
-        data.set_int64_value(111111LL);
+        data.set_int64_value(11111111111LL);
         data.set_string_value("complete_test_string");
         data.set_string_array_value({ "str1", "str2", "str3" });
         data.set_int32_value(222);
         data.set_int32_count_value(333);
         data.set_int32_array_value({ 444, 555, 666 });
-        data.set_int64_count_value(777777LL);
-        data.set_int64_array_value({ 888888LL, 999999LL });
+        data.set_int64_count_value(77777777LL);
+        data.set_int64_array_value({ 88888888LL, 999999999LL });
         data.set_double_value(1.2345);
         data.set_double_array_value({ 6.7, 8.9, 10.11 });
         data.set_bool_value(true);
 
-        const celeritas::properties_data::document_type nested_doc{ celeritas::basis_database{ "nested_int", 100 },
-                                                                    celeritas::basis_database{ "nested_string", "hello" } };
+        const celeritas::properties_data::document_type nested_document{ celeritas::basis_database{ "nested_int", 100 },
+                                                                         celeritas::basis_database{ "nested_string", "hello" } };
 
-        data.set_document_value(nested_doc);
+        data.set_document_value(nested_document);
 
-        celeritas::properties_data::document_type doc_array_element1{ celeritas::basis_database{ "array_int1", 1 } };
-        celeritas::properties_data::document_type doc_array_element2{ celeritas::basis_database{ "array_string2", "world" } };
+        celeritas::properties_data::document_type document_array_element1{ celeritas::basis_database{ "array_int", 1 } };
+        celeritas::properties_data::document_type document_array_element2{ celeritas::basis_database{ "array_string", "world" } };
 
-        data.set_document_array_value({ doc_array_element1, doc_array_element2 });
+        data.set_document_array_value({ document_array_element1, document_array_element2 });
 
         return data;
     }
@@ -62,8 +62,8 @@ namespace
 
         data.set_document_value(nested_document);
 
-        celeritas::logs_data::document_type document_array_element1{ celeritas::basis_database{ "array_int1", 1 } };
-        celeritas::logs_data::document_type document_array_element2{ celeritas::basis_database{ "array_string2", "world" } };
+        celeritas::logs_data::document_type document_array_element1{ celeritas::basis_database{ "array_int", 1 } };
+        celeritas::logs_data::document_type document_array_element2{ celeritas::basis_database{ "array_string", "world" } };
 
         data.set_document_array_value({ document_array_element1, document_array_element2 });
 
