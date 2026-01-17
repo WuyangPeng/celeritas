@@ -9,6 +9,61 @@
 #include <string>
 #include <vector>
 
+namespace
+{
+    void check_get_keys_command(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session)
+    {
+        const celeritas::test_redis_commands test_commands{ *session };
+        const celeritas::redis_commands::key_container keys{ "key1", "key2", "key3" };
+        const auto result = test_commands.test_get_keys_command(keys);
+
+        BOOST_CHECK_EQUAL(result.size(), 3);
+        BOOST_CHECK(result.at(0).find("key1") != std::string::npos);
+        BOOST_CHECK(result.at(1).find("key2") != std::string::npos);
+        BOOST_CHECK(result.at(2).find("key3") != std::string::npos);
+    }
+
+    void check_get_keys_value_command(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session)
+    {
+        const celeritas::test_redis_commands test_commands{ *session };
+        const celeritas::redis_commands::key_value_container key_values{ { "key1", "value1" }, { "key2", "value2" } };
+        const auto result = test_commands.test_get_keys_value_command(key_values);
+
+        BOOST_CHECK_EQUAL(result.size(), 4);
+        BOOST_CHECK(result.at(0).find("key1") != std::string::npos);
+        BOOST_CHECK_EQUAL(result.at(1), "value1");
+        BOOST_CHECK(result.at(2).find("key2") != std::string::npos);
+        BOOST_CHECK_EQUAL(result.at(3), "value2");
+    }
+
+    void check_get_prefixed_key(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session)
+    {
+        const celeritas::test_redis_commands test_commands{ *session };
+        const std::string original_key{ "test_key" };
+        const auto prefixed_key = test_commands.test_get_prefixed_key(original_key);
+
+        BOOST_CHECK(!prefixed_key.empty());
+        BOOST_CHECK(prefixed_key.find(original_key) != std::string::npos || prefixed_key == original_key);
+    }
+
+    void check_get_expire_seconds_command(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session)
+    {
+        const celeritas::test_redis_commands test_commands{ *session };
+        constexpr auto expire_seconds = 60;
+        const auto result = test_commands.test_get_expire_seconds_command(expire_seconds);
+
+        BOOST_CHECK_EQUAL(result.size(), 2);
+        BOOST_CHECK_EQUAL(result.at(1), "60");
+    }
+
+    void check_get_redis_database_session(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session)
+    {
+        celeritas::test_redis_commands test_commands{ *session };
+        const auto& retrieved_session = test_commands.test_get_redis_database_session();
+        BOOST_CHECK(&retrieved_session == session.get());
+    }
+}
+
 BOOST_FIXTURE_TEST_SUITE(redis_commands_suite, celeritas::redis_database_session_fixture)
 
     BOOST_AUTO_TEST_CASE(test_key_container_type)
@@ -37,16 +92,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_commands_suite, celeritas::redis_database_session
             const auto session = get_session();
             co_await session->async_connect();
 
-            const celeritas::test_redis_commands test_commands{ *session };
-
-            const celeritas::redis_commands::key_container keys{ "key1", "key2", "key3" };
-            const auto result = test_commands.test_get_keys_command(keys);
-
-            BOOST_CHECK_EQUAL(result.size(), 3);
-            BOOST_CHECK(result.at(0).find( "key1") != std::string::npos);
-            BOOST_CHECK(result.at(1).find( "key2") != std::string::npos);
-            BOOST_CHECK(result.at(2).find( "key3") != std::string::npos);
-
+            check_get_keys_command(session);
             set_test_end(true);
         });
     }
@@ -57,18 +103,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_commands_suite, celeritas::redis_database_session
             const auto session = get_session();
             co_await session->async_connect();
 
-            const celeritas::test_redis_commands test_commands{ *session };
-
-            const celeritas::redis_commands::key_value_container key_values{ { "key1", "value1" }, { "key2", "value2" } };
-
-            const auto result = test_commands.test_get_keys_value_command(key_values);
-
-            BOOST_CHECK_EQUAL(result.size(), 4);
-            BOOST_CHECK(result.at(0).find( "key1") != std::string::npos);
-            BOOST_CHECK_EQUAL(result.at(1), "value1");
-            BOOST_CHECK(result.at(2).find( "key2") != std::string::npos);
-            BOOST_CHECK_EQUAL(result.at(3), "value2");
-
+            check_get_keys_value_command(session);
             set_test_end(true);
         });
     }
@@ -77,7 +112,6 @@ BOOST_FIXTURE_TEST_SUITE(redis_commands_suite, celeritas::redis_database_session
     {
         const celeritas::redis_commands::key_value_container field_values{ { "field1", "value1" },
                                                                            { "field2", "value2" } };
-
         const auto result = celeritas::test_redis_commands::test_get_fields_value_command(field_values);
 
         BOOST_CHECK_EQUAL(result.size(), 4);
@@ -92,16 +126,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_commands_suite, celeritas::redis_database_session
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
-
-            const celeritas::test_redis_commands test_commands{ *session };
-
-            const std::string original_key{ "test_key" };
-            const auto prefixed_key = test_commands.test_get_prefixed_key(original_key);
-
-            BOOST_CHECK(!prefixed_key.empty());
-
-            BOOST_CHECK(prefixed_key.find(original_key) != std::string::npos || prefixed_key == original_key);
-
+            check_get_prefixed_key(session);
             set_test_end(true);
         });
     }
@@ -112,14 +137,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_commands_suite, celeritas::redis_database_session
             const auto session = get_session();
             co_await session->async_connect();
 
-            const celeritas::test_redis_commands test_commands{ *session };
-
-            constexpr auto expire_seconds = 60;
-            const auto result = test_commands.test_get_expire_seconds_command(expire_seconds);
-
-            BOOST_CHECK_EQUAL(result.size(), 2);
-            BOOST_CHECK_EQUAL(result.at(1), "60");
-
+            check_get_expire_seconds_command(session);
             set_test_end(true);
         });
     }
@@ -130,12 +148,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_commands_suite, celeritas::redis_database_session
             const auto session = get_session();
             co_await session->async_connect();
 
-            celeritas::test_redis_commands test_commands{ *session };
-
-            const auto& retrieved_session = test_commands.test_get_redis_database_session();
-
-            BOOST_CHECK(&retrieved_session == session.get());
-
+            check_get_redis_database_session(session);
             set_test_end(true);
         });
     }
