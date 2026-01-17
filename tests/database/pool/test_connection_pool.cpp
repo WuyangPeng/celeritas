@@ -12,7 +12,7 @@ BOOST_FIXTURE_TEST_SUITE(connection_pool_suite, celeritas::connection_pool_fixtu
 
     BOOST_AUTO_TEST_CASE(test_connection_pool_with_mock_session)
     {
-        run([&]() -> boost::asio::awaitable<void> {
+        run([this]() -> boost::asio::awaitable<void> {
             const auto pool = std::make_shared<pool_type>(get_io_context().get_executor(),
                                                           "localhost",
                                                           3306,
@@ -32,7 +32,7 @@ BOOST_FIXTURE_TEST_SUITE(connection_pool_suite, celeritas::connection_pool_fixtu
 
     BOOST_AUTO_TEST_CASE(test_connection_pool_with_uri_constructor)
     {
-        run([&]() -> boost::asio::awaitable<void> {
+        run([this]() -> boost::asio::awaitable<void> {
             const auto pool = std::make_shared<pool_type>(get_io_context().get_executor(),
                                                           "mongodb://localhost:27017",
                                                           "test_db",
@@ -49,7 +49,7 @@ BOOST_FIXTURE_TEST_SUITE(connection_pool_suite, celeritas::connection_pool_fixtu
 
     BOOST_AUTO_TEST_CASE(test_is_health)
     {
-        run([&]() -> boost::asio::awaitable<void> {
+        run([this]() -> boost::asio::awaitable<void> {
             const auto pool = std::make_shared<pool_type>(get_io_context().get_executor(),
                                                           "localhost",
                                                           3306,
@@ -69,7 +69,7 @@ BOOST_FIXTURE_TEST_SUITE(connection_pool_suite, celeritas::connection_pool_fixtu
 
     BOOST_AUTO_TEST_CASE(test_execute_changes)
     {
-        run([&]() -> boost::asio::awaitable<void> {
+        run([this]() -> boost::asio::awaitable<void> {
             const auto pool = std::make_shared<pool_type>(get_io_context().get_executor(),
                                                           "localhost",
                                                           3306,
@@ -94,7 +94,7 @@ BOOST_FIXTURE_TEST_SUITE(connection_pool_suite, celeritas::connection_pool_fixtu
 
     BOOST_AUTO_TEST_CASE(test_select_one)
     {
-        run([&]() -> boost::asio::awaitable<void> {
+        run([this]() -> boost::asio::awaitable<void> {
             const auto pool = std::make_shared<pool_type>(get_io_context().get_executor(),
                                                           "localhost",
                                                           3306,
@@ -120,7 +120,7 @@ BOOST_FIXTURE_TEST_SUITE(connection_pool_suite, celeritas::connection_pool_fixtu
 
     BOOST_AUTO_TEST_CASE(test_select_all)
     {
-        run([&]() -> boost::asio::awaitable<void> {
+        run([this]() -> boost::asio::awaitable<void> {
             const auto pool = std::make_shared<pool_type>(get_io_context().get_executor(),
                                                           "localhost",
                                                           3306,
@@ -145,7 +145,7 @@ BOOST_FIXTURE_TEST_SUITE(connection_pool_suite, celeritas::connection_pool_fixtu
 
     BOOST_AUTO_TEST_CASE(test_cleanup_database_by_duration)
     {
-        run([&]() -> boost::asio::awaitable<void> {
+        run([this]() -> boost::asio::awaitable<void> {
             const auto pool = std::make_shared<pool_type>(get_io_context().get_executor(),
                                                           "localhost",
                                                           3306,
@@ -172,7 +172,7 @@ BOOST_FIXTURE_TEST_SUITE(connection_pool_suite, celeritas::connection_pool_fixtu
 
     BOOST_AUTO_TEST_CASE(test_pool_full_and_wait)
     {
-        run([&]() -> boost::asio::awaitable<void> {
+        run([this]() -> boost::asio::awaitable<void> {
             const auto pool = std::make_shared<pool_type>(get_io_context().get_executor(),
                                                           "localhost",
                                                           3306,

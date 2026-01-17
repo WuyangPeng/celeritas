@@ -12,9 +12,9 @@ namespace celeritas
     public:
         using class_type = concurrent_access_tester;
         using void_awaitable_type = boost::asio::awaitable<void>;
-        using io_context_type = boost::asio::io_context;
+        using any_io_executor = boost::asio::any_io_executor;
 
-        explicit concurrent_access_tester(io_context_type& io_context);
+        explicit concurrent_access_tester(const any_io_executor& executor);
 
         void run();
 
@@ -26,7 +26,7 @@ namespace celeritas
 
         [[nodiscard]] static void_awaitable_type check_time_refresh_task();
 
-        io_context_type& io_context_;
+        any_io_executor any_io_executor_;
         atomic_int_shared_ptr tasks_remaining_;
         exception_shared_ptr exception_;
     };

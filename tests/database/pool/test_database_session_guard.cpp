@@ -10,17 +10,17 @@ BOOST_FIXTURE_TEST_SUITE(database_session_guard_suite, celeritas::connection_poo
 
     BOOST_AUTO_TEST_CASE(test_move_constructor)
     {
-        const auto pool = std::make_shared<celeritas::connection_pool<celeritas::mock_pool_database_session> >(get_io_context().get_executor(), "localhost", 3306, "user", "password", "test_db", 1, 1);
+        auto pool = std::make_shared<celeritas::connection_pool<celeritas::mock_pool_database_session> >(get_io_context().get_executor(), "localhost", 3306, "user", "password", "test_db", 1, 1);
 
-        run([&]() -> boost::asio::awaitable<void> {
+        run([this,pool = std::move(pool)]() -> boost::asio::awaitable<void> {
             co_await pool->async_initialize();
-            auto guard1 = co_await pool->async_get_session();
-            auto session1 = guard1.get_session();
-            BOOST_TEST(session1 != nullptr);
+
+            auto guard1 = co_await check_get_session(pool);
+            auto session = guard1.get_session();
 
             auto guard2{ std::move(guard1) };
             BOOST_TEST(guard1.get_session() == nullptr);
-            BOOST_TEST(guard2.get_session() == session1);
+            BOOST_TEST(guard2.get_session() == session);
 
             set_test_end(true);
         });
@@ -28,21 +28,19 @@ BOOST_FIXTURE_TEST_SUITE(database_session_guard_suite, celeritas::connection_poo
 
     BOOST_AUTO_TEST_CASE(test_move_assignment)
     {
-        const auto pool = std::make_shared<celeritas::connection_pool<celeritas::mock_pool_database_session> >(get_io_context().get_executor(), "localhost", 3306, "user", "password", "test_db", 1, 2);
+        auto pool = std::make_shared<celeritas::connection_pool<celeritas::mock_pool_database_session> >(get_io_context().get_executor(), "localhost", 3306, "user", "password", "test_db", 1, 2);
 
-        run([&]() -> boost::asio::awaitable<void> {
+        run([this,pool = std::move(pool)]() -> boost::asio::awaitable<void> {
             co_await pool->async_initialize();
-            auto guard1 = co_await pool->async_get_session();
-            auto session1 = guard1.get_session();
-            BOOST_TEST(session1 != nullptr);
 
-            auto guard2 = co_await pool->async_get_session();
-            auto session2 = guard2.get_session();
-            BOOST_TEST(session2 != nullptr);
+            auto guard1 = co_await check_get_session(pool);
+            auto session = guard1.get_session();
+
+            auto guard2 = co_await check_get_session(pool);
 
             guard2 = std::move(guard1);
             BOOST_TEST(guard1.get_session() == nullptr);
-            BOOST_TEST(guard2.get_session() == session1);
+            BOOST_TEST(guard2.get_session() == session);
 
             set_test_end(true);
         });
@@ -50,12 +48,12 @@ BOOST_FIXTURE_TEST_SUITE(database_session_guard_suite, celeritas::connection_poo
 
     BOOST_AUTO_TEST_CASE(test_get_session)
     {
-        const auto pool = std::make_shared<celeritas::connection_pool<celeritas::mock_pool_database_session> >(get_io_context().get_executor(), "localhost", 3306, "user", "password", "test_db", 1, 1);
+        auto pool = std::make_shared<celeritas::connection_pool<celeritas::mock_pool_database_session> >(get_io_context().get_executor(), "localhost", 3306, "user", "password", "test_db", 1, 1);
 
-        run([&]() -> boost::asio::awaitable<void> {
+        run([this,pool= std::move(pool)]() -> boost::asio::awaitable<void> {
             co_await pool->async_initialize();
-            auto guard = co_await pool->async_get_session();
-            BOOST_TEST(guard.get_session() != nullptr);
+
+            co_await check_get_session(pool);
 
             set_test_end(true);
         });
@@ -63,17 +61,13 @@ BOOST_FIXTURE_TEST_SUITE(database_session_guard_suite, celeritas::connection_poo
 
     BOOST_AUTO_TEST_CASE(test_destructor)
     {
-        const auto pool = std::make_shared<celeritas::connection_pool<celeritas::mock_pool_database_session> >(get_io_context().get_executor(), "localhost", 3306, "user", "password", "test_db", 1, 1);
+        auto pool = std::make_shared<celeritas::connection_pool<celeritas::mock_pool_database_session> >(get_io_context().get_executor(), "localhost", 3306, "user", "password", "test_db", 1, 1);
 
-        run([&]() -> boost::asio::awaitable<void> {
+        run([this,pool = std::move(pool)]() -> boost::asio::awaitable<void> {
             co_await pool->async_initialize();
-            {
-                auto guard = co_await pool->async_get_session();
-                BOOST_TEST(guard.get_session() != nullptr);
-            }
 
-            auto guard2 = co_await pool->async_get_session();
-            BOOST_TEST(guard2.get_session() != nullptr);
+            co_await check_get_session(pool);
+            co_await check_get_session(pool);
 
             set_test_end(true);
         });

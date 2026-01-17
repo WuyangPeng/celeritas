@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_SUITE(database_pool_base_suite)
 
     BOOST_FIXTURE_TEST_CASE(test_execute_changes_forwarding, celeritas::connection_pool_fixture)
     {
-        run([&]() -> boost::asio::awaitable<void> {
+        run([this]() -> boost::asio::awaitable<void> {
             const auto pool = std::make_shared<celeritas::mock_database_pool_base>();
             const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
             const auto dummy_change = std::make_shared<const celeritas::database_entity_change>(celeritas::database_type::mysql,
