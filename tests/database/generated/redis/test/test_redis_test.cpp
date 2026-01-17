@@ -269,7 +269,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
         const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
-     redis_test.add_attachment('x');
+        redis_test.add_attachment('x');
         BOOST_CHECK_EQUAL(redis_test.get_attachment().size(), 1);
         BOOST_CHECK_EQUAL(redis_test.get_attachment().at(0), 'x');
         redis_test.set_attachment(0, 'y');
@@ -366,4 +366,4 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
         BOOST_CHECK(delete_redis->get_change_type() == celeritas::database_change_type::delete_type);
     }
 
-    BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END()

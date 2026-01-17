@@ -12,12 +12,12 @@ namespace celeritas
 
         explicit mock_pool_database_session(const any_io_executor& any_io_executor);
 
-        mock_pool_database_session(std::string host,
+        mock_pool_database_session(const std::string& host,
                                    int port,
-                                   std::string user,
-                                   std::string password,
-                                   std::string uri,
-                                   std::string db_name,
+                                   const std::string& user,
+                                   const std::string& password,
+                                   const std::string& uri,
+                                   const std::string& db_name,
                                    int expire_seconds,
                                    const any_io_executor& any_io_executor);
 

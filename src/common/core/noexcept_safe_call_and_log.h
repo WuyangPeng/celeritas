@@ -70,8 +70,9 @@ namespace celeritas
         return default_value;
     }
 
+    // 这里error_message必须传值，传引用会导致程序崩溃。
     template <typename Func>
-    [[nodiscard]] boost::asio::awaitable<void> noexcept_safe_call_and_log_awaitable(Func f, const std::string_view channel_name, const std::string& error_message) noexcept
+    [[nodiscard]] boost::asio::awaitable<void> noexcept_safe_call_and_log_awaitable(Func f, const std::string_view channel_name, const std::string error_message) noexcept
     {
         try
         {
@@ -81,7 +82,7 @@ namespace celeritas
         {
             try
             {
-                LOG_CHANNEL(channel_name, error) << error_message << exception.what();
+                LOG_CHANNEL(channel_name, error) << std::move(error_message) << exception.what();
             }
             catch (...)
             {
@@ -92,7 +93,7 @@ namespace celeritas
         {
             try
             {
-                LOG_CHANNEL(channel_name, fatal) << "unknown error[" << error_message << "]";
+                LOG_CHANNEL(channel_name, fatal) << "unknown error[" << std::move(error_message) << "]";
             }
             catch (...)
             {
@@ -102,7 +103,7 @@ namespace celeritas
     }
 
     template <typename Func, typename ReturnType>
-    [[nodiscard]] boost::asio::awaitable<ReturnType> noexcept_safe_call_and_log_awaitable(Func f, const std::string_view channel_name, const std::string& error_message, const ReturnType& default_value) noexcept
+    [[nodiscard]] boost::asio::awaitable<ReturnType> noexcept_safe_call_and_log_awaitable(Func f, const std::string_view channel_name, const std::string error_message, const ReturnType& default_value) noexcept
     {
         try
         {
@@ -112,7 +113,7 @@ namespace celeritas
         {
             try
             {
-                LOG_CHANNEL(channel_name, error) << error_message << exception.what();
+                LOG_CHANNEL(channel_name, error) << std::move(error_message) << exception.what();
             }
             catch (...)
             {
@@ -123,7 +124,7 @@ namespace celeritas
         {
             try
             {
-                LOG_CHANNEL(channel_name, fatal) << "unknown error[" << error_message << "]";
+                LOG_CHANNEL(channel_name, fatal) << "unknown error[" << std::move(error_message) << "]";
             }
             catch (...)
             {
