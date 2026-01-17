@@ -73,17 +73,23 @@ namespace
 
         return data;
     }
+
+    [[nodiscard]] celeritas::database_entity_change get_test_entity_change()
+    {
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
+
+        return celeritas::database_entity_change{ celeritas::database_type::redis,
+                                                  "redis_test",
+                                                  celeritas::database_change_type::insert_type,
+                                                  key_container };
+    }
 }
 
 BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_constructors)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
-                                                               "redis_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         const celeritas::redis_test redis_test1{ entity_change };
         const celeritas::redis_test redis_test2{ celeritas::database_type::redis, entity_change };
@@ -94,11 +100,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_getters_and_setters)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
-                                                               "redis_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
 
@@ -126,11 +128,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_array_field_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
-                                                               "redis_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
 
@@ -153,11 +151,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_byte_array_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
-                                                               "redis_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
 
@@ -168,11 +162,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_document_field_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
-                                                               "redis_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
 
@@ -188,11 +178,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_modifier_methods)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
-                                                               "redis_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
 
@@ -207,11 +193,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_tags_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
-                                                               "redis_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
         redis_test.add_tags("new_tag");
@@ -223,11 +205,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_category_index_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
-                                                               "redis_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
         redis_test.add_category_index(999);
@@ -239,11 +217,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_related_index_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
-                                                               "redis_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
         redis_test.add_related_index(777777LL);
@@ -255,11 +229,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_ratios_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
-                                                               "redis_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
         redis_test.add_ratios(0.99);
@@ -271,11 +241,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_attachment_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
-                                                               "redis_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
         redis_test.add_attachment('x');
@@ -287,11 +253,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_logs_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
-                                                               "redis_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
         celeritas::logs_data logs_data1{};
@@ -311,11 +273,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_static_methods)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
-                                                               "redis_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         const auto& field_container = celeritas::redis_test::get_database_field_container();
         BOOST_CHECK(!field_container.empty());
@@ -348,11 +306,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_inheritance_modify)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
-                                                               "redis_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
 
@@ -375,11 +329,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_inheritance_delete)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::redis,
-                                                               "redis_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         const celeritas::redis_test redis_test{ entity_change };
 

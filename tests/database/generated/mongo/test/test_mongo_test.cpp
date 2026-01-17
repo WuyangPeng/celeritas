@@ -69,17 +69,22 @@ namespace
 
         return data;
     }
+
+    [[nodiscard]] celeritas::database_entity_change get_test_entity_change()
+    {
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
+        return celeritas::database_entity_change{ celeritas::database_type::mongo,
+                                                  "mongo_test",
+                                                  celeritas::database_change_type::insert_type,
+                                                  key_container };
+    }
 }
 
 BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_constructors)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
-                                                               "mongo_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         const celeritas::mongo_test mongo_test1{ entity_change };
         const celeritas::mongo_test mongo_test2{ celeritas::database_type::mongo, entity_change };
@@ -90,11 +95,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_getters_and_setters)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
-                                                               "mongo_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mongo_test mongo_test{ entity_change };
 
@@ -120,27 +121,44 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
         BOOST_CHECK_EQUAL(mongo_test.get_count(), 100);
     }
 
-    BOOST_AUTO_TEST_CASE(test_array_field_operations)
+    BOOST_AUTO_TEST_CASE(test_tags_array_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
-                                                               "mongo_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mongo_test mongo_test{ entity_change };
 
         const celeritas::traits::string_array_type tags{ "tag1", "tag2", "tag3" };
         mongo_test.set_tags(tags);
         celeritas::check_array(tags, mongo_test.get_tags());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_category_index_array_operations)
+    {
+        const auto entity_change = get_test_entity_change();
+
+        celeritas::mongo_test mongo_test{ entity_change };
 
         const celeritas::traits::int32_array_type category_indices{ 1, 2, 3, 4 };
         mongo_test.set_category_index(category_indices);
         celeritas::check_array(category_indices, mongo_test.get_category_index());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_related_index_array_operations)
+    {
+        const auto entity_change = get_test_entity_change();
+
+        celeritas::mongo_test mongo_test{ entity_change };
 
         const celeritas::traits::int64_array_type related_indices{ 100LL, 200LL, 300LL };
         mongo_test.set_related_index(related_indices);
         celeritas::check_array(related_indices, mongo_test.get_related_index());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_ratios_array_operations)
+    {
+        const auto entity_change = get_test_entity_change();
+
+        celeritas::mongo_test mongo_test{ entity_change };
 
         const celeritas::traits::double_array_type ratios{ 0.1, 0.2, 0.3 };
         mongo_test.set_ratios(ratios);
@@ -149,11 +167,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_byte_array_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
-                                                               "mongo_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mongo_test mongo_test{ entity_change };
 
@@ -165,13 +179,10 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_document_field_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
-                                                               "mongo_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mongo_test mongo_test{ entity_change };
+
         const auto properties_data = get_test_properties_data();
         mongo_test.set_properties(properties_data.to_document_type());
         check_properties_data(celeritas::properties_data::from_document(mongo_test.get_properties()), properties_data);
@@ -184,11 +195,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_modifier_methods)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
-                                                               "mongo_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mongo_test mongo_test{ entity_change };
 
@@ -203,11 +210,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_tags_array_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
-                                                               "mongo_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mongo_test mongo_test{ entity_change };
 
@@ -220,11 +223,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_category_index_array_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
-                                                               "mongo_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mongo_test mongo_test{ entity_change };
 
@@ -237,11 +236,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_related_index_array_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
-                                                               "mongo_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mongo_test mongo_test{ entity_change };
 
@@ -254,11 +249,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_ratios_array_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
-                                                               "mongo_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mongo_test mongo_test{ entity_change };
 
@@ -271,11 +262,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_attachment_array_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
-                                                               "mongo_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mongo_test mongo_test{ entity_change };
 
@@ -288,11 +275,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_logs_array_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
-                                                               "mongo_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mongo_test mongo_test{ entity_change };
 
@@ -313,11 +296,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_static_methods)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
-                                                               "mongo_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         const auto& field_container = celeritas::mongo_test::get_database_field_container();
         BOOST_CHECK(!field_container.empty());
@@ -350,16 +329,13 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_inheritance_modify)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
-                                                               "mongo_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mongo_test mongo_test{ entity_change };
 
         BOOST_CHECK(!mongo_test.is_modify());
         BOOST_CHECK(!mongo_test.is_must_save());
+
         mongo_test.set_chapter_name("new name");
 
         BOOST_CHECK(mongo_test.is_modify());
@@ -377,11 +353,7 @@ BOOST_AUTO_TEST_SUITE(mongo_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_inheritance_delete)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "_id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mongo,
-                                                               "mongo_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         const celeritas::mongo_test mongo_test{ entity_change };
 

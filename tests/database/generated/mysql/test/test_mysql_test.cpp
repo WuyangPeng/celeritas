@@ -66,12 +66,22 @@ namespace
 
         data.set_document_value(nested_document);
 
-        celeritas::logs_data::document_type document_array_element1{ celeritas::basis_database{ "array_int1", 1 } };
-        celeritas::logs_data::document_type document_array_element2{ celeritas::basis_database{ "array_string2", "world" } };
+        celeritas::logs_data::document_type document_array_element1{ celeritas::basis_database{ "array_int", 1 } };
+        celeritas::logs_data::document_type document_array_element2{ celeritas::basis_database{ "array_string", "world" } };
 
         data.set_document_array_value({ document_array_element1, document_array_element2 });
 
         return data;
+    }
+
+    [[nodiscard]] celeritas::database_entity_change get_test_entity_change()
+    {
+        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
+
+        return celeritas::database_entity_change{ celeritas::database_type::mysql,
+                                                  "mysql_test",
+                                                  celeritas::database_change_type::insert_type,
+                                                  key_container };
     }
 }
 
@@ -79,11 +89,7 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_constructors)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
-                                                               "mysql_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         const celeritas::mysql_test mysql_test1{ entity_change };
         const celeritas::mysql_test mysql_test2{ celeritas::database_type::mysql, entity_change };
@@ -94,11 +100,7 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_getters_and_setters)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
-                                                               "mysql_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mysql_test mysql_test{ entity_change };
 
@@ -126,11 +128,7 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_array_field_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
-                                                               "mysql_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mysql_test mysql_test{ entity_change };
 
@@ -153,11 +151,7 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_document_field_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
-                                                               "mysql_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mysql_test mysql_test{ entity_change };
 
@@ -173,11 +167,7 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_modifier_methods)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
-                                                               "mysql_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mysql_test mysql_test{ entity_change };
 
@@ -192,13 +182,10 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_tags_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
-                                                               "mysql_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mysql_test mysql_test{ entity_change };
+
         mysql_test.add_tags("new_tag");
         BOOST_CHECK_EQUAL(mysql_test.get_tags().size(), 1);
         BOOST_CHECK_EQUAL(mysql_test.get_tags().at(0), "new_tag");
@@ -208,13 +195,10 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_category_index_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
-                                                               "mysql_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mysql_test mysql_test{ entity_change };
+
         mysql_test.add_category_index(999);
         BOOST_CHECK_EQUAL(mysql_test.get_category_index().size(), 1);
         BOOST_CHECK_EQUAL(mysql_test.get_category_index().at(0), 999);
@@ -224,11 +208,7 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_related_index_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
-                                                               "mysql_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mysql_test mysql_test{ entity_change };
         mysql_test.add_related_index(777777LL);
@@ -240,13 +220,10 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_ratios_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
-                                                               "mysql_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mysql_test mysql_test{ entity_change };
+
         mysql_test.add_ratios(0.99);
         BOOST_CHECK_EQUAL(mysql_test.get_ratios().size(), 1);
         BOOST_CHECK_CLOSE(mysql_test.get_ratios().at(0), 0.99, 0.001);
@@ -256,11 +233,7 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_logs_element_operations)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
-                                                               "mysql_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mysql_test mysql_test{ entity_change };
 
@@ -281,11 +254,7 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_static_methods)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
-                                                               "mysql_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         const auto& field_container = celeritas::mysql_test::get_database_field_container();
         BOOST_CHECK(!field_container.empty());
@@ -317,16 +286,13 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_inheritance_modify)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
-                                                               "mysql_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         celeritas::mysql_test mysql_test{ entity_change };
 
         BOOST_CHECK(!mysql_test.is_modify());
         BOOST_CHECK(!mysql_test.is_must_save());
+
         mysql_test.set_chapter_name("new name");
 
         BOOST_CHECK(mysql_test.is_modify());
@@ -344,11 +310,7 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
 
     BOOST_AUTO_TEST_CASE(test_inheritance_delete)
     {
-        const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
-        const celeritas::database_entity_change entity_change{ celeritas::database_type::mysql,
-                                                               "mysql_test",
-                                                               celeritas::database_change_type::insert_type,
-                                                               key_container };
+        const auto entity_change = get_test_entity_change();
 
         const celeritas::mysql_test mysql_test{ entity_change };
 
