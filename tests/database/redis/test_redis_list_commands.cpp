@@ -12,7 +12,7 @@ namespace
         const auto length = co_await list_commands.async_left_push(key, "value1");
         BOOST_CHECK_EQUAL(length, 1);
 
-        auto popped = co_await list_commands.async_left_pop(key);
+        const auto popped = co_await list_commands.async_left_pop(key);
         BOOST_REQUIRE(popped.has_value());
         BOOST_CHECK_EQUAL(*popped, "value1");
     }
@@ -34,11 +34,11 @@ namespace
         const auto& list_commands = session->get_redis_list_commands();
         const celeritas::redis_commands::key_container values{ "v1", "v2", "v3" };
 
-        const auto l_length = co_await list_commands.async_left_push_many(key, values);
-        BOOST_CHECK_EQUAL(l_length, 3);
+        const auto left_length = co_await list_commands.async_left_push_many(key, values);
+        BOOST_CHECK_EQUAL(left_length, 3);
 
-        const auto r_length = co_await list_commands.async_right_push_many(key, values);
-        BOOST_CHECK_EQUAL(r_length, 6);
+        const auto right_length = co_await list_commands.async_right_push_many(key, values);
+        BOOST_CHECK_EQUAL(right_length, 6);
 
         const auto total_length = co_await list_commands.async_get_length(key);
         BOOST_CHECK_EQUAL(total_length, 6);
@@ -80,8 +80,8 @@ namespace
     [[nodiscard]] boost::asio::awaitable<void> check_async_blocking_left_pop(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session)
     {
         const auto& list_commands = session->get_redis_list_commands();
-        const std::string key1{ "test_list_blpop1" };
-        const std::string key2{ "test_list_blpop2" };
+        const std::string key1{ "test_list_bl_pop1" };
+        const std::string key2{ "test_list_bl_pop2" };
 
         co_await session->get_redis_key_commands().async_delete(key1);
         co_await session->get_redis_key_commands().async_delete(key2);
@@ -106,7 +106,8 @@ BOOST_FIXTURE_TEST_SUITE(redis_list_commands_suite, celeritas::redis_database_se
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
-            const std::string key{ "test_list_lpush" };
+
+            const std::string key{ "test_list_l_push" };
 
             co_await session->get_redis_key_commands().async_delete(key);
             co_await check_async_left_push_and_pop(session, key);
@@ -121,7 +122,8 @@ BOOST_FIXTURE_TEST_SUITE(redis_list_commands_suite, celeritas::redis_database_se
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
-            const std::string key{ "test_list_rpush" };
+
+            const std::string key{ "test_list_r_push" };
 
             co_await session->get_redis_key_commands().async_delete(key);
             co_await check_async_right_push_and_pop(session, key);
@@ -136,6 +138,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_list_commands_suite, celeritas::redis_database_se
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_list_push_many" };
 
             co_await session->get_redis_key_commands().async_delete(key);
@@ -151,6 +154,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_list_commands_suite, celeritas::redis_database_se
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_list_range" };
 
             co_await session->get_redis_key_commands().async_delete(key);
@@ -166,6 +170,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_list_commands_suite, celeritas::redis_database_se
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_list_remove" };
 
             co_await session->get_redis_key_commands().async_delete(key);
@@ -181,7 +186,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_list_commands_suite, celeritas::redis_database_se
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
-            co_await check_async_blocking_left_pop(session);
+ co_await check_async_blocking_left_pop(session);
             set_test_end(true);
         });
     }

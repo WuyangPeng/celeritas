@@ -5,9 +5,9 @@
 #include <boost/asio.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <set>
 #include <string>
 #include <vector>
-#include <set>
 
 namespace
 {
@@ -99,7 +99,7 @@ namespace
         std::set<std::string> result_set;
         for (const auto& item : result)
         {
-            result_set.insert(item);
+            result_set.emplace(item);
         }
 
         for (const auto& member : static_cast<const std::vector<std::string>&>(members))
@@ -127,7 +127,7 @@ namespace
         std::set<std::string> result_set;
         for (const auto& item : result)
         {
-            result_set.insert(item);
+            result_set.emplace(item);
         }
 
         BOOST_CHECK(result_set.contains("member1"));
@@ -154,7 +154,7 @@ namespace
         std::set<std::string> result_set;
         for (const auto& item : result)
         {
-            result_set.insert(item);
+            result_set.emplace(item);
         }
 
         BOOST_CHECK(result_set.contains("member2"));
@@ -180,7 +180,7 @@ namespace
         std::set<std::string> result_set;
         for (const auto& item : result)
         {
-            result_set.insert(item);
+            result_set.emplace(item);
         }
 
         BOOST_CHECK(result_set.contains("member1"));
@@ -195,10 +195,13 @@ BOOST_FIXTURE_TEST_SUITE(redis_set_commands_suite, celeritas::redis_database_ses
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_set_add" };
+
             co_await session->get_redis_key_commands().async_delete(key);
             co_await check_async_add(session, key);
             co_await session->get_redis_key_commands().async_delete(key);
+
             set_test_end(true);
         });
     }
@@ -208,10 +211,13 @@ BOOST_FIXTURE_TEST_SUITE(redis_set_commands_suite, celeritas::redis_database_ses
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_set_add_many" };
+
             co_await session->get_redis_key_commands().async_delete(key);
             co_await check_async_add_many(session, key);
             co_await session->get_redis_key_commands().async_delete(key);
+
             set_test_end(true);
         });
     }
@@ -221,10 +227,13 @@ BOOST_FIXTURE_TEST_SUITE(redis_set_commands_suite, celeritas::redis_database_ses
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_set_remove" };
+
             co_await session->get_redis_key_commands().async_delete(key);
             co_await check_async_remove(session, key);
             co_await session->get_redis_key_commands().async_delete(key);
+
             set_test_end(true);
         });
     }
@@ -234,10 +243,13 @@ BOOST_FIXTURE_TEST_SUITE(redis_set_commands_suite, celeritas::redis_database_ses
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_set_remove_many" };
+
             co_await session->get_redis_key_commands().async_delete(key);
             co_await check_async_remove_many(session, key);
             co_await session->get_redis_key_commands().async_delete(key);
+
             set_test_end(true);
         });
     }
@@ -247,10 +259,13 @@ BOOST_FIXTURE_TEST_SUITE(redis_set_commands_suite, celeritas::redis_database_ses
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_set_cardinality" };
+
             co_await session->get_redis_key_commands().async_delete(key);
             co_await check_async_set_cardinality(session, key);
             co_await session->get_redis_key_commands().async_delete(key);
+
             set_test_end(true);
         });
     }
@@ -260,10 +275,13 @@ BOOST_FIXTURE_TEST_SUITE(redis_set_commands_suite, celeritas::redis_database_ses
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_set_is_member" };
+
             co_await session->get_redis_key_commands().async_delete(key);
             co_await check_async_set_is_member(session, key);
             co_await session->get_redis_key_commands().async_delete(key);
+
             set_test_end(true);
         });
     }
@@ -273,11 +291,13 @@ BOOST_FIXTURE_TEST_SUITE(redis_set_commands_suite, celeritas::redis_database_ses
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_set_members" };
+
             co_await session->get_redis_key_commands().async_delete(key);
             co_await check_async_set_members(session, key);
             co_await session->get_redis_key_commands().async_delete(key);
-            set_test_end(true);
+ set_test_end(true);
         });
     }
 
@@ -286,6 +306,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_set_commands_suite, celeritas::redis_database_ses
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             co_await check_async_set_union(session);
             set_test_end(true);
         });
@@ -296,6 +317,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_set_commands_suite, celeritas::redis_database_ses
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             co_await check_async_set_inter(session);
             set_test_end(true);
         });
@@ -306,6 +328,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_set_commands_suite, celeritas::redis_database_ses
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             co_await check_async_set_diff(session);
             set_test_end(true);
         });
