@@ -80,6 +80,30 @@ namespace
         BOOST_CHECK(found);
     }
 
+    [[nodiscard]] boost::asio::awaitable<void> test_verify_select_all_multiple(const celeritas::redis_database_session_fixture& fixture)
+    {
+        const auto session = fixture.get_session();
+        const auto select_all_change = celeritas::redis_test::get_select(celeritas::database_type::redis);
+        const auto results = co_await session->select_all(select_all_change, celeritas::redis_test::get_database_field_container());
+
+        auto found1 = false;
+        auto found2 = false;
+        for (const auto& element : results)
+        {
+            if (const celeritas::redis_test test{ celeritas::database_type::redis, element };
+                test.get_user_id() == user_id + 1)
+            {
+                found1 = true;
+            }
+            else if (test.get_user_id() == user_id + 2)
+            {
+                found2 = true;
+            }
+        }
+        BOOST_CHECK(found1);
+        BOOST_CHECK(found2);
+    }
+
     [[nodiscard]] boost::asio::awaitable<void> test_delete(const celeritas::redis_database_session_fixture& fixture, const celeritas::redis_test& entity)
     {
         const auto session = fixture.get_session();
@@ -100,6 +124,7 @@ namespace
     [[nodiscard]] celeritas::redis_test get_redis_test_for_user(const int64_t custom_user_id)
     {
         celeritas::redis_test entity{ celeritas::database_type::redis, custom_user_id };
+
         entity.set_chapter_id(10);
         entity.set_chapter_name("Test Chapter");
         entity.set_chance_winning(0.99);
@@ -118,6 +143,7 @@ namespace
     [[nodiscard]] celeritas::properties_data get_properties_data()
     {
         celeritas::properties_data properties{};
+
         properties.set_int64_value(987654321LL);
         properties.set_string_value("prop_string");
         properties.set_string_array_value({ "p1", "p2" });
@@ -129,12 +155,14 @@ namespace
         properties.set_double_value(1.23);
         properties.set_double_array_value({ 1.1, 2.2 });
         properties.set_bool_value(true);
+
         return properties;
     }
 
     [[nodiscard]] celeritas::logs_data get_logs_data()
     {
         celeritas::logs_data log_data{};
+
         log_data.set_int64_value(123456789LL);
         log_data.set_string_value("log_string");
         log_data.set_string_array_value({ "l1", "l2" });
@@ -146,12 +174,14 @@ namespace
         log_data.set_double_value(3.21);
         log_data.set_double_array_value({ 3.3, 4.4 });
         log_data.set_bool_value(false);
+
         return log_data;
     }
 
     [[nodiscard]] celeritas::redis_test get_full_redis_test()
     {
         celeritas::redis_test entity{ celeritas::database_type::redis, user_id };
+
         entity.set_chapter_id(101);
         entity.set_chapter_name("Conversion Test");
         entity.set_chance_winning(0.5);
@@ -193,6 +223,195 @@ namespace
 
         check_properties_data(lhs.get_properties(), rhs.get_properties());
         check_logs_data(lhs.get_logs(), rhs.get_logs());
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> test_data_conversion(const celeritas::redis_database_session_fixture& fixture, const celeritas::redis_test& entity)
+    {
+        const auto session = fixture.get_session();
+        const auto select_change = celeritas::redis_test::get_select(celeritas::database_type::redis, user_id);
+        const auto optional_result = co_await session->select_one(select_change, celeritas::redis_test::get_database_field_container());
+
+        BOOST_REQUIRE(optional_result.has_value());
+        const celeritas::redis_test loaded{ celeritas::database_type::redis, *optional_result };
+
+        check_redis_test(loaded, entity);
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> verify_void_command(const celeritas::redis_database_session_fixture& fixture, const std::string& key)
+    {
+        const auto session = fixture.get_session();
+        const std::vector<std::string> get_command{ "GET", key };
+        const auto verify_void = co_await session->async_execute_command_return_optional_string(get_command);
+
+        BOOST_REQUIRE(verify_void.has_value());
+        BOOST_CHECK_EQUAL(*verify_void, "void_value");
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> test_execute_command_void(const celeritas::redis_database_session_fixture& fixture)
+    {
+        const auto session = fixture.get_session();
+        const auto void_key = session->get_prefixed_key("test_void_key");
+        const std::vector<std::string> set_command{ "SET", void_key, "void_value" };
+
+        co_await session->async_execute_command_return_void(set_command);
+
+        co_await verify_void_command(fixture, void_key);
+
+        const std::vector<std::string> delete_command{ "DEL", void_key };
+        co_await session->async_execute_command_return_int(delete_command);
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> verify_int_command(const celeritas::redis_database_session_fixture& fixture, const std::string& key)
+    {
+        const auto session = fixture.get_session();
+        const std::vector<std::string> incr_command{ "INCR", key };
+
+        const auto int_res = co_await session->async_execute_command_return_int(incr_command);
+        BOOST_CHECK_EQUAL(int_res, 11);
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> test_execute_command_int(const celeritas::redis_database_session_fixture& fixture)
+    {
+        const auto session = fixture.get_session();
+        const auto int_key = session->get_prefixed_key("test_int_key");
+        const std::vector<std::string> set_int_command{ "SET", int_key, "10" };
+        co_await session->async_execute_command_return_void(set_int_command);
+
+        co_await verify_int_command(fixture, int_key);
+
+        const std::vector<std::string> delete_int_command{ "DEL", int_key };
+        co_await session->async_execute_command_return_int(delete_int_command);
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> verify_optional_string_command(const celeritas::redis_database_session_fixture& fixture, const std::string& key)
+    {
+        const auto session = fixture.get_session();
+        const std::vector<std::string> get_str_command{ "GET", key };
+
+        const auto result = co_await session->async_execute_command_return_optional_string(get_str_command);
+        BOOST_REQUIRE(result.has_value());
+        BOOST_CHECK_EQUAL(*result, "hello");
+
+        const std::vector<std::string> get_str_none_command{ "GET", key + "_none" };
+        const auto none_result = co_await session->async_execute_command_return_optional_string(get_str_none_command);
+        BOOST_CHECK(!none_result.has_value());
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> test_execute_command_optional_string(const celeritas::redis_database_session_fixture& fixture)
+    {
+        const auto session = fixture.get_session();
+        const auto key = session->get_prefixed_key("test_str_key");
+        const std::vector<std::string> set_str_command{ "SET", key, "hello" };
+        co_await session->async_execute_command_return_void(set_str_command);
+
+        co_await verify_optional_string_command(fixture, key);
+
+        const std::vector<std::string> delete_string_command{ "DEL", key };
+        co_await session->async_execute_command_return_int(delete_string_command);
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> verify_array_command(const celeritas::redis_database_session_fixture& fixture, const std::string& key)
+    {
+        const auto session = fixture.get_session();
+        const std::vector<std::string> left_range_command{ "LRANGE", key, "0", "-1" };
+        const auto array_res = co_await session->async_execute_command_return_array(left_range_command);
+        BOOST_REQUIRE_EQUAL(array_res.size(), 3);
+        BOOST_CHECK_EQUAL(array_res[0], "a");
+        BOOST_CHECK_EQUAL(array_res[1], "b");
+        BOOST_CHECK_EQUAL(array_res[2], "c");
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> test_execute_command_array(const celeritas::redis_database_session_fixture& fixture)
+    {
+        const auto session = fixture.get_session();
+        const auto list_key = session->get_prefixed_key("test_list_key");
+        const std::vector<std::string> right{ "RPUSH", list_key, "a", "b", "c" };
+        co_await session->async_execute_command_return_int(right);
+
+        co_await verify_array_command(fixture, list_key);
+
+        const std::vector<std::string> delete_list_command{ "DEL", list_key };
+        co_await session->async_execute_command_return_int(delete_list_command);
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> verify_map_command(const celeritas::redis_database_session_fixture& fixture, const std::string& key)
+    {
+        const auto session = fixture.get_session();
+        const std::vector<std::string> h_get_all_command = { "HGETALL", key };
+
+        auto map_res = co_await session->async_execute_command_return_map(h_get_all_command);
+        BOOST_CHECK_EQUAL(map_res.size(), 2);
+        BOOST_CHECK_EQUAL(map_res["f1"], "v1");
+        BOOST_CHECK_EQUAL(map_res["f2"], "v2");
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> test_execute_command_map(const celeritas::redis_database_session_fixture& fixture)
+    {
+        const auto session = fixture.get_session();
+        const auto hash_key = session->get_prefixed_key("test_hash_key");
+        const std::vector<std::string> has_set_command{ "HSET", hash_key, "f1", "v1", "f2", "v2" };
+        co_await session->async_execute_command_return_int(has_set_command);
+
+        co_await verify_map_command(fixture, hash_key);
+
+        const std::vector<std::string> del_hash_command = { "DEL", hash_key };
+        co_await session->async_execute_command_return_int(del_hash_command);
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> verify_optional_double_command(const celeritas::redis_database_session_fixture& fixture, const std::string& key)
+    {
+        const auto session = fixture.get_session();
+        const std::vector<std::string> z_score_command{ "ZSCORE", key, "m1" };
+
+        const auto double_res = co_await session->async_execute_command_return_optional_double(z_score_command);
+        BOOST_REQUIRE(double_res.has_value());
+        BOOST_CHECK_CLOSE(*double_res, 1.5, 0.0001);
+
+        const std::vector<std::string> zscore_none_command{ "ZSCORE", key, "m_none" };
+        const auto double_res_none = co_await session->async_execute_command_return_optional_double(zscore_none_command);
+        BOOST_CHECK(!double_res_none.has_value());
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> test_execute_command_optional_double(const celeritas::redis_database_session_fixture& fixture)
+    {
+        const auto session = fixture.get_session();
+        const auto z_set_key = session->get_prefixed_key("test_zset_key");
+
+        const std::vector<std::string> z_add_command{ "ZADD", z_set_key, "1.5", "m1" };
+        co_await session->async_execute_command_return_int(z_add_command);
+
+        co_await verify_optional_double_command(fixture, z_set_key);
+
+        const std::vector<std::string> delete_z_set_command{ "DEL", z_set_key };
+        co_await session->async_execute_command_return_int(delete_z_set_command);
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> verify_optional_int_command(const celeritas::redis_database_session_fixture& fixture, const std::string& key)
+    {
+        const auto session = fixture.get_session();
+
+        const std::vector<std::string> z_rank_command{ "ZRANK", key, "m2" };
+        const auto result = co_await session->async_execute_command_return_optional_int(z_rank_command);
+        BOOST_REQUIRE(result.has_value());
+        BOOST_CHECK_EQUAL(*result, 1);
+
+        const std::vector<std::string> z_rank_none_command{ "ZRANK", key, "m_none" };
+        const auto none_result = co_await session->async_execute_command_return_optional_int(z_rank_none_command);
+        BOOST_CHECK(!none_result.has_value());
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> test_execute_command_optional_int(const celeritas::redis_database_session_fixture& fixture)
+    {
+        const auto session = fixture.get_session();
+        const auto z_rank_key = session->get_prefixed_key("test_zrank_key");
+
+        const std::vector<std::string> z_add_rank_command = { "ZADD", z_rank_key, "10", "m1", "20", "m2" };
+        co_await session->async_execute_command_return_int(z_add_rank_command);
+
+        co_await verify_optional_int_command(fixture, z_rank_key);
+
+        const std::vector<std::string> delete_z_rank_command = { "DEL", z_rank_key };
+        co_await session->async_execute_command_return_int(delete_z_rank_command);
     }
 }
 
@@ -351,25 +570,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
             co_await test_insert(*this, entity1);
             co_await test_insert(*this, entity2);
 
-            const auto select_all_change = celeritas::redis_test::get_select(celeritas::database_type::redis);
-            const auto results = co_await session->select_all(select_all_change, celeritas::redis_test::get_database_field_container());
-
-            auto found1 = false;
-            auto found2 = false;
-            for (const auto& element : results)
-            {
-                if (const celeritas::redis_test test{ celeritas::database_type::redis, element };
-                    test.get_user_id() == user_id + 1)
-                {
-                    found1 = true;
-                }
-                else if (test.get_user_id() == user_id + 2)
-                {
-                    found2 = true;
-                }
-            }
-            BOOST_CHECK(found1);
-            BOOST_CHECK(found2);
+            co_await test_verify_select_all_multiple(*this);
 
             co_await test_delete(*this, entity1);
             co_await test_delete(*this, entity2);
@@ -415,13 +616,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
             co_await test_delete(*this, entity);
             co_await test_insert(*this, entity);
 
-            const auto select_change = celeritas::redis_test::get_select(celeritas::database_type::redis, user_id);
-            const auto optional_result = co_await session->select_one(select_change, celeritas::redis_test::get_database_field_container());
-
-            BOOST_REQUIRE(optional_result.has_value());
-            const celeritas::redis_test loaded{ celeritas::database_type::redis, *optional_result };
-
-            check_redis_test(loaded, entity);
+            co_await test_data_conversion(*this, entity);
 
             co_await test_delete(*this, entity);
             set_test_end(true);
@@ -439,16 +634,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                 co_return;
             }
 
-            const auto void_key = session->get_prefixed_key("test_void_key");
-            const std::vector<std::string> set_command{ "SET", void_key, "void_value" };
-            co_await session->async_execute_command_return_void(set_command);
-
-            const std::vector<std::string> get_command{ "GET", void_key };
-            const auto verify_void = co_await session->async_execute_command_return_optional_string(get_command);
-            BOOST_REQUIRE(verify_void.has_value());
-            BOOST_CHECK_EQUAL(*verify_void, "void_value");
-            const std::vector<std::string> delete_command{ "DEL", void_key };
-            co_await session->async_execute_command_return_int(delete_command);
+            co_await test_execute_command_void(*this);
 
             set_test_end(true);
         });
@@ -465,14 +651,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                 co_return;
             }
 
-            const auto int_key = session->get_prefixed_key("test_int_key");
-            const std::vector<std::string> set_int_command{ "SET", int_key, "10" };
-            co_await session->async_execute_command_return_void(set_int_command);
-            const std::vector<std::string> incr_command{ "INCR", int_key };
-            const auto int_res = co_await session->async_execute_command_return_int(incr_command);
-            BOOST_CHECK_EQUAL(int_res, 11);
-            const std::vector<std::string> delete_int_command{ "DEL", int_key };
-            co_await session->async_execute_command_return_int(delete_int_command);
+            co_await test_execute_command_int(*this);
 
             set_test_end(true);
         });
@@ -489,19 +668,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                 co_return;
             }
 
-            const auto str_key = session->get_prefixed_key("test_str_key");
-            const std::vector<std::string> set_str_command{ "SET", str_key, "hello" };
-            co_await session->async_execute_command_return_void(set_str_command);
-            const std::vector<std::string> get_str_command{ "GET", str_key };
-            const auto str_res = co_await session->async_execute_command_return_optional_string(get_str_command);
-            BOOST_REQUIRE(str_res.has_value());
-            BOOST_CHECK_EQUAL(*str_res, "hello");
-
-            const std::vector<std::string> get_str_none_command{ "GET", str_key + "_none" };
-            const auto str_res_none = co_await session->async_execute_command_return_optional_string(get_str_none_command);
-            BOOST_CHECK(!str_res_none.has_value());
-            const std::vector<std::string> delete_str_command{ "DEL", str_key };
-            co_await session->async_execute_command_return_int(delete_str_command);
+            co_await test_execute_command_optional_string(*this);
 
             set_test_end(true);
         });
@@ -518,17 +685,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                 co_return;
             }
 
-            const auto list_key = session->get_prefixed_key("test_list_key");
-            const std::vector<std::string> r_push_command{ "RPUSH", list_key, "a", "b", "c" };
-            co_await session->async_execute_command_return_int(r_push_command);
-            const std::vector<std::string> l_range_command{ "LRANGE", list_key, "0", "-1" };
-            const auto array_res = co_await session->async_execute_command_return_array(l_range_command);
-            BOOST_REQUIRE_EQUAL(array_res.size(), 3);
-            BOOST_CHECK_EQUAL(array_res[0], "a");
-            BOOST_CHECK_EQUAL(array_res[1], "b");
-            BOOST_CHECK_EQUAL(array_res[2], "c");
-            const std::vector<std::string> delete_list_command{ "DEL", list_key };
-            co_await session->async_execute_command_return_int(delete_list_command);
+            co_await test_execute_command_array(*this);
 
             set_test_end(true);
         });
@@ -545,16 +702,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                 co_return;
             }
 
-            const auto hash_key = session->get_prefixed_key("test_hash_key");
-            const std::vector<std::string> h_set_command = { "HSET", hash_key, "f1", "v1", "f2", "v2" };
-            co_await session->async_execute_command_return_int(h_set_command);
-            const std::vector<std::string> h_get_all_command = { "HGETALL", hash_key };
-            auto map_res = co_await session->async_execute_command_return_map(h_get_all_command);
-            BOOST_CHECK_EQUAL(map_res.size(), 2);
-            BOOST_CHECK_EQUAL(map_res["f1"], "v1");
-            BOOST_CHECK_EQUAL(map_res["f2"], "v2");
-            const std::vector<std::string> del_hash_command = { "DEL", hash_key };
-            co_await session->async_execute_command_return_int(del_hash_command);
+            co_await test_execute_command_map(*this);
 
             set_test_end(true);
         });
@@ -571,19 +719,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                 co_return;
             }
 
-            const auto z_set_key = session->get_prefixed_key("test_zset_key");
-            const std::vector<std::string> z_add_command = { "ZADD", z_set_key, "1.5", "m1" };
-            co_await session->async_execute_command_return_int(z_add_command);
-            const std::vector<std::string> z_score_command = { "ZSCORE", z_set_key, "m1" };
-            const auto double_res = co_await session->async_execute_command_return_optional_double(z_score_command);
-            BOOST_REQUIRE(double_res.has_value());
-            BOOST_CHECK_CLOSE(*double_res, 1.5, 0.0001);
-
-            const std::vector<std::string> zscore_none_command = { "ZSCORE", z_set_key, "m_none" };
-            const auto double_res_none = co_await session->async_execute_command_return_optional_double(zscore_none_command);
-            BOOST_CHECK(!double_res_none.has_value());
-            const std::vector<std::string> delete_z_set_command = { "DEL", z_set_key };
-            co_await session->async_execute_command_return_int(delete_z_set_command);
+            co_await test_execute_command_optional_double(*this);
 
             set_test_end(true);
         });
@@ -600,19 +736,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
                 co_return;
             }
 
-            const auto z_rank_key = session->get_prefixed_key("test_zrank_key");
-            const std::vector<std::string> z_add_rank_command = { "ZADD", z_rank_key, "10", "m1", "20", "m2" };
-            co_await session->async_execute_command_return_int(z_add_rank_command);
-            const std::vector<std::string> z_rank_command = { "ZRANK", z_rank_key, "m2" };
-            const auto opt_int_res = co_await session->async_execute_command_return_optional_int(z_rank_command);
-            BOOST_REQUIRE(opt_int_res.has_value());
-            BOOST_CHECK_EQUAL(*opt_int_res, 1);
-
-            const std::vector<std::string> z_rank_none_command = { "ZRANK", z_rank_key, "m_none" };
-            const auto opt_int_res_none = co_await session->async_execute_command_return_optional_int(z_rank_none_command);
-            BOOST_CHECK(!opt_int_res_none.has_value());
-            const std::vector<std::string> delete_z_rank_command = { "DEL", z_rank_key };
-            co_await session->async_execute_command_return_int(delete_z_rank_command);
+            co_await test_execute_command_optional_int(*this);
 
             set_test_end(true);
         });
