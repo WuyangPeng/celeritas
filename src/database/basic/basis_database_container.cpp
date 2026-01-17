@@ -14,7 +14,7 @@ celeritas::basis_database_container::basis_database_container(const basis_databa
 celeritas::basis_database_container::basis_database_container(object_container container)
     : container_{ std::move(container) }
 {
-    std::unordered_set<std::string_view> field_names{};
+    std::unordered_set<std::string> field_names{};
     for (const auto& db : container_)
     {
         if (!field_names.emplace(db.get_field_name()).second)
