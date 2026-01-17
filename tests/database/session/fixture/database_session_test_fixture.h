@@ -22,7 +22,7 @@ namespace celeritas
 
         database_session_test_fixture();
 
-        void run(const awaitable_function& test_body);
+        void run(awaitable_function test_body);
 
         [[nodiscard]] mock_database_session& get_session();
 
@@ -32,6 +32,9 @@ namespace celeritas
 
         [[nodiscard]] const database_field_container& get_fields() const;
 
+    protected:
+        void set_test_end(bool test_end);
+
     private:
         using io_context_type = boost::asio::io_context;
 
@@ -40,5 +43,6 @@ namespace celeritas
         const_database_entity_change_shared_ptr select_change_;
         const_database_entity_change_shared_ptr update_change_;
         database_field_container fields_;
+        bool test_end_ = false;
     };
 }

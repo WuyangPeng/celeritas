@@ -1,9 +1,12 @@
 ﻿#include "database_session_test_fixture.h"
+#include "common/common_constant.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "config/basic/database_type.h"
 #include "database/basic/basis_database_container.h"
 #include "database/basic/database_change_type.h"
 
 #include <boost/asio/detached.hpp>
+#include <boost/test/unit_test.hpp>
 
 celeritas::database_session_test_fixture::database_session_test_fixture()
     : io_context_{},
@@ -19,10 +22,18 @@ celeritas::database_session_test_fixture::database_session_test_fixture()
 {
 }
 
-void celeritas::database_session_test_fixture::run(const awaitable_function& test_body)
+void celeritas::database_session_test_fixture::run(awaitable_function test_body)
 {
-    boost::asio::co_spawn(io_context_, test_body, boost::asio::detached);
+    boost::asio::co_spawn(io_context_,
+                          noexcept_safe_call_and_log_awaitable(std::move(test_body),
+                                                               database_channel,
+                                                               "database session test run error: "),
+                          boost::asio::detached);
+
     io_context_.run();
+    io_context_.restart();
+
+    BOOST_CHECK(test_end_);
 }
 
 celeritas::mock_database_session& celeritas::database_session_test_fixture::get_session()
@@ -43,4 +54,9 @@ const celeritas::database_session_test_fixture::const_database_entity_change_sha
 const celeritas::database_session_test_fixture::database_field_container& celeritas::database_session_test_fixture::get_fields() const
 {
     return fields_;
+}
+
+void celeritas::database_session_test_fixture::set_test_end(const bool test_end)
+{
+    this->test_end_ = test_end;
 }

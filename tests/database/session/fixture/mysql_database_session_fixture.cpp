@@ -1,5 +1,7 @@
 ﻿#include "mysql_database_session_fixture.h"
+#include "common/common_constant.h"
 #include "common/core/celeritas_error.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "config/aggregate/detail/database_config_reader.h"
 #include "config/basic/database_type.h"
 #include "database/pool/database_pool_manager.h"
@@ -25,8 +27,12 @@ void celeritas::mysql_database_session_fixture::run(awaitable_function func)
         BOOST_FAIL("Session is not initialized, cannot run test.");
         return;
     }
+ boost::asio::co_spawn(io_context_,
+                          noexcept_safe_call_and_log_awaitable(std::move(func),
+                                                               database_channel,
+                                                               "mysql database session test run error: "),
+                          boost::asio::detached);
 
-    boost::asio::co_spawn(io_context_, std::move(func), boost::asio::detached);
     io_context_.run();
     io_context_.restart();
     BOOST_CHECK(test_end_);
