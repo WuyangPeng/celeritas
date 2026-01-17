@@ -3,6 +3,23 @@
 
 #include <boost/test/unit_test.hpp>
 
+namespace
+{
+    [[nodiscard]] boost::asio::awaitable<void> check_async_set_and_get(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session, const std::string& key)
+    {
+        const std::string field{ "field1" };
+        const std::string value{ "value1" };
+
+        const auto& hash_commands = session->get_redis_hash_commands();
+        const auto result = co_await hash_commands.async_set(key, field, value);
+        BOOST_CHECK_EQUAL(result, 1);
+
+        const auto retrieved_value = co_await hash_commands.async_get(key, field);
+        BOOST_REQUIRE(retrieved_value.has_value());
+        BOOST_CHECK_EQUAL(*retrieved_value, value);
+    }
+}
+
 BOOST_FIXTURE_TEST_SUITE(redis_hash_commands_suite, celeritas::redis_database_session_fixture)
 
     BOOST_AUTO_TEST_CASE(test_async_set_and_get)
@@ -11,19 +28,11 @@ BOOST_FIXTURE_TEST_SUITE(redis_hash_commands_suite, celeritas::redis_database_se
             const auto session = get_session();
             co_await session->async_connect();
 
-            const auto& hash_commands = session->get_redis_hash_commands();
             const std::string key{ "test_hash_set_get" };
-            const std::string field{ "field1" };
-            const std::string value{ "value1" };
 
             co_await session->get_redis_key_commands().async_delete(key);
 
-            const auto result = co_await hash_commands.async_set(key, field, value);
-            BOOST_CHECK_EQUAL(result, 1);
-
-            const auto retrieved_value = co_await hash_commands.async_get(key, field);
-            BOOST_REQUIRE(retrieved_value.has_value());
-            BOOST_CHECK_EQUAL(*retrieved_value, value);
+            co_await check_async_set_and_get(session, key);
 
             co_await session->get_redis_key_commands().async_delete(key);
 
@@ -36,6 +45,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_hash_commands_suite, celeritas::redis_database_se
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const auto& hash_commands = session->get_redis_hash_commands();
             const std::string key{ "test_hash_set_many" };
             const celeritas::redis_commands::key_value_container field_values{ { "f1", "v1" }, { "f2", "v2" } };
@@ -62,6 +72,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_hash_commands_suite, celeritas::redis_database_se
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const auto& hash_commands = session->get_redis_hash_commands();
             const std::string key{ "test_hash_del" };
             const celeritas::redis_commands::key_value_container fv{ { "f1", "v1" }, { "f2", "v2" }, { "f3", "v3" } };
@@ -107,6 +118,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_hash_commands_suite, celeritas::redis_database_se
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const auto& hash_commands = session->get_redis_hash_commands();
             const std::string key{ "test_hash_get_all" };
             const celeritas::redis_commands::key_value_container fv{ { "f1", "v1" }, { "f2", "v2" } };
@@ -136,6 +148,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_hash_commands_suite, celeritas::redis_database_se
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const auto& hash_commands = session->get_redis_hash_commands();
             const std::string key{ "test_hash_get_all_real" };
             const auto real_key{ session->get_prefixed_key(key) };
