@@ -6,12 +6,11 @@
 #include "database/session/mongo_database_session.h"
 #include "database/session/mysql_database_session.h"
 #include "database/session/redis_database_session.h"
+#include "fixture/connection_pool_fixture.h"
 #include "mock/mock_database_pool_base.h"
 
 #include <boost/asio.hpp>
 #include <boost/filesystem.hpp>
-#include <boost/asio/co_spawn.hpp>
-#include <boost/asio/detached.hpp>
 #include <boost/test/unit_test.hpp>
 
 namespace
@@ -123,35 +122,32 @@ BOOST_AUTO_TEST_SUITE(database_pool_manager_suite)
         manager.release_pool();
     }
 
-    BOOST_AUTO_TEST_CASE(test_is_health)
+    BOOST_FIXTURE_TEST_CASE(test_is_health, celeritas::connection_pool_fixture)
     {
         celeritas::database_pool_manager::create_mongo_instance();
-        boost::asio::io_context io_context{};
-        auto& manager = celeritas::database_pool_manager::get_instance();
+
         const auto config = get_db_config(celeritas::database_type::mongo);
 
         const auto pool_name = "test_health_mongo_pool";
-        const auto pool = manager.create_pool(pool_name,
-                                              celeritas::database_type::mongo,
-                                              io_context.get_executor(),
-                                              config->get_host(),
-                                              config->get_port(),
-                                              config->get_user(),
-                                              config->get_password(),
-                                              config->get_db_name(),
-                                              config->get_min_connections(),
-                                              config->get_max_connections(),
-                                              config->get_expire_seconds());
+        const auto pool = celeritas::database_pool_manager::get_instance().create_pool(pool_name,
+                                                                                       celeritas::database_type::mongo,
+                                                                                       get_io_context().get_executor(),
+                                                                                       config->get_host(),
+                                                                                       config->get_port(),
+                                                                                       config->get_user(),
+                                                                                       config->get_password(),
+                                                                                       config->get_db_name(),
+                                                                                       config->get_min_connections(),
+                                                                                       config->get_max_connections(),
+                                                                                       config->get_expire_seconds());
 
-        boost::asio::co_spawn(io_context,
-                              [&]() -> boost::asio::awaitable<void> {
-                                  co_await pool->async_initialize();
-                                  BOOST_TEST(co_await manager.is_health());
-                              },
-                              boost::asio::detached);
+        run([&]() -> boost::asio::awaitable<void> {
+            co_await pool->async_initialize();
+            BOOST_TEST(co_await celeritas::database_pool_manager::get_instance().is_health());
+            celeritas::database_pool_manager::get_instance().release_pool();
 
-        io_context.run();
-        manager.release_pool();
+            set_test_end(true);
+        });
     }
 
     BOOST_AUTO_TEST_CASE(test_release_pool)
@@ -176,22 +172,21 @@ BOOST_AUTO_TEST_SUITE(database_pool_manager_suite)
 
         BOOST_TEST(manager.get_pool(pool_name) != nullptr);
         manager.release_pool();
-        BOOST_CHECK_THROW(static_cast<void>(manager.get_pool(pool_name)), celeritas::celeritas_error);
+        BOOST_CHECK_THROW([pool_name ]{std::ignore = celeritas::database_pool_manager::get_instance().get_pool(pool_name); }(),
+                          celeritas::celeritas_error);
     }
 
-    BOOST_AUTO_TEST_CASE(test_set_mock_pool)
+    BOOST_FIXTURE_TEST_CASE(test_set_mock_pool, celeritas::connection_pool_fixture)
     {
         auto& manager = celeritas::database_pool_manager::get_instance();
         const auto mock_pool = std::make_shared<celeritas::mock_database_pool_base>();
         manager.set_mock_pool(mock_pool);
 
-        boost::asio::io_context io_context{};
-        boost::asio::co_spawn(io_context,
-                              [&]() -> boost::asio::awaitable<void> {
-                                  BOOST_TEST(co_await manager.is_health());
-                              },
-                              boost::asio::detached);
-        io_context.run();
+        run([&]() -> boost::asio::awaitable<void> {
+            BOOST_TEST(co_await manager.is_health());
+
+            set_test_end(true);
+        });
 
         manager.set_mock_pool(nullptr);
     }

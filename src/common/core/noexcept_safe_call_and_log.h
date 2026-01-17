@@ -72,7 +72,7 @@ namespace celeritas
 
     // 这里error_message必须传值，传引用会导致程序崩溃。
     template <typename Func>
-    [[nodiscard]] boost::asio::awaitable<void> noexcept_safe_call_and_log_awaitable(Func f, const std::string_view channel_name, const std::string error_message) noexcept
+    [[nodiscard]] boost::asio::awaitable<void> noexcept_safe_call_and_log_awaitable(Func f, const std::string_view channel_name, std::string error_message) noexcept
     {
         try
         {
@@ -103,7 +103,7 @@ namespace celeritas
     }
 
     template <typename Func, typename ReturnType>
-    [[nodiscard]] boost::asio::awaitable<ReturnType> noexcept_safe_call_and_log_awaitable(Func f, const std::string_view channel_name, const std::string error_message, const ReturnType& default_value) noexcept
+    [[nodiscard]] boost::asio::awaitable<ReturnType> noexcept_safe_call_and_log_awaitable(Func f, const std::string_view channel_name, std::string error_message, const ReturnType& default_value) noexcept
     {
         try
         {
