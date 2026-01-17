@@ -186,7 +186,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_list_commands_suite, celeritas::redis_database_se
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
- co_await check_async_blocking_left_pop(session);
+            co_await check_async_blocking_left_pop(session);
             set_test_end(true);
         });
     }

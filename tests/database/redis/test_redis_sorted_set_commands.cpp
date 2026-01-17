@@ -107,13 +107,13 @@ namespace
         BOOST_REQUIRE(rank.has_value());
         BOOST_CHECK_EQUAL(*rank, 1);
 
-        const auto rev_rank = co_await z_set_commands.async_reverse_rank(key, "two");
-        BOOST_REQUIRE(rev_rank.has_value());
-        BOOST_CHECK_EQUAL(*rev_rank, 1);
+        const auto reverse_rank = co_await z_set_commands.async_reverse_rank(key, "two");
+        BOOST_REQUIRE(reverse_rank.has_value());
+        BOOST_CHECK_EQUAL(*reverse_rank, 1);
 
-        const auto rev_rank_one = co_await z_set_commands.async_reverse_rank(key, "one");
-        BOOST_REQUIRE(rev_rank_one.has_value());
-        BOOST_CHECK_EQUAL(*rev_rank_one, 2);
+        const auto reverse_rank_one = co_await z_set_commands.async_reverse_rank(key, "one");
+        BOOST_REQUIRE(reverse_rank_one.has_value());
+        BOOST_CHECK_EQUAL(*reverse_rank_one, 2);
     }
 }
 
@@ -124,6 +124,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_sorted_set_commands_suite, celeritas::redis_datab
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_z_set_add" };
 
             co_await session->get_redis_key_commands().async_delete(key);
@@ -139,6 +140,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_sorted_set_commands_suite, celeritas::redis_datab
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_z_set_add_many" };
 
             co_await session->get_redis_key_commands().async_delete(key);
@@ -154,6 +156,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_sorted_set_commands_suite, celeritas::redis_datab
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_z_set_remove" };
 
             co_await session->get_redis_key_commands().async_delete(key);
@@ -169,6 +172,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_sorted_set_commands_suite, celeritas::redis_datab
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_z_set_remove_many" };
 
             co_await session->get_redis_key_commands().async_delete(key);
@@ -184,6 +188,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_sorted_set_commands_suite, celeritas::redis_datab
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_z_set_incrby" };
 
             co_await session->get_redis_key_commands().async_delete(key);
@@ -199,6 +204,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_sorted_set_commands_suite, celeritas::redis_datab
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_z_set_range" };
 
             co_await session->get_redis_key_commands().async_delete(key);

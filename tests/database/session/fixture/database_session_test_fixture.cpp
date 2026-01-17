@@ -1,7 +1,7 @@
 ﻿#include "database_session_test_fixture.h"
 #include "config/basic/database_type.h"
-#include "database/basic/database_change_type.h"
 #include "database/basic/basis_database_container.h"
+#include "database/basic/database_change_type.h"
 
 #include <boost/asio/detached.hpp>
 

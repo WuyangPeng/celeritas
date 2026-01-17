@@ -86,23 +86,46 @@ namespace
         BOOST_CHECK_EQUAL(result2, true);
     }
 
+    [[nodiscard]] boost::asio::awaitable<void> setup_set_members(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session, const std::string& key, const celeritas::redis_commands::key_container& members)
+    {
+        const auto& set_commands = session->get_redis_set_commands();
+        co_await set_commands.async_add_many(key, members);
+    }
+
+    void verify_set_members(const celeritas::redis_commands::key_container& result, const celeritas::redis_commands::key_container& expected_members)
+    {
+        BOOST_CHECK_EQUAL(result.size(), expected_members.size());
+        const std::set result_set(result.begin(), result.end());
+        for (const auto& member : expected_members)
+        {
+            BOOST_CHECK(result_set.contains(member));
+        }
+    }
+
     [[nodiscard]] boost::asio::awaitable<void> check_async_set_members(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session, const std::string& key)
     {
         const auto& set_commands = session->get_redis_set_commands();
         const celeritas::redis_commands::key_container members{ "member1", "member2", "member3" };
 
-        co_await set_commands.async_add_many(key, members);
+        co_await setup_set_members(session, key, members);
 
         const auto result = co_await set_commands.async_set_members(key);
-        BOOST_CHECK_EQUAL(result.size(), 3);
+        verify_set_members(result, members);
+    }
 
-        std::set<std::string> result_set;
-        for (const auto& item : result)
-        {
-            result_set.emplace(item);
-        }
+    [[nodiscard]] boost::asio::awaitable<void> setup_set_operation(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session, const std::string& key1, const std::string& key2, const celeritas::redis_commands::key_container& members1, const celeritas::redis_commands::key_container& members2)
+    {
+        const auto& set_commands = session->get_redis_set_commands();
+        co_await session->get_redis_key_commands().async_delete_many(std::vector{ key1, key2 });
+        co_await set_commands.async_add_many(key1, members1);
+        co_await set_commands.async_add_many(key2, members2);
+    }
 
-        for (const auto& member : static_cast<const std::vector<std::string>&>(members))
+    void verify_set_operation(const std::vector<std::string>& result, const std::set<std::string>& expected_members)
+    {
+        BOOST_CHECK_EQUAL(result.size(), expected_members.size());
+        const std::set result_set(result.begin(), result.end());
+        for (const auto& member : expected_members)
         {
             BOOST_CHECK(result_set.contains(member));
         }
@@ -116,23 +139,11 @@ namespace
         const celeritas::redis_commands::key_container members1{ "member1", "member2" };
         const celeritas::redis_commands::key_container members2{ "member2", "member3" };
 
-        co_await session->get_redis_key_commands().async_delete_many(std::vector{ key1, key2 });
-        co_await set_commands.async_add_many(key1, members1);
-        co_await set_commands.async_add_many(key2, members2);
+        co_await setup_set_operation(session, key1, key2, members1, members2);
 
         const celeritas::redis_commands::key_container keys{ key1, key2 };
         const auto result = co_await set_commands.async_set_union(keys);
-        BOOST_CHECK_EQUAL(result.size(), 3);
-
-        std::set<std::string> result_set;
-        for (const auto& item : result)
-        {
-            result_set.emplace(item);
-        }
-
-        BOOST_CHECK(result_set.contains("member1"));
-        BOOST_CHECK(result_set.contains("member2"));
-        BOOST_CHECK(result_set.contains("member3"));
+        verify_set_operation(result, { "member1", "member2", "member3" });
     }
 
     [[nodiscard]] boost::asio::awaitable<void> check_async_set_inter(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session)
@@ -143,22 +154,11 @@ namespace
         const celeritas::redis_commands::key_container members1{ "member1", "member2", "member3" };
         const celeritas::redis_commands::key_container members2{ "member2", "member3", "member4" };
 
-        co_await session->get_redis_key_commands().async_delete_many(std::vector{ key1, key2 });
-        co_await set_commands.async_add_many(key1, members1);
-        co_await set_commands.async_add_many(key2, members2);
+        co_await setup_set_operation(session, key1, key2, members1, members2);
 
         const celeritas::redis_commands::key_container keys{ key1, key2 };
         const auto result = co_await set_commands.async_set_inter(keys);
-        BOOST_CHECK_EQUAL(result.size(), 2);
-
-        std::set<std::string> result_set;
-        for (const auto& item : result)
-        {
-            result_set.emplace(item);
-        }
-
-        BOOST_CHECK(result_set.contains("member2"));
-        BOOST_CHECK(result_set.contains("member3"));
+        verify_set_operation(result, { "member2", "member3" });
     }
 
     [[nodiscard]] boost::asio::awaitable<void> check_async_set_diff(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session)
@@ -169,22 +169,11 @@ namespace
         const celeritas::redis_commands::key_container members1{ "member1", "member2", "member3" };
         const celeritas::redis_commands::key_container members2{ "member2", "member4" };
 
-        co_await session->get_redis_key_commands().async_delete_many(std::vector{ key1, key2 });
-        co_await set_commands.async_add_many(key1, members1);
-        co_await set_commands.async_add_many(key2, members2);
+        co_await setup_set_operation(session, key1, key2, members1, members2);
 
         const celeritas::redis_commands::key_container keys{ key1, key2 };
         const auto result = co_await set_commands.async_set_diff(keys);
-        BOOST_CHECK_EQUAL(result.size(), 2);
-
-        std::set<std::string> result_set;
-        for (const auto& item : result)
-        {
-            result_set.emplace(item);
-        }
-
-        BOOST_CHECK(result_set.contains("member1"));
-        BOOST_CHECK(result_set.contains("member3"));
+        verify_set_operation(result, { "member1", "member3" });
     }
 }
 
@@ -297,7 +286,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_set_commands_suite, celeritas::redis_database_ses
             co_await session->get_redis_key_commands().async_delete(key);
             co_await check_async_set_members(session, key);
             co_await session->get_redis_key_commands().async_delete(key);
- set_test_end(true);
+            set_test_end(true);
         });
     }
 
