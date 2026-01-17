@@ -1,11 +1,12 @@
 #include "config/basic/database_type.h"
 #include "database/basic/database_data_type_traits.h"
 #include "database/basic/database_entity_change.tpp"
+#include "database/detail/check_helper.h"
 #include "database/document/test/logs_data.h"
 #include "database/document/test/properties_data.h"
 #include "database/generated/redis/test/redis_test.h"
 #include "database/session/redis_database_session.h"
-#include "database/detail/check_helper.h"
+#include "fixture/database_session_fixture.tpp"
 #include "fixture/redis_database_session_fixture.h"
 
 #include <boost/asio.hpp>

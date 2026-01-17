@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_SUITE(database_session_suite)
             const auto result = co_await get_session().select_one(get_select_change(), get_fields());
             BOOST_CHECK(!result.has_value());
             BOOST_CHECK(get_session().get_select_one_called());
-            
+
             set_test_end(true);
         });
     }

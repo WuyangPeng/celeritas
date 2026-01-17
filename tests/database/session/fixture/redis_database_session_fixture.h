@@ -1,51 +1,21 @@
 ﻿#pragma once
 
-#include "config/local/database_config.h"
-#include "database/session/redis_database_session.h"
-
-#include <boost/asio/awaitable.hpp>
-#include <boost/asio/io_context.hpp>
-
-#include <functional>
-#include <memory>
+#include "database_session_fixture.h"
+#include "database/session/mysql_database_session.h"
 
 namespace celeritas
 {
-    class redis_database_session_fixture
+    class redis_database_session_fixture : public database_session_fixture<redis_database_session>
     {
     public:
         using class_type = redis_database_session_fixture;
-        using awaitable_function = std::function<boost::asio::awaitable<void>()>;
+        using bass_type = database_session_fixture;
         using redis_database_session_shared_ptr = std::shared_ptr<redis_database_session>;
-        using const_database_config_shared_ptr = std::shared_ptr<const database_config>;
 
         redis_database_session_fixture();
 
-        void run(awaitable_function func);
+        void init_session() override;
 
-        [[nodiscard]] redis_database_session_shared_ptr get_session() const;
-
-        [[nodiscard]] const_database_config_shared_ptr get_config() const;
-
-    protected:
-        void set_test_end(bool test_end);
-
-        [[nodiscard]] bool is_test_end() const;
-
-    private:
-        using io_context_type = boost::asio::io_context;
-
-        void init();
-
-        void do_init();
-
-        void init_config();
-
-        void init_session();
-
-        io_context_type io_context_;
-        redis_database_session_shared_ptr session_;
-        const_database_config_shared_ptr config_;
-        bool test_end_ = false;
+        void init_config() override;
     };
 }
