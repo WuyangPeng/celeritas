@@ -126,7 +126,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
         BOOST_CHECK_EQUAL(redis_test.get_count(), 100);
     }
 
-    BOOST_AUTO_TEST_CASE(test_array_field_operations)
+    BOOST_AUTO_TEST_CASE(test_tags_array_operations)
     {
         const auto entity_change = get_test_entity_change();
 
@@ -135,14 +135,35 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
         const celeritas::traits::string_array_type tags{ "tag1", "tag2", "tag3" };
         redis_test.set_tags(tags);
         celeritas::check_array(tags, redis_test.get_tags());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_category_index_array_operations)
+    {
+        const auto entity_change = get_test_entity_change();
+
+        celeritas::redis_test redis_test{ entity_change };
 
         const celeritas::traits::int32_array_type category_indices{ 1, 2, 3, 4 };
         redis_test.set_category_index(category_indices);
         celeritas::check_array(category_indices, redis_test.get_category_index());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_related_index_array_operations)
+    {
+        const auto entity_change = get_test_entity_change();
+
+        celeritas::redis_test redis_test{ entity_change };
 
         const celeritas::traits::int64_array_type related_indices{ 100LL, 200LL, 300LL };
         redis_test.set_related_index(related_indices);
         celeritas::check_array(related_indices, redis_test.get_related_index());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_ratios_array_operations)
+    {
+        const auto entity_change = get_test_entity_change();
+
+        celeritas::redis_test redis_test{ entity_change };
 
         const celeritas::traits::double_array_type ratios{ 0.1, 0.2, 0.3 };
         redis_test.set_ratios(ratios);
@@ -196,6 +217,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
         const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
+
         redis_test.add_tags("new_tag");
         BOOST_CHECK_EQUAL(redis_test.get_tags().size(), 1);
         BOOST_CHECK_EQUAL(redis_test.get_tags().at(0), "new_tag");
@@ -208,6 +230,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
         const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
+
         redis_test.add_category_index(999);
         BOOST_CHECK_EQUAL(redis_test.get_category_index().size(), 1);
         BOOST_CHECK_EQUAL(redis_test.get_category_index().at(0), 999);
@@ -220,6 +243,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
         const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
+
         redis_test.add_related_index(777777LL);
         BOOST_CHECK_EQUAL(redis_test.get_related_index().size(), 1);
         BOOST_CHECK_EQUAL(redis_test.get_related_index().at(0), 777777LL);
@@ -232,6 +256,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
         const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
+
         redis_test.add_ratios(0.99);
         BOOST_CHECK_EQUAL(redis_test.get_ratios().size(), 1);
         BOOST_CHECK_CLOSE(redis_test.get_ratios().at(0), 0.99, 0.001);
@@ -244,7 +269,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
         const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
-        redis_test.add_attachment('x');
+     redis_test.add_attachment('x');
         BOOST_CHECK_EQUAL(redis_test.get_attachment().size(), 1);
         BOOST_CHECK_EQUAL(redis_test.get_attachment().at(0), 'x');
         redis_test.set_attachment(0, 'y');
@@ -256,6 +281,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
         const auto entity_change = get_test_entity_change();
 
         celeritas::redis_test redis_test{ entity_change };
+
         celeritas::logs_data logs_data1{};
         logs_data1.set_string_value("log1");
         redis_test.add_logs(logs_data1.to_document_type());
@@ -312,6 +338,7 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
 
         BOOST_CHECK(!redis_test.is_modify());
         BOOST_CHECK(!redis_test.is_must_save());
+
         redis_test.set_chapter_name("new name");
 
         BOOST_CHECK(redis_test.is_modify());
@@ -339,4 +366,4 @@ BOOST_AUTO_TEST_SUITE(redis_test_suite)
         BOOST_CHECK(delete_redis->get_change_type() == celeritas::database_change_type::delete_type);
     }
 
-BOOST_AUTO_TEST_SUITE_END()
+    BOOST_AUTO_TEST_SUITE_END()

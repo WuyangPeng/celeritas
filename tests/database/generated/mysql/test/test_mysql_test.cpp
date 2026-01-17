@@ -126,7 +126,7 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
         BOOST_CHECK_EQUAL(mysql_test.get_count(), 100);
     }
 
-    BOOST_AUTO_TEST_CASE(test_array_field_operations)
+    BOOST_AUTO_TEST_CASE(test_tags_array_operations)
     {
         const auto entity_change = get_test_entity_change();
 
@@ -135,14 +135,35 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
         const celeritas::traits::string_array_type tags{ "tag1", "tag2", "tag3" };
         mysql_test.set_tags(tags);
         celeritas::check_array(tags, mysql_test.get_tags());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_category_index_array_operations)
+    {
+        const auto entity_change = get_test_entity_change();
+
+        celeritas::mysql_test mysql_test{ entity_change };
 
         const celeritas::traits::int32_array_type category_indices{ 1, 2, 3, 4 };
         mysql_test.set_category_index(category_indices);
         celeritas::check_array(category_indices, mysql_test.get_category_index());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_related_index_array_operations)
+    {
+        const auto entity_change = get_test_entity_change();
+
+        celeritas::mysql_test mysql_test{ entity_change };
 
         const celeritas::traits::int64_array_type related_indices{ 100LL, 200LL, 300LL };
         mysql_test.set_related_index(related_indices);
         celeritas::check_array(related_indices, mysql_test.get_related_index());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_ratios_array_operations)
+    {
+        const auto entity_change = get_test_entity_change();
+
+        celeritas::mysql_test mysql_test{ entity_change };
 
         const celeritas::traits::double_array_type ratios{ 0.1, 0.2, 0.3 };
         mysql_test.set_ratios(ratios);
@@ -211,6 +232,7 @@ BOOST_AUTO_TEST_SUITE(mysql_test_suite)
         const auto entity_change = get_test_entity_change();
 
         celeritas::mysql_test mysql_test{ entity_change };
+
         mysql_test.add_related_index(777777LL);
         BOOST_CHECK_EQUAL(mysql_test.get_related_index().size(), 1);
         BOOST_CHECK_EQUAL(mysql_test.get_related_index().at(0), 777777LL);
