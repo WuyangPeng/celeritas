@@ -29,3 +29,8 @@ celeritas::redis_commands::array_type celeritas::test_redis_commands::test_get_e
 {
     return get_expire_seconds_command(expire_seconds);
 }
+
+celeritas::redis_database_session& celeritas::test_redis_commands::test_get_redis_database_session()
+{
+    return get_redis_database_session();
+}

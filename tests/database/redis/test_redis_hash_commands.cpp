@@ -10,6 +10,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_hash_commands_suite, celeritas::redis_database_se
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const auto& hash_commands = session->get_redis_hash_commands();
             const std::string key{ "test_hash_set_get" };
             const std::string field{ "field1" };
@@ -25,6 +26,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_hash_commands_suite, celeritas::redis_database_se
             BOOST_CHECK_EQUAL(*retrieved_value, value);
 
             co_await session->get_redis_key_commands().async_delete(key);
+
             set_test_end(true);
         });
     }
@@ -36,9 +38,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_hash_commands_suite, celeritas::redis_database_se
             co_await session->async_connect();
             const auto& hash_commands = session->get_redis_hash_commands();
             const std::string key{ "test_hash_set_many" };
-            const celeritas::redis_commands::key_value_container field_values{
-                { "f1", "v1" }, { "f2", "v2" }
-            };
+            const celeritas::redis_commands::key_value_container field_values{ { "f1", "v1" }, { "f2", "v2" } };
 
             co_await session->get_redis_key_commands().async_delete(key);
 

@@ -22,9 +22,6 @@ namespace celeritas
 
         [[nodiscard]] array_type test_get_expire_seconds_command(int expire_seconds) const;
 
-        [[nodiscard]] redis_database_session& test_get_redis_database_session()
-        {
-            return get_redis_database_session();
-        }
+        [[nodiscard]] redis_database_session& test_get_redis_database_session();
     };
 }  
