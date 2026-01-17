@@ -14,13 +14,29 @@
 #include <bsoncxx/json.hpp>
 #include <bsoncxx/builder/basic/document.hpp>
 
-#include <map>
 #include <memory>
 #include <vector>
 
 namespace
 {
     constexpr auto user_id = 123456789;
+
+    [[nodiscard]] boost::asio::awaitable<void> test_document(const celeritas::mongo_database_session_fixture& fixture)
+    {
+        const auto session = fixture.get_session();
+        bsoncxx::builder::basic::document filter_builder{};
+        filter_builder.append(bsoncxx::builder::basic::kvp("_id", static_cast<int64_t>(user_id)));
+
+        auto cursor = co_await session->async_find("mongo_test", filter_builder.view());
+
+        auto count = 0;
+        for (const auto& doc : cursor)
+        {
+            BOOST_CHECK(doc["_id"].get_int64() == user_id);
+            ++count;
+        }
+        BOOST_CHECK_EQUAL(count, 1);
+    }
 
     [[nodiscard]] boost::asio::awaitable<void> test_insert(const celeritas::mongo_database_session_fixture& fixture, celeritas::mongo_test& entity)
     {
@@ -204,15 +220,8 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
     BOOST_AUTO_TEST_CASE(test_connect)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
-            {
-                co_await get_session()->async_connect();
-                BOOST_CHECK(co_await get_session()->is_health());
-            }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR("Connection failed: " << error.what());
-            }
+            co_await get_session()->async_connect();
+            BOOST_CHECK(co_await get_session()->is_health());
 
             set_test_end(true);
         });
@@ -221,15 +230,8 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
     BOOST_AUTO_TEST_CASE(test_is_health)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
-            {
-                co_await get_session()->async_connect();
-                BOOST_CHECK(co_await get_session()->is_health());
-            }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR("is_health failed: " << error.what());
-            }
+            co_await get_session()->async_connect();
+            BOOST_CHECK(co_await get_session()->is_health());
 
             set_test_end(true);
         });
@@ -238,215 +240,155 @@ BOOST_FIXTURE_TEST_SUITE(mongo_database_session_suite, celeritas::mongo_database
     BOOST_AUTO_TEST_CASE(test_insert_and_select_one)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
+            const auto session = get_session();
+            co_await session->async_connect();
+            if (!co_await session->is_health())
             {
-                const auto session = get_session();
-                co_await session->async_connect();
-                if (!co_await session->is_health())
-                {
-                    BOOST_ERROR("MongoDB not reachable, skipping test.");
-                    co_return;
-                }
-
-                auto entity = get_mongo_test();
-                co_await test_delete(*this, entity);
-                co_await test_insert(*this, entity);
-                co_await test_select_one(*this, "Test Chapter", 1000);
-                co_await test_delete(*this, entity);
-
-                set_test_end(true);
+                BOOST_ERROR("MongoDB not reachable, skipping test.");
+                co_return;
             }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
-            }
+
+            auto entity = get_mongo_test();
+            co_await test_delete(*this, entity);
+            co_await test_insert(*this, entity);
+            co_await test_select_one(*this, "Test Chapter", 1000);
+            co_await test_delete(*this, entity);
+
+            set_test_end(true);
         });
     }
 
     BOOST_AUTO_TEST_CASE(test_update_and_select_one)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
+            const auto session = get_session();
+            co_await session->async_connect();
+            if (!co_await session->is_health())
             {
-                const auto session = get_session();
-                co_await session->async_connect();
-                if (!co_await session->is_health())
-                {
-                    BOOST_ERROR("MongoDB not reachable, skipping test.");
-                    co_return;
-                }
-
-                auto entity = get_mongo_test();
-                co_await test_delete(*this, entity);
-                co_await test_insert(*this, entity);
-                co_await test_update(*this, entity);
-                co_await test_select_one(*this, "Updated Chapter", 1500);
-                co_await test_delete(*this, entity);
-
-                set_test_end(true);
+                BOOST_ERROR("MongoDB not reachable, skipping test.");
+                co_return;
             }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
-            }
+
+            auto entity = get_mongo_test();
+            co_await test_delete(*this, entity);
+            co_await test_insert(*this, entity);
+            co_await test_update(*this, entity);
+            co_await test_select_one(*this, "Updated Chapter", 1500);
+            co_await test_delete(*this, entity);
+
+            set_test_end(true);
         });
     }
 
     BOOST_AUTO_TEST_CASE(test_delete_and_verify)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
+            const auto session = get_session();
+            co_await session->async_connect();
+            if (!co_await session->is_health())
             {
-                const auto session = get_session();
-                co_await session->async_connect();
-                if (!co_await session->is_health())
-                {
-                    BOOST_ERROR("MongoDB not reachable, skipping test.");
-                    co_return;
-                }
-
-                auto entity = get_mongo_test();
-                co_await test_insert(*this, entity);
-                co_await test_delete(*this, entity);
-                co_await test_verify_delete(*this);
-
-                set_test_end(true);
+                BOOST_ERROR("MongoDB not reachable, skipping test.");
+                co_return;
             }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
-            }
+
+            auto entity = get_mongo_test();
+            co_await test_insert(*this, entity);
+            co_await test_delete(*this, entity);
+            co_await test_verify_delete(*this);
+
+            set_test_end(true);
         });
     }
 
     BOOST_AUTO_TEST_CASE(test_select_all_functionality)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
+            const auto session = get_session();
+            co_await session->async_connect();
+            if (!co_await session->is_health())
             {
-                const auto session = get_session();
-                co_await session->async_connect();
-                if (!co_await session->is_health())
-                {
-                    BOOST_ERROR("MongoDB not reachable, skipping test.");
-                    co_return;
-                }
-
-                auto entity = get_mongo_test();
-                co_await test_delete(*this, entity);
-                co_await test_insert(*this, entity);
-                co_await test_select_all(*this);
-                co_await test_delete(*this, entity);
-
-                set_test_end(true);
+                BOOST_ERROR("MongoDB not reachable, skipping test.");
+                co_return;
             }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
-            }
+
+            auto entity = get_mongo_test();
+            co_await test_delete(*this, entity);
+            co_await test_insert(*this, entity);
+            co_await test_select_all(*this);
+            co_await test_delete(*this, entity);
+
+            set_test_end(true);
         });
     }
 
     BOOST_AUTO_TEST_CASE(test_async_find)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
+            const auto session = get_session();
+            co_await session->async_connect();
+            if (!co_await session->is_health())
             {
-                const auto session = get_session();
-                co_await session->async_connect();
-                if (!co_await session->is_health())
-                {
-                    BOOST_ERROR("MongoDB not reachable, skipping async_find test.");
-                    co_return;
-                }
-
-                auto entity = get_mongo_test();
-                co_await test_insert(*this, entity);
-
-                bsoncxx::builder::basic::document filter_builder{};
-                filter_builder.append(bsoncxx::builder::basic::kvp("_id", static_cast<int64_t>(user_id)));
-
-                auto cursor = co_await session->async_find("mongo_test", filter_builder.view());
-
-                auto count = 0;
-                for (const auto& doc : cursor)
-                {
-                    BOOST_CHECK(doc["_id"].get_int64() == user_id);
-                    count++;
-                }
-                BOOST_CHECK_EQUAL(count, 1);
-
-                co_await test_delete(*this, entity);
-                set_test_end(true);
+                BOOST_ERROR("MongoDB not reachable, skipping async_find test.");
+                co_return;
             }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR(std::string{"Exception in async_find test: "} + error.what());
-            }
+
+            auto entity = get_mongo_test();
+
+            co_await test_insert(*this, entity);
+            co_await test_document(*this);
+            co_await test_delete(*this, entity);
+
+            set_test_end(true);
         });
     }
 
     BOOST_AUTO_TEST_CASE(test_execute_changes_with_empty_change)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
+            const auto session = get_session();
+            co_await session->async_connect();
+            if (!co_await session->is_health())
             {
-                const auto session = get_session();
-                co_await session->async_connect();
-                if (!co_await session->is_health())
-                {
-                    BOOST_ERROR("MongoDB not reachable, skipping test.");
-                    co_return;
-                }
-
-                auto entity = get_mongo_test();
-                entity.clear_modify();
-                co_await session->execute_changes(entity.get_modify(), 10);
-
-                BOOST_CHECK(true);
-
-                set_test_end(true);
+                BOOST_ERROR("MongoDB not reachable, skipping test.");
+                co_return;
             }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
-            }
+
+            auto entity = get_mongo_test();
+            entity.clear_modify();
+            co_await session->execute_changes(entity.get_modify(), 10);
+
+            BOOST_CHECK(true);
+
+            set_test_end(true);
         });
     }
 
     BOOST_AUTO_TEST_CASE(test_data_conversion_round_trip)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
+            const auto session = get_session();
+            co_await session->async_connect();
+            if (!co_await session->is_health())
             {
-                const auto session = get_session();
-                co_await session->async_connect();
-                if (!co_await session->is_health())
-                {
-                    BOOST_ERROR("MongoDB not reachable, skipping test.");
-                    co_return;
-                }
-
-                auto entity = get_full_mongo_test();
-
-                co_await test_delete(*this, entity);
-                co_await test_insert(*this, entity);
-
-                const auto select_change = celeritas::mongo_test::get_select(celeritas::database_type::mongo, user_id);
-                const auto optional_result = co_await session->select_one(select_change, celeritas::mongo_test::get_database_field_container());
-
-                BOOST_REQUIRE(optional_result.has_value());
-                const celeritas::mongo_test loaded{ celeritas::database_type::mongo, *optional_result };
-
-                check_mongo_test(loaded, entity);
-
-                co_await test_delete(*this, entity);
-                set_test_end(true);
+                BOOST_ERROR("MongoDB not reachable, skipping test.");
+                co_return;
             }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
-            }
+
+            auto entity = get_full_mongo_test();
+
+            co_await test_delete(*this, entity);
+            co_await test_insert(*this, entity);
+
+            const auto select_change = celeritas::mongo_test::get_select(celeritas::database_type::mongo, user_id);
+            const auto optional_result = co_await session->select_one(select_change, celeritas::mongo_test::get_database_field_container());
+
+            BOOST_REQUIRE(optional_result.has_value());
+            const celeritas::mongo_test loaded{ celeritas::database_type::mongo, *optional_result };
+
+            check_mongo_test(loaded, entity);
+
+            co_await test_delete(*this, entity);
+            set_test_end(true);
         });
     }
 

@@ -197,15 +197,8 @@ BOOST_FIXTURE_TEST_SUITE(mysql_database_session_suite, celeritas::mysql_database
     BOOST_AUTO_TEST_CASE(test_connect)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
-            {
-                co_await get_session()->async_connect();
-                BOOST_CHECK(co_await get_session()->is_health());
-            }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR("Connection failed: " << error.what());
-            }
+            co_await get_session()->async_connect();
+            BOOST_CHECK(co_await get_session()->is_health());
 
             set_test_end(true);
         });
@@ -214,15 +207,8 @@ BOOST_FIXTURE_TEST_SUITE(mysql_database_session_suite, celeritas::mysql_database
     BOOST_AUTO_TEST_CASE(test_is_health)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
-            {
-                co_await get_session()->async_connect();
-                BOOST_CHECK(co_await get_session()->is_health());
-            }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR("is_health failed: " << error.what());
-            }
+            co_await get_session()->async_connect();
+            BOOST_CHECK(co_await get_session()->is_health());
 
             set_test_end(true);
         });
@@ -231,207 +217,158 @@ BOOST_FIXTURE_TEST_SUITE(mysql_database_session_suite, celeritas::mysql_database
     BOOST_AUTO_TEST_CASE(test_insert_and_select_one)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
+            const auto session = get_session();
+            co_await session->async_connect();
+            if (!co_await session->is_health())
             {
-                const auto session = get_session();
-                co_await session->async_connect();
-                if (!co_await session->is_health())
-                {
-                    BOOST_ERROR("MySQL not reachable, skipping test.");
-                    co_return;
-                }
-
-                auto entity = get_mysql_test();
-                co_await test_delete(*this, entity);
-                co_await test_insert(*this, entity);
-                co_await test_select_one(*this, "Test Chapter", 1000);
-                co_await test_delete(*this, entity);
-
-                set_test_end(true);
+                BOOST_ERROR("MySQL not reachable, skipping test.");
+                co_return;
             }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
-            }
+
+            auto entity = get_mysql_test();
+            co_await test_delete(*this, entity);
+            co_await test_insert(*this, entity);
+            co_await test_select_one(*this, "Test Chapter", 1000);
+            co_await test_delete(*this, entity);
+
+            set_test_end(true);
         });
     }
 
     BOOST_AUTO_TEST_CASE(test_update_and_select_one)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
+            const auto session = get_session();
+            co_await session->async_connect();
+            if (!co_await session->is_health())
             {
-                const auto session = get_session();
-                co_await session->async_connect();
-                if (!co_await session->is_health())
-                {
-                    BOOST_ERROR("MySQL not reachable, skipping test.");
-                    co_return;
-                }
-
-                auto entity = get_mysql_test();
-                co_await test_delete(*this, entity);
-                co_await test_insert(*this, entity);
-                co_await test_update(*this, entity);
-                co_await test_select_one(*this, "Updated Chapter", 1500);
-                co_await test_delete(*this, entity);
-
-                set_test_end(true);
+                BOOST_ERROR("MySQL not reachable, skipping test.");
+                co_return;
             }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
-            }
+
+            auto entity = get_mysql_test();
+            co_await test_delete(*this, entity);
+            co_await test_insert(*this, entity);
+            co_await test_update(*this, entity);
+            co_await test_select_one(*this, "Updated Chapter", 1500);
+            co_await test_delete(*this, entity);
+
+            set_test_end(true);
         });
     }
 
     BOOST_AUTO_TEST_CASE(test_delete_and_verify)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
+            const auto session = get_session();
+            co_await session->async_connect();
+            if (!co_await session->is_health())
             {
-                const auto session = get_session();
-                co_await session->async_connect();
-                if (!co_await session->is_health())
-                {
-                    BOOST_ERROR("MySQL not reachable, skipping test.");
-                    co_return;
-                }
-
-                auto entity = get_mysql_test();
-                co_await test_insert(*this, entity);
-                co_await test_delete(*this, entity);
-                co_await test_verify_delete(*this);
-
-                set_test_end(true);
+                BOOST_ERROR("MySQL not reachable, skipping test.");
+                co_return;
             }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
-            }
+
+            auto entity = get_mysql_test();
+            co_await test_insert(*this, entity);
+            co_await test_delete(*this, entity);
+            co_await test_verify_delete(*this);
+
+            set_test_end(true);
         });
     }
 
     BOOST_AUTO_TEST_CASE(test_select_all_functionality)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
+            const auto session = get_session();
+            co_await session->async_connect();
+            if (!co_await session->is_health())
             {
-                const auto session = get_session();
-                co_await session->async_connect();
-                if (!co_await session->is_health())
-                {
-                    BOOST_ERROR("MySQL not reachable, skipping test.");
-                    co_return;
-                }
-
-                auto entity = get_mysql_test();
-                co_await test_delete(*this, entity);
-                co_await test_insert(*this, entity);
-                co_await test_select_all(*this);
-                co_await test_delete(*this, entity);
-
-                set_test_end(true);
+                BOOST_ERROR("MySQL not reachable, skipping test.");
+                co_return;
             }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
-            }
+
+            auto entity = get_mysql_test();
+            co_await test_delete(*this, entity);
+            co_await test_insert(*this, entity);
+            co_await test_select_all(*this);
+            co_await test_delete(*this, entity);
+
+            set_test_end(true);
         });
     }
 
     BOOST_AUTO_TEST_CASE(test_async_query)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
+            const auto session = get_session();
+            co_await session->async_connect();
+            if (!co_await session->is_health())
             {
-                const auto session = get_session();
-                co_await session->async_connect();
-                if (!co_await session->is_health())
-                {
-                    BOOST_ERROR("MySQL not reachable, skipping async_query test.");
-                    co_return;
-                }
-
-                auto entity = get_mysql_test();
-                co_await test_insert(*this, entity);
-
-                const auto sql = "SELECT * FROM mysql_test WHERE user_id = " + std::to_string(user_id);
-                const auto results = co_await session->async_query(sql);
-
-                BOOST_CHECK(results.has_value());
-                BOOST_CHECK_EQUAL(results.rows().size(), 1);
-
-                co_await test_delete(*this, entity);
-                set_test_end(true);
+                BOOST_ERROR("MySQL not reachable, skipping async_query test.");
+                co_return;
             }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR(std::string{"Exception in async_query test: "} + error.what());
-            }
+
+            auto entity = get_mysql_test();
+            co_await test_insert(*this, entity);
+
+            const auto sql = "SELECT * FROM mysql_test WHERE user_id = " + std::to_string(user_id);
+            const auto results = co_await session->async_query(sql);
+
+            BOOST_CHECK(results.has_value());
+            BOOST_CHECK_EQUAL(results.rows().size(), 1);
+
+            co_await test_delete(*this, entity);
+            set_test_end(true);
         });
     }
 
     BOOST_AUTO_TEST_CASE(test_execute_changes_with_empty_change)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
+            const auto session = get_session();
+            co_await session->async_connect();
+            if (!co_await session->is_health())
             {
-                const auto session = get_session();
-                co_await session->async_connect();
-                if (!co_await session->is_health())
-                {
-                    BOOST_ERROR("MySQL not reachable, skipping test.");
-                    co_return;
-                }
-
-                auto entity = get_mysql_test();
-                entity.clear_modify();
-                co_await session->execute_changes(entity.get_modify(), 10);
-
-                BOOST_CHECK(true);
-
-                set_test_end(true);
+                BOOST_ERROR("MySQL not reachable, skipping test.");
+                co_return;
             }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
-            }
+
+            auto entity = get_mysql_test();
+            entity.clear_modify();
+            co_await session->execute_changes(entity.get_modify(), 10);
+
+            BOOST_CHECK(true);
+
+            set_test_end(true);
         });
     }
 
     BOOST_AUTO_TEST_CASE(test_data_conversion_round_trip)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            try
+            const auto session = get_session();
+            co_await session->async_connect();
+            if (!co_await session->is_health())
             {
-                const auto session = get_session();
-                co_await session->async_connect();
-                if (!co_await session->is_health())
-                {
-                    BOOST_ERROR("MySQL not reachable, skipping test.");
-                    co_return;
-                }
-                auto entity = get_full_mysql_test();
-
-                co_await test_delete(*this, entity);
-                co_await test_insert(*this, entity);
-
-                const auto select_change = celeritas::mysql_test::get_select(celeritas::database_type::mysql, user_id);
-                const auto optional_result = co_await session->select_one(select_change, celeritas::mysql_test::get_database_field_container());
-
-                BOOST_REQUIRE(optional_result.has_value());
-                const celeritas::mysql_test loaded{ celeritas::database_type::mysql, *optional_result };
-
-                check_mysql_test(loaded, entity);
-
-                co_await test_delete(*this, entity);
-                set_test_end(true);
+                BOOST_ERROR("MySQL not health, skipping test.");
+                co_return;
             }
-            catch (const std::exception& error)
-            {
-                BOOST_ERROR(std::string{"Exception in test: "} + error.what());
-            }
+            auto entity = get_full_mysql_test();
+
+            co_await test_delete(*this, entity);
+            co_await test_insert(*this, entity);
+
+            const auto select_change = celeritas::mysql_test::get_select(celeritas::database_type::mysql, user_id);
+            const auto optional_result = co_await session->select_one(select_change, celeritas::mysql_test::get_database_field_container());
+
+            BOOST_REQUIRE(optional_result.has_value());
+            const celeritas::mysql_test loaded{ celeritas::database_type::mysql, *optional_result };
+
+            check_mysql_test(loaded, entity);
+
+            co_await test_delete(*this, entity);
+            set_test_end(true);
         });
     }
 
