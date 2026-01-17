@@ -6,7 +6,7 @@
 #include "common/logging/logger.h"
 #include "database/pool/database_pool_manager.h"
 #include "message/basic/header.h"
-#include "network/message_header.h"
+#include "network/core/message_header.h"
 #include "player/component/player_manager.h"
 #include "proto/celeritas.pb.h"
 #include "proto/common/common.pb.h"

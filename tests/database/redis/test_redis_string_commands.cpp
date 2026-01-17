@@ -1,5 +1,6 @@
 ﻿#include "database/redis/redis_string_commands.h"
 #include "database/session/redis_database_session.h"
+#include "database/session/fixture/database_session_fixture.tpp"
 #include "database/session/fixture/redis_database_session_fixture.h"
 
 #include <boost/asio.hpp>

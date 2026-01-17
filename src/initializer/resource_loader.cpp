@@ -14,7 +14,7 @@
 #include "detail/server_resource_loader.h"
 #include "detail/service_registry_loader.h"
 #include "detail/service_registry_timer.h"
-#include "network/tcp_client.h"
+#include "network/client/tcp_client.h"
 #include "player_server/player_server.h"
 #include "proto/celeritas.pb.h"
 #include "service_registry/data/health_check_level_type.h"

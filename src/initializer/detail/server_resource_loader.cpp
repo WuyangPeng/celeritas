@@ -1,9 +1,9 @@
 ﻿#include "server_resource_loader.h"
 #include "common/core/celeritas_error.h"
 #include "config/basic/server_network_type.h"
-#include "network/http_listener.h"
-#include "network/tcp_listener.h"
-#include "network/websocket_listener.h"
+#include "network/listener/http_listener.h"
+#include "network/listener/tcp_listener.h"
+#include "network/listener/websocket_listener.h"
 
 celeritas::server_resource_loader::listener_shared_ptr celeritas::server_resource_loader::loader_server(const any_io_executor& any_io_executor, const server_config& server_config, const server_network_config& server_network_config, const network_message_callback_weak_ptr& network_message_callback)
 {

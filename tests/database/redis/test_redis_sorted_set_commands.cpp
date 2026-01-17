@@ -1,6 +1,7 @@
 ﻿#include "database/redis/redis_sorted_set_commands.h"
 #include "database/redis/sorted_set_member_score.h"
 #include "database/session/redis_database_session.h"
+#include "database/session/fixture/database_session_fixture.tpp"
 #include "database/session/fixture/redis_database_session_fixture.h"
 
 #include <boost/test/unit_test.hpp>

@@ -8,7 +8,7 @@
 #include "config/local/health_check_url_config.h"
 #include "detail/auth_server_fwd.h"
 #include "initializer/initializer_constant.h"
-#include "network/http_client.h"
+#include "network/client/http_client.h"
 #include "service_registry/core/service_registry.h"
 #include "service_registry/data/service_info.h"
 

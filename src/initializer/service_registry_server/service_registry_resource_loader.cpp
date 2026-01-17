@@ -1,7 +1,7 @@
 ﻿#include "service_registry_resource_loader.h"
 #include "config/local/health_check_url_config.h"
-#include "network/http_client.h"
-#include "network/tcp_client.h"
+#include "network/client/http_client.h"
+#include "network/client/tcp_client.h"
 #include "service_registry/core/service_registry.h"
 #include "service_registry/data/service_info.h"
 

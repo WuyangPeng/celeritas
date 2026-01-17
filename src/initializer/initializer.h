@@ -2,11 +2,12 @@
 
 #include "daemon.h"
 #include "initializer_factory.h"
-#include "network/network_message_callback.h"
+#include "network/core/network_message_callback.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/signal_set.hpp>
+
 #include <memory>
 #include <string>
 

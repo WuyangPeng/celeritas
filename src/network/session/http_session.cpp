@@ -1,0 +1,111 @@
+﻿#include "http_session.h"
+#include "common/logging/logger.h"
+#include "common/core/noexcept_safe_call_and_log.h"
+#include "network/session_helper/detail/http_request_session_run.h"
+#include "network/session_helper/detail/http_request_session_write.h"
+#include "network/session_helper/detail/http_response_session_run.h"
+#include "network/session_helper/detail/http_response_session_write.h"
+#include "network/session_helper/detail/http_session_run.h"
+#include "network/session_helper/detail/http_session_write.h"
+
+celeritas::http_session::http_session(socket_type socket,
+                                      const server_network_type server_network_type,
+                                      const int64_t session_id,
+                                      std::string game_server_id,
+                                      session_callback session_callback,
+                                      const bool is_server,
+                                      std::string host,
+                                      const std::string& path)
+    : base_type{ server_network_type, session_id, std::move(session_callback) },
+      socket_{ std::move(socket) },
+      http_run_{ get_session_run(socket_, is_server, session_id, get_session_callback(), path) },
+      http_write_{ get_session_write(socket_, is_server, std::move(host), path) },
+      game_server_id_{ std::move(game_server_id) },
+      is_stop_{ false }
+{
+}
+
+celeritas::http_session::~http_session() noexcept
+{
+    noexcept_safe_call_and_log([this] {
+                                   this->stop();
+                               },
+                               network_channel,
+                               "closed http session error: ");
+}
+
+void celeritas::http_session::start()
+{
+    http_run_->start(shared_from_this());
+}
+
+celeritas::session_base::void_awaitable_type celeritas::http_session::start_awaitable()
+{
+    co_await http_run_->start_awaitable(shared_from_this());
+}
+
+bool celeritas::http_session::is_open() const
+{
+    return socket_.is_open();
+}
+
+void celeritas::http_session::stop()
+{
+    if (is_open() && !is_stop_)
+    {
+        is_stop_ = true;
+
+        boost::system::error_code error_code{};
+        socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_send, error_code);
+
+        if (error_code)
+        {
+            LOG_CHANNEL(network_channel, info) << "http socket session [" << get_session_id() << "] terminated error, code = " << error_code.message();
+        }
+        else
+        {
+            LOG_CHANNEL(network_channel, info) << "http socket session [" << get_session_id() << "] terminated success.";
+        }
+    }
+}
+
+bool celeritas::http_session::is_full() const
+{
+    return http_write_->is_full();
+}
+
+celeritas::session::any_io_executor celeritas::http_session::get_any_io_executor()
+{
+    return socket_.get_executor();
+}
+
+void celeritas::http_session::do_write(buffer_guard data)
+{
+    http_write_->write(std::move(data));
+}
+
+celeritas::http_session::session_write_shared_ptr celeritas::http_session::get_session_write(socket_type& socket, const bool is_server, std::string host, const std::string& path)
+{
+    if (is_server)
+    {
+        return std::make_shared<http_response_session_write>(socket);
+    }
+
+    return std::make_shared<http_request_session_write>(socket, std::move(host), path);
+}
+
+celeritas::http_session::session_run_shared_ptr celeritas::http_session::get_session_run(socket_type& socket, const bool is_server, int64_t session_id, const session_callback& session_callback, const std::string& path)
+{
+    if (is_server)
+    {
+        return std::make_shared<http_request_session_run>(socket, session_id, session_callback);
+    }
+
+    return std::make_shared<http_response_session_run>(socket, session_id, session_callback, path);
+}
+
+celeritas::session_base::void_awaitable_type celeritas::http_session::do_write_immediately(buffer_guard data)
+{
+    co_await http_write_->write_immediately(std::move(data), shared_from_this());
+}
+

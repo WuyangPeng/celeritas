@@ -5,8 +5,8 @@
 #include "config/aggregate/app_config.h"
 #include "detail/initializer_internal_fwd.h"
 #include "message/message_fwd.h"
-#include "network/listener.h"
-#include "network/network_message_callback.h"
+#include "network/core/listener.h"
+#include "network/core/network_message_callback.h"
 #include "proto/celeritas.pb.h"
 
 #include <shared_mutex>

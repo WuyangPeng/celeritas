@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "config/aggregate/server_config.h"
-#include "network/listener.h"
+#include "network/core/listener.h"
 
 #include <boost/asio/io_context.hpp>
 
