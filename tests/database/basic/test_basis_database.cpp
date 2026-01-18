@@ -254,6 +254,35 @@ BOOST_AUTO_TEST_SUITE(basis_database_suite)
         BOOST_CHECK_EQUAL(db_int.get_quotation_mark_string(), "30");
     }
 
+    BOOST_AUTO_TEST_CASE(test_string_with_quotation_mark)
+    {
+        const std::string field_name{ "field_with_quotes" };
+        const std::string value{ "value with \"quotes\"" };
+        const celeritas::basis_database db{ field_name, value };
+
+        BOOST_CHECK_EQUAL(db.get_quotation_mark_string(), "\"value with \\\"quotes\\\"\"");
+        BOOST_CHECK_EQUAL(db.get_sql_value_string(), "'value with \"quotes\"'");
+    }
+
+    BOOST_AUTO_TEST_CASE(test_document_with_quotation_mark)
+    {
+        const std::string field_name{ "field_with_quotes" };
+        const std::string value{ "value with \"quotes\"" };
+
+        const celeritas::basis_database::document_type doc_with_quotes{ { field_name, value } };
+        const celeritas::basis_database db_doc{ "doc", doc_with_quotes };
+        BOOST_CHECK_EQUAL(db_doc.get_string(), "{\"field_with_quotes\":\"value with \\\"quotes\\\"\"}");
+    }
+
+    BOOST_AUTO_TEST_CASE(test_single_quote_handling)
+    {
+        const std::string field_name{ "field_with_single_quotes" };
+        const std::string value{ "value with 'single quotes'" };
+        const celeritas::basis_database db{ field_name, value };
+
+        BOOST_CHECK_EQUAL(db.get_sql_value_string(), "'value with ''single quotes'''");
+    }
+
     BOOST_AUTO_TEST_CASE(test_basis_database_operators)
     {
         const celeritas::basis_database db1{ "name", "test" };

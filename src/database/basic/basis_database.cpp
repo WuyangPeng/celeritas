@@ -1,5 +1,6 @@
 ﻿#include "basis_database.tpp"
 
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 
 #include <sstream>
@@ -138,7 +139,9 @@ std::string celeritas::basis_database::get_quotation_mark_string() const
 {
     if (data_type_ == database_data_type::string_type)
     {
-        return "\"" + get_value<database_data_type::string_type>() + "\"";
+        auto value = get_value<database_data_type::string_type>();
+        boost::replace_all(value, "\"", "\\\"");
+        return "\"" + value + "\"";
     }
 
     return get_string();
@@ -154,7 +157,9 @@ std::string celeritas::basis_database::get_sql_value_string() const
         data_type_ == database_data_type::document_type ||
         data_type_ == database_data_type::document_array_type)
     {
-        return "'" + get_string() + "'";
+        auto value = get_string();
+        boost::replace_all(value, "'", "''");
+        return "'" + value + "'";
     }
 
     return get_string();

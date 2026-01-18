@@ -2,6 +2,7 @@
 
 #include "basis_database.h"
 
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 
 #include <sstream>
@@ -66,7 +67,9 @@ void celeritas::basis_database::append_value(std::ostringstream& os, typename da
 {
     if constexpr (Type == database_data_type::string_array_type)
     {
-        os << "\"" + value + "\"";
+        auto replace_result = value;
+        boost::replace_all(replace_result, "\"", "\\\"");
+        os << "\"" + replace_result + "\"";
     }
     else
     {
