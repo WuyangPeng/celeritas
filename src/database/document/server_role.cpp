@@ -74,15 +74,15 @@ celeritas::server_role celeritas::server_role::from_document(const document_type
         {
             role.set_game_server_id(element.get_value<database_data_type::string_type>());
         }
-        if (element.get_field_name() == role_surname_description)
+        else if (element.get_field_name() == role_surname_description)
         {
             role.set_role_surname(element.get_value<database_data_type::string_type>());
         }
-        if (element.get_field_name() == role_name_description)
+        else if (element.get_field_name() == role_name_description)
         {
             role.set_role_name(element.get_value<database_data_type::string_type>());
         }
-        if (element.get_field_name() == last_login_time_description)
+        else if (element.get_field_name() == last_login_time_description)
         {
             role.set_last_login_time(element.get_value<database_data_type::int64_type>());
         }

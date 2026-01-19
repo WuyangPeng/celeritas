@@ -4,7 +4,7 @@
 #include "database/entity/entity.h"
 
 template <const std::string_view& FieldName, celeritas::database_data_type Type, celeritas::database_index_type Index>
-celeritas::entity<FieldName, Type, Index>::entity(typename boost::call_traits<entity_type>::param_type entity) noexcept(std::is_arithmetic_v<entity_type>)
+celeritas::entity<FieldName, Type, Index>::entity(typename boost::call_traits<entity_type>::param_type entity) noexcept(std::is_nothrow_copy_constructible_v<entity_type>)
     : entity_{ entity }
 {
 }
@@ -16,19 +16,19 @@ celeritas::database_field celeritas::entity<FieldName, Type, Index>::get_databas
 }
 
 template <const std::string_view& FieldName, celeritas::database_data_type Type, celeritas::database_index_type Index>
-celeritas::entity<FieldName, Type, Index>::entity_type celeritas::entity<FieldName, Type, Index>::get_value() const noexcept(std::is_arithmetic_v<entity_type>)
+celeritas::entity<FieldName, Type, Index>::entity_type celeritas::entity<FieldName, Type, Index>::get_value() const noexcept(std::is_nothrow_copy_constructible_v<entity_type>)
 {
     return entity_;
 }
 
 template <const std::string_view& FieldName, celeritas::database_data_type Type, celeritas::database_index_type Index>
-void celeritas::entity<FieldName, Type, Index>::set_value(typename boost::call_traits<entity_type>::param_type entity) noexcept(std::is_arithmetic_v<entity_type>)
+void celeritas::entity<FieldName, Type, Index>::set_value(typename boost::call_traits<entity_type>::param_type entity) noexcept(std::is_nothrow_copy_assignable_v<entity_type>)
 {
     entity_ = entity;
 }
 
 template <const std::string_view& FieldName, celeritas::database_data_type Type, celeritas::database_index_type Index>
-void celeritas::entity<FieldName, Type, Index>::modify_value(typename boost::call_traits<entity_type>::param_type entity) noexcept(std::is_arithmetic_v<entity_type>)
+void celeritas::entity<FieldName, Type, Index>::modify_value(typename boost::call_traits<entity_type>::param_type entity) noexcept(noexcept(std::declval<entity_type&>() += std::declval<typename boost::call_traits<entity_type>::param_type>()))
 {
     entity_ += entity;
 }

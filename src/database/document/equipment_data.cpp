@@ -51,7 +51,7 @@ celeritas::equipment_data celeritas::equipment_data::from_document(const documen
         {
             equipment_data.set_strength(element.get_value<database_data_type::int32_type>());
         }
-        if (element.get_field_name() == durability_description)
+        else if (element.get_field_name() == durability_description)
         {
             equipment_data.set_durability(element.get_value<database_data_type::int32_type>());
         }

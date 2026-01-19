@@ -75,15 +75,15 @@ celeritas::red_dots celeritas::red_dots::from_document(const document_type& docu
         {
             red_dots.set_node_id(underlying_cast_enum<red_dot_type>(element.get_value<database_data_type::int32_type>()));
         }
-        if (element.get_field_name() == state_description)
+        else if (element.get_field_name() == state_description)
         {
             red_dots.set_state(element.get_value<database_data_type::bool_type>());
         }
-        if (element.get_field_name() == last_value_description)
+        else if (element.get_field_name() == last_value_description)
         {
             red_dots.set_last_value(element.get_value<database_data_type::int64_type>());
         }
-        if (element.get_field_name() == update_time_description)
+        else if (element.get_field_name() == update_time_description)
         {
             red_dots.set_update_time(element.get_value<database_data_type::int64_type>());
         }

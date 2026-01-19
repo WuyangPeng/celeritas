@@ -164,15 +164,15 @@ celeritas::player_time_refresh celeritas::player_time_refresh::from_document(con
         {
             player_time_refresh.set_time_refresh_type(underlying_cast_enum<time_refresh_type>(element.get_value<database_data_type::int32_type>()));
         }
-        if (element.get_field_name() == parameter_description)
+        else if (element.get_field_name() == parameter_description)
         {
             player_time_refresh.set_parameter(element.get_value<database_data_type::int64_type>());
         }
-        if (element.get_field_name() == time_id_description)
+        else if (element.get_field_name() == time_id_description)
         {
             player_time_refresh.set_time_id(element.get_value<database_data_type::int64_type>());
         }
-        if (element.get_field_name() == component_description)
+        else if (element.get_field_name() == component_description)
         {
             const auto& result = element.get_value<database_data_type::int32_array_type>();
             component_container container{};
@@ -182,7 +182,7 @@ celeritas::player_time_refresh celeritas::player_time_refresh::from_document(con
             }
             player_time_refresh.set_component(container);
         }
-        if (element.get_field_name() == last_refresh_time_description)
+        else if (element.get_field_name() == last_refresh_time_description)
         {
             player_time_refresh.set_last_refresh_time(element.get_value<database_data_type::int64_type>());
         }

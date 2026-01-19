@@ -93,19 +93,19 @@ celeritas::develop_data celeritas::develop_data::from_document(const document_ty
         {
             develop_data.set_system_id(element.get_value<database_data_type::int32_type>());
         }
-        if (element.get_field_name() == instance_id_description)
+        else if (element.get_field_name() == instance_id_description)
         {
             develop_data.set_instance_id(element.get_value<database_data_type::int64_type>());
         }
-        if (element.get_field_name() == level_description)
+        else if (element.get_field_name() == level_description)
         {
             develop_data.set_level(element.get_value<database_data_type::int32_type>());
         }
-        if (element.get_field_name() == exp_description)
+        else if (element.get_field_name() == exp_description)
         {
             develop_data.set_exp(element.get_value<database_data_type::int64_type>());
         }
-        if (element.get_field_name() == updated_time_description)
+        else if (element.get_field_name() == updated_time_description)
         {
             develop_data.set_updated_time(element.get_value<database_data_type::int64_type>());
         }

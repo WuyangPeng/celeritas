@@ -89,19 +89,19 @@ celeritas::inventory_data celeritas::inventory_data::from_document(const documen
         {
             inventory_data.set_item_id(element.get_value<database_data_type::int64_type>());
         }
-        if (element.get_field_name() == template_id_description)
+        else if (element.get_field_name() == template_id_description)
         {
             inventory_data.set_template_id(element.get_value<database_data_type::int32_type>());
         }
-        if (element.get_field_name() == count_description)
+        else if (element.get_field_name() == count_description)
         {
             inventory_data.set_count(element.get_value<database_data_type::int64_type>());
         }
-        if (element.get_field_name() == position_description)
+        else if (element.get_field_name() == position_description)
         {
             inventory_data.set_position(element.get_value<database_data_type::int32_type>());
         }
-        if (element.get_field_name() == custom_data_description)
+        else if (element.get_field_name() == custom_data_description)
         {
             const auto& database = element.get_value<database_data_type::document_type>();
             const auto custom_data = custom_data::from_document(database);
