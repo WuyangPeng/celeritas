@@ -53,9 +53,10 @@ std::string celeritas::basis_database::get_array_string_value() const
 
     std::ostringstream os{};
     os << "[";
-    for (auto iter = value.cbegin(); iter != value.cend(); ++iter)
+    for (auto iter = value.cbegin(); iter != value.cend();)
     {
-        append_value<Type>(os, *iter, std::next(iter) == value.cend());
+        auto current = iter++;
+        append_value<Type>(os, *current, iter == value.cend());
     }
     os << "]";
 

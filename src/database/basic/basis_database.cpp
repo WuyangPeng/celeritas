@@ -186,17 +186,18 @@ std::string celeritas::basis_database::get_document_string() const
 
 std::string celeritas::basis_database::get_document_array_string() const
 {
-    const auto& doc_array = get_value<database_data_type::document_array_type>();
-    if (doc_array.empty())
+    const auto& document_array = get_value<database_data_type::document_array_type>();
+    if (document_array.empty())
     {
         return "[]";
     }
 
     std::ostringstream os{};
     os << "[";
-    for (auto iter = doc_array.cbegin(); iter != doc_array.cend(); ++iter)
+    for (auto iter = document_array.cbegin(); iter != document_array.cend();)
     {
-        append_value(os, *iter, std::next(iter) == doc_array.cend());
+        auto current = iter++;
+        append_value(os, *current, iter == document_array.cend());
     }
     os << "]";
     return os.str();
@@ -224,9 +225,10 @@ void celeritas::basis_database::append_value(std::ostringstream& os, const docum
 void celeritas::basis_database::append_document_value(std::ostringstream& os, const document_type& document)
 {
     os << "{";
-    for (auto iter = document.cbegin(); iter != document.cend(); ++iter)
+    for (auto iter = document.cbegin(); iter != document.cend();)
     {
-        append_value(os, *iter, std::next(iter) == document.cend());
+        auto current = iter++;
+        append_value(os, *current, iter == document.cend());
     }
     os << "}";
 }
