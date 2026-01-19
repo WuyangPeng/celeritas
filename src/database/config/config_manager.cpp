@@ -16,7 +16,7 @@ void celeritas::config_manager::reload_from_db(const any_io_executor& any_io_exe
 {
     if (db_name.empty() && id == 0)
     {
-        load_from_db(any_io_executor);
+        return load_from_db(any_io_executor);
     }
 
     boost::asio::co_spawn(any_io_executor,
@@ -101,6 +101,6 @@ celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_t
         const time_refresh time_refresh{ *optional_time_refresh };
 
         std::lock_guard lock{ shared_mutex_ };
-        time_refresh_.emplace(time_refresh.get_id(), time_refresh);
+        time_refresh_.insert_or_assign(time_refresh.get_id(), time_refresh);
     }
 }
