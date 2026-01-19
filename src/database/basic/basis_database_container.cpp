@@ -26,13 +26,17 @@ celeritas::basis_database_container::basis_database_container(object_container c
 
 void celeritas::basis_database_container::modify(const basis_database& basis_database)
 {
-    const auto result = std::ranges::remove_if(container_, [&basis_database](const auto& element) {
-        return element.get_field_name() == basis_database.get_field_name();
-    });
-
-    container_.erase(result.begin(), result.end());
-
-    container_.emplace_back(basis_database);
+    if (const auto result = std::ranges::find_if(container_, [&basis_database](const auto& element) {
+            return element.get_field_name() == basis_database.get_field_name();
+        });
+        result != container_.cend())
+    {
+        *result = basis_database;
+    }
+    else
+    {
+        container_.emplace_back(basis_database);
+    }
 }
 
 void celeritas::basis_database_container::clear()
