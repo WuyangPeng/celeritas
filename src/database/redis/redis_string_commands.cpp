@@ -97,7 +97,7 @@ celeritas::redis_string_commands::array_awaitable_type celeritas::redis_string_c
     const auto keys_command = get_keys_command(keys);
     get_many_command.insert(get_many_command.end(), keys_command.begin(), keys_command.end());
 
-    co_return co_await async_execute_command_return_array_type(get_many_command);
+    co_return co_await async_execute_command_return_array(get_many_command);
 }
 
 celeritas::redis_string_commands::optional_string_awaitable_type celeritas::redis_string_commands::async_get_set(const std::string& key, const std::string& value) const

@@ -74,12 +74,12 @@ celeritas::redis_commands::optional_string_awaitable_type celeritas::redis_comma
     co_return co_await session_.async_execute_command_return_optional_string(command);
 }
 
-celeritas::redis_commands::array_awaitable_type celeritas::redis_commands::async_execute_command_return_array_type(const array_type& command) const
+celeritas::redis_commands::array_awaitable_type celeritas::redis_commands::async_execute_command_return_array(const array_type& command) const
 {
     co_return co_await session_.async_execute_command_return_array(command);
 }
 
-celeritas::redis_commands::map_awaitable_type celeritas::redis_commands::async_execute_command_return_map_type(const array_type& command) const
+celeritas::redis_commands::map_awaitable_type celeritas::redis_commands::async_execute_command_return_map(const array_type& command) const
 {
     co_return co_await session_.async_execute_command_return_map(command);
 }

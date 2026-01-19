@@ -59,7 +59,7 @@ celeritas::redis_list_commands::int_awaitable_type celeritas::redis_list_command
 
 celeritas::redis_list_commands::array_awaitable_type celeritas::redis_list_commands::async_get_range(const std::string& key, const int start, const int end) const
 {
-    co_return co_await async_execute_command_return_array_type({ "LRANGE", get_prefixed_key(key), std::to_string(start), std::to_string(end) });
+    co_return co_await async_execute_command_return_array({ "LRANGE", get_prefixed_key(key), std::to_string(start), std::to_string(end) });
 }
 
 celeritas::redis_list_commands::int_awaitable_type celeritas::redis_list_commands::async_remove(const std::string& key, const int count, const std::string& value) const
@@ -82,7 +82,7 @@ celeritas::redis_list_commands::blocking_left_pop_awaitable_type celeritas::redi
 
     command.emplace_back(std::to_string(timeout_seconds));
 
-    const auto array_result = co_await async_execute_command_return_array_type(command);
+    const auto array_result = co_await async_execute_command_return_array(command);
 
     if (array_result.empty())
     {

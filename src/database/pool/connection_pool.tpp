@@ -140,6 +140,11 @@ void celeritas::connection_pool<SessionType>::release_session(const session_shar
 template <typename SessionType>
 void celeritas::connection_pool<SessionType>::cleanup_database_by_duration()
 {
+    if (connections_ <= min_connections_)
+    {
+        return;
+    }
+
     std::lock_guard lock{ mutex_ };
 
     for (auto iter = sessions_.begin(); iter != sessions_.end();)

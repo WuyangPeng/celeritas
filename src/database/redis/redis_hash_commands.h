@@ -7,7 +7,7 @@ namespace celeritas
     class redis_hash_commands final : public redis_commands
     {
     public:
-        using class_tye = redis_hash_commands;
+        using class_type = redis_hash_commands;
         using base_type = redis_commands;
 
         explicit redis_hash_commands(redis_database_session& session) noexcept;
@@ -20,7 +20,7 @@ namespace celeritas
         // 批量设置哈希表 key 中多个字段的值。
         // key_value_container 包含 (field, value) 对。
         // 返回的是新字段的数量
-        [[nodiscard]] bool_awaitable_type async_set_many(const std::string& key, const key_value_container& field_values) const;
+        [[nodiscard]] int_awaitable_type async_set_many(const std::string& key, const key_value_container& field_values) const;
 
         // 删除哈希表中一个字段。
         [[nodiscard]] int_awaitable_type async_delete(const std::string& key, const std::string& field) const;

@@ -68,9 +68,9 @@ namespace celeritas
 
         [[nodiscard]] optional_string_awaitable_type async_execute_command_return_optional_string(const array_type& command) const;
 
-        [[nodiscard]] array_awaitable_type async_execute_command_return_array_type(const array_type& command) const;
+        [[nodiscard]] array_awaitable_type async_execute_command_return_array(const array_type& command) const;
 
-        [[nodiscard]] map_awaitable_type async_execute_command_return_map_type(const array_type& command) const;
+        [[nodiscard]] map_awaitable_type async_execute_command_return_map(const array_type& command) const;
 
         [[nodiscard]] optional_double_awaitable_type async_execute_command_return_optional_double(const array_type& command) const;
 

@@ -48,7 +48,7 @@ redis_set_commands::bool_awaitable_type redis_set_commands::async_set_is_member(
 
 redis_set_commands::array_awaitable_type redis_set_commands::async_set_members(const std::string& key) const
 {
-    co_return co_await async_execute_command_return_array_type({ "SMEMBERS", get_prefixed_key(key) });
+    co_return co_await async_execute_command_return_array({ "SMEMBERS", get_prefixed_key(key) });
 }
 
 redis_set_commands::array_awaitable_type redis_set_commands::async_set_union(const array_type& keys) const
@@ -59,7 +59,7 @@ redis_set_commands::array_awaitable_type redis_set_commands::async_set_union(con
         command.emplace_back(get_prefixed_key(key));
     }
 
-    co_return co_await async_execute_command_return_array_type(command);
+    co_return co_await async_execute_command_return_array(command);
 }
 
 redis_set_commands::array_awaitable_type redis_set_commands::async_set_inter(const array_type& keys) const
@@ -70,7 +70,7 @@ redis_set_commands::array_awaitable_type redis_set_commands::async_set_inter(con
         command.emplace_back(get_prefixed_key(key));
     }
 
-    co_return co_await async_execute_command_return_array_type(command);
+    co_return co_await async_execute_command_return_array(command);
 }
 
 redis_set_commands::array_awaitable_type redis_set_commands::async_set_diff(const array_type& keys) const
@@ -81,5 +81,5 @@ redis_set_commands::array_awaitable_type redis_set_commands::async_set_diff(cons
         command.emplace_back(get_prefixed_key(key));
     }
 
-    co_return co_await async_execute_command_return_array_type(command);
+    co_return co_await async_execute_command_return_array(command);
 }

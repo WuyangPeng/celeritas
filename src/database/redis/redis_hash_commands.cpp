@@ -10,7 +10,7 @@ celeritas::redis_hash_commands::int_awaitable_type celeritas::redis_hash_command
     co_return co_await async_execute_command_return_int({ "HSET", get_prefixed_key(key), field, value });
 }
 
-celeritas::redis_hash_commands::bool_awaitable_type celeritas::redis_hash_commands::async_set_many(const std::string& key, const key_value_container& field_values) const
+celeritas::redis_hash_commands::int_awaitable_type celeritas::redis_hash_commands::async_set_many(const std::string& key, const key_value_container& field_values) const
 {
     array_type command{ "HSET", get_prefixed_key(key) };
     const auto fields_value_command = get_fields_value_command(field_values);
@@ -47,20 +47,20 @@ celeritas::redis_hash_commands::array_awaitable_type celeritas::redis_hash_comma
     array_type command{ "HMGET", get_prefixed_key(key) };
     command.insert(command.end(), fields.begin(), fields.end());
 
-    co_return co_await async_execute_command_return_array_type(command);
+    co_return co_await async_execute_command_return_array(command);
 }
 
 celeritas::redis_hash_commands::array_awaitable_type celeritas::redis_hash_commands::async_get_fields(const std::string& key) const
 {
-    co_return co_await async_execute_command_return_array_type({ "HKEYS", get_prefixed_key(key) });
+    co_return co_await async_execute_command_return_array({ "HKEYS", get_prefixed_key(key) });
 }
 
 celeritas::redis_hash_commands::map_awaitable_type celeritas::redis_hash_commands::async_get_all(const std::string& key) const
 {
-    co_return co_await async_execute_command_return_map_type({ "HGETALL", get_prefixed_key(key) });
+    co_return co_await async_execute_command_return_map({ "HGETALL", get_prefixed_key(key) });
 }
 
 celeritas::redis_commands::map_awaitable_type celeritas::redis_hash_commands::async_get_all_by_real_key(const std::string& key) const
 {
-    co_return co_await async_execute_command_return_map_type({ "HGETALL", key });
+    co_return co_await async_execute_command_return_map({ "HGETALL", key });
 }
