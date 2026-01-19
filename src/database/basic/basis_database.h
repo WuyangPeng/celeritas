@@ -107,7 +107,9 @@ namespace celeritas
 
         static void append_value(std::ostringstream& os, const basis_database& value, bool is_last);
 
-        static void append_value(std::ostringstream& os, const document_type& value, bool is_last);
+        static void append_value(std::ostringstream& os, const document_type& document, bool is_last);
+
+        static void append_document_value(std::ostringstream& os, const document_type& document);
 
         std::string field_name_;
         database_data_type data_type_ = database_data_type::null_type;

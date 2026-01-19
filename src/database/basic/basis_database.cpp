@@ -139,9 +139,9 @@ std::string celeritas::basis_database::get_quotation_mark_string() const
 {
     if (data_type_ == database_data_type::string_type)
     {
-        auto value = get_value<database_data_type::string_type>();
-        boost::replace_all(value, "\"", "\\\"");
-        return "\"" + value + "\"";
+        auto result = get_value<database_data_type::string_type>();
+        boost::replace_all(result, "\"", "\\\"");
+        return "\"" + result + "\"";
     }
 
     return get_string();
@@ -157,9 +157,9 @@ std::string celeritas::basis_database::get_sql_value_string() const
         data_type_ == database_data_type::document_type ||
         data_type_ == database_data_type::document_array_type)
     {
-        auto value = get_string();
-        boost::replace_all(value, "'", "''");
-        return "'" + value + "'";
+        auto result = get_string();
+        boost::replace_all(result, "'", "''");
+        return "'" + result + "'";
     }
 
     return get_string();
@@ -179,12 +179,7 @@ std::string celeritas::basis_database::get_document_string() const
     }
 
     std::ostringstream os{};
-    os << "{";
-    for (auto iter = document.cbegin(); iter != document.cend(); ++iter)
-    {
-        append_value(os, *iter, std::next(iter) == document.cend());
-    }
-    os << "}";
+    append_document_value(os, document);
 
     return os.str();
 }
@@ -216,14 +211,24 @@ void celeritas::basis_database::append_value(std::ostringstream& os, const basis
     }
 }
 
-void celeritas::basis_database::append_value(std::ostringstream& os, const document_type& value, const bool is_last)
+void celeritas::basis_database::append_value(std::ostringstream& os, const document_type& document, const bool is_last)
 {
-    const basis_database doc{ "", database_data_type::document_type, value };
-    os << doc.get_string();
+    append_document_value(os, document);
+
     if (!is_last)
     {
         os << ",";
     }
+}
+
+void celeritas::basis_database::append_document_value(std::ostringstream& os, const document_type& document)
+{
+    os << "{";
+    for (auto iter = document.cbegin(); iter != document.cend(); ++iter)
+    {
+        append_value(os, *iter, std::next(iter) == document.cend());
+    }
+    os << "}";
 }
 
 bool celeritas::operator==(const basis_database& lhs, const basis_database& rhs)

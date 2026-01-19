@@ -67,9 +67,9 @@ void celeritas::basis_database::append_value(std::ostringstream& os, typename da
 {
     if constexpr (Type == database_data_type::string_array_type)
     {
-        auto replace_result = value;
-        boost::replace_all(replace_result, "\"", "\\\"");
-        os << "\"" + replace_result + "\"";
+        auto result = value;
+        boost::replace_all(result, "\"", "\\\"");
+        os << "\"" + result + "\"";
     }
     else
     {
