@@ -1,4 +1,5 @@
 ﻿#include "config_manager.h"
+#include "config_table.tpp"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 #include "database/database_constant.h"
@@ -43,7 +44,7 @@ celeritas::config_manager::optional_const_time_refresh_shared_ptr celeritas::con
 {
     if (time_refresh_table_ != nullptr)
     {
-        return time_refresh_table_->get_time_refresh(id);
+        return time_refresh_table_->get_item(id);
     }
 
     return std::nullopt;
@@ -62,7 +63,7 @@ void celeritas::config_manager::register_config_tables()
 
 void celeritas::config_manager::register_time_refresh_table()
 {
-    auto table = std::make_unique<time_refresh_table>();
+    auto table = std::make_unique<time_refresh_table>(time_refresh_db_name);
     time_refresh_table_ = table.get();
     config_tables_.emplace(table->get_name(), std::move(table));
 }

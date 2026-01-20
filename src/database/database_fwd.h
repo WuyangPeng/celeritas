@@ -46,4 +46,8 @@ namespace celeritas
     class scan_result;
 
     class config_manager;
+    class config_table_base;
+
+    template <typename T>
+    class config_table;
 }

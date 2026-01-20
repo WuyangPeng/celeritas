@@ -17,7 +17,7 @@ namespace celeritas
 
         virtual ~config_table_base() = default;
 
-        [[nodiscard]] virtual const std::string& get_name() const = 0;
+        [[nodiscard]] virtual std::string_view get_name() const = 0;
 
         [[nodiscard]] virtual void_awaitable_type load_all(const database_pool_shared_ptr& pool) = 0;
 

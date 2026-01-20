@@ -1,12 +1,12 @@
 ﻿#pragma once
 
+#include "config_table.h"
 #include "config_table_base.h"
-#include "time_refresh_table.h"
+#include "database/generated/mysql/config/time_refresh.h"
 
 #include <boost/asio.hpp>
 
 #include <memory>
-#include <shared_mutex>
 #include <unordered_map>
 
 namespace celeritas
@@ -32,6 +32,7 @@ namespace celeritas
         using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
         using config_table_unique_ptr = std::unique_ptr<config_table_base>;
         using config_table_container = std::unordered_map<std::string, config_table_unique_ptr>;
+        using time_refresh_table = config_table<time_refresh>;
 
         config_manager();
 
