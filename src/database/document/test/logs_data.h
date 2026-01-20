@@ -90,16 +90,16 @@ namespace celeritas
     private:
         int64_t int64_value_;
         std::string string_value_;
-        std::vector<std::string> string_array_value_;
+        string_array_type string_array_value_;
         int32_t int32_value_;
         int32_t int32_count_value_;
-        std::vector<int32_t> int32_array_value_;
+        int32_array_type int32_array_value_;
         int64_t int64_count_value_;
-        std::vector<int64_t> int64_array_value_;
+        int64_array_type int64_array_value_;
         double double_value_;
-        std::vector<double> double_array_value_;
+        double_array_type double_array_value_;
         bool bool_value_;
         document_type document_value_;
-        traits::document_array_type document_array_value_;
+        document_array_type document_array_value_;
     };
 }

@@ -7,6 +7,7 @@
 #include "database/pool/database_pool_manager.h"
 
 #include <boost/polymorphic_cast.hpp>
+
 #include <ranges>
 
 celeritas::config_manager& celeritas::config_manager::get_instance()
