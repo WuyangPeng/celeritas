@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "database/pool/database_pool_base.h"
+
 #include <boost/asio/awaitable.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/test/unit_test.hpp>
@@ -18,6 +20,7 @@ namespace celeritas
         using awaitable_function = std::function<void_awaitable()>;
         using atomic_int_shared_ptr = std::shared_ptr<std::atomic_int>;
         using atomic_bool_shared_ptr = std::shared_ptr<std::atomic_bool>;
+        using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
 
         config_manager_fixture();
 
@@ -36,6 +39,8 @@ namespace celeritas
         void spawn_writer(const atomic_int_shared_ptr& tasks_remaining, const atomic_bool_shared_ptr& stop_flag);
 
         void spawn_reader(const atomic_int_shared_ptr& tasks_remaining, const atomic_bool_shared_ptr& stop_flag);
+
+        [[nodiscard]] void_awaitable check_load_one(const database_pool_shared_ptr& pool);
 
     private:
         io_context_type io_context_;

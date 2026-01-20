@@ -1,4 +1,5 @@
 ﻿#include "config_manager_fixture.h"
+#include "common/core/celeritas_error.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "database/config/config_manager.h"
 #include "database/config/mock/mock_config_database_pool.h"
@@ -82,4 +83,20 @@ void celeritas::config_manager_fixture::spawn_reader(const atomic_int_shared_ptr
         }
         --(*tasks_remaining);
     });
+}
+
+celeritas::config_manager_fixture::void_awaitable celeritas::config_manager_fixture::check_load_one(const database_pool_shared_ptr& pool)
+{
+    auto exception_thrown = false;
+    try
+    {
+        config_table<time_refresh> table{ time_refresh_db_name };
+
+        co_await table.load_one(pool, 0);
+    }
+    catch (const celeritas_error&)
+    {
+        exception_thrown = true;
+    }
+    BOOST_CHECK(exception_thrown);
 }
