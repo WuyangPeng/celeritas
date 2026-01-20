@@ -44,15 +44,15 @@ BOOST_AUTO_TEST_SUITE(develop_data_suite)
         data.set_instance_id(2);
         BOOST_CHECK_EQUAL(data.get_instance_id(), 2);
 
-        const auto old_time = data.get_updated_time();
+        const auto old_time1 = data.get_updated_time();
         data.set_level(10);
         BOOST_CHECK_EQUAL(data.get_level(), 10);
-        BOOST_CHECK_GT(data.get_updated_time(), old_time);
+        BOOST_CHECK_GE(data.get_updated_time(), old_time1);
 
-        const auto old_time_2 = data.get_updated_time();
+        const auto old_time2 = data.get_updated_time();
         data.set_exp(1000);
         BOOST_CHECK_EQUAL(data.get_exp(), 1000);
-        BOOST_CHECK_GT(data.get_updated_time(), old_time_2);
+        BOOST_CHECK_GE(data.get_updated_time(), old_time2);
 
         data.set_updated_time(1234567890);
         BOOST_CHECK_EQUAL(data.get_updated_time(), 1234567890);

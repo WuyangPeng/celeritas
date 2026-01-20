@@ -38,8 +38,18 @@ BOOST_AUTO_TEST_SUITE(equipment_data_suite)
         const auto document = original.to_document_type();
         const auto restored = celeritas::equipment_data::from_document(document);
 
-        BOOST_CHECK_EQUAL(restored.get_strength(), 20);
-        BOOST_CHECK_EQUAL(restored.get_durability(), 200);
+        BOOST_CHECK_EQUAL(restored.get_strength(), original.get_strength());
+        BOOST_CHECK_EQUAL(restored.get_durability(), original.get_durability());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_from_document_partial)
+    {
+        const celeritas::equipment_data::document_type document{ celeritas::basis_database{ celeritas::equipment_data::strength_description, 99 } };
+
+        const auto data = celeritas::equipment_data::from_document(document);
+
+        BOOST_CHECK_EQUAL(data.get_strength(), 99);
+        BOOST_CHECK_EQUAL(data.get_durability(), 0);
     }
 
 BOOST_AUTO_TEST_SUITE_END()
