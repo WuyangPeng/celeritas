@@ -47,10 +47,8 @@ const celeritas::database_data_type_traits<Type>::type& celeritas::basis_databas
 }
 
 template <celeritas::database_data_type Type>
-std::string celeritas::basis_database::get_array_string_value() const
+std::string celeritas::basis_database::get_array_string_value(typename database_data_type_traits<Type>::param_type value) const
 {
-    const auto& value = get_value<Type>();
-
     std::ostringstream os{};
     os << "[";
     for (auto iter = value.cbegin(); iter != value.cend();)

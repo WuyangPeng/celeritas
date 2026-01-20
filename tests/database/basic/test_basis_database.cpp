@@ -1,6 +1,7 @@
 ﻿#include "database/basic/basis_database.tpp"
 
 #include <boost/test/unit_test.hpp>
+#include <boost/numeric/conversion/cast.hpp>
 
 BOOST_AUTO_TEST_SUITE(basis_database_suite)
 
@@ -73,6 +74,13 @@ BOOST_AUTO_TEST_SUITE(basis_database_suite)
         BOOST_CHECK_EQUAL(db.get_value<celeritas::database_data_type::int64_type>(), value);
     }
 
+    BOOST_AUTO_TEST_CASE(test_basis_database_uint64_overflow_constructor)
+    {
+        const std::string field_name{ "uid" };
+        constexpr auto value = std::numeric_limits<uint64_t>::max();
+        BOOST_CHECK_THROW((celeritas::basis_database{field_name, value}), boost::numeric::positive_overflow);
+    }
+
     BOOST_AUTO_TEST_CASE(test_basis_database_bool_true_constructor)
     {
         const std::string field_name{ "is_active" };
@@ -104,7 +112,7 @@ BOOST_AUTO_TEST_SUITE(basis_database_suite)
         BOOST_CHECK_EQUAL(db.get_field_name(), field_name);
         BOOST_CHECK(db.get_data_type() == celeritas::database_data_type::double_type);
         BOOST_CHECK_CLOSE(db.get_value<celeritas::database_data_type::double_type>(), value, 0.001);
-        BOOST_CHECK_EQUAL(db.get_string(), std::to_string(value));
+        BOOST_CHECK_EQUAL(db.get_string(), "99.9");
     }
 
     BOOST_AUTO_TEST_CASE(test_basis_database_byte_array_constructor)

@@ -85,7 +85,7 @@ namespace celeritas
         [[nodiscard]] const database_data_type_traits<Type>::type& get_value() const;
 
         template <database_data_type Type>
-        [[nodiscard]] std::string get_array_string_value() const;
+        [[nodiscard]] std::string get_array_string_value(database_data_type_traits<Type>::param_type value) const;
 
         [[nodiscard]] const value_variant& get_variant_value() const;
 
@@ -98,9 +98,11 @@ namespace celeritas
     private:
         basis_database(std::string_view field_name, database_data_type dataType, value_variant value);
 
-        [[nodiscard]] std::string get_document_string() const;
+        [[nodiscard]] static std::string get_double_string(database_data_type_traits<database_data_type::double_type>::param_type value);
 
-        [[nodiscard]] std::string get_document_array_string() const;
+        [[nodiscard]] static std::string get_document_string(database_data_type_traits<database_data_type::document_type>::param_type document);
+
+        [[nodiscard]] static std::string get_document_array_string(database_data_type_traits<database_data_type::document_array_type>::param_type document_array);
 
         template <database_data_type Type>
         static void append_value(std::ostringstream& os, database_data_type_traits<Type>::element_param_type value, bool is_last);

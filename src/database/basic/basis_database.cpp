@@ -105,8 +105,8 @@ std::string celeritas::basis_database::get_string() const
                           [](const int64_t value) {
                               return std::to_string(value);
                           },
-                          [](const double value) {
-                              return std::to_string(value);
+                          [ ](const double value) {
+                              return get_double_string(value);
                           },
                           [](const bool value) {
                               return std::string{ value ? "true" : "false" };
@@ -115,22 +115,22 @@ std::string celeritas::basis_database::get_string() const
                               return std::string{ value.begin(), value.end() };
                           },
                           [this](const string_array& value) {
-                              return get_array_string_value<database_data_type::string_array_type>();
+                              return get_array_string_value<database_data_type::string_array_type>(value);
                           },
                           [this](const int32_array& value) {
-                              return get_array_string_value<database_data_type::int32_array_type>();
+                              return get_array_string_value<database_data_type::int32_array_type>(value);
                           },
                           [this](const int64_array& value) {
-                              return get_array_string_value<database_data_type::int64_array_type>();
+                              return get_array_string_value<database_data_type::int64_array_type>(value);
                           },
                           [this](const double_array& value) {
-                              return get_array_string_value<database_data_type::double_array_type>();
+                              return get_array_string_value<database_data_type::double_array_type>(value);
                           },
-                          [this](const document_type& value) {
-                              return get_document_string();
+                          [](const document_type& value) {
+                              return get_document_string(value);
                           },
-                          [this](const document_array& value) {
-                              return get_document_array_string();
+                          [](const document_array& value) {
+                              return get_document_array_string(value);
                           }
                       }, value_);
 }
@@ -170,9 +170,16 @@ celeritas::basis_database::basis_database(const std::string_view field_name, con
 {
 }
 
-std::string celeritas::basis_database::get_document_string() const
+std::string celeritas::basis_database::get_double_string(database_data_type_traits<database_data_type::double_type>::param_type value)
 {
-    const auto& document = get_value<database_data_type::document_type>();
+    std::ostringstream os{};
+    os << value;
+
+    return os.str();
+}
+
+std::string celeritas::basis_database::get_document_string(database_data_type_traits<database_data_type::document_type>::param_type document)
+{
     if (document.empty())
     {
         return "{}";
@@ -184,9 +191,8 @@ std::string celeritas::basis_database::get_document_string() const
     return os.str();
 }
 
-std::string celeritas::basis_database::get_document_array_string() const
+std::string celeritas::basis_database::get_document_array_string(database_data_type_traits<database_data_type::document_array_type>::param_type document_array)
 {
-    const auto& document_array = get_value<database_data_type::document_array_type>();
     if (document_array.empty())
     {
         return "[]";
