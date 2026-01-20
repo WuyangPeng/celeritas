@@ -38,9 +38,7 @@ BOOST_FIXTURE_TEST_SUITE(config_manager_suite, celeritas::config_manager_fixture
     BOOST_AUTO_TEST_CASE(test_reload_from_db_with_params)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            auto& config_manager = celeritas::config_manager::get_instance();
-
-            config_manager.reload_from_db(get_io_context().get_executor(), "time_refresh_db", celeritas::mock_config_database_pool::time_refresh_id);
+            celeritas::config_manager::get_instance().reload_from_db(get_io_context().get_executor(), "time_refresh_db", celeritas::mock_config_database_pool::time_refresh_id);
 
             co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds(100)).async_wait(boost::asio::use_awaitable);
 
@@ -53,11 +51,22 @@ BOOST_FIXTURE_TEST_SUITE(config_manager_suite, celeritas::config_manager_fixture
     BOOST_AUTO_TEST_CASE(test_reload_from_db_empty_params)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            auto& config_manager = celeritas::config_manager::get_instance();
-
-            config_manager.reload_from_db(get_io_context().get_executor(), "", 0);
+            celeritas::config_manager::get_instance().reload_from_db(get_io_context().get_executor(), "", 0);
 
             co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds(100)).async_wait(boost::asio::use_awaitable);
+
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_reload_from_db_with_empty_db_name_and_non_zero_id)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            celeritas::config_manager::get_instance().reload_from_db(get_io_context().get_executor(), "", celeritas::mock_config_database_pool::time_refresh_id);
+
+            co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds(100)).async_wait(boost::asio::use_awaitable);
+
+            check_time_refresh_valid();
 
             set_test_end(true);
         });
