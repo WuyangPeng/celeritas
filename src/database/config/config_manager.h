@@ -31,7 +31,7 @@ namespace celeritas
     private:
         using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
         using config_table_unique_ptr = std::unique_ptr<config_table_base>;
-        using config_table_container = std::unordered_map<std::string, config_table_unique_ptr>;
+        using config_table_container = std::unordered_map<std::string_view, config_table_unique_ptr>;
         using time_refresh_table = config_table<time_refresh>;
 
         config_manager();
@@ -45,6 +45,5 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type load_from_db(const std::string& db_name, int64_t id);
 
         config_table_container config_tables_;
-        time_refresh_table* time_refresh_table_;
     };
 }

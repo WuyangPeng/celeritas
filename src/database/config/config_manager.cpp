@@ -5,6 +5,7 @@
 #include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"
 
+#include <boost/polymorphic_cast.hpp>
 #include <ranges>
 
 celeritas::config_manager& celeritas::config_manager::get_instance()
@@ -42,16 +43,18 @@ void celeritas::config_manager::load_from_db(const any_io_executor& any_io_execu
 
 celeritas::config_manager::optional_const_time_refresh_shared_ptr celeritas::config_manager::get_time_refresh(const int64_t id)
 {
-    if (time_refresh_table_ != nullptr)
+    if (const auto iter = config_tables_.find(time_refresh_db_name);
+        iter != config_tables_.cend())
     {
-        return time_refresh_table_->get_item(id);
+        const auto table = boost::polymorphic_downcast<time_refresh_table*>(iter->second.get());
+        return table->get_item(id);
     }
 
     return std::nullopt;
 }
 
 celeritas::config_manager::config_manager()
-    : config_tables_{}, time_refresh_table_{}
+    : config_tables_{}
 {
     register_config_tables();
 }
@@ -64,7 +67,6 @@ void celeritas::config_manager::register_config_tables()
 void celeritas::config_manager::register_time_refresh_table()
 {
     auto table = std::make_unique<time_refresh_table>(time_refresh_db_name);
-    time_refresh_table_ = table.get();
     config_tables_.emplace(table->get_name(), std::move(table));
 }
 
