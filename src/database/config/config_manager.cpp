@@ -125,6 +125,6 @@ celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_f
     }
     else
     {
-        throw celeritas_error{ "load from db is error, id = {}", id };
+        throw celeritas_error{ "load from db is error, db name = {}", db_name };
     }
 }

@@ -24,6 +24,7 @@ void celeritas::config_manager_fixture::run(awaitable_function func)
                                                                database_channel,
                                                                "config manager fixture run error: "),
                           boost::asio::detached);
+
     io_context_.run();
     io_context_.restart();
     BOOST_CHECK(test_end_);

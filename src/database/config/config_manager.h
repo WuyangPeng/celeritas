@@ -7,6 +7,7 @@
 #include <boost/asio.hpp>
 
 #include <memory>
+#include <shared_mutex>
 #include <unordered_map>
 
 namespace celeritas
