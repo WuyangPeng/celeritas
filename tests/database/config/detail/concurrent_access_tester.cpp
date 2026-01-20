@@ -48,11 +48,11 @@ celeritas::concurrent_access_tester::void_awaitable_type celeritas::concurrent_a
 
 celeritas::concurrent_access_tester::void_awaitable_type celeritas::concurrent_access_tester::check_time_refresh_task()
 {
-    if (const auto time_refresh_opt = celeritas::config_manager::get_instance().get_time_refresh(celeritas::mock_config_database_pool::time_refresh_id);
-        time_refresh_opt.has_value())
+    if (const auto time_refresh_optional = celeritas::config_manager::get_instance().get_time_refresh(celeritas::mock_config_database_pool::time_refresh_id);
+        time_refresh_optional.has_value())
     {
-        BOOST_CHECK_EQUAL(time_refresh_opt->get_time_refresh_type(), 2);
-        BOOST_CHECK_EQUAL(time_refresh_opt->get_parameter(), 3);
+        BOOST_CHECK_EQUAL((*time_refresh_optional)->get_time_refresh_type(), 2);
+        BOOST_CHECK_EQUAL((*time_refresh_optional)->get_parameter(), 3);
     }
     else
     {

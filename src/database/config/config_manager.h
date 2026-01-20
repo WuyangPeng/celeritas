@@ -1,10 +1,13 @@
 ﻿#pragma once
 
-#include "database/generated/mysql/config/time_refresh.h"
+#include "config_table_base.h"
+#include "time_refresh_table.h"
 
 #include <boost/asio.hpp>
 
+#include <memory>
 #include <shared_mutex>
+#include <unordered_map>
 
 namespace celeritas
 {
@@ -12,10 +15,10 @@ namespace celeritas
     {
     public:
         using class_type = config_manager;
-        using io_context_type = boost::asio::io_context;
-        using void_awaitable_type = boost::asio::awaitable<void>;
-        using optional_time_refresh = std::optional<time_refresh>;
         using any_io_executor = boost::asio::any_io_executor;
+        using void_awaitable_type = boost::asio::awaitable<void>;
+        using const_time_refresh_shared_ptr = std::shared_ptr<const time_refresh>;
+        using optional_const_time_refresh_shared_ptr = std::optional<const_time_refresh_shared_ptr>;
 
         [[nodiscard]] static config_manager& get_instance();
 
@@ -23,23 +26,24 @@ namespace celeritas
 
         void load_from_db(const any_io_executor& any_io_executor);
 
-        [[nodiscard]] optional_time_refresh get_time_refresh(int64_t id);
+        [[nodiscard]] optional_const_time_refresh_shared_ptr get_time_refresh(int64_t id);
 
     private:
-        using time_refresh_container_type = std::unordered_map<int64_t, time_refresh>;
         using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
+        using config_table_unique_ptr = std::unique_ptr<config_table_base>;
+        using config_table_container = std::unordered_map<std::string, config_table_unique_ptr>;
 
-        config_manager() noexcept = default;
+        config_manager();
+
+        void register_config_tables();
+
+        void register_time_refresh_table();
 
         [[nodiscard]] void_awaitable_type load_from_db();
 
-        [[nodiscard]] void_awaitable_type load_time_refresh_db(const database_pool_shared_ptr& mysql_pool);
-
         [[nodiscard]] void_awaitable_type load_from_db(const std::string& db_name, int64_t id);
 
-        [[nodiscard]] void_awaitable_type load_time_refresh_db(const database_pool_shared_ptr& mysql_pool, int64_t id);
-
-        std::shared_mutex shared_mutex_;
-        time_refresh_container_type time_refresh_;
+        config_table_container config_tables_;
+        time_refresh_table* time_refresh_table_;
     };
 }

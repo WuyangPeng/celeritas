@@ -1,0 +1,1 @@
+﻿#include "config_table_base.h"

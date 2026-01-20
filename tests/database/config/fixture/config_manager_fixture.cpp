@@ -33,7 +33,7 @@ celeritas::config_manager_fixture::io_context_type& celeritas::config_manager_fi
     return io_context_;
 }
 
-void celeritas::config_manager_fixture::set_test_end(bool test_end)
+void celeritas::config_manager_fixture::set_test_end(const bool test_end)
 {
     this->test_end_ = test_end;
 }
@@ -43,6 +43,6 @@ void celeritas::config_manager_fixture::check_time_refresh_valid()
     const auto optional_time_refresh = config_manager::get_instance().get_time_refresh(mock_config_database_pool::time_refresh_id);
 
     BOOST_REQUIRE(optional_time_refresh.has_value());
-    BOOST_CHECK_EQUAL(optional_time_refresh->get_time_refresh_type(), 2);
-    BOOST_CHECK_EQUAL(optional_time_refresh->get_parameter(), 3);
+    BOOST_CHECK_EQUAL((*optional_time_refresh)->get_time_refresh_type(), 2);
+    BOOST_CHECK_EQUAL((*optional_time_refresh)->get_parameter(), 3);
 }
