@@ -2,6 +2,7 @@
 #include "common/core/celeritas_error.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "database/config/config_manager.h"
+#include "database/config/config_table.tpp"
 #include "database/config/mock/mock_config_database_pool.h"
 #include "database/pool/database_pool_manager.h"
 

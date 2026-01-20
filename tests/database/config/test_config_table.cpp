@@ -1,5 +1,5 @@
 ﻿#include "common/core/celeritas_error.h"
-#include "database/config/config_table.h"
+#include "database/config/config_table.tpp"
 #include "database/generated/mysql/config/time_refresh.h"
 #include "database/pool/database_pool_manager.h"
 #include "fixture/config_manager_fixture.h"
