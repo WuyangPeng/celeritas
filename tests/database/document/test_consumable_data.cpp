@@ -37,10 +37,10 @@ BOOST_AUTO_TEST_SUITE(consumable_data_suite)
 
     BOOST_AUTO_TEST_CASE(test_parameterized_constructor)
     {
-        constexpr auto test_expire_time = 123456789LL;
-        const celeritas::consumable_data data{ test_expire_time };
+        constexpr auto expire_time = 123456789LL;
+        const celeritas::consumable_data data{ expire_time };
 
-        BOOST_CHECK_EQUAL(data.get_expire_time(), test_expire_time);
+        BOOST_CHECK_EQUAL(data.get_expire_time(), expire_time);
     }
 
     BOOST_AUTO_TEST_CASE(test_expire_time_accessors)
@@ -65,12 +65,12 @@ BOOST_AUTO_TEST_SUITE(consumable_data_suite)
     BOOST_AUTO_TEST_CASE(test_from_document)
     {
         celeritas::consumable_data::document_type doc{};
-        constexpr auto test_expire_time = 999888777LL;
-        doc.emplace_back(celeritas::consumable_data::expire_time_description, test_expire_time);
+        constexpr auto expire_time = 999888777LL;
+        doc.emplace_back(celeritas::consumable_data::expire_time_description, expire_time);
 
         const auto data = celeritas::consumable_data::from_document(doc);
 
-        BOOST_CHECK_EQUAL(data.get_expire_time(), test_expire_time);
+        BOOST_CHECK_EQUAL(data.get_expire_time(), expire_time);
     }
 
     BOOST_AUTO_TEST_CASE(test_from_document_empty)

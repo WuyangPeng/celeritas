@@ -135,4 +135,20 @@ BOOST_AUTO_TEST_SUITE(custom_data_suite)
         BOOST_CHECK_THROW(std::ignore = celeritas::custom_data::from_document(custom_document), celeritas::celeritas_error);
     }
 
+    BOOST_AUTO_TEST_CASE(test_missing_equipment_data)
+    {
+        const celeritas::custom_data::document_type custom_document{ celeritas::basis_database{ celeritas::custom_data::type_description, std::string{ celeritas::custom_data::equipment_description } } };
+
+        const auto data = celeritas::custom_data::from_document(custom_document);
+        BOOST_CHECK(data.to_document_type().empty());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_missing_consumable_data)
+    {
+        const celeritas::custom_data::document_type custom_document{ celeritas::basis_database{ celeritas::custom_data::type_description, std::string{ celeritas::custom_data::consumable_description } } };
+
+        const auto data = celeritas::custom_data::from_document(custom_document);
+        BOOST_CHECK(data.to_document_type().empty());
+    }
+
 BOOST_AUTO_TEST_SUITE_END()
