@@ -35,4 +35,8 @@ namespace celeritas
     private:
         object_container container_;
     };
+
+    [[nodiscard]] bool operator==(const basis_database_container& lhs, const basis_database_container& rhs);
+
+    [[nodiscard]] bool operator!=(const basis_database_container& lhs, const basis_database_container& rhs);
 }

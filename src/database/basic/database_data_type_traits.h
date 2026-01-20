@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include <string>
+#include <variant>
 #include <vector>
 
 namespace celeritas
@@ -17,7 +18,7 @@ namespace celeritas
     template <>
     struct database_data_type_traits<database_data_type::null_type>
     {
-        using type = decltype(nullptr);
+        using type = std::monostate;
         using element_type = type;
         using param_type = boost::call_traits<type>::param_type;
         using element_param_type = boost::call_traits<element_type>::param_type;

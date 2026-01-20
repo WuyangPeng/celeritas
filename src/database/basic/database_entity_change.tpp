@@ -4,6 +4,7 @@
 #include "common/logging/logger.h"
 
 #include <boost/core/demangle.hpp>
+
 #include <variant>
 
 template <celeritas::database_data_type Type>

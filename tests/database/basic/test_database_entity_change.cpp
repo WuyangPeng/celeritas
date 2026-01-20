@@ -106,10 +106,44 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
         BOOST_CHECK_EQUAL(mutable_change.get_value<celeritas::database_data_type::string_type>("field"), "value");
     }
 
+    BOOST_AUTO_TEST_CASE(test_copy_on_write_behavior)
+    {
+        const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
+        celeritas::database_entity_change original_change{ celeritas::database_type::mysql, "test", celeritas::database_change_type::update_type, key };
+
+        original_change.modify(celeritas::basis_database{ "field", "original" });
+        auto copied_change = original_change;
+
+        copied_change.modify(celeritas::basis_database{ "field", "modified" });
+
+        BOOST_CHECK_EQUAL(original_change.get_value<celeritas::database_data_type::string_type>("field"), "original");
+        BOOST_CHECK_EQUAL(copied_change.get_value<celeritas::database_data_type::string_type>("field"), "modified");
+
+        copied_change.clear();
+        BOOST_CHECK(original_change.is_modify());
+        BOOST_CHECK(!copied_change.is_modify());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_get_value_fallback_to_key)
+    {
+        const auto key = std::make_shared<celeritas::basis_database_container>();
+        key->modify({ "id", 123 });
+        key->modify({ "name", "original_name" });
+
+        celeritas::database_entity_change change{ celeritas::database_type::mysql, "test", celeritas::database_change_type::update_type, key };
+
+        change.modify({ "age", 30 });
+        BOOST_CHECK_EQUAL(change.get_value<celeritas::database_data_type::int32_type>("age"), 30);
+
+        change.modify({ "name", "new_name" });
+        BOOST_CHECK_EQUAL(change.get_value<celeritas::database_data_type::string_type>("name"), "new_name");
+    }
+
     BOOST_AUTO_TEST_CASE(test_database_entity_change_modify_overwrite)
     {
         const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change change{ celeritas::database_type::mysql, "test", celeritas::database_change_type::update_type, key };
+
         change.modify(celeritas::basis_database{ "field", "original_value" });
         change.modify(celeritas::basis_database{ "field", "new_value" });
 
@@ -120,6 +154,7 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
     {
         const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change change{ celeritas::database_type::mysql, "test", celeritas::database_change_type::update_type, key };
+
         change.modify(celeritas::basis_database{ "field", "value" });
         BOOST_CHECK(change.is_modify());
 
@@ -131,6 +166,7 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
     {
         const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change change{ celeritas::database_type::mysql, "test", celeritas::database_change_type::insert_type, key };
+
         BOOST_CHECK(change.get_change_type() == celeritas::database_change_type::insert_type);
 
         change.clear();
@@ -213,17 +249,27 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
         celeritas::database_entity_change change_insert{ celeritas::database_type::mysql, "test", celeritas::database_change_type::insert_type, key };
         BOOST_CHECK(!change_insert.is_must_save());
 
-        change_insert.modify(celeritas::basis_database{ "id", 1 });
-        BOOST_CHECK(!change_insert.is_must_save());
-
-        change_insert.modify(celeritas::basis_database{ "f", 1 });
+        change_insert.modify(celeritas::basis_database{ "field", 1 });
         BOOST_CHECK(change_insert.is_must_save());
+    }
+
+    BOOST_AUTO_TEST_CASE(test_is_must_save_when_modifying_with_same_key_value)
+    {
+        const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
+        celeritas::database_entity_change change{ celeritas::database_type::mysql, "test", celeritas::database_change_type::update_type, key };
+
+        change.modify(celeritas::basis_database{ "id", 1 });
+        BOOST_CHECK(!change.is_must_save());
+
+        change.modify(celeritas::basis_database{ "id", 2 });
+        BOOST_CHECK(change.is_must_save());
     }
 
     BOOST_AUTO_TEST_CASE(test_database_entity_change_is_must_save_for_update)
     {
         const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change change_update{ celeritas::database_type::mysql, "test", celeritas::database_change_type::update_type, key };
+
         BOOST_CHECK(!change_update.is_must_save());
         change_update.modify(celeritas::basis_database{ "f", 1 });
         BOOST_CHECK(change_update.is_must_save());
@@ -271,11 +317,12 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
     {
         const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change change{ celeritas::database_type::mysql, "test", celeritas::database_change_type::insert_type, key };
+
         change.modify(celeritas::basis_database{ "field1", "value1" });
-        BOOST_CHECK(!change.is_must_save());
+        BOOST_CHECK(change.is_must_save());
 
         change.modify(celeritas::basis_database{ "field1", "value2" });
-        BOOST_CHECK(!change.is_must_save());
+        BOOST_CHECK(change.is_must_save());
 
         change.modify(celeritas::basis_database{ "field2", 123 });
         BOOST_CHECK(change.is_must_save());
@@ -301,6 +348,7 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
     {
         const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change change{ celeritas::database_type::mysql, "test", celeritas::database_change_type::update_type, key };
+
         change.modify(celeritas::basis_database{ "double_field", 3.14 });
         change.modify(celeritas::basis_database{ "int64_field", 1234567890123 });
         change.modify(celeritas::basis_database{ "bool_field", true });

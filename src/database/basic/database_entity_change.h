@@ -6,6 +6,7 @@
 
 namespace celeritas
 {
+    // 调用非const函数时必须调用deep_copy_if_shared实现写时复制
     class database_entity_change
     {
     public:
@@ -40,7 +41,8 @@ namespace celeritas
         void clear();
 
         template <database_data_type Type>
-        [[nodiscard]] database_data_type_traits<Type>::type get_value(std::string_view field_name, boost::call_traits<typename database_data_type_traits<Type>::type>::param_type default_value = typename database_data_type_traits<Type>::type{}) const;
+        [[nodiscard]] database_data_type_traits<Type>::type get_value(std::string_view field_name,
+                                                                      boost::call_traits<typename database_data_type_traits<Type>::type>::param_type default_value = typename database_data_type_traits<Type>::type{}) const;
 
         [[nodiscard]] bool is_modify() const;
 
@@ -54,7 +56,10 @@ namespace celeritas
         [[nodiscard]] const value_variant& get_variant_value(std::string_view field_name) const;
 
         template <database_data_type Type>
-        [[nodiscard]] database_data_type_traits<Type>::type do_get_value(const value_variant& variant, boost::call_traits<typename database_data_type_traits<Type>::type>::param_type default_value) const;
+        [[nodiscard]] database_data_type_traits<Type>::type do_get_value(const value_variant& variant,
+                                                                         boost::call_traits<typename database_data_type_traits<Type>::type>::param_type default_value) const;
+
+        void deep_copy_if_shared();
 
         database_type database_type_;
         std::string_view database_name_;

@@ -72,3 +72,25 @@ int celeritas::basis_database_container::get_size() const
 {
     return boost::numeric_cast<int>(container_.size());
 }
+
+bool celeritas::operator==(const basis_database_container& lhs, const basis_database_container& rhs)
+{
+    if (lhs.get_size() == rhs.get_size())
+    {
+        const auto pred = [rhs](const basis_database& basis_database) {
+            return basis_database.get_variant_value() == rhs.get_variant_value(basis_database.get_field_name());
+        };
+
+        if (std::ranges::all_of(lhs, pred))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool celeritas::operator!=(const basis_database_container& lhs, const basis_database_container& rhs)
+{
+    return !(lhs == rhs);
+}

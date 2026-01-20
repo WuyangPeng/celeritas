@@ -2,6 +2,8 @@
 #include "database_entity_change.h"
 #include "common/core/celeritas_error.h"
 
+#include <algorithm>
+
 celeritas::database_entity_change::database_entity_change(const database_type database_type,
                                                           const std::string_view database_name,
                                                           const database_change_type change_type,
@@ -71,11 +73,15 @@ void celeritas::database_entity_change::modify(const basis_database& basis_datab
         throw celeritas_error{ "delete type cannot be modified." };
     }
 
+    deep_copy_if_shared();
+
     database_->modify(basis_database);
 }
 
 void celeritas::database_entity_change::clear()
 {
+    deep_copy_if_shared();
+
     database_->clear();
     if (change_type_ == database_change_type::insert_type)
     {
@@ -90,20 +96,30 @@ bool celeritas::database_entity_change::is_modify() const
 
 bool celeritas::database_entity_change::is_must_save() const
 {
-    if (!is_modify())
+    if (change_type_ == database_change_type::delete_type)
+    {
+        return true;
+    }
+
+    if (database_->get_size() == 0)
     {
         return false;
     }
 
-    if (change_type_ == database_change_type::insert_type && database_->get_size() == 1)
-    {
-        return false;
-    }
-
-    return true;
+    return *key_ != *database_;
 }
 
 const celeritas::database_entity_change::value_variant& celeritas::database_entity_change::get_variant_value(const std::string_view field_name) const
 {
     return database_->get_variant_value(field_name);
+}
+
+void celeritas::database_entity_change::deep_copy_if_shared()
+{
+    if (!database_ || database_.use_count() == 1)
+    {
+        return;
+    }
+
+    database_ = std::make_shared<basis_database_container>(*database_);
 }

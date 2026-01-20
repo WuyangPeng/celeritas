@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <string>
 #include <type_traits>
+#include <variant>
 #include <vector>
 
 using namespace celeritas;
@@ -17,8 +18,8 @@ BOOST_AUTO_TEST_SUITE(database_data_type_traits_suite)
     {
         using traits = database_data_type_traits<database_data_type::null_type>;
 
-        BOOST_CHECK((std::is_same_v<traits::type, decltype(nullptr)>));
-        BOOST_CHECK((std::is_same_v<traits::element_type, decltype(nullptr)>));
+        BOOST_CHECK((std::is_same_v<traits::type, std::monostate>));
+        BOOST_CHECK((std::is_same_v<traits::element_type, std::monostate>));
         BOOST_CHECK((std::is_same_v<traits::param_type, boost::call_traits<traits::type>::param_type>));
         BOOST_CHECK((std::is_same_v<traits::element_param_type, boost::call_traits<traits::element_type>::param_type>));
     }

@@ -94,6 +94,7 @@ BOOST_AUTO_TEST_SUITE(basis_database_container_suite)
     {
         const celeritas::basis_database_container container{ celeritas::basis_database_container::object_container{ { "age", 30 } } };
         const auto& value = container.get_variant_value("age");
+
         BOOST_CHECK(std::holds_alternative<int32_t>(value));
         BOOST_CHECK_EQUAL(std::get<int32_t>(value), 30);
     }
@@ -102,6 +103,7 @@ BOOST_AUTO_TEST_SUITE(basis_database_container_suite)
     {
         const celeritas::basis_database_container container{ celeritas::basis_database_container::object_container{} };
         const auto& value = container.get_variant_value("missing");
+
         BOOST_CHECK(std::holds_alternative<std::monostate>(value));
     }
 
@@ -112,6 +114,69 @@ BOOST_AUTO_TEST_SUITE(basis_database_container_suite)
         BOOST_CHECK_EQUAL(get_value<celeritas::database_data_type::string_type>(container, "name"), "test");
         BOOST_CHECK_EQUAL(get_value<celeritas::database_data_type::int32_type>(container, "age"), 30);
         BOOST_CHECK_THROW(get_value<celeritas::database_data_type::string_type>(container, "missing"), std::bad_variant_access);
+    }
+
+    BOOST_AUTO_TEST_CASE(test_equality_identical_containers)
+    {
+        const celeritas::basis_database_container container1{ celeritas::basis_database_container::object_container{ { "name", "test" }, { "age", 30 } } };
+        const celeritas::basis_database_container container2{ celeritas::basis_database_container::object_container{ { "name", "test" }, { "age", 30 } } };
+
+        BOOST_CHECK(container1 == container2);
+        BOOST_CHECK(!(container1 != container2));
+    }
+
+    BOOST_AUTO_TEST_CASE(test_equality_different_order)
+    {
+        const celeritas::basis_database_container container1{ celeritas::basis_database_container::object_container{ { "name", "test" }, { "age", 30 } } };
+        const celeritas::basis_database_container container2{ celeritas::basis_database_container::object_container{ { "age", 30 }, { "name", "test" } } };
+
+        BOOST_CHECK(container1 == container2);
+        BOOST_CHECK(!(container1 != container2));
+    }
+
+    BOOST_AUTO_TEST_CASE(test_inequality_different_values)
+    {
+        const celeritas::basis_database_container container1{ celeritas::basis_database_container::object_container{ { "name", "test" }, { "age", 30 } } };
+        const celeritas::basis_database_container container2{ celeritas::basis_database_container::object_container{ { "name", "test" }, { "age", 31 } } };
+
+        BOOST_CHECK(container1 != container2);
+        BOOST_CHECK(!(container1 == container2));
+    }
+
+    BOOST_AUTO_TEST_CASE(test_inequality_different_sizes)
+    {
+        const celeritas::basis_database_container container1{ celeritas::basis_database_container::object_container{ { "name", "test" }, { "age", 30 } } };
+        const celeritas::basis_database_container container2{ celeritas::basis_database_container::object_container{ { "name", "test" } } };
+
+        BOOST_CHECK(container1 != container2);
+        BOOST_CHECK(!(container1 == container2));
+    }
+
+    BOOST_AUTO_TEST_CASE(test_inequality_different_fields)
+    {
+        const celeritas::basis_database_container container1{ celeritas::basis_database_container::object_container{ { "name", "test" }, { "age", 30 } } };
+        const celeritas::basis_database_container container2{ celeritas::basis_database_container::object_container{ { "name", "test" }, { "city", "ny" } } };
+
+        BOOST_CHECK(container1 != container2);
+        BOOST_CHECK(!(container1 == container2));
+    }
+
+    BOOST_AUTO_TEST_CASE(test_equality_empty_containers)
+    {
+        const celeritas::basis_database_container empty_container1{};
+        const celeritas::basis_database_container empty_container2{};
+
+        BOOST_CHECK(empty_container1 == empty_container2);
+        BOOST_CHECK(!(empty_container1 != empty_container2));
+    }
+
+    BOOST_AUTO_TEST_CASE(test_inequality_with_empty_container)
+    {
+        const celeritas::basis_database_container container1{ celeritas::basis_database_container::object_container{ { "name", "test" } } };
+        const celeritas::basis_database_container empty_container{};
+
+        BOOST_CHECK(container1 != empty_container);
+        BOOST_CHECK(!(container1 == empty_container));
     }
 
 BOOST_AUTO_TEST_SUITE_END()
