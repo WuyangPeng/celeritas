@@ -291,8 +291,8 @@ BOOST_AUTO_TEST_SUITE(properties_data_suite)
         BOOST_CHECK_EQUAL(data.get_bool_value(), true);
         BOOST_CHECK(data.get_document_value() == nested_document);
         BOOST_CHECK(data.get_document_array_value().size() == 2);
-        BOOST_CHECK(data.get_document_array_value()[0] == document_array_element1);
-        BOOST_CHECK(data.get_document_array_value()[1] == document_array_element2);
+        BOOST_CHECK(data.get_document_array_value().at(0) == document_array_element1);
+        BOOST_CHECK(data.get_document_array_value().at(1) == document_array_element2);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

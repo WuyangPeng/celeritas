@@ -205,11 +205,11 @@ celeritas::properties_data celeritas::properties_data::from_document(const docum
         {
             if (element.has_value<database_data_type::int32_type>())
             {
-                properties_data.set_int32_count_value(element.get_value<database_data_type::int32_count_type>());
+                properties_data.set_int32_count_value(element.get_value<database_data_type::int32_type>());
             }
             else if (element.has_value<database_data_type::int64_type>())
             {
-                properties_data.set_int32_count_value(boost::numeric_cast<int32_t>(element.get_value<database_data_type::int64_count_type>()));
+                properties_data.set_int32_count_value(boost::numeric_cast<int32_t>(element.get_value<database_data_type::int64_type>()));
             }
         }
         else if (element.get_field_name() == int32_array_value_description)
@@ -232,7 +232,10 @@ celeritas::properties_data celeritas::properties_data::from_document(const docum
         }
         else if (element.get_field_name() == int64_count_value_description)
         {
-            properties_data.set_int64_count_value(element.get_value<database_data_type::int64_count_type>());
+            if (element.has_value<database_data_type::int64_type>())
+            {
+                properties_data.set_int64_count_value(element.get_value<database_data_type::int64_type>());
+            }
         }
         else if (element.get_field_name() == int64_array_value_description)
         {

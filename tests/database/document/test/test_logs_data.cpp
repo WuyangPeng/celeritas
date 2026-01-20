@@ -84,10 +84,14 @@ BOOST_AUTO_TEST_SUITE(logs_data_suite)
 
         BOOST_CHECK_EQUAL(data.get_int64_value(), 0);
         BOOST_CHECK_EQUAL(data.get_string_value(), "");
+        BOOST_CHECK(data.get_string_array_value().empty());
         BOOST_CHECK_EQUAL(data.get_int32_value(), 0);
         BOOST_CHECK_EQUAL(data.get_int32_count_value(), 0);
+        BOOST_CHECK(data.get_int32_array_value().empty());
         BOOST_CHECK_EQUAL(data.get_int64_count_value(), 0);
+        BOOST_CHECK(data.get_int64_array_value().empty());
         BOOST_CHECK_CLOSE(data.get_double_value(), 0.0, 0.000001);
+        BOOST_CHECK(data.get_double_array_value().empty());
         BOOST_CHECK_EQUAL(data.get_bool_value(), false);
         BOOST_CHECK(data.get_document_value().empty());
         BOOST_CHECK(data.get_document_array_value().empty());
@@ -281,6 +285,63 @@ BOOST_AUTO_TEST_SUITE(logs_data_suite)
         BOOST_CHECK_CLOSE(data.get_double_value(), 1.2345, 0.001);
         BOOST_CHECK_EQUAL(data.get_double_array_value().size(), 3);
         BOOST_CHECK_EQUAL(data.get_bool_value(), true);
+    }
+
+    BOOST_AUTO_TEST_CASE(test_from_document_missing_fields)
+    {
+        const celeritas::logs_data::document_type empty_document{};
+        const auto loaded_data_from_empty = celeritas::logs_data::from_document(empty_document);
+        const celeritas::logs_data default_data{};
+        check_logs_data(loaded_data_from_empty, default_data);
+
+        const celeritas::logs_data::document_type partial_document{ celeritas::basis_database{ celeritas::logs_data::string_value_description.data(), "partial_string" },
+                                                                    celeritas::basis_database{ celeritas::logs_data::int32_value_description.data(), 42 } };
+
+        const auto partial_loaded_data = celeritas::logs_data::from_document(partial_document);
+        BOOST_CHECK_EQUAL(partial_loaded_data.get_string_value(), "partial_string");
+        BOOST_CHECK_EQUAL(partial_loaded_data.get_int32_value(), 42);
+        BOOST_CHECK_EQUAL(partial_loaded_data.get_int64_value(), 0);
+    }
+
+    BOOST_AUTO_TEST_CASE(test_from_document_type_conversion)
+    {
+        const celeritas::logs_data::document_type doc_with_int64{ celeritas::basis_database{ celeritas::logs_data::int32_value_description.data(), 123LL },
+                                                                  celeritas::basis_database{ celeritas::logs_data::int32_count_value_description.data(), 456LL },
+                                                                  celeritas::basis_database{ celeritas::logs_data::int32_array_value_description.data(), celeritas::logs_data::int64_array_type{ 789LL, 101LL } } };
+
+        const auto loaded_data = celeritas::logs_data::from_document(doc_with_int64);
+
+        BOOST_CHECK_EQUAL(loaded_data.get_int32_value(), 123);
+        BOOST_CHECK_EQUAL(loaded_data.get_int32_count_value(), 456);
+
+        const celeritas::logs_data::int32_array_type expected_array{ 789, 101 };
+        celeritas::check_array(loaded_data.get_int32_array_value(), expected_array);
+    }
+
+    BOOST_AUTO_TEST_CASE(test_set_empty_and_default_values)
+    {
+        auto data = get_test_logs_data();
+
+        data.set_string_value("");
+        BOOST_CHECK_EQUAL(data.get_string_value(), "");
+
+        data.set_string_array_value({});
+        BOOST_CHECK(data.get_string_array_value().empty());
+
+        data.set_int32_array_value({});
+        BOOST_CHECK(data.get_int32_array_value().empty());
+
+        data.set_int64_array_value({});
+        BOOST_CHECK(data.get_int64_array_value().empty());
+
+        data.set_double_array_value({});
+        BOOST_CHECK(data.get_double_array_value().empty());
+
+        data.set_document_value({});
+        BOOST_CHECK(data.get_document_value().empty());
+
+        data.set_document_array_value({});
+        BOOST_CHECK(data.get_document_array_value().empty());
     }
 
 BOOST_AUTO_TEST_SUITE_END()

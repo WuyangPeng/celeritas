@@ -205,11 +205,11 @@ celeritas::logs_data celeritas::logs_data::from_document(const document_type& do
         {
             if (element.has_value<database_data_type::int32_type>())
             {
-                logs_data.set_int32_count_value(element.get_value<database_data_type::int32_count_type>());
+                logs_data.set_int32_count_value(element.get_value<database_data_type::int32_type>());
             }
             else if (element.has_value<database_data_type::int64_type>())
             {
-                logs_data.set_int32_count_value(boost::numeric_cast<int32_t>(element.get_value<database_data_type::int64_count_type>()));
+                logs_data.set_int32_count_value(boost::numeric_cast<int32_t>(element.get_value<database_data_type::int64_type>()));
             }
         }
         else if (element.get_field_name() == int32_array_value_description)
@@ -232,7 +232,10 @@ celeritas::logs_data celeritas::logs_data::from_document(const document_type& do
         }
         else if (element.get_field_name() == int64_count_value_description)
         {
-            logs_data.set_int64_count_value(element.get_value<database_data_type::int64_count_type>());
+            if (element.has_value<database_data_type::int64_type>())
+            {
+                logs_data.set_int64_count_value(element.get_value<database_data_type::int64_type>());
+            }
         }
         else if (element.get_field_name() == int64_array_value_description)
         {
