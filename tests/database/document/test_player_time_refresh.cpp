@@ -106,6 +106,7 @@ BOOST_AUTO_TEST_SUITE(player_time_refresh_suite)
     BOOST_AUTO_TEST_CASE(test_refresh_logic_interval)
     {
         celeritas::player_time_refresh data{};
+
         const auto now = celeritas::time_helper::get_current_milliseconds();
         data.set_time_refresh_type(celeritas::time_refresh_type::interval_duration);
         data.set_parameter(1000);
@@ -120,6 +121,7 @@ BOOST_AUTO_TEST_SUITE(player_time_refresh_suite)
     BOOST_AUTO_TEST_CASE(test_refresh_logic_absolute)
     {
         celeritas::player_time_refresh data{};
+
         const auto now = celeritas::time_helper::get_current_milliseconds();
         data.set_time_refresh_type(celeritas::time_refresh_type::absolute_point);
 
@@ -133,10 +135,12 @@ BOOST_AUTO_TEST_SUITE(player_time_refresh_suite)
     BOOST_AUTO_TEST_CASE(test_refresh_logic_daily)
     {
         celeritas::player_time_refresh data{};
+
         const auto now = celeritas::time_helper::get_current_milliseconds();
         data.set_time_refresh_type(celeritas::time_refresh_type::daily);
         data.set_parameter(0);
         data.set_last_refresh_time(now - 86400000 * 2);
+
         BOOST_CHECK(data.is_can_refresh());
         BOOST_CHECK_GT(data.get_next_refresh_time(), now);
     }
@@ -144,9 +148,11 @@ BOOST_AUTO_TEST_SUITE(player_time_refresh_suite)
     BOOST_AUTO_TEST_CASE(test_refresh_logic_weekly)
     {
         celeritas::player_time_refresh data{};
+
         const auto now = celeritas::time_helper::get_current_milliseconds();
         data.set_time_refresh_type(celeritas::time_refresh_type::weekly);
         data.set_last_refresh_time(now - 86400000 * 8);
+
         BOOST_CHECK(data.is_can_refresh());
         BOOST_CHECK_GT(data.get_next_refresh_time(), now);
     }
@@ -154,9 +160,11 @@ BOOST_AUTO_TEST_SUITE(player_time_refresh_suite)
     BOOST_AUTO_TEST_CASE(test_refresh_logic_monthly)
     {
         celeritas::player_time_refresh data{};
+
         const auto now = celeritas::time_helper::get_current_milliseconds();
         data.set_time_refresh_type(celeritas::time_refresh_type::monthly);
         data.set_last_refresh_time(now - 86400000LL * 32);
+
         BOOST_CHECK(data.is_can_refresh());
         BOOST_CHECK_GT(data.get_next_refresh_time(), now);
     }
@@ -164,6 +172,7 @@ BOOST_AUTO_TEST_SUITE(player_time_refresh_suite)
     BOOST_AUTO_TEST_CASE(test_round_trip)
     {
         celeritas::player_time_refresh original{};
+
         original.set_time_refresh_type(celeritas::time_refresh_type::daily);
         original.set_parameter(100);
         original.set_time_id(1);
