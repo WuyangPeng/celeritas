@@ -35,6 +35,7 @@ int celeritas::develop_data::get_level() const
 void celeritas::develop_data::set_level(const int level)
 {
     level_ = level;
+    updated_time_ = time_helper::get_current_milliseconds();
 }
 
 void celeritas::develop_data::add_level()
@@ -51,6 +52,7 @@ int64_t celeritas::develop_data::get_exp() const
 void celeritas::develop_data::set_exp(const int64_t exp)
 {
     exp_ = exp;
+    updated_time_ = time_helper::get_current_milliseconds();
 }
 
 int64_t celeritas::develop_data::get_updated_time() const
@@ -85,31 +87,31 @@ celeritas::develop_data::document_type celeritas::develop_data::to_document_type
 
 celeritas::develop_data celeritas::develop_data::from_document(const document_type& document)
 {
-    develop_data develop_data{};
+    develop_data data{};
 
     for (const auto& element : document)
     {
         if (element.get_field_name() == system_id_description)
         {
-            develop_data.set_system_id(element.get_value<database_data_type::int32_type>());
+            data.system_id_ = element.get_value<database_data_type::int32_type>();
         }
         else if (element.get_field_name() == instance_id_description)
         {
-            develop_data.set_instance_id(element.get_value<database_data_type::int64_type>());
+            data.instance_id_ = element.get_value<database_data_type::int64_type>();
         }
         else if (element.get_field_name() == level_description)
         {
-            develop_data.set_level(element.get_value<database_data_type::int32_type>());
+            data.level_ = element.get_value<database_data_type::int32_type>();
         }
         else if (element.get_field_name() == exp_description)
         {
-            develop_data.set_exp(element.get_value<database_data_type::int64_type>());
+            data.exp_ = element.get_value<database_data_type::int64_type>();
         }
         else if (element.get_field_name() == updated_time_description)
         {
-            develop_data.set_updated_time(element.get_value<database_data_type::int64_type>());
+            data.updated_time_ = element.get_value<database_data_type::int64_type>();
         }
     }
 
-    return develop_data;
+    return data;
 }
