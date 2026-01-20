@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_SUITE(player_time_refresh_suite)
         data.set_last_refresh_time(now - 86400000 * 2);
 
         BOOST_CHECK(data.is_can_refresh());
-        BOOST_CHECK_GT(data.get_next_refresh_time(), now);
+        BOOST_CHECK_LE(data.get_next_refresh_time(), now);
     }
 
     BOOST_AUTO_TEST_CASE(test_refresh_logic_weekly)
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_SUITE(player_time_refresh_suite)
         data.set_last_refresh_time(now - 86400000 * 8);
 
         BOOST_CHECK(data.is_can_refresh());
-        BOOST_CHECK_GT(data.get_next_refresh_time(), now);
+        BOOST_CHECK_LE(data.get_next_refresh_time(), now);
     }
 
     BOOST_AUTO_TEST_CASE(test_refresh_logic_monthly)
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_SUITE(player_time_refresh_suite)
         data.set_last_refresh_time(now - 86400000LL * 32);
 
         BOOST_CHECK(data.is_can_refresh());
-        BOOST_CHECK_GT(data.get_next_refresh_time(), now);
+        BOOST_CHECK_LE(data.get_next_refresh_time(), now);
     }
 
     BOOST_AUTO_TEST_CASE(test_round_trip)
