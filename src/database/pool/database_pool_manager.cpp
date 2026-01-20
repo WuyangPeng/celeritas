@@ -6,6 +6,8 @@
 #include "database/session/mysql_database_session.h"
 #include "database/session/redis_database_session.h"
 
+#include <mongocxx/instance.hpp>
+
 #include <ranges>
 
 celeritas::database_pool_manager& celeritas::database_pool_manager::get_instance()

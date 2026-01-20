@@ -3,8 +3,6 @@
 #include "database_pool_base.h"
 #include "config/basic/database_type.h"
 
-#include <mongocxx/instance.hpp>
-
 #include <map>
 #include <shared_mutex>
 
