@@ -30,6 +30,8 @@ namespace celeritas
 
         [[nodiscard]] optional_const_entity_shared_ptr get_item(int64_t id);
 
+        void clear() override;
+
     private:
         using container_type = std::unordered_map<int64_t, const_entity_shared_ptr>;
 

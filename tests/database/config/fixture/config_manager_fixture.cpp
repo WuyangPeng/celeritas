@@ -14,6 +14,7 @@ celeritas::config_manager_fixture::config_manager_fixture()
 celeritas::config_manager_fixture::~config_manager_fixture()
 {
     database_pool_manager::get_instance().set_mock_pool(nullptr);
+    config_manager::get_instance().clear();
 }
 
 void celeritas::config_manager_fixture::run(awaitable_function func)

@@ -1,5 +1,6 @@
 ﻿#include "config_manager.h"
 #include "config_table.tpp"
+#include "common/core/celeritas_error.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 #include "database/database_constant.h"
@@ -11,6 +12,7 @@
 celeritas::config_manager& celeritas::config_manager::get_instance()
 {
     static config_manager instance{};
+
     return instance;
 }
 
@@ -55,6 +57,16 @@ celeritas::config_manager::optional_const_time_refresh_shared_ptr celeritas::con
     return std::nullopt;
 }
 
+void celeritas::config_manager::clear()
+{
+    std::lock_guard lock{ shared_mutex_ };
+
+    for (const auto& table : config_tables_ | std::views::values)
+    {
+        table->clear();
+    }
+}
+
 celeritas::config_manager::config_manager()
     : config_tables_{}, shared_mutex_{}
 {
@@ -74,7 +86,7 @@ void celeritas::config_manager::register_time_refresh_table()
 
 celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_from_db()
 {
-    const auto mysql_pool = celeritas::database_pool_manager::get_instance().get_pool(mysql_config_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_config_db_name.data());
     if (!mysql_pool)
     {
         co_return;
@@ -90,7 +102,7 @@ celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_f
 
 celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_from_db(const std::string& db_name, const int64_t id)
 {
-    const auto mysql_pool = celeritas::database_pool_manager::get_instance().get_pool(mysql_config_db_name.data());
+    const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_config_db_name.data());
     if (!mysql_pool)
     {
         co_return;
@@ -98,16 +110,20 @@ celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_f
 
     std::lock_guard lock{ shared_mutex_ };
 
-    if (db_name.empty())
-    {
-        for (const auto& table : config_tables_ | std::views::values)
-        {
-            co_await table->load_one(mysql_pool, id);
-        }
-    }
-    else if (const auto iter = config_tables_.find(db_name);
+    if (const auto iter = config_tables_.find(db_name);
         iter != config_tables_.cend())
     {
-        co_await iter->second->load_one(mysql_pool, id);
+        if (id == 0)
+        {
+            co_await iter->second->load_all(mysql_pool);
+        }
+        else
+        {
+            co_await iter->second->load_one(mysql_pool, id);
+        }
+    }
+    else
+    {
+        throw celeritas_error{ "load from db is error, id = {}", id };
     }
 }

@@ -28,6 +28,8 @@ namespace celeritas
 
         [[nodiscard]] optional_const_time_refresh_shared_ptr get_time_refresh(int64_t id);
 
+        void clear();
+
     private:
         using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
         using config_table_unique_ptr = std::unique_ptr<config_table_base>;

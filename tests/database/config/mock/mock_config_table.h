@@ -21,6 +21,8 @@ namespace celeritas
 
         [[nodiscard]] bool was_load_one_called() const;
 
+        void clear();
+
     private:
         std::string_view name_;
         bool load_all_called_;

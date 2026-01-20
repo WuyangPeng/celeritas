@@ -22,5 +22,7 @@ namespace celeritas
         [[nodiscard]] virtual void_awaitable_type load_all(const database_pool_shared_ptr& pool) = 0;
 
         [[nodiscard]] virtual void_awaitable_type load_one(const database_pool_shared_ptr& pool, int64_t id) = 0;
+
+        virtual void clear() = 0;
     };
 }

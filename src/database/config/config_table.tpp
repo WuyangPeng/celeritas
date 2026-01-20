@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "config_table.h"
+#include "common/core/celeritas_error.h"
 #include "config/basic/database_type.h"
 
 template <typename T>
@@ -35,7 +36,7 @@ celeritas::config_table_base::void_awaitable_type celeritas::config_table<T>::lo
 {
     if (id == 0)
     {
-        co_return co_await load_all(pool);
+        throw celeritas_error{ "load one error, id = 0" };
     }
 
     if (const auto optional_item = co_await pool->select_one(entity_type::get_select(database_type::mysql, id), entity_type::get_database_field_container()))
@@ -43,6 +44,10 @@ celeritas::config_table_base::void_awaitable_type celeritas::config_table<T>::lo
         const entity_type item{ *optional_item };
 
         container_.insert_or_assign(item.get_id(), std::make_shared<const entity_type>(item));
+    }
+    else
+    {
+        throw celeritas_error{ "load one error, id = {}", id };
     }
 }
 
@@ -56,5 +61,11 @@ celeritas::config_table<T>::optional_const_entity_shared_ptr celeritas::config_t
     }
 
     return std::nullopt;
+}
+
+template <typename T>
+void celeritas::config_table<T>::clear()
+{
+    container_.clear();
 }
 

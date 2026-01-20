@@ -38,9 +38,9 @@ BOOST_FIXTURE_TEST_SUITE(config_manager_suite, celeritas::config_manager_fixture
     BOOST_AUTO_TEST_CASE(test_reload_from_db_with_params)
     {
         run([this]() -> boost::asio::awaitable<void> {
-            celeritas::config_manager::get_instance().reload_from_db(get_io_context().get_executor(), "time_refresh_db", celeritas::mock_config_database_pool::time_refresh_id);
+            celeritas::config_manager::get_instance().reload_from_db(get_io_context().get_executor(), celeritas::time_refresh_db_name.data(), celeritas::mock_config_database_pool::time_refresh_id);
 
-            co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds(100)).async_wait(boost::asio::use_awaitable);
+            co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds{ 100 }).async_wait(boost::asio::use_awaitable);
 
             check_time_refresh_valid();
 
@@ -53,7 +53,7 @@ BOOST_FIXTURE_TEST_SUITE(config_manager_suite, celeritas::config_manager_fixture
         run([this]() -> boost::asio::awaitable<void> {
             celeritas::config_manager::get_instance().reload_from_db(get_io_context().get_executor(), "", 0);
 
-            co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds(100)).async_wait(boost::asio::use_awaitable);
+            co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds{ 100 }).async_wait(boost::asio::use_awaitable);
 
             check_time_refresh_valid();
 
@@ -66,9 +66,10 @@ BOOST_FIXTURE_TEST_SUITE(config_manager_suite, celeritas::config_manager_fixture
         run([this]() -> boost::asio::awaitable<void> {
             celeritas::config_manager::get_instance().reload_from_db(get_io_context().get_executor(), "", celeritas::mock_config_database_pool::time_refresh_id);
 
-            co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds(100)).async_wait(boost::asio::use_awaitable);
+            co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds{ 100 }).async_wait(boost::asio::use_awaitable);
 
-            check_time_refresh_valid();
+            const auto non_existent = celeritas::config_manager::get_instance().get_time_refresh(celeritas::mock_config_database_pool::time_refresh_id);
+            BOOST_CHECK(!non_existent.has_value());
 
             set_test_end(true);
         });
@@ -79,7 +80,7 @@ BOOST_FIXTURE_TEST_SUITE(config_manager_suite, celeritas::config_manager_fixture
         run([this]() -> boost::asio::awaitable<void> {
             celeritas::config_manager::get_instance().reload_from_db(get_io_context().get_executor(), "non_existent_db", 1);
 
-            co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds(100)).async_wait(boost::asio::use_awaitable);
+            co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds{ 100 }).async_wait(boost::asio::use_awaitable);
 
             set_test_end(true);
         });
@@ -90,7 +91,7 @@ BOOST_FIXTURE_TEST_SUITE(config_manager_suite, celeritas::config_manager_fixture
         run([this]() -> boost::asio::awaitable<void> {
             celeritas::config_manager::get_instance().load_from_db(get_io_context().get_executor());
 
-            co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds(100)).async_wait(boost::asio::use_awaitable);
+            co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds{ 100 }).async_wait(boost::asio::use_awaitable);
 
             celeritas::concurrent_access_tester tester{ get_io_context().get_executor() };
             tester.run();
