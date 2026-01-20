@@ -1,5 +1,6 @@
 ﻿#include "player_time_refresh.h"
 #include "common/common_constant.h"
+#include "common/core/celeritas_error.h"
 #include "common/core/enum_cast.h"
 #include "common/core/time_helper.h"
 #include "database/basic/basis_database.tpp"
@@ -106,7 +107,7 @@ int64_t celeritas::player_time_refresh::get_next_refresh_time() const
         }
         default:
         {
-            return 0;
+            throw celeritas_error{"Invalid time refresh type."};
         }
     }
 }
@@ -156,21 +157,21 @@ celeritas::player_time_refresh::document_type celeritas::player_time_refresh::to
 
 celeritas::player_time_refresh celeritas::player_time_refresh::from_document(const document_type& document)
 {
-    player_time_refresh player_time_refresh{};
+    player_time_refresh data{};
 
     for (const auto& element : document)
     {
         if (element.get_field_name() == time_refresh_type_description)
         {
-            player_time_refresh.set_time_refresh_type(underlying_cast_enum<time_refresh_type>(element.get_value<database_data_type::int32_type>()));
+            data.time_refresh_type_ = underlying_cast_enum<time_refresh_type>(element.get_value<database_data_type::int32_type>());
         }
         else if (element.get_field_name() == parameter_description)
         {
-            player_time_refresh.set_parameter(element.get_value<database_data_type::int64_type>());
+            data.parameter_ = element.get_value<database_data_type::int64_type>();
         }
         else if (element.get_field_name() == time_id_description)
         {
-            player_time_refresh.set_time_id(element.get_value<database_data_type::int64_type>());
+            data.time_id_ = element.get_value<database_data_type::int64_type>();
         }
         else if (element.get_field_name() == component_description)
         {
@@ -180,13 +181,13 @@ celeritas::player_time_refresh celeritas::player_time_refresh::from_document(con
             {
                 container.emplace_back(underlying_cast_enum<player_component_type>(component_type));
             }
-            player_time_refresh.set_component(container);
+            data.component_ = container;
         }
         else if (element.get_field_name() == last_refresh_time_description)
         {
-            player_time_refresh.set_last_refresh_time(element.get_value<database_data_type::int64_type>());
+            data.last_refresh_time_ = element.get_value<database_data_type::int64_type>();
         }
     }
 
-    return player_time_refresh;
+    return data;
 }
