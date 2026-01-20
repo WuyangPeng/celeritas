@@ -9,7 +9,7 @@
 #include "database/entity/entity.tpp"
 
 celeritas::time_refresh::time_refresh(const database_entity_change& entity)
-    : base_type{ entity },
+    : base_type{ entity.get_database_entity_change(id_describe)  },
       id_{ entity.get_value<database_data_type::int64_type>(id_describe) },
       time_refresh_type_{ entity.get_value<database_data_type::int32_type>(time_refresh_type_describe) },
       parameter_{ entity.get_value<database_data_type::int32_type>(parameter_describe) }
@@ -17,7 +17,7 @@ celeritas::time_refresh::time_refresh(const database_entity_change& entity)
 }
 
 celeritas::time_refresh::time_refresh(const database_type database_type, const database_entity_change& entity)
-    : base_type{ database_type, entity },
+    : base_type{ database_type, entity.get_database_entity_change(id_describe) },
       id_{ entity.get_value<database_data_type::int64_type>(id_describe) },
       time_refresh_type_{ entity.get_value<database_data_type::int32_type>(time_refresh_type_describe) },
       parameter_{ entity.get_value<database_data_type::int32_type>(parameter_describe) }

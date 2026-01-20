@@ -210,7 +210,7 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
 
         change.modify(celeritas::basis_database{ "int_field", 100 });
 
-        BOOST_CHECK_THROW([change = std::move(change)]{ std::ignore = change.get_value<celeritas::database_data_type::string_type>("int_field"); }(), std::bad_variant_access);
+        BOOST_CHECK_THROW(std::ignore = change.get_value<celeritas::database_data_type::string_type>("int_field"), std::bad_variant_access);
     }
 
     BOOST_AUTO_TEST_CASE(test_database_entity_change_get_database_content)
@@ -360,6 +360,32 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
         BOOST_CHECK_CLOSE(change.get_value<celeritas::database_data_type::double_type>("double_field"), 3.14, 0.001);
         BOOST_CHECK_EQUAL(change.get_value<celeritas::database_data_type::int64_type>("int64_field"), 1234567890123);
         BOOST_CHECK_EQUAL(change.get_value<celeritas::database_data_type::bool_type>("bool_field"), true);
+    }
+
+    BOOST_AUTO_TEST_CASE(test_get_database_entity_change)
+    {
+        const auto key = std::make_shared<celeritas::basis_database_container>();
+        celeritas::database_entity_change change{ celeritas::database_type::mysql, "test", celeritas::database_change_type::select_type, key };
+
+        const celeritas::basis_database id{ "id", 1 };
+        const celeritas::basis_database field1{ "field1", "value1" };
+        const celeritas::basis_database field2{ "field2", 123 };
+        change.modify(id);
+        change.modify(field1);
+        change.modify(field2);
+
+        const auto new_change = change.get_database_entity_change("id");
+
+        BOOST_CHECK(new_change.get_database_type() == change.get_database_type());
+        BOOST_CHECK_EQUAL(new_change.get_database_name(), change.get_database_name());
+        BOOST_CHECK(new_change.get_change_type() == change.get_change_type());
+
+        const auto new_key = new_change.get_key();
+        BOOST_CHECK(new_key != nullptr);
+        BOOST_CHECK_EQUAL(new_key->get_size(), 1);
+        BOOST_CHECK(new_key->get_basis_database("id") == id);
+
+        BOOST_CHECK_THROW(std::ignore = change.get_database_entity_change("missing_field"), celeritas::celeritas_error);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

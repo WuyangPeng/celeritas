@@ -34,7 +34,11 @@ namespace celeritas
 
         [[nodiscard]] const object_container& get_object_container() const;
 
+        [[nodiscard]] const basis_database& get_basis_database(std::string_view field_name) const;
+
     private:
+        [[nodiscard]] object_container_const_iter get_object_container_const_iter(std::string_view field_name) const;
+
         object_container container_;
     };
 

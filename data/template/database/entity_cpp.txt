@@ -9,13 +9,13 @@
 #include "database/entity/entity.tpp"
 
 celeritas::${class_name}::${class_name}(const database_entity_change& entity)
-    : base_type{ entity },
+    : base_type{ entity.get_database_entity_change(${key_name}_describe)  },
       ${key_name}_{ entity.get_value<database_data_type::${key_type}>(${key_name}_describe) },
 ${field_assignment}{
 }
 
 celeritas::${class_name}::${class_name}(const database_type database_type, const database_entity_change& entity)
-    : base_type{ database_type, entity },
+    : base_type{ database_type, entity.get_database_entity_change(${key_name}_describe) },
       ${key_name}_{ entity.get_value<database_data_type::${key_type}>(${key_name}_describe) },
 ${field_assignment}{
     if (database_type != entity.get_database_type())

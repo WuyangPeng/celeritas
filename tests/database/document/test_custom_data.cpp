@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_SUITE(custom_data_suite)
     {
         celeritas::custom_data::document_type custom_document{ celeritas::basis_database{ celeritas::custom_data::type_description, std::string{ "unknown" } } };
 
-        BOOST_CHECK_THROW([custom_document = std::move(custom_document)] { std::ignore = celeritas::custom_data::from_document(custom_document) ; }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = celeritas::custom_data::from_document(custom_document), celeritas::celeritas_error);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

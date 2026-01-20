@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_SUITE(app_config_suite)
 
         BOOST_CHECK(config.get_expire_milliseconds(db_name) >= current_time + database_config->get_expire_seconds() * celeritas::milliseconds);
 
-        BOOST_CHECK_THROW([&config] { std::ignore = config.get_database_config("non_existent");}(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = config.get_database_config("non_existent"), celeritas::celeritas_error);
     }
 
     BOOST_AUTO_TEST_CASE(test_load_loggers_config)

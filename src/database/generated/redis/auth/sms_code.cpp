@@ -9,7 +9,7 @@
 #include "database/entity/entity.tpp"
 
 celeritas::sms_code::sms_code(const database_entity_change& entity)
-    : base_type{ entity },
+    : base_type{ entity.get_database_entity_change(phone_describe)  },
       phone_{ entity.get_value<database_data_type::string_type>(phone_describe) },
       code_{ entity.get_value<database_data_type::int32_type>(code_describe) },
       retry_count_{ entity.get_value<database_data_type::int32_count_type>(retry_count_describe) }
@@ -17,7 +17,7 @@ celeritas::sms_code::sms_code(const database_entity_change& entity)
 }
 
 celeritas::sms_code::sms_code(const database_type database_type, const database_entity_change& entity)
-    : base_type{ database_type, entity },
+    : base_type{ database_type, entity.get_database_entity_change(phone_describe) },
       phone_{ entity.get_value<database_data_type::string_type>(phone_describe) },
       code_{ entity.get_value<database_data_type::int32_type>(code_describe) },
       retry_count_{ entity.get_value<database_data_type::int32_count_type>(retry_count_describe) }

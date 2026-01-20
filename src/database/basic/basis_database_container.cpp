@@ -46,12 +46,10 @@ void celeritas::basis_database_container::clear()
 
 const celeritas::basis_database::value_variant& celeritas::basis_database_container::get_variant_value(std::string_view field_name) const
 {
-    if (const auto result = std::ranges::find_if(container_, [&field_name](const auto& element) {
-            return element.get_field_name() == field_name;
-        });
-        result != container_.cend())
+    if (const auto iter = get_object_container_const_iter(field_name);
+        iter != container_.cend())
     {
-        return result->get_variant_value();
+        return iter->get_variant_value();
     }
 
     static constexpr value_variant default_value{};
@@ -76,6 +74,24 @@ int celeritas::basis_database_container::get_size() const
 const celeritas::basis_database_container::object_container& celeritas::basis_database_container::get_object_container() const
 {
     return container_;
+}
+
+const celeritas::basis_database& celeritas::basis_database_container::get_basis_database(std::string_view field_name) const
+{
+    if (const auto iter = get_object_container_const_iter(field_name);
+        iter != container_.cend())
+    {
+        return *iter;
+    }
+
+    throw celeritas_error{ "field name:{} not found", field_name };
+}
+
+celeritas::basis_database_container::object_container_const_iter celeritas::basis_database_container::get_object_container_const_iter(std::string_view field_name) const
+{
+    return std::ranges::find_if(container_, [&field_name](const auto& element) {
+        return element.get_field_name() == field_name;
+    });
 }
 
 bool celeritas::operator==(const basis_database_container& lhs, const basis_database_container& rhs)

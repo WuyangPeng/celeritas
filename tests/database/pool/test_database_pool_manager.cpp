@@ -132,8 +132,7 @@ BOOST_AUTO_TEST_SUITE(database_pool_manager_suite)
 
         BOOST_TEST(celeritas::database_pool_manager::get_instance().get_pool(pool_name) != nullptr);
         celeritas::database_pool_manager::get_instance().release_pool();
-        BOOST_CHECK_THROW([pool_name ]{std::ignore = celeritas::database_pool_manager::get_instance().get_pool(pool_name); }(),
-                          celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = celeritas::database_pool_manager::get_instance().get_pool(pool_name), celeritas::celeritas_error);
     }
 
     BOOST_FIXTURE_TEST_CASE(test_set_mock_pool, celeritas::connection_pool_fixture)

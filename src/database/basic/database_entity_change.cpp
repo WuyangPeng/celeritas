@@ -14,21 +14,17 @@ celeritas::database_entity_change::database_entity_change(const database_type da
       key_{ std::move(key) },
       database_{ std::make_shared<basis_database_container>() }
 {
+    if (key_->get_size() == 0 && change_type != database_change_type::select_type)
+    {
+        throw celeritas_error{ "A key must be provided when the change type is not select_type." };
+    }
 }
 
 celeritas::database_entity_change::database_entity_change(const database_type database_type,
                                                           const std::string_view database_name,
                                                           const database_change_type change_type)
-    : database_type_{ database_type },
-      database_name_{ database_name },
-      change_type_{ change_type },
-      key_{ std::make_shared<basis_database_container>() },
-      database_{ std::make_shared<basis_database_container>() }
+    : class_type{ database_type, database_name, change_type, std::make_shared<basis_database_container>() }
 {
-    if (change_type != database_change_type::select_type)
-    {
-        throw celeritas_error{ "A key must be provided when the change type is not select_type." };
-    }
 }
 
 celeritas::database_type celeritas::database_entity_change::get_database_type() const noexcept
@@ -64,6 +60,19 @@ celeritas::database_entity_change celeritas::database_entity_change::get_select(
 celeritas::database_entity_change celeritas::database_entity_change::get_select(const const_basis_database_container_shared_ptr& key) const
 {
     return database_entity_change{ database_type_, database_name_, database_change_type::select_type, key };
+}
+
+celeritas::database_entity_change celeritas::database_entity_change::get_database_entity_change(const std::string_view field_name) const
+{
+    if (key_->get_size() == 0)
+    {
+        return database_entity_change{ database_type_,
+                                       database_name_,
+                                       change_type_,
+                                       std::make_shared<basis_database_container>(database_->get_basis_database(field_name)) };
+    }
+
+    return *this;
 }
 
 void celeritas::database_entity_change::modify(const basis_database& basis_database)

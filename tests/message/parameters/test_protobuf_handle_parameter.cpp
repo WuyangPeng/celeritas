@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_SUITE(protobuf_handle_parameter_suite)
     {
         const auto parameter = get_parameter();
 
-        BOOST_CHECK_NO_THROW([&parameter] { std::ignore = parameter->get_application_loader(); }());
+        BOOST_CHECK_NO_THROW(std::ignore = parameter->get_application_loader());
         BOOST_CHECK_EQUAL(parameter->get_application_loader(), get_application_loader());
         BOOST_CHECK_EQUAL(parameter->get_resource_loader(), get_resource_loader());
     }
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_SUITE(protobuf_handle_parameter_suite)
     {
         const auto parameter = get_parameter();
 
-        BOOST_CHECK_NO_THROW([&parameter] { std::ignore = parameter->get_app_config(); }());
+        BOOST_CHECK_NO_THROW(std::ignore = parameter->get_app_config());
         const auto app_config = parameter->get_app_config();
         BOOST_CHECK_EQUAL(app_config->get_external_host(), "192.168.1.100");
     }
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_SUITE(protobuf_handle_parameter_suite)
     BOOST_FIXTURE_TEST_CASE(test_get_any_io_executor, celeritas::protobuf_handle_parameter_fixture)
     {
         const auto parameter = get_parameter();
-        BOOST_CHECK_NO_THROW([&parameter] { std::ignore = parameter->get_any_io_executor(); }());
+        BOOST_CHECK_NO_THROW(std::ignore = parameter->get_any_io_executor());
         BOOST_CHECK(parameter->get_any_io_executor().target<boost::asio::io_context::executor_type>());
     }
 
@@ -143,10 +143,10 @@ BOOST_AUTO_TEST_SUITE(protobuf_handle_parameter_suite)
         constexpr celeritas::header header{};
         const auto parameter = std::make_shared<celeritas::protobuf_handle_parameter>(header, nullptr, nullptr, nullptr, nullptr);
 
-        BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_session_id(); }(), celeritas::celeritas_error);
-        BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_server_network_type(); }(), celeritas::celeritas_error);
-        BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_instance_id(); }(), celeritas::celeritas_error);
-        BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_any_io_executor(); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = parameter->get_session_id(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = parameter->get_server_network_type(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = parameter->get_instance_id(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = parameter->get_any_io_executor(), celeritas::celeritas_error);
         BOOST_CHECK_THROW([&parameter] { parameter->set_instance_id("instance"); }(), celeritas::celeritas_error);
         BOOST_CHECK_THROW([&parameter] { parameter->add_session_route(1, celeritas::session_route{ celeritas::server_network_type::tcp, 1, "instance" }); }(), celeritas::celeritas_error);
 
@@ -159,8 +159,8 @@ BOOST_AUTO_TEST_SUITE(protobuf_handle_parameter_suite)
         constexpr celeritas::header header{};
         const auto parameter = std::make_shared<celeritas::protobuf_handle_parameter>(header, nullptr, nullptr, nullptr, nullptr);
 
-        BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_application_loader(); }(), celeritas::celeritas_error);
-        BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_app_config(); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = parameter->get_application_loader(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = parameter->get_app_config(), celeritas::celeritas_error);
     }
 
     BOOST_AUTO_TEST_CASE(test_null_resource_loader_dependency_throws)
@@ -168,7 +168,7 @@ BOOST_AUTO_TEST_SUITE(protobuf_handle_parameter_suite)
         constexpr celeritas::header header{};
         const auto parameter = std::make_shared<celeritas::protobuf_handle_parameter>(header, nullptr, nullptr, nullptr, nullptr);
 
-        BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_resource_loader(); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = parameter->get_resource_loader(), celeritas::celeritas_error);
 
         const google::protobuf::Empty empty{};
         BOOST_CHECK_THROW(([&parameter, &empty] { parameter->write_to_client(empty); }()), celeritas::celeritas_error);

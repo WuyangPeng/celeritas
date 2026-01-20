@@ -9,7 +9,7 @@
 #include "database/entity/entity.tpp"
 
 celeritas::email_providers::email_providers(const database_entity_change& entity)
-    : base_type{ entity },
+    : base_type{ entity.get_database_entity_change(provider_id_describe)  },
       provider_id_{ entity.get_value<database_data_type::int64_type>(provider_id_describe) },
       provider_name_{ entity.get_value<database_data_type::string_type>(provider_name_describe) },
       base_url_{ entity.get_value<database_data_type::string_type>(base_url_describe) },
@@ -22,7 +22,7 @@ celeritas::email_providers::email_providers(const database_entity_change& entity
 }
 
 celeritas::email_providers::email_providers(const database_type database_type, const database_entity_change& entity)
-    : base_type{ database_type, entity },
+    : base_type{ database_type, entity.get_database_entity_change(provider_id_describe) },
       provider_id_{ entity.get_value<database_data_type::int64_type>(provider_id_describe) },
       provider_name_{ entity.get_value<database_data_type::string_type>(provider_name_describe) },
       base_url_{ entity.get_value<database_data_type::string_type>(base_url_describe) },

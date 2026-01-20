@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_SUITE(game_tables_suite)
         const auto tables_data = create_test_tables();
         const celeritas::game_tables game_tables{ tables_data };
 
-        BOOST_CHECK_THROW([game_tables] { std::ignore = game_tables.get_name(static_cast<celeritas::game_tables::sex_type>(999));}(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = game_tables.get_name(static_cast<celeritas::game_tables::sex_type>(999)), celeritas::celeritas_error);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

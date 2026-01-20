@@ -9,7 +9,7 @@
 #include "database/entity/entity.tpp"
 
 celeritas::server_cell::server_cell(const database_entity_change& entity)
-    : base_type{ entity },
+    : base_type{ entity.get_database_entity_change(cell_id_describe)  },
       cell_id_{ entity.get_value<database_data_type::int64_type>(cell_id_describe) },
       game_server_id_{ entity.get_value<database_data_type::string_type>(game_server_id_describe) },
       server_name_{ entity.get_value<database_data_type::string_type>(server_name_describe) },
@@ -22,7 +22,7 @@ celeritas::server_cell::server_cell(const database_entity_change& entity)
 }
 
 celeritas::server_cell::server_cell(const database_type database_type, const database_entity_change& entity)
-    : base_type{ database_type, entity },
+    : base_type{ database_type, entity.get_database_entity_change(cell_id_describe) },
       cell_id_{ entity.get_value<database_data_type::int64_type>(cell_id_describe) },
       game_server_id_{ entity.get_value<database_data_type::string_type>(game_server_id_describe) },
       server_name_{ entity.get_value<database_data_type::string_type>(server_name_describe) },

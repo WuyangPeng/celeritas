@@ -9,7 +9,7 @@
 #include "database/entity/entity.tpp"
 
 celeritas::user_red_dots::user_red_dots(const database_entity_change& entity)
-    : base_type{ entity },
+    : base_type{ entity.get_database_entity_change(user_id_describe)  },
       user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       red_dots_{ entity.get_value<database_data_type::document_array_type>(red_dots_describe) },
       last_check_time_{ entity.get_value<database_data_type::int64_type>(last_check_time_describe) }
@@ -17,7 +17,7 @@ celeritas::user_red_dots::user_red_dots(const database_entity_change& entity)
 }
 
 celeritas::user_red_dots::user_red_dots(const database_type database_type, const database_entity_change& entity)
-    : base_type{ database_type, entity },
+    : base_type{ database_type, entity.get_database_entity_change(user_id_describe) },
       user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       red_dots_{ entity.get_value<database_data_type::document_array_type>(red_dots_describe) },
       last_check_time_{ entity.get_value<database_data_type::int64_type>(last_check_time_describe) }

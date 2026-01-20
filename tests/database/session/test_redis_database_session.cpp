@@ -779,12 +779,13 @@ BOOST_FIXTURE_TEST_SUITE(redis_database_session_suite, celeritas::redis_database
     BOOST_AUTO_TEST_CASE(test_get_commands_accessors)
     {
         const auto session = get_session();
-        BOOST_CHECK_NO_THROW([session = session]{std::ignore = session->get_redis_key_commands();}());
-        BOOST_CHECK_NO_THROW([session = session]{std::ignore =session->get_redis_string_commands();}());
-        BOOST_CHECK_NO_THROW([session = session]{std::ignore =session->get_redis_hash_commands();}());
-        BOOST_CHECK_NO_THROW([session = session]{std::ignore =session->get_redis_list_commands();}());
-        BOOST_CHECK_NO_THROW([session = session]{std::ignore =session->get_redis_set_commands();}());
-        BOOST_CHECK_NO_THROW([session = session]{std::ignore =session->get_redis_sorted_set_commands();}());
+
+        BOOST_CHECK_NO_THROW(std::ignore = session->get_redis_key_commands());
+        BOOST_CHECK_NO_THROW(std::ignore =session->get_redis_string_commands());
+        BOOST_CHECK_NO_THROW(std::ignore =session->get_redis_hash_commands());
+        BOOST_CHECK_NO_THROW(std::ignore =session->get_redis_list_commands());
+        BOOST_CHECK_NO_THROW(std::ignore =session->get_redis_set_commands());
+        BOOST_CHECK_NO_THROW(std::ignore =session->get_redis_sorted_set_commands());
     }
 
 BOOST_AUTO_TEST_SUITE_END()

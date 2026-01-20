@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_SUITE(weight_suite)
         weight.add_element(201, 1.0);
         BOOST_CHECK_EQUAL(weight.get_id(0), 201);
 
-        BOOST_CHECK_THROW([&weight] { std::ignore = weight.get_id(1); }(), std::out_of_range);
+        BOOST_CHECK_THROW(std::ignore = weight.get_id(1), std::out_of_range);
     }
 
     BOOST_AUTO_TEST_CASE(test_weight_get_id_out_of_range)
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_SUITE(weight_suite)
         weight.add_element(1, 10.0);
 
         BOOST_CHECK_EQUAL(weight.get_id(0), 1);
-        BOOST_CHECK_THROW([&weight] { std::ignore = weight.get_id(1); }(), std::out_of_range);
+        BOOST_CHECK_THROW(std::ignore = weight.get_id(1), std::out_of_range);
     }
 
     BOOST_AUTO_TEST_CASE(test_get_random_index_by_weight)
@@ -75,10 +75,10 @@ BOOST_AUTO_TEST_SUITE(weight_suite)
 
     BOOST_AUTO_TEST_CASE(test_random_on_empty_weight)
     {
-        celeritas::weight weight{};
+        const celeritas::weight weight{};
 
-        BOOST_CHECK_THROW([&weight] { std::ignore = weight.get_random_index_by_weight(); }(), celeritas::celeritas_error);
-        BOOST_CHECK_THROW([&weight] { std::ignore = weight.get_random_id_by_weight(); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = weight.get_random_index_by_weight(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = weight.get_random_id_by_weight(), celeritas::celeritas_error);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

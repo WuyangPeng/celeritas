@@ -17,9 +17,9 @@ BOOST_AUTO_TEST_SUITE(server_network_type_suite)
 
     BOOST_AUTO_TEST_CASE(test_get_server_network_type_invalid)
     {
-        BOOST_CHECK_THROW([] { std::ignore = celeritas::get_server_network_type("unknown"); }(), celeritas::celeritas_error);
-        BOOST_CHECK_THROW([] { std::ignore = celeritas::get_server_network_type(""); }(), celeritas::celeritas_error);
-        BOOST_CHECK_THROW([] { std::ignore = celeritas::get_server_network_type("ws"); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = celeritas::get_server_network_type("unknown"), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = celeritas::get_server_network_type(""), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = celeritas::get_server_network_type("ws"), celeritas::celeritas_error);
     }
 
     BOOST_AUTO_TEST_CASE(test_get_all_server_network_type)

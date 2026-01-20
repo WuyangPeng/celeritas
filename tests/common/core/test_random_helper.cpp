@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
     {
         constexpr auto begin = 10;
         constexpr auto end = 5;
-        BOOST_CHECK_THROW([] { std::ignore = celeritas::random_helper::get_random_int(begin, end); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = celeritas::random_helper::get_random_int(begin, end), celeritas::celeritas_error);
     }
 
     // 测试 get_random_float()
@@ -151,7 +151,7 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
     {
         constexpr auto begin = 10.0f;
         constexpr auto end = 5.0f;
-        BOOST_CHECK_THROW([] { std::ignore = celeritas::random_helper::get_random_float(begin, end); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = celeritas::random_helper::get_random_float(begin, end), celeritas::celeritas_error);
     }
 
     // 测试 get_random_double()
@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
     {
         constexpr auto begin = 100.0;
         constexpr auto end = 50.0;
-        BOOST_CHECK_THROW([] { std::ignore = celeritas::random_helper::get_random_double(begin, end); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = celeritas::random_helper::get_random_double(begin, end), celeritas::celeritas_error);
     }
 
     // 测试 get_random_bool(double p)
@@ -242,27 +242,27 @@ BOOST_AUTO_TEST_SUITE(random_helper_suite)
     BOOST_AUTO_TEST_CASE(test_get_random_index_by_weight_empty_vector_throws)
     {
         const celeritas::random_helper::weights_type weights{};
-        BOOST_CHECK_THROW([&] { std::ignore = celeritas::random_helper::get_random_index_by_weight(weights); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = celeritas::random_helper::get_random_index_by_weight(weights), celeritas::celeritas_error);
     }
 
     // 测试 get_random_index_by_weight 全零权重抛出异常
     BOOST_AUTO_TEST_CASE(test_get_random_index_by_weight_all_zeros_throws)
     {
         const celeritas::random_helper::weights_type weights{ 0.0, 0.0, 0.0 };
-        BOOST_CHECK_THROW([&] { std::ignore = celeritas::random_helper::get_random_index_by_weight(weights); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = celeritas::random_helper::get_random_index_by_weight(weights), celeritas::celeritas_error);
     }
 
     // 测试 get_random_index_by_weight 负权重抛出异常
     BOOST_AUTO_TEST_CASE(test_get_random_index_by_weight_negative_weights_throws)
     {
         const celeritas::random_helper::weights_type weights1{ 10.0, -20.0, 5.0 };
-        BOOST_CHECK_THROW([&] { std::ignore = celeritas::random_helper::get_random_index_by_weight(weights1); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = celeritas::random_helper::get_random_index_by_weight(weights1), celeritas::celeritas_error);
 
         const celeritas::random_helper::weights_type weights2{ 10.0, -10.0 };
-        BOOST_CHECK_THROW([&] { std::ignore = celeritas::random_helper::get_random_index_by_weight(weights2); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = celeritas::random_helper::get_random_index_by_weight(weights2), celeritas::celeritas_error);
 
         const celeritas::random_helper::weights_type weights3{ 20.0, -5.0, 10.0 };
-        BOOST_CHECK_THROW([&] { std::ignore = celeritas::random_helper::get_random_index_by_weight(weights3); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = celeritas::random_helper::get_random_index_by_weight(weights3), celeritas::celeritas_error);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -9,7 +9,7 @@
 #include "database/entity/entity.tpp"
 
 celeritas::user::user(const database_entity_change& entity)
-    : base_type{ entity },
+    : base_type{ entity.get_database_entity_change(user_id_describe)  },
       user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       game_server_id_{ entity.get_value<database_data_type::string_type>(game_server_id_describe) },
@@ -18,7 +18,7 @@ celeritas::user::user(const database_entity_change& entity)
 }
 
 celeritas::user::user(const database_type database_type, const database_entity_change& entity)
-    : base_type{ database_type, entity },
+    : base_type{ database_type, entity.get_database_entity_change(user_id_describe) },
       user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       game_server_id_{ entity.get_value<database_data_type::string_type>(game_server_id_describe) },

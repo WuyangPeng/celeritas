@@ -9,7 +9,7 @@
 #include "database/entity/entity.tpp"
 
 celeritas::account_last_login::account_last_login(const database_entity_change& entity)
-    : base_type{ entity },
+    : base_type{ entity.get_database_entity_change(account_id_describe)  },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       game_server_id_{ entity.get_value<database_data_type::string_type>(game_server_id_describe) },
       update_time_{ entity.get_value<database_data_type::int64_type>(update_time_describe) }
@@ -17,7 +17,7 @@ celeritas::account_last_login::account_last_login(const database_entity_change& 
 }
 
 celeritas::account_last_login::account_last_login(const database_type database_type, const database_entity_change& entity)
-    : base_type{ database_type, entity },
+    : base_type{ database_type, entity.get_database_entity_change(account_id_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       game_server_id_{ entity.get_value<database_data_type::string_type>(game_server_id_describe) },
       update_time_{ entity.get_value<database_data_type::int64_type>(update_time_describe) }

@@ -9,7 +9,7 @@
 #include "database/entity/entity.tpp"
 
 celeritas::orders::orders(const database_entity_change& entity)
-    : base_type{ entity },
+    : base_type{ entity.get_database_entity_change(id_describe)  },
       id_{ entity.get_value<database_data_type::int64_type>(id_describe) },
       order_id_{ entity.get_value<database_data_type::string_type>(order_id_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
@@ -33,7 +33,7 @@ celeritas::orders::orders(const database_entity_change& entity)
 }
 
 celeritas::orders::orders(const database_type database_type, const database_entity_change& entity)
-    : base_type{ database_type, entity },
+    : base_type{ database_type, entity.get_database_entity_change(id_describe) },
       id_{ entity.get_value<database_data_type::int64_type>(id_describe) },
       order_id_{ entity.get_value<database_data_type::string_type>(order_id_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },

@@ -9,14 +9,14 @@
 #include "database/entity/entity.tpp"
 
 celeritas::user_time_refresh::user_time_refresh(const database_entity_change& entity)
-    : base_type{ entity },
+    : base_type{ entity.get_database_entity_change(user_id_describe)  },
       user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       player_time_refresh_{ entity.get_value<database_data_type::document_array_type>(player_time_refresh_describe) }
 {
 }
 
 celeritas::user_time_refresh::user_time_refresh(const database_type database_type, const database_entity_change& entity)
-    : base_type{ database_type, entity },
+    : base_type{ database_type, entity.get_database_entity_change(user_id_describe) },
       user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       player_time_refresh_{ entity.get_value<database_data_type::document_array_type>(player_time_refresh_describe) }
 {

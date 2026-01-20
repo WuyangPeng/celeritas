@@ -9,14 +9,14 @@
 #include "database/entity/entity.tpp"
 
 celeritas::email_limit::email_limit(const database_entity_change& entity)
-    : base_type{ entity },
+    : base_type{ entity.get_database_entity_change(email_describe)  },
       email_{ entity.get_value<database_data_type::string_type>(email_describe) },
       exist_{ entity.get_value<database_data_type::bool_type>(exist_describe) }
 {
 }
 
 celeritas::email_limit::email_limit(const database_type database_type, const database_entity_change& entity)
-    : base_type{ database_type, entity },
+    : base_type{ database_type, entity.get_database_entity_change(email_describe) },
       email_{ entity.get_value<database_data_type::string_type>(email_describe) },
       exist_{ entity.get_value<database_data_type::bool_type>(exist_describe) }
 {

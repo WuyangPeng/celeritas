@@ -9,7 +9,7 @@
 #include "database/entity/entity.tpp"
 
 celeritas::apps::apps(const database_entity_change& entity)
-    : base_type{ entity },
+    : base_type{ entity.get_database_entity_change(app_id_describe)  },
       app_id_{ entity.get_value<database_data_type::int64_type>(app_id_describe) },
       game_name_{ entity.get_value<database_data_type::string_type>(game_name_describe) },
       app_secret_{ entity.get_value<database_data_type::string_type>(app_secret_describe) },
@@ -21,7 +21,7 @@ celeritas::apps::apps(const database_entity_change& entity)
 }
 
 celeritas::apps::apps(const database_type database_type, const database_entity_change& entity)
-    : base_type{ database_type, entity },
+    : base_type{ database_type, entity.get_database_entity_change(app_id_describe) },
       app_id_{ entity.get_value<database_data_type::int64_type>(app_id_describe) },
       game_name_{ entity.get_value<database_data_type::string_type>(game_name_describe) },
       app_secret_{ entity.get_value<database_data_type::string_type>(app_secret_describe) },

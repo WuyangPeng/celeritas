@@ -32,8 +32,8 @@ namespace
 
     void test_error(celeritas::buffer_pool_data& data)
     {
-        BOOST_CHECK_THROW([&data] { std::ignore = data.get(test_operations_size); }(), celeritas::celeritas_error);
-        BOOST_CHECK_THROW([&data] { std::ignore = data.get(test_operations_size + 1); }(), celeritas:: celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = data.get(test_operations_size), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = data.get(test_operations_size + 1), celeritas:: celeritas_error);
 
         const std::string large(test_operations_size + 1, 'x');
         BOOST_CHECK_THROW(data.set(large), celeritas:: celeritas_error);
@@ -61,11 +61,11 @@ BOOST_AUTO_TEST_SUITE(buffer_pool_data_suite)
         BOOST_CHECK(!data.is_effective());
         BOOST_CHECK_EQUAL(data.size(), 0);
 
-        BOOST_CHECK_THROW([&data] { std::ignore = data.data(); }(), celeritas::celeritas_error);
-        BOOST_CHECK_THROW([&data] { std::ignore = data.get(0); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = data.data(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = data.get(0), celeritas::celeritas_error);
 
         const auto& const_data = data;
-        BOOST_CHECK_THROW([&const_data] { std::ignore = const_data.data() ; }(), celeritas:: celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = const_data.data(), celeritas:: celeritas_error);
     }
 
     BOOST_AUTO_TEST_CASE(test_buffer_pool_data_operations)

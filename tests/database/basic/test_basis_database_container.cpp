@@ -179,4 +179,19 @@ BOOST_AUTO_TEST_SUITE(basis_database_container_suite)
         BOOST_CHECK(!(container1 == empty_container));
     }
 
+    BOOST_AUTO_TEST_CASE(test_get_basis_database)
+    {
+        const celeritas::basis_database db1{ "name", "test" };
+        const celeritas::basis_database db2{ "age", 30 };
+        const celeritas::basis_database_container container{ celeritas::basis_database_container::object_container{ db1, db2 } };
+
+        const auto& found_db1 = container.get_basis_database("name");
+        BOOST_CHECK(found_db1 == db1);
+
+        const auto& found_db2 = container.get_basis_database("age");
+        BOOST_CHECK(found_db2 == db2);
+
+        BOOST_CHECK_THROW(std::ignore = container.get_basis_database("missing"), celeritas::celeritas_error);
+    }
+
 BOOST_AUTO_TEST_SUITE_END()

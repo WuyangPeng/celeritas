@@ -53,7 +53,7 @@ namespace
         guard.set(span_source);
         BOOST_CHECK_EQUAL(std::strncmp(guard.get(), "span", 4), 0);
 
-        BOOST_CHECK_THROW([&] { std::ignore = guard.get(access_test_size); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = guard.get(access_test_size);, celeritas::celeritas_error);
     }
 
     [[nodiscard]] const void* get_data_ptr()

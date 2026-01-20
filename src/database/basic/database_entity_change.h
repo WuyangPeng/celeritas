@@ -36,6 +36,8 @@ namespace celeritas
 
         [[nodiscard]] database_entity_change get_select(const const_basis_database_container_shared_ptr& key) const;
 
+        [[nodiscard]] database_entity_change get_database_entity_change(std::string_view field_name) const;
+
         void modify(const basis_database& basis_database);
 
         void clear();

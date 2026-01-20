@@ -14,9 +14,9 @@ BOOST_AUTO_TEST_SUITE(database_type_suite)
 
     BOOST_AUTO_TEST_CASE(test_get_database_type_invalid)
     {
-        BOOST_CHECK_THROW([] { std::ignore = celeritas::get_database_type("unknown"); }(), celeritas::celeritas_error);
-        BOOST_CHECK_THROW([] { std::ignore =celeritas::get_database_type(""); }(), celeritas::celeritas_error);
-        BOOST_CHECK_THROW([] { std::ignore =celeritas::get_database_type("postgresql"); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = celeritas::get_database_type("unknown"), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore =celeritas::get_database_type(""), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore =celeritas::get_database_type("postgresql"), celeritas::celeritas_error);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -9,7 +9,7 @@
 #include "database/entity/entity.tpp"
 
 celeritas::session_token::session_token(const database_entity_change& entity)
-    : base_type{ entity },
+    : base_type{ entity.get_database_entity_change(token_describe)  },
       token_{ entity.get_value<database_data_type::string_type>(token_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       account_bind_id_{ entity.get_value<database_data_type::int64_type>(account_bind_id_describe) },
@@ -18,7 +18,7 @@ celeritas::session_token::session_token(const database_entity_change& entity)
 }
 
 celeritas::session_token::session_token(const database_type database_type, const database_entity_change& entity)
-    : base_type{ database_type, entity },
+    : base_type{ database_type, entity.get_database_entity_change(token_describe) },
       token_{ entity.get_value<database_data_type::string_type>(token_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       account_bind_id_{ entity.get_value<database_data_type::int64_type>(account_bind_id_describe) },

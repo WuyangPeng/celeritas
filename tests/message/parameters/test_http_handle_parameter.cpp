@@ -21,7 +21,7 @@ namespace
     {
         BOOST_CHECK_EQUAL(http_handle_parameter.get_path(), path);
         BOOST_CHECK_EQUAL(http_handle_parameter.get_param("key").value_or(""), "value");
-        BOOST_CHECK_NO_THROW([&http_handle_parameter] { std::ignore = http_handle_parameter.get_app_config(); }());
+        BOOST_CHECK_NO_THROW(std::ignore = http_handle_parameter.get_app_config());
     }
 }
 
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_SUITE(http_handle_parameter_suite)
 
     BOOST_FIXTURE_TEST_CASE(test_http_handle_parameter_get_any_io_executor, celeritas::http_handle_parameter_fixture)
     {
-        BOOST_CHECK_NO_THROW([this] { std::ignore = get_parameter()->get_any_io_executor(); }());
+        BOOST_CHECK_NO_THROW(std::ignore = get_parameter()->get_any_io_executor());
         BOOST_CHECK(get_parameter()->get_any_io_executor().target<boost::asio::io_context::executor_type>());
     }
 
@@ -109,10 +109,10 @@ BOOST_AUTO_TEST_SUITE(http_handle_parameter_suite)
     {
         const auto parameter = std::make_shared<celeritas::http_handle_parameter>("", "", nullptr, nullptr, nullptr);
 
-        BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_any_io_executor(); }(), celeritas::celeritas_error);
-        BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_app_config(); }(), celeritas::celeritas_error);
-        BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_server_type(); }(), celeritas::celeritas_error);
-        BOOST_CHECK_THROW([&parameter] { std::ignore = parameter->get_database_config("db"); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = parameter->get_any_io_executor(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = parameter->get_app_config(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = parameter->get_server_type(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = parameter->get_database_config("db"), celeritas::celeritas_error);
 
         BOOST_CHECK_THROW([&parameter] { parameter->submit_task([]{}); }(), celeritas::celeritas_error);
     }

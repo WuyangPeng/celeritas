@@ -9,7 +9,7 @@
 #include "database/entity/entity.tpp"
 
 celeritas::redis_test::redis_test(const database_entity_change& entity)
-    : base_type{ entity },
+    : base_type{ entity.get_database_entity_change(user_id_describe)  },
       user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       chapter_id_{ entity.get_value<database_data_type::int32_type>(chapter_id_describe) },
       chapter_name_{ entity.get_value<database_data_type::string_type>(chapter_name_describe) },
@@ -28,7 +28,7 @@ celeritas::redis_test::redis_test(const database_entity_change& entity)
 }
 
 celeritas::redis_test::redis_test(const database_type database_type, const database_entity_change& entity)
-    : base_type{ database_type, entity },
+    : base_type{ database_type, entity.get_database_entity_change(user_id_describe) },
       user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       chapter_id_{ entity.get_value<database_data_type::int32_type>(chapter_id_describe) },
       chapter_name_{ entity.get_value<database_data_type::string_type>(chapter_name_describe) },

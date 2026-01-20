@@ -9,7 +9,7 @@
 #include "database/entity/entity.tpp"
 
 celeritas::sdk_payment_providers::sdk_payment_providers(const database_entity_change& entity)
-    : base_type{ entity },
+    : base_type{ entity.get_database_entity_change(sdk_id_describe)  },
       sdk_id_{ entity.get_value<database_data_type::int64_type>(sdk_id_describe) },
       app_id_{ entity.get_value<database_data_type::int64_type>(app_id_describe) },
       platform_{ entity.get_value<database_data_type::int32_type>(platform_describe) },
@@ -23,7 +23,7 @@ celeritas::sdk_payment_providers::sdk_payment_providers(const database_entity_ch
 }
 
 celeritas::sdk_payment_providers::sdk_payment_providers(const database_type database_type, const database_entity_change& entity)
-    : base_type{ database_type, entity },
+    : base_type{ database_type, entity.get_database_entity_change(sdk_id_describe) },
       sdk_id_{ entity.get_value<database_data_type::int64_type>(sdk_id_describe) },
       app_id_{ entity.get_value<database_data_type::int64_type>(app_id_describe) },
       platform_{ entity.get_value<database_data_type::int32_type>(platform_describe) },

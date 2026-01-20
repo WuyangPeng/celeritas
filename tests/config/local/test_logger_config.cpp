@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_SUITE(logger_config_suite)
 
     BOOST_AUTO_TEST_CASE(test_get_severity_level_type_invalid)
     {
-        BOOST_CHECK_THROW([] { std::ignore = celeritas::logger_config::get_severity_level_type("unknown"); }(), celeritas::celeritas_error);
+        BOOST_CHECK_THROW(std::ignore = celeritas::logger_config::get_severity_level_type("unknown"), celeritas::celeritas_error);
     }
 
 BOOST_AUTO_TEST_SUITE_END()
