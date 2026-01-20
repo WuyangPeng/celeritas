@@ -31,6 +31,7 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
         constexpr auto db_type = celeritas::database_type::mysql;
         const std::string db_name{ "test_db" };
         constexpr auto change_type = celeritas::database_change_type::insert_type;
+
         const auto key = std::make_shared<celeritas::basis_database_container>();
         key->modify(celeritas::basis_database{ "id", 1 });
         key->modify(celeritas::basis_database{ "name", "test" });
@@ -85,6 +86,7 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
     {
         const celeritas::database_entity_change original_change{ celeritas::database_type::mysql, "test_db", celeritas::database_change_type::select_type };
         const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 2 });
+
         const auto select_change = original_change.get_select(key);
 
         BOOST_CHECK(select_change.get_database_type() == original_change.get_database_type());
@@ -194,6 +196,7 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
     {
         const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change change{ celeritas::database_type::mysql, "test", celeritas::database_change_type::update_type, key };
+
         change.modify(celeritas::basis_database{ "int_field", 100 });
 
         BOOST_CHECK_EQUAL(change.get_value<celeritas::database_data_type::int32_type>("int_field"), 100);
@@ -204,6 +207,7 @@ BOOST_AUTO_TEST_SUITE(database_entity_change_suite)
     {
         const auto key = std::make_shared<celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
         celeritas::database_entity_change change{ celeritas::database_type::mysql, "test", celeritas::database_change_type::update_type, key };
+
         change.modify(celeritas::basis_database{ "int_field", 100 });
 
         BOOST_CHECK_THROW([change = std::move(change)]{ std::ignore = change.get_value<celeritas::database_data_type::string_type>("int_field"); }(), std::bad_variant_access);

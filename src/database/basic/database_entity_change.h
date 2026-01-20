@@ -46,7 +46,7 @@ namespace celeritas
 
         [[nodiscard]] bool is_modify() const;
 
-        // 只有主键其他值都是默认值时，数据库不保存
+        // 只有主键，其他值都是默认值时，数据库不保存
         [[nodiscard]] bool is_must_save() const;
 
     private:

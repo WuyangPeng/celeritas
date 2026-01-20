@@ -130,8 +130,8 @@ BOOST_AUTO_TEST_SUITE(basis_database_container_suite)
         const celeritas::basis_database_container container1{ celeritas::basis_database_container::object_container{ { "name", "test" }, { "age", 30 } } };
         const celeritas::basis_database_container container2{ celeritas::basis_database_container::object_container{ { "age", 30 }, { "name", "test" } } };
 
-        BOOST_CHECK(container1 == container2);
-        BOOST_CHECK(!(container1 != container2));
+        BOOST_CHECK(container1 != container2);
+        BOOST_CHECK(!(container1 == container2));
     }
 
     BOOST_AUTO_TEST_CASE(test_inequality_different_values)

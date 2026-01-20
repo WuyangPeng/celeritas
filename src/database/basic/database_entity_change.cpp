@@ -27,7 +27,7 @@ celeritas::database_entity_change::database_entity_change(const database_type da
 {
     if (change_type != database_change_type::select_type)
     {
-        throw celeritas_error{ "The key cannot be empty when the change type is not select_type." };
+        throw celeritas_error{ "A key must be provided when the change type is not select_type." };
     }
 }
 

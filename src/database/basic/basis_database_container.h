@@ -32,6 +32,8 @@ namespace celeritas
 
         [[nodiscard]] int get_size() const;
 
+        [[nodiscard]] const object_container& get_object_container() const;
+
     private:
         object_container container_;
     };
