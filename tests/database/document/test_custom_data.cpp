@@ -11,6 +11,22 @@
 
 namespace
 {
+    void do_check_equipment(const celeritas::basis_database& element)
+    {
+        for (const auto& inner_document = element.get_value<celeritas::database_data_type::document_type>();
+             const auto& inner_element : inner_document)
+        {
+            if (inner_element.get_field_name() == celeritas::equipment_data::strength_description)
+            {
+                BOOST_CHECK_EQUAL(inner_element.get_value<celeritas::database_data_type::int32_type>(), 10);
+            }
+            else if (inner_element.get_field_name() == celeritas::equipment_data::durability_description)
+            {
+                BOOST_CHECK_EQUAL(inner_element.get_value<celeritas::database_data_type::int32_type>(), 100);
+            }
+        }
+    }
+
     void check_equipment(const celeritas::custom_data::document_type& document)
     {
         auto found_type = false;
@@ -25,23 +41,24 @@ namespace
             }
             else if (element.get_field_name() == celeritas::custom_data::data_description)
             {
-                for (const auto& inner_document = element.get_value<celeritas::database_data_type::document_type>();
-                     const auto& inner_element : inner_document)
-                {
-                    if (inner_element.get_field_name() == celeritas::equipment_data::strength_description)
-                    {
-                        BOOST_CHECK_EQUAL(inner_element.get_value<celeritas::database_data_type::int32_type>(), 10);
-                    }
-                    else if (inner_element.get_field_name() == celeritas::equipment_data::durability_description)
-                    {
-                        BOOST_CHECK_EQUAL(inner_element.get_value<celeritas::database_data_type::int32_type>(), 100);
-                    }
-                }
+                do_check_equipment(element);
                 found_data = true;
             }
         }
         BOOST_CHECK(found_type);
         BOOST_CHECK(found_data);
+    }
+
+    void do_check_consumable(const celeritas::basis_database& element)
+    {
+        for (const auto& inner_document = element.get_value<celeritas::database_data_type::document_type>();
+             const auto& inner_element : inner_document)
+        {
+            if (inner_element.get_field_name() == celeritas::consumable_data::expire_time_description)
+            {
+                BOOST_CHECK_EQUAL(inner_element.get_value<celeritas::database_data_type::int64_type>(), 123456789LL);
+            }
+        }
     }
 
     void check_consumable(const celeritas::custom_data::document_type& document)
@@ -58,14 +75,7 @@ namespace
             }
             else if (element.get_field_name() == celeritas::custom_data::data_description)
             {
-                for (const auto& inner_document = element.get_value<celeritas::database_data_type::document_type>();
-                     const auto& inner_element : inner_document)
-                {
-                    if (inner_element.get_field_name() == celeritas::consumable_data::expire_time_description)
-                    {
-                        BOOST_CHECK_EQUAL(inner_element.get_value<celeritas::database_data_type::int64_type>(), 123456789LL);
-                    }
-                }
+                do_check_consumable(element);
                 found_data = true;
             }
         }
