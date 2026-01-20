@@ -48,6 +48,5 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type load_from_db(const std::string& db_name, int64_t id);
 
         config_table_container config_tables_;
-        std::shared_mutex shared_mutex_;
     };
 }

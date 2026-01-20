@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <optional>
+#include <shared_mutex>
 #include <unordered_map>
 
 namespace celeritas
@@ -36,6 +37,7 @@ namespace celeritas
 
         std::string_view name_;
         container_type container_;
+        std::shared_mutex shared_mutex_;
     };
 }
 
