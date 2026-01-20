@@ -43,6 +43,20 @@ BOOST_AUTO_TEST_SUITE(inventory_data_suite)
         BOOST_CHECK_EQUAL(data.get_position(), 1);
     }
 
+    BOOST_AUTO_TEST_CASE(test_accessors)
+    {
+        celeritas::inventory_data data{};
+        data.set_item_id(1);
+        data.set_template_id(2);
+        data.set_count(3);
+        data.set_position(4);
+
+        BOOST_CHECK_EQUAL(data.get_item_id(), 1);
+        BOOST_CHECK_EQUAL(data.get_template_id(), 2);
+        BOOST_CHECK_EQUAL(data.get_count(), 3);
+        BOOST_CHECK_EQUAL(data.get_position(), 4);
+    }
+
     BOOST_AUTO_TEST_CASE(test_count_operations)
     {
         celeritas::inventory_data data{};
@@ -73,6 +87,30 @@ BOOST_AUTO_TEST_SUITE(inventory_data_suite)
         const auto restored_custom = restored.get_custom_data();
         const auto restored_custom_document = restored_custom.to_document_type();
 
+        check_custom(restored_custom_document);
+    }
+
+    BOOST_AUTO_TEST_CASE(test_round_trip)
+    {
+        const celeritas::equipment_data::document_type equip_document{ celeritas::basis_database{ celeritas::equipment_data::strength_description, 10 },
+                                                                       celeritas::basis_database{ celeritas::equipment_data::durability_description, 100 } };
+
+        const celeritas::custom_data::document_type custom_document{ celeritas::basis_database{ celeritas::custom_data::type_description, std::string{ celeritas::custom_data::equipment_description } },
+                                                                     celeritas::basis_database{ celeritas::custom_data::data_description, equip_document } };
+        const auto custom = celeritas::custom_data::from_document(custom_document);
+
+        celeritas::inventory_data original{ 12345, 101, 5, 1 };
+        original.set_custom_data(custom);
+
+        const auto document = original.to_document_type();
+        const auto restored = celeritas::inventory_data::from_document(document);
+
+        BOOST_CHECK_EQUAL(restored.get_item_id(), original.get_item_id());
+        BOOST_CHECK_EQUAL(restored.get_template_id(), original.get_template_id());
+        BOOST_CHECK_EQUAL(restored.get_count(), original.get_count());
+        BOOST_CHECK_EQUAL(restored.get_position(), original.get_position());
+
+        const auto restored_custom_document = restored.get_custom_data().to_document_type();
         check_custom(restored_custom_document);
     }
 
