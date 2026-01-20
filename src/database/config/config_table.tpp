@@ -5,7 +5,7 @@
 
 template <typename T>
 celeritas::config_table<T>::config_table(const std::string_view name)
-    : name_{ name }, container_{}, shared_mutex_{}
+    : name_{ name }, container_{}
 {
 }
 
@@ -27,7 +27,6 @@ celeritas::config_table_base::void_awaitable_type celeritas::config_table<T>::lo
         container.emplace(item.get_id(), std::make_shared<const entity_type>(item));
     }
 
-    std::lock_guard lock{ shared_mutex_ };
     container_ = std::move(container);
 }
 
@@ -43,16 +42,13 @@ celeritas::config_table_base::void_awaitable_type celeritas::config_table<T>::lo
     {
         const entity_type item{ *optional_item };
 
-        std::lock_guard lock{ shared_mutex_ };
         container_.insert_or_assign(item.get_id(), std::make_shared<const entity_type>(item));
     }
 }
 
 template <typename T>
-typename celeritas::config_table<T>::optional_const_entity_shared_ptr celeritas::config_table<T>::get_item(const int64_t id)
+celeritas::config_table<T>::optional_const_entity_shared_ptr celeritas::config_table<T>::get_item(const int64_t id)
 {
-    std::shared_lock lock{ shared_mutex_ };
-
     if (const auto iter = container_.find(id);
         iter != container_.cend())
     {

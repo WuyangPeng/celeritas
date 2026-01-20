@@ -55,6 +55,8 @@ BOOST_FIXTURE_TEST_SUITE(config_manager_suite, celeritas::config_manager_fixture
 
             co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds(100)).async_wait(boost::asio::use_awaitable);
 
+            check_time_refresh_valid();
+
             set_test_end(true);
         });
     }
@@ -67,6 +69,17 @@ BOOST_FIXTURE_TEST_SUITE(config_manager_suite, celeritas::config_manager_fixture
             co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds(100)).async_wait(boost::asio::use_awaitable);
 
             check_time_refresh_valid();
+
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_reload_from_db_with_non_existent_db_name)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            celeritas::config_manager::get_instance().reload_from_db(get_io_context().get_executor(), "non_existent_db", 1);
+
+            co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds(100)).async_wait(boost::asio::use_awaitable);
 
             set_test_end(true);
         });

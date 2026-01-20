@@ -35,7 +35,6 @@ namespace celeritas
 
         std::string_view name_;
         container_type container_;
-        std::shared_mutex shared_mutex_;
     };
 }
 

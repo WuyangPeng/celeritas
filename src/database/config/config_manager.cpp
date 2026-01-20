@@ -43,6 +43,8 @@ void celeritas::config_manager::load_from_db(const any_io_executor& any_io_execu
 
 celeritas::config_manager::optional_const_time_refresh_shared_ptr celeritas::config_manager::get_time_refresh(const int64_t id)
 {
+    std::shared_lock lock{ shared_mutex_ };
+
     if (const auto iter = config_tables_.find(time_refresh_db_name);
         iter != config_tables_.cend())
     {
@@ -54,7 +56,7 @@ celeritas::config_manager::optional_const_time_refresh_shared_ptr celeritas::con
 }
 
 celeritas::config_manager::config_manager()
-    : config_tables_{}
+    : config_tables_{}, shared_mutex_{}
 {
     register_config_tables();
 }
@@ -78,6 +80,8 @@ celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_f
         co_return;
     }
 
+    std::lock_guard lock{ shared_mutex_ };
+
     for (const auto& table : config_tables_ | std::views::values)
     {
         co_await table->load_all(mysql_pool);
@@ -91,6 +95,8 @@ celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_f
     {
         co_return;
     }
+
+    std::lock_guard lock{ shared_mutex_ };
 
     if (db_name.empty())
     {
