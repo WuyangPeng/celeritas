@@ -59,6 +59,7 @@ template <typename T>
 celeritas::config_table<T>::optional_const_entity_shared_ptr celeritas::config_table<T>::get_item(const int64_t id)
 {
     std::shared_lock lock{ shared_mutex_ };
+
     if (const auto iter = container_.find(id);
         iter != container_.cend())
     {

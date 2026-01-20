@@ -101,4 +101,29 @@ BOOST_FIXTURE_TEST_SUITE(config_manager_suite, celeritas::config_manager_fixture
         });
     }
 
+    BOOST_AUTO_TEST_CASE(test_concurrent_read_write)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            celeritas::config_manager::get_instance().load_from_db(get_io_context().get_executor());
+            co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds{ 100 }).async_wait(boost::asio::use_awaitable);
+
+            const auto tasks_remaining = std::make_shared<std::atomic<int> >(20);
+            const auto stop_flag = std::make_shared<std::atomic<bool> >(false);
+
+            spawn_writer(tasks_remaining, stop_flag);
+
+            for (auto i = 0; i < 19; ++i)
+            {
+                spawn_reader(tasks_remaining, stop_flag);
+            }
+
+            while (tasks_remaining->load() > 0)
+            {
+                co_await boost::asio::steady_timer(get_io_context().get_executor(), std::chrono::milliseconds{ 10 }).async_wait(boost::asio::use_awaitable);
+            }
+
+            set_test_end(true);
+        });
+    }
+
 BOOST_AUTO_TEST_SUITE_END()

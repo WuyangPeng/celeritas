@@ -106,14 +106,7 @@ celeritas::config_manager::void_awaitable_type celeritas::config_manager::load_f
     if (const auto iter = config_tables_.find(db_name);
         iter != config_tables_.cend())
     {
-        if (id == 0)
-        {
-            co_await iter->second->load_all(mysql_pool);
-        }
-        else
-        {
-            co_await iter->second->load_one(mysql_pool, id);
-        }
+        co_await iter->second->load(mysql_pool, id);
     }
     else
     {

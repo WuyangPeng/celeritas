@@ -4,6 +4,8 @@
 #include "database/config/mock/mock_config_database_pool.h"
 #include "database/pool/database_pool_manager.h"
 
+#include <boost/asio/steady_timer.hpp>
+
 celeritas::config_manager_fixture::config_manager_fixture()
     : io_context_{}, test_end_{ false }
 {
@@ -17,13 +19,18 @@ celeritas::config_manager_fixture::~config_manager_fixture()
     config_manager::get_instance().clear();
 }
 
-void celeritas::config_manager_fixture::run(awaitable_function func)
+void celeritas::config_manager_fixture::spawn(awaitable_function func)
 {
     boost::asio::co_spawn(io_context_,
                           noexcept_safe_call_and_log_awaitable(std::move(func),
                                                                database_channel,
                                                                "config manager fixture run error: "),
                           boost::asio::detached);
+}
+
+void celeritas::config_manager_fixture::run(awaitable_function func)
+{
+    spawn(std::move(func));
 
     io_context_.run();
     io_context_.restart();
@@ -47,4 +54,32 @@ void celeritas::config_manager_fixture::check_time_refresh_valid()
     BOOST_REQUIRE(optional_time_refresh.has_value());
     BOOST_CHECK_EQUAL((*optional_time_refresh)->get_time_refresh_type(), 2);
     BOOST_CHECK_EQUAL((*optional_time_refresh)->get_parameter(), 3);
+}
+
+void celeritas::config_manager_fixture::spawn_writer(const atomic_int_shared_ptr& tasks_remaining, const atomic_bool_shared_ptr& stop_flag)
+{
+    spawn([this, tasks_remaining, stop_flag]() -> boost::asio::awaitable<void> {
+        for (auto i = 0; i < 10; ++i)
+        {
+            config_manager::get_instance().reload_from_db(io_context_.get_executor(), "", 0);
+            co_await boost::asio::steady_timer(io_context_.get_executor(), std::chrono::milliseconds{ 10 }).async_wait(boost::asio::use_awaitable);
+        }
+        *stop_flag = true;
+        --(*tasks_remaining);
+    });
+}
+
+void celeritas::config_manager_fixture::spawn_reader(const atomic_int_shared_ptr& tasks_remaining, const atomic_bool_shared_ptr& stop_flag)
+{
+    spawn([this, tasks_remaining, stop_flag]() -> boost::asio::awaitable<void> {
+        while (!*stop_flag)
+        {
+            if (const auto result = config_manager::get_instance().get_time_refresh(mock_config_database_pool::time_refresh_id))
+            {
+                BOOST_CHECK_EQUAL((*result)->get_time_refresh_type(), 2);
+            }
+            co_await boost::asio::steady_timer(io_context_.get_executor(), std::chrono::milliseconds{ 5 }).async_wait(boost::asio::use_awaitable);
+        }
+        --(*tasks_remaining);
+    });
 }
