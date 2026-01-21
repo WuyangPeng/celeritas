@@ -117,7 +117,7 @@ celeritas::connection_pool<SessionType>::database_session_guard_awaitable_type c
 template <typename SessionType>
 void celeritas::connection_pool<SessionType>::release_session(const session_shared_ptr& session)
 {
-    waiter_type waiter = get_waiter_or_store_session(session);
+    auto waiter = get_waiter_or_store_session(session);
 
     if (waiter != nullptr)
     {
