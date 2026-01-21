@@ -82,7 +82,11 @@ celeritas::connection_pool<SessionType>::void_awaitable_type celeritas::connecti
     for (auto i = 0u; i < min_connections_; ++i)
     {
         ++connections_;
-        co_await this->async_one_initialize();
+        if (!co_await this->async_one_initialize())
+        {
+            --connections_;
+            break;
+        }
     }
 }
 
@@ -97,19 +101,14 @@ celeritas::connection_pool<SessionType>::database_session_guard_awaitable_type c
 
     if (connections_.fetch_add(1) < max_connections_)
     {
-        co_await this->async_one_initialize();
-
-        session = try_get_existing_session();
+        session = co_await try_create_session();
         if (session != nullptr)
         {
             co_return database_session_guard_type{ session, boost::polymorphic_pointer_cast<class_type>(this->shared_from_this()) };
         }
     }
-    else
-    {
-        connections_.fetch_sub(1);
-    }
 
+    --connections_;
     session = co_await async_initiate_session();
 
     co_return database_session_guard_type{ session, boost::polymorphic_pointer_cast<class_type>(this->shared_from_this()) };
@@ -118,23 +117,7 @@ celeritas::connection_pool<SessionType>::database_session_guard_awaitable_type c
 template <typename SessionType>
 void celeritas::connection_pool<SessionType>::release_session(const session_shared_ptr& session)
 {
-    waiter_type waiter{};
-
-    {
-        std::lock_guard lock{ mutex_ };
-
-        if (!waiters_.empty())
-        {
-            // 如果有等待的协程，直接将会话给它
-            waiter = std::move(waiters_.front());
-            waiters_.pop_front();
-            session->set_last_heartbeat();
-        }
-        else
-        {
-            sessions_.emplace_back(session);
-        }
-    }
+    waiter_type waiter = get_waiter_or_store_session(session);
 
     if (waiter != nullptr)
     {
@@ -176,9 +159,7 @@ celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connecti
 {
     auto session = co_await async_get_session();
 
-    const auto result = co_await session.get_session()->is_health();
-
-    co_return result;
+    co_return co_await session.get_session()->is_health();
 }
 
 template <typename SessionType>
@@ -211,21 +192,22 @@ celeritas::database_pool_base::result_container_awaitable_type celeritas::connec
 }
 
 template <typename SessionType>
-celeritas::connection_pool<SessionType>::void_awaitable_type celeritas::connection_pool<SessionType>::async_one_initialize()
+celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connection_pool<SessionType>::async_one_initialize()
 {
     try
     {
         co_await this->do_async_one_initialize();
+        co_return true;
     }
     catch (const std::exception& error)
     {
-        --connections_;
         LOG_CHANNEL(database_channel, error) << "connect host:" << host_ << ",port:" << port_ << " error:" << error.what();
+        co_return false;
     }
     catch (...)
     {
-        --connections_;
         LOG_CHANNEL(database_channel, fatal) << "connect host:" << host_ << ",port:" << port_ << " unknown exception";
+        co_return false;
     }
 }
 
@@ -257,6 +239,19 @@ celeritas::connection_pool<SessionType>::session_shared_ptr celeritas::connectio
     }
 
     return nullptr;
+}
+
+template <typename SessionType>
+celeritas::connection_pool<SessionType>::session_awaitable_type celeritas::connection_pool<SessionType>::try_create_session()
+{
+    if (co_await this->async_one_initialize())
+    {
+        co_return try_get_existing_session();
+    }
+
+    LOG_CHANNEL(database_channel, error) << "Failed to create new database connection, waiting for existing connection.";
+
+    co_return nullptr;
 }
 
 template <typename SessionType>
@@ -295,4 +290,22 @@ celeritas::database_pool_base::bool_awaitable_type celeritas::connection_pool<Se
     co_await session.get_session()->execute_changes(database, expiration_time);
 
     co_return true;
+}
+
+template <typename SessionType>
+celeritas::connection_pool<SessionType>::waiter_type celeritas::connection_pool<SessionType>::get_waiter_or_store_session(const session_shared_ptr& session)
+{
+    std::lock_guard lock{ mutex_ };
+
+    if (!waiters_.empty())
+    {
+        // 如果有等待的协程，直接将会话给它
+        auto waiter = std::move(waiters_.front());
+        waiters_.pop_front();
+        session->set_last_heartbeat();
+        return waiter;
+    }
+
+    sessions_.emplace_back(session);
+    return nullptr;
 }

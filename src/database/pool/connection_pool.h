@@ -71,15 +71,19 @@ namespace celeritas
         using self_shared_ptr = std::shared_ptr<base_type>;
         using waiter_container = std::deque<waiter_type>;
 
-        [[nodiscard]] void_awaitable_type async_one_initialize();
+        [[nodiscard]] bool_awaitable_type async_one_initialize();
 
         [[nodiscard]] void_awaitable_type do_async_one_initialize();
 
         [[nodiscard]] session_shared_ptr try_get_existing_session();
 
+        [[nodiscard]] session_awaitable_type try_create_session();
+
         [[nodiscard]] session_awaitable_type async_initiate_session();
 
         [[nodiscard]] bool_awaitable_type do_execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time);
+
+        [[nodiscard]] waiter_type get_waiter_or_store_session(const session_shared_ptr& session);
 
         any_io_executor any_io_executor_;
         std::string host_;
