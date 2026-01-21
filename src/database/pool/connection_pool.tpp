@@ -81,6 +81,7 @@ celeritas::connection_pool<SessionType>::void_awaitable_type celeritas::connecti
 {
     for (auto i = 0u; i < min_connections_; ++i)
     {
+        ++connections_;
         co_await this->async_one_initialize();
     }
 }
@@ -94,7 +95,7 @@ celeritas::connection_pool<SessionType>::database_session_guard_awaitable_type c
         co_return database_session_guard_type{ session, boost::polymorphic_pointer_cast<class_type>(this->shared_from_this()) };
     }
 
-    if (connections_ < max_connections_)
+    if (connections_.fetch_add(1) < max_connections_)
     {
         co_await this->async_one_initialize();
 
@@ -103,6 +104,10 @@ celeritas::connection_pool<SessionType>::database_session_guard_awaitable_type c
         {
             co_return database_session_guard_type{ session, boost::polymorphic_pointer_cast<class_type>(this->shared_from_this()) };
         }
+    }
+    else
+    {
+        connections_.fetch_sub(1);
     }
 
     session = co_await async_initiate_session();
@@ -211,14 +216,15 @@ celeritas::connection_pool<SessionType>::void_awaitable_type celeritas::connecti
     try
     {
         co_await this->do_async_one_initialize();
-        ++connections_;
     }
     catch (const std::exception& error)
     {
+        --connections_;
         LOG_CHANNEL(database_channel, error) << "connect host:" << host_ << ",port:" << port_ << " error:" << error.what();
     }
     catch (...)
     {
+        --connections_;
         LOG_CHANNEL(database_channel, fatal) << "connect host:" << host_ << ",port:" << port_ << " unknown exception";
     }
 }
