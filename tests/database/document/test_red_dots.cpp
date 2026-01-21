@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_SUITE(red_dots_suite)
 
     BOOST_AUTO_TEST_CASE(test_from_document_with_missing_fields)
     {
-        celeritas::red_dots::document_type partial_document;
+        celeritas::red_dots::document_type partial_document{};
         partial_document.emplace_back(celeritas::red_dots::node_id_description,
                                       celeritas::enum_cast_underlying(celeritas::config::red_dot_type::role));
         partial_document.emplace_back(celeritas::red_dots::state_description, true);
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_SUITE(red_dots_suite)
 
     BOOST_AUTO_TEST_CASE(test_from_document_with_extra_fields)
     {
-        celeritas::red_dots::document_type extra_fields_document;
+        celeritas::red_dots::document_type extra_fields_document{};
         extra_fields_document.emplace_back(celeritas::red_dots::node_id_description,
                                            celeritas::enum_cast_underlying(celeritas::config::red_dot_type::role));
         extra_fields_document.emplace_back("extra_field", "some_value");

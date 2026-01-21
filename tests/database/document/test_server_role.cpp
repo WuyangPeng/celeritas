@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_SUITE(server_role_suite)
 
     BOOST_AUTO_TEST_CASE(test_from_document_with_missing_fields)
     {
-        celeritas::server_role::document_type partial_document;
+        celeritas::server_role::document_type partial_document{};
         partial_document.emplace_back(celeritas::server_role::game_server_id_description, "server3");
         partial_document.emplace_back(celeritas::server_role::role_name_description, "Neo");
 
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_SUITE(server_role_suite)
 
     BOOST_AUTO_TEST_CASE(test_from_document_with_extra_fields)
     {
-        celeritas::server_role::document_type extra_fields_document;
+        celeritas::server_role::document_type extra_fields_document{};
         extra_fields_document.emplace_back(celeritas::server_role::game_server_id_description, "server4");
         extra_fields_document.emplace_back("extra_field", "some_value");
         extra_fields_document.emplace_back(celeritas::server_role::role_name_description, "Trinity");

@@ -16,6 +16,7 @@ BOOST_AUTO_TEST_SUITE(database_entity_suite)
 
         BOOST_CHECK(!entity.is_modify());
         BOOST_CHECK(!entity.is_must_save());
+        BOOST_CHECK(entity.get_modify()->get_change_type() == celeritas::database_change_type::insert_type);
     }
 
     BOOST_FIXTURE_TEST_CASE(test_database_entity_get_modify, celeritas::database_entity_fixture)
@@ -48,12 +49,35 @@ BOOST_AUTO_TEST_SUITE(database_entity_suite)
         BOOST_CHECK(!entity.is_modify());
     }
 
-    BOOST_FIXTURE_TEST_CASE(test_database_entity_add_modify, celeritas::database_entity_fixture)
+    BOOST_FIXTURE_TEST_CASE(test_database_entity_clear_modify_changes_type, celeritas::database_entity_fixture)
+    {
+        celeritas::database_entity entity{ get_db_type(), get_db_name(), get_key() };
+        BOOST_CHECK(entity.get_modify()->get_change_type() == celeritas::database_change_type::insert_type);
+
+        entity.clear_modify();
+        BOOST_CHECK(entity.get_modify()->get_change_type() == celeritas::database_change_type::update_type);
+    }
+
+    BOOST_FIXTURE_TEST_CASE(test_database_entity_add_modify_on_new_entity, celeritas::database_entity_fixture)
+    {
+        celeritas::test_entity entity{ get_db_type(), get_db_name(), get_key() };
+        BOOST_CHECK(entity.get_modify()->get_change_type() == celeritas::database_change_type::insert_type);
+
+        entity.add_modify("test_field", 123);
+
+        const auto modify = entity.get_modify();
+        BOOST_CHECK(modify->get_change_type() == celeritas::database_change_type::insert_type);
+        BOOST_CHECK(entity.is_modify());
+        BOOST_CHECK(modify->get_database()->get_size() == 1);
+    }
+
+    BOOST_FIXTURE_TEST_CASE(test_database_entity_add_modify_after_clear, celeritas::database_entity_fixture)
     {
         celeritas::test_entity entity{ get_db_type(), get_db_name(), get_key() };
 
         entity.clear_modify();
         BOOST_CHECK(!entity.is_modify());
+        BOOST_CHECK(entity.get_modify()->get_change_type() == celeritas::database_change_type::update_type);
 
         entity.add_modify("test_field", 123);
         BOOST_CHECK(entity.is_modify());
@@ -117,9 +141,14 @@ BOOST_AUTO_TEST_SUITE(database_entity_suite)
         celeritas::test_entity entity{ get_db_type(), get_db_name(), get_key() };
         entity.add_modify("field", 1);
 
-        const auto entity2{ entity };
+        auto entity2{ entity };
         BOOST_CHECK(entity2.is_modify());
         BOOST_CHECK(entity2.get_modify() == entity.get_modify());
+
+        entity2.add_modify("field2", 2);
+        BOOST_CHECK(entity2.get_modify() != entity.get_modify());
+        BOOST_CHECK(entity.get_modify()->get_database()->get_size() == 1);
+        BOOST_CHECK(entity2.get_modify()->get_database()->get_size() == 2);
     }
 
     BOOST_FIXTURE_TEST_CASE(test_database_entity_copy_assignment, celeritas::database_entity_fixture)
@@ -131,6 +160,11 @@ BOOST_AUTO_TEST_SUITE(database_entity_suite)
         entity2 = entity1;
         BOOST_CHECK(entity2.is_modify());
         BOOST_CHECK(entity2.get_modify() == entity1.get_modify());
+
+        entity2.add_modify("field2", 2);
+        BOOST_CHECK(entity2.get_modify() != entity1.get_modify());
+        BOOST_CHECK(entity1.get_modify()->get_database()->get_size() == 1);
+        BOOST_CHECK(entity2.get_modify()->get_database()->get_size() == 2);
     }
 
     BOOST_FIXTURE_TEST_CASE(test_database_entity_move_constructor, celeritas::database_entity_fixture)

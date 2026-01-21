@@ -52,6 +52,8 @@ namespace celeritas
         }
 
     private:
+        void detach();
+
         database_entity_change_shared_ptr modify_;
     };
 }

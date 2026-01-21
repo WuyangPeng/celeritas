@@ -43,7 +43,8 @@ celeritas::database_entity::const_database_entity_change_shared_ptr celeritas::d
 
 void celeritas::database_entity::clear_modify()
 {
-    modify_->clear();
+    detach();
+ modify_->clear();
 }
 
 bool celeritas::database_entity::is_modify() const
@@ -58,5 +59,15 @@ bool celeritas::database_entity::is_must_save() const
 
 void celeritas::database_entity::add_modify(const basis_database& basis_database)
 {
+    detach();
+
     modify_->modify(basis_database);
+}
+
+void celeritas::database_entity::detach()
+{
+    if (modify_.use_count() > 1)
+    {
+        modify_ = std::make_shared<database_entity_change>(*modify_);
+    }
 }
