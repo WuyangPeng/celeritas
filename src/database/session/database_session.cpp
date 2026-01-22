@@ -4,7 +4,7 @@
 #include <boost/asio/strand.hpp>
 
 celeritas::database_session::database_session(const any_io_executor& any_io_executor)
-    : last_heartbeat_{}, any_io_executor_{ boost::asio::make_strand(any_io_executor) }
+    : last_heartbeat_{ std::chrono::steady_clock::now() }, any_io_executor_{ boost::asio::make_strand(any_io_executor) }
 {
 }
 

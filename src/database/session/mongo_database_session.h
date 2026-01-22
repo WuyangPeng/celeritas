@@ -60,12 +60,6 @@ namespace celeritas
 
         void delete_document(const const_database_entity_change_shared_ptr& database) const;
 
-        [[nodiscard]] cursor_awaitable_type async_execute_query(std::string_view collection_name,
-                                                                const document_view_type& filter) const;
-
-        [[nodiscard]] cursor_awaitable_type async_handle_and_retry(std::string_view collection_name,
-                                                                   const document_view_type& filter);
-
         [[nodiscard]] void_awaitable_type do_async_connect();
 
         [[nodiscard]] static database_entity_change to_database_entity_change(const const_database_entity_change_shared_ptr& database,

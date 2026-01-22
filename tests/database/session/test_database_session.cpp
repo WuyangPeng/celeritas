@@ -6,6 +6,8 @@ BOOST_AUTO_TEST_SUITE(database_session_suite)
 
     BOOST_FIXTURE_TEST_CASE(test_heartbeat_and_expiration, celeritas::database_session_test_fixture)
     {
+        BOOST_CHECK(!get_session().is_expired());
+
         get_session().set_last_heartbeat();
         BOOST_CHECK(!get_session().is_expired());
     }

@@ -27,9 +27,9 @@ namespace celeritas
 
         virtual ~database_session() noexcept = default;
 
-        database_session(const database_session& rhs) noexcept = default;
+        database_session(const database_session& rhs) = delete;
 
-        database_session& operator=(const database_session& rhs) noexcept = default;
+        database_session& operator=(const database_session& rhs) = delete;
 
         database_session(database_session&& rhs) noexcept = default;
 

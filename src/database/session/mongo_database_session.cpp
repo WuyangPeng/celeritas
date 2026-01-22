@@ -47,36 +47,11 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
 
 celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_find(const std::string_view collection_name, const document_view_type& filter)
 {
-    auto is_error = false;
+    co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
 
-    try
-    {
-        co_return co_await async_execute_query(collection_name, filter);
-    }
-    catch (const mongocxx::operation_exception& error)
-    {
-        LOG_CHANNEL(database_channel, error) << "MongoDB find failed: " << error.what();
+    auto collection = get_collection(collection_name);
 
-        is_error = true;
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(database_channel, error) << "MongoDB find_one failed: " << error.what();
-
-        is_error = true;
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(database_channel, fatal) << "MongoDB find unknown exception";
-        throw;
-    }
-
-    if (is_error)
-    {
-        co_return co_await async_handle_and_retry(collection_name, filter);
-    }
-
-    throw celeritas_error{ "mongoDB find unknown exception" };
+    co_return collection.find(filter);
 }
 
 celeritas::database_session::bool_awaitable_type celeritas::mongo_database_session::is_health()
@@ -200,35 +175,6 @@ void celeritas::mongo_database_session::delete_document(const const_database_ent
     const auto document = mongo_row_data_converter::get_document(database->get_key());
 
     collection.delete_one(document->extract());
-}
-
-celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_execute_query(const std::string_view collection_name, const document_view_type& filter) const
-{
-    co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
-
-    auto collection = get_collection(collection_name);
-
-    co_return collection.find(filter);
-}
-
-celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_handle_and_retry(const std::string_view collection_name, const document_view_type& filter)
-{
-    LOG_CHANNEL(database_channel, warning) << "MongoDB connection lost. Trying to reconnect...";
-
-    try
-    {
-        co_await async_connect();
-
-        LOG_CHANNEL(database_channel, info) << "MongoDB reconnected successfully. Retrying query.";
-
-        co_return co_await async_execute_query(collection_name, filter);
-    }
-    catch (const std::exception& reconnect_error)
-    {
-        LOG_CHANNEL(database_channel, error) << "Reconnection failed: " << reconnect_error.what();
-
-        throw;
-    }
 }
 
 celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database_session::do_async_connect()
