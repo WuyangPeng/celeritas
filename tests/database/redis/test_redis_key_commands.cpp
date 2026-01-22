@@ -262,6 +262,19 @@ namespace
         }
     }
 
+    [[nodiscard]] boost::asio::awaitable<void> check_async_scan(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session)
+    {
+        const auto& key_commands = session->get_redis_key_commands();
+
+        co_await setup_scan_keys(session);
+
+        const std::string pattern = "test_scan_key_*";
+        const auto result = co_await key_commands.async_scan(pattern, 0, loop_count);
+
+        BOOST_CHECK(!result.get_cursor().empty());
+        BOOST_CHECK(!result.get_keys().empty());
+    }
+
     [[nodiscard]] boost::asio::awaitable<void> check_async_scan_all(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session)
     {
         const auto& key_commands = session->get_redis_key_commands();
@@ -382,6 +395,17 @@ BOOST_FIXTURE_TEST_SUITE(redis_key_commands_suite, celeritas::redis_database_ses
             co_await session->async_connect();
 
             co_await check_async_get_type(session);
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_scan)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto session = get_session();
+            co_await session->async_connect();
+
+            co_await check_async_scan(session);
             set_test_end(true);
         });
     }

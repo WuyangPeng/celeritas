@@ -7,7 +7,7 @@ namespace celeritas
     class redis_key_commands final : public redis_commands
     {
     public:
-        using class_tye = redis_key_commands;
+        using class_type = redis_key_commands;
         using base_type = redis_commands;
 
         explicit redis_key_commands(redis_database_session& session) noexcept;

@@ -21,6 +21,23 @@ namespace
         BOOST_CHECK_EQUAL(*retrieved_value, value);
     }
 
+    [[nodiscard]] boost::asio::awaitable<void> check_async_set_existing(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session, const std::string& key)
+    {
+        const auto& hash_commands = session->get_redis_hash_commands();
+        const std::string field{ "field" };
+        const std::string value{ "value" };
+        const std::string new_value{ "new_value" };
+
+        co_await hash_commands.async_set(key, field, value);
+
+        const auto result = co_await hash_commands.async_set(key, field, new_value);
+        BOOST_CHECK_EQUAL(result, 0);
+
+        const auto retrieved_value = co_await hash_commands.async_get(key, field);
+        BOOST_REQUIRE(retrieved_value.has_value());
+        BOOST_CHECK_EQUAL(*retrieved_value, new_value);
+    }
+
     [[nodiscard]] boost::asio::awaitable<void> check_async_set_many_and_get_many(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session, const std::string& key)
     {
         const auto& hash_commands = session->get_redis_hash_commands();
@@ -32,9 +49,9 @@ namespace
         const celeritas::redis_commands::key_container fields{ "f1", "f2", "non_existent" };
         const auto values = co_await hash_commands.async_get_many(key, fields);
         BOOST_REQUIRE_EQUAL(values.size(), 3);
-        BOOST_CHECK_EQUAL(values[0], "v1");
-        BOOST_CHECK_EQUAL(values[1], "v2");
-        BOOST_CHECK(values[2].empty());
+        BOOST_CHECK_EQUAL(values.at(0), "v1");
+        BOOST_CHECK_EQUAL(values.at(1), "v2");
+        BOOST_CHECK(values.at(2).empty());
     }
 
     [[nodiscard]] boost::asio::awaitable<void> check_async_delete_and_delete_many(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session, const std::string& key)
@@ -112,6 +129,22 @@ BOOST_FIXTURE_TEST_SUITE(redis_hash_commands_suite, celeritas::redis_database_se
 
             co_await session->get_redis_key_commands().async_delete(key);
             co_await check_async_set_and_get(session, key);
+            co_await session->get_redis_key_commands().async_delete(key);
+
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_set_existing)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto session = get_session();
+            co_await session->async_connect();
+
+            const std::string key{ "test_hash_set_existing" };
+
+            co_await session->get_redis_key_commands().async_delete(key);
+            co_await check_async_set_existing(session, key);
             co_await session->get_redis_key_commands().async_delete(key);
 
             set_test_end(true);

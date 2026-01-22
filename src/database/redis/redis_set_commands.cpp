@@ -1,19 +1,17 @@
 ﻿#include "redis_set_commands.h"
 #include "common/core/celeritas_error.h"
 
-using namespace celeritas;
-
-redis_set_commands::redis_set_commands(redis_database_session& session) noexcept
+celeritas::redis_set_commands::redis_set_commands(redis_database_session& session) noexcept
     : base_type{ session }
 {
 }
 
-redis_set_commands::int_awaitable_type redis_set_commands::async_add(const std::string& key, const std::string& member) const
+celeritas::redis_set_commands::int_awaitable_type celeritas::redis_set_commands::async_add(const std::string& key, const std::string& member) const
 {
     co_return co_await async_execute_command_return_int({ "SADD", get_prefixed_key(key), member });
 }
 
-redis_set_commands::int_awaitable_type redis_set_commands::async_add_many(const std::string& key, const array_type& members) const
+celeritas::redis_set_commands::int_awaitable_type celeritas::redis_set_commands::async_add_many(const std::string& key, const array_type& members) const
 {
     array_type command{ "SADD", get_prefixed_key(key) };
     command.insert(command.end(), members.begin(), members.end());
@@ -21,12 +19,12 @@ redis_set_commands::int_awaitable_type redis_set_commands::async_add_many(const 
     co_return co_await async_execute_command_return_int(command);
 }
 
-redis_set_commands::int_awaitable_type redis_set_commands::async_remove(const std::string& key, const std::string& member) const
+celeritas::redis_set_commands::int_awaitable_type celeritas::redis_set_commands::async_remove(const std::string& key, const std::string& member) const
 {
     co_return co_await async_execute_command_return_int({ "SREM", get_prefixed_key(key), member });
 }
 
-redis_set_commands::int_awaitable_type redis_set_commands::async_remove_many(const std::string& key, const array_type& members) const
+celeritas::redis_set_commands::int_awaitable_type celeritas::redis_set_commands::async_remove_many(const std::string& key, const array_type& members) const
 {
     array_type command{ "SREM", get_prefixed_key(key) };
     command.insert(command.end(), members.begin(), members.end());
@@ -34,24 +32,24 @@ redis_set_commands::int_awaitable_type redis_set_commands::async_remove_many(con
     co_return co_await async_execute_command_return_int(command);
 }
 
-redis_set_commands::int_awaitable_type redis_set_commands::async_set_cardinality(const std::string& key) const
+celeritas::redis_set_commands::int_awaitable_type celeritas::redis_set_commands::async_set_cardinality(const std::string& key) const
 {
     co_return co_await async_execute_command_return_int({ "SCARD", get_prefixed_key(key) });
 }
 
-redis_set_commands::bool_awaitable_type redis_set_commands::async_set_is_member(const std::string& key, const std::string& member) const
+celeritas::redis_set_commands::bool_awaitable_type celeritas::redis_set_commands::async_set_is_member(const std::string& key, const std::string& member) const
 {
     const auto result = co_await async_execute_command_return_int({ "SISMEMBER", get_prefixed_key(key), member });
 
     co_return result == 1;
 }
 
-redis_set_commands::array_awaitable_type redis_set_commands::async_set_members(const std::string& key) const
+celeritas::redis_set_commands::array_awaitable_type celeritas::redis_set_commands::async_set_members(const std::string& key) const
 {
     co_return co_await async_execute_command_return_array({ "SMEMBERS", get_prefixed_key(key) });
 }
 
-redis_set_commands::array_awaitable_type redis_set_commands::async_set_union(const array_type& keys) const
+celeritas::redis_set_commands::array_awaitable_type celeritas::redis_set_commands::async_set_union(const array_type& keys) const
 {
     array_type command{ "SUNION" };
     for (const auto& key : keys)
@@ -62,7 +60,7 @@ redis_set_commands::array_awaitable_type redis_set_commands::async_set_union(con
     co_return co_await async_execute_command_return_array(command);
 }
 
-redis_set_commands::array_awaitable_type redis_set_commands::async_set_inter(const array_type& keys) const
+celeritas::redis_set_commands::array_awaitable_type celeritas::redis_set_commands::async_set_inter(const array_type& keys) const
 {
     array_type command{ "SINTER" };
     for (const auto& key : keys)
@@ -73,7 +71,7 @@ redis_set_commands::array_awaitable_type redis_set_commands::async_set_inter(con
     co_return co_await async_execute_command_return_array(command);
 }
 
-redis_set_commands::array_awaitable_type redis_set_commands::async_set_diff(const array_type& keys) const
+celeritas::redis_set_commands::array_awaitable_type celeritas::redis_set_commands::async_set_diff(const array_type& keys) const
 {
     array_type command{ "SDIFF" };
     for (const auto& key : keys)
