@@ -1,7 +1,7 @@
 ﻿#include "listener_sessions.h"
-#include "network/core/session_base.h"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
+#include "network/core/session_base.h"
 
 celeritas::listener_sessions::listener_sessions(const server_network_type server_network_type) noexcept
     : server_network_type_{ server_network_type }
@@ -56,14 +56,14 @@ celeritas::server_network_type celeritas::listener_sessions::get_server_network_
     return server_network_type_;
 }
 
-bool celeritas::listener_sessions::write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request)
+bool celeritas::listener_sessions::write(const std::string &instance_id, const header &header, const protobuf_message &request)
 {
     auto to_write = false;
-    for (const auto& element : sessions_)
+    for (const auto& element : sessions_ | std::views::values)
     {
-        if (element.second->get_instance_id() == instance_id)
+        if (element->get_instance_id() == instance_id)
         {
-            element.second->write(header, request);
+            element->write(header, request);
             to_write = true;
         }
     }

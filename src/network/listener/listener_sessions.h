@@ -2,11 +2,11 @@
 
 #include "listener_sessions_base.h"
 #include "config/config_fwd.h"
-#include "network/network_fwd.h"
 #include "message/message_fwd.h"
+#include "network/network_fwd.h"
 
-#include <google/protobuf/message.h>
 #include <boost/asio/awaitable.hpp>
+#include <google/protobuf/message.h>
 
 #include <map>
 #include <memory>
@@ -30,7 +30,7 @@ namespace celeritas
 
         [[nodiscard]] server_network_type get_server_network_type() const noexcept;
 
-        [[nodiscard]] bool write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request);
+        [[nodiscard]] bool write(const std::string &instance_id, const celeritas::header &header, const protobuf_message &request);
 
     protected:
         void set_stop();

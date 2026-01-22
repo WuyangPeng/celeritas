@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "network/core/listener.h"
 #include "listener_accept.h"
+#include "network/core/listener.h"
 
 namespace celeritas
 {

@@ -1,7 +1,7 @@
 ﻿#include "http_client.h"
-#include "network/session/http_session.h"
 #include "common/logging/logger.h"
 #include "config/basic/server_network_type.h"
+#include "network/session/http_session.h"
 
 celeritas::http_client::http_client(const any_io_executor& any_io_executor,
                                     network_message_callback_weak_ptr callback,
@@ -11,7 +11,7 @@ celeritas::http_client::http_client(const any_io_executor& any_io_executor,
                                     std::string server_type,
                                     std::string path)
     : base_type{},
-      any_io_executor_{ any_io_executor },
+      any_io_executor_{ boost::asio::make_strand(any_io_executor) },
       network_message_callback_{ std::move(callback) },
       game_server_id_{ std::move(game_server_id) },
       host_{ std::move(host) },

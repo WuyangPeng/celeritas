@@ -6,7 +6,7 @@ celeritas::listener::listener(const any_io_executor& any_io_executor,
                               network_message_callback_weak_ptr callback,
                               std::string game_server_id,
                               const server_network_type server_network_type)
-    : any_io_executor_{ any_io_executor },
+    : any_io_executor_{ boost::asio::make_strand(any_io_executor) },
       network_message_callback_{ std::move(callback) },
       game_server_id_{ std::move(game_server_id) },
       server_network_type_{ server_network_type }

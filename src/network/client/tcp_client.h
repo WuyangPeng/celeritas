@@ -4,6 +4,7 @@
 #include "proto/celeritas.pb.h"
 
 #include <boost/asio/awaitable.hpp>
+#include <boost/asio/ip/tcp.hpp>
 
 namespace celeritas
 {

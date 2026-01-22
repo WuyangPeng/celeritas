@@ -1,7 +1,7 @@
-﻿#include "network/session/generic_session.tpp"
-#include "tcp_client.h"
+﻿#include "tcp_client.h"
 #include "common/logging/logger.h"
 #include "config/basic/server_network_type.h"
+#include "network/session/generic_session.tpp"
 
 celeritas::tcp_client::tcp_client(const any_io_executor& any_io_executor,
                                   network_message_callback_weak_ptr callback,
@@ -11,7 +11,7 @@ celeritas::tcp_client::tcp_client(const any_io_executor& any_io_executor,
                                   const int port,
                                   std::string server_type)
     : base_type{},
-      any_io_executor_{ any_io_executor },
+      any_io_executor_{ boost::asio::make_strand(any_io_executor) },
       network_message_callback_{ std::move(callback) },
       game_server_id_{ std::move(game_server_id) },
       instance_id_{ std::move(instance_id) },
