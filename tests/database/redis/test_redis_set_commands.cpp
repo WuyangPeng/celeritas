@@ -176,6 +176,30 @@ namespace
         const auto result = co_await set_commands.async_set_diff(keys);
         verify_set_operation(result, { "member1", "member3" });
     }
+
+    [[nodiscard]] boost::asio::awaitable<void> check_async_set_union_empty_keys(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session)
+    {
+        const auto& set_commands = session->get_redis_set_commands();
+        const celeritas::redis_commands::key_container keys{};
+        const auto result = co_await set_commands.async_set_union(keys);
+        BOOST_CHECK(result.empty());
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> check_async_set_inter_empty_keys(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session)
+    {
+        const auto& set_commands = session->get_redis_set_commands();
+        const celeritas::redis_commands::key_container keys{};
+        const auto result = co_await set_commands.async_set_inter(keys);
+        BOOST_CHECK(result.empty());
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> check_async_set_diff_empty_keys(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session)
+    {
+        const auto& set_commands = session->get_redis_set_commands();
+        const celeritas::redis_commands::key_container keys{};
+        const auto result = co_await set_commands.async_set_diff(keys);
+        BOOST_CHECK(result.empty());
+    }
 }
 
 BOOST_FIXTURE_TEST_SUITE(redis_set_commands_suite, celeritas::redis_database_session_fixture)
@@ -320,6 +344,39 @@ BOOST_FIXTURE_TEST_SUITE(redis_set_commands_suite, celeritas::redis_database_ses
             co_await session->async_connect();
 
             co_await check_async_set_diff(session);
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_set_union_empty_keys)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto session = get_session();
+            co_await session->async_connect();
+
+            co_await check_async_set_union_empty_keys(session);
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_set_inter_empty_keys)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto session = get_session();
+            co_await session->async_connect();
+
+            co_await check_async_set_inter_empty_keys(session);
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_set_diff_empty_keys)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto session = get_session();
+            co_await session->async_connect();
+
+            co_await check_async_set_diff_empty_keys(session);
             set_test_end(true);
         });
     }

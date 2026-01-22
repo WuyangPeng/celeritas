@@ -51,6 +51,11 @@ celeritas::redis_set_commands::array_awaitable_type celeritas::redis_set_command
 
 celeritas::redis_set_commands::array_awaitable_type celeritas::redis_set_commands::async_set_union(const array_type& keys) const
 {
+    if (keys.empty())
+    {
+        co_return array_type{};
+    }
+
     array_type command{ "SUNION" };
     for (const auto& key : keys)
     {
@@ -62,6 +67,11 @@ celeritas::redis_set_commands::array_awaitable_type celeritas::redis_set_command
 
 celeritas::redis_set_commands::array_awaitable_type celeritas::redis_set_commands::async_set_inter(const array_type& keys) const
 {
+    if (keys.empty())
+    {
+        co_return array_type{};
+    }
+
     array_type command{ "SINTER" };
     for (const auto& key : keys)
     {
@@ -73,6 +83,11 @@ celeritas::redis_set_commands::array_awaitable_type celeritas::redis_set_command
 
 celeritas::redis_set_commands::array_awaitable_type celeritas::redis_set_commands::async_set_diff(const array_type& keys) const
 {
+    if (keys.empty())
+    {
+        co_return array_type{};
+    }
+
     array_type command{ "SDIFF" };
     for (const auto& key : keys)
     {

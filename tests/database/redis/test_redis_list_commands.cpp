@@ -101,9 +101,9 @@ namespace
         const celeritas::redis_commands::key_container values{ "a", "b", "a", "c", "a" };
 
         co_await list_commands.async_right_push_many(key, values);
-       const auto removed_count = co_await list_commands.async_remove(key, 0, "a");
+        const auto removed_count = co_await list_commands.async_remove(key, 0, "a");
         BOOST_CHECK_EQUAL(removed_count, 3);
-       const auto length = co_await list_commands.async_get_length(key);
+        const auto length = co_await list_commands.async_get_length(key);
         BOOST_CHECK_EQUAL(length, 2);
     }
 
@@ -215,7 +215,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_list_commands_suite, celeritas::redis_database_se
             co_await session->get_redis_key_commands().async_delete(key);
 
             const auto& list_commands = session->get_redis_list_commands();
-            const celeritas::redis_commands::key_container empty_values;
+            const celeritas::redis_commands::key_container empty_values{};
 
             auto length = co_await list_commands.async_left_push_many(key, empty_values);
             BOOST_CHECK_EQUAL(length, 0);
@@ -289,6 +289,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_list_commands_suite, celeritas::redis_database_se
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             co_await check_async_blocking_left_pop(session);
             set_test_end(true);
         });
@@ -300,7 +301,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_list_commands_suite, celeritas::redis_database_se
             const auto session = get_session();
             co_await session->async_connect();
             const auto& list_commands = session->get_redis_list_commands();
-            const celeritas::redis_commands::key_container empty_keys;
+            const celeritas::redis_commands::key_container empty_keys{};
 
             BOOST_CHECK_THROW(co_await list_commands.async_blocking_left_pop(empty_keys, 1), celeritas::celeritas_error);
 
