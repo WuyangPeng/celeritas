@@ -132,7 +132,7 @@ celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database
         }
     }
 
-    throw celeritas_error("async query exception.");
+    throw celeritas_error{ "async query exception." };
 }
 
 celeritas::database_entity_change celeritas::mysql_database_session::populate_database_from_row(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container, const row_view_type& row)
