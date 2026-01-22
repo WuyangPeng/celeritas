@@ -48,6 +48,8 @@ namespace celeritas
 
         void set_test_end(bool test_end);
 
+        [[nodiscard]] void_awaitable test_routine(const pool_shared_ptr& pool);
+
     private:
         io_context_type io_context_;
         bool test_end_;

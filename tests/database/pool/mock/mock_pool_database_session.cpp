@@ -1,4 +1,5 @@
 ﻿#include "mock_pool_database_session.h"
+#include "common/core/celeritas_error.h"
 #include "database/basic/database_entity_change.h"
 
 celeritas::mock_pool_database_session::mock_pool_database_session(const any_io_executor& any_io_executor)
@@ -42,3 +43,4 @@ celeritas::database_session::result_container_awaitable_type celeritas::mock_poo
 {
     co_return result_container{};
 }
+

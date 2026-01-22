@@ -79,3 +79,25 @@ void celeritas::connection_pool_fixture::set_test_end(const bool test_end)
 {
     this->test_end_ = test_end;
 }
+
+celeritas::connection_pool_fixture::void_awaitable celeritas::connection_pool_fixture::test_routine(const pool_shared_ptr& pool)
+{
+    auto routine = [&]() -> boost::asio::awaitable<void> {
+        for (auto i = 0; i < 10; ++i)
+        {
+            auto session = co_await pool->async_get_session();
+            co_await async_wait(std::chrono::milliseconds{ 10 });
+        }
+    };
+
+    std::vector<boost::asio::awaitable<void> > tasks{};
+    for (auto i = 0; i < 5; ++i)
+    {
+        tasks.emplace_back(routine());
+    }
+
+    for (auto& task : tasks)
+    {
+        co_await std::move(task);
+    }
+}

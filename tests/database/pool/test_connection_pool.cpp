@@ -196,4 +196,49 @@ BOOST_FIXTURE_TEST_SUITE(connection_pool_suite, celeritas::connection_pool_fixtu
         });
     }
 
+    BOOST_AUTO_TEST_CASE(test_concurrent_get_and_release)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto pool = std::make_shared<pool_type>(get_io_context().get_executor(),
+                                                          "localhost",
+                                                          3306,
+                                                          "user",
+                                                          "password",
+                                                          "test_db",
+                                                          1,
+                                                          5);
+            co_await pool->async_initialize();
+
+            co_await test_routine(pool);
+
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_cleanup_with_no_expired_connections)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto pool = std::make_shared<pool_type>(get_io_context().get_executor(),
+                                                          "localhost",
+                                                          3306,
+                                                          "user",
+                                                          "password",
+                                                          "test_db",
+                                                          1,
+                                                          5,
+                                                          10);
+            co_await pool->async_initialize();
+
+            auto guards = co_await get_many_sessions(pool, 5);
+            guards.clear();
+
+            pool->cleanup_database_by_duration();
+
+            const auto final_guards = co_await get_many_sessions(pool, 5);
+            BOOST_TEST(final_guards.size() == 5);
+
+            set_test_end(true);
+        });
+    }
+
 BOOST_AUTO_TEST_SUITE_END()
