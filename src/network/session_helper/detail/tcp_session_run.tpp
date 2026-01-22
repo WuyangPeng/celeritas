@@ -1,9 +1,7 @@
 ﻿#pragma once
 
 #include "network_session_helper_internal_constant.h"
-#include "network_session_helper_internal_fwd.h"
 #include "tcp_session_run.h"
-#include "common/common_fwd.h"
 #include "common/buffer/buffer_guard.h"
 #include "common/buffer/buffer_pool.h"
 #include "common/logging/logger.h"
@@ -19,9 +17,12 @@ celeritas::tcp_session_run<SocketType>::tcp_session_run(socket_type& socket, con
 template <typename SocketType>
 void celeritas::tcp_session_run<SocketType>::do_start()
 {
-    co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
-                 return self->run();
-             },
+    co_spawn(socket_.get_executor(),
+             noexcept_safe_call_and_log_awaitable([self = shared_from_this()] {
+                                                      return self->run();
+                                                  },
+                                                  network_channel,
+                                                  "tcp session run error: "),
              boost::asio::detached);
 }
 
@@ -69,20 +70,20 @@ void celeritas::tcp_session_run<SocketType>::send_offline_message()
 }
 
 template <typename SocketType>
-auto celeritas::tcp_session_run<SocketType>::setup_timeout_cancellation_slot(steady_timer_type& steady_timer, cancellation_signal_type& cancel_signal)
+auto celeritas::tcp_session_run<SocketType>::setup_timeout_cancellation_slot(const steady_timer_shared_ptr& steady_timer, const cancellation_signal_shared_ptr& cancel_signal)
 {
-    co_spawn(socket_.get_executor(), [&]() -> boost::asio::awaitable<void> {
+    co_spawn(socket_.get_executor(), [steady_timer = steady_timer,cancel_signal = cancel_signal]() -> boost::asio::awaitable<void> {
                  auto await_token = boost::asio::as_tuple(boost::asio::use_awaitable);
-                 if (auto [error_code] = co_await steady_timer.async_wait(await_token);
+                 if (auto [error_code] = co_await steady_timer->async_wait(await_token);
                      error_code != boost::asio::error::operation_aborted)
                  {
-                     cancel_signal.emit(boost::asio::cancellation_type::all);
+                     cancel_signal->emit(boost::asio::cancellation_type::all);
                  }
                  co_return;
              },
              boost::asio::detached);
 
-    return boost::asio::as_tuple(boost::asio::bind_cancellation_slot(cancel_signal.slot(), boost::asio::use_awaitable));
+    return boost::asio::as_tuple(boost::asio::bind_cancellation_slot(cancel_signal->slot(), boost::asio::use_awaitable));
 }
 
 template <typename SocketType>
@@ -111,14 +112,14 @@ celeritas::session_run::void_awaitable_type celeritas::tcp_session_run<SocketTyp
 template <typename SocketType>
 celeritas::tcp_session_run<SocketType>::read_awaitable_type celeritas::tcp_session_run<SocketType>::read_data_with_timeout(mutable_buffer_type buffer)
 {
-    steady_timer_type timer{ socket_.get_executor(), std::chrono::steady_clock::now() + timeout_seconds };
-    cancellation_signal_type cancel_signal{};
+    const auto timer = std::make_shared<steady_timer_type>(socket_.get_executor(), std::chrono::steady_clock::now() + timeout_seconds);
+    const auto cancel_signal = std::make_shared<cancellation_signal_type>();
 
     auto await_token = setup_timeout_cancellation_slot(timer, cancel_signal);
 
     auto [read_error_code, bytes_read] = co_await boost::asio::async_read(socket_, buffer, await_token);
 
-    timer.cancel();
+    timer->cancel();
 
     if (read_error_code)
     {

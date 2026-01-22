@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "network/network_fwd.h"
 #include "config/config_fwd.h"
 #include "message/message_fwd.h"
+#include "network/network_fwd.h"
 
 #include <boost/asio.hpp>
 #include <google/protobuf/message.h>
@@ -15,12 +15,11 @@ namespace celeritas
     {
     public:
         using class_type = listener;
-        using io_context_type = boost::asio::io_context;
+        using any_io_executor = boost::asio::any_io_executor;
         using network_message_callback_weak_ptr = std::weak_ptr<network_message_callback>;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using session_shared_ptr = std::shared_ptr<session_base>;
         using protobuf_message = google::protobuf::Message;
-        using any_io_executor = boost::asio::any_io_executor;
 
         listener(const any_io_executor& any_io_executor,
                  network_message_callback_weak_ptr callback,

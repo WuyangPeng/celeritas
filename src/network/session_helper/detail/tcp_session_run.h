@@ -28,10 +28,12 @@ namespace celeritas
         using read_awaitable_type = boost::asio::awaitable<size_t>;
         using buffer_guard_optional_type = std::optional<buffer_guard>;
         using steady_timer_type = boost::asio::steady_timer;
+        using steady_timer_shared_ptr = std::shared_ptr<steady_timer_type>;
         using mutable_buffer_type = boost::asio::mutable_buffer;
         using cancellation_signal_type = boost::asio::cancellation_signal;
+        using cancellation_signal_shared_ptr = std::shared_ptr<cancellation_signal_type>;
 
-        [[nodiscard]] auto setup_timeout_cancellation_slot(steady_timer_type& steady_timer, cancellation_signal_type& cancel_signal);
+        [[nodiscard]] auto setup_timeout_cancellation_slot(const steady_timer_shared_ptr& steady_timer, const cancellation_signal_shared_ptr& cancel_signal);
 
         [[nodiscard]] void_awaitable_type handle_one_message();
 

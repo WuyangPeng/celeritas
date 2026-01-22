@@ -27,8 +27,7 @@ celeritas::session_write::void_awaitable_type celeritas::tcp_session_write<Socke
     {
         try
         {
-            if (const auto result = co_await do_one_write();
-                !result)
+            if (!co_await do_one_write())
             {
                 co_return;
             }
@@ -74,7 +73,8 @@ celeritas::tcp_session_write<SocketType>::bool_awaitable_type celeritas::tcp_ses
     auto optional_buffer_guard = get_next_write_buffer();
     if (!optional_buffer_guard)
     {
-        co_return false; // 队列为空，退出协程
+        // 队列为空，退出协程
+        co_return false;
     }
     auto buffer_guard = std::move(*optional_buffer_guard);
 
@@ -90,7 +90,8 @@ celeritas::tcp_session_write<SocketType>::buffer_guard_optional_type celeritas::
     std::lock_guard lock{ write_mutex_ };
     if (write_queue_.empty())
     {
-        return std::nullopt; // 队列为空，返回一个空对象
+        // 队列为空，返回一个空对象
+        return std::nullopt;
     }
     auto buffer = std::move(write_queue_.front());
     write_queue_.pop_front();
@@ -116,8 +117,11 @@ bool celeritas::tcp_session_write<SocketType>::write_buffer_guard(buffer_guard d
 template <typename SocketType>
 void celeritas::tcp_session_write<SocketType>::co_spawn_write()
 {
-    co_spawn(socket_.get_executor(), [self = this->shared_from_this()] {
-                 return self->do_write();
-             },
+    co_spawn(socket_.get_executor(),
+             noexcept_safe_call_and_log_awaitable([self = shared_from_this()] {
+                                                      return self->do_write();
+                                                  },
+                                                  network_channel,
+                                                  "tcp session write error: "),
              boost::asio::detached);
 }

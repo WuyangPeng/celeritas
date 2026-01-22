@@ -1,9 +1,10 @@
 ﻿#include "buffer_consumer.h"
-#include "network/session_helper/detail/http_session_run.h"
 #include "network_session_helper_internal_constant.h"
 #include "common/buffer/buffer_guard.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 #include "network/core/network_message_callback.h"
+#include "network/session_helper/detail/http_session_run.h"
 
 #include <boost/beast.hpp>
 #include <boost/url.hpp>
@@ -16,9 +17,12 @@ celeritas::http_session_run::http_session_run(socket_type& socket, const int64_t
 void celeritas::http_session_run::do_start()
 {
     boost::asio::co_spawn(socket_.get_executor(),
-                          [self = shared_from_this()] {
-                              return self->run();
-                          }, boost::asio::detached);
+                          noexcept_safe_call_and_log_awaitable([self = shared_from_this()] {
+                                                                   return self->run();
+                                                               },
+                                                               network_channel,
+                                                               "http session run start error: "),
+                          boost::asio::detached);
 }
 
 celeritas::session_run::void_awaitable_type celeritas::http_session_run::run()
