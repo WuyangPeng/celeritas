@@ -72,7 +72,9 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
 
     if (retry_error.has_value())
     {
-        co_return co_await async_handle_and_retry(sql, retry_error.value());
+        co_await async_reconnect_and_retry_query(retry_error.value());
+
+        co_return co_await async_execute_query(sql);
     }
 
     throw celeritas_error{ "mysql async query unknown exception" };
@@ -130,7 +132,7 @@ celeritas::database_session::database_entity_change_awaitable_type celeritas::my
     if (const auto& rows = result.rows();
         !rows.empty())
     {
-        co_return populate_database_from_row(database, field_name_container, rows[0]);
+        co_return populate_database_from_row(database, field_name_container, rows.at(0));
     }
 
     co_return std::nullopt;
@@ -172,7 +174,7 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
     co_return results;
 }
 
-celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_database_session::async_handle_and_retry(const std::string& sql, const error_code_type& error_code)
+celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::async_reconnect_and_retry_query(const error_code_type& error_code)
 {
     if (error_code == boost::asio::error::eof ||
         error_code == boost::asio::error::broken_pipe ||
@@ -185,8 +187,6 @@ celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_datab
             co_await async_connect();
 
             LOG_CHANNEL(database_channel, info) << "Database reconnected successfully. Retrying query.";
-
-            co_return co_await async_execute_query(sql);
         }
         catch (const std::exception& reconnect_error)
         {

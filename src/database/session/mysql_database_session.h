@@ -16,6 +16,7 @@ namespace celeritas
         using base_type = database_session;
         using ssl_io_context_type = boost::asio::ssl::context;
         using results_type = boost::mysql::results;
+        using void_awaitable_type = boost::asio::awaitable<void>;
         using results_awaitable_type = boost::asio::awaitable<results_type>;
 
         mysql_database_session(const std::string& host,
@@ -62,7 +63,7 @@ namespace celeritas
 
         [[nodiscard]] results_awaitable_type async_execute_query(const std::string& sql);
 
-        [[nodiscard]] results_awaitable_type async_handle_and_retry(const std::string& sql, const error_code_type& error_code);
+        [[nodiscard]] void_awaitable_type async_reconnect_and_retry_query(const error_code_type& error_code);
 
         [[nodiscard]] static database_entity_change populate_database_from_row(const const_database_entity_change_shared_ptr& database,
                                                                                const database_field_container& field_name_container,
