@@ -2,7 +2,6 @@
 
 #include "config/local/database_config.h"
 #include "config/basic/database_type.h"
-#include "database/pool/database_pool_manager.h"
 
 #include <boost/asio/awaitable.hpp>
 #include <boost/asio/io_context.hpp>

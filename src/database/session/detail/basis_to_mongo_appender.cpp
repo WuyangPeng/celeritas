@@ -1,8 +1,8 @@
 ﻿#include "basis_to_mongo_appender.tpp"
 #include "common/core/celeritas_error.h"
 
-#include <bsoncxx/builder/basic/array.hpp>
 #include <bsoncxx/types.hpp>
+#include <bsoncxx/builder/basic/array.hpp>
 
 celeritas::basis_to_mongo_appender::basis_to_mongo_appender()
     : document_{ std::make_shared<document_type>() }
