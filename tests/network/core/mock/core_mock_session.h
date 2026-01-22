@@ -4,10 +4,10 @@
 
 namespace celeritas
 {
-    class mock_session : public session
+    class core_mock_session : public session
     {
     public:
-        using class_type = mock_session;
+        using class_type = core_mock_session;
         using base_type = session;
 
         [[nodiscard]] int64_t get_session_id() const noexcept override;
