@@ -39,6 +39,11 @@ celeritas::redis_sorted_set_commands::int_awaitable_type celeritas::redis_sorted
 
 celeritas::redis_sorted_set_commands::int_awaitable_type celeritas::redis_sorted_set_commands::async_remove_many(const std::string& key, const key_container& members) const
 {
+    if (members.empty())
+    {
+        co_return 0;
+    }
+
     array_type command{ "ZREM", get_prefixed_key(key) };
     command.insert(command.end(), members.begin(), members.end());
 

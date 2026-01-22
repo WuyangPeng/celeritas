@@ -85,17 +85,17 @@ namespace
 
         const auto range_result = co_await z_set_commands.async_range(key, 0, -1, true);
         BOOST_REQUIRE_EQUAL(range_result.size(), 3);
-        BOOST_CHECK_EQUAL(range_result[0].get_member(), "one");
-        BOOST_CHECK_CLOSE(range_result[0].get_score(), 1.0, 0.001);
-        BOOST_CHECK_EQUAL(range_result[2].get_member(), "three");
-        BOOST_CHECK_CLOSE(range_result[2].get_score(), 3.0, 0.001);
+        BOOST_CHECK_EQUAL(range_result.at(0).get_member(), "one");
+        BOOST_CHECK_CLOSE(range_result.at(0).get_score(), 1.0, 0.001);
+        BOOST_CHECK_EQUAL(range_result.at(2).get_member(), "three");
+        BOOST_CHECK_CLOSE(range_result.at(2).get_score(), 3.0, 0.001);
 
         const auto rev_range_result = co_await z_set_commands.async_reverse_range(key, 0, -1, true);
         BOOST_REQUIRE_EQUAL(rev_range_result.size(), 3);
-        BOOST_CHECK_EQUAL(rev_range_result[0].get_member(), "three");
-        BOOST_CHECK_CLOSE(rev_range_result[0].get_score(), 3.0, 0.001);
-        BOOST_CHECK_EQUAL(rev_range_result[2].get_member(), "one");
-        BOOST_CHECK_CLOSE(rev_range_result[2].get_score(), 1.0, 0.001);
+        BOOST_CHECK_EQUAL(rev_range_result.at(0).get_member(), "three");
+        BOOST_CHECK_CLOSE(rev_range_result.at(0).get_score(), 3.0, 0.001);
+        BOOST_CHECK_EQUAL(rev_range_result.at(2).get_member(), "one");
+        BOOST_CHECK_CLOSE(rev_range_result.at(2).get_score(), 1.0, 0.001);
     }
 
     [[nodiscard]] boost::asio::awaitable<void> check_async_rank_and_reverse_rank(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session, const std::string& key)
@@ -116,6 +116,84 @@ namespace
         const auto reverse_rank_one = co_await z_set_commands.async_reverse_rank(key, "one");
         BOOST_REQUIRE(reverse_rank_one.has_value());
         BOOST_CHECK_EQUAL(*reverse_rank_one, 2);
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> check_async_add_many_empty(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session, const std::string& key)
+    {
+        const auto& z_set_commands = session->get_redis_sorted_set_commands();
+        const celeritas::redis_sorted_set_commands::sorted_set_member_score_container members{};
+
+        const auto add_count = co_await z_set_commands.async_add_many(key, members);
+        BOOST_CHECK_EQUAL(add_count, 0);
+
+        const auto cardinality = co_await z_set_commands.async_sorted_set_cardinality(key);
+        BOOST_CHECK_EQUAL(cardinality, 0);
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> check_async_remove_many_empty(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session, const std::string& key)
+    {
+        const auto& z_set_commands = session->get_redis_sorted_set_commands();
+        const celeritas::redis_sorted_set_commands::sorted_set_member_score_container members_to_add{ { "member1", 1.0 } };
+        const celeritas::redis_commands::key_container members_to_remove{};
+
+        co_await z_set_commands.async_add_many(key, members_to_add);
+
+        const auto remove_count = co_await z_set_commands.async_remove_many(key, members_to_remove);
+        BOOST_CHECK_EQUAL(remove_count, 0);
+
+        const auto cardinality = co_await z_set_commands.async_sorted_set_cardinality(key);
+        BOOST_CHECK_EQUAL(cardinality, 1);
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> check_async_range_without_scores(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session, const std::string& key)
+    {
+        const auto& z_set_commands = session->get_redis_sorted_set_commands();
+        const celeritas::redis_sorted_set_commands::sorted_set_member_score_container members{ { "one", 1 }, { "two", 2 } };
+
+        co_await z_set_commands.async_add_many(key, members);
+
+        const auto range_result = co_await z_set_commands.async_range(key, 0, -1, false);
+        BOOST_REQUIRE_EQUAL(range_result.size(), 2);
+        BOOST_CHECK_EQUAL(range_result.at(0).get_member(), "one");
+        BOOST_CHECK_EQUAL(range_result.at(0).get_score(), 0);
+        BOOST_CHECK_EQUAL(range_result.at(1).get_member(), "two");
+        BOOST_CHECK_EQUAL(range_result.at(1).get_score(), 0);
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> check_async_reverse_range_without_scores(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session, const std::string& key)
+    {
+        const auto& z_set_commands = session->get_redis_sorted_set_commands();
+        const celeritas::redis_sorted_set_commands::sorted_set_member_score_container members{ { "one", 1 }, { "two", 2 } };
+
+        co_await z_set_commands.async_add_many(key, members);
+
+        const auto rev_range_result = co_await z_set_commands.async_reverse_range(key, 0, -1, false);
+        BOOST_REQUIRE_EQUAL(rev_range_result.size(), 2);
+        BOOST_CHECK_EQUAL(rev_range_result.at(0).get_member(), "two");
+        BOOST_CHECK_EQUAL(rev_range_result.at(0).get_score(), 0);
+        BOOST_CHECK_EQUAL(rev_range_result.at(1).get_member(), "one");
+        BOOST_CHECK_EQUAL(rev_range_result.at(1).get_score(), 0);
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> check_async_score_non_existent(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session, const std::string& key)
+    {
+        const auto& z_set_commands = session->get_redis_sorted_set_commands();
+        const auto score = co_await z_set_commands.async_score(key, "non_existent_member");
+        BOOST_CHECK(!score.has_value());
+    }
+
+    [[nodiscard]] boost::asio::awaitable<void> check_async_rank_non_existent(const celeritas::redis_database_session_fixture::redis_database_session_shared_ptr& session, const std::string& key)
+    {
+        const auto& z_set_commands = session->get_redis_sorted_set_commands();
+        const celeritas::redis_sorted_set_commands::sorted_set_member_score_container members{ { "one", 1 } };
+
+        co_await z_set_commands.async_add_many(key, members);
+
+        const auto rank = co_await z_set_commands.async_rank(key, "non_existent_member");
+        BOOST_CHECK(!rank.has_value());
+
+        const auto reverse_rank = co_await z_set_commands.async_reverse_rank(key, "non_existent_member");
+        BOOST_CHECK(!reverse_rank.has_value());
     }
 }
 
@@ -222,10 +300,102 @@ BOOST_FIXTURE_TEST_SUITE(redis_sorted_set_commands_suite, celeritas::redis_datab
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             const std::string key{ "test_z_set_rank" };
 
             co_await session->get_redis_key_commands().async_delete(key);
             co_await check_async_rank_and_reverse_rank(session, key);
+            co_await session->get_redis_key_commands().async_delete(key);
+
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_add_many_empty)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto session = get_session();
+            co_await session->async_connect();
+
+            const std::string key{ "test_z_set_add_many_empty" };
+            co_await session->get_redis_key_commands().async_delete(key);
+            co_await check_async_add_many_empty(session, key);
+            co_await session->get_redis_key_commands().async_delete(key);
+
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_remove_many_empty)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto session = get_session();
+            co_await session->async_connect();
+
+            const std::string key{ "test_z_set_remove_many_empty" };
+            co_await session->get_redis_key_commands().async_delete(key);
+            co_await check_async_remove_many_empty(session, key);
+            co_await session->get_redis_key_commands().async_delete(key);
+
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_range_without_scores)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto session = get_session();
+            co_await session->async_connect();
+
+            const std::string key{ "test_z_set_range_no_scores" };
+            co_await session->get_redis_key_commands().async_delete(key);
+            co_await check_async_range_without_scores(session, key);
+            co_await session->get_redis_key_commands().async_delete(key);
+
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_reverse_range_without_scores)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto session = get_session();
+            co_await session->async_connect();
+
+            const std::string key{ "test_z_set_rev_range_no_scores" };
+            co_await session->get_redis_key_commands().async_delete(key);
+            co_await check_async_reverse_range_without_scores(session, key);
+            co_await session->get_redis_key_commands().async_delete(key);
+
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_score_non_existent)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto session = get_session();
+            co_await session->async_connect();
+
+            const std::string key{ "test_z_set_score_non_existent" };
+
+            co_await session->get_redis_key_commands().async_delete(key);
+            co_await check_async_score_non_existent(session, key);
+            co_await session->get_redis_key_commands().async_delete(key);
+
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_rank_non_existent)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto session = get_session();
+            co_await session->async_connect();
+
+            const std::string key{ "test_z_set_rank_non_existent" };
+            co_await session->get_redis_key_commands().async_delete(key);
+            co_await check_async_rank_non_existent(session, key);
             co_await session->get_redis_key_commands().async_delete(key);
 
             set_test_end(true);
