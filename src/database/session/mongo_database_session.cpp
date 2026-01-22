@@ -74,7 +74,7 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
     {
         case database_change_type::select_type:
         {
-            throw celeritas_error("change type is select.");
+            throw celeritas_error{ "change type is select." };
         }
 
         case database_change_type::update_type:
@@ -210,5 +210,10 @@ celeritas::database_entity_change celeritas::mongo_database_session::to_database
 
 celeritas::mongo_database_session::collection_type celeritas::mongo_database_session::get_collection(const std::string_view collection_name) const
 {
-    return (*database_)[collection_name.data()];
+    if (!database_)
+    {
+        throw celeritas_error{ "database is null." };
+    }
+
+    return database_->collection(collection_name);
 }
