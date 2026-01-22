@@ -45,7 +45,7 @@ celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database
     co_return;
 }
 
-celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_find(const std::string_view collection_name, const document_view_type& filter)
+celeritas::mongo_database_session::cursor_awaitable_type celeritas::mongo_database_session::async_find(const std::string_view collection_name, const document_view_type& filter) const
 {
     co_await boost::asio::post(get_any_io_executor(), boost::asio::use_awaitable);
 

@@ -32,7 +32,7 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type async_connect();
 
         [[nodiscard]] cursor_awaitable_type async_find(std::string_view collection_name,
-                                                       const document_view_type& filter);
+                                                       const document_view_type& filter) const;
 
         [[nodiscard]] bool_awaitable_type is_health() override;
 
