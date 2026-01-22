@@ -31,7 +31,7 @@ celeritas::write_protobuf_message::buffer_guard_optional_type celeritas::write_p
     return buffer_guard;
 }
 
-bool celeritas::write_protobuf_message::write(const message_shared_ptr& header_request, size_t header_size, buffer_guard& buffer_guard) const
+bool celeritas::write_protobuf_message::write(const message_shared_ptr& header_request, const size_t header_size, buffer_guard& buffer_guard) const
 {
     if (!header_request->SerializeToArray(buffer_guard.get(header_size), boost::numeric_cast<int>(header_request->ByteSizeLong())))
     {

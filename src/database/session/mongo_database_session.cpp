@@ -215,5 +215,5 @@ celeritas::mongo_database_session::collection_type celeritas::mongo_database_ses
         throw celeritas_error{ "database is null." };
     }
 
-    return database_->collection(collection_name);
+    return database_->collection(collection_name.data());
 }
