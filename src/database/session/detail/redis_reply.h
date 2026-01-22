@@ -74,6 +74,8 @@ namespace celeritas
 
         [[nodiscard]] sorted_set_member_score to_sorted_set_member_score(int index) const;
 
+        [[nodiscard]] sorted_set_member_score to_sorted_set_member(int index) const;
+
         [[nodiscard]] static std::string array_to_string(const redisReply* element);
 
         [[nodiscard]] static std::string map_to_string(const redisReply* element);

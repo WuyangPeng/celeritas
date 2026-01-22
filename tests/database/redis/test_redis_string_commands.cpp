@@ -281,6 +281,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_string_commands_suite, celeritas::redis_database_
             co_await session->async_connect();
 
             co_await check_async_set_many(session);
+
             set_test_end(true);
         });
     }
@@ -328,6 +329,7 @@ BOOST_FIXTURE_TEST_SUITE(redis_string_commands_suite, celeritas::redis_database_
             co_await session->get_redis_key_commands().async_delete(key);
             co_await check_async_increment(session, key);
             co_await session->get_redis_key_commands().async_delete(key);
+
             set_test_end(true);
         });
     }
@@ -385,7 +387,9 @@ BOOST_FIXTURE_TEST_SUITE(redis_string_commands_suite, celeritas::redis_database_
         run([this]() -> boost::asio::awaitable<void> {
             const auto session = get_session();
             co_await session->async_connect();
+
             co_await check_async_get_many(session);
+
             set_test_end(true);
         });
     }
@@ -401,6 +405,55 @@ BOOST_FIXTURE_TEST_SUITE(redis_string_commands_suite, celeritas::redis_database_
             co_await session->get_redis_key_commands().async_delete(key);
             co_await check_async_get_set(session, key);
             co_await session->get_redis_key_commands().async_delete(key);
+
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_set_not_exists_invalid_expire)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto session = get_session();
+            co_await session->async_connect();
+
+            const std::string key{ "test_key_nx_invalid_expire" };
+            const auto& string_commands = session->get_redis_string_commands();
+
+            co_await session->get_redis_key_commands().async_delete(key);
+            BOOST_CHECK_THROW(co_await string_commands.async_set_not_exists(key, "value", -1), celeritas::celeritas_error);
+            co_await session->get_redis_key_commands().async_delete(key);
+
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_set_many_empty)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto session = get_session();
+            co_await session->async_connect();
+
+            const auto& string_commands = session->get_redis_string_commands();
+            const celeritas::redis_string_commands::key_value_container key_values{};
+
+            const auto result = co_await string_commands.async_set_many(key_values);
+            BOOST_CHECK_EQUAL(result, false);
+
+            set_test_end(true);
+        });
+    }
+
+    BOOST_AUTO_TEST_CASE(test_async_get_many_empty)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto session = get_session();
+            co_await session->async_connect();
+
+            const auto& string_commands = session->get_redis_string_commands();
+            const celeritas::redis_string_commands::key_container keys{};
+
+            const auto result = co_await string_commands.async_get_many(keys);
+            BOOST_CHECK(result.empty());
 
             set_test_end(true);
         });

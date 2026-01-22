@@ -32,8 +32,8 @@ BOOST_AUTO_TEST_SUITE(scan_result_suite)
 
         BOOST_CHECK_EQUAL(result.get_cursor(), cursor);
         BOOST_CHECK_EQUAL(result.get_keys().size(), 2);
-        BOOST_CHECK_EQUAL(result.get_keys()[0], "key1");
-        BOOST_CHECK_EQUAL(result.get_keys()[1], "key2");
+        BOOST_CHECK_EQUAL(result.get_keys().at(0), "key1");
+        BOOST_CHECK_EQUAL(result.get_keys().at(1), "key2");
     }
 
     BOOST_AUTO_TEST_CASE(test_scan_result_with_empty_keys)
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_SUITE(scan_result_suite)
         const celeritas::scan_result result{ cursor, keys };
 
         BOOST_CHECK_EQUAL(result.get_cursor(), cursor);
-        BOOST_CHECK_EQUAL(result.get_keys().size(), 0);
+        BOOST_CHECK(result.get_keys().empty());
     }
 
     BOOST_AUTO_TEST_CASE(test_scan_result_with_both_empty)
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_SUITE(scan_result_suite)
         const celeritas::scan_result result{ cursor, keys };
 
         BOOST_CHECK_EQUAL(result.get_cursor(), "");
-        BOOST_CHECK_EQUAL(result.get_keys().size(), 0);
+        BOOST_CHECK(result.get_keys().empty());
     }
 
     BOOST_AUTO_TEST_CASE(test_scan_result_move_semantics)
@@ -69,8 +69,8 @@ BOOST_AUTO_TEST_SUITE(scan_result_suite)
         BOOST_CHECK_EQUAL(result.get_cursor(), "temp_cursor");
         const auto retrieved_keys = result.get_keys();
         BOOST_CHECK_EQUAL(retrieved_keys.size(), 2);
-        BOOST_CHECK_EQUAL(retrieved_keys[0], "temp_key1");
-        BOOST_CHECK_EQUAL(retrieved_keys[1], "temp_key2");
+        BOOST_CHECK_EQUAL(retrieved_keys.at(0), "temp_key1");
+        BOOST_CHECK_EQUAL(retrieved_keys.at(1), "temp_key2");
     }
 
 BOOST_AUTO_TEST_SUITE_END()

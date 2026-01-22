@@ -159,7 +159,14 @@ celeritas::redis_reply::sorted_set_member_score_container celeritas::redis_reply
 
     for (auto i = 0; i < redis_reply_->elements; ++i)
     {
-        result.emplace_back(to_sorted_set_member_score(i));
+        if (redis_reply_->element[i]->type == REDIS_REPLY_ARRAY)
+        {
+            result.emplace_back(to_sorted_set_member_score(i));
+        }
+        else
+        {
+            result.emplace_back(to_sorted_set_member(i));
+        }
     }
 
     return result;
@@ -352,6 +359,18 @@ celeritas::sorted_set_member_score celeritas::redis_reply::to_sorted_set_member_
     const auto value = value_element->dval;
 
     return sorted_set_member_score{ std::move(key), value };
+}
+
+celeritas::sorted_set_member_score celeritas::redis_reply::to_sorted_set_member(const int index) const
+{
+    if (redis_reply_->element[index]->type != REDIS_REPLY_STRING)
+    {
+        throw celeritas_error{ "reply type mismatch: expected string for sorted set member score result conversion." };
+    }
+
+    std::string key{ redis_reply_->element[index]->str, redis_reply_->element[index]->len };
+
+    return sorted_set_member_score{ std::move(key), 0.0 };
 }
 
 std::string celeritas::redis_reply::array_to_string(const redisReply* element)
