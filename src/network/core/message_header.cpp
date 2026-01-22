@@ -22,7 +22,7 @@ size_t celeritas::message_header::get_total_size() const
 
 bool celeritas::message_header::is_effective() const
 {
-    return header_size <= max_header_message_size && body_size <= max_message_size;
+    return 0 < header_size && header_size <= max_header_message_size && 0 < body_size && body_size <= max_message_size;
 }
 
 uint16_t celeritas::message_header::get_header_type() const
