@@ -63,7 +63,7 @@ namespace celeritas
 
         [[nodiscard]] results_awaitable_type async_execute_query(const std::string& sql);
 
-        [[nodiscard]] void_awaitable_type async_reconnect_and_retry_query(const error_code_type& error_code);
+        [[nodiscard]] void_awaitable_type async_reconnect_on_disconnection(const error_code_type& error_code);
 
         [[nodiscard]] static database_entity_change populate_database_from_row(const const_database_entity_change_shared_ptr& database,
                                                                                const database_field_container& field_name_container,
