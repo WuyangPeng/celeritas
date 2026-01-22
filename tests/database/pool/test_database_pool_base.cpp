@@ -47,4 +47,23 @@ BOOST_AUTO_TEST_SUITE(database_pool_base_suite)
         });
     }
 
+    BOOST_FIXTURE_TEST_CASE(test_execute_changes_error, celeritas::connection_pool_fixture)
+    {
+        run([this]() -> boost::asio::awaitable<void> {
+            const auto pool = std::make_shared<celeritas::mock_database_pool_base>();
+            pool->set_execute_changes_result(false);
+            const auto key_container = std::make_shared<const celeritas::basis_database_container>(celeritas::basis_database{ "id", 1 });
+            const auto dummy_change = std::make_shared<const celeritas::database_entity_change>(celeritas::database_type::mysql,
+                                                                                                "test",
+                                                                                                celeritas::database_change_type::insert_type,
+                                                                                                key_container);
+            const auto result = co_await pool->execute_changes(dummy_change, 2);
+
+            BOOST_TEST(!result);
+            BOOST_TEST(pool->is_execute_changes_called());
+
+            set_test_end(true);
+        });
+    }
+
 BOOST_AUTO_TEST_SUITE_END()

@@ -84,6 +84,8 @@ namespace celeritas
                                                                  int max_connections,
                                                                  int expire_seconds);
 
+        void check_pool_name(const std::string& name);
+
         database_pool_container pools_;
         std::shared_mutex mutex_;
         database_pool_shared_ptr mock_pool_;

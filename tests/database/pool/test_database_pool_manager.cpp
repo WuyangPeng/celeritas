@@ -105,6 +105,20 @@ BOOST_AUTO_TEST_SUITE(database_pool_manager_suite)
         celeritas::database_pool_manager::get_instance().release_pool();
     }
 
+    BOOST_AUTO_TEST_CASE(test_create_pool_with_existing_name_throws_error)
+    {
+        celeritas::database_pool_manager::create_mongo_instance();
+        boost::asio::io_context io_context{};
+        const auto pool_name = "test_duplicate_pool";
+
+        std::ignore = create_test_pool(pool_name, celeritas::database_type::mongo, io_context.get_executor());
+
+        BOOST_CHECK_THROW(std::ignore = create_test_pool(pool_name, celeritas::database_type::mongo, io_context.get_executor()),
+                          celeritas::celeritas_error);
+
+        celeritas::database_pool_manager::get_instance().release_pool();
+    }
+
     BOOST_FIXTURE_TEST_CASE(test_is_health, celeritas::connection_pool_fixture)
     {
         celeritas::database_pool_manager::create_mongo_instance();

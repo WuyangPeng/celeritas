@@ -29,6 +29,8 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
                                                                                                          const int max_connections,
                                                                                                          const int expire_seconds)
 {
+    check_pool_name(name);
+
     switch (database_type)
     {
         case database_type::mysql:
@@ -183,4 +185,14 @@ celeritas::database_pool_manager::database_pool_shared_ptr celeritas::database_p
     pools_.insert({ name, pool });
 
     return pool;
+}
+
+void celeritas::database_pool_manager::check_pool_name(const std::string& name)
+{
+    std::shared_lock lock{ mutex_ };
+
+    if (pools_.contains(name))
+    {
+        throw celeritas_error{ "pool name = {} is exist.", name };
+    }
 }

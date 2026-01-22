@@ -22,6 +22,8 @@ namespace celeritas
 
         [[nodiscard]] result_container_awaitable_type select_all(const const_database_entity_change_shared_ptr&, const database_field_container&) override;
 
+        void set_execute_changes_result(bool result);
+
         [[nodiscard]] int get_cleanup_called_count() const;
 
         [[nodiscard]] bool is_execute_changes_called() const;
@@ -29,8 +31,9 @@ namespace celeritas
         [[nodiscard]] int get_expiration_time_passed() const;
 
     private:
-        std::atomic_int cleanup_called_count = 0;
-        bool execute_changes_called = false;
-        int expiration_time_passed = -1;
+        std::atomic_int cleanup_called_count_ = 0;
+        bool execute_changes_called_ = false;
+        int expiration_time_passed_ = -1;
+        bool execute_changes_result_ = true;
     };
 }
