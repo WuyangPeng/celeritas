@@ -1,6 +1,7 @@
 #pragma once
 
 #include "database_session.h"
+#include "common/core/celeritas_error.h"
 #include "detail/mysql_parameter.h"
 
 #include <boost/mysql.hpp>
@@ -68,6 +69,15 @@ namespace celeritas
         [[nodiscard]] static database_entity_change populate_database_from_row(const const_database_entity_change_shared_ptr& database,
                                                                                const database_field_container& field_name_container,
                                                                                const row_view_type& row);
+
+        [[nodiscard]] void_awaitable_type do_execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time);
+
+        [[nodiscard]] database_entity_change_awaitable_type do_select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container);
+
+        [[nodiscard]] result_container_awaitable_type do_select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container);
+
+        template <typename Func>
+        [[nodiscard]] auto execute_with_retry(Func&& func) -> decltype(func());
 
         connection_type connection_;
         mysql_parameter mysql_parameter_;

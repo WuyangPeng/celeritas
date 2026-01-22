@@ -1,4 +1,4 @@
-﻿#include "mysql_database_session.h"
+﻿#include "mysql_database_session.tpp"
 #include "common/core/celeritas_error.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
@@ -15,8 +15,6 @@
 #include <boost/asio/use_awaitable.hpp>
 
 #include <ranges>
-
-using namespace std::literals;
 
 celeritas::mysql_database_session::mysql_database_session(const std::string& host,
                                                           const int port,
@@ -52,32 +50,9 @@ celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database
 
 celeritas::mysql_database_session::results_awaitable_type celeritas::mysql_database_session::async_query(const std::string& sql)
 {
-    std::optional<error_code_type> retry_error{};
-
-    try
-    {
-        co_return co_await async_execute_query(sql);
-    }
-    catch (const boost::system::system_error& error)
-    {
-        LOG_CHANNEL(database_channel, error) << "async query exception" << error.what();
-
-        retry_error = error.code();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(database_channel, fatal) << "async_query unknown exception";
-        throw;
-    }
-
-    if (retry_error.has_value())
-    {
-        co_await async_reconnect_on_disconnection(retry_error.value());
-
-        co_return co_await async_execute_query(sql);
-    }
-
-    throw celeritas_error{ "mysql async query unknown exception" };
+    co_return co_await execute_with_retry([this, sql] {
+        return async_execute_query(sql);
+    });
 }
 
 celeritas::database_session::bool_awaitable_type celeritas::mysql_database_session::is_health()
@@ -94,62 +69,23 @@ celeritas::database_session::bool_awaitable_type celeritas::mysql_database_sessi
 
 celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time)
 {
-    switch (database->get_change_type())
-    {
-        case database_change_type::select_type:
-        {
-            throw celeritas_error("change type is select.");
-        }
-
-        case database_change_type::update_type:
-        {
-            if (database->is_modify())
-            {
-                co_await async_query(mysql_statement_generator::generate_update_statement(database));
-            }
-
-            co_return;
-        }
-        case database_change_type::insert_type:
-        {
-            co_await async_query(mysql_statement_generator::generate_insert_statement(database));
-            co_return;
-        }
-        case database_change_type::delete_type:
-        {
-            co_await async_query(mysql_statement_generator::generate_delete_statement(database));
-            co_return;
-        }
-    }
-
-    co_return;
+    co_return co_await execute_with_retry([this, database,expiration_time] {
+        return do_execute_changes(database, expiration_time);
+    });
 }
 
 celeritas::database_session::database_entity_change_awaitable_type celeritas::mysql_database_session::select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container)
 {
-    const auto result = co_await async_query(mysql_statement_generator::generate_select_statement(field_name_container, database) + " LIMIT 1;");
-
-    if (const auto& rows = result.rows();
-        !rows.empty())
-    {
-        co_return populate_database_from_row(database, field_name_container, rows.at(0));
-    }
-
-    co_return std::nullopt;
+    co_return co_await execute_with_retry([this, database,field_name_container] {
+        return do_select_one(database, field_name_container);
+    });
 }
 
 celeritas::database_session::result_container_awaitable_type celeritas::mysql_database_session::select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container)
 {
-    const auto result = co_await async_query(mysql_statement_generator::generate_select_statement(field_name_container, database) + ";");
-
-    result_container container{};
-
-    for (const auto& entity : result.rows())
-    {
-        container.emplace_back(populate_database_from_row(database, field_name_container, entity));
-    }
-
-    co_return container;
+    co_return co_await execute_with_retry([this, database,field_name_container] {
+        return do_select_all(database, field_name_container);
+    });
 }
 
 celeritas::mysql_database_session::connection_type celeritas::mysql_database_session::get_any_connection(const any_io_executor& any_io_executor, ssl_io_context_type* ssl_context)
@@ -210,4 +146,64 @@ celeritas::database_entity_change celeritas::mysql_database_session::populate_da
         ++index;
     }
     return select;
+}
+
+celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::do_execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time)
+{
+    switch (database->get_change_type())
+    {
+        case database_change_type::select_type:
+        {
+            throw celeritas_error{ "change type is select." };
+        }
+
+        case database_change_type::update_type:
+        {
+            if (database->is_modify())
+            {
+                co_await async_query(mysql_statement_generator::generate_update_statement(database));
+            }
+
+            co_return;
+        }
+        case database_change_type::insert_type:
+        {
+            co_await async_query(mysql_statement_generator::generate_insert_statement(database));
+            co_return;
+        }
+        case database_change_type::delete_type:
+        {
+            co_await async_query(mysql_statement_generator::generate_delete_statement(database));
+            co_return;
+        }
+    }
+
+    co_return;
+}
+
+celeritas::database_session::database_entity_change_awaitable_type celeritas::mysql_database_session::do_select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container)
+{
+    const auto result = co_await async_query(mysql_statement_generator::generate_select_statement(field_name_container, database) + " LIMIT 1;");
+
+    if (const auto& rows = result.rows();
+        !rows.empty())
+    {
+        co_return populate_database_from_row(database, field_name_container, rows.at(0));
+    }
+
+    co_return std::nullopt;
+}
+
+celeritas::database_session::result_container_awaitable_type celeritas::mysql_database_session::do_select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container)
+{
+    const auto result = co_await async_query(mysql_statement_generator::generate_select_statement(field_name_container, database) + ";");
+
+    result_container container{};
+
+    for (const auto& entity : result.rows())
+    {
+        container.emplace_back(populate_database_from_row(database, field_name_container, entity));
+    }
+
+    co_return container;
 }
