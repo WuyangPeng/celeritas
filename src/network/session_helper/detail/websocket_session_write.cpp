@@ -1,6 +1,6 @@
 ﻿#include "network_session_helper_internal_constant.h"
-#include "network_session_helper_internal_fwd.h"
 #include "websocket_session_write.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 
 #include <boost/asio.hpp>
@@ -24,8 +24,7 @@ celeritas::session_write::void_awaitable_type celeritas::websocket_session_write
     {
         try
         {
-            if (const auto result = co_await do_one_write();
-                !result)
+            if (!co_await do_one_write())
             {
                 co_return;
             }
@@ -72,7 +71,8 @@ celeritas::websocket_session_write::bool_awaitable_type celeritas::websocket_ses
     auto optional_buffer_guard = get_next_write_buffer();
     if (!optional_buffer_guard)
     {
-        co_return false; // 队列为空，退出协程
+        // 队列为空，退出协程
+        co_return false;
     }
 
     auto buffer_guard = std::move(*optional_buffer_guard);
@@ -90,7 +90,8 @@ celeritas::websocket_session_write::buffer_guard_optional_type celeritas::websoc
 
     if (write_queue_.empty())
     {
-        return std::nullopt; // 队列为空，返回一个空对象
+        // 队列为空，返回一个空对象
+        return std::nullopt;
     }
 
     auto buffer = std::move(write_queue_.front());
@@ -102,9 +103,12 @@ celeritas::websocket_session_write::buffer_guard_optional_type celeritas::websoc
 void celeritas::websocket_session_write::co_spawn_write()
 {
     // 如果发送协程没有在运行，就启动它
-    co_spawn(web_socket_.get_executor(), [self = this->shared_from_this()] {
-                 return self->do_write();
-             },
+    co_spawn(web_socket_.get_executor(),
+             noexcept_safe_call_and_log_awaitable([self = shared_from_this()] {
+                                                      return self->do_write();
+                                                  },
+                                                  network_channel,
+                                                  "websocket session write error: "),
              boost::asio::detached);
 }
 

@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "common/common_fwd.h"
 #include "network/core/network_message_callback.h"
 
 #include <boost/asio.hpp>

@@ -1,6 +1,6 @@
 ﻿#include "websocket_session_handle_one_message.h"
-#include "network/session_helper/detail/websocket_session_handle_session.h"
 #include "common/logging/logger.h"
+#include "network/session_helper/detail/websocket_session_handle_session.h"
 
 celeritas::websocket_session_handle_session::websocket_session_handle_session(web_socket_stream_type& web_socket,
                                                                               const int64_t session_id,

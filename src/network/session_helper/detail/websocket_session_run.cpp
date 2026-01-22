@@ -1,6 +1,12 @@
 ﻿#include "websocket_session_handle_session.h"
+#include "common/common_constant.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "network/session_helper/detail/websocket_session_run.h"
-#include "common/logging/logger.h"
+
+#include <boost/asio/co_spawn.hpp>
+#include <boost/asio/detached.hpp>
+
+#include <memory>
 
 celeritas::websocket_session_run::websocket_session_run(web_socket_stream_type& web_socket, const int64_t session_id, session_callback session_callback)
     : base_type{}, web_socket_{ web_socket }, session_id_{ session_id }, session_callback_{ std::move(session_callback) }
@@ -11,9 +17,11 @@ void celeritas::websocket_session_run::do_start()
 {
     // 启动主运行协程
     boost::asio::co_spawn(web_socket_.get_executor(),
-                          [self = shared_from_this()] {
-                              return self->run();
-                          },
+                          noexcept_safe_call_and_log_awaitable([self = shared_from_this()] {
+                                                                   return self->run();
+                                                               },
+                                                               network_channel,
+                                                               "websocket session run error: "),
                           boost::asio::detached);
 }
 
