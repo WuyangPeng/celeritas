@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "service_registry/detail/service_registry_internal_fwd.h"
+#include "detail/service_registry_core_internal_fwd.h"
 #include "service_registry/service_registry_fwd.h"
 
 #include <boost/asio/io_context.hpp>

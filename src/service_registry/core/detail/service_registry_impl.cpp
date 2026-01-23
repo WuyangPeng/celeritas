@@ -1,6 +1,6 @@
 ﻿#include "cleanup_timer.h"
+#include "service_registry_core_internal_constant.h"
 #include "service_registry_impl.h"
-#include "service_registry_internal_fwd.h"
 #include "common/logging/logger.h"
 
 #include <ranges>
@@ -9,7 +9,18 @@ void celeritas::service_registry_impl::register_service(const service_info& info
 {
     std::lock_guard lock{ mutex_ };
 
-    server_[info.get_service_name()][info.get_game_server_id()].emplace_back(info);
+    auto& server = server_[info.get_service_name()][info.get_game_server_id()];
+    const auto server_iter = std::ranges::find_if(server, [instance_id = info.get_instance_id()](const auto& element) {
+        return element.get_instance_id() == instance_id;
+    });
+    if (server_iter != server.cend())
+    {
+        *server_iter = info;
+    }
+    else
+    {
+        server.emplace_back(info);
+    }
 
     if (const auto iter = registry_.find(info.get_instance_id());
         iter != registry_.end())
@@ -28,7 +39,7 @@ void celeritas::service_registry_impl::clear_services(const std::string& service
 {
     std::lock_guard lock{ mutex_ };
 
-    erase_if(registry_, [service_name](const auto& element) {
+    erase_if(registry_, [service_name = service_name](const auto& element) {
         return element.second.get_service_name() == service_name;
     });
 
@@ -66,7 +77,7 @@ celeritas::service_registry_impl::service_info_container_type celeritas::service
 
     service_info_container_type services{};
     if (const auto iter = server_.find(service_name);
-        iter != server_.end())
+        iter != server_.cend())
     {
         for (const auto& container : iter->second | std::views::values)
         {
@@ -248,7 +259,7 @@ void celeritas::service_registry_impl::remove_server(const service_info& service
     }
 }
 
-celeritas::service_registry_impl::optional_service_info celeritas::service_registry_impl::get_idle_services(const service_info_container_type& service_info_container_type, int next_index)
+celeritas::service_registry_impl::optional_service_info celeritas::service_registry_impl::get_idle_services(const service_info_container_type& service_info_container_type, const int next_index)
 {
     if (service_info_container_type.size() == 1)
     {

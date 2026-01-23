@@ -1,9 +1,7 @@
 ﻿#include "health_check.h"
-#include "../../common/core/celeritas_error.h"
+#include "common/core/celeritas_error.h"
 
 #include <boost/json.hpp>
-
-using namespace std::literals;
 
 celeritas::health_check::health_check(std::string instance_id, const health_check_level_type health_check_level)
     : instance_id_{ std::move(instance_id) }, health_check_level_{ health_check_level }
@@ -43,7 +41,7 @@ celeritas::health_check celeritas::health_check::from_json_string(const std::str
     }
     catch (const std::exception& e)
     {
-        throw celeritas_error{ "json deserialization failed: "s + e.what() };
+        throw celeritas_error{ "json deserialization failed: {}", e.what() };
     }
 }
 
@@ -70,11 +68,11 @@ celeritas::health_check celeritas::tag_invoke(health_check_tag, const health_che
     }
     catch (const std::out_of_range& error)
     {
-        throw celeritas_error{ "json deserialization failed: missing 'instance_id' or 'health_check_level' key."s + error.what() };
+        throw celeritas_error{ "json deserialization failed: missing 'instance_id' or 'health_check_level' key.{}", error.what() };
     }
     catch (const boost::system::system_error& error)
     {
-        throw celeritas_error{ "json deserialization failed: invalid value type for key."s + error.what() };
+        throw celeritas_error{ "json deserialization failed: invalid value type for key.{}", error.what() };
     }
 }
 

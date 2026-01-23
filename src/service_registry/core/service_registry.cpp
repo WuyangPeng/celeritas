@@ -1,5 +1,5 @@
 ﻿#include "service_registry.h"
-#include "service_registry/detail/service_registry_impl.h"
+#include "detail/service_registry_impl.h"
 
 void celeritas::service_registry::register_service(const service_info& info)
 {
