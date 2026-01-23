@@ -21,8 +21,7 @@ celeritas::auth_login::optional_database_entity_change_awaitable_type celeritas:
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account::device_id_describe, device_id },
                                                                                                             { account::app_id_describe, app_id } });
 
-    co_return co_await mysql_pool->select_one(account::get_select(database_type::mysql, key),
-                                              account::get_database_field_container());
+    co_return co_await mysql_pool->select_one(account::get_select(database_type::mysql, key), account::get_database_field_container());
 }
 
 celeritas::auth_login::account_awaitable_type celeritas::auth_login::create_new_account(const int64_t app_id,

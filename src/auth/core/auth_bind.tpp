@@ -2,9 +2,9 @@
 
 #include "auth_bind.h"
 #include "auth/sdk/sdk_process_type.h"
-#include "database/pool/database_pool_base.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "database/generated/redis/auth/session_token.h"
+#include "database/pool/database_pool_base.h"
 #include "initializer/account_type.h"
 
 template <typename ResponseType>
@@ -38,8 +38,7 @@ celeritas::auth_bind::optional_account_awaitable_type celeritas::auth_bind::get_
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { account_bind::account_type_describe, static_cast<int>(account_type) },
                                                                                                             { account_bind::process_type_describe, static_cast<int>(sdk_process_type::null) },
                                                                                                             { account_bind::auth_key_describe, auth_key },
-                                                                                                            { account_bind::app_id_describe, app_id }
-    });
+                                                                                                            { account_bind::app_id_describe, app_id } });
 
     if (auto optional_account_bind = co_await mysql_pool->select_one(account_bind::get_select(database_type::mysql, key), account::get_database_field_container()))
     {
