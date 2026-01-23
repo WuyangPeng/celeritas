@@ -1,7 +1,7 @@
 ﻿#include "password_bind.h"
 #include "password_bind_response.h"
 #include "auth/core/auth_bind.tpp"
-#include "auth/data/app_secret.h"
+#include "auth/config/app_secret.h"
 #include "config/aggregate/app_config.h"
 #include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"

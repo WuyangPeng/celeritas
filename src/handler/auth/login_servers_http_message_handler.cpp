@@ -1,5 +1,5 @@
 ﻿#include "login_servers_http_message_handler.h"
-#include "auth/data/app_secret.h"
+#include "auth/config/app_secret.h"
 #include "auth/server_list/login_servers.h"
 #include "auth/server_list/login_servers_response.h"
 #include "common/core/celeritas_error.h"

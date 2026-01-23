@@ -1,5 +1,5 @@
 ﻿#include "guest_login_http_message_handler.h"
-#include "auth/data/app_secret.h"
+#include "auth/config/app_secret.h"
 #include "auth/authentication/guest/guest_login.h"
 #include "auth/authentication/guest/guest_login_response.h"
 #include "common/core/celeritas_error.h"

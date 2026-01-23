@@ -1,5 +1,5 @@
 ﻿#include "reload_server_cell_db_message_handler.h"
-#include "auth/data/server_cell_repository.h"
+#include "auth/config/server_cell_repository.h"
 #include "message/parameters/protobuf_handle_parameter.h"
 #include "proto/celeritas.pb.h"
 

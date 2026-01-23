@@ -1,7 +1,7 @@
 ﻿#include "password_login.h"
 #include "password_login_response.h"
 #include "auth/authentication/sdk/sdk_process_type.h"
-#include "auth/data/app_secret.h"
+#include "auth/config/app_secret.h"
 #include "common/core/hmac_sha_256.h"
 #include "config/aggregate/app_config.h"
 #include "database/database_constant.h"

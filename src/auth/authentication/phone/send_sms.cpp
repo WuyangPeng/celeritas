@@ -1,7 +1,7 @@
 ﻿#include "send_sms.h"
 #include "send_sms_response.h"
 #include "auth/auth_constant.h"
-#include "auth/data/app_sms_providers.h"
+#include "auth/config/app_sms_providers.h"
 #include "common/core/random_helper.h"
 #include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"

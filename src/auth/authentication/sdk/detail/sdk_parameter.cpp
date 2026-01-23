@@ -1,6 +1,6 @@
 ﻿#include "sdk_parameter.h"
 #include "auth/auth_constant.h"
-#include "auth/data/app_secret.h"
+#include "auth/config/app_secret.h"
 
 #include <boost/lexical_cast.hpp>
 

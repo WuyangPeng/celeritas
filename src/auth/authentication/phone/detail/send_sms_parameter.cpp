@@ -1,5 +1,5 @@
 ﻿#include "send_sms_parameter.h"
-#include "auth/data/app_secret.h"
+#include "auth/config/app_secret.h"
 #include "common/core/hmac_sha_256.h"
 
 celeritas::send_sms_parameter::send_sms_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)

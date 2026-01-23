@@ -1,6 +1,6 @@
 ﻿#include "login_servers.h"
 #include "login_servers_response.h"
-#include "auth/data/server_cell_repository.h"
+#include "auth/config/server_cell_repository.h"
 #include "auth/server_list/detail/login_servers_parameter.h"
 #include "common/core/time_helper.h"
 #include "database/database_constant.h"

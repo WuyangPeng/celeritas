@@ -1,6 +1,6 @@
 ﻿#include "guest_login.h"
 #include "guest_login_response.h"
-#include "auth/data/app_secret.h"
+#include "auth/config/app_secret.h"
 #include "common/core/celeritas_error.h"
 #include "config/aggregate/app_config.h"
 #include "database/database_constant.h"

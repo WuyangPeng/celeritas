@@ -1,5 +1,5 @@
 ﻿#include "reload_email_providers_db_message_handler.h"
-#include "auth/data/app_email_providers.h"
+#include "auth/config/app_email_providers.h"
 #include "message/parameters/protobuf_handle_parameter.h"
 #include "proto/celeritas.pb.h"
 

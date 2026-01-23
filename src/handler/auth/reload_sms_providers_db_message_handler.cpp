@@ -1,5 +1,5 @@
 ﻿#include "reload_sms_providers_db_message_handler.h"
-#include "auth/data/app_sms_providers.h"
+#include "auth/config/app_sms_providers.h"
 #include "message/parameters/protobuf_handle_parameter.h"
 #include "proto/celeritas.pb.h"
 

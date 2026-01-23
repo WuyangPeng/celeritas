@@ -1,6 +1,6 @@
 ﻿#include "login_servers_parameter.h"
 #include "auth/auth_constant.h"
-#include "auth/data/app_secret.h"
+#include "auth/config/app_secret.h"
 #include "common/core/hmac_sha_256.h"
 #include "database/generated/redis/auth/session_token.h"
 

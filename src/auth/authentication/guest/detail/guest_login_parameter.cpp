@@ -1,5 +1,5 @@
 ﻿#include "guest_login_parameter.h"
-#include "auth/data/app_secret.h"
+#include "auth/config/app_secret.h"
 #include "common/core/hmac_sha_256.h"
 #include "database/generated/mysql/auth/account.h"
 

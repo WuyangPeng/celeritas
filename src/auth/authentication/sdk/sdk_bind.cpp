@@ -1,7 +1,7 @@
 ﻿#include "sdk_bind.h"
 #include "sdk_bind_response.h"
 #include "auth/core/auth_bind.tpp"
-#include "auth/data/app_sdk_providers.h"
+#include "auth/config/app_sdk_providers.h"
 #include "detail/sdk_bind_parameter.h"
 #include "detail/sdk_process.h"
 #include "auth/authentication/sdk/detail/sdk_process_parameter.h"

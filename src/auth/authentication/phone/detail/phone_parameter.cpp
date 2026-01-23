@@ -1,6 +1,6 @@
 ﻿#include "phone_parameter.h"
 #include "auth/auth_constant.h"
-#include "auth/data/app_secret.h"
+#include "auth/config/app_secret.h"
 #include "common/core/hmac_sha_256.h"
 
 #include <regex>

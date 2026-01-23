@@ -1,7 +1,7 @@
 ﻿#include "email_bind.h"
 #include "email_bind_response.h"
 #include "auth/core/auth_bind.tpp"
-#include "auth/data/app_secret.h"
+#include "auth/config/app_secret.h"
 #include "common/logging/logger.h"
 #include "config/aggregate/app_config.h"
 #include "database/database_constant.h"
