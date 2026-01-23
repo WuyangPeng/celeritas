@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "network/core/listener.h"
+#include "network/core/session_base.h"
 
 namespace celeritas
 {
@@ -25,6 +26,35 @@ namespace celeritas
 
         [[nodiscard]] session_shared_ptr get_session(int64_t id) override;
 
-        [[nodiscard]] bool write(const std::string& server_type, const std::string& instance_id, const header& header, const protobuf_message& request) override;
+        [[nodiscard]] bool write(const std::string& server_type,
+                                 const std::string& instance_id,
+                                 const header& header,
+                                 const protobuf_message& request) override;
+
+        [[nodiscard]] bool stop_called() const;
+
+        [[nodiscard]] bool accept_connections_called() const;
+
+        void set_session_to_return(session_shared_ptr session);
+
+        [[nodiscard]] bool write_called() const;
+
+        [[nodiscard]] std::string get_write_server_type() const;
+
+        [[nodiscard]] std::string get_write_instance_id() const;
+
+        [[nodiscard]] header get_write_header() const;
+
+        [[nodiscard]] const protobuf_message* get_write_request() const;
+
+    private:
+        bool stop_called_ = false;
+        bool accept_connections_called_ = false;
+        session_shared_ptr session_to_return_ = nullptr;
+        bool write_called_ = false;
+        std::string write_server_type_;
+        std::string write_instance_id_;
+        header write_header_;
+        const protobuf_message* write_request_ = nullptr;
     };
 }

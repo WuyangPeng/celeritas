@@ -4,9 +4,9 @@
 
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_SUITE(network_message_callback_tests)
+BOOST_AUTO_TEST_SUITE(network_message_callback_suite)
 
-    BOOST_AUTO_TEST_CASE(constructor)
+    BOOST_AUTO_TEST_CASE(test_constructor)
     {
         celeritas::mock_network_message_callback callback{};
 

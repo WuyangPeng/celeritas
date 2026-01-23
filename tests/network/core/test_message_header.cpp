@@ -2,9 +2,9 @@
 
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_SUITE(message_header_tests)
+BOOST_AUTO_TEST_SUITE(message_header_suite)
 
-    BOOST_AUTO_TEST_CASE(default_constructor)
+    BOOST_AUTO_TEST_CASE(test_default_constructor)
     {
         constexpr celeritas::message_header header{};
 
@@ -15,12 +15,12 @@ BOOST_AUTO_TEST_SUITE(message_header_tests)
         BOOST_CHECK(!header.is_effective());
     }
 
-    BOOST_AUTO_TEST_CASE(static_size)
+    BOOST_AUTO_TEST_CASE(test_static_size)
     {
         BOOST_CHECK_EQUAL(celeritas::message_header::get_self_size(), 8);
     }
 
-    BOOST_AUTO_TEST_CASE(parameterized_constructor)
+    BOOST_AUTO_TEST_CASE(test_parameterized_constructor)
     {
         constexpr uint16_t header_size{ 100 };
         constexpr uint32_t body_size{ 500 };
@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_SUITE(message_header_tests)
         BOOST_CHECK(header.is_effective());
     }
 
-    BOOST_AUTO_TEST_CASE(network_host_conversion)
+    BOOST_AUTO_TEST_CASE(test_network_host_conversion)
     {
         constexpr uint16_t header_size{ 123 };
         constexpr uint32_t body_size{ 456 };

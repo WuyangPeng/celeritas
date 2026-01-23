@@ -8,9 +8,9 @@
 #include <boost/asio/io_context.hpp>
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_SUITE(session_base_tests)
+BOOST_AUTO_TEST_SUITE(session_base_suite)
 
-    BOOST_AUTO_TEST_CASE(constructor_and_getters)
+    BOOST_AUTO_TEST_CASE(test_constructor_and_getters)
     {
         boost::asio::io_context io_context{};
         constexpr auto server_type = celeritas::server_network_type::tcp;
@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_SUITE(session_base_tests)
         BOOST_CHECK(session.get_server_network_type() == server_type);
     }
 
-    BOOST_AUTO_TEST_CASE(instance_id)
+    BOOST_AUTO_TEST_CASE(test_instance_id)
     {
         boost::asio::io_context io_context{};
 
