@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "phone_operation_parameter.h"
+#include "auth/auth_constant.h"
 #include "auth/core/auth_service_base.h"
 #include "database/pool/database_pool_base.h"
 

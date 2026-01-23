@@ -1,6 +1,6 @@
 ﻿#include "send_email.h"
 #include "send_email_response.h"
-#include "auth/auth_fwd.h"
+#include "auth/auth_constant.h"
 #include "auth/data/app_email_providers.h"
 #include "auth/data/app_secret.h"
 #include "auth/detail/email/send_email_parameter.h"

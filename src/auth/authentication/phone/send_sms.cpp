@@ -1,6 +1,6 @@
 ﻿#include "send_sms.h"
 #include "send_sms_response.h"
-#include "auth/auth_fwd.h"
+#include "auth/auth_constant.h"
 #include "auth/data/app_sms_providers.h"
 #include "auth/detail/phone/send_sms_parameter.h"
 #include "auth/detail/phone/send_sms_to_providers.h"
