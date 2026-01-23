@@ -1,25 +1,27 @@
 ﻿#pragma once
 
 #include "auth/auth_fwd.h"
-#include "auth/core/auth_service_base.h"
 #include "database/document/server_role.h"
 #include "database/generated/mysql/auth/server_cell.h"
 #include "database/generated/redis/auth/session_token.h"
 #include "detail/auth_server_list_internal_fwd.h"
+#include "message/basic/http_service_base.h"
 
 #include <map>
 
 namespace celeritas
 {
-    class login_servers final : public auth_service_base
+    class login_servers final : public http_service_base
     {
     public:
         using class_type = login_servers;
-        using base_type = auth_service_base;
+        using base_type = http_service_base;
 
         explicit login_servers(http_handle_parameter_shared_ptr handle_parameter);
 
         [[nodiscard]] void_awaitable_type response() override;
+
+        [[nodiscard]] void_awaitable_type send_error_response() override;
 
     private:
         using container = std::map<std::string, server_role>;

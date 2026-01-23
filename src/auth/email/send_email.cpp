@@ -60,7 +60,12 @@ celeritas::send_email::void_awaitable_type celeritas::send_email::response()
     co_return;
 }
 
-celeritas::auth_service_base::void_awaitable_type celeritas::send_email::send_sdk_sms(const email_code& sms_code, const apps& apps)
+celeritas::http_service_base::void_awaitable_type celeritas::send_email::send_error_response()
+{
+    co_return;
+}
+
+celeritas::http_service_base::void_awaitable_type celeritas::send_email::send_sdk_sms(const email_code& sms_code, const apps& apps)
 {
     const auto email_providers = app_email_providers::get_instance().get_email_providers(apps.get_sms_provider_id());
 

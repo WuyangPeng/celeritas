@@ -54,3 +54,8 @@ celeritas::email_bind::void_awaitable_type celeritas::email_bind::response()
         co_return co_await write_immediately(email_bind_response{ game_error_type::mysql_error });
     }
 }
+
+celeritas::http_service_base::void_awaitable_type celeritas::email_bind::send_error_response()
+{
+    co_return;
+}

@@ -5,8 +5,8 @@
 #include "common/core/snowflake_generator.h"
 #include "common/core/time_helper.h"
 #include "config/aggregate/app_config.h"
-#include "database/pool/database_pool_base.h"
 #include "database/generated/mysql/auth/account_bind.h"
+#include "database/pool/database_pool_base.h"
 #include "initializer/account_status_type.h"
 
 celeritas::auth_login::auth_login(http_handle_parameter_shared_ptr handle_parameter)

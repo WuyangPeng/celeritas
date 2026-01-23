@@ -1,17 +1,17 @@
 ﻿#pragma once
 
-#include "auth_service_base.h"
 #include "auth/auth_fwd.h"
 #include "database/generated/mysql/auth/account.h"
 #include "initializer/account_type.h"
+#include "message/basic/http_service_base.h"
 
 namespace celeritas
 {
-    class auth_bind : public auth_service_base
+    class auth_bind : public http_service_base
     {
     public:
         using class_type = auth_bind;
-        using base_type = auth_service_base;
+        using base_type = http_service_base;
 
         explicit auth_bind(http_handle_parameter_shared_ptr handle_parameter);
 

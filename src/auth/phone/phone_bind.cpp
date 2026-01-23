@@ -55,3 +55,8 @@ celeritas::phone_bind::void_awaitable_type celeritas::phone_bind::response()
         co_return co_await write_immediately(phone_bind_response{ game_error_type::mysql_error });
     }
 }
+
+celeritas::http_service_base::void_awaitable_type celeritas::phone_bind::send_error_response()
+{
+    co_return;
+}
