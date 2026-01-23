@@ -3,8 +3,19 @@
 
 #include <mutex>
 
+celeritas::protobuf_message_registry::protobuf_message_registry(const std::string_view server_type)
+    : registry_{}, mutex_{}, server_type_{ server_type }
+{
+}
+
 void celeritas::protobuf_message_registry::register_handler(const base_message_handler_shared_ptr& handler)
 {
+    if (const auto server_type = handler->get_server_type();
+        !server_type.empty() && server_type.find(server_type_) == std::string::npos)
+    {
+        return;
+    }
+
     const auto type_name = handler->get_supported_type_name();
 
     std::lock_guard lock{ mutex_ };

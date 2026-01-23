@@ -1,7 +1,7 @@
 ﻿#include "battle_application_loader.h"
 
-celeritas::battle_application_loader::battle_application_loader(app_config_shared_ptr app_config)
-    : base_type{ std::move(app_config) }
+celeritas::battle_application_loader::battle_application_loader(const std::string_view server_type, app_config_shared_ptr app_config)
+    : base_type{ server_type, std::move(app_config) }
 {
 }
 

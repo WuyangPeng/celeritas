@@ -4,8 +4,8 @@
 #include "message/handler_base/concrete_message_handler.tpp"
 #include "payment/app_sdk_payment_providers.h"
 
-celeritas::payment_application_loader::payment_application_loader(app_config_shared_ptr app_config)
-    : base_type{ std::move(app_config) }
+celeritas::payment_application_loader::payment_application_loader(const std::string_view server_type, app_config_shared_ptr app_config)
+    : base_type{ server_type, std::move(app_config) }
 {
 }
 

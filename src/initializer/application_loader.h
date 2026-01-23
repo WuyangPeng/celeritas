@@ -27,7 +27,7 @@ namespace celeritas
         using io_context_type = boost::asio::io_context;
         using http_base_message_handler_shared_ptr = std::shared_ptr<http_base_message_handler>;
 
-        explicit application_loader(app_config_shared_ptr app_config);
+        explicit application_loader(std::string_view server_type, app_config_shared_ptr app_config);
 
         void initialize();
 

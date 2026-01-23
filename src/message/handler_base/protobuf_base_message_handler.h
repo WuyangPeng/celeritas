@@ -31,5 +31,7 @@ namespace celeritas
         [[nodiscard]] virtual std::string get_supported_type_name() const = 0;
 
         [[nodiscard]] virtual bool handle(const protobuf_handle_parameter_shared_ptr& handle_parameter, const protobuf_message& current_message, const message_registry_weak_ptr& message_registry) = 0;
+
+        [[nodiscard]] virtual std::string get_server_type() const;
     };
 }

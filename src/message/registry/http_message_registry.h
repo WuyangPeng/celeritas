@@ -16,6 +16,8 @@ namespace celeritas
         using http_base_message_handler_shared_ptr = std::shared_ptr<http_base_message_handler>;
         using http_handle_parameter_shared_ptr = std::shared_ptr<http_handle_parameter>;
 
+        explicit http_message_registry(std::string_view server_type);
+
         void register_handler(const http_base_message_handler_shared_ptr& handler);
 
         [[nodiscard]] bool dispatch(const http_handle_parameter_shared_ptr& handle_parameter);
@@ -28,5 +30,6 @@ namespace celeritas
 
         registry_type registry_;
         std::shared_mutex mutex_;
+        std::string_view server_type_;
     };
 }

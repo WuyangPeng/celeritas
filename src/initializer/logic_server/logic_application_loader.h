@@ -10,7 +10,7 @@ namespace celeritas
         using class_type = logic_application_loader;
         using base_type = application_loader;
 
-        explicit logic_application_loader(app_config_shared_ptr app_config);
+        explicit logic_application_loader(std::string_view server_type, app_config_shared_ptr app_config);
 
     private:
         void service_initialize_application() override;

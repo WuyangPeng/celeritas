@@ -51,11 +51,11 @@ celeritas::server_cell_repository::optional_server_cell_type celeritas::server_c
         iter != app_id_server_.cend() && !iter->second.empty())
     {
         const auto current_milliseconds = time_helper::get_current_milliseconds();
-        for (auto server_cell = iter->second.cbegin(); server_cell != iter->second.cend(); ++server_cell)
+        for (const auto& server_cell : iter->second)
         {
-            if (current_milliseconds >= server_cell->get_launch_time())
+            if (current_milliseconds >= server_cell.get_launch_time())
             {
-                return *server_cell;
+                return server_cell;
             }
         }
     }

@@ -17,6 +17,8 @@ namespace celeritas
         using base_message_handler_shared_ptr = std::shared_ptr<protobuf_base_message_handler>;
         using protobuf_handle_parameter_shared_ptr = std::shared_ptr<protobuf_handle_parameter>;
 
+        explicit protobuf_message_registry(std::string_view server_type);
+
         void register_handler(const base_message_handler_shared_ptr& handler);
 
         [[nodiscard]] bool dispatch(const protobuf_handle_parameter_shared_ptr& handle_parameter, const protobuf_message& current_message);
@@ -29,5 +31,6 @@ namespace celeritas
 
         registry_type registry_;
         std::shared_mutex mutex_;
+        std::string_view server_type_;
     };
 }
