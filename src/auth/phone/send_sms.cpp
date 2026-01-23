@@ -51,17 +51,13 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::response()
                                   return send_sdk_sms(sms_code, app);
                               }, boost::asio::detached);
     }
-    else
-    {
-        co_return co_await write_immediately(send_sms_response{ game_error_type::redis_error });
-    }
 
-    co_return;
+    co_return co_await write_immediately(send_sms_response{ game_error_type::redis_error });
 }
 
 celeritas::http_service_base::void_awaitable_type celeritas::send_sms::send_error_response()
 {
-    co_return;
+    co_return co_await write_immediately(send_sms_response{ game_error_type::unknown, "unknown error" });
 }
 
 celeritas::send_sms::void_awaitable_type celeritas::send_sms::send_sdk_sms(const sms_code& sms_code, const apps& apps)

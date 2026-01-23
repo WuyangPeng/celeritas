@@ -3,8 +3,6 @@
 #include "common/core/enum_cast.h"
 #include "common/logging/logger.h"
 
-using namespace std::literals;
-
 celeritas::login_servers_response::login_servers_response(const game_error_type code)
     : bass_type{ code }, login_server_info_{}
 {
@@ -74,11 +72,11 @@ celeritas::login_servers_response celeritas::tag_invoke(login_servers_response_t
     }
     catch (const std::out_of_range& error)
     {
-        throw celeritas_error{ "json deserialization failed: missing 'code' or 'message' key."s + error.what() };
+        throw celeritas_error{ "json deserialization failed: missing 'code' or 'message' key.{}", error.what() };
     }
     catch (const boost::system::system_error& error)
     {
-        throw celeritas_error{ "json deserialization failed: invalid value type for key."s + error.what() };
+        throw celeritas_error{ "json deserialization failed: invalid value type for key.{}", error.what() };
     }
 }
 

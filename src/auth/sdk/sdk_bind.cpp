@@ -54,13 +54,11 @@ celeritas::sdk_bind::void_awaitable_type celeritas::sdk_bind::response()
     {
         co_return co_await write_immediately(sdk_bind_response{ game_error_type::success, "sdk bind success" });
     }
-    else
-    {
-        co_return co_await write_immediately(sdk_bind_response{ game_error_type::mysql_error });
-    }
+
+    co_return co_await write_immediately(sdk_bind_response{ game_error_type::mysql_error });
 }
 
 celeritas::http_service_base::void_awaitable_type celeritas::sdk_bind::send_error_response()
 {
-    co_return;
+    co_return co_await write_immediately(sdk_bind_response{ game_error_type::unknown });
 }

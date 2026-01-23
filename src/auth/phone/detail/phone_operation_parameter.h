@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "phone_parameter.h"
-#include "auth/auth_fwd.h"
 #include "database/generated/redis/auth/sms_code.h"
 
 namespace celeritas

@@ -4,6 +4,7 @@
 #include "auth/config/app_secret.h"
 #include "common/logging/logger.h"
 #include "config/aggregate/app_config.h"
+#include "detail/email_operation_parameter.tpp"
 #include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"
 #include "database/generated/mysql/auth/account_bind.h"
@@ -49,13 +50,11 @@ celeritas::email_bind::void_awaitable_type celeritas::email_bind::response()
             LOG_CHANNEL(auth_channel, error) << "delete email code error.";
         }
     }
-    else
-    {
-        co_return co_await write_immediately(email_bind_response{ game_error_type::mysql_error });
-    }
+
+    co_return co_await write_immediately(email_bind_response{ game_error_type::mysql_error });
 }
 
 celeritas::http_service_base::void_awaitable_type celeritas::email_bind::send_error_response()
 {
-    co_return;
+    co_return co_await write_immediately(email_bind_response{ game_error_type::unknown });
 }

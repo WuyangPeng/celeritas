@@ -2,7 +2,6 @@
 #include "phone_login_response.h"
 #include "auth/sdk/sdk_process_type.h"
 #include "auth/config/app_secret.h"
-#include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
 #include "config/aggregate/app_config.h"
 #include "database/database_constant.h"
@@ -73,7 +72,7 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
 
 celeritas::http_service_base::void_awaitable_type celeritas::phone_login::send_error_response()
 {
-    co_return;
+    co_return co_await write_immediately(phone_login_response{ game_error_type::unknown, "unknown error" });
 }
 
 celeritas::phone_login::account_awaitable_type celeritas::phone_login::get_account(const optional_database_entity_change& database_entity_change,

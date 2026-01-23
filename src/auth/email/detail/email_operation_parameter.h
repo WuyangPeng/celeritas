@@ -1,9 +1,7 @@
 ﻿#pragma once
 
 #include "email_parameter.h"
-#include "auth/auth_fwd.h"
 #include "database/generated/redis/auth/email_code.h"
-#include "message/basic/http_service_base.h"
 
 namespace celeritas
 {

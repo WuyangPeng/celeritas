@@ -9,5 +9,6 @@ namespace celeritas
     class email_bind_parameter;
     class send_email_to_providers;
     class tencent_cloud_email;
- enum class send_email_type;
+
+    enum class send_email_type;
 }

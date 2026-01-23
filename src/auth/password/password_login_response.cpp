@@ -25,8 +25,7 @@ celeritas::password_login_response::password_login_response(http_response http_r
 {
 }
 
-celeritas::password_login_response
-    celeritas::password_login_response::from_json_string(const std::string& json_string)
+celeritas::password_login_response celeritas::password_login_response::from_json_string(const std::string& json_string)
 {
     auto token_http_response = bass_type::from_json_string(json_string);
 

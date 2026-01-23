@@ -1,6 +1,5 @@
 ﻿#include "guest_login.h"
 #include "guest_login_response.h"
-#include "auth/config/app_secret.h"
 #include "common/core/celeritas_error.h"
 #include "config/aggregate/app_config.h"
 #include "database/database_constant.h"
@@ -54,8 +53,7 @@ celeritas::guest_login::void_awaitable_type celeritas::guest_login::response()
 
 celeritas::http_service_base::void_awaitable_type celeritas::guest_login::send_error_response()
 {
-    const guest_login_response response{ game_error_type::unknown, "unknown error" };
-    co_return co_await get_http_handle_parameter()->write_immediately(response.to_json_string());
+    co_return co_await write_immediately(guest_login_response{ game_error_type::unknown, "unknown error" });
 }
 
 celeritas::guest_login::account_awaitable_type celeritas::guest_login::get_account(const int64_t app_id,

@@ -51,7 +51,7 @@ celeritas::http_service_base::void_awaitable_type celeritas::login_servers::resp
 
 celeritas::http_service_base::void_awaitable_type celeritas::login_servers::send_error_response()
 {
-    co_return;
+    co_return co_await write_immediately(login_servers_response{ game_error_type::unknown });
 }
 
 celeritas::login_server_info celeritas::login_servers::get_login_server_info(const login_servers_parameter& login_servers_parameter, const server_cell& server_cell)

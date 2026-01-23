@@ -2,7 +2,6 @@
 #include "email_login_response.h"
 #include "auth/sdk/sdk_process_type.h"
 #include "auth/config/app_secret.h"
-#include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
 #include "config/aggregate/app_config.h"
 #include "database/database_constant.h"
@@ -52,10 +51,10 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
     // 这里没有删除旧的token，旧的token依赖redis有效时间进行删除。
     if (auto session_token = co_await create_session_token(account, !optional_account_bind, redis_pool))
     {
-        co_return co_await write_immediately(email_login_response{ game_error_type::success,
-                                                                   "login successful",
-                                                                   session_token->get_token(),
-                                                                   get_app_config()->get_expire_milliseconds(redis_db_name.data()) });
+        co_await write_immediately(email_login_response{ game_error_type::success,
+                                                         "login successful",
+                                                         session_token->get_token(),
+                                                         get_app_config()->get_expire_milliseconds(redis_db_name.data()) });
     }
     else
     {
@@ -72,7 +71,7 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
 
 celeritas::http_service_base::void_awaitable_type celeritas::email_login::send_error_response()
 {
-    co_return;
+    co_return co_await write_immediately(email_login_response{ game_error_type::unknown });
 }
 
 celeritas::email_login::account_awaitable_type celeritas::email_login::get_account(const optional_database_entity_change& database_entity_change,

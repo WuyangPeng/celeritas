@@ -1,7 +1,6 @@
 ﻿#include "password_bind.h"
 #include "password_bind_response.h"
 #include "auth/core/auth_bind.tpp"
-#include "auth/config/app_secret.h"
 #include "config/aggregate/app_config.h"
 #include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"
@@ -37,13 +36,11 @@ celeritas::password_bind::void_awaitable_type celeritas::password_bind::response
     {
         co_return co_await write_immediately(password_bind_response{ game_error_type::success, "password bind success" });
     }
-    else
-    {
-        co_return co_await write_immediately(password_bind_response{ game_error_type::mysql_error });
-    }
+
+    co_return co_await write_immediately(password_bind_response{ game_error_type::mysql_error });
 }
 
 celeritas::http_service_base::void_awaitable_type celeritas::password_bind::send_error_response()
 {
-    co_return;
+    co_return co_await write_immediately(password_bind_response{ game_error_type::unknown });
 }

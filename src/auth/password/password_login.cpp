@@ -1,14 +1,13 @@
 ﻿#include "password_login.h"
 #include "password_login_response.h"
 #include "auth/sdk/sdk_process_type.h"
-#include "auth/config/app_secret.h"
 #include "common/core/hmac_sha_256.h"
 #include "config/aggregate/app_config.h"
 #include "database/database_constant.h"
-#include "database/pool/database_pool_manager.h"
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "database/generated/redis/auth/session_token.h"
+#include "database/pool/database_pool_manager.h"
 #include "detail/password_login_parameter.h"
 #include "initializer/account_type.h"
 #include "message/basic/game_error_type.h"
@@ -47,7 +46,7 @@ celeritas::password_login::void_awaitable_type celeritas::password_login::respon
 
 celeritas::http_service_base::void_awaitable_type celeritas::password_login::send_error_response()
 {
-    co_return;
+    co_return co_await write_immediately(password_login_response{ game_error_type::unknown });
 }
 
 celeritas::password_login::void_awaitable_type celeritas::password_login::login(const optional_database_entity_change& database_entity_change,
@@ -93,8 +92,6 @@ celeritas::password_login::void_awaitable_type celeritas::password_login::login(
                                                                       session_token->get_token(),
                                                                       get_app_config()->get_expire_milliseconds(redis_db_name.data()) });
     }
-    else
-    {
-        co_return co_await write_immediately(password_login_response{ game_error_type::redis_error });
-    }
+
+    co_return co_await write_immediately(password_login_response{ game_error_type::redis_error });
 }

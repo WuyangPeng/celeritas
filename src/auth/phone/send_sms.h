@@ -3,7 +3,6 @@
 #include "database/generated/mysql/auth/apps.h"
 #include "database/generated/redis/auth/sms_code.h"
 #include "message/basic/http_service_base.h"
-#include "message/parameters/http_handle_parameter.h"
 
 namespace celeritas
 {

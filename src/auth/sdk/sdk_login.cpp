@@ -69,15 +69,13 @@ celeritas::sdk_login::void_awaitable_type celeritas::sdk_login::response()
                                                                  session_token->get_token(),
                                                                  get_app_config()->get_expire_milliseconds(redis_db_name.data()) });
     }
-    else
-    {
-        co_return co_await write_immediately(sdk_login_response{ game_error_type::redis_error });
-    }
+
+    co_return co_await write_immediately(sdk_login_response{ game_error_type::redis_error });
 }
 
 celeritas::http_service_base::void_awaitable_type celeritas::sdk_login::send_error_response()
 {
-    co_return;
+    co_return co_await write_immediately(sdk_login_response{ game_error_type::unknown });
 }
 
 celeritas::sdk_login::account_awaitable_type celeritas::sdk_login::get_account(const optional_database_entity_change& database_entity_change,

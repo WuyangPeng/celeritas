@@ -1,12 +1,8 @@
 ﻿#include "phone_bind_http_message_handler.h"
 #include "auth/phone/phone_bind.h"
-#include "auth/phone/phone_bind_response.h"
 #include "common/logging/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_constant.h"
-#include "initializer/initializer_fwd.h"
-#include "message/basic/game_error_type.h"
-#include "message/parameters/http_handle_parameter.h"
 
 std::string celeritas::phone_bind_http_message_handler::get_supported_type_name() const
 {
@@ -16,34 +12,12 @@ std::string celeritas::phone_bind_http_message_handler::get_supported_type_name(
 bool celeritas::phone_bind_http_message_handler::handle(const http_handle_parameter_shared_ptr& handle_parameter,
                                                         const http_message_registry_weak_ptr& message_registry)
 {
-    if (handle_parameter->get_server_type() != auth_type)
-    {
-        return false;
-    }
-
-    boost::asio::co_spawn(handle_parameter->get_any_io_executor(),
-                          response(handle_parameter),
-                          boost::asio::detached);
+    co_spawn_response<phone_bind>(handle_parameter, handler_channel, "phone bind error:");
 
     return true;
 }
 
-celeritas::phone_bind_http_message_handler::void_awaitable_type celeritas::phone_bind_http_message_handler::response(http_handle_parameter_shared_ptr handle_parameter)
+std::string celeritas::phone_bind_http_message_handler::get_server_type() const
 {
-    try
-    {
-        phone_bind phone_bind{ handle_parameter };
-        co_return co_await phone_bind.response();
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(handler_channel, error) << "phone login error: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(handler_channel, fatal) << "phone login unknown error.";
-    }
-
-    const phone_bind_response response{ game_error_type::unknown, "unknown error" };
-    co_return co_await handle_parameter->write_immediately(response.to_json_string());
+    return auth_type.data();
 }
