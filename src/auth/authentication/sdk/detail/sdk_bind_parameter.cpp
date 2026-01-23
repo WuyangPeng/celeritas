@@ -1,6 +1,6 @@
 ﻿#include "sdk_bind_parameter.h"
-#include "auth/detail/auth_internal_fwd.h"
 #include "common/core/hmac_sha_256.h"
+#include "database/generated/redis/auth/session_token.h"
 
 celeritas::sdk_bind_parameter::sdk_bind_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)
     : base_type{ http_handle_parameter }, response_{}, token_{}
@@ -25,7 +25,7 @@ std::string celeritas::sdk_bind_parameter::get_token() const
 
 void celeritas::sdk_bind_parameter::init()
 {
-    const auto optional_token = get_param(token_describe.data());
+    const auto optional_token = get_param(session_token::token_describe.data());
     if (!optional_token)
     {
         response_ = sdk_bind_response{ game_error_type::invalid_parameter, "token is required" };

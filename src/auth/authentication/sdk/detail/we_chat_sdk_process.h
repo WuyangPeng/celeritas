@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "sdk_process.h"
+#include "sdk_process_parameter.h"
 
 namespace celeritas
 {

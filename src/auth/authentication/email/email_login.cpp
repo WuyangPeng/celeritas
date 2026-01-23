@@ -2,8 +2,6 @@
 #include "email_login_response.h"
 #include "auth/authentication/sdk/sdk_process_type.h"
 #include "auth/data/app_secret.h"
-#include "auth/detail/email/email_login_parameter.h"
-#include "auth/detail/email/email_operation_parameter.tpp"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
 #include "config/aggregate/app_config.h"
@@ -13,6 +11,7 @@
 #include "database/generated/mysql/auth/account_bind.h"
 #include "database/generated/redis/auth/email_code.h"
 #include "database/generated/redis/auth/session_token.h"
+#include "detail/email_login_parameter.h"
 #include "initializer/account_type.h"
 #include "message/basic/game_error_type.h"
 

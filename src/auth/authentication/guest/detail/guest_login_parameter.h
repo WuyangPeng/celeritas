@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "auth/authentication/guest/guest_login_response.h"
-#include "auth/detail/core/auth_parameter.h"
+#include "auth/core/detail/auth_parameter.h"
 #include "message/parameters/http_handle_parameter.h"
 
 namespace celeritas

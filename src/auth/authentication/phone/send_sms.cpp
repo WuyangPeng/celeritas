@@ -2,13 +2,13 @@
 #include "send_sms_response.h"
 #include "auth/auth_constant.h"
 #include "auth/data/app_sms_providers.h"
-#include "auth/detail/phone/send_sms_parameter.h"
-#include "auth/detail/phone/send_sms_to_providers.h"
 #include "common/core/random_helper.h"
 #include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"
 #include "database/generated/redis/auth/sms_code.h"
 #include "database/generated/redis/auth/sms_limit.h"
+#include "detail/send_sms_parameter.h"
+#include "detail/send_sms_to_providers.h"
 #include "message/basic/game_error_type.h"
 
 celeritas::send_sms::send_sms(http_handle_parameter_shared_ptr handle_parameter)

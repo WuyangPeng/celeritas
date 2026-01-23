@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "auth/auth_fwd.h"
-#include "auth/detail/core/auth_parameter.h"
+#include "auth/core/detail/auth_parameter.h"
 #include "database/generated/mysql/auth/apps.h"
 
 namespace celeritas

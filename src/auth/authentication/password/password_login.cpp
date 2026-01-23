@@ -2,7 +2,6 @@
 #include "password_login_response.h"
 #include "auth/authentication/sdk/sdk_process_type.h"
 #include "auth/data/app_secret.h"
-#include "auth/detail/password/password_login_parameter.h"
 #include "common/core/hmac_sha_256.h"
 #include "config/aggregate/app_config.h"
 #include "database/database_constant.h"
@@ -10,6 +9,7 @@
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "database/generated/redis/auth/session_token.h"
+#include "detail/password_login_parameter.h"
 #include "initializer/account_type.h"
 #include "message/basic/game_error_type.h"
 

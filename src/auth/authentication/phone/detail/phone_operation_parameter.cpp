@@ -1,7 +1,6 @@
 ﻿#include "phone_operation_parameter.h"
+#include "auth/auth_constant.h"
 #include "auth/core/auth_service_base.h"
-#include "auth/detail/auth_internal_fwd.h"
-
 #include <boost/lexical_cast.hpp>
 
 celeritas::phone_operation_parameter::phone_operation_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)

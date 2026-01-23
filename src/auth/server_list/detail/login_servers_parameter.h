@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "auth/detail/core/auth_parameter.h"
+#include "auth/core/detail/auth_parameter.h"
 #include "auth/server_list/login_servers_response.h"
 #include "database/generated/mysql/auth/apps.h"
 

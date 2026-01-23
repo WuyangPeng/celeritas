@@ -1,5 +1,5 @@
 ﻿#include "phone_bind_parameter.h"
-#include "auth/detail/auth_internal_fwd.h"
+#include "auth/auth_constant.h"
 #include "common/core/hmac_sha_256.h"
 
 celeritas::phone_bind_parameter::phone_bind_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)

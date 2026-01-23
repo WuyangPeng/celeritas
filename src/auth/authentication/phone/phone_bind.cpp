@@ -1,8 +1,6 @@
 ﻿#include "phone_bind.h"
 #include "phone_bind_response.h"
 #include "auth/core/auth_bind.tpp"
-#include "auth/detail/phone/phone_bind_parameter.h"
-#include "auth/detail/phone/phone_operation_parameter.tpp"
 #include "common/logging/logger.h"
 #include "common/core/snowflake_generator.h"
 #include "config/aggregate/app_config.h"
@@ -10,6 +8,7 @@
 #include "database/pool/database_pool_manager.h"
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/mysql/auth/account_bind.h"
+#include "detail/phone_bind_parameter.h"
 #include "initializer/account_type.h"
 #include "message/basic/game_error_type.h"
 
