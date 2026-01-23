@@ -25,11 +25,20 @@ namespace celeritas
 
         [[nodiscard]] any_io_executor get_any_io_executor() override;
 
+        [[nodiscard]] bool was_do_write_called() const;
+
+        [[nodiscard]] bool was_do_write_immediately_called() const;
+
+        [[nodiscard]] size_t get_last_write_size() const;
+
     private:
         void do_write(buffer_guard data) override;
 
         [[nodiscard]] void_awaitable_type do_write_immediately(buffer_guard data) override;
 
         boost::asio::any_io_executor executor_;
+        bool do_write_called_ = false;
+        bool do_write_immediately_called_ = false;
+        size_t last_write_size_ = 0;
     };
 }

@@ -8,7 +8,7 @@ celeritas::network_message_callback_fixture::network_message_callback_fixture()
       session_(std::make_shared<mock_session_base>(io_context_.get_executor(),
                                                    server_network_type::tcp,
                                                    1,
-                                                   session_callback{ session_callback::listener_accept_weak_ptr{}, std::make_shared<mock_network_message_callback>() }))
+                                                   session_callback{ std::weak_ptr<listener_sessions_base>(), std::make_shared<mock_network_message_callback>() }))
 {
 }
 
