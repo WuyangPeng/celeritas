@@ -1,20 +1,22 @@
 ﻿#pragma once
 
-#include "payment_service_base.h"
 #include "database/generated/mysql/payment/orders.h"
-#include "detail/order_create_parameter.h"
+#include "payment/detail/order_create_parameter.h"
+#include "message/basic/http_service_base.h"
 
 namespace celeritas
 {
-    class order_create final : public payment_service_base
+    class order_create final : public http_service_base
     {
     public:
         using class_type = order_create;
-        using base_type = payment_service_base;
+        using base_type = http_service_base;
 
         explicit order_create(http_handle_parameter_shared_ptr handle_parameter);
 
         [[nodiscard]] void_awaitable_type response() override;
+
+        [[nodiscard]] void_awaitable_type send_error_response() override;
 
     private:
         using optional_orders = std::optional<orders>;

@@ -2,8 +2,8 @@
 
 #include "payment_parameter.h"
 #include "database/generated/mysql/auth/apps.h"
-#include "payment/order_create_http_response.h"
-#include "payment/payment_platform_type.h"
+#include "../core/order_create_http_response.h"
+#include "../basic/payment_platform_type.h"
 
 namespace celeritas
 {

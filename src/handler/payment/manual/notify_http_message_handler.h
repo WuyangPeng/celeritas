@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "message/handler_base/http_base_message_handler.h"
-#include "payment/sdk_payment_providers_key.h"
+#include "../../../payment/config/sdk_payment_providers_key.h"
 
 #include <boost/asio/awaitable.hpp>
 

@@ -10,7 +10,6 @@ namespace celeritas
 
     class sdk_payment_providers_key;
     class app_sdk_payment_providers;
-    class payment_service_base;
 
     class order_create;
     class order_create_http_response;

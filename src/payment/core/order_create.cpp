@@ -1,14 +1,14 @@
 ﻿#include "order_create.h"
-#include "payment_delivery_status.h"
-#include "payment_fwd.h"
-#include "payment_status_type.h"
+#include "payment/basic/payment_delivery_status_type.h"
+#include "payment/payment_fwd.h"
+#include "payment/basic/payment_status_type.h"
 #include "common/core/snowflake_generator.h"
 #include "common/core/time_helper.h"
 #include "config/aggregate/app_config.h"
 #include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"
 #include "database/generated/mysql/payment/orders.h"
-#include "detail/payment_params_json.h"
+#include "payment/detail/payment_params_json.h"
 
 celeritas::order_create::order_create(http_handle_parameter_shared_ptr handle_parameter)
     : base_type{ std::move(handle_parameter) }
@@ -39,6 +39,11 @@ celeritas::order_create::void_awaitable_type celeritas::order_create::response()
                                                                      static_cast<payment_platform_type>(order.get_platform()),
                                                                      payment_params_json::create(order_create_parameter)->get_payment_params_json(),
                                                                      order.get_amount() });
+}
+
+celeritas::http_service_base::void_awaitable_type celeritas::order_create::send_error_response()
+{
+    co_return co_await write_immediately(order_create_http_response{ game_error_type::unknown });
 }
 
 celeritas::order_create::optional_orders_awaitable_type celeritas::order_create::get_orders(const database_pool_shared_ptr& mysql_pool,

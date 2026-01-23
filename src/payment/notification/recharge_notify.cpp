@@ -1,4 +1,4 @@
-﻿#include "payment_platform_type.h"
+﻿#include "payment/basic/payment_platform_type.h"
 #include "recharge_notify.h"
 #include "we_chat_recharge_notify.h"
 #include "common/core/celeritas_error.h"

@@ -3,7 +3,7 @@
 #include "manual/notify_http_message_handler.h"
 #include "manual/refund_http_message_handler.h"
 #include "message/parameters/protobuf_handle_parameter.h"
-#include "payment/app_sdk_payment_providers.h"
+#include "../../payment/config/app_sdk_payment_providers.h"
 #include "proto/celeritas.pb.h"
 
 #include <boost/polymorphic_pointer_cast.hpp>

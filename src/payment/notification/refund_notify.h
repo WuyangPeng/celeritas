@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "app_sdk_payment_providers.h"
+#include "payment/config/app_sdk_payment_providers.h"
 #include "message/message_fwd.h"
 
 #include <memory>
