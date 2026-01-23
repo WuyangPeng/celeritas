@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "auth_bind.h"
-#include "auth/authentication/sdk/sdk_process_type.h"
+#include "auth/sdk/sdk_process_type.h"
 #include "database/pool/database_pool_base.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "database/generated/redis/auth/session_token.h"

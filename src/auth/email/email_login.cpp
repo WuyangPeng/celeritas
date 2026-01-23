@@ -1,6 +1,6 @@
 ﻿#include "email_login.h"
 #include "email_login_response.h"
-#include "auth/authentication/sdk/sdk_process_type.h"
+#include "auth/sdk/sdk_process_type.h"
 #include "auth/config/app_secret.h"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"

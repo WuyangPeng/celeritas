@@ -1,6 +1,6 @@
 ﻿#include "send_sms_http_message_handler.h"
-#include "auth/authentication/phone/send_sms.h"
-#include "auth/authentication/phone/send_sms_response.h"
+#include "auth/phone/send_sms.h"
+#include "auth/phone/send_sms_response.h"
 #include "boost/asio/co_spawn.hpp"
 #include "common/logging/logger.h"
 #include "handler/handler_fwd.h"

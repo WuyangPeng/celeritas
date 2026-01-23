@@ -1,6 +1,6 @@
 ﻿#include "sdk_process.h"
 #include "we_chat_sdk_process.h"
-#include "auth/authentication/sdk/sdk_process_type.h"
+#include "auth/sdk/sdk_process_type.h"
 #include "common/core/celeritas_error.h"
 
 celeritas::sdk_process::sdk_process(sdk_process_parameter sdk_process_parameter)

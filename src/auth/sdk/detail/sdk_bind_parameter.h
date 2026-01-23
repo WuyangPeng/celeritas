@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "sdk_parameter.h"
-#include "auth/authentication/sdk/sdk_bind_response.h"
+#include "auth/sdk/sdk_bind_response.h"
 
 namespace celeritas
 {

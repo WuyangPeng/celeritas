@@ -1,6 +1,6 @@
 ﻿#include "password_login.h"
 #include "password_login_response.h"
-#include "auth/authentication/sdk/sdk_process_type.h"
+#include "auth/sdk/sdk_process_type.h"
 #include "auth/config/app_secret.h"
 #include "common/core/hmac_sha_256.h"
 #include "config/aggregate/app_config.h"

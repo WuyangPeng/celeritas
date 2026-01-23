@@ -4,7 +4,7 @@
 #include "auth/config/app_sdk_providers.h"
 #include "detail/sdk_bind_parameter.h"
 #include "detail/sdk_process.h"
-#include "auth/authentication/sdk/detail/sdk_process_parameter.h"
+#include "auth/sdk/detail/sdk_process_parameter.h"
 #include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"
 #include "database/generated/mysql/auth/account_bind.h"

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "phone_parameter.h"
-#include "auth/authentication/phone/send_sms_response.h"
+#include "auth/phone/send_sms_response.h"
 
 namespace celeritas
 {

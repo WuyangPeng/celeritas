@@ -1,6 +1,6 @@
 ﻿#include "phone_bind_http_message_handler.h"
-#include "auth/authentication/phone/phone_bind.h"
-#include "auth/authentication/phone/phone_bind_response.h"
+#include "auth/phone/phone_bind.h"
+#include "auth/phone/phone_bind_response.h"
 #include "common/logging/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_constant.h"

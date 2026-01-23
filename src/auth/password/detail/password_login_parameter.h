@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "password_parameter.h"
-#include "auth/authentication/password/password_login_response.h"
+#include "auth/password/password_login_response.h"
 
 namespace celeritas
 {

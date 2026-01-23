@@ -1,6 +1,6 @@
 ﻿#include "password_login_http_message_handler.h"
-#include "auth/authentication/password/password_login.h"
-#include "auth/authentication/password/password_login_response.h"
+#include "auth/password/password_login.h"
+#include "auth/password/password_login_response.h"
 #include "common/logging/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_constant.h"

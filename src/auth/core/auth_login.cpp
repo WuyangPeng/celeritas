@@ -1,5 +1,5 @@
 ﻿#include "auth_login.h"
-#include "auth/authentication/sdk/sdk_process_type.h"
+#include "auth/sdk/sdk_process_type.h"
 #include "common/core/celeritas_error.h"
 #include "common/core/hmac_sha_256.h"
 #include "common/core/snowflake_generator.h"

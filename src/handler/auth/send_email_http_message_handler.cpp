@@ -1,6 +1,6 @@
 ﻿#include "send_email_http_message_handler.h"
-#include "auth/authentication/email/send_email.h"
-#include "auth/authentication/email/send_email_response.h"
+#include "auth/email/send_email.h"
+#include "auth/email/send_email_response.h"
 #include "boost/asio/co_spawn.hpp"
 #include "common/logging/logger.h"
 #include "handler/handler_fwd.h"

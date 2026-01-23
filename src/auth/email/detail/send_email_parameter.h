@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "email_parameter.h"
-#include "auth/authentication/email/send_email_response.h"
+#include "auth/email/send_email_response.h"
 
 namespace celeritas
 {

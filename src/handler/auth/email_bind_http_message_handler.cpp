@@ -1,6 +1,6 @@
 ﻿#include "email_bind_http_message_handler.h"
-#include "auth/authentication/email/email_bind_response.h"
-#include "auth/authentication/email/email_bind.h"
+#include "auth/email/email_bind_response.h"
+#include "auth/email/email_bind.h"
 #include "common/logging/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_constant.h"

@@ -5,7 +5,7 @@
 #include "auth/config/app_secret.h"
 #include "detail/sdk_login_parameter.h"
 #include "detail/sdk_process.h"
-#include "auth/authentication/sdk/detail/sdk_process_parameter.h"
+#include "auth/sdk/detail/sdk_process_parameter.h"
 #include "common/logging/logger.h"
 #include "config/aggregate/app_config.h"
 #include "database/database_constant.h"
