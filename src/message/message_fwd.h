@@ -7,6 +7,7 @@ namespace celeritas
     class header;
     class celeritas_game_error;
     class http_response;
+    class http_service_base;
 
     class protobuf_handle_parameter;
     class http_handle_parameter;

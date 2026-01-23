@@ -1,6 +1,10 @@
 ﻿#pragma once
 
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "message/message_fwd.h"
+#include "message/parameters/http_handle_parameter.h"
+
+#include <boost/asio/awaitable.hpp>
 
 #include <memory>
 #include <string>
@@ -13,6 +17,7 @@ namespace celeritas
         using class_type = http_base_message_handler;
         using http_message_registry_weak_ptr = std::weak_ptr<http_message_registry>;
         using http_handle_parameter_shared_ptr = std::shared_ptr<http_handle_parameter>;
+        using void_awaitable_type = boost::asio::awaitable<void>;
 
         http_base_message_handler() noexcept = default;
 
@@ -31,5 +36,34 @@ namespace celeritas
         [[nodiscard]] virtual bool handle(const http_handle_parameter_shared_ptr& handle_parameter, const http_message_registry_weak_ptr& message_registry) = 0;
 
         [[nodiscard]] virtual std::string get_server_type() const;
+
+        template <typename HttpServiceType>
+        void co_spawn_response(http_handle_parameter_shared_ptr handle_parameter, const std::string_view channel_name, const std::string& error_message)
+        {
+            co_spawn(handle_parameter->get_any_io_executor(),
+                     noexcept_safe_call_and_log_awaitable([handle_parameter = handle_parameter,
+                                                              channel_name = channel_name,
+                                                              error_message = error_message] {
+                                                              return response<HttpServiceType>(handle_parameter, channel_name, error_message);
+                                                          },
+                                                          channel_name,
+                                                          error_message),
+
+                     boost::asio::detached);
+        }
+
+        template <typename HttpServiceType>
+        [[nodiscard]] static void_awaitable_type response(http_handle_parameter_shared_ptr handle_parameter, const std::string_view channel_name, const std::string& error_message)
+        {
+            auto login = std::make_shared<HttpServiceType>(std::move(handle_parameter));
+
+            co_await noexcept_safe_call_and_log_awaitable([login = login] {
+                                                              return login->response();
+                                                          },
+                                                          channel_name,
+                                                          error_message);
+
+            co_await login->send_error_response();
+        }
     };
 }

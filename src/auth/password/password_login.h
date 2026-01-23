@@ -17,6 +17,8 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type response() override;
 
+        [[nodiscard]] void_awaitable_type send_error_response() override;
+
     private:
         using account_awaitable_type = boost::asio::awaitable<account>;
         using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;

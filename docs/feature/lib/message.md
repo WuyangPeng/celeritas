@@ -62,6 +62,17 @@
     - **作用**：定义所有`HTTP`消息处理器的抽象基类。
     - **接口**：定义了处理器必须实现的纯虚函数：`get_supported_type_name()`（获取支持的 URL 路径）和`handle(...)`（核心处理逻辑）。
 
+
+* **🌐 HTTP服务基类（`http_service_base`）**
+    - **作用**：定义了处理具体`HTTP`业务逻辑的服务基类。
+    - **接口**：
+        - `response()`：纯虚函数，子类需实现具体的业务逻辑并生成响应。
+        - `send_error_response()`：纯虚函数，子类需实现错误响应的发送逻辑。
+    - **功能**：
+        - 提供了`write_immediately(response)`方法，用于立即发送`HTTP`响应。
+        - 提供了获取请求参数(`get_param`)、应用配置(`get_app_config`)和提交异步任务(`submit_task`)等辅助方法。
+        - 管理`http_handle_parameter`，方便子类访问请求上下文。
+
 ## message dispatch and registry（消息分发注册机制）
 
 * **🔄 Protobuf消息注册与分发（`protobuf_message_registry`）**

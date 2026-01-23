@@ -21,14 +21,6 @@ namespace celeritas
         [[nodiscard]] bool handle(const http_handle_parameter_shared_ptr& handle_parameter,
                                   const http_message_registry_weak_ptr& message_registry) override;
 
-    private:
-        using void_awaitable_type = boost::asio::awaitable<void>;
-        using result_container = database_pool_base::result_container;
-        using account_awaitable_type = boost::asio::awaitable<account>;
-        using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
-        using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
-        using optional_database_entity_change = std::optional<database_entity_change>;
-
-        [[nodiscard]] void_awaitable_type response(http_handle_parameter_shared_ptr handle_parameter);
+        [[nodiscard]] std::string get_server_type() const override;
     };
 }

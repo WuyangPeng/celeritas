@@ -52,6 +52,12 @@ celeritas::guest_login::void_awaitable_type celeritas::guest_login::response()
     }
 }
 
+celeritas::http_service_base::void_awaitable_type celeritas::guest_login::send_error_response()
+{
+    const guest_login_response response{ game_error_type::unknown, "unknown error" };
+    co_return co_await get_http_handle_parameter()->write_immediately(response.to_json_string());
+}
+
 celeritas::guest_login::account_awaitable_type celeritas::guest_login::get_account(const int64_t app_id,
                                                                                    const std::string& device_id,
                                                                                    const optional_database_entity_change& database_entity_change,

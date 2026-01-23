@@ -70,6 +70,11 @@ celeritas::email_login::void_awaitable_type celeritas::email_login::response()
     co_return;
 }
 
+celeritas::http_service_base::void_awaitable_type celeritas::email_login::send_error_response()
+{
+    co_return;
+}
+
 celeritas::email_login::account_awaitable_type celeritas::email_login::get_account(const optional_database_entity_change& database_entity_change,
                                                                                    const database_pool_shared_ptr& redis_pool,
                                                                                    const database_pool_shared_ptr& mysql_pool,

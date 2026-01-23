@@ -3,6 +3,7 @@
 #include "email_parameter.h"
 #include "auth/auth_fwd.h"
 #include "database/generated/redis/auth/email_code.h"
+#include "message/basic/http_service_base.h"
 
 namespace celeritas
 {
@@ -21,9 +22,9 @@ namespace celeritas
 
         [[nodiscard]] optional_http_response get_http_parameter() override;
 
-        template <typename ResponseType>
+        template <typename ResponseType, typename ServiceBaseType>
         [[nodiscard]] optional_email_code_awaitable_type check_code(const database_pool_shared_ptr& redis_pool,
-                                                                    auth_service_base& auth_service_base) const;
+                                                                    ServiceBaseType& http_service_base) const;
 
     private:
         int code_;

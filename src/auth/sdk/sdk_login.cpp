@@ -75,6 +75,11 @@ celeritas::sdk_login::void_awaitable_type celeritas::sdk_login::response()
     }
 }
 
+celeritas::http_service_base::void_awaitable_type celeritas::sdk_login::send_error_response()
+{
+    co_return;
+}
+
 celeritas::sdk_login::account_awaitable_type celeritas::sdk_login::get_account(const optional_database_entity_change& database_entity_change,
                                                                                const database_pool_shared_ptr& redis_pool,
                                                                                const database_pool_shared_ptr& mysql_pool,

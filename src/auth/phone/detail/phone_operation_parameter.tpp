@@ -5,8 +5,8 @@
 #include "auth/core/auth_service_base.h"
 #include "database/pool/database_pool_base.h"
 
-template <typename ResponseType>
-celeritas::phone_operation_parameter::optional_sms_code_awaitable_type celeritas::phone_operation_parameter::check_code(const database_pool_shared_ptr& redis_pool, auth_service_base& auth_service_base) const
+template <typename ResponseType, typename ServiceBaseType>
+celeritas::phone_operation_parameter::optional_sms_code_awaitable_type celeritas::phone_operation_parameter::check_code(const database_pool_shared_ptr& redis_pool, ServiceBaseType& auth_service_base) const
 {
     const auto optional_sms_code = co_await redis_pool->select_one(sms_code::get_select(database_type::redis, get_phone()), sms_code::get_database_field_container());
     if (!optional_sms_code)

@@ -71,6 +71,11 @@ celeritas::phone_login::void_awaitable_type celeritas::phone_login::response()
     co_return;
 }
 
+celeritas::http_service_base::void_awaitable_type celeritas::phone_login::send_error_response()
+{
+    co_return;
+}
+
 celeritas::phone_login::account_awaitable_type celeritas::phone_login::get_account(const optional_database_entity_change& database_entity_change,
                                                                                    const database_pool_shared_ptr& redis_pool,
                                                                                    const database_pool_shared_ptr& mysql_pool,

@@ -5,14 +5,15 @@
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/redis/auth/session_token.h"
 #include "initializer/initializer_fwd.h"
+#include "message/basic/http_service_base.h"
 
 namespace celeritas
 {
-    class auth_login : public auth_service_base
+    class auth_login : public http_service_base
     {
     public:
         using class_type = auth_login;
-        using base_type = auth_service_base;
+        using base_type = http_service_base;
 
         explicit auth_login(http_handle_parameter_shared_ptr handle_parameter);
 

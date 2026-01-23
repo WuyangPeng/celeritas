@@ -45,6 +45,11 @@ celeritas::password_login::void_awaitable_type celeritas::password_login::respon
     co_return co_await login(optional_account_bind, redis_pool, mysql_pool, app_id, auth_key, password);
 }
 
+celeritas::http_service_base::void_awaitable_type celeritas::password_login::send_error_response()
+{
+    co_return;
+}
+
 celeritas::password_login::void_awaitable_type celeritas::password_login::login(const optional_database_entity_change& database_entity_change,
                                                                                 const database_pool_shared_ptr& redis_pool,
                                                                                 const database_pool_shared_ptr& mysql_pool,
