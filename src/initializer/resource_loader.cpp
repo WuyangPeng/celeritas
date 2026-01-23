@@ -19,7 +19,7 @@
 #include "proto/celeritas.pb.h"
 #include "service_registry/data/health_check_level_type.h"
 #include "service_registry/data/service_info.h"
-#include "../service_registry/core/detail/service_registry_core_internal_fwd.h"
+#include "service_registry/core/detail/service_registry_core_internal_constant.h"
 
 #include <ranges>
 
