@@ -31,12 +31,7 @@ namespace celeritas
         app_email_providers() noexcept = default;
 
         [[nodiscard]] void_awaitable_type load_from_db();
-
-        [[nodiscard]] void_awaitable_type do_load_from_db();
-
         [[nodiscard]] void_awaitable_type load_from_db(int64_t provider_id);
-
-        [[nodiscard]] void_awaitable_type do_load_from_db(int64_t provider_id);
 
         email_providers_type email_providers_;
         std::shared_mutex mutex_;

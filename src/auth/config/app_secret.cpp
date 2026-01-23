@@ -1,6 +1,7 @@
 ﻿#include "app_secret.h"
 #include "auth/core/app_status_type.h"
 #include "common/core/celeritas_error.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 #include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"
@@ -42,41 +43,30 @@ void celeritas::app_secret::reload_from_db(const any_io_executor& any_io_executo
     }
 
     boost::asio::co_spawn(any_io_executor,
-                          [app_id,this] {
-                              return this->load_from_db(app_id);
-                          }, boost::asio::detached);
+                          noexcept_safe_call_and_log_awaitable([app_id] {
+                                                                   return get_instance().load_from_db(app_id);
+                                                               },
+                                                               auth_channel,
+                                                               "load app secret from db error:"),
+                          boost::asio::detached);
 }
 
 void celeritas::app_secret::load_from_db(const any_io_executor& any_io_executor)
 {
     boost::asio::co_spawn(any_io_executor,
-                          [this] {
-                              return this->load_from_db();
-                          }, boost::asio::detached);
+                          noexcept_safe_call_and_log_awaitable([] {
+                                                                   return get_instance().load_from_db();
+                                                               },
+                                                               auth_channel,
+                                                               "load app secret from db error:"),
+                          boost::asio::detached);
 }
 
 celeritas::app_secret::void_awaitable_type celeritas::app_secret::load_from_db()
 {
-    try
-    {
-        co_return co_await do_load_from_db();
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(auth_channel, error) << "load app secret from db error: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(auth_channel, fatal) << "load app secret from db unknown error.";
-    }
-}
-
-celeritas::app_secret::void_awaitable_type celeritas::app_secret::do_load_from_db()
-{
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
-    const auto apps_result = co_await mysql_pool->select_all(apps::get_select(database_type::mysql),
-                                                             apps::get_database_field_container());
+    const auto apps_result = co_await mysql_pool->select_all(apps::get_select(database_type::mysql), apps::get_database_field_container());
 
     apps_type apps_type{};
     for (const auto& row : apps_result)
@@ -85,36 +75,19 @@ celeritas::app_secret::void_awaitable_type celeritas::app_secret::do_load_from_d
         apps_type.emplace(app.get_app_id(), app);
     }
 
-    std::unique_lock lock{ mutex_ };
+    std::lock_guard lock{ mutex_ };
     apps_ = std::move(apps_type);
 }
 
 celeritas::app_secret::void_awaitable_type celeritas::app_secret::load_from_db(const int64_t app_id)
 {
-    try
-    {
-        co_return co_await do_load_from_db(app_id);
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(auth_channel, error) << "load app secret from db error: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(auth_channel, fatal) << "load app secret from db unknown error.";
-    }
-}
-
-celeritas::app_secret::void_awaitable_type celeritas::app_secret::do_load_from_db(const int64_t app_id)
-{
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
-    if (const auto apps_result = co_await mysql_pool->select_one(apps::get_select(database_type::mysql, app_id),
-                                                                 apps::get_database_field_container()))
+    if (const auto apps_result = co_await mysql_pool->select_one(apps::get_select(database_type::mysql, app_id), apps::get_database_field_container()))
     {
         const apps app{ *apps_result };
 
-        std::unique_lock lock{ mutex_ };
+        std::lock_guard lock{ mutex_ };
         apps_.emplace(app.get_app_id(), app);
     }
 }

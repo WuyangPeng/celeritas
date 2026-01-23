@@ -82,7 +82,7 @@ namespace celeritas
         {
             try
             {
-                LOG_CHANNEL(channel_name, error) << std::move(error_message) << exception.what();
+                LOG_CHANNEL(channel_name, error) << error_message << exception.what();
             }
             catch (...)
             {
@@ -93,7 +93,7 @@ namespace celeritas
         {
             try
             {
-                LOG_CHANNEL(channel_name, fatal) << "unknown error[" << std::move(error_message) << "]";
+                LOG_CHANNEL(channel_name, fatal) << "unknown error[" << error_message << "]";
             }
             catch (...)
             {
@@ -113,7 +113,7 @@ namespace celeritas
         {
             try
             {
-                LOG_CHANNEL(channel_name, error) << std::move(error_message) << exception.what();
+                LOG_CHANNEL(channel_name, error) << error_message << exception.what();
             }
             catch (...)
             {
@@ -124,7 +124,7 @@ namespace celeritas
         {
             try
             {
-                LOG_CHANNEL(channel_name, fatal) << "unknown error[" << std::move(error_message) << "]";
+                LOG_CHANNEL(channel_name, fatal) << "unknown error[" << error_message << "]";
             }
             catch (...)
             {

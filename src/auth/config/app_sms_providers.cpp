@@ -1,5 +1,6 @@
 ﻿#include "app_sms_providers.h"
 #include "common/core/celeritas_error.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 #include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"
@@ -36,36 +37,26 @@ void celeritas::app_sms_providers::reload_from_db(const any_io_executor& any_io_
     }
 
     boost::asio::co_spawn(any_io_executor,
-                          [provider_id,this] {
-                              return this->load_from_db(provider_id);
-                          }, boost::asio::detached);
+                          noexcept_safe_call_and_log_awaitable([provider_id] {
+                                                                   return get_instance().load_from_db(provider_id);
+                                                               },
+                                                               auth_channel,
+                                                               "load sms providers from db error:"),
+                          boost::asio::detached);
 }
 
 void celeritas::app_sms_providers::load_from_db(const any_io_executor& any_io_executor)
 {
     boost::asio::co_spawn(any_io_executor,
-                          [this] {
-                              return this->load_from_db();
-                          }, boost::asio::detached);
+                          noexcept_safe_call_and_log_awaitable([] {
+                                                                   return get_instance().load_from_db();
+                                                               },
+                                                               auth_channel,
+                                                               "load sms providers from db error:"),
+                          boost::asio::detached);
 }
 
 celeritas::app_sms_providers::void_awaitable_type celeritas::app_sms_providers::load_from_db()
-{
-    try
-    {
-        co_return co_await do_load_from_db();
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(auth_channel, error) << "load sms providers from db error: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(auth_channel, fatal) << "load sms providers from db unknown error.";
-    }
-}
-
-celeritas::app_sms_providers::void_awaitable_type celeritas::app_sms_providers::do_load_from_db()
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
@@ -79,27 +70,11 @@ celeritas::app_sms_providers::void_awaitable_type celeritas::app_sms_providers::
         sms_providers_type.emplace(sms_providers.get_provider_id(), sms_providers);
     }
 
-    std::unique_lock lock{ mutex_ };
+    std::lock_guard lock{ mutex_ };
     sms_providers_ = std::move(sms_providers_type);
 }
 
 celeritas::app_sms_providers::void_awaitable_type celeritas::app_sms_providers::load_from_db(int64_t provider_id)
-{
-    try
-    {
-        co_return co_await do_load_from_db(provider_id);
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(auth_channel, error) << "load sms providers from db error: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(auth_channel, fatal) << "load sms providers from db unknown error.";
-    }
-}
-
-celeritas::app_sms_providers::void_awaitable_type celeritas::app_sms_providers::do_load_from_db(int64_t provider_id)
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
@@ -108,7 +83,7 @@ celeritas::app_sms_providers::void_awaitable_type celeritas::app_sms_providers::
     {
         const sms_providers sms_providers{ *optional_sms_providers };
 
-        std::unique_lock lock{ mutex_ };
+        std::lock_guard lock{ mutex_ };
         sms_providers_.emplace(sms_providers.get_provider_id(), sms_providers);
     }
 }

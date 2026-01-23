@@ -1,4 +1,5 @@
 ﻿#include "server_cell_repository.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/core/time_helper.h"
 #include "common/logging/logger.h"
 #include "database/database_constant.h"
@@ -20,17 +21,24 @@ void celeritas::server_cell_repository::reload_from_db(const any_io_executor& an
         load_from_db(any_io_executor);
     }
 
-    boost::asio::co_spawn(any_io_executor, [cell_id, this] {
-                              return this->load_from_db(cell_id);
-                          },
+    boost::asio::co_spawn(any_io_executor,
+                          noexcept_safe_call_and_log_awaitable([cell_id] {
+                                                                   return get_instance().load_from_db(cell_id);
+                                                               },
+                                                               auth_channel,
+                                                               "load server cell from db error:"),
+
                           boost::asio::detached);
 }
 
 void celeritas::server_cell_repository::load_from_db(const any_io_executor& any_io_executor)
 {
-    boost::asio::co_spawn(any_io_executor, [this] {
-                              return this->load_from_db();
-                          },
+    boost::asio::co_spawn(any_io_executor,
+                          noexcept_safe_call_and_log_awaitable([] {
+                                                                   return get_instance().load_from_db();
+                                                               },
+                                                               auth_channel,
+                                                               "load server cell from db error:"),
                           boost::asio::detached);
 }
 
@@ -47,6 +55,8 @@ celeritas::server_cell_repository::optional_server_cell_type celeritas::server_c
 
 celeritas::server_cell_repository::optional_server_cell_type celeritas::server_cell_repository::get_last_server_cell(const int64_t app_id)
 {
+    std::shared_lock lock{ mutex_ };
+
     if (const auto iter = app_id_server_.find(app_id);
         iter != app_id_server_.cend() && !iter->second.empty())
     {
@@ -65,6 +75,8 @@ celeritas::server_cell_repository::optional_server_cell_type celeritas::server_c
 
 celeritas::server_cell_repository::server_cell_container_type celeritas::server_cell_repository::get_server_cell_by_app_id(const int64_t app_id, const optional_string& zone)
 {
+    std::shared_lock lock{ mutex_ };
+
     if (const auto iter = app_id_server_.find(app_id);
         iter != app_id_server_.cend())
     {
@@ -86,22 +98,6 @@ celeritas::server_cell_repository::server_cell_container_type celeritas::server_
 }
 
 celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_repository::load_from_db()
-{
-    try
-    {
-        co_return co_await do_load_from_db();
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(auth_channel, error) << "load server cell from db error: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(auth_channel, fatal) << "load server cell from db unknown error.";
-    }
-}
-
-celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_repository::do_load_from_db()
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
@@ -127,7 +123,7 @@ celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_re
         });
     }
 
-    std::unique_lock lock{ mutex_ };
+    std::lock_guard lock{ mutex_ };
     server_cell_ = std::move(server_cell_type);
     game_server_ = std::move(game_server_type);
     app_id_server_ = std::move(app_id_server_type);
@@ -135,29 +131,13 @@ celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_re
 
 celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_repository::load_from_db(const int64_t cell_id)
 {
-    try
-    {
-        co_return co_await do_load_from_db(cell_id);
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(auth_channel, error) << "load server cell from db error: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(auth_channel, fatal) << "load server cell from db unknown error.";
-    }
-}
-
-celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_repository::do_load_from_db(const int64_t cell_id)
-{
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
     if (const auto optional_server_cell = co_await mysql_pool->select_one(server_cell::get_select(database_type::mysql, cell_id), server_cell::get_database_field_container()))
     {
         const server_cell server_cell{ *optional_server_cell };
 
-        std::unique_lock lock{ mutex_ };
+        std::lock_guard lock{ mutex_ };
 
         if (const auto iter = server_cell_.find(cell_id);
             iter != server_cell_.cend())

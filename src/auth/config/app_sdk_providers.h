@@ -33,11 +33,7 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type load_from_db();
 
-        [[nodiscard]] void_awaitable_type do_load_from_db();
-
         [[nodiscard]] void_awaitable_type load_from_db(int64_t sdk_id);
-
-        [[nodiscard]] void_awaitable_type do_load_from_db(int64_t sdk_id);
 
         sdk_providers_type sdk_providers_;
         std::shared_mutex mutex_;

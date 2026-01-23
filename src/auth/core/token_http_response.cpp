@@ -1,8 +1,6 @@
 ﻿#include "token_http_response.h"
 #include "common/core/celeritas_error.h"
 
-using namespace std::literals;
-
 celeritas::token_http_response::token_http_response(const game_error_type code)
     : bass_type{ code }, token_{}, expire_milliseconds_{}
 {
@@ -61,7 +59,7 @@ celeritas::token_http_response celeritas::token_http_response::from_json_string(
     }
     catch (const std::exception& e)
     {
-        throw celeritas_error{ "json deserialization failed: "s + e.what() };
+        throw celeritas_error{ "json deserialization failed: {}", e.what() };
     }
 }
 
@@ -90,11 +88,11 @@ celeritas::token_http_response celeritas::tag_invoke(token_http_response_tag, co
     }
     catch (const std::out_of_range& error)
     {
-        throw celeritas_error{ "json deserialization failed: missing 'code' or 'message' key."s + error.what() };
+        throw celeritas_error{ "json deserialization failed: missing 'code' or 'message' key.{}", error.what() };
     }
     catch (const boost::system::system_error& error)
     {
-        throw celeritas_error{ "json deserialization failed: invalid value type for key."s + error.what() };
+        throw celeritas_error{ "json deserialization failed: invalid value type for key.{}", error.what() };
     }
 }
 

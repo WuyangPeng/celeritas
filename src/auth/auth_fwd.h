@@ -2,15 +2,17 @@
 
 namespace celeritas
 {
-    enum class app_status_type;
-    enum class sdk_process_type;
-    enum class server_status_type;
-
     class app_secret;
     class app_sms_providers;
     class auth_service_base;
     class sdk_providers_key;
     class app_sdk_providers;
+    class server_cell_repository;
+
+    enum class app_status_type;
+    enum class sdk_process_type;
+    enum class server_status_type;
+
     class token_http_response;
     class auth_login;
     class auth_bind;
@@ -47,6 +49,4 @@ namespace celeritas
     class login_server_info;
     class login_servers_response;
     class login_servers;
-
-    class server_cell_repository;
 }

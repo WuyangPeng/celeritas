@@ -41,11 +41,7 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type load_from_db();
 
-        [[nodiscard]] void_awaitable_type do_load_from_db();
-
         [[nodiscard]] void_awaitable_type load_from_db(int64_t cell_id);
-
-        [[nodiscard]] void_awaitable_type do_load_from_db(int64_t cell_id);
 
         server_cell_type server_cell_;
         game_server_type game_server_;
