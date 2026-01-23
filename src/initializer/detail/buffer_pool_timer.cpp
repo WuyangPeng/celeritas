@@ -1,6 +1,6 @@
 ﻿#include "buffer_pool_timer.h"
 #include "common/buffer/buffer_pool.h"
-#include "../../service_registry/core/detail/service_registry_core_internal_fwd.h"
+#include "service_registry/core/detail/service_registry_core_internal_constant.h"
 
 celeritas::buffer_pool_timer::buffer_pool_timer(const any_io_executor& any_io_executor, const duration_type interval)
     : base_type{ any_io_executor, interval }
