@@ -7,6 +7,7 @@
 #include "message/registry/protobuf_message_registry.h"
 
 #include <boost/polymorphic_cast.hpp>
+#include <boost/asio/detached.hpp>
 
 template <typename Message>
 std::string celeritas::concrete_message_handler<Message>::get_supported_type_name() const
