@@ -1,10 +1,16 @@
 ﻿#include "gateway_login_request_message_handler.h"
 #include "gateway/gateway_login.h"
+#include "initializer/initializer_constant.h"
 #include "message/handler_base/concrete_message_handler.tpp"
 #include "message/parameters/protobuf_handle_parameter.h"
 
 celeritas::gateway_login_request_message_handler::gateway_login_request_message_handler()
 {
+}
+
+std::string celeritas::gateway_login_request_message_handler::get_server_type() const
+{
+    return gateway_type.data();
 }
 
 bool celeritas::gateway_login_request_message_handler::handle_concrete(const protobuf_handle_parameter_shared_ptr& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
