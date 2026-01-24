@@ -3,6 +3,7 @@
 #include "common/logging/logger.h"
 #include "handler/handler_fwd.h"
 #include "initializer/initializer_constant.h"
+#include "message/handler_base/http_base_message_handler.tpp"
 
 std::string celeritas::send_email_http_message_handler::get_supported_type_name() const
 {

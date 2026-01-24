@@ -18,11 +18,11 @@ namespace celeritas
 
         gateway_login(protobuf_handle_parameter_shared_ptr protobuf_handle_parameter, const proto::client::login_request& login);
 
-        [[nodiscard]] void_awaitable_type send_message() const;
+        [[nodiscard]] void_awaitable_type response() const;
 
-    private:
         void send_error_message(game_error_type game_error_type) const;
 
+    private:
         void write_to_server(const session_token& session_token, const std::string& instance_id, bool new_game_server_id) const;
 
         protobuf_handle_parameter_shared_ptr protobuf_handle_parameter_;

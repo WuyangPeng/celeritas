@@ -3,6 +3,7 @@
 #include "concrete_message_handler.h"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
+#include "message/parameters/protobuf_handle_parameter.h"
 #include "message/registry/protobuf_message_registry.h"
 
 #include <boost/polymorphic_cast.hpp>
@@ -90,5 +91,36 @@ bool celeritas::concrete_message_handler<Message>::handle_dispatch(const protobu
     }
 
     return true;
+}
+
+template <typename Message>
+template <typename ServiceType>
+void celeritas::concrete_message_handler<Message>::co_spawn_response(protobuf_handle_parameter_shared_ptr handle_parameter, const std::string_view channel_name, const std::string& error_message)
+{
+    co_spawn(handle_parameter->get_any_io_executor(),
+             noexcept_safe_call_and_log_awaitable([handle_parameter = handle_parameter,
+                                                      channel_name = channel_name,
+                                                      error_message = error_message] {
+                                                      return response<ServiceType>(handle_parameter, channel_name, error_message);
+                                                  },
+                                                  channel_name,
+                                                  error_message),
+
+             boost::asio::detached);
+}
+
+template <typename Message>
+template <typename ServiceType>
+celeritas::concrete_message_handler<Message>::void_awaitable_type celeritas::concrete_message_handler<Message>::response(protobuf_handle_parameter_shared_ptr handle_parameter, const std::string_view channel_name, const std::string& error_message)
+{
+    auto service = std::make_shared<ServiceType>(std::move(handle_parameter));
+
+    co_await noexcept_safe_call_and_log_awaitable([service = service] {
+                                                      return service->response();
+                                                  },
+                                                  channel_name,
+                                                  error_message);
+
+    co_await service->send_error_response(game_error_type::unknown);
 }
 

@@ -40,7 +40,7 @@ void celeritas::gateway_login::write_to_server(const session_token& session_toke
     protobuf_handle_parameter_->write_to_server(player_type.data(), instance_id, request);
 }
 
-celeritas::gateway_login::void_awaitable_type celeritas::gateway_login::send_message() const
+celeritas::gateway_login::void_awaitable_type celeritas::gateway_login::response() const
 {
     LOG_CHANNEL(gateway_channel, debug) << "gateway login begin. token = " << login_.token();
 
@@ -74,3 +74,5 @@ celeritas::gateway_login::void_awaitable_type celeritas::gateway_login::send_mes
 
     co_return write_to_server(session_token, optional_services_info->get_instance_id(), true);
 }
+
+ 

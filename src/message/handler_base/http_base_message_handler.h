@@ -38,32 +38,13 @@ namespace celeritas
         [[nodiscard]] virtual std::string get_server_type() const;
 
         template <typename HttpServiceType>
-        void co_spawn_response(http_handle_parameter_shared_ptr handle_parameter, const std::string_view channel_name, const std::string& error_message)
-        {
-            co_spawn(handle_parameter->get_any_io_executor(),
-                     noexcept_safe_call_and_log_awaitable([handle_parameter = handle_parameter,
-                                                              channel_name = channel_name,
-                                                              error_message = error_message] {
-                                                              return response<HttpServiceType>(handle_parameter, channel_name, error_message);
-                                                          },
-                                                          channel_name,
-                                                          error_message),
-
-                     boost::asio::detached);
-        }
+        void co_spawn_response(http_handle_parameter_shared_ptr handle_parameter,
+                               std::string_view channel_name,
+                               const std::string& error_message);
 
         template <typename HttpServiceType>
-        [[nodiscard]] static void_awaitable_type response(http_handle_parameter_shared_ptr handle_parameter, const std::string_view channel_name, const std::string& error_message)
-        {
-            auto login = std::make_shared<HttpServiceType>(std::move(handle_parameter));
-
-            co_await noexcept_safe_call_and_log_awaitable([login = login] {
-                                                              return login->response();
-                                                          },
-                                                          channel_name,
-                                                          error_message);
-
-            co_await login->send_error_response();
-        }
+        [[nodiscard]] static void_awaitable_type response(http_handle_parameter_shared_ptr handle_parameter,
+                                                          std::string_view channel_name,
+                                                          const std::string& error_message);
     };
 }

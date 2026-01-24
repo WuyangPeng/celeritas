@@ -2,6 +2,8 @@
 
 #include "protobuf_base_message_handler.h"
 
+#include <boost/asio/awaitable.hpp>
+
 namespace celeritas
 {
     template <typename Message>
@@ -19,6 +21,7 @@ namespace celeritas
 
     protected:
         using message_type = Message;
+        using void_awaitable_type = boost::asio::awaitable<void>;
         using message_registry_shared_ptr = std::shared_ptr<protobuf_message_registry>;
         using handler_function_type = bool (*)(const protobuf_handle_parameter_shared_ptr& handle_parameter,
                                                const message_type& current_message,
@@ -45,6 +48,16 @@ namespace celeritas
                                                   const message_type& current_message,
                                                   const message_registry_shared_ptr& message_registry,
                                                   GetFunction get_function);
+
+        template <typename ServiceType>
+        void co_spawn_response(protobuf_handle_parameter_shared_ptr handle_parameter,
+                               std::string_view channel_name,
+                               const std::string& error_message);
+
+        template <typename ServiceType>
+        [[nodiscard]] static void_awaitable_type response(protobuf_handle_parameter_shared_ptr handle_parameter,
+                                                          std::string_view channel_name,
+                                                          const std::string& error_message);
 
     private:
         using handler_container_type = std::map<int, handler_function_type>;
