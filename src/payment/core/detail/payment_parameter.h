@@ -13,7 +13,7 @@ namespace celeritas
         using class_type = payment_parameter;
         using http_handle_parameter_shared_ptr = std::shared_ptr<http_handle_parameter>;
 
-        explicit payment_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter);
+        explicit payment_parameter(http_handle_parameter_shared_ptr http_handle_parameter);
 
         virtual ~payment_parameter() noexcept = default;
 

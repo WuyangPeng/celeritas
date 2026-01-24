@@ -1,4 +1,4 @@
-﻿#include "payment_internal_fwd.h"
+﻿#include "payment_core_internal_fwd.h"
 #include "payment_parameter.h"
 #include "common/common_constant.h"
 #include "common/core/time_helper.h"
@@ -7,8 +7,8 @@
 
 #include <boost/lexical_cast.hpp>
 
-celeritas::payment_parameter::payment_parameter(const http_handle_parameter_shared_ptr& http_handle_parameter)
-    : http_handle_parameter_{ http_handle_parameter }, app_id_{}, sign_{}, timestamp_{}
+celeritas::payment_parameter::payment_parameter(http_handle_parameter_shared_ptr http_handle_parameter)
+    : http_handle_parameter_{ std::move(http_handle_parameter) }, app_id_{}, sign_{}, timestamp_{}
 {
 }
 

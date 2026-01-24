@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include "common/common_constant.h"
-
 namespace celeritas
 {
     enum class payment_status_type;
@@ -16,9 +14,6 @@ namespace celeritas
 
     class recharge_notify;
     class we_chat_recharge_notify;
-
     class refund_notify;
     class we_chat_refund_notify;
-
-    constexpr auto default_order_timeout = minute_milliseconds * 30;
 }

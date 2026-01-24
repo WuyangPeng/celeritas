@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "database/generated/mysql/payment/orders.h"
-#include "payment/detail/order_create_parameter.h"
+#include "detail/order_create_parameter.h"
 #include "message/basic/http_service_base.h"
 
 namespace celeritas

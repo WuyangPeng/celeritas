@@ -2,8 +2,8 @@
 
 #include "payment_parameter.h"
 #include "database/generated/mysql/auth/apps.h"
-#include "../core/order_create_http_response.h"
-#include "../basic/payment_platform_type.h"
+#include "payment/core/order_create_http_response.h"
+#include "payment/basic/payment_platform_type.h"
 
 namespace celeritas
 {
@@ -41,7 +41,6 @@ namespace celeritas
 
         void init();
 
-    private:
         optional_order_create_http_response response_;
         std::string client_request_id_;
         int64_t account_id_;

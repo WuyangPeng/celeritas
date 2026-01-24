@@ -1,5 +1,6 @@
 ﻿#include "app_sdk_payment_providers.h"
 #include "common/core/celeritas_error.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 #include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"
@@ -52,17 +53,23 @@ void celeritas::app_sdk_payment_providers::reload_from_db(const any_io_executor&
     }
 
     boost::asio::co_spawn(any_io_executor,
-                          [sdk_id,this] {
-                              return this->load_from_db(sdk_id);
-                          }, boost::asio::detached);
+                          noexcept_safe_call_and_log_awaitable([sdk_id] {
+                                                                   return get_instance().load_from_db(sdk_id);
+                                                               },
+                                                               payment_channel,
+                                                               "load sdk providers from db error"),
+                          boost::asio::detached);
 }
 
 void celeritas::app_sdk_payment_providers::load_from_db(const any_io_executor& any_io_executor)
 {
     boost::asio::co_spawn(any_io_executor,
-                          [this] {
-                              return this->load_from_db();
-                          }, boost::asio::detached);
+                          noexcept_safe_call_and_log_awaitable([] {
+                                                                   return get_instance().load_from_db();
+                                                               },
+                                                               payment_channel,
+                                                               "load sdk providers from db error"),
+                          boost::asio::detached);
 }
 
 celeritas::app_sdk_payment_providers::sdk_payment_providers_type celeritas::app_sdk_payment_providers::get_sdk_payment_providers()
@@ -73,22 +80,6 @@ celeritas::app_sdk_payment_providers::sdk_payment_providers_type celeritas::app_
 }
 
 celeritas::app_sdk_payment_providers::void_awaitable_type celeritas::app_sdk_payment_providers::load_from_db()
-{
-    try
-    {
-        co_return co_await do_load_from_db();
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(payment_channel, error) << "load sdk providers from db error: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(payment_channel, fatal) << "load sdk providers from db unknown error.";
-    }
-}
-
-celeritas::app_sdk_payment_providers::void_awaitable_type celeritas::app_sdk_payment_providers::do_load_from_db()
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(payment_db_name.data());
 
@@ -106,22 +97,6 @@ celeritas::app_sdk_payment_providers::void_awaitable_type celeritas::app_sdk_pay
 }
 
 celeritas::app_sdk_payment_providers::void_awaitable_type celeritas::app_sdk_payment_providers::load_from_db(const int64_t sdk_id)
-{
-    try
-    {
-        co_return co_await do_load_from_db(sdk_id);
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(payment_channel, error) << "load sdk providers from db error: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(payment_channel, fatal) << "load sdk providers from db unknown error.";
-    }
-}
-
-celeritas::app_sdk_payment_providers::void_awaitable_type celeritas::app_sdk_payment_providers::do_load_from_db(int64_t sdk_id)
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(payment_db_name.data());
 

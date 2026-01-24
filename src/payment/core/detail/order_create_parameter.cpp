@@ -1,5 +1,5 @@
 ﻿#include "order_create_parameter.h"
-#include "payment_internal_fwd.h"
+#include "payment_core_internal_fwd.h"
 #include "auth/config/app_secret.h"
 #include "common/core/hmac_sha_256.h"
 
