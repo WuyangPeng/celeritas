@@ -2,6 +2,7 @@
 
 #include "concrete_message_handler.h"
 #include "common/core/celeritas_error.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 #include "message/parameters/protobuf_handle_parameter.h"
 #include "message/registry/protobuf_message_registry.h"
