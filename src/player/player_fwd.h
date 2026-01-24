@@ -3,7 +3,7 @@
 namespace celeritas
 {
     class create_account;
-    class create_character;
+    class create_user;
     class service_login;
 
     enum class player_state_type;

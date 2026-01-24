@@ -22,11 +22,14 @@ celeritas::http_base_message_handler::void_awaitable_type celeritas::http_base_m
 {
     auto http_service = std::make_shared<HttpServiceType>(std::move(handle_parameter));
 
-    co_await noexcept_safe_call_and_log_awaitable([http_service = http_service] {
-                                                      return http_service->response();
-                                                  },
-                                                  channel_name,
-                                                  error_message);
-
-    co_await http_service->send_error_response();
+    if (!co_await noexcept_safe_call_and_log_awaitable([http_service = http_service]() -> boost::asio::awaitable<bool> {
+                                                           co_await http_service->response();
+                                                           co_return true;
+                                                       },
+                                                       channel_name,
+                                                       error_message,
+                                                       false))
+    {
+        co_await http_service->send_error_response();
+    }
 }

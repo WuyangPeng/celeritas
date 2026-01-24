@@ -10,7 +10,7 @@ std::string celeritas::gateway_login_request_message_handler::get_server_type() 
 
 bool celeritas::gateway_login_request_message_handler::handle_concrete(const protobuf_handle_parameter_shared_ptr& handle_parameter, const message_type& current_message, const message_registry_weak_ptr& message_registry)
 {
-    co_spawn_response<gateway_login>(handle_parameter, handler_channel, "gateway login error:");
+    co_spawn_response<gateway_login>(handle_parameter, current_message, handler_channel, "gateway login error:");
 
     return true;
 }
