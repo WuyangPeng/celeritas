@@ -18,14 +18,14 @@ namespace celeritas
 
         service_login(protobuf_handle_parameter_shared_ptr protobuf_handle_parameter, const proto::service::service_login_request& login);
 
-        [[nodiscard]] int64_awaitable_type send_message() const;
+        [[nodiscard]] int64_awaitable_type response() const;
+
+        void send_error_message(game_error_type game_error_type) const;
 
     private:
         using optional_user = std::optional<user>;
         using optional_user_awaitable_type = boost::asio::awaitable<optional_user>;
         using player_state_shared_ptr = std::shared_ptr<player_state>;
-
-        void send_error_message(game_error_type game_error_type) const;
 
         void send_success_message(int64_t user_id) const;
 

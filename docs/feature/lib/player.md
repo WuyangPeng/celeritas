@@ -16,10 +16,6 @@
 * **🆕 创建用户 (`create_user`)**
     - **作用**：负责处理创建新用户的逻辑。
 
-
-* **🧑‍🎨 创建角色 (`create_character`)**
-    - **作用**：负责处理创建游戏角色的逻辑。
-
 ## core components (核心组件)
 
 * **👨‍💼 玩家管理器 (`player_manager`)**
@@ -34,19 +30,37 @@
     - **作用**：所有玩家组件的抽象基类，定义了组件的生命周期钩子函数，如 `on_load_db`, `on_login`, `on_logout` 等。
 
 
+* **🚫 玩家空组件 (`player_null_component`)**
+    - **作用**：一个特殊的玩家组件，用于表示一个空的或无效的组件。
+    - **特点**：通常用于占位或作为默认值，避免空指针异常。
+
+## user components (用户组件)
+
 * **👤 玩家用户组件 (`player_user_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的用户基础信息。
 
+## role components (角色组件)
 
 * **🎭 玩家角色组件 (`player_role_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的角色信息。
 
+## online components (在线组件)
 
 * **📶 玩家在线组件 (`player_online_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的在线状态和相关数据。
 
+## time components (时间组件)
 
-* **🔴 玩家红点组件 (`player_red_component`)**
+* **⏳ 玩家时间组件 (`player_time_component`)**
+    - **作用**：一个具体的玩家组件，负责管理玩家的各种时间信息，如冷却时间、持续时间等。
+
+* **🔑 玩家时间刷新键 (`player_time_refresh_key`)**
+    - **作用**：作为玩家时间刷新事件的唯一标识符。
+    - **特点**：通常与玩家组件类型（`player_component_type`）结合使用，用于注册、移除和触发特定的定时刷新逻辑，例如每日重置、冷却时间结束等。
+
+## red dot components (红点组件)
+
+* **🔴 玩家红点组件 (`player_red_dot_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的红点系统。
 
 
@@ -54,15 +68,7 @@
     - **作用**：表示游戏中的一个红点节点，用于构建红点树结构。
     - **特点**：包含红点类型、值、父节点和子节点。
 
-
-* **⏳ 玩家时间组件 (`player_time_component`)**
-    - **作用**：一个具体的玩家组件，负责管理玩家的各种时间信息，如冷却时间、持续时间等。
-
-
-* **🔑 玩家时间刷新键 (`player_time_refresh_key`)**
-    - **作用**：作为玩家时间刷新事件的唯一标识符。
-    - **特点**：通常与玩家组件类型（`player_component_type`）结合使用，用于注册、移除和触发特定的定时刷新逻辑，例如每日重置、冷却时间结束等。
-
+## item components (道具组件)
 
 * **🎒 玩家道具组件 (`player_item_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的道具数据。
@@ -79,35 +85,43 @@
     - **作用**：表示一个具体的道具实例信息。
     - **内容**：包含 `template_id` (道具模板ID) 和 `count` (道具数量)。
 
-
-* **🎉 玩家活动组件 (`player_activity_component`)**
-    - **作用**：一个具体的玩家组件，负责管理玩家参与的活动信息。
-
+## develop components (养成组件)
 
 * **🛠️ 玩家养成组件 (`player_develop_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的成长和发展相关数据。
 
 
+* **🔑 养成数据键 (`develop_data_key`)**
+    - **作用**：作为养成数据的唯一标识符。
+    - **特点**：包含系统ID (`system_id`) 和实例ID (`instance_id`)，用于唯一标识一个养成数据项。
+
+## mail components (邮件组件)
+
 * **📧 玩家邮件组件 (`player_mail_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的邮件信息。
 
+## task components (任务组件)
 
 * **🎯 玩家任务组件 (`player_task_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的任务进度和状态。
 
+## activity components (活动组件)
+
+* **🎉 玩家活动组件 (`player_activity_component`)**
+    - **作用**：一个具体的玩家组件，负责管理玩家参与的活动信息。
+
+
+## attribute components (属性组件)
 
 * **💪 玩家属性组件 (`player_attribute_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的动态属性。
 
+## instance components (副本组件)
 
 * **🗺️ 玩家副本组件 (`player_instance_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的副本进度和状态。
 
+## finish components (完成组件)
 
 * **🏁 玩家完成组件 (`player_finish_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的成就或完成度相关数据。
-
-
-* **🚫 玩家空组件 (`player_null_component`)**
-    - **作用**：一个特殊的玩家组件，用于表示一个空的或无效的组件。
-    - **特点**：通常用于占位或作为默认值，避免空指针异常。

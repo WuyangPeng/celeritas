@@ -82,7 +82,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
 
         boost::asio::co_spawn(io_context_,
                               [&]() -> boost::asio::awaitable<void> {
-                                  const auto user_id = co_await service.send_message();
+                                  const auto user_id = co_await service.response();
                                   const auto player_state = celeritas::player_manager::get_instance().get_player(user_id);
                                   player_state->get_component<celeritas::player_time_component>()->stop_timer();
                               },
@@ -122,7 +122,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
 
         boost::asio::co_spawn(io_context_,
                               [&]() -> boost::asio::awaitable<void> {
-                                  co_await service.send_message();
+                                  co_await service.response();
                               },
                               boost::asio::detached);
 
@@ -155,7 +155,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
 
         boost::asio::co_spawn(io_context_,
                               [&]() -> boost::asio::awaitable<void> {
-                                  co_await service.send_message();
+                                  co_await service.response();
                               },
                               boost::asio::detached);
 

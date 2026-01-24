@@ -9,7 +9,6 @@
 #include "proto/service/player.pb.h"
 
 #include <boost/asio/awaitable.hpp>
-#include <boost/asio/strand.hpp>
 #include <boost/asio/io_context.hpp>
 
 #include <array>

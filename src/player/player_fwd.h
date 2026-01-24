@@ -11,29 +11,39 @@ namespace celeritas
 
     class player_manager;
     class player_state;
-
     class player_component;
+    class player_null_component;
+
     class player_user_component;
+
     class player_role_component;
+
     class player_online_component;
+
     class player_time_component;
+    class player_time_refresh_key;
+
+    enum class time_refresh_type;
+
     class player_red_dot_component;
+    class red_dot_node;
+
     class player_item_component;
-    class player_activity_component;
+    class item_info;
+    class item_container;
+
     class player_develop_component;
+    class develop_data_key;
+
     class player_mail_component;
+
     class player_task_component;
+
+    class player_activity_component;
+
     class player_attribute_component;
+
     class player_instance_component;
 
     class player_finish_component;
-
-    class player_null_component;
-
-    enum class time_refresh_type;
-    class player_time_refresh_key;
-    class red_dot_node;
-    class item_info;
-    class item_container;
-    class develop_data_key;
 }

@@ -20,7 +20,7 @@ celeritas::service_login::service_login(protobuf_handle_parameter_shared_ptr pro
 {
 }
 
-celeritas::service_login::int64_awaitable_type celeritas::service_login::send_message() const
+celeritas::service_login::int64_awaitable_type celeritas::service_login::response() const
 {
     if (login_.new_account())
     {
