@@ -123,6 +123,6 @@ celeritas::concrete_message_handler<Message>::void_awaitable_type celeritas::con
                                                   channel_name,
                                                   error_message);
 
-    co_await service->send_error_response(game_error_type::unknown);
+    co_await service->send_error_message(game_error_type::unknown);
 }
 
