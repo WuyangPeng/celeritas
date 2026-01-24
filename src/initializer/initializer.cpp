@@ -208,16 +208,12 @@ void celeritas::initializer::setup_signal_handler()
 void celeritas::initializer::stop()
 {
     daemon_.reset();
-    boost::asio::co_spawn(io_context_,
-                          [&]() -> boost::asio::awaitable<void> {
-                              co_await player_manager::get_instance().clear();
-                          },
-                          boost::asio::detached);
+    player_manager::get_instance().clear();
 
     database_pool_manager::get_instance().release_pool();
     resource_loader_->release_resource();
     application_loader_->stop();
-    io_context_.stop();
+    work_guard_.reset();
 
     LOG_CHANNEL(initializer_channel, info) << get_server_type() << " server is stop finish!";
 }

@@ -11,6 +11,8 @@
 #include <shared_mutex>
 #include <unordered_map>
 
+// 由player_manager调用player_state，需要将环境转到player_state的executor。
+// player_state的player_state_type是原子变量，可直接修改。
 namespace celeritas
 {
     class player_manager
@@ -34,15 +36,15 @@ namespace celeritas
 
         [[nodiscard]] player_state_shared_ptr get_player(int64_t user_id);
 
-        [[nodiscard]] void_awaitable_type save_db();
+        void save_db();
 
-        [[nodiscard]] void_awaitable_type time_callback(time_refresh_type time_refresh_type, int64_t parameter);
+        void time_callback(time_refresh_type time_refresh_type, int64_t parameter);
 
-        [[nodiscard]] void_awaitable_type offline_player(int64_t user_id);
+        void offline_player(int64_t user_id);
 
         [[nodiscard]] void_awaitable_type check_player();
 
-        [[nodiscard]] void_awaitable_type clear();
+        void clear();
 
     private:
         using container_type = std::unordered_map<int64_t, player_state_shared_ptr>;

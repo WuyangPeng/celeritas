@@ -8,7 +8,5 @@ celeritas::player_state_check_timer::player_state_check_timer(const any_io_execu
 
 void celeritas::player_state_check_timer::execute_timer_task()
 {
-    boost::asio::co_spawn(any_io_executor_,
-                          player_manager::get_instance().save_db(),
-                          boost::asio::detached);
+    player_manager::get_instance().save_db();
 }

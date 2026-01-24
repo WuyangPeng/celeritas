@@ -188,15 +188,17 @@ celeritas::player_state::void_awaitable_type celeritas::player_state::time_callb
     co_await get_component<player_time_component>()->time_callback(player_time_refresh_key, is_login);
 }
 
-
 void celeritas::player_state::set_mock_player_component(const player_component_shared_ptr& mock)
 {
     components_.at(static_cast<int>(player_component_type::mock)) = mock;
 }
 
-void celeritas::player_state::set_login(const service_login_request_type& login)
+celeritas::player_state::void_awaitable_type celeritas::player_state::set_login(const std::string& instance_id, const service_login_request_type& login)
 {
+    set_instance_id(instance_id);
     get_component<player_role_component>()->set_login(login);
+
+    co_return;
 }
 
 celeritas::player_state::any_io_executor celeritas::player_state::get_any_io_executor()

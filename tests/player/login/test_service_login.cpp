@@ -97,11 +97,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
         // 我们可以通过 mock_session_ 检查最后发送的消息
         BOOST_CHECK(mock_session_->get_code() == celeritas::game_error_type::success);
 
-        boost::asio::co_spawn(io_context_,
-                              [&]() -> boost::asio::awaitable<void> {
-                                  co_await celeritas::player_manager::get_instance().clear();
-                              },
-                              boost::asio::detached);
+        celeritas::player_manager::get_instance().clear();
 
         run_io_context_two_times();
     }
@@ -133,11 +129,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
 
         BOOST_CHECK(mock_session_->get_code() == celeritas::game_error_type::success);
 
-        boost::asio::co_spawn(io_context_,
-                              [&]() -> boost::asio::awaitable<void> {
-                                  co_await celeritas::player_manager::get_instance().clear();
-                              },
-                              boost::asio::detached);
+        celeritas::player_manager::get_instance().clear();
 
         run_io_context_two_times();
     }

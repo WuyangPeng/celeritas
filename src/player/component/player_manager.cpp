@@ -2,11 +2,15 @@
 #include "player_state.h"
 #include "player_state_type.h"
 #include "common/core/celeritas_error.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/core/time_helper.h"
 #include "common/logging/logger.h"
 #include "player/component/player_state.tpp"
 #include "player/online/player_online_component.h"
 #include "player/time/player_time_refresh_key.h"
+
+#include <boost/asio/co_spawn.hpp>
+#include <boost/asio/detached.hpp>
 
 #include <ranges>
 
@@ -37,8 +41,17 @@ celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::ad
         else
         {
             iter->second->set_player_state_type(player_state_type::online);
-            iter->second->set_instance_id(instance_id);
-            iter->second->set_login(login);
+
+            co_spawn(iter->second->get_any_io_executor(),
+                     noexcept_safe_call_and_log_awaitable([player = iter->second,
+                                                              instance_id = instance_id,
+                                                              login = login] {
+                                                              return player->set_login(instance_id, login);
+                                                          },
+                                                          player_channel,
+                                                          "set login error: "),
+                     boost::asio::detached);
+
             return iter->second;
         }
     }
@@ -59,7 +72,7 @@ celeritas::player_manager::player_state_shared_ptr celeritas::player_manager::ge
     throw celeritas_error{ "player is no exist,user id = {}", user_id };
 }
 
-celeritas::player_manager::void_awaitable_type celeritas::player_manager::save_db()
+void celeritas::player_manager::save_db()
 {
     std::shared_lock lock{ mutex_ };
 
@@ -67,7 +80,13 @@ celeritas::player_manager::void_awaitable_type celeritas::player_manager::save_d
     {
         try
         {
-            co_await element->save_db();
+            co_spawn(element->get_any_io_executor(),
+                     noexcept_safe_call_and_log_awaitable([player = element] {
+                                                              return player->save_db();
+                                                          },
+                                                          player_channel,
+                                                          "save db error: "),
+                     boost::asio::detached);
         }
         catch (const std::exception& exception)
         {
@@ -76,24 +95,38 @@ celeritas::player_manager::void_awaitable_type celeritas::player_manager::save_d
     }
 }
 
-celeritas::player_manager::void_awaitable_type celeritas::player_manager::time_callback(const time_refresh_type time_refresh_type, const int64_t parameter)
+void celeritas::player_manager::time_callback(const time_refresh_type time_refresh_type, const int64_t parameter)
 {
     std::shared_lock lock{ mutex_ };
 
     for (const auto& element : container_ | std::views::values)
     {
-        co_await element->time_callback(player_time_refresh_key{ time_refresh_type, parameter }, false);
+        co_spawn(element->get_any_io_executor(),
+                 noexcept_safe_call_and_log_awaitable([player = element,
+                                                          time_refresh_type = time_refresh_type,
+                                                          parameter = parameter] {
+                                                          return player->time_callback(player_time_refresh_key{ time_refresh_type, parameter }, false);
+                                                      },
+                                                      player_channel,
+                                                      "time callback error: "),
+                 boost::asio::detached);
     }
 }
 
-celeritas::player_manager::void_awaitable_type celeritas::player_manager::offline_player(const int64_t user_id)
+void celeritas::player_manager::offline_player(const int64_t user_id)
 {
     std::lock_guard lock{ mutex_ };
 
     if (const auto iter = container_.find(user_id);
         iter != container_.cend())
     {
-        co_await iter->second->on_logout();
+        co_spawn(iter->second->get_any_io_executor(),
+                 noexcept_safe_call_and_log_awaitable([player = iter->second ] {
+                                                          return player->on_logout();
+                                                      },
+                                                      player_channel,
+                                                      "clear exception:"),
+                 boost::asio::detached);
     }
 }
 
@@ -114,7 +147,13 @@ celeritas::player_manager::void_awaitable_type celeritas::player_manager::check_
                 if (current_time - heartbeat >= minute_milliseconds * 5)
                 {
                     element->set_player_state_type(player_state_type::disconnected_ghost);
-                    co_await element->on_logout();
+                    co_spawn(element->get_any_io_executor(),
+                             noexcept_safe_call_and_log_awaitable([player = element ] {
+                                                                      return player->on_logout();
+                                                                  },
+                                                                  player_channel,
+                                                                  "clear player exception:"),
+                             boost::asio::detached);
                 }
             }
             case player_state_type::disconnected_ghost:
@@ -141,7 +180,7 @@ celeritas::player_manager::void_awaitable_type celeritas::player_manager::check_
     co_return;
 }
 
-celeritas::player_manager::void_awaitable_type celeritas::player_manager::clear()
+void celeritas::player_manager::clear()
 {
     try
     {
@@ -149,7 +188,13 @@ celeritas::player_manager::void_awaitable_type celeritas::player_manager::clear(
 
         for (const auto& element : container_ | std::views::values)
         {
-            co_await element->on_logout();
+            co_spawn(element->get_any_io_executor(),
+                     noexcept_safe_call_and_log_awaitable([player = element] {
+                                                              return player->on_logout();
+                                                          },
+                                                          player_channel,
+                                                          "clear exception:"),
+                     boost::asio::detached);
         }
 
         container_.clear();

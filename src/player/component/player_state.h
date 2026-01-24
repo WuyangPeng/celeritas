@@ -36,11 +36,11 @@ namespace celeritas
 
         virtual ~player_state() noexcept = default;
 
-        player_state(const player_state& rhs) = default;
+        player_state(const player_state& rhs) = delete;
 
         player_state& operator=(const player_state& rhs) = delete;
 
-        player_state(player_state&& rhs) noexcept = default;
+        player_state(player_state&& rhs) noexcept = delete;
 
         player_state& operator=(player_state&& rhs) noexcept = delete;
 
@@ -92,18 +92,19 @@ namespace celeritas
 
         void set_mock_player_component(const player_component_shared_ptr& mock);
 
-        void set_login(const service_login_request_type& login);
+        [[nodiscard]] void_awaitable_type set_login(const std::string& instance_id, const service_login_request_type& login);
 
         [[nodiscard]] any_io_executor get_any_io_executor();
 
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
+        using player_state_atomic = std::atomic<player_state_type>;
 
         void check() const;
 
         bool dirty_;
-        player_state_type player_state_;
+        player_state_atomic player_state_;
         component_container_type components_;
         resource_loader_weak_ptr resource_loader_;
         std::string instance_id_;
