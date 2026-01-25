@@ -1,5 +1,5 @@
 ﻿#include "player_item_database.h"
-#include "player_item_internal_fwd.h"
+#include "player_item_internal_constant.h"
 #include "common/core/time_helper.h"
 #include "config/basic/database_type.h"
 #include "database/pool/database_pool_base.h"

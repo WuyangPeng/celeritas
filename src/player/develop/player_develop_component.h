@@ -2,7 +2,6 @@
 
 #include "detail/player_develop_database.h"
 #include "detail/player_develop_document.h"
-#include "message/message_fwd.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
 

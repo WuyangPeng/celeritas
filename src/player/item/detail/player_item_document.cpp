@@ -4,7 +4,6 @@
 #include "common/logging/logger.h"
 #include "common/core/snowflake_generator.h"
 #include "config/aggregate/app_config.h"
-#include "config/game/container_config.tpp"
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
 #include "database/basic/basis_database.tpp"

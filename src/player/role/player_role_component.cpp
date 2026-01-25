@@ -5,10 +5,9 @@
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
 #include "config/luban/generated/schema.h"
-#include "database/pool/database_pool_base.h"
 #include "database/generated/mongo/auth/user_server_roles.h"
+#include "database/pool/database_pool_base.h"
 #include "initializer/initializer_constant.h"
-#include "initializer/initializer_fwd.h"
 #include "player/component/player_state.tpp"
 #include "player/time/player_time_refresh_key.h"
 #include "player/time/time_refresh_type.h"
@@ -38,8 +37,8 @@ celeritas::player_component::void_awaitable_type celeritas::player_role_componen
 {
     if (user_role_->is_must_save())
     {
-        const auto mongo_player_pool = get_mongo_player_database_pool();
-        if (co_await mongo_player_pool->execute_changes(user_role_->get_modify()))
+        if (const auto mongo_player_pool = get_mongo_player_database_pool();
+            co_await mongo_player_pool->execute_changes(user_role_->get_modify()))
         {
             user_role_->clear_modify();
         }
@@ -47,8 +46,8 @@ celeritas::player_component::void_awaitable_type celeritas::player_role_componen
 
     if (user_server_roles_->is_must_save())
     {
-        const auto mongo_auth_pool = get_mongo_auth_database_pool();
-        if (co_await mongo_auth_pool->execute_changes(user_server_roles_->get_modify()))
+        if (const auto mongo_auth_pool = get_mongo_auth_database_pool();
+            co_await mongo_auth_pool->execute_changes(user_server_roles_->get_modify()))
         {
             user_server_roles_->clear_modify();
         }
