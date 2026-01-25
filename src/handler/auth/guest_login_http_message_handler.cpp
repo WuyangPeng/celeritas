@@ -2,7 +2,7 @@
 #include "auth/guest/guest_login.h"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
-#include "handler/handler_fwd.h"
+#include "handler/handler_constant.h"
 #include "initializer/initializer_constant.h"
 #include "message/handler_base/http_base_message_handler.tpp"
 

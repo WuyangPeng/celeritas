@@ -25,9 +25,29 @@
     - **功能**：接收并处理`register_response`消息，确认服务注册结果。
 
 
+* **💓 服务心跳请求消息处理器 (`service_heartbeat_request_message_handler`)**
+    - **作用**：处理服务实例向服务注册中心发起的心跳请求。
+    - **功能**：接收并处理`service_heartbeat_request`消息，更新服务实例的活跃状态。
+
+
+* **💓 服务心跳响应消息处理器 (`service_heartbeat_response_message_handler`)**
+    - **作用**：处理服务心跳请求的响应。
+    - **功能**：接收并处理`service_heartbeat_response`消息，确认心跳发送结果。
+
+
 * **🚪 关闭请求消息处理器 (`close_request_message_handler`)**
     - **作用**：处理客户端发起的关闭连接请求。
     - **功能**：接收并处理`close_request`消息，执行连接关闭逻辑。
+
+
+* **🌐 HTTP健康检查请求处理器 (`health_check_request_http_message_handler`)**
+    - **作用**：处理来自客户端的`HTTP`健康检查请求。
+    - **功能**：接收并处理`HTTP` `GET`请求，返回服务当前的健康状态。
+
+
+* **📨 HTTP健康检查响应处理器 (`health_check_response_http_message_handler`)**
+    - **作用**：处理`HTTP`健康检查请求的响应。
+    - **功能**：接收并处理`HTTP`响应，通常用于内部服务间健康状态的同步或监控。
 
 ## auth handlers (认证处理器)
 
@@ -114,9 +134,45 @@
     - **功能**：接收并处理`HTTP`请求，根据SDK信息进行绑定。
 
 
-* **🖥️ 登录服务器列表HTTP请求处理器 (`login_servers_message_handler`)**
+* **🖥️ 登录服务器列表HTTP请求处理器 (`login_servers_http_message_handler`)**
     - **作用**：处理客户端获取游戏服务器列表的`HTTP`请求。
     - **功能**：接收并处理`HTTP`请求，调用`login_servers`服务，并返回包含服务器列表的`login_servers_response`。
+
+## gateway handlers (网关处理器)
+
+* **🚪 网关请求消息处理器 (`gateway_request_message_handler`)**
+    - **作用**：处理网关通用请求消息。
+    - **功能**：接收并处理`gateway_request`消息。
+
+
+* **🔑 网关登录请求消息处理器 (`gateway_login_request_message_handler`)**
+    - **作用**：处理网关登录请求。
+    - **功能**：接收并处理`gateway_login_request`消息。
+
+
+* **👤 网关客户端登录请求消息处理器 (`gateway_client_login_request_message_handler`)**
+    - **作用**：处理来自客户端的网关登录请求。
+    - **功能**：接收并处理`gateway_client_login_request`消息。
+
+
+* **🎮 网关客户端玩家请求消息处理器 (`gateway_client_player_request_message_handler`)**
+    - **作用**：处理来自客户端的玩家相关请求。
+    - **功能**：接收并处理`gateway_client_player_request`消息。
+
+
+* **📨 网关客户端请求消息处理器 (`gateway_client_request_message_handler`)**
+    - **作用**：处理来自客户端的通用请求。
+    - **功能**：接收并处理`gateway_client_request`消息。
+
+
+* **📩 网关客户端响应消息处理器 (`gateway_client_response_message_handler`)**
+    - **作用**：处理发送给客户端的响应消息。
+    - **功能**：接收并处理`gateway_client_response`消息。
+
+
+* **✅ 网关服务登录响应消息处理器 (`gateway_service_login_response_message_handler`)**
+    - **作用**：处理服务登录网关的响应。
+    - **功能**：接收并处理`gateway_service_login_response`消息。
 
 ## payment handlers (支付处理器)
 
@@ -135,6 +191,11 @@
     - **作用**：处理来自第三方平台的退款`HTTP`请求。
     - **功能**：接收并处理`HTTP`通知，验证通知的合法性，并更新对应的支付订单状态。
 
+
+* **🛒 创建订单HTTP请求处理器 (`order_create_http_message_handler`)**
+    - **作用**：处理创建支付订单的`HTTP`请求。
+    - **功能**：接收并处理`HTTP`请求，创建新的支付订单。
+
 ## player handlers (玩家处理器)
 
 * **➡️ 登录请求消息处理器 (`service_login_request_message_handler`)**
@@ -152,13 +213,18 @@
     - **作用**：处理重新加载游戏配置的请求。
     - **功能**：接收并处理 `reload_game_config_request` 消息，触发 `game_config::load_tables()` 重新加载所有游戏配置表。
 
-## http handlers（HTTP 处理器）
 
-* **🌐 HTTP健康检查请求处理器 (`health_check_request_http_message_handler`)**
-    - **作用**：处理来自客户端的`HTTP`健康检查请求。
-    - **功能**：接收并处理`HTTP` `GET`请求，返回服务当前的健康状态。
+* **📝 修改角色名消息处理器 (`change_role_name_message_handler`)**
+    - **作用**：处理玩家修改角色名的请求。
+    - **功能**：接收并处理`change_role_name_request`消息，更新玩家角色名。
 
 
-* **📨 HTTP健康检查响应处理器 (`health_check_response_http_message_handler`)**
-    - **作用**：处理`HTTP`健康检查请求的响应。
-    - **功能**：接收并处理`HTTP`响应，通常用于内部服务间健康状态的同步或监控。
+* **💓 客户端心跳请求消息处理器 (`client_heartbeat_request_message_handler`)**
+    - **作用**：处理客户端发起的心跳请求。
+    - **功能**：接收并处理`client_heartbeat_request`消息，维持客户端连接活跃。
+
+
+* **🔌 离线请求消息处理器 (`offline_request_message_handler`)**
+    - **作用**：处理玩家离线请求。
+    - **功能**：接收并处理`offline_request`消息，处理玩家下线逻辑。
+

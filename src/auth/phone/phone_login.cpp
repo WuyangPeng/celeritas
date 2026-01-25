@@ -11,6 +11,7 @@
 #include "database/generated/redis/auth/session_token.h"
 #include "database/generated/redis/auth/sms_code.h"
 #include "detail/phone_login_parameter.h"
+#include "detail/phone_operation_parameter.tpp"
 #include "initializer/account_type.h"
 #include "message/basic/game_error_type.h"
 

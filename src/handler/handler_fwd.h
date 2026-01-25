@@ -2,31 +2,50 @@
 
 namespace celeritas
 {
+    class close_request_message_handler;
+    class discover_request_message_handler;
+    class discover_response_message_handler;
     class health_check_request_http_message_handler;
     class health_check_response_http_message_handler;
-    class discover_response_message_handler;
-    class discover_request_message_handler;
-    class close_request_message_handler;
-    class register_response_message_handler;
     class register_request_message_handler;
+    class register_response_message_handler;
+    class service_heartbeat_request_message_handler;
+    class service_heartbeat_response_message_handler;
 
+    class email_bind_http_message_handler;
+    class email_login_http_message_handler;
     class guest_login_http_message_handler;
+    class login_servers_http_message_handler;
+    class password_bind_http_message_handler;
+    class password_login_http_message_handler;
+    class phone_bind_http_message_handler;
+    class phone_login_http_message_handler;
+    class reload_app_db_message_handler;
+    class reload_email_providers_db_message_handler;
+    class reload_sdk_providers_db_message_handler;
+    class reload_server_cell_db_message_handler;
+    class reload_sms_providers_db_message_handler;
+    class sdk_bind_http_message_handler;
+    class sdk_login_http_message_handler;
+    class send_email_http_message_handler;
+    class send_sms_http_message_handler;
+    class notify_http_message_handler;
+    class order_create_http_message_handler;
+    class refund_http_message_handler;
+    class reload_sdk_payment_providers_db_message_handler;
 
-    constexpr std::string_view guest_login_path = "/api/v1/login/guest";
-    constexpr std::string_view send_sms_path = "/api/v1/login/send_sms";
-    constexpr std::string_view send_email_path = "/api/v1/login/send_email";
-    constexpr std::string_view phone_login_path = "/api/v1/login/phone";
-    constexpr std::string_view email_login_path = "/api/v1/login/email";
-    constexpr std::string_view password_login_path = "/api/v1/login/password";
-    constexpr std::string_view sdk_login_path = "/api/v1/login/sdk";
-    constexpr std::string_view phone_bind_path = "/api/v1/login/bind/phone";
-    constexpr std::string_view email_bind_path = "/api/v1/login/bind/email";
-    constexpr std::string_view password_bind_path = "/api/v1/login/bind/password";
-    constexpr std::string_view sdk_bind_path = "/api/v1/login/bind/sdk";
-    constexpr std::string_view login_servers_path = "/api/v1/login/servers";
+    class gateway_client_login_request_message_handler;
+    class gateway_client_player_request_message_handler;
+    class gateway_client_request_message_handler;
+    class gateway_client_response_message_handler;
+    class gateway_login_request_message_handler;
+    class gateway_request_message_handler;
+    class gateway_service_login_response_message_handler;
 
-    constexpr std::string_view order_create_path = "/api/v1/order/create";
-    constexpr std::string_view notify_path = "/api/v1/notify/";
-
-    constexpr std::string_view refund_path = "/refund/";
+    class change_role_name_message_handler;
+    class client_heartbeat_request_message_handler;
+    class offline_request_message_handler;
+    class reload_config_db_message_handler;
+    class reload_game_config_message_handler;
+    class service_login_request_message_handler;
 }

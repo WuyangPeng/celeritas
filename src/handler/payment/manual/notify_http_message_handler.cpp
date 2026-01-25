@@ -1,10 +1,9 @@
 ﻿#include "notify_http_message_handler.h"
 #include "common/logging/logger.h"
-#include "handler/handler_fwd.h"
+#include "handler/handler_constant.h"
 #include "initializer/initializer_constant.h"
-#include "initializer/initializer_fwd.h"
 #include "message/parameters/http_handle_parameter.h"
-#include "../../../payment/notification/recharge_notify.h"
+#include "payment/notification/recharge_notify.h"
 
 celeritas::notify_http_message_handler::notify_http_message_handler(const sdk_payment_providers_key& sdk_payment_providers_key, std::string path_suffix)
     : sdk_payment_providers_key_{ sdk_payment_providers_key }, path_suffix_{ std::move(path_suffix) }

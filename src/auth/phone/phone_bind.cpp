@@ -3,6 +3,7 @@
 #include "auth/core/auth_bind.tpp"
 #include "common/logging/logger.h"
 #include "config/aggregate/app_config.h"
+#include "detail/phone_operation_parameter.tpp"
 #include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"
 #include "database/generated/mysql/auth/account.h"

@@ -1,7 +1,7 @@
 ﻿#include "sdk_bind_http_message_handler.h"
 #include "auth/sdk/sdk_bind.h"
 #include "common/logging/logger.h"
-#include "handler/handler_fwd.h"
+#include "handler/handler_constant.h"
 #include "initializer/initializer_constant.h"
 #include "message/handler_base/http_base_message_handler.tpp"
 
