@@ -1,8 +1,9 @@
 ﻿#include "change_timer_result.h"
 #include "player_timer.h"
 #include "player_time_scheduler.h"
-#include "common/logging/logger.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/core/time_helper.h"
+#include "common/logging/logger.h"
 #include "player/component/player_state.h"
 #include "player/time/player_time_component.h"
 
@@ -44,21 +45,11 @@ void celeritas::player_time_scheduler::remove_timer(const player_component_type 
 
 celeritas::player_time_scheduler::void_awaitable_type celeritas::player_time_scheduler::on_time_callback(const function_type& on_change)
 {
-    try
-    {
-        co_await do_time_callback(on_change);
-
-        next_refresh_time_ = player_time_document_->calculate_next_refresh_time();
-        wait_for_next_tick();
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(player_channel, error) << "error:" << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(player_channel, fatal) << "unknown error.";
-    }
+    co_await noexcept_safe_call_and_log_awaitable([on_change = on_change,self = shared_from_this()] {
+                                                      return self->do_on_time_callback(on_change);
+                                                  },
+                                                  player_channel,
+                                                  "on time callback error:");
 }
 
 celeritas::player_time_scheduler::void_awaitable_type celeritas::player_time_scheduler::on_time_callback(const player_time_refresh_key& player_time_refresh_key, const bool is_login, const function_type& on_change)
@@ -147,4 +138,12 @@ void celeritas::player_time_scheduler::change_player_timer()
             init_player_timer();
         }
     }
+}
+
+celeritas::player_time_scheduler::void_awaitable_type celeritas::player_time_scheduler::do_on_time_callback(const function_type& on_change)
+{
+    co_await do_time_callback(on_change);
+
+    next_refresh_time_ = player_time_document_->calculate_next_refresh_time();
+    wait_for_next_tick();
 }

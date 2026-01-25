@@ -11,7 +11,7 @@
 
 namespace celeritas
 {
-    class player_time_scheduler
+    class player_time_scheduler : public std::enable_shared_from_this<player_time_scheduler>
     {
     public:
         using class_type = player_time_scheduler;
@@ -45,6 +45,8 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type do_time_callback(const function_type& on_change);
 
         void change_player_timer();
+
+        [[nodiscard]] void_awaitable_type do_on_time_callback(const function_type& on_change);
 
         player_state* player_state_;
         player_time_component* time_component_;

@@ -42,12 +42,14 @@ namespace celeritas
         void stop_timer();
 
     private:
+        using player_time_scheduler_shared_ptr = std::shared_ptr<player_time_scheduler>;
+
         void on_data_change();
 
         [[nodiscard]] void_awaitable_type on_all_time_callback(bool is_login);
 
         player_time_document document_;
         player_time_database database_;
-        player_time_scheduler scheduler_;
+        player_time_scheduler_shared_ptr scheduler_;
     };
 }

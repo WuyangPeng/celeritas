@@ -2,11 +2,13 @@
 #include "detail/change_timer_result.h"
 #include "player/component/player_state.h"
 
+#include <boost/polymorphic_pointer_cast.hpp>
+
 celeritas::player_time_component::player_time_component(player_state* player_state) noexcept
     : base_type{ get_player_component_type(), player_state },
       document_{ player_state },
       database_{ player_state->get_user_id(), this, &document_ },
-      scheduler_{ player_state, this, &document_ }
+      scheduler_{ std::make_shared<player_time_scheduler>(player_state, this, &document_) }
 {
 }
 
@@ -19,8 +21,8 @@ celeritas::player_component::void_awaitable_type celeritas::player_time_componen
 {
     co_await on_all_time_callback(true);
 
-    scheduler_.calculate_next_refresh_time();
-    scheduler_.init_player_timer();
+    scheduler_->calculate_next_refresh_time();
+    scheduler_->init_player_timer();
 }
 
 celeritas::player_component::void_awaitable_type celeritas::player_time_component::save_db()
@@ -35,36 +37,36 @@ bool celeritas::player_time_component::is_modify() const
 
 celeritas::player_component::void_awaitable_type celeritas::player_time_component::time_callback()
 {
-    co_await scheduler_.on_time_callback([this] {
-        on_data_change();
+    co_await scheduler_->on_time_callback([self = boost::polymorphic_pointer_cast<class_type>(shared_from_this())] {
+        self->on_data_change();
     });
 }
 
 celeritas::player_component::void_awaitable_type celeritas::player_time_component::time_callback(const player_time_refresh_key& player_time_refresh_key, const bool is_login)
 {
-    co_await scheduler_.on_time_callback(player_time_refresh_key,
-                                         is_login,
-                                         [this] {
-                                             on_data_change();
-                                         });
+    co_await scheduler_->on_time_callback(player_time_refresh_key,
+                                          is_login,
+                                          [self = boost::polymorphic_pointer_cast<class_type>(shared_from_this())] {
+                                              self->on_data_change();
+                                          });
 }
 
 void celeritas::player_time_component::register_timer(const player_component_type player_component, const player_time_refresh_key& player_time_refresh_key)
 {
-    scheduler_.register_timer(player_component,
-                              player_time_refresh_key,
-                              [this] {
-                                  on_data_change();
-                              });
+    scheduler_->register_timer(player_component,
+                               player_time_refresh_key,
+                               [self = boost::polymorphic_pointer_cast<class_type>(shared_from_this())] {
+                                   self->on_data_change();
+                               });
 }
 
 void celeritas::player_time_component::remove_timer(const player_component_type player_component, const player_time_refresh_key& player_time_refresh_key)
 {
-    scheduler_.remove_timer(player_component,
-                            player_time_refresh_key,
-                            [this] {
-                                on_data_change();
-                            });
+    scheduler_->remove_timer(player_component,
+                             player_time_refresh_key,
+                             [self = boost::polymorphic_pointer_cast<class_type>(shared_from_this())] {
+                                 self->on_data_change();
+                             });
 }
 
 celeritas::player_time_refresh celeritas::player_time_component::get_player_time_refresh(const player_time_refresh_key& player_time_refresh_key) const
@@ -74,7 +76,7 @@ celeritas::player_time_refresh celeritas::player_time_component::get_player_time
 
 void celeritas::player_time_component::stop_timer()
 {
-    scheduler_.stop_timer();
+    scheduler_->stop_timer();
 }
 
 void celeritas::player_time_component::on_data_change()

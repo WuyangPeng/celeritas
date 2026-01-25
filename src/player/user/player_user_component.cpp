@@ -20,9 +20,8 @@ celeritas::player_user_component::void_awaitable_type celeritas::player_user_com
 {
     if (user_.is_modify())
     {
-        const auto mysql_pool = get_mysql_player_database_pool();
-
-        if (co_await mysql_pool->execute_changes(user_.get_modify()))
+        if (const auto mysql_pool = get_mysql_player_database_pool();
+            co_await mysql_pool->execute_changes(user_.get_modify()))
         {
             user_.clear_modify();
         }
