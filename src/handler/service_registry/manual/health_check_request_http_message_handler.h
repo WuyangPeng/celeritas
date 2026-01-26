@@ -21,9 +21,7 @@ namespace celeritas
     private:
         using void_awaitable_type = boost::asio::awaitable<void>;
 
-        [[nodiscard]] void_awaitable_type health_check_result(http_handle_parameter_shared_ptr handle_parameter);
-
-        [[nodiscard]] void_awaitable_type do_health_check_result(http_handle_parameter_shared_ptr handle_parameter);
+        [[nodiscard]] static void_awaitable_type health_check_result(http_handle_parameter_shared_ptr handle_parameter);
 
         std::string path_;
     };

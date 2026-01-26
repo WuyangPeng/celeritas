@@ -1,10 +1,7 @@
 ﻿#pragma once
 
 #include "database/pool/database_pool_base.h"
-#include "database/generated/mysql/auth/account.h"
 #include "message/handler_base/http_base_message_handler.h"
-
-#include <boost/asio/awaitable.hpp>
 
 namespace celeritas
 {

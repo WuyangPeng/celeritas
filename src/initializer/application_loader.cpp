@@ -6,8 +6,8 @@
 #include "handler/service_registry/manual/health_check_request_http_message_handler.h"
 #include "handler/service_registry/manual/health_check_response_http_message_handler.h"
 #include "message/parameters/http_handle_parameter.h"
-#include "message/registry/http_message_registry.h"
 #include "message/parameters/protobuf_handle_parameter.h"
+#include "message/registry/http_message_registry.h"
 
 celeritas::application_loader::application_loader(const std::string_view server_type, app_config_shared_ptr app_config)
     : app_config_{ std::move(app_config) },

@@ -32,7 +32,7 @@ namespace celeritas
 
         [[nodiscard]] bool write_to_user(const std::string& server_type, int64_t session_id, const header& header, const protobuf_message& message) override;
 
-        void add_session_route(int64_t user_id, session_route session_route) override;
+        void add_session_route(int64_t user_id, const session_route& session_route) override;
 
         void check_client(const any_io_executor& any_io_executor, const std::string& server_type, const service_info_container& container) override;
 

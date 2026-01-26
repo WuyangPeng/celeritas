@@ -2,8 +2,6 @@
 
 #include "message/handler_base/http_base_message_handler.h"
 
-#include <boost/asio/awaitable.hpp>
-
 namespace celeritas
 {
     class phone_login_http_message_handler final : public http_base_message_handler

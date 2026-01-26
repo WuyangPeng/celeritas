@@ -18,29 +18,18 @@ bool celeritas::health_check_request_http_message_handler::handle(const http_han
                                                                   const http_message_registry_weak_ptr& message_registry)
 {
     co_spawn(handle_parameter->get_any_io_executor(),
-             health_check_result(handle_parameter),
+             noexcept_safe_call_and_log_awaitable([handle_parameter = handle_parameter] {
+                                                      return health_check_result(handle_parameter);
+                                                  },
+                                                  handler_channel,
+                                                  "health check error error:"),
+
              boost::asio::detached);
 
     return true;
 }
 
 celeritas::health_check_request_http_message_handler::void_awaitable_type celeritas::health_check_request_http_message_handler::health_check_result(http_handle_parameter_shared_ptr handle_parameter)
-{
-    try
-    {
-        co_await do_health_check_result(std::move(handle_parameter));
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(handler_channel, error) << "health check error: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(handler_channel, fatal) << "health check unknown error.";
-    }
-}
-
-celeritas::health_check_request_http_message_handler::void_awaitable_type celeritas::health_check_request_http_message_handler::do_health_check_result(http_handle_parameter_shared_ptr handle_parameter)
 {
     const auto app_config = handle_parameter->get_app_config();
     const auto instance_id = app_config->get_server_config()->get_instance_id();

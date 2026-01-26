@@ -1,6 +1,6 @@
 ﻿#include "gateway_service_login_response_message_handler.h"
-#include "common/framework/resource_loader_base.h"
 #include "common/core/session_route.h"
+#include "common/framework/resource_loader_base.h"
 #include "message/handler_base/concrete_message_handler.tpp"
 #include "message/parameters/protobuf_handle_parameter.h"
 #include "proto/celeritas.pb.h"

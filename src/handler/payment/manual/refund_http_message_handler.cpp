@@ -17,34 +17,27 @@ std::string celeritas::refund_http_message_handler::get_supported_type_name() co
 
 bool celeritas::refund_http_message_handler::handle(const http_handle_parameter_shared_ptr& handle_parameter, const http_message_registry_weak_ptr& message_registry)
 {
-    if (handle_parameter->get_server_type() != payment_type)
-    {
-        return false;
-    }
+    co_spawn(handle_parameter->get_any_io_executor(),
+             noexcept_safe_call_and_log_awaitable([handle_parameter = handle_parameter,
+                                                      sdk_payment_providers_key = sdk_payment_providers_key_] {
+                                                      return response(sdk_payment_providers_key, handle_parameter);
+                                                  },
+                                                  handler_channel,
+                                                  "refund error: "),
 
-    boost::asio::co_spawn(handle_parameter->get_any_io_executor(),
-                          response(sdk_payment_providers_key_, handle_parameter),
-                          boost::asio::detached);
+             boost::asio::detached);
 
     return true;
 }
 
+std::string celeritas::refund_http_message_handler::get_server_type() const
+{
+    return payment_type.data();
+}
+
 celeritas::refund_http_message_handler::void_awaitable_type celeritas::refund_http_message_handler::response(const sdk_payment_providers_key sdk_payment_providers_key, http_handle_parameter_shared_ptr handle_parameter)
 {
-    try
-    {
-        const auto refund_notify = refund_notify::create(sdk_payment_providers_key, std::move(handle_parameter));
+    const auto refund_notify = refund_notify::create(sdk_payment_providers_key, std::move(handle_parameter));
 
-        co_await refund_notify->execute();
-    }
-    catch (const std::exception& error)
-    {
-        LOG_CHANNEL(handler_channel, error) << "refund error: " << error.what();
-    }
-    catch (...)
-    {
-        LOG_CHANNEL(handler_channel, fatal) << "refund unknown error.";
-    }
-
-    co_return;
+    co_await refund_notify->execute();
 }

@@ -63,7 +63,7 @@ namespace celeritas
 
         [[nodiscard]] health_check_level_awaitable_type get_health_check_level() override;
 
-        void add_session_route(int64_t user_id, session_route session_route) override;
+        void add_session_route(int64_t user_id, const session_route& session_route) override;
 
         void check_client(const any_io_executor& any_io_executor, const std::string& server_type, const service_info_container& container) override;
 

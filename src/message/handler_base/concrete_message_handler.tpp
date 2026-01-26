@@ -9,6 +9,7 @@
 
 #include <boost/polymorphic_cast.hpp>
 #include <boost/asio/detached.hpp>
+#include <boost/asio/co_spawn.hpp>
 
 template <typename Message>
 std::string celeritas::concrete_message_handler<Message>::get_supported_type_name() const

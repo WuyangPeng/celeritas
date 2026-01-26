@@ -1,5 +1,4 @@
 ﻿#include "gateway_client_request_message_handler.h"
-#include "message/parameters/protobuf_handle_parameter.h"
 #include "message/handler_base/concrete_message_handler.tpp"
 
 celeritas::gateway_client_request_message_handler::gateway_client_request_message_handler()

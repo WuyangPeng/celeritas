@@ -3,8 +3,6 @@
 #include "message/handler_base/concrete_message_handler.h"
 #include "proto/service/player.pb.h"
 
-#include <boost/asio.hpp>
-
 namespace celeritas
 {
     class service_login_request_message_handler final : public concrete_message_handler<proto::service::service_login_request>

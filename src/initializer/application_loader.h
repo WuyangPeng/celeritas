@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 #include "boost/asio/io_context.hpp"
-#include "common/framework/application_loader_base.h"
 #include "common/common_fwd.h"
+#include "common/framework/application_loader_base.h"
 #include "common/worker_pool/worker_pool.h"
 #include "config/aggregate/app_config.h"
 #include "message/registry/protobuf_message_registry.h"

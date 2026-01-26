@@ -1,8 +1,9 @@
 ﻿#include "initializer_constant.h"
 #include "initializer_fwd.h"
 #include "resource_loader.h"
-#include "common/logging/logger.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/core/random_helper.h"
+#include "common/logging/logger.h"
 #include "config/game/game_config.h"
 #include "config/local/service_registry_config.h"
 #include "config/luban/generated/schema.h"
@@ -15,11 +16,10 @@
 #include "detail/service_registry_loader.h"
 #include "detail/service_registry_timer.h"
 #include "network/client/tcp_client.h"
-#include "player_server/player_server.h"
 #include "proto/celeritas.pb.h"
+#include "service_registry/core/detail/service_registry_core_internal_constant.h"
 #include "service_registry/data/health_check_level_type.h"
 #include "service_registry/data/service_info.h"
-#include "service_registry/core/detail/service_registry_core_internal_constant.h"
 
 #include <ranges>
 
@@ -62,7 +62,7 @@ void celeritas::resource_loader::initialize(const any_io_executor& any_io_execut
 
 void celeritas::resource_loader::release_resource()
 {
-    std::unique_lock lock{ mutex_ };
+    std::lock_guard lock{ mutex_ };
 
     for (const auto& element : tcp_clients_ | std::views::values)
     {
@@ -189,15 +189,14 @@ bool celeritas::resource_loader::write_to_client(const header& header, const pro
     return to_write;
 }
 
-bool celeritas::resource_loader::write_to_user(const std::string& server_type, int64_t session_id, const header& header_message, const protobuf_message& message)
+bool celeritas::resource_loader::write_to_user(const std::string& server_type, const int64_t session_id, const header& header_message, const protobuf_message& message)
 {
     std::shared_lock lock{ mutex_ };
 
-    const auto iter = session_mapping_.find(session_id);
-    if (iter != session_mapping_.end())
+    if (const auto iter = session_mapping_.find(session_id);
+        iter != session_mapping_.cend())
     {
-        const auto session = session_route_.find(iter->second);
-        if (session != session_route_.end())
+        if (const auto session = session_route_.find(iter->second); session != session_route_.cend())
         {
             return write_to_server(server_type, session->second.get_instance_id(), header{ header_message.get_rpc(), iter->second }, message);
         }
@@ -208,7 +207,7 @@ bool celeritas::resource_loader::write_to_user(const std::string& server_type, i
 
 void celeritas::resource_loader::process_check_tcp_clients_by_duration(const any_io_executor& any_io_executor)
 {
-    std::vector<tcp_client_shared_ptr> no_open_clients;
+    std::vector<tcp_client_shared_ptr> no_open_clients{};
     {
         std::shared_lock lock{ mutex_ };
         for (const auto& element : tcp_clients_ | std::views::values)
@@ -229,7 +228,12 @@ void celeritas::resource_loader::process_check_tcp_clients_by_duration(const any
         else
         {
             boost::asio::co_spawn(any_io_executor,
-                                  tcp_client->connect(),
+                                  noexcept_safe_call_and_log_awaitable([tcp_client = tcp_client] {
+                                                                           return tcp_client->connect();
+                                                                       },
+                                                                       auth_channel,
+                                                                       "tcp client connect error:"),
+
                                   boost::asio::detached);
         }
     }
@@ -290,19 +294,19 @@ celeritas::resource_loader::health_check_level_awaitable_type celeritas::resourc
     co_return health_check_level_type::health;
 }
 
-void celeritas::resource_loader::add_session_route(const int64_t user_id, session_route session_route)
+void celeritas::resource_loader::add_session_route(const int64_t user_id, const session_route& session_route)
 {
-    std::unique_lock lock{ mutex_ };
+    std::lock_guard lock{ mutex_ };
 
-    auto iter = session_route_.find(user_id);
-    if (iter == session_route_.end())
+    if (const auto iter = session_route_.find(user_id);
+        iter == session_route_.end())
     {
-        session_route_.emplace(user_id, std::move(session_route));
+        session_route_.emplace(user_id, session_route);
     }
     else
     {
         session_mapping_.erase(session_route.get_session_id());
-        iter->second = std::move(session_route);
+        iter->second = session_route;
     }
 
     session_mapping_[session_route.get_session_id()] = user_id;
@@ -310,7 +314,7 @@ void celeritas::resource_loader::add_session_route(const int64_t user_id, sessio
 
 void celeritas::resource_loader::check_client(const any_io_executor& any_io_executor, const std::string& server_type, const service_info_container& container)
 {
-    std::unique_lock lock{ mutex_ };
+    std::lock_guard lock{ mutex_ };
 
     for (auto iter = tcp_clients_.begin(); iter != tcp_clients_.end();)
     {
@@ -400,7 +404,7 @@ void celeritas::resource_loader::initialize_server_resource(const any_io_executo
 
         listener->start();
 
-        std::unique_lock lock{ mutex_ };
+        std::lock_guard lock{ mutex_ };
 
         listener_.emplace_back(listener);
     }
@@ -416,7 +420,7 @@ void celeritas::resource_loader::initialize_service_registry_resource(const any_
         {
             const auto client = get_random_client(any_io_executor, network_message_callback, *service_registry);
 
-            std::unique_lock lock{ mutex_ };
+            std::lock_guard lock{ mutex_ };
 
             tcp_clients_.emplace(client->get_instance_id(), client);
         }
@@ -433,7 +437,7 @@ void celeritas::resource_loader::initialize_service_registry_resource(const any_
             {
                 const auto client = service_registry_loader::loader_service_registry(any_io_executor, *element, network_message_callback, game_server_id, service_registry_type.data());
 
-                std::unique_lock lock{ mutex_ };
+                std::lock_guard lock{ mutex_ };
                 tcp_clients_.emplace(client->get_instance_id(), client);
             }
         }
@@ -447,7 +451,7 @@ void celeritas::resource_loader::modify_service_registry_resource(const any_io_e
     {
         const auto tcp_client = get_random_client(any_io_executor, network_message_callback, *service_registry);
 
-        std::unique_lock lock{ mutex_ };
+        std::lock_guard lock{ mutex_ };
 
         if (tcp_client->get_instance_id() != instance_id)
         {

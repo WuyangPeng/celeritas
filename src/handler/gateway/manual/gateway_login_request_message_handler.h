@@ -3,8 +3,6 @@
 #include "message/handler_base/concrete_message_handler.h"
 #include "proto/client/player/login.pb.h"
 
-#include <boost/asio.hpp>
-
 namespace celeritas
 {
     class gateway_login_request_message_handler final : public concrete_message_handler<proto::client::login_request>

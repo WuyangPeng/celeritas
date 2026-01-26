@@ -1,7 +1,5 @@
 ﻿#include "configuration_loader.h"
 
-using namespace std::literals;
-
 celeritas::configuration_loader::configuration_loader(std::string config_file_path)
     : config_file_path_{ std::move(config_file_path) },
       current_path_{ boost::filesystem::current_path() },

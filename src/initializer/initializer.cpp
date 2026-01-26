@@ -13,8 +13,6 @@
 
 #include <boost/polymorphic_pointer_cast.hpp>
 
-using namespace std::literals;
-
 celeritas::initializer::initializer_shared_ptr celeritas::initializer::create(const std::string_view& server_type, std::string config_file_path)
 {
     return std::make_shared<initializer>(server_type, std::move(config_file_path));
@@ -100,7 +98,7 @@ void celeritas::initializer::call_back(const std::string& path, const std::strin
     }
 }
 
-void celeritas::initializer::send_offline_message(int64_t session_id)
+void celeritas::initializer::send_offline_message(const int64_t session_id)
 {
     resource_loader_->send_offline_message(session_id);
 }
@@ -195,10 +193,18 @@ void celeritas::initializer::setup_signal_handler()
         [self = boost::polymorphic_pointer_downcast<class_type>(shared_from_this())](const boost::system::error_code& error, const int signal_number) {
             if (!error)
             {
-                LOG_CHANNEL(initializer_channel, info) << self->get_server_type() << " server is stop! signal_number = " <<
-                        signal_number << ",error = " << error.message();
+                LOG_CHANNEL(initializer_channel, info)
+                << self->get_server_type()
+                << " server is stop! signal_number = "
+                << signal_number
+                << ",error = "
+                << error.message();
 
-                self->stop();
+                noexcept_safe_call_and_log([self = self] {
+                                               self->stop();
+                                           },
+                                           initializer_channel,
+                                           "setup signal handler error: ");
             }
         });
 

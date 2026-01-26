@@ -1,6 +1,5 @@
 ﻿#include "register_request_message_handler.h"
 #include "initializer/initializer_constant.h"
-#include "initializer/initializer_fwd.h"
 #include "message/handler_base/concrete_message_handler.tpp"
 #include "message/parameters/protobuf_handle_parameter.h"
 #include "proto/celeritas.pb.h"
