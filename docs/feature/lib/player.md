@@ -54,6 +54,11 @@
 * **🎭 玩家角色组件 (`player_role_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的角色信息。
 
+
+* **📝 修改名称 (`change_name`)**
+    - **作用**：处理玩家修改角色名称的业务逻辑。
+    - **功能**：继承自 `player_service_base`，接收 `change_role_name_request` 请求，并更新 `player_role_component` 中的角色名称。
+
 ## online components (在线组件)
 
 * **📶 玩家在线组件 (`player_online_component`)**

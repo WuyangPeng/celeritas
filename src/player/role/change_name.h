@@ -15,9 +15,9 @@ namespace celeritas
         using base_type = player_service_base;
         using request_type = proto::client::change_role_name_request;
 
-        explicit change_name(protobuf_handle_parameter_shared_ptr handle_parameter,
-                             player_state_shared_ptr player_state,
-                             const request_type& request);
+        change_name(protobuf_handle_parameter_shared_ptr handle_parameter,
+                    player_state_shared_ptr player_state,
+                    const request_type& request);
 
         [[nodiscard]] void_awaitable_type response() override;
 
