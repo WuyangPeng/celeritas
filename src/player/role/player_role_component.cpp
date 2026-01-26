@@ -59,12 +59,12 @@ bool celeritas::player_role_component::is_modify() const
     return user_role_->is_must_save() || user_server_roles_->is_must_save();
 }
 
-celeritas::player_role_component::bool_awaitable_type celeritas::player_role_component::change_name(const std::string& surname, const std::string& name)
+celeritas::player_role_component::game_error_awaitable_type celeritas::player_role_component::change_name(const std::string& surname, const std::string& name)
 {
     const auto mongo_player_pool = get_mongo_player_database_pool();
     if (!co_await mongo_player_pool->execute_changes(user_role_->get_modify()))
     {
-        co_return false;
+        co_return game_error_type::mongo_error;
     }
 
     const auto change_name_time = time_helper::get_current_milliseconds();
@@ -75,7 +75,7 @@ celeritas::player_role_component::bool_awaitable_type celeritas::player_role_com
     user_role_->set_name(name);
     user_role_->set_modify_name(true);
     user_role_->set_change_name_time(change_name_time);
-    user_role_->set_full_name(player_user->get_game_server_id() + surname + name);
+    user_role_->set_full_name(player_user->get_game_server_id() + "," + surname + name);
 
     if (co_await mongo_player_pool->execute_changes(user_role_->get_modify()))
     {
@@ -85,7 +85,7 @@ celeritas::player_role_component::bool_awaitable_type celeritas::player_role_com
     {
         user_role_ = old_user_role;
         user_role_->clear_modify();
-        co_return false;
+        co_return game_error_type::duplicate_name;
     }
 
     server_role_->set_role_surname(surname);
@@ -95,7 +95,7 @@ celeritas::player_role_component::bool_awaitable_type celeritas::player_role_com
 
     get_player_state()->set_dirty();
 
-    co_return true;
+    co_return game_error_type::success;
 }
 
 void celeritas::player_role_component::set_login(const service_login_request_type& login)
@@ -211,11 +211,11 @@ void celeritas::player_role_component::set_server_role()
     }
 }
 
-void celeritas::player_role_component::send_role_response()
+void celeritas::player_role_component::send_role_response(const int rpc)
 {
     auto* player_state = get_player_state();
 
-    const header header{ player_state->get_user_id() };
+    const header header{ rpc, player_state->get_user_id() };
 
     proto::celeritas response{};
     auto* role_response = response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_role()->mutable_role();

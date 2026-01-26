@@ -55,6 +55,7 @@
 #include "handler/payment/reload_sdk_payment_providers_db_message_handler.h"
 #include "handler/player/change_role_name_message_handler.h"
 #include "handler/player/client_heartbeat_request_message_handler.h"
+#include "handler/player/manual/player_concrete_message_handler.h"
 #include "handler/player/offline_request_message_handler.h"
 #include "handler/player/reload_config_db_message_handler.h"
 #include "handler/player/reload_game_config_message_handler.h"

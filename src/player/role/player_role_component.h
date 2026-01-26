@@ -3,6 +3,7 @@
 #include "database/document/server_role.h"
 #include "database/generated/mongo/auth/user_server_roles.h"
 #include "database/generated/mongo/player/user_role.h"
+#include "message/basic/game_error_type.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
 #include "proto/service/player.pb.h"
@@ -16,6 +17,7 @@ namespace celeritas
         using base_type = player_component;
         using service_login_request_type = proto::service::service_login_request;
         using bool_awaitable_type = boost::asio::awaitable<bool>;
+        using game_error_awaitable_type = boost::asio::awaitable<game_error_type>;
 
         explicit player_role_component(player_state* player_state, const service_login_request_type& login) noexcept;
 
@@ -30,7 +32,7 @@ namespace celeritas
 
         [[nodiscard]] bool is_modify() const override;
 
-        [[nodiscard]] bool_awaitable_type change_name(const std::string& surname, const std::string& name);
+        [[nodiscard]] game_error_awaitable_type change_name(const std::string& surname, const std::string& name);
 
         void set_login(const service_login_request_type& login);
 
@@ -44,6 +46,8 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type send_initial_sync() override;
 
+        void send_role_response(int rpc = 0);
+
     private:
         using optional_user_role = std::optional<user_role>;
         using optional_user_server_roles = std::optional<user_server_roles>;
@@ -54,8 +58,6 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type load_user_server_roles_db();
 
         void set_server_role();
-
-        void send_role_response();
 
         optional_user_role user_role_;
         optional_user_server_roles user_server_roles_;

@@ -34,6 +34,16 @@
     - **作用**：一个特殊的玩家组件，用于表示一个空的或无效的组件。
     - **特点**：通常用于占位或作为默认值，避免空指针异常。
 
+
+* **🎮 玩家服务基类 (`player_service_base`)**
+    - **作用**：定义了处理具体玩家业务逻辑的服务基类，专门用于处理 Protobuf 消息。
+    - **接口**：
+        - `response()`：纯虚函数，子类需实现具体的业务逻辑并生成响应。
+        - `send_error_response()`：纯虚函数，子类需实现错误响应的发送逻辑。
+    - **功能**：
+        - 管理 `protobuf_handle_parameter` 和 `player_state`，为子类提供完整的请求上下文和玩家状态信息。
+        - 提供了 `get_player_state()` 方法，方便子类访问玩家数据。
+
 ## user components (用户组件)
 
 * **👤 玩家用户组件 (`player_user_component`)**
@@ -109,7 +119,6 @@
 
 * **🎉 玩家活动组件 (`player_activity_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家参与的活动信息。
-
 
 ## attribute components (属性组件)
 

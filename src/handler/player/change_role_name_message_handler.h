@@ -1,15 +1,15 @@
 ﻿#pragma once
 
-#include "message/handler_base/concrete_message_handler.h"
+#include "manual/player_concrete_message_handler.h"
 #include "proto/client/player/role.pb.h"
 
 namespace celeritas
 {
-    class change_role_name_message_handler final : public concrete_message_handler<proto::client::change_role_name_request>
+    class change_role_name_message_handler final : public player_concrete_message_handler<proto::client::change_role_name_request>
     {
     public:
         using class_type = change_role_name_message_handler;
-        using base_type = concrete_message_handler;
+        using base_type = player_concrete_message_handler;
 
         change_role_name_message_handler() = default;
 

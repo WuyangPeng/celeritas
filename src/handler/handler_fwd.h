@@ -42,6 +42,7 @@ namespace celeritas
     class gateway_request_message_handler;
     class gateway_service_login_response_message_handler;
 
+    class player_concrete_message_handler;
     class change_role_name_message_handler;
     class client_heartbeat_request_message_handler;
     class offline_request_message_handler;

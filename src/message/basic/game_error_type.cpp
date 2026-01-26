@@ -30,6 +30,8 @@ std::string celeritas::get_game_error_description(const game_error_type game_err
                                                 { game_error_type::create_account_error, "create account error" },
                                                 { game_error_type::create_user_error, "create user error" },
 
+                                                { game_error_type::duplicate_name, "duplicate name error" },
+
                                                 { game_error_type::max_develop, "max develop" },
                                                 { game_error_type::non_resettable, "non resettable" },
                                                 { game_error_type::develop_not_exist, "develop not exist" }

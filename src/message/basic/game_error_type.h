@@ -25,6 +25,7 @@ namespace celeritas
         // 数据库错误
         redis_error = 1000,
         mysql_error = 1001,
+        mongo_error = 1002,
 
         // 认证服务器错误 10000 - 19999
 
@@ -36,6 +37,9 @@ namespace celeritas
         create_user_error = 10004,
 
         // 玩家服务器错误 60000 - 69999
+
+        // 角色模块
+        duplicate_name = 60100,
 
         // 养成模块
         max_develop = 60600,

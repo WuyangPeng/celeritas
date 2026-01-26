@@ -1,0 +1,34 @@
+﻿#pragma once
+
+#include "message/handler_base/concrete_message_handler.h"
+#include "player/component/player_state.h"
+
+namespace celeritas
+{
+    template <typename Message>
+    class player_concrete_message_handler : public concrete_message_handler<Message>
+    {
+    public:
+        using class_type = player_concrete_message_handler;
+        using base_type = concrete_message_handler<Message>;
+
+    protected:
+        using message_type = Message;
+        using void_awaitable_type = boost::asio::awaitable<void>;
+        using protobuf_handle_parameter_shared_ptr = std::shared_ptr<protobuf_handle_parameter>;
+        using player_state_shared_ptr = std::shared_ptr<player_state>;
+
+        template <typename ServiceType>
+        void player_co_spawn_response(const protobuf_handle_parameter_shared_ptr& handle_parameter,
+                                      const message_type& current_message,
+                                      std::string_view channel_name,
+                                      const std::string& error_message);
+
+        template <typename ServiceType>
+        [[nodiscard]] static void_awaitable_type player_response(protobuf_handle_parameter_shared_ptr handle_parameter,
+                                                                 const player_state_shared_ptr& player_state,
+                                                                 const message_type& current_message,
+                                                                 std::string_view channel_name,
+                                                                 const std::string& error_message);
+    };
+}

@@ -103,6 +103,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_player_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_player_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_player_response, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_player_response, _impl_.payload_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -121,25 +122,29 @@ const char descriptor_table_protodef_proto_2fclient_2fplayer_2fplayer_2eproto[] 
     "login.proto\032#proto/client/player/heartbe"
     "at.proto\032\036proto/client/player/role.proto"
     "\032!proto/client/player/red_dot.proto\032\036pro"
-    "to/client/player/item.proto\"\345\001\n\025client_p"
-    "layer_request\022=\n\005login\030\001 \001(\0132,.celeritas"
-    ".proto.client.client_login_requestH\000\022E\n\t"
-    "heartbeat\030\002 \001(\01320.celeritas.proto.client"
-    ".client_heartbeat_requestH\000\022;\n\004role\030\003 \001("
-    "\0132+.celeritas.proto.client.client_role_r"
-    "equestH\000B\t\n\007payload\"\353\002\n\026client_player_re"
-    "sponse\022>\n\005login\030\001 \001(\0132-.celeritas.proto."
-    "client.client_login_responseH\000\022F\n\theartb"
-    "eat\030\002 \001(\01321.celeritas.proto.client.clien"
-    "t_heartbeat_responseH\000\022<\n\004role\030\003 \001(\0132,.c"
-    "eleritas.proto.client.client_role_respon"
-    "seH\000\022B\n\007red_dot\030\004 \001(\0132/.celeritas.proto."
-    "client.client_red_dot_responseH\000\022<\n\004item"
-    "\030\005 \001(\0132,.celeritas.proto.client.client_i"
-    "tem_responseH\000B\t\n\007payloadb\006proto3"
+    "to/client/player/item.proto\032\037proto/clien"
+    "t/player/error.proto\"\345\001\n\025client_player_r"
+    "equest\022=\n\005login\030\001 \001(\0132,.celeritas.proto."
+    "client.client_login_requestH\000\022E\n\theartbe"
+    "at\030\002 \001(\01320.celeritas.proto.client.client"
+    "_heartbeat_requestH\000\022;\n\004role\030\003 \001(\0132+.cel"
+    "eritas.proto.client.client_role_requestH"
+    "\000B\t\n\007payload\"\253\003\n\026client_player_response\022"
+    ">\n\005login\030\001 \001(\0132-.celeritas.proto.client."
+    "client_login_responseH\000\022F\n\theartbeat\030\002 \001"
+    "(\01321.celeritas.proto.client.client_heart"
+    "beat_responseH\000\022>\n\005error\030\003 \001(\0132-.celerit"
+    "as.proto.client.client_error_responseH\000\022"
+    "<\n\004role\030\004 \001(\0132,.celeritas.proto.client.c"
+    "lient_role_responseH\000\022B\n\007red_dot\030\005 \001(\0132/"
+    ".celeritas.proto.client.client_red_dot_r"
+    "esponseH\000\022<\n\004item\030\006 \001(\0132,.celeritas.prot"
+    "o.client.client_item_responseH\000B\t\n\007paylo"
+    "adb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
-    descriptor_table_proto_2fclient_2fplayer_2fplayer_2eproto_deps[5] = {
+    descriptor_table_proto_2fclient_2fplayer_2fplayer_2eproto_deps[6] = {
+        &::descriptor_table_proto_2fclient_2fplayer_2ferror_2eproto,
         &::descriptor_table_proto_2fclient_2fplayer_2fheartbeat_2eproto,
         &::descriptor_table_proto_2fclient_2fplayer_2fitem_2eproto,
         &::descriptor_table_proto_2fclient_2fplayer_2flogin_2eproto,
@@ -150,12 +155,12 @@ static ::absl::once_flag descriptor_table_proto_2fclient_2fplayer_2fplayer_2epro
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fclient_2fplayer_2fplayer_2eproto = {
     false,
     false,
-    833,
+    930,
     descriptor_table_protodef_proto_2fclient_2fplayer_2fplayer_2eproto,
     "proto/client/player/player.proto",
     &descriptor_table_proto_2fclient_2fplayer_2fplayer_2eproto_once,
     descriptor_table_proto_2fclient_2fplayer_2fplayer_2eproto_deps,
-    5,
+    6,
     2,
     schemas,
     file_default_instances,
@@ -665,6 +670,30 @@ void client_player_response::clear_heartbeat() {
     clear_has_payload();
   }
 }
+void client_player_response::set_allocated_error(::celeritas::proto::client::client_error_response* PROTOBUF_NULLABLE error) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (error) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(error)->GetArena();
+    if (message_arena != submessage_arena) {
+      error = ::google::protobuf::internal::GetOwnedMessage(message_arena, error, submessage_arena);
+    }
+    set_has_error();
+    _impl_.payload_.error_ = error;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.client_player_response.error)
+}
+void client_player_response::clear_error() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kError) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.error_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.error_);
+    }
+    clear_has_payload();
+  }
+}
 void client_player_response::set_allocated_role(::celeritas::proto::client::client_role_response* PROTOBUF_NULLABLE role) {
   ::google::protobuf::Arena* message_arena = GetArena();
   clear_payload();
@@ -776,6 +805,9 @@ client_player_response::client_player_response(
       case kHeartbeat:
         _impl_.payload_.heartbeat_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.heartbeat_);
         break;
+      case kError:
+        _impl_.payload_.error_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.error_);
+        break;
       case kRole:
         _impl_.payload_.role_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.role_);
         break;
@@ -833,6 +865,14 @@ void client_player_response::clear_payload() {
         delete _impl_.payload_.heartbeat_;
       } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
         ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.heartbeat_);
+      }
+      break;
+    }
+    case kError: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.error_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.error_);
       }
       break;
     }
@@ -911,17 +951,17 @@ client_player_response::GetClassData() const {
   return client_player_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 5, 5, 0, 2>
+const ::_pbi::TcParseTable<0, 6, 6, 0, 2>
 client_player_response::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    5, 0,  // max_field_number, fast_idx_mask
+    6, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
-    5,  // num_aux_entries
+    6,  // num_field_entries
+    6,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     client_player_response_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -938,16 +978,19 @@ client_player_response::_table_ = {
     {PROTOBUF_FIELD_OFFSET(client_player_response, _impl_.payload_.login_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.client.client_heartbeat_response heartbeat = 2;
     {PROTOBUF_FIELD_OFFSET(client_player_response, _impl_.payload_.heartbeat_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .celeritas.proto.client.client_role_response role = 3;
-    {PROTOBUF_FIELD_OFFSET(client_player_response, _impl_.payload_.role_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .celeritas.proto.client.client_red_dot_response red_dot = 4;
-    {PROTOBUF_FIELD_OFFSET(client_player_response, _impl_.payload_.red_dot_), _Internal::kOneofCaseOffset + 0, 3, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .celeritas.proto.client.client_item_response item = 5;
-    {PROTOBUF_FIELD_OFFSET(client_player_response, _impl_.payload_.item_), _Internal::kOneofCaseOffset + 0, 4, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.client.client_error_response error = 3;
+    {PROTOBUF_FIELD_OFFSET(client_player_response, _impl_.payload_.error_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.client.client_role_response role = 4;
+    {PROTOBUF_FIELD_OFFSET(client_player_response, _impl_.payload_.role_), _Internal::kOneofCaseOffset + 0, 3, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.client.client_red_dot_response red_dot = 5;
+    {PROTOBUF_FIELD_OFFSET(client_player_response, _impl_.payload_.red_dot_), _Internal::kOneofCaseOffset + 0, 4, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.client.client_item_response item = 6;
+    {PROTOBUF_FIELD_OFFSET(client_player_response, _impl_.payload_.item_), _Internal::kOneofCaseOffset + 0, 5, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::client::client_login_response>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::client::client_heartbeat_response>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::client::client_error_response>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::client::client_role_response>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::client::client_red_dot_response>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::client::client_item_response>()},
@@ -997,21 +1040,27 @@ PROTOBUF_NOINLINE void client_player_response::Clear() {
           stream);
       break;
     }
+    case kError: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          3, *this_._impl_.payload_.error_, this_._impl_.payload_.error_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     case kRole: {
       target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          3, *this_._impl_.payload_.role_, this_._impl_.payload_.role_->GetCachedSize(), target,
+          4, *this_._impl_.payload_.role_, this_._impl_.payload_.role_->GetCachedSize(), target,
           stream);
       break;
     }
     case kRedDot: {
       target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          4, *this_._impl_.payload_.red_dot_, this_._impl_.payload_.red_dot_->GetCachedSize(), target,
+          5, *this_._impl_.payload_.red_dot_, this_._impl_.payload_.red_dot_->GetCachedSize(), target,
           stream);
       break;
     }
     case kItem: {
       target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          5, *this_._impl_.payload_.item_, this_._impl_.payload_.item_->GetCachedSize(), target,
+          6, *this_._impl_.payload_.item_, this_._impl_.payload_.item_->GetCachedSize(), target,
           stream);
       break;
     }
@@ -1054,19 +1103,25 @@ PROTOBUF_NOINLINE void client_player_response::Clear() {
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.heartbeat_);
       break;
     }
-    // .celeritas.proto.client.client_role_response role = 3;
+    // .celeritas.proto.client.client_error_response error = 3;
+    case kError: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.error_);
+      break;
+    }
+    // .celeritas.proto.client.client_role_response role = 4;
     case kRole: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.role_);
       break;
     }
-    // .celeritas.proto.client.client_red_dot_response red_dot = 4;
+    // .celeritas.proto.client.client_red_dot_response red_dot = 5;
     case kRedDot: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.red_dot_);
       break;
     }
-    // .celeritas.proto.client.client_item_response item = 5;
+    // .celeritas.proto.client.client_item_response item = 6;
     case kItem: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.item_);
@@ -1116,6 +1171,14 @@ void client_player_response::MergeImpl(::google::protobuf::MessageLite& to_msg, 
           _this->_impl_.payload_.heartbeat_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.heartbeat_);
         } else {
           _this->_impl_.payload_.heartbeat_->MergeFrom(*from._impl_.payload_.heartbeat_);
+        }
+        break;
+      }
+      case kError: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.error_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.error_);
+        } else {
+          _this->_impl_.payload_.error_->MergeFrom(*from._impl_.payload_.error_);
         }
         break;
       }

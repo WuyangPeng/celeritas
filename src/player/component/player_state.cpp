@@ -3,6 +3,8 @@
 #include "player_state_type.h"
 #include "common/core/celeritas_error.h"
 #include "common/framework/resource_loader_base.h"
+#include "common/logging/logger.h"
+#include "initializer/initializer_constant.h"
 #include "player/activity/player_activity_component.h"
 #include "player/attribute/player_attribute_component.h"
 #include "player/develop/player_develop_component.h"
@@ -16,6 +18,7 @@
 #include "player/task/player_task_component.h"
 #include "player/time/player_time_component.h"
 #include "player/user/player_user_component.h"
+#include "proto/celeritas.pb.h"
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
@@ -204,6 +207,18 @@ celeritas::player_state::void_awaitable_type celeritas::player_state::set_login(
 celeritas::player_state::any_io_executor celeritas::player_state::get_any_io_executor()
 {
     return strand_;
+}
+
+void celeritas::player_state::send_error_message(const int rpc, const game_error_type game_error_type)
+{
+    const header header{ rpc, get_user_id(), game_error_type };
+
+    proto::celeritas response{};
+    response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_error();
+    if (!write(gateway_type.data(), get_instance_id(), header, response))
+    {
+        LOG_CHANNEL(player_channel, error) << "send message error.";
+    }
 }
 
 void celeritas::player_state::check() const

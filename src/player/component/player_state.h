@@ -96,6 +96,8 @@ namespace celeritas
 
         [[nodiscard]] any_io_executor get_any_io_executor();
 
+        void send_error_message(int rpc, game_error_type game_error_type);
+
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;

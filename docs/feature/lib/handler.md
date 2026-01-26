@@ -198,6 +198,13 @@
 
 ## player handlers (玩家处理器)
 
+* **🎮 玩家具体消息处理器 (`player_concrete_message_handler<Message>`)**
+    - **作用**：玩家相关消息处理器的模板基类，继承自 `concrete_message_handler`。
+    - **功能**：
+        - 提供了 `player_co_spawn_response` 和 `player_response` 方法，用于在协程中处理玩家消息并发送响应。
+        - 简化了需要访问 `player_state` 的消息处理逻辑。
+
+
 * **➡️ 登录请求消息处理器 (`service_login_request_message_handler`)**
     - **作用**：处理客户端发起的登录请求。`
     - **功能**：接收并处理`login_request`消息，验证玩家身份并返回登录结果。
@@ -227,4 +234,3 @@
 * **🔌 离线请求消息处理器 (`offline_request_message_handler`)**
     - **作用**：处理玩家离线请求。
     - **功能**：接收并处理`offline_request`消息，处理玩家下线逻辑。
-
