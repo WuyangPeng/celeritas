@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "application_loader.h"
-#include "configuration_loader.h"
-#include "resource_loader.h"
+#include "initializer/loader_base/application_loader.h"
+#include "initializer/loader_base/configuration_loader.h"
+#include "initializer/loader_base/resource_loader.h"
 
 #include <memory>
 

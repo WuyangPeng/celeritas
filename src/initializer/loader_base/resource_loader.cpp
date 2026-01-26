@@ -1,6 +1,4 @@
-﻿#include "initializer_constant.h"
-#include "initializer_fwd.h"
-#include "resource_loader.h"
+﻿#include "resource_loader.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "common/core/random_helper.h"
 #include "common/logging/logger.h"
@@ -15,6 +13,7 @@
 #include "detail/server_resource_loader.h"
 #include "detail/service_registry_loader.h"
 #include "detail/service_registry_timer.h"
+#include "initializer/initializer_constant.h"
 #include "network/client/tcp_client.h"
 #include "proto/celeritas.pb.h"
 #include "service_registry/core/detail/service_registry_core_internal_constant.h"
@@ -231,7 +230,7 @@ void celeritas::resource_loader::process_check_tcp_clients_by_duration(const any
                                   noexcept_safe_call_and_log_awaitable([tcp_client = tcp_client] {
                                                                            return tcp_client->connect();
                                                                        },
-                                                                       auth_channel,
+                                                                       initializer_channel,
                                                                        "tcp client connect error:"),
 
                                   boost::asio::detached);

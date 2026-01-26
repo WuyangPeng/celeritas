@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "common/framework/celeritas_main.h"
 #include "common/common_fwd.h"
+#include "common/framework/celeritas_main.h"
 
 #include <string>
 

@@ -2,7 +2,7 @@
 
 #include "auth/auth_fwd.h"
 #include "database/generated/mysql/auth/account.h"
-#include "initializer/account_type.h"
+#include "../../initializer/server/account_type.h"
 #include "message/basic/http_service_base.h"
 
 namespace celeritas

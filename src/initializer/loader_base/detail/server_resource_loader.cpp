@@ -26,7 +26,7 @@ celeritas::server_resource_loader::listener_shared_ptr celeritas::server_resourc
 
         default:
         {
-            throw celeritas_error("create server ,type = " + std::to_string(static_cast<int>(server_network_config.get_server_network_type())) + " is  not exist.");
+            throw celeritas_error{ "create server ,type = {} is  not exist.", static_cast<int>(server_network_config.get_server_network_type()) };
         }
     }
 }

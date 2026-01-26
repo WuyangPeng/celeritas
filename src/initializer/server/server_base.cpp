@@ -1,7 +1,7 @@
 ﻿#include "server_base.h"
 #include "common/common_constant.h"
 #include "common/core/command_line_config.h"
-#include "initializer/initializer.h"
+#include "initializer/core/initializer.h"
 
 celeritas::server_base::server_base(const std::string_view& server_type)
     : base_type{ server_type }

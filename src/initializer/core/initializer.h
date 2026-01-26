@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "daemon.h"
 #include "initializer_factory.h"
+#include "initializer/system/daemon.h"
 #include "network/core/network_message_callback.h"
 
 #include <boost/filesystem.hpp>

@@ -5,7 +5,7 @@
 #include "database/generated/mysql/auth/account_bind.h"
 #include "database/generated/redis/auth/session_token.h"
 #include "database/pool/database_pool_base.h"
-#include "initializer/account_type.h"
+#include "../../initializer/server/account_type.h"
 
 template <typename ResponseType>
 celeritas::auth_bind::optional_account_awaitable_type celeritas::auth_bind::get_account(int64_t app_id,

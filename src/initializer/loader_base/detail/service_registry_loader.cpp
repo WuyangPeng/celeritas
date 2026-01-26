@@ -1,4 +1,6 @@
 ﻿#include "service_registry_loader.h"
+#include "common/common_constant.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "config/local/service_registry_config.h"
 #include "network/client/tcp_client.h"
 
@@ -11,7 +13,11 @@ celeritas::service_registry_loader::tcp_client_shared_ptr celeritas::service_reg
     const auto client = std::make_shared<tcp_client>(any_io_executor, network_message_callback, game_server_id, service_registry_config.get_name(), service_registry_config.get_host(), service_registry_config.get_port(), server_type);
 
     boost::asio::co_spawn(any_io_executor,
-                          client->connect(),
+                          noexcept_safe_call_and_log_awaitable([ client = client] {
+                                                                   return client->connect();
+                                                               },
+                                                               initializer_channel,
+                                                               "client connect error:"),
                           boost::asio::detached);
 
     return client;

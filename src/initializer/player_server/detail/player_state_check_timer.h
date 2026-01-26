@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 #include "common/framework/timer_base.h"
 
 namespace celeritas

@@ -1,7 +1,8 @@
 ﻿#include "service_registry_resource_loader.h"
+#include "common/common_constant.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "config/local/health_check_url_config.h"
 #include "network/client/http_client.h"
-#include "network/client/tcp_client.h"
 #include "service_registry/core/service_registry.h"
 #include "service_registry/data/service_info.h"
 
@@ -22,7 +23,12 @@ void celeritas::service_registry_resource_loader::send_health_check(const any_io
         auto client = std::make_shared<http_client>(any_io_executor, network_message_callback, "", service_info.get_host(), service_info.get_port(server_network_type::http), service_info.get_service_name(), health_check_url_config->get_url());
 
         boost::asio::co_spawn(any_io_executor,
-                              send_health_check(std::move(client)),
+                              noexcept_safe_call_and_log_awaitable([client = std::move(client),
+                                                                       self = boost::polymorphic_pointer_downcast<class_type>(shared_from_this())] {
+                                                                       return self->send_health_check(std::move(client));
+                                                                   },
+                                                                   auth_channel,
+                                                                   "load app secret from db error:"),
                               boost::asio::detached);
     }
 }

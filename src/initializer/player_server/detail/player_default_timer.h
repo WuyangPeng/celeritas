@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "common/framework/timer_base.h"
-#include "player/player_fwd.h"
 
 namespace celeritas
 {

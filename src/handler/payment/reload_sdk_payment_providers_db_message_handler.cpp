@@ -1,5 +1,5 @@
 ﻿#include "reload_sdk_payment_providers_db_message_handler.h"
-#include "initializer/application_loader.h"
+#include "../../initializer/loader_base/application_loader.h"
 #include "manual/notify_http_message_handler.h"
 #include "manual/refund_http_message_handler.h"
 #include "message/parameters/protobuf_handle_parameter.h"

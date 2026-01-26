@@ -9,7 +9,7 @@
 #include "database/generated/mysql/auth/account.h"
 #include "database/generated/mysql/auth/account_bind.h"
 #include "detail/phone_bind_parameter.h"
-#include "initializer/account_type.h"
+#include "../../initializer/server/account_type.h"
 #include "message/basic/game_error_type.h"
 
 celeritas::phone_bind::phone_bind(http_handle_parameter_shared_ptr handle_parameter)

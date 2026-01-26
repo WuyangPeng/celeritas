@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "detail/gateway_check_timer.h"
 #include "detail/auth_health_check_timer.h"
-#include "initializer/resource_loader.h"
+#include "detail/gateway_check_timer.h"
+#include "initializer/loader_base/resource_loader.h"
 
 namespace celeritas
 {

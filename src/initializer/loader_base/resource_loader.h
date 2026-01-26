@@ -1,9 +1,9 @@
 ﻿#pragma once
 
-#include "common/framework/resource_loader_base.h"
 #include "common/core/session_route.h"
+#include "common/framework/resource_loader_base.h"
 #include "config/aggregate/app_config.h"
-#include "detail/initializer_internal_fwd.h"
+#include "detail/initializer_loader_base_internal_fwd.h"
 #include "message/message_fwd.h"
 #include "network/core/listener.h"
 #include "network/core/network_message_callback.h"

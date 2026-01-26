@@ -2,7 +2,7 @@
 
 #include "detail/player_default_timer.h"
 #include "detail/player_state_check_timer.h"
-#include "initializer/resource_loader.h"
+#include "initializer/loader_base/resource_loader.h"
 
 namespace celeritas
 {
