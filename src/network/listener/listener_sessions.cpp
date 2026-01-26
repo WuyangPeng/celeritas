@@ -13,7 +13,7 @@ void celeritas::listener_sessions::remove_session(const int64_t session_id)
     if (const auto iter = sessions_.find(session_id);
         iter != sessions_.cend())
     {
-        LOG_CHANNEL(network_channel, debug) << "Listener sessions remove: session id =" << session_id;
+        LOG_CHANNEL(network_channel, debug) << "Listener sessions remove: session id = " << session_id;
 
         iter->second->stop();
         sessions_.erase(iter);
