@@ -20,6 +20,37 @@ void celeritas::listener_sessions::remove_session(const int64_t session_id)
     }
 }
 
+celeritas::listener_sessions::session_shared_ptr celeritas::listener_sessions::get_session(const int64_t id)
+{
+    const auto iter = sessions_.find(id);
+    if (iter == sessions_.cend())
+    {
+        throw celeritas_error{ "no session found for id {}", id };
+    }
+
+    return iter->second;
+}
+
+celeritas::server_network_type celeritas::listener_sessions::get_server_network_type() const noexcept
+{
+    return server_network_type_;
+}
+
+bool celeritas::listener_sessions::write(const std::string& instance_id, const header& header, const protobuf_message& request)
+{
+    auto to_write = false;
+    for (const auto& element : sessions_ | std::views::values)
+    {
+        if (element->get_instance_id() == instance_id)
+        {
+            element->write(header, request);
+            to_write = true;
+        }
+    }
+
+    return to_write;
+}
+
 void celeritas::listener_sessions::set_stop()
 {
     is_running_ = false;
@@ -38,35 +69,4 @@ int64_t celeritas::listener_sessions::get_next_session_id() noexcept
 void celeritas::listener_sessions::add_session(const session_shared_ptr& session)
 {
     sessions_[session->get_session_id()] = session;
-}
-
-celeritas::listener_sessions::session_shared_ptr celeritas::listener_sessions::get_session(const int64_t id)
-{
-    const auto iter = sessions_.find(id);
-    if (iter == sessions_.cend())
-    {
-        throw celeritas_error{ "no session found for id {}", id };
-    }
-
-    return iter->second;
-}
-
-celeritas::server_network_type celeritas::listener_sessions::get_server_network_type() const noexcept
-{
-    return server_network_type_;
-}
-
-bool celeritas::listener_sessions::write(const std::string &instance_id, const header &header, const protobuf_message &request)
-{
-    auto to_write = false;
-    for (const auto& element : sessions_ | std::views::values)
-    {
-        if (element->get_instance_id() == instance_id)
-        {
-            element->write(header, request);
-            to_write = true;
-        }
-    }
-
-    return to_write;
 }
