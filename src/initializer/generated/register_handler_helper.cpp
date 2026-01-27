@@ -19,6 +19,7 @@ void celeritas::register_handler_helper::register_handler() const
     message_registry_->register_handler(std::make_shared<reload_server_cell_db_message_handler>());
     message_registry_->register_handler(std::make_shared<reload_sms_providers_db_message_handler>());
     message_registry_->register_handler(std::make_shared<celeritas_message_handler>());
+    message_registry_->register_handler(std::make_shared<client_item_request_message_handler>());
     message_registry_->register_handler(std::make_shared<client_item_response_message_handler>());
     message_registry_->register_handler(std::make_shared<client_login_request_message_handler>());
     message_registry_->register_handler(std::make_shared<client_login_response_message_handler>());

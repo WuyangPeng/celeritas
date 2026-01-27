@@ -26,6 +26,13 @@ message inventory_data {
     }
 }
 
+message item_selected_data {
+    int64 id = 1;
+    int32 item_type = 2;
+    int32 child_type = 3;
+    int64 selected_id = 4;
+}
+
 message item_response {
     repeated inventory_data inventory = 1;
     bool is_login = 2;
@@ -35,9 +42,25 @@ message item_delete_response {
     repeated int64 item_id = 1;
 }
 
+message item_selected_request {
+    item_selected_data item_selected = 1;
+}
+
+message item_selected_response {
+    repeated item_selected_data item_selected = 1;
+    bool is_login = 2;
+}
+
+message client_item_request {
+  oneof payload {
+    item_selected_request item_selected = 1;
+  }
+}
+
 message client_item_response {
   oneof payload {
     item_response item = 1;
     item_delete_response item_delete = 2;
+    item_selected_response item_selected = 3;
   }
 }

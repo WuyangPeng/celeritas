@@ -144,6 +144,7 @@ class client_player_request final : public ::google::protobuf::Message
     kLogin = 1,
     kHeartbeat = 2,
     kRole = 3,
+    kItem = 4,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 0;
@@ -237,6 +238,7 @@ class client_player_request final : public ::google::protobuf::Message
     kLoginFieldNumber = 1,
     kHeartbeatFieldNumber = 2,
     kRoleFieldNumber = 3,
+    kItemFieldNumber = 4,
   };
   // .celeritas.proto.client.client_login_request login = 1;
   bool has_login() const;
@@ -295,6 +297,25 @@ class client_player_request final : public ::google::protobuf::Message
   ::celeritas::proto::client::client_role_request* PROTOBUF_NONNULL _internal_mutable_role();
 
   public:
+  // .celeritas.proto.client.client_item_request item = 4;
+  bool has_item() const;
+  private:
+  bool _internal_has_item() const;
+
+  public:
+  void clear_item() ;
+  const ::celeritas::proto::client::client_item_request& item() const;
+  [[nodiscard]] ::celeritas::proto::client::client_item_request* PROTOBUF_NULLABLE release_item();
+  ::celeritas::proto::client::client_item_request* PROTOBUF_NONNULL mutable_item();
+  void set_allocated_item(::celeritas::proto::client::client_item_request* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_item(::celeritas::proto::client::client_item_request* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::client_item_request* PROTOBUF_NULLABLE unsafe_arena_release_item();
+
+  private:
+  const ::celeritas::proto::client::client_item_request& _internal_item() const;
+  ::celeritas::proto::client::client_item_request* PROTOBUF_NONNULL _internal_mutable_item();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_player_request)
@@ -303,11 +324,12 @@ class client_player_request final : public ::google::protobuf::Message
   void set_has_login();
   void set_has_heartbeat();
   void set_has_role();
+  void set_has_item();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 3,
-                                   3, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 4,
+                                   4, 0,
                                    2>
       _table_;
 
@@ -332,6 +354,7 @@ class client_player_request final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE login_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE heartbeat_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE role_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE item_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -871,6 +894,76 @@ inline ::celeritas::proto::client::client_role_request* PROTOBUF_NONNULL client_
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::client::client_role_request* _msg = _internal_mutable_role();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_player_request.role)
+  return _msg;
+}
+
+// .celeritas.proto.client.client_item_request item = 4;
+inline bool client_player_request::has_item() const {
+  return payload_case() == kItem;
+}
+inline bool client_player_request::_internal_has_item() const {
+  return payload_case() == kItem;
+}
+inline void client_player_request::set_has_item() {
+  _impl_._oneof_case_[0] = kItem;
+}
+inline ::celeritas::proto::client::client_item_request* PROTOBUF_NULLABLE client_player_request::release_item() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_player_request.item)
+  if (payload_case() == kItem) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_item_request*>(_impl_.payload_.item_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.item_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::client_item_request& client_player_request::_internal_item() const {
+  return payload_case() == kItem ? *reinterpret_cast<::celeritas::proto::client::client_item_request*>(_impl_.payload_.item_) : reinterpret_cast<::celeritas::proto::client::client_item_request&>(::celeritas::proto::client::_client_item_request_default_instance_);
+}
+inline const ::celeritas::proto::client::client_item_request& client_player_request::item() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_player_request.item)
+  return _internal_item();
+}
+inline ::celeritas::proto::client::client_item_request* PROTOBUF_NULLABLE client_player_request::unsafe_arena_release_item() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_player_request.item)
+  if (payload_case() == kItem) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_item_request*>(_impl_.payload_.item_);
+    _impl_.payload_.item_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_player_request::unsafe_arena_set_allocated_item(
+    ::celeritas::proto::client::client_item_request* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_item();
+    _impl_.payload_.item_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_player_request.item)
+}
+inline ::celeritas::proto::client::client_item_request* PROTOBUF_NONNULL client_player_request::_internal_mutable_item() {
+  if (payload_case() != kItem) {
+    clear_payload();
+    set_has_item();
+    _impl_.payload_.item_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_item_request>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::client::client_item_request*>(_impl_.payload_.item_);
+}
+inline ::celeritas::proto::client::client_item_request* PROTOBUF_NONNULL client_player_request::mutable_item()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::client_item_request* _msg = _internal_mutable_item();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_player_request.item)
   return _msg;
 }
 
