@@ -12,6 +12,30 @@
 namespace celeritas {namespace config {
 
 
+bool game::default_item_config::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(id)) return false;
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); playerItem.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<item> _e; if(!item::deserializeitem(_buf, _e)) return false; playerItem.push_back(_e);}}
+
+    return true;
+}
+
+bool game::default_item_config::deserializedefault_item_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::default_item_config>& _out)
+{
+    _out.reset(LUBAN_NEW(game::default_item_config));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
 bool game::develop_config::deserialize(::luban::ByteBuf& _buf)
 {
 
