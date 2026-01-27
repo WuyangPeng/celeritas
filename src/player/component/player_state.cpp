@@ -214,7 +214,7 @@ void celeritas::player_state::send_error_message(const int rpc, const game_error
     const header header{ rpc, get_user_id(), game_error_type };
 
     proto::celeritas response{};
-    response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_error();
+    response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_login()->mutable_error();
     if (!write(gateway_type.data(), get_instance_id(), header, response))
     {
         LOG_CHANNEL(player_channel, error) << "send message error.";

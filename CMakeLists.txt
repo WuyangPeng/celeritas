@@ -194,14 +194,12 @@ else ()
 
 endif ()
 
-add_library(proto_generated ${PROTO_SRCS_GENERATED})
-
 add_library(proto INTERFACE)
 
-if (MSVC)
+add_compile_definitions(PROTOBUF_USE_DLLS)
+add_compile_definitions(ABSL_CONSUME_DLL)
 
-    add_compile_definitions(PROTOBUF_USE_DLLS)
-    add_compile_definitions(ABSL_CONSUME_DLL)
+if (MSVC)
 
     link_directories(${PROTOBUF_DIR}/${LIB_DIRECTORY})
 
@@ -218,6 +216,8 @@ else ()
             absl_log_internal_nullguard)
 
 endif ()
+
+add_library(proto_generated ${PROTO_SRCS_GENERATED})
 
 # 包含mongo库
 add_library(mongo INTERFACE)
