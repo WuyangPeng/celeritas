@@ -121,6 +121,32 @@
     ]
   },
   {
+    "class_name": "user_item_selected",
+    "database_name": "user_item_selected",
+    "entity": [
+      {
+        "entity_name": "user_id",
+        "data_type": "int64",
+        "index_type": "key"
+      },
+      {
+        "entity_name": "item_selected_data",
+        "data_type": "document_array",
+        "document_type": "item_selected_data"
+      },
+      {
+        "entity_name": "data_version",
+        "data_type": "int32",
+        "comment": "版本控制"
+      },
+      {
+        "entity_name": "last_save_time",
+        "data_type": "int64",
+        "comment": "最后保存时间"
+      }
+    ]
+  },
+  {
     "class_name": "user_develop",
     "database_name": "user_develop",
     "entity": [

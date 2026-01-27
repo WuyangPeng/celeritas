@@ -60,6 +60,26 @@ class client_item_response;
 struct client_item_responseDefaultTypeInternal;
 extern client_item_responseDefaultTypeInternal _client_item_response_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull client_item_response_class_data_;
+class consumable_data;
+struct consumable_dataDefaultTypeInternal;
+extern consumable_dataDefaultTypeInternal _consumable_data_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull consumable_data_class_data_;
+class custom_data;
+struct custom_dataDefaultTypeInternal;
+extern custom_dataDefaultTypeInternal _custom_data_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull custom_data_class_data_;
+class equipment_data;
+struct equipment_dataDefaultTypeInternal;
+extern equipment_dataDefaultTypeInternal _equipment_data_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull equipment_data_class_data_;
+class inventory_data;
+struct inventory_dataDefaultTypeInternal;
+extern inventory_dataDefaultTypeInternal _inventory_data_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull inventory_data_class_data_;
+class item_delete_response;
+struct item_delete_responseDefaultTypeInternal;
+extern item_delete_responseDefaultTypeInternal _item_delete_response_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull item_delete_response_class_data_;
 class item_response;
 struct item_responseDefaultTypeInternal;
 extern item_responseDefaultTypeInternal _item_response_default_instance_;
@@ -81,10 +101,1047 @@ namespace client {
 
 // -------------------------------------------------------------------
 
-class item_response final : public ::google::protobuf::internal::ZeroFieldsBase
+class item_delete_response final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client.item_delete_response) */ {
+ public:
+  inline item_delete_response() : item_delete_response(nullptr) {}
+  ~item_delete_response() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(item_delete_response* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(item_delete_response));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR item_delete_response(::google::protobuf::internal::ConstantInitialized);
+
+  inline item_delete_response(const item_delete_response& from) : item_delete_response(nullptr, from) {}
+  inline item_delete_response(item_delete_response&& from) noexcept
+      : item_delete_response(nullptr, ::std::move(from)) {}
+  inline item_delete_response& operator=(const item_delete_response& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline item_delete_response& operator=(item_delete_response&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const item_delete_response& default_instance() {
+    return *reinterpret_cast<const item_delete_response*>(
+        &_item_delete_response_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 5;
+  friend void swap(item_delete_response& a, item_delete_response& b) { a.Swap(&b); }
+  inline void Swap(item_delete_response* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(item_delete_response* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  item_delete_response* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<item_delete_response>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const item_delete_response& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const item_delete_response& from) { item_delete_response::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(item_delete_response* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.item_delete_response"; }
+
+ protected:
+  explicit item_delete_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  item_delete_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const item_delete_response& from);
+  item_delete_response(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, item_delete_response&& from) noexcept
+      : item_delete_response(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kItemIdFieldNumber = 1,
+  };
+  // repeated int64 item_id = 1;
+  int item_id_size() const;
+  private:
+  int _internal_item_id_size() const;
+
+  public:
+  void clear_item_id() ;
+  ::int64_t item_id(int index) const;
+  void set_item_id(int index, ::int64_t value);
+  void add_item_id(::int64_t value);
+  const ::google::protobuf::RepeatedField<::int64_t>& item_id() const;
+  ::google::protobuf::RepeatedField<::int64_t>* PROTOBUF_NONNULL mutable_item_id();
+
+  private:
+  const ::google::protobuf::RepeatedField<::int64_t>& _internal_item_id() const;
+  ::google::protobuf::RepeatedField<::int64_t>* PROTOBUF_NONNULL _internal_mutable_item_id();
+
+  public:
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client.item_delete_response)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const item_delete_response& from_msg);
+    ::google::protobuf::RepeatedField<::int64_t> item_id_;
+    ::google::protobuf::internal::CachedSize _item_id_cached_byte_size_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fclient_2fplayer_2fitem_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull item_delete_response_class_data_;
+// -------------------------------------------------------------------
+
+class equipment_data final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client.equipment_data) */ {
+ public:
+  inline equipment_data() : equipment_data(nullptr) {}
+  ~equipment_data() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(equipment_data* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(equipment_data));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR equipment_data(::google::protobuf::internal::ConstantInitialized);
+
+  inline equipment_data(const equipment_data& from) : equipment_data(nullptr, from) {}
+  inline equipment_data(equipment_data&& from) noexcept
+      : equipment_data(nullptr, ::std::move(from)) {}
+  inline equipment_data& operator=(const equipment_data& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline equipment_data& operator=(equipment_data&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const equipment_data& default_instance() {
+    return *reinterpret_cast<const equipment_data*>(
+        &_equipment_data_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 2;
+  friend void swap(equipment_data& a, equipment_data& b) { a.Swap(&b); }
+  inline void Swap(equipment_data* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(equipment_data* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  equipment_data* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<equipment_data>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const equipment_data& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const equipment_data& from) { equipment_data::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(equipment_data* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.equipment_data"; }
+
+ protected:
+  explicit equipment_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  equipment_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const equipment_data& from);
+  equipment_data(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, equipment_data&& from) noexcept
+      : equipment_data(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kStrengthFieldNumber = 1,
+    kDurabilityFieldNumber = 2,
+  };
+  // int32 strength = 1;
+  void clear_strength() ;
+  ::int32_t strength() const;
+  void set_strength(::int32_t value);
+
+  private:
+  ::int32_t _internal_strength() const;
+  void _internal_set_strength(::int32_t value);
+
+  public:
+  // int32 durability = 2;
+  void clear_durability() ;
+  ::int32_t durability() const;
+  void set_durability(::int32_t value);
+
+  private:
+  ::int32_t _internal_durability() const;
+  void _internal_set_durability(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client.equipment_data)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const equipment_data& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::int32_t strength_;
+    ::int32_t durability_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fclient_2fplayer_2fitem_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull equipment_data_class_data_;
+// -------------------------------------------------------------------
+
+class custom_data final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client.custom_data) */ {
+ public:
+  inline custom_data() : custom_data(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(custom_data* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(custom_data));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR custom_data(::google::protobuf::internal::ConstantInitialized);
+
+  inline custom_data(const custom_data& from) : custom_data(nullptr, from) {}
+  inline custom_data(custom_data&& from) noexcept
+      : custom_data(nullptr, ::std::move(from)) {}
+  inline custom_data& operator=(const custom_data& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline custom_data& operator=(custom_data&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const custom_data& default_instance() {
+    return *reinterpret_cast<const custom_data*>(
+        &_custom_data_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 0;
+  friend void swap(custom_data& a, custom_data& b) { a.Swap(&b); }
+  inline void Swap(custom_data* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(custom_data* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  custom_data* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<custom_data>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const custom_data& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const custom_data& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.custom_data"; }
+
+ protected:
+  explicit custom_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  custom_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const custom_data& from);
+  custom_data(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, custom_data&& from) noexcept
+      : custom_data(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client.custom_data)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 0,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  friend struct ::TableStruct_proto_2fclient_2fplayer_2fitem_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull custom_data_class_data_;
+// -------------------------------------------------------------------
+
+class consumable_data final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client.consumable_data) */ {
+ public:
+  inline consumable_data() : consumable_data(nullptr) {}
+  ~consumable_data() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(consumable_data* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(consumable_data));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR consumable_data(::google::protobuf::internal::ConstantInitialized);
+
+  inline consumable_data(const consumable_data& from) : consumable_data(nullptr, from) {}
+  inline consumable_data(consumable_data&& from) noexcept
+      : consumable_data(nullptr, ::std::move(from)) {}
+  inline consumable_data& operator=(const consumable_data& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline consumable_data& operator=(consumable_data&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const consumable_data& default_instance() {
+    return *reinterpret_cast<const consumable_data*>(
+        &_consumable_data_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 1;
+  friend void swap(consumable_data& a, consumable_data& b) { a.Swap(&b); }
+  inline void Swap(consumable_data* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(consumable_data* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  consumable_data* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<consumable_data>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const consumable_data& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const consumable_data& from) { consumable_data::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(consumable_data* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.consumable_data"; }
+
+ protected:
+  explicit consumable_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  consumable_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const consumable_data& from);
+  consumable_data(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, consumable_data&& from) noexcept
+      : consumable_data(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kExpireTimeFieldNumber = 1,
+  };
+  // int64 expire_time = 1;
+  void clear_expire_time() ;
+  ::int64_t expire_time() const;
+  void set_expire_time(::int64_t value);
+
+  private:
+  ::int64_t _internal_expire_time() const;
+  void _internal_set_expire_time(::int64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client.consumable_data)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const consumable_data& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::int64_t expire_time_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fclient_2fplayer_2fitem_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull consumable_data_class_data_;
+// -------------------------------------------------------------------
+
+class inventory_data final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client.inventory_data) */ {
+ public:
+  inline inventory_data() : inventory_data(nullptr) {}
+  ~inventory_data() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(inventory_data* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(inventory_data));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR inventory_data(::google::protobuf::internal::ConstantInitialized);
+
+  inline inventory_data(const inventory_data& from) : inventory_data(nullptr, from) {}
+  inline inventory_data(inventory_data&& from) noexcept
+      : inventory_data(nullptr, ::std::move(from)) {}
+  inline inventory_data& operator=(const inventory_data& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline inventory_data& operator=(inventory_data&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const inventory_data& default_instance() {
+    return *reinterpret_cast<const inventory_data*>(
+        &_inventory_data_default_instance_);
+  }
+  enum PayloadCase {
+    kCustom = 5,
+    kConsumable = 6,
+    kEquipment = 7,
+    PAYLOAD_NOT_SET = 0,
+  };
+  static constexpr int kIndexInFileMessages = 3;
+  friend void swap(inventory_data& a, inventory_data& b) { a.Swap(&b); }
+  inline void Swap(inventory_data* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(inventory_data* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inventory_data* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<inventory_data>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const inventory_data& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const inventory_data& from) { inventory_data::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(inventory_data* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.inventory_data"; }
+
+ protected:
+  explicit inventory_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  inventory_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const inventory_data& from);
+  inventory_data(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, inventory_data&& from) noexcept
+      : inventory_data(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kItemIdFieldNumber = 1,
+    kCountFieldNumber = 3,
+    kTemplateIdFieldNumber = 2,
+    kPositionFieldNumber = 4,
+    kCustomFieldNumber = 5,
+    kConsumableFieldNumber = 6,
+    kEquipmentFieldNumber = 7,
+  };
+  // int64 item_id = 1;
+  void clear_item_id() ;
+  ::int64_t item_id() const;
+  void set_item_id(::int64_t value);
+
+  private:
+  ::int64_t _internal_item_id() const;
+  void _internal_set_item_id(::int64_t value);
+
+  public:
+  // int64 count = 3;
+  void clear_count() ;
+  ::int64_t count() const;
+  void set_count(::int64_t value);
+
+  private:
+  ::int64_t _internal_count() const;
+  void _internal_set_count(::int64_t value);
+
+  public:
+  // int32 template_id = 2;
+  void clear_template_id() ;
+  ::int32_t template_id() const;
+  void set_template_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_template_id() const;
+  void _internal_set_template_id(::int32_t value);
+
+  public:
+  // int32 position = 4;
+  void clear_position() ;
+  ::int32_t position() const;
+  void set_position(::int32_t value);
+
+  private:
+  ::int32_t _internal_position() const;
+  void _internal_set_position(::int32_t value);
+
+  public:
+  // .celeritas.proto.client.custom_data custom = 5;
+  bool has_custom() const;
+  private:
+  bool _internal_has_custom() const;
+
+  public:
+  void clear_custom() ;
+  const ::celeritas::proto::client::custom_data& custom() const;
+  [[nodiscard]] ::celeritas::proto::client::custom_data* PROTOBUF_NULLABLE release_custom();
+  ::celeritas::proto::client::custom_data* PROTOBUF_NONNULL mutable_custom();
+  void set_allocated_custom(::celeritas::proto::client::custom_data* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_custom(::celeritas::proto::client::custom_data* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::custom_data* PROTOBUF_NULLABLE unsafe_arena_release_custom();
+
+  private:
+  const ::celeritas::proto::client::custom_data& _internal_custom() const;
+  ::celeritas::proto::client::custom_data* PROTOBUF_NONNULL _internal_mutable_custom();
+
+  public:
+  // .celeritas.proto.client.consumable_data consumable = 6;
+  bool has_consumable() const;
+  private:
+  bool _internal_has_consumable() const;
+
+  public:
+  void clear_consumable() ;
+  const ::celeritas::proto::client::consumable_data& consumable() const;
+  [[nodiscard]] ::celeritas::proto::client::consumable_data* PROTOBUF_NULLABLE release_consumable();
+  ::celeritas::proto::client::consumable_data* PROTOBUF_NONNULL mutable_consumable();
+  void set_allocated_consumable(::celeritas::proto::client::consumable_data* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_consumable(::celeritas::proto::client::consumable_data* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::consumable_data* PROTOBUF_NULLABLE unsafe_arena_release_consumable();
+
+  private:
+  const ::celeritas::proto::client::consumable_data& _internal_consumable() const;
+  ::celeritas::proto::client::consumable_data* PROTOBUF_NONNULL _internal_mutable_consumable();
+
+  public:
+  // .celeritas.proto.client.equipment_data equipment = 7;
+  bool has_equipment() const;
+  private:
+  bool _internal_has_equipment() const;
+
+  public:
+  void clear_equipment() ;
+  const ::celeritas::proto::client::equipment_data& equipment() const;
+  [[nodiscard]] ::celeritas::proto::client::equipment_data* PROTOBUF_NULLABLE release_equipment();
+  ::celeritas::proto::client::equipment_data* PROTOBUF_NONNULL mutable_equipment();
+  void set_allocated_equipment(::celeritas::proto::client::equipment_data* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_equipment(::celeritas::proto::client::equipment_data* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::equipment_data* PROTOBUF_NULLABLE unsafe_arena_release_equipment();
+
+  private:
+  const ::celeritas::proto::client::equipment_data& _internal_equipment() const;
+  ::celeritas::proto::client::equipment_data* PROTOBUF_NONNULL _internal_mutable_equipment();
+
+  public:
+  void clear_payload();
+  PayloadCase payload_case() const;
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client.inventory_data)
+ private:
+  class _Internal;
+  void set_has_custom();
+  void set_has_consumable();
+  void set_has_equipment();
+  inline bool has_payload() const;
+  inline void clear_has_payload();
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 7,
+                                   3, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const inventory_data& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::int64_t item_id_;
+    ::int64_t count_;
+    ::int32_t template_id_;
+    ::int32_t position_;
+    union PayloadUnion {
+      constexpr PayloadUnion() : _constinit_{} {}
+      ::google::protobuf::internal::ConstantInitialized _constinit_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE custom_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE consumable_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE equipment_;
+    } payload_;
+    ::uint32_t _oneof_case_[1];
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fclient_2fplayer_2fitem_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull inventory_data_class_data_;
+// -------------------------------------------------------------------
+
+class item_response final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:celeritas.proto.client.item_response) */ {
  public:
   inline item_response() : item_response(nullptr) {}
+  ~item_response() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
   void operator delete(item_response* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
@@ -135,7 +1192,7 @@ class item_response final : public ::google::protobuf::internal::ZeroFieldsBase
     return *reinterpret_cast<const item_response*>(
         &_item_response_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 0;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(item_response& a, item_response& b) { a.Swap(&b); }
   inline void Swap(item_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -154,21 +1211,48 @@ class item_response final : public ::google::protobuf::internal::ZeroFieldsBase
   // implements Message ----------------------------------------------
 
   item_response* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<item_response>(arena);
+    return ::google::protobuf::Message::DefaultConstruct<item_response>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const item_response& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const item_response& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const item_response& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const item_response& from) { item_response::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
 
   public:
   bool IsInitialized() const {
     return true;
   }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(item_response* PROTOBUF_NONNULL other);
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
@@ -195,12 +1279,43 @@ class item_response final : public ::google::protobuf::internal::ZeroFieldsBase
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
+  enum : int {
+    kInventoryFieldNumber = 1,
+    kIsLoginFieldNumber = 2,
+  };
+  // repeated .celeritas.proto.client.inventory_data inventory = 1;
+  int inventory_size() const;
+  private:
+  int _internal_inventory_size() const;
+
+  public:
+  void clear_inventory() ;
+  ::celeritas::proto::client::inventory_data* PROTOBUF_NONNULL mutable_inventory(int index);
+  ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::inventory_data>* PROTOBUF_NONNULL mutable_inventory();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::inventory_data>& _internal_inventory() const;
+  ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::inventory_data>* PROTOBUF_NONNULL _internal_mutable_inventory();
+  public:
+  const ::celeritas::proto::client::inventory_data& inventory(int index) const;
+  ::celeritas::proto::client::inventory_data* PROTOBUF_NONNULL add_inventory();
+  const ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::inventory_data>& inventory() const;
+  // bool is_login = 2;
+  void clear_is_login() ;
+  bool is_login() const;
+  void set_is_login(bool value);
+
+  private:
+  bool _internal_is_login() const;
+  void _internal_set_is_login(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.item_response)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 0,
-                                   0, 0,
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   1, 0,
                                    2>
       _table_;
 
@@ -210,6 +1325,22 @@ class item_response final : public ::google::protobuf::internal::ZeroFieldsBase
   friend class ::google::protobuf::Arena::InternalHelper;
   using InternalArenaConstructable_ = void;
   using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const item_response& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::celeritas::proto::client::inventory_data > inventory_;
+    bool is_login_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_proto_2fclient_2fplayer_2fitem_2eproto;
 };
 
@@ -273,9 +1404,10 @@ class client_item_response final : public ::google::protobuf::Message
   }
   enum PayloadCase {
     kItem = 1,
+    kItemDelete = 2,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 1;
+  static constexpr int kIndexInFileMessages = 6;
   friend void swap(client_item_response& a, client_item_response& b) { a.Swap(&b); }
   inline void Swap(client_item_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -364,6 +1496,7 @@ class client_item_response final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kItemFieldNumber = 1,
+    kItemDeleteFieldNumber = 2,
   };
   // .celeritas.proto.client.item_response item = 1;
   bool has_item() const;
@@ -384,17 +1517,37 @@ class client_item_response final : public ::google::protobuf::Message
   ::celeritas::proto::client::item_response* PROTOBUF_NONNULL _internal_mutable_item();
 
   public:
+  // .celeritas.proto.client.item_delete_response item_delete = 2;
+  bool has_item_delete() const;
+  private:
+  bool _internal_has_item_delete() const;
+
+  public:
+  void clear_item_delete() ;
+  const ::celeritas::proto::client::item_delete_response& item_delete() const;
+  [[nodiscard]] ::celeritas::proto::client::item_delete_response* PROTOBUF_NULLABLE release_item_delete();
+  ::celeritas::proto::client::item_delete_response* PROTOBUF_NONNULL mutable_item_delete();
+  void set_allocated_item_delete(::celeritas::proto::client::item_delete_response* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_item_delete(::celeritas::proto::client::item_delete_response* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::item_delete_response* PROTOBUF_NULLABLE unsafe_arena_release_item_delete();
+
+  private:
+  const ::celeritas::proto::client::item_delete_response& _internal_item_delete() const;
+  ::celeritas::proto::client::item_delete_response* PROTOBUF_NONNULL _internal_mutable_item_delete();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_item_response)
  private:
   class _Internal;
   void set_has_item();
+  void set_has_item_delete();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
-                                   1, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 2,
+                                   2, 0,
                                    2>
       _table_;
 
@@ -417,6 +1570,7 @@ class client_item_response final : public ::google::protobuf::Message
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
       ::celeritas::proto::client::item_response* PROTOBUF_NULLABLE item_;
+      ::celeritas::proto::client::item_delete_response* PROTOBUF_NULLABLE item_delete_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -442,7 +1596,567 @@ extern const ::google::protobuf::internal::ClassDataFull client_item_response_cl
 #endif  // __GNUC__
 // -------------------------------------------------------------------
 
+// custom_data
+
+// -------------------------------------------------------------------
+
+// consumable_data
+
+// int64 expire_time = 1;
+inline void consumable_data::clear_expire_time() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.expire_time_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000001U;
+}
+inline ::int64_t consumable_data::expire_time() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.consumable_data.expire_time)
+  return _internal_expire_time();
+}
+inline void consumable_data::set_expire_time(::int64_t value) {
+  _internal_set_expire_time(value);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.consumable_data.expire_time)
+}
+inline ::int64_t consumable_data::_internal_expire_time() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.expire_time_;
+}
+inline void consumable_data::_internal_set_expire_time(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.expire_time_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// equipment_data
+
+// int32 strength = 1;
+inline void equipment_data::clear_strength() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.strength_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000001U;
+}
+inline ::int32_t equipment_data::strength() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.equipment_data.strength)
+  return _internal_strength();
+}
+inline void equipment_data::set_strength(::int32_t value) {
+  _internal_set_strength(value);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.equipment_data.strength)
+}
+inline ::int32_t equipment_data::_internal_strength() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.strength_;
+}
+inline void equipment_data::_internal_set_strength(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.strength_ = value;
+}
+
+// int32 durability = 2;
+inline void equipment_data::clear_durability() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.durability_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002U;
+}
+inline ::int32_t equipment_data::durability() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.equipment_data.durability)
+  return _internal_durability();
+}
+inline void equipment_data::set_durability(::int32_t value) {
+  _internal_set_durability(value);
+  _impl_._has_bits_[0] |= 0x00000002U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.equipment_data.durability)
+}
+inline ::int32_t equipment_data::_internal_durability() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.durability_;
+}
+inline void equipment_data::_internal_set_durability(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.durability_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// inventory_data
+
+// int64 item_id = 1;
+inline void inventory_data::clear_item_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.item_id_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000001U;
+}
+inline ::int64_t inventory_data::item_id() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.inventory_data.item_id)
+  return _internal_item_id();
+}
+inline void inventory_data::set_item_id(::int64_t value) {
+  _internal_set_item_id(value);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.inventory_data.item_id)
+}
+inline ::int64_t inventory_data::_internal_item_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.item_id_;
+}
+inline void inventory_data::_internal_set_item_id(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.item_id_ = value;
+}
+
+// int32 template_id = 2;
+inline void inventory_data::clear_template_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.template_id_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000004U;
+}
+inline ::int32_t inventory_data::template_id() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.inventory_data.template_id)
+  return _internal_template_id();
+}
+inline void inventory_data::set_template_id(::int32_t value) {
+  _internal_set_template_id(value);
+  _impl_._has_bits_[0] |= 0x00000004U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.inventory_data.template_id)
+}
+inline ::int32_t inventory_data::_internal_template_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.template_id_;
+}
+inline void inventory_data::_internal_set_template_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.template_id_ = value;
+}
+
+// int64 count = 3;
+inline void inventory_data::clear_count() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.count_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000002U;
+}
+inline ::int64_t inventory_data::count() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.inventory_data.count)
+  return _internal_count();
+}
+inline void inventory_data::set_count(::int64_t value) {
+  _internal_set_count(value);
+  _impl_._has_bits_[0] |= 0x00000002U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.inventory_data.count)
+}
+inline ::int64_t inventory_data::_internal_count() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.count_;
+}
+inline void inventory_data::_internal_set_count(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.count_ = value;
+}
+
+// int32 position = 4;
+inline void inventory_data::clear_position() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.position_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000008U;
+}
+inline ::int32_t inventory_data::position() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.inventory_data.position)
+  return _internal_position();
+}
+inline void inventory_data::set_position(::int32_t value) {
+  _internal_set_position(value);
+  _impl_._has_bits_[0] |= 0x00000008U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.inventory_data.position)
+}
+inline ::int32_t inventory_data::_internal_position() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.position_;
+}
+inline void inventory_data::_internal_set_position(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.position_ = value;
+}
+
+// .celeritas.proto.client.custom_data custom = 5;
+inline bool inventory_data::has_custom() const {
+  return payload_case() == kCustom;
+}
+inline bool inventory_data::_internal_has_custom() const {
+  return payload_case() == kCustom;
+}
+inline void inventory_data::set_has_custom() {
+  _impl_._oneof_case_[0] = kCustom;
+}
+inline void inventory_data::clear_custom() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kCustom) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.custom_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.custom_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::celeritas::proto::client::custom_data* PROTOBUF_NULLABLE inventory_data::release_custom() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.inventory_data.custom)
+  if (payload_case() == kCustom) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::custom_data*>(_impl_.payload_.custom_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.custom_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::custom_data& inventory_data::_internal_custom() const {
+  return payload_case() == kCustom ? *reinterpret_cast<::celeritas::proto::client::custom_data*>(_impl_.payload_.custom_) : reinterpret_cast<::celeritas::proto::client::custom_data&>(::celeritas::proto::client::_custom_data_default_instance_);
+}
+inline const ::celeritas::proto::client::custom_data& inventory_data::custom() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.inventory_data.custom)
+  return _internal_custom();
+}
+inline ::celeritas::proto::client::custom_data* PROTOBUF_NULLABLE inventory_data::unsafe_arena_release_custom() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.inventory_data.custom)
+  if (payload_case() == kCustom) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::custom_data*>(_impl_.payload_.custom_);
+    _impl_.payload_.custom_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void inventory_data::unsafe_arena_set_allocated_custom(
+    ::celeritas::proto::client::custom_data* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_custom();
+    _impl_.payload_.custom_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.inventory_data.custom)
+}
+inline ::celeritas::proto::client::custom_data* PROTOBUF_NONNULL inventory_data::_internal_mutable_custom() {
+  if (payload_case() != kCustom) {
+    clear_payload();
+    set_has_custom();
+    _impl_.payload_.custom_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::custom_data>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::client::custom_data*>(_impl_.payload_.custom_);
+}
+inline ::celeritas::proto::client::custom_data* PROTOBUF_NONNULL inventory_data::mutable_custom()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::custom_data* _msg = _internal_mutable_custom();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.inventory_data.custom)
+  return _msg;
+}
+
+// .celeritas.proto.client.consumable_data consumable = 6;
+inline bool inventory_data::has_consumable() const {
+  return payload_case() == kConsumable;
+}
+inline bool inventory_data::_internal_has_consumable() const {
+  return payload_case() == kConsumable;
+}
+inline void inventory_data::set_has_consumable() {
+  _impl_._oneof_case_[0] = kConsumable;
+}
+inline void inventory_data::clear_consumable() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kConsumable) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.consumable_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.consumable_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::celeritas::proto::client::consumable_data* PROTOBUF_NULLABLE inventory_data::release_consumable() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.inventory_data.consumable)
+  if (payload_case() == kConsumable) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::consumable_data*>(_impl_.payload_.consumable_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.consumable_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::consumable_data& inventory_data::_internal_consumable() const {
+  return payload_case() == kConsumable ? *reinterpret_cast<::celeritas::proto::client::consumable_data*>(_impl_.payload_.consumable_) : reinterpret_cast<::celeritas::proto::client::consumable_data&>(::celeritas::proto::client::_consumable_data_default_instance_);
+}
+inline const ::celeritas::proto::client::consumable_data& inventory_data::consumable() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.inventory_data.consumable)
+  return _internal_consumable();
+}
+inline ::celeritas::proto::client::consumable_data* PROTOBUF_NULLABLE inventory_data::unsafe_arena_release_consumable() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.inventory_data.consumable)
+  if (payload_case() == kConsumable) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::consumable_data*>(_impl_.payload_.consumable_);
+    _impl_.payload_.consumable_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void inventory_data::unsafe_arena_set_allocated_consumable(
+    ::celeritas::proto::client::consumable_data* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_consumable();
+    _impl_.payload_.consumable_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.inventory_data.consumable)
+}
+inline ::celeritas::proto::client::consumable_data* PROTOBUF_NONNULL inventory_data::_internal_mutable_consumable() {
+  if (payload_case() != kConsumable) {
+    clear_payload();
+    set_has_consumable();
+    _impl_.payload_.consumable_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::consumable_data>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::client::consumable_data*>(_impl_.payload_.consumable_);
+}
+inline ::celeritas::proto::client::consumable_data* PROTOBUF_NONNULL inventory_data::mutable_consumable()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::consumable_data* _msg = _internal_mutable_consumable();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.inventory_data.consumable)
+  return _msg;
+}
+
+// .celeritas.proto.client.equipment_data equipment = 7;
+inline bool inventory_data::has_equipment() const {
+  return payload_case() == kEquipment;
+}
+inline bool inventory_data::_internal_has_equipment() const {
+  return payload_case() == kEquipment;
+}
+inline void inventory_data::set_has_equipment() {
+  _impl_._oneof_case_[0] = kEquipment;
+}
+inline void inventory_data::clear_equipment() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kEquipment) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.equipment_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.equipment_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::celeritas::proto::client::equipment_data* PROTOBUF_NULLABLE inventory_data::release_equipment() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.inventory_data.equipment)
+  if (payload_case() == kEquipment) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::equipment_data*>(_impl_.payload_.equipment_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.equipment_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::equipment_data& inventory_data::_internal_equipment() const {
+  return payload_case() == kEquipment ? *reinterpret_cast<::celeritas::proto::client::equipment_data*>(_impl_.payload_.equipment_) : reinterpret_cast<::celeritas::proto::client::equipment_data&>(::celeritas::proto::client::_equipment_data_default_instance_);
+}
+inline const ::celeritas::proto::client::equipment_data& inventory_data::equipment() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.inventory_data.equipment)
+  return _internal_equipment();
+}
+inline ::celeritas::proto::client::equipment_data* PROTOBUF_NULLABLE inventory_data::unsafe_arena_release_equipment() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.inventory_data.equipment)
+  if (payload_case() == kEquipment) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::equipment_data*>(_impl_.payload_.equipment_);
+    _impl_.payload_.equipment_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void inventory_data::unsafe_arena_set_allocated_equipment(
+    ::celeritas::proto::client::equipment_data* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_equipment();
+    _impl_.payload_.equipment_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.inventory_data.equipment)
+}
+inline ::celeritas::proto::client::equipment_data* PROTOBUF_NONNULL inventory_data::_internal_mutable_equipment() {
+  if (payload_case() != kEquipment) {
+    clear_payload();
+    set_has_equipment();
+    _impl_.payload_.equipment_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::equipment_data>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::client::equipment_data*>(_impl_.payload_.equipment_);
+}
+inline ::celeritas::proto::client::equipment_data* PROTOBUF_NONNULL inventory_data::mutable_equipment()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::equipment_data* _msg = _internal_mutable_equipment();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.inventory_data.equipment)
+  return _msg;
+}
+
+inline bool inventory_data::has_payload() const {
+  return payload_case() != PAYLOAD_NOT_SET;
+}
+inline void inventory_data::clear_has_payload() {
+  _impl_._oneof_case_[0] = PAYLOAD_NOT_SET;
+}
+inline inventory_data::PayloadCase inventory_data::payload_case() const {
+  return inventory_data::PayloadCase(_impl_._oneof_case_[0]);
+}
+// -------------------------------------------------------------------
+
 // item_response
+
+// repeated .celeritas.proto.client.inventory_data inventory = 1;
+inline int item_response::_internal_inventory_size() const {
+  return _internal_inventory().size();
+}
+inline int item_response::inventory_size() const {
+  return _internal_inventory_size();
+}
+inline void item_response::clear_inventory() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.inventory_.Clear();
+}
+inline ::celeritas::proto::client::inventory_data* PROTOBUF_NONNULL item_response::mutable_inventory(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.item_response.inventory)
+  return _internal_mutable_inventory()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::inventory_data>* PROTOBUF_NONNULL item_response::mutable_inventory()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:celeritas.proto.client.item_response.inventory)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_inventory();
+}
+inline const ::celeritas::proto::client::inventory_data& item_response::inventory(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.item_response.inventory)
+  return _internal_inventory().Get(index);
+}
+inline ::celeritas::proto::client::inventory_data* PROTOBUF_NONNULL item_response::add_inventory()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::celeritas::proto::client::inventory_data* _add = _internal_mutable_inventory()->Add();
+  // @@protoc_insertion_point(field_add:celeritas.proto.client.item_response.inventory)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::inventory_data>& item_response::inventory() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:celeritas.proto.client.item_response.inventory)
+  return _internal_inventory();
+}
+inline const ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::inventory_data>&
+item_response::_internal_inventory() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.inventory_;
+}
+inline ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::inventory_data>* PROTOBUF_NONNULL
+item_response::_internal_mutable_inventory() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.inventory_;
+}
+
+// bool is_login = 2;
+inline void item_response::clear_is_login() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_login_ = false;
+  _impl_._has_bits_[0] &= ~0x00000001U;
+}
+inline bool item_response::is_login() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.item_response.is_login)
+  return _internal_is_login();
+}
+inline void item_response::set_is_login(bool value) {
+  _internal_set_is_login(value);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.item_response.is_login)
+}
+inline bool item_response::_internal_is_login() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.is_login_;
+}
+inline void item_response::_internal_set_is_login(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_login_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// item_delete_response
+
+// repeated int64 item_id = 1;
+inline int item_delete_response::_internal_item_id_size() const {
+  return _internal_item_id().size();
+}
+inline int item_delete_response::item_id_size() const {
+  return _internal_item_id_size();
+}
+inline void item_delete_response::clear_item_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.item_id_.Clear();
+}
+inline ::int64_t item_delete_response::item_id(int index) const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.item_delete_response.item_id)
+  return _internal_item_id().Get(index);
+}
+inline void item_delete_response::set_item_id(int index, ::int64_t value) {
+  _internal_mutable_item_id()->Set(index, value);
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.item_delete_response.item_id)
+}
+inline void item_delete_response::add_item_id(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _internal_mutable_item_id()->Add(value);
+  // @@protoc_insertion_point(field_add:celeritas.proto.client.item_delete_response.item_id)
+}
+inline const ::google::protobuf::RepeatedField<::int64_t>& item_delete_response::item_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:celeritas.proto.client.item_delete_response.item_id)
+  return _internal_item_id();
+}
+inline ::google::protobuf::RepeatedField<::int64_t>* PROTOBUF_NONNULL item_delete_response::mutable_item_id()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:celeritas.proto.client.item_delete_response.item_id)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_item_id();
+}
+inline const ::google::protobuf::RepeatedField<::int64_t>&
+item_delete_response::_internal_item_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.item_id_;
+}
+inline ::google::protobuf::RepeatedField<::int64_t>* PROTOBUF_NONNULL
+item_delete_response::_internal_mutable_item_id() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.item_id_;
+}
 
 // -------------------------------------------------------------------
 
@@ -526,6 +2240,87 @@ inline ::celeritas::proto::client::item_response* PROTOBUF_NONNULL client_item_r
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::client::item_response* _msg = _internal_mutable_item();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_item_response.item)
+  return _msg;
+}
+
+// .celeritas.proto.client.item_delete_response item_delete = 2;
+inline bool client_item_response::has_item_delete() const {
+  return payload_case() == kItemDelete;
+}
+inline bool client_item_response::_internal_has_item_delete() const {
+  return payload_case() == kItemDelete;
+}
+inline void client_item_response::set_has_item_delete() {
+  _impl_._oneof_case_[0] = kItemDelete;
+}
+inline void client_item_response::clear_item_delete() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kItemDelete) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.item_delete_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.item_delete_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::celeritas::proto::client::item_delete_response* PROTOBUF_NULLABLE client_item_response::release_item_delete() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_item_response.item_delete)
+  if (payload_case() == kItemDelete) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.item_delete_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.item_delete_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::item_delete_response& client_item_response::_internal_item_delete() const {
+  return payload_case() == kItemDelete ? *_impl_.payload_.item_delete_ : reinterpret_cast<::celeritas::proto::client::item_delete_response&>(::celeritas::proto::client::_item_delete_response_default_instance_);
+}
+inline const ::celeritas::proto::client::item_delete_response& client_item_response::item_delete() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_item_response.item_delete)
+  return _internal_item_delete();
+}
+inline ::celeritas::proto::client::item_delete_response* PROTOBUF_NULLABLE client_item_response::unsafe_arena_release_item_delete() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_item_response.item_delete)
+  if (payload_case() == kItemDelete) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.item_delete_;
+    _impl_.payload_.item_delete_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_item_response::unsafe_arena_set_allocated_item_delete(
+    ::celeritas::proto::client::item_delete_response* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_item_delete();
+    _impl_.payload_.item_delete_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_item_response.item_delete)
+}
+inline ::celeritas::proto::client::item_delete_response* PROTOBUF_NONNULL client_item_response::_internal_mutable_item_delete() {
+  if (payload_case() != kItemDelete) {
+    clear_payload();
+    set_has_item_delete();
+    _impl_.payload_.item_delete_ = 
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::item_delete_response>(GetArena());
+  }
+  return _impl_.payload_.item_delete_;
+}
+inline ::celeritas::proto::client::item_delete_response* PROTOBUF_NONNULL client_item_response::mutable_item_delete()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::item_delete_response* _msg = _internal_mutable_item_delete();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_item_response.item_delete)
   return _msg;
 }
 

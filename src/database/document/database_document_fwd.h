@@ -7,6 +7,7 @@ namespace celeritas
     class develop_data;
     class equipment_data;
     class inventory_data;
+    class item_selected_data;
     class player_time_refresh;
     class red_dost;
     class server_role;

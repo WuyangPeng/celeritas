@@ -2,11 +2,42 @@
 
 package celeritas.proto.client;
 
+message custom_data {
+}
+
+message consumable_data {
+    int64 expire_time = 1;
+}
+
+message equipment_data {
+    int32 strength = 1;
+    int32 durability = 2;
+}
+
+message inventory_data {
+    int64 item_id = 1;
+    int32 template_id = 2;
+    int64 count = 3;
+    int32 position = 4;
+    oneof payload {
+        custom_data custom = 5;
+        consumable_data consumable = 6;
+        equipment_data equipment = 7;
+    }
+}
+
 message item_response {
+    repeated inventory_data inventory = 1;
+    bool is_login = 2;
+}
+
+message item_delete_response {
+    repeated int64 item_id = 1;
 }
 
 message client_item_response {
   oneof payload {
     item_response item = 1;
+    item_delete_response item_delete = 2;
   }
 }

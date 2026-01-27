@@ -28,32 +28,6 @@ namespace celeritas {
 namespace proto {
 namespace client {
 
-inline constexpr client_player_response::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : payload_{},
-        _cached_size_{0},
-        _oneof_case_{} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR client_player_response::client_player_response(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(client_player_response_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct client_player_responseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR client_player_responseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~client_player_responseDefaultTypeInternal() {}
-  union {
-    client_player_response _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 client_player_responseDefaultTypeInternal _client_player_response_default_instance_;
-
 inline constexpr client_player_request::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : payload_{},
@@ -79,6 +53,32 @@ struct client_player_requestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 client_player_requestDefaultTypeInternal _client_player_request_default_instance_;
+
+inline constexpr client_player_response::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : payload_{},
+        _cached_size_{0},
+        _oneof_case_{} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR client_player_response::client_player_response(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(client_player_response_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct client_player_responseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR client_player_responseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~client_player_responseDefaultTypeInternal() {}
+  union {
+    client_player_response _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 client_player_responseDefaultTypeInternal _client_player_response_default_instance_;
 }  // namespace client
 }  // namespace proto
 }  // namespace celeritas
