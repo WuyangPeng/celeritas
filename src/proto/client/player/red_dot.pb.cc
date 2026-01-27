@@ -27,14 +27,48 @@ namespace _fl = ::google::protobuf::internal::field_layout;
 namespace celeritas {
 namespace proto {
 namespace client {
+
+inline constexpr red_dot_node::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        red_dot_type_{0},
+        value_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR red_dot_node::red_dot_node(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(red_dot_node_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct red_dot_nodeDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR red_dot_nodeDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~red_dot_nodeDefaultTypeInternal() {}
+  union {
+    red_dot_node _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 red_dot_nodeDefaultTypeInternal _red_dot_node_default_instance_;
+
+inline constexpr red_dot_response::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        node_{},
+        is_login_{false} {}
+
 template <typename>
 PROTOBUF_CONSTEXPR red_dot_response::red_dot_response(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(red_dot_response_class_data_.base()){}
+    : ::google::protobuf::Message(red_dot_response_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase() {
-}
+    : ::google::protobuf::Message(),
 #endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct red_dot_responseDefaultTypeInternal {
   PROTOBUF_CONSTEXPR red_dot_responseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~red_dot_responseDefaultTypeInternal() {}
@@ -81,7 +115,20 @@ static constexpr const ::_pb::ServiceDescriptor *PROTOBUF_NONNULL *PROTOBUF_NULL
 const ::uint32_t
     TableStruct_proto_2fclient_2fplayer_2fred_5fdot_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
-        0x000, // bitmap
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::red_dot_node, _impl_._has_bits_),
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::red_dot_node, _impl_.red_dot_type_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::red_dot_node, _impl_.value_),
+        0,
+        1,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::red_dot_response, _impl_._has_bits_),
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::red_dot_response, _impl_.node_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::red_dot_response, _impl_.is_login_),
+        ~0u,
+        0,
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_red_dot_response, _impl_._oneof_case_[0]),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_red_dot_response, _impl_.payload_),
@@ -90,32 +137,37 @@ const ::uint32_t
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, sizeof(::celeritas::proto::client::red_dot_response)},
-        {1, sizeof(::celeritas::proto::client::client_red_dot_response)},
+        {0, sizeof(::celeritas::proto::client::red_dot_node)},
+        {7, sizeof(::celeritas::proto::client::red_dot_response)},
+        {14, sizeof(::celeritas::proto::client::client_red_dot_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
+    &::celeritas::proto::client::_red_dot_node_default_instance_._instance,
     &::celeritas::proto::client::_red_dot_response_default_instance_._instance,
     &::celeritas::proto::client::_client_red_dot_response_default_instance_._instance,
 };
 const char descriptor_table_protodef_proto_2fclient_2fplayer_2fred_5fdot_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n!proto/client/player/red_dot.proto\022\026cel"
-    "eritas.proto.client\"\022\n\020red_dot_response\""
-    "a\n\027client_red_dot_response\022;\n\007red_dot\030\001 "
-    "\001(\0132(.celeritas.proto.client.red_dot_res"
-    "ponseH\000B\t\n\007payloadb\006proto3"
+    "eritas.proto.client\"3\n\014red_dot_node\022\024\n\014r"
+    "ed_dot_type\030\001 \001(\005\022\r\n\005value\030\002 \001(\005\"X\n\020red_"
+    "dot_response\0222\n\004node\030\001 \003(\0132$.celeritas.p"
+    "roto.client.red_dot_node\022\020\n\010is_login\030\002 \001"
+    "(\010\"a\n\027client_red_dot_response\022;\n\007red_dot"
+    "\030\001 \001(\0132(.celeritas.proto.client.red_dot_"
+    "responseH\000B\t\n\007payloadb\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fclient_2fplayer_2fred_5fdot_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fclient_2fplayer_2fred_5fdot_2eproto = {
     false,
     false,
-    186,
+    309,
     descriptor_table_protodef_proto_2fclient_2fplayer_2fred_5fdot_2eproto,
     "proto/client/player/red_dot.proto",
     &descriptor_table_proto_2fclient_2fplayer_2fred_5fdot_2eproto_once,
     nullptr,
     0,
-    2,
+    3,
     schemas,
     file_default_instances,
     TableStruct_proto_2fclient_2fplayer_2fred_5fdot_2eproto::offsets,
@@ -127,32 +179,357 @@ namespace proto {
 namespace client {
 // ===================================================================
 
+class red_dot_node::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<red_dot_node>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(red_dot_node, _impl_._has_bits_);
+};
+
+red_dot_node::red_dot_node(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, red_dot_node_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.client.red_dot_node)
+}
+red_dot_node::red_dot_node(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const red_dot_node& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, red_dot_node_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+PROTOBUF_NDEBUG_INLINE red_dot_node::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void red_dot_node::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, red_dot_type_),
+           0,
+           offsetof(Impl_, value_) -
+               offsetof(Impl_, red_dot_type_) +
+               sizeof(Impl_::value_));
+}
+red_dot_node::~red_dot_node() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.client.red_dot_node)
+  SharedDtor(*this);
+}
+inline void red_dot_node::SharedDtor(MessageLite& self) {
+  red_dot_node& this_ = static_cast<red_dot_node&>(self);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL red_dot_node::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) red_dot_node(arena);
+}
+constexpr auto red_dot_node::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(red_dot_node),
+                                            alignof(red_dot_node));
+}
+constexpr auto red_dot_node::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_red_dot_node_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &red_dot_node::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<red_dot_node>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &red_dot_node::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<red_dot_node>(), &red_dot_node::ByteSizeLong,
+              &red_dot_node::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(red_dot_node, _impl_._cached_size_),
+          false,
+      },
+      &red_dot_node::kDescriptorMethods,
+      &descriptor_table_proto_2fclient_2fplayer_2fred_5fdot_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull red_dot_node_class_data_ =
+        red_dot_node::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+red_dot_node::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&red_dot_node_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(red_dot_node_class_data_.tc_table);
+  return red_dot_node_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2>
+red_dot_node::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(red_dot_node, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    red_dot_node_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::client::red_dot_node>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int32 value = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(red_dot_node, _impl_.value_), 1>(),
+     {16, 1, 0, PROTOBUF_FIELD_OFFSET(red_dot_node, _impl_.value_)}},
+    // int32 red_dot_type = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(red_dot_node, _impl_.red_dot_type_), 0>(),
+     {8, 0, 0, PROTOBUF_FIELD_OFFSET(red_dot_node, _impl_.red_dot_type_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 red_dot_type = 1;
+    {PROTOBUF_FIELD_OFFSET(red_dot_node, _impl_.red_dot_type_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 value = 2;
+    {PROTOBUF_FIELD_OFFSET(red_dot_node, _impl_.value_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void red_dot_node::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.client.red_dot_node)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003U) != 0) {
+    ::memset(&_impl_.red_dot_type_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.value_) -
+        reinterpret_cast<char*>(&_impl_.red_dot_type_)) + sizeof(_impl_.value_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL red_dot_node::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const red_dot_node& this_ = static_cast<const red_dot_node&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL red_dot_node::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const red_dot_node& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.client.red_dot_node)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // int32 red_dot_type = 1;
+  if ((this_._impl_._has_bits_[0] & 0x00000001U) != 0) {
+    if (this_._internal_red_dot_type() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<1>(
+              stream, this_._internal_red_dot_type(), target);
+    }
+  }
+
+  // int32 value = 2;
+  if ((this_._impl_._has_bits_[0] & 0x00000002U) != 0) {
+    if (this_._internal_value() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
+              stream, this_._internal_value(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.client.red_dot_node)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t red_dot_node::ByteSizeLong(const MessageLite& base) {
+  const red_dot_node& this_ = static_cast<const red_dot_node&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t red_dot_node::ByteSizeLong() const {
+  const red_dot_node& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.client.red_dot_node)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003U) != 0) {
+    // int32 red_dot_type = 1;
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      if (this_._internal_red_dot_type() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_red_dot_type());
+      }
+    }
+    // int32 value = 2;
+    if ((cached_has_bits & 0x00000002U) != 0) {
+      if (this_._internal_value() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_value());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void red_dot_node::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<red_dot_node*>(&to_msg);
+  auto& from = static_cast<const red_dot_node&>(from_msg);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    from.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.client.red_dot_node)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000003U) != 0) {
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      if (from._internal_red_dot_type() != 0) {
+        _this->_impl_.red_dot_type_ = from._impl_.red_dot_type_;
+      }
+    }
+    if ((cached_has_bits & 0x00000002U) != 0) {
+      if (from._internal_value() != 0) {
+        _this->_impl_.value_ = from._impl_.value_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void red_dot_node::CopyFrom(const red_dot_node& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.client.red_dot_node)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void red_dot_node::InternalSwap(red_dot_node* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(red_dot_node, _impl_.value_)
+      + sizeof(red_dot_node::_impl_.value_)
+      - PROTOBUF_FIELD_OFFSET(red_dot_node, _impl_.red_dot_type_)>(
+          reinterpret_cast<char*>(&_impl_.red_dot_type_),
+          reinterpret_cast<char*>(&other->_impl_.red_dot_type_));
+}
+
+::google::protobuf::Metadata red_dot_node::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class red_dot_response::_Internal {
  public:
+  using HasBits =
+      decltype(::std::declval<red_dot_response>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(red_dot_response, _impl_._has_bits_);
 };
 
 red_dot_response::red_dot_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena, red_dot_response_class_data_.base()) {
+    : ::google::protobuf::Message(arena, red_dot_response_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+    : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:celeritas.proto.client.red_dot_response)
 }
+PROTOBUF_NDEBUG_INLINE red_dot_response::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::celeritas::proto::client::red_dot_response& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        node_{visibility, arena, from.node_} {}
+
 red_dot_response::red_dot_response(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
     const red_dot_response& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena, red_dot_response_class_data_.base()) {
+    : ::google::protobuf::Message(arena, red_dot_response_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+    : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   red_dot_response* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.is_login_ = from._impl_.is_login_;
 
   // @@protoc_insertion_point(copy_constructor:celeritas.proto.client.red_dot_response)
+}
+PROTOBUF_NDEBUG_INLINE red_dot_response::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        node_{visibility, arena} {}
+
+inline void red_dot_response::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.is_login_ = {};
+}
+red_dot_response::~red_dot_response() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.client.red_dot_response)
+  SharedDtor(*this);
+}
+inline void red_dot_response::SharedDtor(MessageLite& self) {
+  red_dot_response& this_ = static_cast<red_dot_response&>(self);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
 inline void* PROTOBUF_NONNULL red_dot_response::PlacementNew_(
@@ -161,8 +538,20 @@ inline void* PROTOBUF_NONNULL red_dot_response::PlacementNew_(
   return ::new (mem) red_dot_response(arena);
 }
 constexpr auto red_dot_response::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(red_dot_response),
-                                            alignof(red_dot_response));
+  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(red_dot_response, _impl_.node_) +
+          decltype(red_dot_response::_impl_.node_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+  });
+  if (arena_bits.has_value()) {
+    return ::google::protobuf::internal::MessageCreator::ZeroInit(
+        sizeof(red_dot_response), alignof(red_dot_response), *arena_bits);
+  } else {
+    return ::google::protobuf::internal::MessageCreator(&red_dot_response::PlacementNew_,
+                                 sizeof(red_dot_response),
+                                 alignof(red_dot_response));
+  }
 }
 constexpr auto red_dot_response::InternalGenerateClassData_() {
   return ::google::protobuf::internal::ClassDataFull{
@@ -172,10 +561,10 @@ constexpr auto red_dot_response::InternalGenerateClassData_() {
           nullptr,  // OnDemandRegisterArenaDtor
           nullptr,  // IsInitialized
           &red_dot_response::MergeImpl,
-          ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<red_dot_response>(),
+          ::google::protobuf::Message::GetNewImpl<red_dot_response>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
           &red_dot_response::SharedDtor,
-          ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<red_dot_response>(), &red_dot_response::ByteSizeLong,
+          ::google::protobuf::Message::GetClearImpl<red_dot_response>(), &red_dot_response::ByteSizeLong,
               &red_dot_response::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
           PROTOBUF_FIELD_OFFSET(red_dot_response, _impl_._cached_size_),
@@ -198,18 +587,18 @@ red_dot_response::GetClassData() const {
   return red_dot_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
+const ::_pbi::TcParseTable<1, 2, 1, 0, 2>
 red_dot_response::_table_ = {
   {
-    0,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(red_dot_response, _impl_._has_bits_),
     0, // no _extensions_
-    0, 0,  // max_field_number, fast_idx_mask
+    2, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967295,  // skipmap
-    offsetof(decltype(_table_), field_names),  // no field_entries
-    0,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     red_dot_response_class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
@@ -217,22 +606,164 @@ red_dot_response::_table_ = {
     ::_pbi::TcParser::GetTable<::celeritas::proto::client::red_dot_response>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // bool is_login = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(red_dot_response, _impl_.is_login_), 0>(),
+     {16, 0, 0, PROTOBUF_FIELD_OFFSET(red_dot_response, _impl_.is_login_)}},
+    // repeated .celeritas.proto.client.red_dot_node node = 1;
+    {::_pbi::TcParser::FastMtR1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(red_dot_response, _impl_.node_)}},
   }}, {{
     65535, 65535
-  }}, // no field_entries, or aux_entries
+  }}, {{
+    // repeated .celeritas.proto.client.red_dot_node node = 1;
+    {PROTOBUF_FIELD_OFFSET(red_dot_response, _impl_.node_), -1, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // bool is_login = 2;
+    {PROTOBUF_FIELD_OFFSET(red_dot_response, _impl_.is_login_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+  }},
+  {{
+      {::_pbi::TcParser::GetTable<::celeritas::proto::client::red_dot_node>()},
+  }},
   {{
   }},
 };
+PROTOBUF_NOINLINE void red_dot_response::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.client.red_dot_response)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.node_.Clear();
+  _impl_.is_login_ = false;
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL red_dot_response::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const red_dot_response& this_ = static_cast<const red_dot_response&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL red_dot_response::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const red_dot_response& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.client.red_dot_response)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // repeated .celeritas.proto.client.red_dot_node node = 1;
+  for (unsigned i = 0, n = static_cast<unsigned>(
+                           this_._internal_node_size());
+       i < n; i++) {
+    const auto& repfield = this_._internal_node().Get(i);
+    target =
+        ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+            1, repfield, repfield.GetCachedSize(),
+            target, stream);
+  }
+
+  // bool is_login = 2;
+  if ((this_._impl_._has_bits_[0] & 0x00000001U) != 0) {
+    if (this_._internal_is_login() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteBoolToArray(
+          2, this_._internal_is_login(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.client.red_dot_response)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t red_dot_response::ByteSizeLong(const MessageLite& base) {
+  const red_dot_response& this_ = static_cast<const red_dot_response&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t red_dot_response::ByteSizeLong() const {
+  const red_dot_response& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.client.red_dot_response)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+   {
+    // repeated .celeritas.proto.client.red_dot_node node = 1;
+    {
+      total_size += 1UL * this_._internal_node_size();
+      for (const auto& msg : this_._internal_node()) {
+        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
+  }
+   {
+    // bool is_login = 2;
+    cached_has_bits = this_._impl_._has_bits_[0];
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      if (this_._internal_is_login() != 0) {
+        total_size += 2;
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void red_dot_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<red_dot_response*>(&to_msg);
+  auto& from = static_cast<const red_dot_response&>(from_msg);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    from.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.client.red_dot_response)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_internal_mutable_node()->MergeFrom(
+      from._internal_node());
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    if (from._internal_is_login() != 0) {
+      _this->_impl_.is_login_ = from._impl_.is_login_;
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void red_dot_response::CopyFrom(const red_dot_response& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.client.red_dot_response)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
 
 
-
-
-
-
+void red_dot_response::InternalSwap(red_dot_response* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  _impl_.node_.InternalSwap(&other->_impl_.node_);
+  swap(_impl_.is_login_, other->_impl_.is_login_);
+}
 
 ::google::protobuf::Metadata red_dot_response::GetMetadata() const {
-  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 

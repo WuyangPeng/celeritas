@@ -92,6 +92,16 @@ int celeritas::player_red_dot_node::get_red_dot_value(const red_dot_type red_dot
     return iter->second->get_value();
 }
 
+celeritas::player_red_dot_node::red_dot_node_container_const_iter celeritas::player_red_dot_node::begin() const
+{
+    return red_dot_node_.begin();
+}
+
+celeritas::player_red_dot_node::red_dot_node_container_const_iter celeritas::player_red_dot_node::end() const
+{
+    return red_dot_node_.end();
+}
+
 celeritas::player_red_dot_node::red_dot_node_shared_ptr celeritas::player_red_dot_node::get_child_red_dot(red_dot_type red_dot_type) const
 {
     const auto iter = red_dot_node_.find(red_dot_type);

@@ -14,10 +14,13 @@ namespace celeritas
     public:
         using class_type = player_red_dot_node;
         using red_dot_type = config::red_dot_type;
+        using red_dot_node_shared_ptr = std::shared_ptr<red_dot_node>;
+        using red_dot_node_container = std::map<red_dot_type, red_dot_node_shared_ptr>;
+        using red_dot_node_container_const_iter = red_dot_node_container::const_iterator;
 
         explicit player_red_dot_node(player_state* player_state, player_red_dot_document* player_red_dot_document);
 
-        bool add_red_dot(red_dot_type red_dot_type, int value) const;
+        [[nodiscard]] bool add_red_dot(red_dot_type red_dot_type, int value) const;
 
         [[nodiscard]] bool reduce_red_dot(red_dot_type red_dot_type, int value) const;
 
@@ -29,9 +32,11 @@ namespace celeritas
 
         [[nodiscard]] int get_red_dot_value(red_dot_type red_dot_type) const;
 
+        [[nodiscard]] red_dot_node_container_const_iter begin() const;
+
+        [[nodiscard]] red_dot_node_container_const_iter end() const;
+
     private:
-        using red_dot_node_shared_ptr = std::shared_ptr<red_dot_node>;
-        using red_dot_node_container = std::map<red_dot_type, red_dot_node_shared_ptr>;
         using red_container_type = container_config<config::game::red_dot_config, red_dot_type>::container;
         using const_red_dot_config_shared_ptr = std::shared_ptr<const config::game::red_dot_config>;
 

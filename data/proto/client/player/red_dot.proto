@@ -2,7 +2,14 @@
 
 package celeritas.proto.client;
 
+message red_dot_node {
+    int32 red_dot_type = 1;
+    int32 value = 2;
+}
+
 message red_dot_response {
+    repeated red_dot_node node = 1;
+    bool is_login = 2;
 }
 
 message client_red_dot_response {

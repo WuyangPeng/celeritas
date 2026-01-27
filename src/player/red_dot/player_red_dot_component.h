@@ -42,6 +42,8 @@ namespace celeritas
 
         [[nodiscard]] bool is_modify() const override;
 
+        [[nodiscard]] void_awaitable_type send_initial_sync() override;
+
     private:
         [[nodiscard]] void_awaitable_type load_user_red_dots();
 
@@ -50,6 +52,10 @@ namespace celeritas
         void calculate_red_dot();
 
         void update_document();
+
+        void send_red_dot_response();
+
+        void send_red_dot_response(red_dot_type red_dot_type);
 
         player_red_dot_database database_;
         player_red_dot_document document_;
