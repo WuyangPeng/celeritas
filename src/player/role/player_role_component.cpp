@@ -222,7 +222,7 @@ void celeritas::player_role_component::send_role_response(const int rpc)
 
     role_response->set_surname(user_role_->get_surname());
     role_response->set_name(user_role_->get_name());
-    role_response->set_modify_name(user_role_->is_modify());
+    role_response->set_modify_name(user_role_->is_modify_name());
     role_response->set_change_count(user_role_->get_change_count());
     role_response->set_per_day_change_count(user_role_->get_per_day_change_count());
 

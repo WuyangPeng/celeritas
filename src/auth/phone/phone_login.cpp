@@ -12,7 +12,7 @@
 #include "database/generated/redis/auth/sms_code.h"
 #include "detail/phone_login_parameter.h"
 #include "detail/phone_operation_parameter.tpp"
-#include "../../initializer/server/account_type.h"
+#include "initializer/server/account_type.h"
 #include "message/basic/game_error_type.h"
 
 celeritas::phone_login::phone_login(http_handle_parameter_shared_ptr handle_parameter)
