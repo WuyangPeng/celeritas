@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "../initializer/server/server_base.h"
+#include "common/framework/celeritas_main.h"
 
 namespace celeritas
 {
