@@ -18,7 +18,7 @@ namespace celeritas
 
         change_name(protobuf_handle_parameter_shared_ptr handle_parameter,
                     player_state_shared_ptr player_state,
-                    const request_type& request);
+                    request_type request);
 
         [[nodiscard]] void_awaitable_type response() override;
 
