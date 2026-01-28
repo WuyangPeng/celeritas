@@ -90,6 +90,10 @@ namespace celeritas {namespace config {
         /// 称号
         /// </summary>
         Title = 6,
+        /// <summary>
+        /// 英雄
+        /// </summary>
+        Hero = 7,
     };
 
  
