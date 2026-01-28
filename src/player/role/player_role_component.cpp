@@ -4,6 +4,7 @@
 #include "config/basic/database_type.h"
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
+#include "config/game/pretreatment_config.h"
 #include "config/luban/generated/schema.h"
 #include "database/generated/mongo/auth/user_server_roles.h"
 #include "database/pool/database_pool_base.h"
@@ -119,6 +120,11 @@ std::string celeritas::player_role_component::get_app_version() const
     return user_role_->get_app_version();
 }
 
+int celeritas::player_role_component::get_name_change_count() const
+{
+    return user_role_->get_change_count();
+}
+
 celeritas::player_component::void_awaitable_type celeritas::player_role_component::time_callback(const player_time_refresh_key& player_time_refresh_key, bool is_login)
 {
     if (player_time_refresh_key.get_time_refresh_type() == time_refresh_type::daily)
@@ -158,8 +164,8 @@ celeritas::player_role_component::void_awaitable_type celeritas::player_role_com
         user_role_ = user_role{ database_type::mongo, user_id };
         const auto game_tables = game_config::get_instance().get_game_tables();
 
-        user_role_->set_surname(game_tables->get_surname());
-        user_role_->set_name(game_tables->get_name(config::sex_type::none));
+        user_role_->set_surname(game_tables->get_pretreatment_config()->get_weight_config()->get_surname(game_tables->get_tables()->surname_config_container));
+        user_role_->set_name(game_tables->get_pretreatment_config()->get_weight_config()->get_name(config::sex_type::none, game_tables->get_tables()->name_config_container));
         user_role_->set_change_name_time(time_helper::get_current_milliseconds());
         user_role_->set_full_name(std::to_string(user_id));
     }

@@ -42,6 +42,8 @@ namespace celeritas
 
         [[nodiscard]] std::string get_app_version() const;
 
+        [[nodiscard]] int get_name_change_count() const;
+
         [[nodiscard]] void_awaitable_type time_callback(const player_time_refresh_key& player_time_refresh_key, bool is_login) override;
 
         [[nodiscard]] void_awaitable_type send_initial_sync() override;

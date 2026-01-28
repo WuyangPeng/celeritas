@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "player_role_component.h"
+#include "config/luban/generated/schema.h"
 #include "player/component/player_service_base.h"
 #include "proto/client/player/role.pb.h"
 
@@ -23,8 +24,15 @@ namespace celeritas
 
     private:
         using player_role_component_shared_ptr = std::shared_ptr<player_role_component>;
+        using player_item_component_shared_ptr = std::shared_ptr<player_item_component>;
+        using container_type = config::game::rename_cost_config_container;
+        using priority_item_type = ::luban::Vector<::luban::SharedPtr<config::priority_item> >;
+        using optional_priority_item_type = std::optional<priority_item_type>;
+
+        [[nodiscard]] optional_priority_item_type get_rename_cost(const container_type& container);
 
         request_type request_;
         player_role_component_shared_ptr player_role_component_;
+        player_item_component_shared_ptr player_item_component_;
     };
 }

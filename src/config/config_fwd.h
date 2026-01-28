@@ -18,9 +18,11 @@ namespace celeritas
 
     class game_config;
     class game_tables;
+    class pretreatment_config;
 
     template <typename Element, typename IndexType>
     class container_config;
 
     class weight;
+    class weight_config;
 }

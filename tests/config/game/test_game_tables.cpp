@@ -5,12 +5,9 @@
 #include <boost/test/unit_test.hpp>
 
 #include <memory>
-#include <vector>
 
 namespace
 {
-    constexpr auto random_count = 10;
-
     void write_surname_config(luban::ByteBuf& out_buf)
     {
         // 写入大小 2
@@ -86,50 +83,12 @@ namespace
 
 BOOST_AUTO_TEST_SUITE(game_tables_suite)
 
-    BOOST_AUTO_TEST_CASE(test_game_tables_init_and_get_surname)
+    BOOST_AUTO_TEST_CASE(test_game_tables_init)
     {
         const auto tables_data = create_test_tables();
         const celeritas::game_tables game_tables{ tables_data };
 
         BOOST_CHECK(game_tables.get_tables() == tables_data);
-
-        for (auto i = 0; i < random_count; ++i)
-        {
-            const auto surname = game_tables.get_surname();
-            BOOST_CHECK(surname == "Zhao" || surname == "Qian");
-        }
-    }
-
-    BOOST_AUTO_TEST_CASE(test_game_tables_get_name)
-    {
-        const auto tables_data = create_test_tables();
-        const celeritas::game_tables game_tables{ tables_data };
-
-        for (auto i = 0; i < random_count; ++i)
-        {
-            const auto name = game_tables.get_name(celeritas::game_tables::sex_type::male);
-            BOOST_CHECK(name == "MaleName" || name == "AnyName");
-        }
-
-        for (auto i = 0; i < random_count; ++i)
-        {
-            const auto name = game_tables.get_name(celeritas::game_tables::sex_type::female);
-            BOOST_CHECK(name == "FemaleName" || name == "AnyName");
-        }
-
-        for (auto i = 0; i < random_count; ++i)
-        {
-            const auto name = game_tables.get_name(celeritas::game_tables::sex_type::none);
-            BOOST_CHECK(name == "MaleName" || name == "FemaleName" || name == "AnyName");
-        }
-    }
-
-    BOOST_AUTO_TEST_CASE(test_game_tables_invalid_sex_type)
-    {
-        const auto tables_data = create_test_tables();
-        const celeritas::game_tables game_tables{ tables_data };
-
-        BOOST_CHECK_THROW(std::ignore = game_tables.get_name(static_cast<celeritas::game_tables::sex_type>(999)), celeritas::celeritas_error);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

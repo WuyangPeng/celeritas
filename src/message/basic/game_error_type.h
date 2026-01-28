@@ -40,6 +40,7 @@ namespace celeritas
 
         // 角色模块
         duplicate_name = 60100,
+        insufficient_number_of_name_changes = 60101,
 
         // 养成模块
         max_develop = 60600,
