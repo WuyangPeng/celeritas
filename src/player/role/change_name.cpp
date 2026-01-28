@@ -18,6 +18,12 @@ celeritas::change_name::change_name(protobuf_handle_parameter_shared_ptr handle_
 
 celeritas::player_service_base::void_awaitable_type celeritas::change_name::response()
 {
+    if (request_.name() == player_role_component_->get_name() && request_.surname() == player_role_component_->get_surname())
+    {
+        get_player_state()->send_error_message(get_rpc(), game_error_type::name_not_change);
+        co_return;
+    }
+
     const auto tables = get_game_tables()->get_tables();
     const auto& optional_rename_cost = get_rename_cost(tables->rename_cost_config_container);
     if (!optional_rename_cost)

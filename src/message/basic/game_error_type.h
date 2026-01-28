@@ -42,6 +42,7 @@ namespace celeritas
         duplicate_name = 60100,
         insufficient_number_of_name_changes = 60101,
         insufficient_item_of_name_change = 60102,
+        name_not_change = 60103,
 
         // 养成模块
         max_develop = 60600,

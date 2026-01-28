@@ -110,6 +110,11 @@ std::string celeritas::player_role_component::get_name() const
     return user_role_->get_name();
 }
 
+std::string celeritas::player_role_component::get_surname() const
+{
+    return user_role_->get_surname();
+}
+
 std::string celeritas::player_role_component::get_device_id() const
 {
     return user_role_->get_device_id();

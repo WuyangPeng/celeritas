@@ -38,6 +38,8 @@ namespace celeritas
 
         [[nodiscard]] std::string get_name() const;
 
+        [[nodiscard]] std::string get_surname() const;
+
         [[nodiscard]] std::string get_device_id() const;
 
         [[nodiscard]] std::string get_app_version() const;
