@@ -33,12 +33,20 @@ namespace celeritas
         [[nodiscard]] virtual void_awaitable_type response() = 0;
 
     protected:
+        using const_game_tables_shared_ptr = std::shared_ptr<const game_tables>;
+        using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
+
         [[nodiscard]] player_state_shared_ptr get_player_state();
 
         [[nodiscard]] int get_rpc() const;
 
+        [[nodiscard]] const_game_tables_shared_ptr get_game_tables() const;
+
+        [[nodiscard]] const_app_config_shared_ptr get_config() const;
+
     private:
         protobuf_handle_parameter_shared_ptr handle_parameter_;
         player_state_shared_ptr player_state_;
+        const_game_tables_shared_ptr game_tables_;
     };
 }

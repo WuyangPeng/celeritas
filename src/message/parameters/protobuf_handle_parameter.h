@@ -20,7 +20,7 @@ namespace celeritas
         using session_shared_ptr = std::shared_ptr<session>;
         using resource_loader_shared_ptr = std::shared_ptr<resource_loader_base>;
         using application_loader_shared_ptr = std::shared_ptr<application_loader_base>;
-        using app_config_const_shared_ptr = std::shared_ptr<const app_config>;
+        using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
         using service_info_container = std::map<std::string, service_info>;
 
         protobuf_handle_parameter(const header& header,
@@ -57,7 +57,7 @@ namespace celeritas
 
         [[nodiscard]] resource_loader_shared_ptr get_resource_loader() const;
 
-        [[nodiscard]] app_config_const_shared_ptr get_app_config() const;
+        [[nodiscard]] const_app_config_shared_ptr get_app_config() const;
 
         [[nodiscard]] any_io_executor get_any_io_executor() const;
 

@@ -26,10 +26,16 @@ namespace celeritas
         using player_role_component_shared_ptr = std::shared_ptr<player_role_component>;
         using player_item_component_shared_ptr = std::shared_ptr<player_item_component>;
         using container_type = config::game::rename_cost_config_container;
-        using priority_item_type = ::luban::Vector<::luban::SharedPtr<config::priority_item> >;
+        using priority_item_type = luban::SharedPtr<config::priority_item>;
         using optional_priority_item_type = std::optional<priority_item_type>;
+        using priority_item_container_type = luban::Vector<priority_item_type>;
+        using optional_priority_item_container_type = std::optional<priority_item_container_type>;
 
-        [[nodiscard]] optional_priority_item_type get_rename_cost(const container_type& container);
+        [[nodiscard]] optional_priority_item_container_type get_rename_cost(const container_type& container) const;
+
+        [[nodiscard]] optional_priority_item_type get_cost_item(const priority_item_container_type& priority_item);
+
+        void cost_item(const priority_item_type& priority_item);
 
         request_type request_;
         player_role_component_shared_ptr player_role_component_;

@@ -111,7 +111,7 @@ celeritas::protobuf_handle_parameter::resource_loader_shared_ptr celeritas::prot
     throw celeritas_error{ "resource loader is null." };
 }
 
-celeritas::protobuf_handle_parameter::app_config_const_shared_ptr celeritas::protobuf_handle_parameter::get_app_config() const
+celeritas::protobuf_handle_parameter::const_app_config_shared_ptr celeritas::protobuf_handle_parameter::get_app_config() const
 {
     return get_resource_loader()->get_app_config();
 }

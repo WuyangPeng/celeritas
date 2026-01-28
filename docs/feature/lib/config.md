@@ -95,6 +95,10 @@
     - **作用**：一个模板化的配置类，用于加载和管理一组相同类型的配置元素。
 
 
+* **🛠️ 预处理配置 (`pretreatment_config`)**
+    - **作用**：负责在游戏启动或配置加载阶段进行数据的预处理操作，例如初始化权重配置。  
+
+
 * **⚖️ 权重配置 (`weight`)**
     - **作用**：用于管理和操作一组带权重的元素。
     - **功能**：
@@ -102,6 +106,25 @@
         - **`get_weights()`**：获取所有元素的权重列表。
         - **`get_id(index)`**：根据索引获取元素的ID。
         - **`clear()`**：清空所有元素。
+
+
+* **⚖️ 权重配置 (`weight_config`)**
+    - **作用**：专门用于处理姓氏和名字的权重配置，支持随机生成姓名。
+    - **功能**：
+        - **`get_surname(surname_config_container)`**：根据权重随机获取一个姓氏。
+        - **`get_name(sex_type, name_config_container)`**：根据性别和权重随机获取一个名字。
+    - **初始化**：
+        - **`init_surname_config`**：初始化姓氏权重。
+        - **`init_name_config`**：初始化名字权重。
+
+
+* **🏷️ 改名消耗配置 (`rename_cost_config`)**
+    - **作用**：管理改名所需的消耗配置。
+    - **功能**：
+        - **`get_priority_item(id)`**：根据ID获取改名消耗的优先级道具列表。
+    - **初始化**：
+        - **`init_rename_cost`**：初始化改名消耗配置。
+
 
 ## luban configuration (Luban 配置)
 
