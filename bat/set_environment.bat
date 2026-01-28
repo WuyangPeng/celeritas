@@ -1,7 +1,7 @@
 @echo on
 
-echo celeritas_common_dir = %celeritas_common_dir%
+echo celeritas_dir = %celeritas_dir%
 echo %cd%
-setx celeritas_common_dir "%cd%\..\src\common"
+setx celeritas_dir "%cd%\..\src"
 
 pause

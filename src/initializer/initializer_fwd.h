@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include <string_view>
-
 namespace celeritas
 {
     class initializer;
@@ -9,8 +7,6 @@ namespace celeritas
     class initializer_factory;
     class application_loader;
     class resource_loader;
-    class daemon;
-    class crash;
     class register_handler_helper;
 
     class service_registry_resource_loader;

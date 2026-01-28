@@ -31,7 +31,8 @@ namespace celeritas
     constexpr std::string_view log_function{ "function" };
     constexpr std::string_view log_file{ "file" };
     constexpr std::string_view log_line{ "line" };
- constexpr std::string_view logger_path = "log";
+
+    constexpr std::string_view logger_path = "log";
     constexpr std::string_view logger_extension = ".log";
 
     constexpr std::string_view config_file_path_command_line{ "config_file_path" };

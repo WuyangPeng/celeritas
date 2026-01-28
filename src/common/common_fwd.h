@@ -24,4 +24,7 @@ namespace celeritas
     class resource_loader_base;
     class application_loader_base;
     class celeritas_main;
+
+    class daemon;
+    class crash;
 }
