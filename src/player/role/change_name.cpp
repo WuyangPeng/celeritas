@@ -1,12 +1,16 @@
 ﻿#include "change_name.h"
 
-#include <utility>
 #include "player_role_component.h"
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
 #include "config/game/pretreatment_config.h"
 #include "player/component/player_state.tpp"
 #include "player/item/player_item_component.h"
+
+celeritas::change_name::change_name_shared_ptr celeritas::change_name::create(protobuf_handle_parameter_shared_ptr handle_parameter, player_state_shared_ptr player_state, request_type request)
+{
+    return std::make_shared<class_type>(std::move(handle_parameter), std::move(player_state), std::move(request));
+}
 
 celeritas::change_name::change_name(protobuf_handle_parameter_shared_ptr handle_parameter, player_state_shared_ptr player_state, request_type request)
     : base_type{ std::move(handle_parameter), std::move(player_state) },

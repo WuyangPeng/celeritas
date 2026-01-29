@@ -44,10 +44,13 @@ namespace celeritas
         insufficient_item_of_name_change = 60102,
         name_not_change = 60103,
 
+        // 调试模块
+        debug_error = 60300,
+
         // 养成模块
-        max_develop = 60600,
-        non_resettable = 60601,
-        develop_not_exist = 60602,
+        max_develop = 60700,
+        non_resettable = 60701,
+        develop_not_exist = 60702,
     };
 
     [[nodiscard]] std::string get_game_error_description(game_error_type game_error);

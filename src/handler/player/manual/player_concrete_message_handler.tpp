@@ -43,7 +43,7 @@ celeritas::player_concrete_message_handler<Message>::void_awaitable_type celerit
                                                                                                                                               const std::string& error_message)
 {
     const auto rpc = handle_parameter->get_rpc();
-    if (auto service = std::make_shared<ServiceType>(std::move(handle_parameter), player_state, current_message);
+    if (auto service = ServiceType::create(std::move(handle_parameter), player_state, current_message);
         !co_await noexcept_safe_call_and_log_awaitable([service = service]() -> boost::asio::awaitable<bool> {
                                                            co_await service->response();
                                                            co_return true;

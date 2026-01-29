@@ -35,6 +35,8 @@ std::string celeritas::get_game_error_description(const game_error_type game_err
                                                 { game_error_type::insufficient_item_of_name_change, "insufficient item of name change" },
                                                 { game_error_type::name_not_change, "name not change" },
 
+                                                { game_error_type::debug_error, "debug error" },
+
                                                 { game_error_type::max_develop, "max develop" },
                                                 { game_error_type::non_resettable, "non resettable" },
                                                 { game_error_type::develop_not_exist, "develop not exist" }
