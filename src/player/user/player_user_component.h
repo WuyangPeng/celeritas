@@ -33,6 +33,8 @@ namespace celeritas
 
         [[nodiscard]] int64_t get_account_id() const noexcept;
 
+        [[nodiscard]] int get_permission() const noexcept;
+
     private:
         user user_;
     };

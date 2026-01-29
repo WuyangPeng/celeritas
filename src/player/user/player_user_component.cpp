@@ -53,3 +53,8 @@ int64_t celeritas::player_user_component::get_account_id() const noexcept
     return user_.get_account_id();
 }
 
+int celeritas::player_user_component::get_permission() const noexcept
+{
+    return user_.get_permission();
+}
+

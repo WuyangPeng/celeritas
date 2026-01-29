@@ -20,6 +20,7 @@
 #include "google/protobuf/io/coded_stream.h"
 #include "google/protobuf/arena.h"
 #include "google/protobuf/arenastring.h"
+#include "google/protobuf/generated_message_bases.h"
 #include "google/protobuf/generated_message_tctable_decl.h"
 #include "google/protobuf/generated_message_util.h"
 #include "google/protobuf/metadata_lite.h"
@@ -55,6 +56,10 @@ extern const ::google::protobuf::internal::DescriptorTable descriptor_table_prot
 namespace celeritas {
 namespace proto {
 namespace client {
+class client_red_dot_request;
+struct client_red_dot_requestDefaultTypeInternal;
+extern client_red_dot_requestDefaultTypeInternal _client_red_dot_request_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull client_red_dot_request_class_data_;
 class client_red_dot_response;
 struct client_red_dot_responseDefaultTypeInternal;
 extern client_red_dot_responseDefaultTypeInternal _client_red_dot_response_default_instance_;
@@ -285,6 +290,141 @@ class red_dot_node final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull red_dot_node_class_data_;
+// -------------------------------------------------------------------
+
+class client_red_dot_request final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client.client_red_dot_request) */ {
+ public:
+  inline client_red_dot_request() : client_red_dot_request(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(client_red_dot_request* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(client_red_dot_request));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR client_red_dot_request(::google::protobuf::internal::ConstantInitialized);
+
+  inline client_red_dot_request(const client_red_dot_request& from) : client_red_dot_request(nullptr, from) {}
+  inline client_red_dot_request(client_red_dot_request&& from) noexcept
+      : client_red_dot_request(nullptr, ::std::move(from)) {}
+  inline client_red_dot_request& operator=(const client_red_dot_request& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline client_red_dot_request& operator=(client_red_dot_request&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const client_red_dot_request& default_instance() {
+    return *reinterpret_cast<const client_red_dot_request*>(
+        &_client_red_dot_request_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 2;
+  friend void swap(client_red_dot_request& a, client_red_dot_request& b) { a.Swap(&b); }
+  inline void Swap(client_red_dot_request* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(client_red_dot_request* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  client_red_dot_request* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<client_red_dot_request>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const client_red_dot_request& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const client_red_dot_request& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.client_red_dot_request"; }
+
+ protected:
+  explicit client_red_dot_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  client_red_dot_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const client_red_dot_request& from);
+  client_red_dot_request(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, client_red_dot_request&& from) noexcept
+      : client_red_dot_request(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_red_dot_request)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 0,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  friend struct ::TableStruct_proto_2fclient_2fplayer_2fred_5fdot_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull client_red_dot_request_class_data_;
 // -------------------------------------------------------------------
 
 class red_dot_response final : public ::google::protobuf::Message
@@ -556,7 +696,7 @@ class client_red_dot_response final : public ::google::protobuf::Message
     kRedDot = 1,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 2;
+  static constexpr int kIndexInFileMessages = 3;
   friend void swap(client_red_dot_response& a, client_red_dot_response& b) { a.Swap(&b); }
   inline void Swap(client_red_dot_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -850,6 +990,10 @@ inline void red_dot_response::_internal_set_is_login(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_login_ = value;
 }
+
+// -------------------------------------------------------------------
+
+// client_red_dot_request
 
 // -------------------------------------------------------------------
 

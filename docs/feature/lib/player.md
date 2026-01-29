@@ -64,6 +64,18 @@
 * **📶 玩家在线组件 (`player_online_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的在线状态和相关数据。
 
+
+* **💓 心跳 (`heartbeat`)**
+    - **作用**：处理客户端与服务器之间的心跳消息，以维持连接的活跃状态。
+
+
+## debug components (调试组件)
+
+* **🐛 玩家调试组件 (`player_debug_component`)**
+    - **作用**：一个具体的玩家组件，负责处理游戏中的调试和作弊命令。
+
+
+
 ## time components (时间组件)
 
 * **⏳ 玩家时间组件 (`player_time_component`)**
@@ -134,6 +146,7 @@
 
 * **🗺️ 玩家副本组件 (`player_instance_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的副本进度和状态。
+
 
 ## finish components (完成组件)
 

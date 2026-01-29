@@ -7,6 +7,7 @@
 #include "initializer/initializer_constant.h"
 #include "player/activity/player_activity_component.h"
 #include "player/attribute/player_attribute_component.h"
+#include "player/debug/player_debug_component.h"
 #include "player/develop/player_develop_component.h"
 #include "player/finish/player_finish_component.h"
 #include "player/instance/player_instance_component.h"
@@ -34,6 +35,7 @@ celeritas::player_state::player_state(const user& user,
       components_{ std::make_shared<player_user_component>(user, this),
                    std::make_shared<player_role_component>(this, login),
                    std::make_shared<player_online_component>(this),
+                   std::make_shared<player_debug_component>(this),
                    std::make_shared<player_time_component>(this),
                    std::make_shared<player_red_dot_component>(this),
                    std::make_shared<player_item_component>(this),

@@ -12,6 +12,11 @@ message red_dot_response {
     bool is_login = 2;
 }
 
+
+message client_red_dot_request {
+
+}
+
 message client_red_dot_response {
   oneof payload {
     red_dot_response red_dot = 1;

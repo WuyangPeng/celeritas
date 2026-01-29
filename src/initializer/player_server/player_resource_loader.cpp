@@ -1,4 +1,5 @@
 ﻿#include "player_resource_loader.h"
+#include "auth/config/server_cell_repository.h"
 #include "common/core/time_helper.h"
 #include "database/config/config_manager.h"
 #include "detail/player_server_fwd.h"
@@ -12,6 +13,7 @@ celeritas::player_resource_loader::player_resource_loader(const std::string_view
 
 void celeritas::player_resource_loader::service_initialize_resource(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback)
 {
+    load_from_db(any_io_executor);
     load_database_config(any_io_executor);
     start_health_check_timer(any_io_executor, network_message_callback);
     start_player_default_timer(any_io_executor, network_message_callback);
@@ -56,4 +58,9 @@ void celeritas::player_resource_loader::start_player_default_timer(const any_io_
 void celeritas::player_resource_loader::load_database_config(const any_io_executor& any_io_executor)
 {
     config_manager::get_instance().load_from_db(any_io_executor);
+}
+
+void celeritas::player_resource_loader::load_from_db(const any_io_executor& any_io_executor)
+{
+    server_cell_repository::get_instance().load_from_db(any_io_executor);
 }

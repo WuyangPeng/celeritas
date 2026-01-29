@@ -13,7 +13,8 @@ celeritas::user::user(const database_entity_change& entity)
       user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       game_server_id_{ entity.get_value<database_data_type::string_type>(game_server_id_describe) },
-      overload_db_{ entity.get_value<database_data_type::bool_type>(overload_db_describe) }
+      overload_db_{ entity.get_value<database_data_type::bool_type>(overload_db_describe) },
+      permission_{ entity.get_value<database_data_type::int32_type>(permission_describe) }
 {
 }
 
@@ -22,7 +23,8 @@ celeritas::user::user(const database_type database_type, const database_entity_c
       user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       account_id_{ entity.get_value<database_data_type::int64_type>(account_id_describe) },
       game_server_id_{ entity.get_value<database_data_type::string_type>(game_server_id_describe) },
-      overload_db_{ entity.get_value<database_data_type::bool_type>(overload_db_describe) }
+      overload_db_{ entity.get_value<database_data_type::bool_type>(overload_db_describe) },
+      permission_{ entity.get_value<database_data_type::int32_type>(permission_describe) }
 {
     if (database_type != entity.get_database_type())
     {
@@ -30,6 +32,7 @@ celeritas::user::user(const database_type database_type, const database_entity_c
         add_modify(account_id_describe, get_account_id());
         add_modify(game_server_id_describe, get_game_server_id());
         add_modify(overload_db_describe, is_overload_db());
+        add_modify(permission_describe, get_permission());
     }
 }
 
@@ -38,7 +41,8 @@ celeritas::user::user(const database_type database_type, traits::param_type::int
       user_id_{ user_id },
       account_id_{ traits::int64_type{} },
       game_server_id_{ traits::string_type{} },
-      overload_db_{ traits::bool_type{} }
+      overload_db_{ traits::bool_type{} },
+      permission_{ traits::int32_type{} }
 {
     add_modify(user_id_describe, user_id);
 }
@@ -61,6 +65,11 @@ celeritas::traits::string_type celeritas::user::get_game_server_id() const
 celeritas::traits::bool_type celeritas::user::is_overload_db() const noexcept
 {
     return overload_db_.get_value();
+}
+
+celeritas::traits::int32_type celeritas::user::get_permission() const noexcept
+{
+    return permission_.get_value();
 }
 
 void celeritas::user::set_user_id(traits::param_type::int64_type user_id)
@@ -103,12 +112,23 @@ void celeritas::user::set_overload_db(traits::param_type::bool_type overload_db)
     }
 }
 
+void celeritas::user::set_permission(traits::param_type::int32_type permission)
+{
+    if (permission != get_permission())
+    {
+        permission_.set_value(permission);
+
+        add_modify(permission_describe, get_permission());
+    }
+}
+
 const celeritas::database_entity::database_field_container& celeritas::user::get_database_field_container()
 {
     static const database_field_container field_name_container{ decltype(user_id_)::get_database_field(),
                                                                 decltype(account_id_)::get_database_field(),
                                                                 decltype(game_server_id_)::get_database_field(),
-                                                                decltype(overload_db_)::get_database_field() };
+                                                                decltype(overload_db_)::get_database_field(),
+                                                                decltype(permission_)::get_database_field() };
 
     return field_name_container;
 }

@@ -64,6 +64,14 @@ class client_heartbeat_response;
 struct client_heartbeat_responseDefaultTypeInternal;
 extern client_heartbeat_responseDefaultTypeInternal _client_heartbeat_response_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull client_heartbeat_response_class_data_;
+class heartbeat_request;
+struct heartbeat_requestDefaultTypeInternal;
+extern heartbeat_requestDefaultTypeInternal _heartbeat_request_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull heartbeat_request_class_data_;
+class heartbeat_response;
+struct heartbeat_responseDefaultTypeInternal;
+extern heartbeat_responseDefaultTypeInternal _heartbeat_response_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull heartbeat_response_class_data_;
 }  // namespace client
 }  // namespace proto
 }  // namespace celeritas
@@ -79,6 +87,332 @@ namespace client {
 // ===================================================================
 
 
+// -------------------------------------------------------------------
+
+class heartbeat_response final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client.heartbeat_response) */ {
+ public:
+  inline heartbeat_response() : heartbeat_response(nullptr) {}
+  ~heartbeat_response() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(heartbeat_response* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(heartbeat_response));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR heartbeat_response(::google::protobuf::internal::ConstantInitialized);
+
+  inline heartbeat_response(const heartbeat_response& from) : heartbeat_response(nullptr, from) {}
+  inline heartbeat_response(heartbeat_response&& from) noexcept
+      : heartbeat_response(nullptr, ::std::move(from)) {}
+  inline heartbeat_response& operator=(const heartbeat_response& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline heartbeat_response& operator=(heartbeat_response&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const heartbeat_response& default_instance() {
+    return *reinterpret_cast<const heartbeat_response*>(
+        &_heartbeat_response_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 1;
+  friend void swap(heartbeat_response& a, heartbeat_response& b) { a.Swap(&b); }
+  inline void Swap(heartbeat_response* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(heartbeat_response* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  heartbeat_response* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<heartbeat_response>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const heartbeat_response& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const heartbeat_response& from) { heartbeat_response::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(heartbeat_response* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.heartbeat_response"; }
+
+ protected:
+  explicit heartbeat_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  heartbeat_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const heartbeat_response& from);
+  heartbeat_response(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, heartbeat_response&& from) noexcept
+      : heartbeat_response(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kServerTimeFieldNumber = 1,
+  };
+  // int64 server_time = 1;
+  void clear_server_time() ;
+  ::int64_t server_time() const;
+  void set_server_time(::int64_t value);
+
+  private:
+  ::int64_t _internal_server_time() const;
+  void _internal_set_server_time(::int64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client.heartbeat_response)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const heartbeat_response& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::int64_t server_time_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fclient_2fplayer_2fheartbeat_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull heartbeat_response_class_data_;
+// -------------------------------------------------------------------
+
+class heartbeat_request final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client.heartbeat_request) */ {
+ public:
+  inline heartbeat_request() : heartbeat_request(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(heartbeat_request* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(heartbeat_request));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR heartbeat_request(::google::protobuf::internal::ConstantInitialized);
+
+  inline heartbeat_request(const heartbeat_request& from) : heartbeat_request(nullptr, from) {}
+  inline heartbeat_request(heartbeat_request&& from) noexcept
+      : heartbeat_request(nullptr, ::std::move(from)) {}
+  inline heartbeat_request& operator=(const heartbeat_request& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline heartbeat_request& operator=(heartbeat_request&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const heartbeat_request& default_instance() {
+    return *reinterpret_cast<const heartbeat_request*>(
+        &_heartbeat_request_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 0;
+  friend void swap(heartbeat_request& a, heartbeat_request& b) { a.Swap(&b); }
+  inline void Swap(heartbeat_request* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(heartbeat_request* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  heartbeat_request* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<heartbeat_request>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const heartbeat_request& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const heartbeat_request& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.heartbeat_request"; }
+
+ protected:
+  explicit heartbeat_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  heartbeat_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const heartbeat_request& from);
+  heartbeat_request(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, heartbeat_request&& from) noexcept
+      : heartbeat_request(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client.heartbeat_request)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 0,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  friend struct ::TableStruct_proto_2fclient_2fplayer_2fheartbeat_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull heartbeat_request_class_data_;
 // -------------------------------------------------------------------
 
 class client_heartbeat_response final : public ::google::protobuf::Message
@@ -136,7 +470,11 @@ class client_heartbeat_response final : public ::google::protobuf::Message
     return *reinterpret_cast<const client_heartbeat_response*>(
         &_client_heartbeat_response_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 1;
+  enum PayloadCase {
+    kHeartbeat = 1,
+    PAYLOAD_NOT_SET = 0,
+  };
+  static constexpr int kIndexInFileMessages = 3;
   friend void swap(client_heartbeat_response& a, client_heartbeat_response& b) { a.Swap(&b); }
   inline void Swap(client_heartbeat_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -224,24 +562,38 @@ class client_heartbeat_response final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kServerTimeFieldNumber = 1,
+    kHeartbeatFieldNumber = 1,
   };
-  // int64 server_time = 1;
-  void clear_server_time() ;
-  ::int64_t server_time() const;
-  void set_server_time(::int64_t value);
-
+  // .celeritas.proto.client.heartbeat_response heartbeat = 1;
+  bool has_heartbeat() const;
   private:
-  ::int64_t _internal_server_time() const;
-  void _internal_set_server_time(::int64_t value);
+  bool _internal_has_heartbeat() const;
 
   public:
+  void clear_heartbeat() ;
+  const ::celeritas::proto::client::heartbeat_response& heartbeat() const;
+  [[nodiscard]] ::celeritas::proto::client::heartbeat_response* PROTOBUF_NULLABLE release_heartbeat();
+  ::celeritas::proto::client::heartbeat_response* PROTOBUF_NONNULL mutable_heartbeat();
+  void set_allocated_heartbeat(::celeritas::proto::client::heartbeat_response* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_heartbeat(::celeritas::proto::client::heartbeat_response* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::heartbeat_response* PROTOBUF_NULLABLE unsafe_arena_release_heartbeat();
+
+  private:
+  const ::celeritas::proto::client::heartbeat_response& _internal_heartbeat() const;
+  ::celeritas::proto::client::heartbeat_response* PROTOBUF_NONNULL _internal_mutable_heartbeat();
+
+  public:
+  void clear_payload();
+  PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_heartbeat_response)
  private:
   class _Internal;
+  void set_has_heartbeat();
+  inline bool has_payload() const;
+  inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<0, 1,
-                                   0, 0,
+                                   1, 0,
                                    2>
       _table_;
 
@@ -260,9 +612,13 @@ class client_heartbeat_response final : public ::google::protobuf::Message
         ::google::protobuf::internal::InternalVisibility visibility,
         ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
         const client_heartbeat_response& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    union PayloadUnion {
+      constexpr PayloadUnion() : _constinit_{} {}
+      ::google::protobuf::internal::ConstantInitialized _constinit_;
+      ::celeritas::proto::client::heartbeat_response* PROTOBUF_NULLABLE heartbeat_;
+    } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::int64_t server_time_;
+    ::uint32_t _oneof_case_[1];
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -272,10 +628,11 @@ class client_heartbeat_response final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull client_heartbeat_response_class_data_;
 // -------------------------------------------------------------------
 
-class client_heartbeat_request final : public ::google::protobuf::internal::ZeroFieldsBase
+class client_heartbeat_request final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:celeritas.proto.client.client_heartbeat_request) */ {
  public:
   inline client_heartbeat_request() : client_heartbeat_request(nullptr) {}
+  ~client_heartbeat_request() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
   void operator delete(client_heartbeat_request* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
@@ -326,7 +683,11 @@ class client_heartbeat_request final : public ::google::protobuf::internal::Zero
     return *reinterpret_cast<const client_heartbeat_request*>(
         &_client_heartbeat_request_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 0;
+  enum PayloadCase {
+    kHeartbeat = 1,
+    PAYLOAD_NOT_SET = 0,
+  };
+  static constexpr int kIndexInFileMessages = 2;
   friend void swap(client_heartbeat_request& a, client_heartbeat_request& b) { a.Swap(&b); }
   inline void Swap(client_heartbeat_request* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -345,21 +706,48 @@ class client_heartbeat_request final : public ::google::protobuf::internal::Zero
   // implements Message ----------------------------------------------
 
   client_heartbeat_request* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<client_heartbeat_request>(arena);
+    return ::google::protobuf::Message::DefaultConstruct<client_heartbeat_request>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const client_heartbeat_request& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const client_heartbeat_request& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const client_heartbeat_request& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const client_heartbeat_request& from) { client_heartbeat_request::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
 
   public:
   bool IsInitialized() const {
     return true;
   }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(client_heartbeat_request* PROTOBUF_NONNULL other);
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
@@ -386,12 +774,39 @@ class client_heartbeat_request final : public ::google::protobuf::internal::Zero
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
+  enum : int {
+    kHeartbeatFieldNumber = 1,
+  };
+  // .celeritas.proto.client.heartbeat_request heartbeat = 1;
+  bool has_heartbeat() const;
+  private:
+  bool _internal_has_heartbeat() const;
+
+  public:
+  void clear_heartbeat() ;
+  const ::celeritas::proto::client::heartbeat_request& heartbeat() const;
+  [[nodiscard]] ::celeritas::proto::client::heartbeat_request* PROTOBUF_NULLABLE release_heartbeat();
+  ::celeritas::proto::client::heartbeat_request* PROTOBUF_NONNULL mutable_heartbeat();
+  void set_allocated_heartbeat(::celeritas::proto::client::heartbeat_request* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_heartbeat(::celeritas::proto::client::heartbeat_request* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::heartbeat_request* PROTOBUF_NULLABLE unsafe_arena_release_heartbeat();
+
+  private:
+  const ::celeritas::proto::client::heartbeat_request& _internal_heartbeat() const;
+  ::celeritas::proto::client::heartbeat_request* PROTOBUF_NONNULL _internal_mutable_heartbeat();
+
+  public:
+  void clear_payload();
+  PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_heartbeat_request)
  private:
   class _Internal;
+  void set_has_heartbeat();
+  inline bool has_payload() const;
+  inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 0,
-                                   0, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   1, 0,
                                    2>
       _table_;
 
@@ -401,6 +816,25 @@ class client_heartbeat_request final : public ::google::protobuf::internal::Zero
   friend class ::google::protobuf::Arena::InternalHelper;
   using InternalArenaConstructable_ = void;
   using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const client_heartbeat_request& from_msg);
+    union PayloadUnion {
+      constexpr PayloadUnion() : _constinit_{} {}
+      ::google::protobuf::internal::ConstantInitialized _constinit_;
+      ::celeritas::proto::client::heartbeat_request* PROTOBUF_NULLABLE heartbeat_;
+    } payload_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::uint32_t _oneof_case_[1];
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_proto_2fclient_2fplayer_2fheartbeat_2eproto;
 };
 
@@ -420,36 +854,224 @@ extern const ::google::protobuf::internal::ClassDataFull client_heartbeat_reques
 #endif  // __GNUC__
 // -------------------------------------------------------------------
 
-// client_heartbeat_request
+// heartbeat_request
 
 // -------------------------------------------------------------------
 
-// client_heartbeat_response
+// heartbeat_response
 
 // int64 server_time = 1;
-inline void client_heartbeat_response::clear_server_time() {
+inline void heartbeat_response::clear_server_time() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.server_time_ = ::int64_t{0};
   _impl_._has_bits_[0] &= ~0x00000001U;
 }
-inline ::int64_t client_heartbeat_response::server_time() const {
-  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_heartbeat_response.server_time)
+inline ::int64_t heartbeat_response::server_time() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.heartbeat_response.server_time)
   return _internal_server_time();
 }
-inline void client_heartbeat_response::set_server_time(::int64_t value) {
+inline void heartbeat_response::set_server_time(::int64_t value) {
   _internal_set_server_time(value);
   _impl_._has_bits_[0] |= 0x00000001U;
-  // @@protoc_insertion_point(field_set:celeritas.proto.client.client_heartbeat_response.server_time)
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.heartbeat_response.server_time)
 }
-inline ::int64_t client_heartbeat_response::_internal_server_time() const {
+inline ::int64_t heartbeat_response::_internal_server_time() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.server_time_;
 }
-inline void client_heartbeat_response::_internal_set_server_time(::int64_t value) {
+inline void heartbeat_response::_internal_set_server_time(::int64_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.server_time_ = value;
 }
 
+// -------------------------------------------------------------------
+
+// client_heartbeat_request
+
+// .celeritas.proto.client.heartbeat_request heartbeat = 1;
+inline bool client_heartbeat_request::has_heartbeat() const {
+  return payload_case() == kHeartbeat;
+}
+inline bool client_heartbeat_request::_internal_has_heartbeat() const {
+  return payload_case() == kHeartbeat;
+}
+inline void client_heartbeat_request::set_has_heartbeat() {
+  _impl_._oneof_case_[0] = kHeartbeat;
+}
+inline void client_heartbeat_request::clear_heartbeat() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kHeartbeat) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.heartbeat_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.heartbeat_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::celeritas::proto::client::heartbeat_request* PROTOBUF_NULLABLE client_heartbeat_request::release_heartbeat() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_heartbeat_request.heartbeat)
+  if (payload_case() == kHeartbeat) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.heartbeat_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.heartbeat_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::heartbeat_request& client_heartbeat_request::_internal_heartbeat() const {
+  return payload_case() == kHeartbeat ? *_impl_.payload_.heartbeat_ : reinterpret_cast<::celeritas::proto::client::heartbeat_request&>(::celeritas::proto::client::_heartbeat_request_default_instance_);
+}
+inline const ::celeritas::proto::client::heartbeat_request& client_heartbeat_request::heartbeat() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_heartbeat_request.heartbeat)
+  return _internal_heartbeat();
+}
+inline ::celeritas::proto::client::heartbeat_request* PROTOBUF_NULLABLE client_heartbeat_request::unsafe_arena_release_heartbeat() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_heartbeat_request.heartbeat)
+  if (payload_case() == kHeartbeat) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.heartbeat_;
+    _impl_.payload_.heartbeat_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_heartbeat_request::unsafe_arena_set_allocated_heartbeat(
+    ::celeritas::proto::client::heartbeat_request* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_heartbeat();
+    _impl_.payload_.heartbeat_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_heartbeat_request.heartbeat)
+}
+inline ::celeritas::proto::client::heartbeat_request* PROTOBUF_NONNULL client_heartbeat_request::_internal_mutable_heartbeat() {
+  if (payload_case() != kHeartbeat) {
+    clear_payload();
+    set_has_heartbeat();
+    _impl_.payload_.heartbeat_ = 
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::heartbeat_request>(GetArena());
+  }
+  return _impl_.payload_.heartbeat_;
+}
+inline ::celeritas::proto::client::heartbeat_request* PROTOBUF_NONNULL client_heartbeat_request::mutable_heartbeat()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::heartbeat_request* _msg = _internal_mutable_heartbeat();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_heartbeat_request.heartbeat)
+  return _msg;
+}
+
+inline bool client_heartbeat_request::has_payload() const {
+  return payload_case() != PAYLOAD_NOT_SET;
+}
+inline void client_heartbeat_request::clear_has_payload() {
+  _impl_._oneof_case_[0] = PAYLOAD_NOT_SET;
+}
+inline client_heartbeat_request::PayloadCase client_heartbeat_request::payload_case() const {
+  return client_heartbeat_request::PayloadCase(_impl_._oneof_case_[0]);
+}
+// -------------------------------------------------------------------
+
+// client_heartbeat_response
+
+// .celeritas.proto.client.heartbeat_response heartbeat = 1;
+inline bool client_heartbeat_response::has_heartbeat() const {
+  return payload_case() == kHeartbeat;
+}
+inline bool client_heartbeat_response::_internal_has_heartbeat() const {
+  return payload_case() == kHeartbeat;
+}
+inline void client_heartbeat_response::set_has_heartbeat() {
+  _impl_._oneof_case_[0] = kHeartbeat;
+}
+inline void client_heartbeat_response::clear_heartbeat() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kHeartbeat) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.heartbeat_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.heartbeat_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::celeritas::proto::client::heartbeat_response* PROTOBUF_NULLABLE client_heartbeat_response::release_heartbeat() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_heartbeat_response.heartbeat)
+  if (payload_case() == kHeartbeat) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.heartbeat_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.heartbeat_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::heartbeat_response& client_heartbeat_response::_internal_heartbeat() const {
+  return payload_case() == kHeartbeat ? *_impl_.payload_.heartbeat_ : reinterpret_cast<::celeritas::proto::client::heartbeat_response&>(::celeritas::proto::client::_heartbeat_response_default_instance_);
+}
+inline const ::celeritas::proto::client::heartbeat_response& client_heartbeat_response::heartbeat() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_heartbeat_response.heartbeat)
+  return _internal_heartbeat();
+}
+inline ::celeritas::proto::client::heartbeat_response* PROTOBUF_NULLABLE client_heartbeat_response::unsafe_arena_release_heartbeat() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_heartbeat_response.heartbeat)
+  if (payload_case() == kHeartbeat) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.heartbeat_;
+    _impl_.payload_.heartbeat_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_heartbeat_response::unsafe_arena_set_allocated_heartbeat(
+    ::celeritas::proto::client::heartbeat_response* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_heartbeat();
+    _impl_.payload_.heartbeat_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_heartbeat_response.heartbeat)
+}
+inline ::celeritas::proto::client::heartbeat_response* PROTOBUF_NONNULL client_heartbeat_response::_internal_mutable_heartbeat() {
+  if (payload_case() != kHeartbeat) {
+    clear_payload();
+    set_has_heartbeat();
+    _impl_.payload_.heartbeat_ = 
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::heartbeat_response>(GetArena());
+  }
+  return _impl_.payload_.heartbeat_;
+}
+inline ::celeritas::proto::client::heartbeat_response* PROTOBUF_NONNULL client_heartbeat_response::mutable_heartbeat()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::heartbeat_response* _msg = _internal_mutable_heartbeat();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_heartbeat_response.heartbeat)
+  return _msg;
+}
+
+inline bool client_heartbeat_response::has_payload() const {
+  return payload_case() != PAYLOAD_NOT_SET;
+}
+inline void client_heartbeat_response::clear_has_payload() {
+  _impl_._oneof_case_[0] = PAYLOAD_NOT_SET;
+}
+inline client_heartbeat_response::PayloadCase client_heartbeat_response::payload_case() const {
+  return client_heartbeat_response::PayloadCase(_impl_._oneof_case_[0]);
+}
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif  // __GNUC__

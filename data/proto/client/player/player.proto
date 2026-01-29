@@ -5,6 +5,7 @@ package celeritas.proto.client;
 import "proto/client/player/login.proto";
 import "proto/client/player/heartbeat.proto";
 import "proto/client/player/role.proto";
+import "proto/client/player/debug.proto";
 import "proto/client/player/red_dot.proto";
 import "proto/client/player/item.proto";
 
@@ -12,8 +13,10 @@ message client_player_request {
   oneof payload {
     client_login_request login = 1;
     client_heartbeat_request heartbeat = 2;
-    client_role_request role = 3;
-    client_item_request item = 4;
+    client_debug_request debug = 3;
+    client_role_request role = 4;
+    client_red_dot_request red_dot = 5;
+    client_item_request item = 6;
   }
 }
 
@@ -21,8 +24,9 @@ message client_player_response {
   oneof payload {
     client_login_response login = 1;
     client_heartbeat_response heartbeat = 2;
-    client_role_response role = 3;
-    client_red_dot_response red_dot = 4;
-    client_item_response item = 5;
+    client_debug_response debug = 3;
+    client_role_response role = 4;
+    client_red_dot_response red_dot = 5;
+    client_item_response item = 6;
   }
 }

@@ -26,6 +26,8 @@ namespace celeritas
 
         void load_database_config(const any_io_executor& any_io_executor);
 
+        static void load_from_db(const any_io_executor& any_io_executor);
+
         player_state_check_timer_shared_ptr player_state_check_timer_;
         player_default_timer_shared_ptr player_default_timer_;
     };

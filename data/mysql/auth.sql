@@ -57,6 +57,7 @@ CREATE TABLE `server_cell` (
   `zone` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '区域',
   `is_close_display` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '当服务器不可连时，服务器列表是否显示',
   `status` INT NOT NULL DEFAULT 0 COMMENT '游戏状态',
+  `mode` INT NOT NULL DEFAULT 0 COMMENT '模式',
   PRIMARY KEY (`cell_id`),
   UNIQUE KEY `game_server_id_unique` (`game_server_id`),
   KEY `app_id_index` (`app_id`)

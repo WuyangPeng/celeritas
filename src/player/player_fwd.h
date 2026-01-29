@@ -20,6 +20,7 @@ namespace celeritas
     class change_name;
 
     class player_online_component;
+    class heartbeat;
 
     class player_time_component;
     class player_time_refresh_key;
@@ -45,6 +46,8 @@ namespace celeritas
     class player_attribute_component;
 
     class player_instance_component;
+
+    class player_debug_component;
 
     class player_finish_component;
 }

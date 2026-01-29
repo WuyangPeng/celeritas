@@ -17,7 +17,8 @@ celeritas::server_cell::server_cell(const database_entity_change& entity)
       launch_time_{ entity.get_value<database_data_type::int64_type>(launch_time_describe) },
       zone_{ entity.get_value<database_data_type::string_type>(zone_describe) },
       is_close_display_{ entity.get_value<database_data_type::bool_type>(is_close_display_describe) },
-      status_{ entity.get_value<database_data_type::int32_type>(status_describe) }
+      status_{ entity.get_value<database_data_type::int32_type>(status_describe) },
+      mode_{ entity.get_value<database_data_type::int32_type>(mode_describe) }
 {
 }
 
@@ -30,7 +31,8 @@ celeritas::server_cell::server_cell(const database_type database_type, const dat
       launch_time_{ entity.get_value<database_data_type::int64_type>(launch_time_describe) },
       zone_{ entity.get_value<database_data_type::string_type>(zone_describe) },
       is_close_display_{ entity.get_value<database_data_type::bool_type>(is_close_display_describe) },
-      status_{ entity.get_value<database_data_type::int32_type>(status_describe) }
+      status_{ entity.get_value<database_data_type::int32_type>(status_describe) },
+      mode_{ entity.get_value<database_data_type::int32_type>(mode_describe) }
 {
     if (database_type != entity.get_database_type())
     {
@@ -42,6 +44,7 @@ celeritas::server_cell::server_cell(const database_type database_type, const dat
         add_modify(zone_describe, get_zone());
         add_modify(is_close_display_describe, is_is_close_display());
         add_modify(status_describe, get_status());
+        add_modify(mode_describe, get_mode());
     }
 }
 
@@ -54,7 +57,8 @@ celeritas::server_cell::server_cell(const database_type database_type, traits::p
       launch_time_{ traits::int64_type{} },
       zone_{ traits::string_type{} },
       is_close_display_{ traits::bool_type{} },
-      status_{ traits::int32_type{} }
+      status_{ traits::int32_type{} },
+      mode_{ traits::int32_type{} }
 {
     add_modify(cell_id_describe, cell_id);
 }
@@ -97,6 +101,11 @@ celeritas::traits::bool_type celeritas::server_cell::is_is_close_display() const
 celeritas::traits::int32_type celeritas::server_cell::get_status() const noexcept
 {
     return status_.get_value();
+}
+
+celeritas::traits::int32_type celeritas::server_cell::get_mode() const noexcept
+{
+    return mode_.get_value();
 }
 
 void celeritas::server_cell::set_cell_id(traits::param_type::int64_type cell_id)
@@ -179,6 +188,16 @@ void celeritas::server_cell::set_status(traits::param_type::int32_type status)
     }
 }
 
+void celeritas::server_cell::set_mode(traits::param_type::int32_type mode)
+{
+    if (mode != get_mode())
+    {
+        mode_.set_value(mode);
+
+        add_modify(mode_describe, get_mode());
+    }
+}
+
 const celeritas::database_entity::database_field_container& celeritas::server_cell::get_database_field_container()
 {
     static const database_field_container field_name_container{ decltype(cell_id_)::get_database_field(),
@@ -188,7 +207,8 @@ const celeritas::database_entity::database_field_container& celeritas::server_ce
                                                                 decltype(launch_time_)::get_database_field(),
                                                                 decltype(zone_)::get_database_field(),
                                                                 decltype(is_close_display_)::get_database_field(),
-                                                                decltype(status_)::get_database_field() };
+                                                                decltype(status_)::get_database_field(),
+                                                                decltype(mode_)::get_database_field() };
 
     return field_name_container;
 }

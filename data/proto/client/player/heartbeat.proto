@@ -2,9 +2,22 @@
 
 package celeritas.proto.client;
 
+message heartbeat_request {
+}
+
+message heartbeat_response {
+  int64 server_time = 1;
+}
+
+
 message client_heartbeat_request {
+  oneof payload {
+     heartbeat_request heartbeat = 1;
+  }
 }
 
 message client_heartbeat_response {
-  int64 server_time = 1;
+  oneof payload {
+     heartbeat_response heartbeat = 1;
+  }
 }

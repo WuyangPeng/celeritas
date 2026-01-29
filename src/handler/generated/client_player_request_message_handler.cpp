@@ -5,6 +5,12 @@
 
 celeritas::client_player_request_message_handler::client_player_request_message_handler()
 {
+    add_handler_function(proto::client::client_player_request::PayloadCase::kDebug,
+                         [](const protobuf_handle_parameter_shared_ptr& handle_parameter,
+                            const message_type& current_message,
+                            const message_registry_shared_ptr& message_registry) -> bool {
+                             return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::debug);
+                         });
     add_handler_function(proto::client::client_player_request::PayloadCase::kHeartbeat,
                          [](const protobuf_handle_parameter_shared_ptr& handle_parameter,
                             const message_type& current_message,
@@ -22,6 +28,12 @@ celeritas::client_player_request_message_handler::client_player_request_message_
                             const message_type& current_message,
                             const message_registry_shared_ptr& message_registry) -> bool {
                              return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::login);
+                         });
+    add_handler_function(proto::client::client_player_request::PayloadCase::kRedDot,
+                         [](const protobuf_handle_parameter_shared_ptr& handle_parameter,
+                            const message_type& current_message,
+                            const message_registry_shared_ptr& message_registry) -> bool {
+                             return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::red_dot);
                          });
     add_handler_function(proto::client::client_player_request::PayloadCase::kRole,
                          [](const protobuf_handle_parameter_shared_ptr& handle_parameter,

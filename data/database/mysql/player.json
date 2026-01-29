@@ -24,6 +24,11 @@
         "entity_name": "overload_db",
         "data_type": "bool",
         "comment": "是否重载数据库"
+      },
+      {
+        "entity_name": "permission",
+        "data_type": "int32",
+        "comment": "权限"
       }
     ]
   }

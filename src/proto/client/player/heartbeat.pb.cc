@@ -28,10 +28,54 @@ namespace celeritas {
 namespace proto {
 namespace client {
 
-inline constexpr client_heartbeat_response::Impl_::Impl_(
+inline constexpr heartbeat_response::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
         server_time_{::int64_t{0}} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR heartbeat_response::heartbeat_response(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(heartbeat_response_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct heartbeat_responseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR heartbeat_responseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~heartbeat_responseDefaultTypeInternal() {}
+  union {
+    heartbeat_response _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 heartbeat_responseDefaultTypeInternal _heartbeat_response_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR heartbeat_request::heartbeat_request(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(heartbeat_request_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct heartbeat_requestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR heartbeat_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~heartbeat_requestDefaultTypeInternal() {}
+  union {
+    heartbeat_request _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 heartbeat_requestDefaultTypeInternal _heartbeat_request_default_instance_;
+
+inline constexpr client_heartbeat_response::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : payload_{},
+        _cached_size_{0},
+        _oneof_case_{} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR client_heartbeat_response::client_heartbeat_response(::_pbi::ConstantInitialized)
@@ -52,14 +96,22 @@ struct client_heartbeat_responseDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 client_heartbeat_responseDefaultTypeInternal _client_heartbeat_response_default_instance_;
+
+inline constexpr client_heartbeat_request::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : payload_{},
+        _cached_size_{0},
+        _oneof_case_{} {}
+
 template <typename>
 PROTOBUF_CONSTEXPR client_heartbeat_request::client_heartbeat_request(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(client_heartbeat_request_class_data_.base()){}
+    : ::google::protobuf::Message(client_heartbeat_request_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase() {
-}
+    : ::google::protobuf::Message(),
 #endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct client_heartbeat_requestDefaultTypeInternal {
   PROTOBUF_CONSTEXPR client_heartbeat_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~client_heartbeat_requestDefaultTypeInternal() {}
@@ -82,39 +134,56 @@ const ::uint32_t
         protodesc_cold) = {
         0x000, // bitmap
         0x081, // bitmap
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_heartbeat_response, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::heartbeat_response, _impl_._has_bits_),
         4, // hasbit index offset
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_heartbeat_response, _impl_.server_time_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::heartbeat_response, _impl_.server_time_),
         0,
+        0x004, // bitmap
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_heartbeat_request, _impl_._oneof_case_[0]),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_heartbeat_request, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_heartbeat_request, _impl_.payload_),
+        0x004, // bitmap
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_heartbeat_response, _impl_._oneof_case_[0]),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_heartbeat_response, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_heartbeat_response, _impl_.payload_),
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, sizeof(::celeritas::proto::client::client_heartbeat_request)},
-        {1, sizeof(::celeritas::proto::client::client_heartbeat_response)},
+        {0, sizeof(::celeritas::proto::client::heartbeat_request)},
+        {1, sizeof(::celeritas::proto::client::heartbeat_response)},
+        {6, sizeof(::celeritas::proto::client::client_heartbeat_request)},
+        {10, sizeof(::celeritas::proto::client::client_heartbeat_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
+    &::celeritas::proto::client::_heartbeat_request_default_instance_._instance,
+    &::celeritas::proto::client::_heartbeat_response_default_instance_._instance,
     &::celeritas::proto::client::_client_heartbeat_request_default_instance_._instance,
     &::celeritas::proto::client::_client_heartbeat_response_default_instance_._instance,
 };
 const char descriptor_table_protodef_proto_2fclient_2fplayer_2fheartbeat_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n#proto/client/player/heartbeat.proto\022\026c"
-    "eleritas.proto.client\"\032\n\030client_heartbea"
-    "t_request\"0\n\031client_heartbeat_response\022\023"
-    "\n\013server_time\030\001 \001(\003b\006proto3"
+    "eleritas.proto.client\"\023\n\021heartbeat_reque"
+    "st\")\n\022heartbeat_response\022\023\n\013server_time\030"
+    "\001 \001(\003\"e\n\030client_heartbeat_request\022>\n\thea"
+    "rtbeat\030\001 \001(\0132).celeritas.proto.client.he"
+    "artbeat_requestH\000B\t\n\007payload\"g\n\031client_h"
+    "eartbeat_response\022\?\n\theartbeat\030\001 \001(\0132*.c"
+    "eleritas.proto.client.heartbeat_response"
+    "H\000B\t\n\007payloadb\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fclient_2fplayer_2fheartbeat_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fclient_2fplayer_2fheartbeat_2eproto = {
     false,
     false,
-    147,
+    341,
     descriptor_table_protodef_proto_2fclient_2fplayer_2fheartbeat_2eproto,
     "proto/client/player/heartbeat.proto",
     &descriptor_table_proto_2fclient_2fplayer_2fheartbeat_2eproto_once,
     nullptr,
     0,
-    2,
+    4,
     schemas,
     file_default_instances,
     TableStruct_proto_2fclient_2fplayer_2fheartbeat_2eproto::offsets,
@@ -126,33 +195,463 @@ namespace proto {
 namespace client {
 // ===================================================================
 
-class client_heartbeat_request::_Internal {
+class heartbeat_request::_Internal {
  public:
 };
 
-client_heartbeat_request::client_heartbeat_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+heartbeat_request::heartbeat_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena, client_heartbeat_request_class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, heartbeat_request_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.client.heartbeat_request)
+}
+heartbeat_request::heartbeat_request(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const heartbeat_request& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, heartbeat_request_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  heartbeat_request* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.client.heartbeat_request)
+}
+
+inline void* PROTOBUF_NONNULL heartbeat_request::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) heartbeat_request(arena);
+}
+constexpr auto heartbeat_request::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(heartbeat_request),
+                                            alignof(heartbeat_request));
+}
+constexpr auto heartbeat_request::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_heartbeat_request_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &heartbeat_request::MergeImpl,
+          ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<heartbeat_request>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &heartbeat_request::SharedDtor,
+          ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<heartbeat_request>(), &heartbeat_request::ByteSizeLong,
+              &heartbeat_request::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(heartbeat_request, _impl_._cached_size_),
+          false,
+      },
+      &heartbeat_request::kDescriptorMethods,
+      &descriptor_table_proto_2fclient_2fplayer_2fheartbeat_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull heartbeat_request_class_data_ =
+        heartbeat_request::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+heartbeat_request::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&heartbeat_request_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(heartbeat_request_class_data_.tc_table);
+  return heartbeat_request_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
+heartbeat_request::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    heartbeat_request_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::client::heartbeat_request>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+::google::protobuf::Metadata heartbeat_request::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class heartbeat_response::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<heartbeat_response>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(heartbeat_response, _impl_._has_bits_);
+};
+
+heartbeat_response::heartbeat_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, heartbeat_response_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.client.heartbeat_response)
+}
+heartbeat_response::heartbeat_response(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const heartbeat_response& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, heartbeat_response_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+PROTOBUF_NDEBUG_INLINE heartbeat_response::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void heartbeat_response::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.server_time_ = {};
+}
+heartbeat_response::~heartbeat_response() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.client.heartbeat_response)
+  SharedDtor(*this);
+}
+inline void heartbeat_response::SharedDtor(MessageLite& self) {
+  heartbeat_response& this_ = static_cast<heartbeat_response&>(self);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL heartbeat_response::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) heartbeat_response(arena);
+}
+constexpr auto heartbeat_response::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(heartbeat_response),
+                                            alignof(heartbeat_response));
+}
+constexpr auto heartbeat_response::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_heartbeat_response_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &heartbeat_response::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<heartbeat_response>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &heartbeat_response::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<heartbeat_response>(), &heartbeat_response::ByteSizeLong,
+              &heartbeat_response::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(heartbeat_response, _impl_._cached_size_),
+          false,
+      },
+      &heartbeat_response::kDescriptorMethods,
+      &descriptor_table_proto_2fclient_2fplayer_2fheartbeat_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull heartbeat_response_class_data_ =
+        heartbeat_response::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+heartbeat_response::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&heartbeat_response_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(heartbeat_response_class_data_.tc_table);
+  return heartbeat_response_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
+heartbeat_response::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(heartbeat_response, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    heartbeat_response_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::client::heartbeat_response>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int64 server_time = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(heartbeat_response, _impl_.server_time_), 0>(),
+     {8, 0, 0, PROTOBUF_FIELD_OFFSET(heartbeat_response, _impl_.server_time_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int64 server_time = 1;
+    {PROTOBUF_FIELD_OFFSET(heartbeat_response, _impl_.server_time_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void heartbeat_response::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.client.heartbeat_response)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.server_time_ = ::int64_t{0};
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL heartbeat_response::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const heartbeat_response& this_ = static_cast<const heartbeat_response&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL heartbeat_response::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const heartbeat_response& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.client.heartbeat_response)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // int64 server_time = 1;
+  if ((this_._impl_._has_bits_[0] & 0x00000001U) != 0) {
+    if (this_._internal_server_time() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<1>(
+              stream, this_._internal_server_time(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.client.heartbeat_response)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t heartbeat_response::ByteSizeLong(const MessageLite& base) {
+  const heartbeat_response& this_ = static_cast<const heartbeat_response&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t heartbeat_response::ByteSizeLong() const {
+  const heartbeat_response& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.client.heartbeat_response)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+   {
+    // int64 server_time = 1;
+    cached_has_bits = this_._impl_._has_bits_[0];
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      if (this_._internal_server_time() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+            this_._internal_server_time());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void heartbeat_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<heartbeat_response*>(&to_msg);
+  auto& from = static_cast<const heartbeat_response&>(from_msg);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    from.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.client.heartbeat_response)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    if (from._internal_server_time() != 0) {
+      _this->_impl_.server_time_ = from._impl_.server_time_;
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void heartbeat_response::CopyFrom(const heartbeat_response& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.client.heartbeat_response)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void heartbeat_response::InternalSwap(heartbeat_response* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.server_time_, other->_impl_.server_time_);
+}
+
+::google::protobuf::Metadata heartbeat_response::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class client_heartbeat_request::_Internal {
+ public:
+  static constexpr ::int32_t kOneofCaseOffset =
+      PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_heartbeat_request, _impl_._oneof_case_);
+};
+
+void client_heartbeat_request::set_allocated_heartbeat(::celeritas::proto::client::heartbeat_request* PROTOBUF_NULLABLE heartbeat) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (heartbeat) {
+    ::google::protobuf::Arena* submessage_arena = heartbeat->GetArena();
+    if (message_arena != submessage_arena) {
+      heartbeat = ::google::protobuf::internal::GetOwnedMessage(message_arena, heartbeat, submessage_arena);
+    }
+    set_has_heartbeat();
+    _impl_.payload_.heartbeat_ = heartbeat;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.client_heartbeat_request.heartbeat)
+}
+client_heartbeat_request::client_heartbeat_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, client_heartbeat_request_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:celeritas.proto.client.client_heartbeat_request)
 }
+PROTOBUF_NDEBUG_INLINE client_heartbeat_request::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::celeritas::proto::client::client_heartbeat_request& from_msg)
+      : payload_{},
+        _cached_size_{0},
+        _oneof_case_{from._oneof_case_[0]} {}
+
 client_heartbeat_request::client_heartbeat_request(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
     const client_heartbeat_request& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena, client_heartbeat_request_class_data_.base()) {
+    : ::google::protobuf::Message(arena, client_heartbeat_request_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+    : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   client_heartbeat_request* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  switch (payload_case()) {
+    case PAYLOAD_NOT_SET:
+      break;
+      case kHeartbeat:
+        _impl_.payload_.heartbeat_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.heartbeat_);
+        break;
+  }
 
   // @@protoc_insertion_point(copy_constructor:celeritas.proto.client.client_heartbeat_request)
 }
+PROTOBUF_NDEBUG_INLINE client_heartbeat_request::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : payload_{},
+        _cached_size_{0},
+        _oneof_case_{} {}
+
+inline void client_heartbeat_request::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+client_heartbeat_request::~client_heartbeat_request() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.client.client_heartbeat_request)
+  SharedDtor(*this);
+}
+inline void client_heartbeat_request::SharedDtor(MessageLite& self) {
+  client_heartbeat_request& this_ = static_cast<client_heartbeat_request&>(self);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  if (this_.has_payload()) {
+    this_.clear_payload();
+  }
+  this_._impl_.~Impl_();
+}
+
+void client_heartbeat_request::clear_payload() {
+// @@protoc_insertion_point(one_of_clear_start:celeritas.proto.client.client_heartbeat_request)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  switch (payload_case()) {
+    case kHeartbeat: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.heartbeat_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.heartbeat_);
+      }
+      break;
+    }
+    case PAYLOAD_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = PAYLOAD_NOT_SET;
+}
+
 
 inline void* PROTOBUF_NONNULL client_heartbeat_request::PlacementNew_(
     const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
@@ -171,10 +670,10 @@ constexpr auto client_heartbeat_request::InternalGenerateClassData_() {
           nullptr,  // OnDemandRegisterArenaDtor
           nullptr,  // IsInitialized
           &client_heartbeat_request::MergeImpl,
-          ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<client_heartbeat_request>(),
+          ::google::protobuf::Message::GetNewImpl<client_heartbeat_request>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
           &client_heartbeat_request::SharedDtor,
-          ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<client_heartbeat_request>(), &client_heartbeat_request::ByteSizeLong,
+          ::google::protobuf::Message::GetClearImpl<client_heartbeat_request>(), &client_heartbeat_request::ByteSizeLong,
               &client_heartbeat_request::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
           PROTOBUF_FIELD_OFFSET(client_heartbeat_request, _impl_._cached_size_),
@@ -197,18 +696,18 @@ client_heartbeat_request::GetClassData() const {
   return client_heartbeat_request_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
 client_heartbeat_request::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    0, 0,  // max_field_number, fast_idx_mask
+    1, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967295,  // skipmap
-    offsetof(decltype(_table_), field_names),  // no field_entries
-    0,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     client_heartbeat_request_class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
@@ -219,30 +718,167 @@ client_heartbeat_request::_table_ = {
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
-  }}, // no field_entries, or aux_entries
+  }}, {{
+    // .celeritas.proto.client.heartbeat_request heartbeat = 1;
+    {PROTOBUF_FIELD_OFFSET(client_heartbeat_request, _impl_.payload_.heartbeat_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+  }},
+  {{
+      {::_pbi::TcParser::GetTable<::celeritas::proto::client::heartbeat_request>()},
+  }},
   {{
   }},
 };
+PROTOBUF_NOINLINE void client_heartbeat_request::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.client.client_heartbeat_request)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  clear_payload();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL client_heartbeat_request::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const client_heartbeat_request& this_ = static_cast<const client_heartbeat_request&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL client_heartbeat_request::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const client_heartbeat_request& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.client.client_heartbeat_request)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // .celeritas.proto.client.heartbeat_request heartbeat = 1;
+  if (this_.payload_case() == kHeartbeat) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, *this_._impl_.payload_.heartbeat_, this_._impl_.payload_.heartbeat_->GetCachedSize(), target,
+        stream);
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.client.client_heartbeat_request)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t client_heartbeat_request::ByteSizeLong(const MessageLite& base) {
+  const client_heartbeat_request& this_ = static_cast<const client_heartbeat_request&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t client_heartbeat_request::ByteSizeLong() const {
+  const client_heartbeat_request& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.client.client_heartbeat_request)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  switch (this_.payload_case()) {
+    // .celeritas.proto.client.heartbeat_request heartbeat = 1;
+    case kHeartbeat: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.heartbeat_);
+      break;
+    }
+    case PAYLOAD_NOT_SET: {
+      break;
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void client_heartbeat_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<client_heartbeat_request*>(&to_msg);
+  auto& from = static_cast<const client_heartbeat_request&>(from_msg);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    from.VerifyHasBitConsistency();
+  }
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.client.client_heartbeat_request)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (const uint32_t oneof_from_case = from._impl_._oneof_case_[0]) {
+    const uint32_t oneof_to_case = _this->_impl_._oneof_case_[0];
+    const bool oneof_needs_init = oneof_to_case != oneof_from_case;
+    if (oneof_needs_init) {
+      if (oneof_to_case != 0) {
+        _this->clear_payload();
+      }
+      _this->_impl_._oneof_case_[0] = oneof_from_case;
+    }
+
+    switch (oneof_from_case) {
+      case kHeartbeat: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.heartbeat_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.heartbeat_);
+        } else {
+          _this->_impl_.payload_.heartbeat_->MergeFrom(*from._impl_.payload_.heartbeat_);
+        }
+        break;
+      }
+      case PAYLOAD_NOT_SET:
+        break;
+    }
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void client_heartbeat_request::CopyFrom(const client_heartbeat_request& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.client.client_heartbeat_request)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
 
 
-
-
-
-
+void client_heartbeat_request::InternalSwap(client_heartbeat_request* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_.payload_, other->_impl_.payload_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
+}
 
 ::google::protobuf::Metadata client_heartbeat_request::GetMetadata() const {
-  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class client_heartbeat_response::_Internal {
  public:
-  using HasBits =
-      decltype(::std::declval<client_heartbeat_response>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(client_heartbeat_response, _impl_._has_bits_);
+  static constexpr ::int32_t kOneofCaseOffset =
+      PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_heartbeat_response, _impl_._oneof_case_);
 };
 
+void client_heartbeat_response::set_allocated_heartbeat(::celeritas::proto::client::heartbeat_response* PROTOBUF_NULLABLE heartbeat) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (heartbeat) {
+    ::google::protobuf::Arena* submessage_arena = heartbeat->GetArena();
+    if (message_arena != submessage_arena) {
+      heartbeat = ::google::protobuf::internal::GetOwnedMessage(message_arena, heartbeat, submessage_arena);
+    }
+    set_has_heartbeat();
+    _impl_.payload_.heartbeat_ = heartbeat;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.client_heartbeat_response.heartbeat)
+}
 client_heartbeat_response::client_heartbeat_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, client_heartbeat_response_class_data_.base()) {
@@ -252,25 +888,46 @@ client_heartbeat_response::client_heartbeat_response(::google::protobuf::Arena* 
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:celeritas.proto.client.client_heartbeat_response)
 }
+PROTOBUF_NDEBUG_INLINE client_heartbeat_response::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::celeritas::proto::client::client_heartbeat_response& from_msg)
+      : payload_{},
+        _cached_size_{0},
+        _oneof_case_{from._oneof_case_[0]} {}
+
 client_heartbeat_response::client_heartbeat_response(
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const client_heartbeat_response& from)
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const client_heartbeat_response& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, client_heartbeat_response_class_data_.base()),
+    : ::google::protobuf::Message(arena, client_heartbeat_response_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena),
+    : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(from._impl_) {
+  client_heartbeat_response* const _this = this;
+  (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  switch (payload_case()) {
+    case PAYLOAD_NOT_SET:
+      break;
+      case kHeartbeat:
+        _impl_.payload_.heartbeat_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.heartbeat_);
+        break;
+  }
+
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.client.client_heartbeat_response)
 }
 PROTOBUF_NDEBUG_INLINE client_heartbeat_response::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-      : _cached_size_{0} {}
+      : payload_{},
+        _cached_size_{0},
+        _oneof_case_{} {}
 
 inline void client_heartbeat_response::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.server_time_ = {};
 }
 client_heartbeat_response::~client_heartbeat_response() {
   // @@protoc_insertion_point(destructor:celeritas.proto.client.client_heartbeat_response)
@@ -283,8 +940,31 @@ inline void client_heartbeat_response::SharedDtor(MessageLite& self) {
   }
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
+  if (this_.has_payload()) {
+    this_.clear_payload();
+  }
   this_._impl_.~Impl_();
 }
+
+void client_heartbeat_response::clear_payload() {
+// @@protoc_insertion_point(one_of_clear_start:celeritas.proto.client.client_heartbeat_response)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  switch (payload_case()) {
+    case kHeartbeat: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.heartbeat_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.heartbeat_);
+      }
+      break;
+    }
+    case PAYLOAD_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = PAYLOAD_NOT_SET;
+}
+
 
 inline void* PROTOBUF_NONNULL client_heartbeat_response::PlacementNew_(
     const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
@@ -329,18 +1009,18 @@ client_heartbeat_response::GetClassData() const {
   return client_heartbeat_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
 client_heartbeat_response::_table_ = {
   {
-    PROTOBUF_FIELD_OFFSET(client_heartbeat_response, _impl_._has_bits_),
+    0,  // no _has_bits_
     0, // no _extensions_
     1, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
     4294967294,  // skipmap
     offsetof(decltype(_table_), field_entries),
     1,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     client_heartbeat_response_class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
@@ -348,16 +1028,16 @@ client_heartbeat_response::_table_ = {
     ::_pbi::TcParser::GetTable<::celeritas::proto::client::client_heartbeat_response>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int64 server_time = 1;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(client_heartbeat_response, _impl_.server_time_), 0>(),
-     {8, 0, 0, PROTOBUF_FIELD_OFFSET(client_heartbeat_response, _impl_.server_time_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
-    // int64 server_time = 1;
-    {PROTOBUF_FIELD_OFFSET(client_heartbeat_response, _impl_.server_time_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // .celeritas.proto.client.heartbeat_response heartbeat = 1;
+    {PROTOBUF_FIELD_OFFSET(client_heartbeat_response, _impl_.payload_.heartbeat_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
-  // no aux_entries
+  {{
+      {::_pbi::TcParser::GetTable<::celeritas::proto::client::heartbeat_response>()},
+  }},
   {{
   }},
 };
@@ -368,8 +1048,7 @@ PROTOBUF_NOINLINE void client_heartbeat_response::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.server_time_ = ::int64_t{0};
-  _impl_._has_bits_.Clear();
+  clear_payload();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -391,13 +1070,11 @@ PROTOBUF_NOINLINE void client_heartbeat_response::Clear() {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // int64 server_time = 1;
-  if ((this_._impl_._has_bits_[0] & 0x00000001U) != 0) {
-    if (this_._internal_server_time() != 0) {
-      target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<1>(
-              stream, this_._internal_server_time(), target);
-    }
+  // .celeritas.proto.client.heartbeat_response heartbeat = 1;
+  if (this_.payload_case() == kHeartbeat) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, *this_._impl_.payload_.heartbeat_, this_._impl_.payload_.heartbeat_->GetCachedSize(), target,
+        stream);
   }
 
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -423,14 +1100,15 @@ PROTOBUF_NOINLINE void client_heartbeat_response::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void)cached_has_bits;
 
-   {
-    // int64 server_time = 1;
-    cached_has_bits = this_._impl_._has_bits_[0];
-    if ((cached_has_bits & 0x00000001U) != 0) {
-      if (this_._internal_server_time() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
-            this_._internal_server_time());
-      }
+  switch (this_.payload_case()) {
+    // .celeritas.proto.client.heartbeat_response heartbeat = 1;
+    case kHeartbeat: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.heartbeat_);
+      break;
+    }
+    case PAYLOAD_NOT_SET: {
+      break;
     }
   }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -443,18 +1121,35 @@ void client_heartbeat_response::MergeImpl(::google::protobuf::MessageLite& to_ms
   if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
     from.VerifyHasBitConsistency();
   }
+  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.client.client_heartbeat_response)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000001U) != 0) {
-    if (from._internal_server_time() != 0) {
-      _this->_impl_.server_time_ = from._impl_.server_time_;
+  if (const uint32_t oneof_from_case = from._impl_._oneof_case_[0]) {
+    const uint32_t oneof_to_case = _this->_impl_._oneof_case_[0];
+    const bool oneof_needs_init = oneof_to_case != oneof_from_case;
+    if (oneof_needs_init) {
+      if (oneof_to_case != 0) {
+        _this->clear_payload();
+      }
+      _this->_impl_._oneof_case_[0] = oneof_from_case;
+    }
+
+    switch (oneof_from_case) {
+      case kHeartbeat: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.heartbeat_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.heartbeat_);
+        } else {
+          _this->_impl_.payload_.heartbeat_->MergeFrom(*from._impl_.payload_.heartbeat_);
+        }
+        break;
+      }
+      case PAYLOAD_NOT_SET:
+        break;
     }
   }
-  _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -469,8 +1164,8 @@ void client_heartbeat_response::CopyFrom(const client_heartbeat_response& from) 
 void client_heartbeat_response::InternalSwap(client_heartbeat_response* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   using ::std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  swap(_impl_.server_time_, other->_impl_.server_time_);
+  swap(_impl_.payload_, other->_impl_.payload_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
 ::google::protobuf::Metadata client_heartbeat_response::GetMetadata() const {

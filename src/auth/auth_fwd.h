@@ -2,6 +2,8 @@
 
 namespace celeritas
 {
+    enum class server_mode_type;
+
     class app_secret;
     class app_sms_providers;
     class sdk_providers_key;

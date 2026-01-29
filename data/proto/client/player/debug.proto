@@ -1,0 +1,37 @@
+﻿syntax = "proto3";
+
+package celeritas.proto.client;
+
+enum debug_type {
+	none = 0;
+	add_item = 1;
+}
+
+message debug_info_response {
+    bool open_debug = 1;
+}
+
+message debug_request {
+    debug_type type = 1;
+    int64 id = 2;
+    int64 parameter = 3;
+}
+
+message debug_response {
+
+}
+
+
+
+message client_debug_request {
+    oneof payload {
+        debug_request debug = 1;
+    }
+}
+
+message client_debug_response {
+    oneof payload {
+        debug_info_response debug_info = 1;
+        debug_response debug = 2;
+    }
+}

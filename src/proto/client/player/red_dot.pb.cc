@@ -53,6 +53,24 @@ struct red_dot_nodeDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 red_dot_nodeDefaultTypeInternal _red_dot_node_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR client_red_dot_request::client_red_dot_request(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(client_red_dot_request_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct client_red_dot_requestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR client_red_dot_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~client_red_dot_requestDefaultTypeInternal() {}
+  union {
+    client_red_dot_request _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 client_red_dot_requestDefaultTypeInternal _client_red_dot_request_default_instance_;
 
 inline constexpr red_dot_response::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -129,6 +147,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::red_dot_response, _impl_.is_login_),
         ~0u,
         0,
+        0x000, // bitmap
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_red_dot_response, _impl_._oneof_case_[0]),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_red_dot_response, _impl_.payload_),
@@ -139,11 +158,13 @@ static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::celeritas::proto::client::red_dot_node)},
         {7, sizeof(::celeritas::proto::client::red_dot_response)},
-        {14, sizeof(::celeritas::proto::client::client_red_dot_response)},
+        {14, sizeof(::celeritas::proto::client::client_red_dot_request)},
+        {15, sizeof(::celeritas::proto::client::client_red_dot_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::client::_red_dot_node_default_instance_._instance,
     &::celeritas::proto::client::_red_dot_response_default_instance_._instance,
+    &::celeritas::proto::client::_client_red_dot_request_default_instance_._instance,
     &::celeritas::proto::client::_client_red_dot_response_default_instance_._instance,
 };
 const char descriptor_table_protodef_proto_2fclient_2fplayer_2fred_5fdot_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
@@ -153,21 +174,22 @@ const char descriptor_table_protodef_proto_2fclient_2fplayer_2fred_5fdot_2eproto
     "ed_dot_type\030\001 \001(\005\022\r\n\005value\030\002 \001(\005\"X\n\020red_"
     "dot_response\0222\n\004node\030\001 \003(\0132$.celeritas.p"
     "roto.client.red_dot_node\022\020\n\010is_login\030\002 \001"
-    "(\010\"a\n\027client_red_dot_response\022;\n\007red_dot"
-    "\030\001 \001(\0132(.celeritas.proto.client.red_dot_"
-    "responseH\000B\t\n\007payloadb\006proto3"
+    "(\010\"\030\n\026client_red_dot_request\"a\n\027client_r"
+    "ed_dot_response\022;\n\007red_dot\030\001 \001(\0132(.celer"
+    "itas.proto.client.red_dot_responseH\000B\t\n\007"
+    "payloadb\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fclient_2fplayer_2fred_5fdot_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fclient_2fplayer_2fred_5fdot_2eproto = {
     false,
     false,
-    309,
+    335,
     descriptor_table_protodef_proto_2fclient_2fplayer_2fred_5fdot_2eproto,
     "proto/client/player/red_dot.proto",
     &descriptor_table_proto_2fclient_2fplayer_2fred_5fdot_2eproto_once,
     nullptr,
     0,
-    3,
+    4,
     schemas,
     file_default_instances,
     TableStruct_proto_2fclient_2fplayer_2fred_5fdot_2eproto::offsets,
@@ -764,6 +786,115 @@ void red_dot_response::InternalSwap(red_dot_response* PROTOBUF_RESTRICT PROTOBUF
 
 ::google::protobuf::Metadata red_dot_response::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class client_red_dot_request::_Internal {
+ public:
+};
+
+client_red_dot_request::client_red_dot_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, client_red_dot_request_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.client.client_red_dot_request)
+}
+client_red_dot_request::client_red_dot_request(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const client_red_dot_request& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, client_red_dot_request_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  client_red_dot_request* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.client.client_red_dot_request)
+}
+
+inline void* PROTOBUF_NONNULL client_red_dot_request::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) client_red_dot_request(arena);
+}
+constexpr auto client_red_dot_request::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(client_red_dot_request),
+                                            alignof(client_red_dot_request));
+}
+constexpr auto client_red_dot_request::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_client_red_dot_request_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &client_red_dot_request::MergeImpl,
+          ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<client_red_dot_request>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &client_red_dot_request::SharedDtor,
+          ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<client_red_dot_request>(), &client_red_dot_request::ByteSizeLong,
+              &client_red_dot_request::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(client_red_dot_request, _impl_._cached_size_),
+          false,
+      },
+      &client_red_dot_request::kDescriptorMethods,
+      &descriptor_table_proto_2fclient_2fplayer_2fred_5fdot_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull client_red_dot_request_class_data_ =
+        client_red_dot_request::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+client_red_dot_request::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&client_red_dot_request_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(client_red_dot_request_class_data_.tc_table);
+  return client_red_dot_request_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
+client_red_dot_request::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    client_red_dot_request_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::client::client_red_dot_request>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+::google::protobuf::Metadata client_red_dot_request::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 

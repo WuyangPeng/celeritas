@@ -37,6 +37,8 @@ namespace celeritas
 
         [[nodiscard]] traits::int32_type get_status() const noexcept;
 
+        [[nodiscard]] traits::int32_type get_mode() const noexcept;
+
         void set_cell_id(traits::param_type::int64_type cell_id);
 
         void set_game_server_id(traits::param_type::string_type game_server_id);
@@ -52,6 +54,8 @@ namespace celeritas
         void set_is_close_display(traits::param_type::bool_type is_close_display);
 
         void set_status(traits::param_type::int32_type status);
+
+        void set_mode(traits::param_type::int32_type mode);
 
         [[nodiscard]] static const database_field_container& get_database_field_container();
 
@@ -71,6 +75,7 @@ namespace celeritas
         static constexpr std::string_view zone_describe{ "zone" };
         static constexpr std::string_view is_close_display_describe{ "is_close_display" };
         static constexpr std::string_view status_describe{ "status" };
+        static constexpr std::string_view mode_describe{ "mode" };
 
     private:
         [[nodiscard]] static const_basis_database_container_shared_ptr get_key_basis_database_container(traits::param_type::int64_type cell_id);
@@ -83,5 +88,6 @@ namespace celeritas
         entity<zone_describe, database_data_type::string_type> zone_;
         entity<is_close_display_describe, database_data_type::bool_type> is_close_display_;
         entity<status_describe, database_data_type::int32_type> status_;
+        entity<mode_describe, database_data_type::int32_type> mode_;
     };
 }
