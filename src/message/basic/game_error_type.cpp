@@ -36,6 +36,8 @@ std::string celeritas::get_game_error_description(const game_error_type game_err
                                                 { game_error_type::name_not_change, "name not change" },
 
                                                 { game_error_type::debug_error, "debug error" },
+                                                { game_error_type::item_id_error, "item id error" },
+                                                { game_error_type::item_count_error, "item count error" },
 
                                                 { game_error_type::max_develop, "max develop" },
                                                 { game_error_type::non_resettable, "non resettable" },

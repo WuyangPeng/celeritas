@@ -1,4 +1,6 @@
 ﻿#include "add_item.h"
+#include "config/game/game_config.h"
+#include "config/game/game_tables.h"
 #include "player/item/player_item_component.h"
 
 celeritas::add_item::add_item(protobuf_handle_parameter_shared_ptr handle_parameter, player_state_shared_ptr player_state, request_type request)
@@ -9,7 +11,21 @@ celeritas::add_item::add_item(protobuf_handle_parameter_shared_ptr handle_parame
 
 celeritas::debug_base::game_error_awaitable_type celeritas::add_item::do_response()
 {
-    player_item_component_->change_item(get_config(), get_id(), get_parameter());
+    const auto id = get_id();
+    const auto count = get_parameter();
+
+    if (count == 0)
+    {
+        co_return game_error_type::item_count_error;
+    }
+
+    if (const auto item_config = game_config::get_instance().get_game_tables()->get_tables()->item_config_container.get(id);
+        !item_config)
+    {
+        co_return game_error_type::item_id_error;
+    }
+
+    player_item_component_->change_item(get_config(), id, count);
 
     co_return game_error_type::success;
 }

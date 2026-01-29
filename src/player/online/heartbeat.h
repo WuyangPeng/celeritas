@@ -13,6 +13,9 @@ namespace celeritas
         using class_type = heartbeat;
         using base_type = player_service_base;
         using request_type = proto::client::heartbeat_request;
+        using heartbeat_shared_ptr = std::shared_ptr<heartbeat>;
+
+        [[nodiscard]] static heartbeat_shared_ptr create(protobuf_handle_parameter_shared_ptr handle_parameter, player_state_shared_ptr player_state, request_type request);
 
         heartbeat(protobuf_handle_parameter_shared_ptr handle_parameter, player_state_shared_ptr player_state, request_type request);
 

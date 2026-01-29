@@ -5,6 +5,11 @@
 #include "player/online/player_online_component.h"
 #include "proto/celeritas.pb.h"
 
+celeritas::heartbeat::heartbeat_shared_ptr celeritas::heartbeat::create(protobuf_handle_parameter_shared_ptr handle_parameter, player_state_shared_ptr player_state, request_type request)
+{
+    return std::make_shared<class_type>(std::move(handle_parameter), std::move(player_state), std::move(request));
+}
+
 celeritas::heartbeat::heartbeat(protobuf_handle_parameter_shared_ptr handle_parameter, player_state_shared_ptr player_state, request_type request)
     : base_type{ std::move(handle_parameter), std::move(player_state) }
 {

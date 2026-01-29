@@ -46,6 +46,8 @@ namespace celeritas
 
         // 调试模块
         debug_error = 60300,
+        item_id_error = 60301,
+        item_count_error = 60302,
 
         // 养成模块
         max_develop = 60700,
