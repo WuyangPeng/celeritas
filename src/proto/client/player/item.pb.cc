@@ -34,7 +34,9 @@ inline constexpr item_selected_data::Impl_::Impl_(
         id_{::int64_t{0}},
         item_type_{0},
         child_type_{0},
-        selected_id_{::int64_t{0}} {}
+        operation_id_{::int64_t{0}},
+        selected_id_{::int64_t{0}},
+        parameter_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR item_selected_data::item_selected_data(::_pbi::ConstantInitialized)
@@ -353,15 +355,19 @@ const ::uint32_t
         ~0u,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::item_selected_data, _impl_._has_bits_),
-        7, // hasbit index offset
+        9, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::item_selected_data, _impl_.id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::item_selected_data, _impl_.item_type_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::item_selected_data, _impl_.child_type_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::item_selected_data, _impl_.operation_id_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::item_selected_data, _impl_.parameter_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::item_selected_data, _impl_.selected_id_),
         0,
         1,
         2,
         3,
+        5,
+        4,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::item_response, _impl_._has_bits_),
         5, // hasbit index offset
@@ -402,12 +408,12 @@ static const ::_pbi::MigrationSchema
         {6, sizeof(::celeritas::proto::client::equipment_data)},
         {13, sizeof(::celeritas::proto::client::inventory_data)},
         {32, sizeof(::celeritas::proto::client::item_selected_data)},
-        {43, sizeof(::celeritas::proto::client::item_response)},
-        {50, sizeof(::celeritas::proto::client::item_delete_response)},
-        {52, sizeof(::celeritas::proto::client::item_selected_request)},
-        {57, sizeof(::celeritas::proto::client::item_selected_response)},
-        {64, sizeof(::celeritas::proto::client::client_item_request)},
-        {68, sizeof(::celeritas::proto::client::client_item_response)},
+        {47, sizeof(::celeritas::proto::client::item_response)},
+        {54, sizeof(::celeritas::proto::client::item_delete_response)},
+        {56, sizeof(::celeritas::proto::client::item_selected_request)},
+        {61, sizeof(::celeritas::proto::client::item_selected_response)},
+        {68, sizeof(::celeritas::proto::client::client_item_request)},
+        {72, sizeof(::celeritas::proto::client::client_item_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::client::_custom_data_default_instance_._instance,
@@ -435,32 +441,33 @@ const char descriptor_table_protodef_proto_2fclient_2fplayer_2fitem_2eproto[] AB
     "umable\030\006 \001(\0132\'.celeritas.proto.client.co"
     "nsumable_dataH\000\022;\n\tequipment\030\007 \001(\0132&.cel"
     "eritas.proto.client.equipment_dataH\000B\t\n\007"
-    "payload\"\\\n\022item_selected_data\022\n\n\002id\030\001 \001("
-    "\003\022\021\n\titem_type\030\002 \001(\005\022\022\n\nchild_type\030\003 \001(\005"
-    "\022\023\n\013selected_id\030\004 \001(\003\"\\\n\ritem_response\0229"
-    "\n\tinventory\030\001 \003(\0132&.celeritas.proto.clie"
-    "nt.inventory_data\022\020\n\010is_login\030\002 \001(\010\"\'\n\024i"
-    "tem_delete_response\022\017\n\007item_id\030\001 \003(\003\"Z\n\025"
-    "item_selected_request\022A\n\ritem_selected\030\001"
-    " \001(\0132*.celeritas.proto.client.item_selec"
-    "ted_data\"m\n\026item_selected_response\022A\n\rit"
-    "em_selected\030\001 \003(\0132*.celeritas.proto.clie"
-    "nt.item_selected_data\022\020\n\010is_login\030\002 \001(\010\""
-    "h\n\023client_item_request\022F\n\ritem_selected\030"
-    "\001 \001(\0132-.celeritas.proto.client.item_sele"
-    "cted_requestH\000B\t\n\007payload\"\346\001\n\024client_ite"
-    "m_response\0225\n\004item\030\001 \001(\0132%.celeritas.pro"
-    "to.client.item_responseH\000\022C\n\013item_delete"
-    "\030\002 \001(\0132,.celeritas.proto.client.item_del"
-    "ete_responseH\000\022G\n\ritem_selected\030\003 \001(\0132.."
-    "celeritas.proto.client.item_selected_res"
-    "ponseH\000B\t\n\007payloadb\006proto3"
+    "payload\"\205\001\n\022item_selected_data\022\n\n\002id\030\001 \001"
+    "(\003\022\021\n\titem_type\030\002 \001(\005\022\022\n\nchild_type\030\003 \001("
+    "\005\022\024\n\014operation_id\030\004 \001(\003\022\021\n\tparameter\030\005 \001"
+    "(\005\022\023\n\013selected_id\030\006 \001(\003\"\\\n\ritem_response"
+    "\0229\n\tinventory\030\001 \003(\0132&.celeritas.proto.cl"
+    "ient.inventory_data\022\020\n\010is_login\030\002 \001(\010\"\'\n"
+    "\024item_delete_response\022\017\n\007item_id\030\001 \003(\003\"Z"
+    "\n\025item_selected_request\022A\n\ritem_selected"
+    "\030\001 \001(\0132*.celeritas.proto.client.item_sel"
+    "ected_data\"m\n\026item_selected_response\022A\n\r"
+    "item_selected\030\001 \003(\0132*.celeritas.proto.cl"
+    "ient.item_selected_data\022\020\n\010is_login\030\002 \001("
+    "\010\"h\n\023client_item_request\022F\n\ritem_selecte"
+    "d\030\001 \001(\0132-.celeritas.proto.client.item_se"
+    "lected_requestH\000B\t\n\007payload\"\346\001\n\024client_i"
+    "tem_response\0225\n\004item\030\001 \001(\0132%.celeritas.p"
+    "roto.client.item_responseH\000\022C\n\013item_dele"
+    "te\030\002 \001(\0132,.celeritas.proto.client.item_d"
+    "elete_responseH\000\022G\n\ritem_selected\030\003 \001(\0132"
+    "..celeritas.proto.client.item_selected_r"
+    "esponseH\000B\t\n\007payloadb\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fclient_2fplayer_2fitem_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fclient_2fplayer_2fitem_2eproto = {
     false,
     false,
-    1226,
+    1268,
     descriptor_table_protodef_proto_2fclient_2fplayer_2fitem_2eproto,
     "proto/client/player/item.proto",
     &descriptor_table_proto_2fclient_2fplayer_2fitem_2eproto_once,
@@ -1708,9 +1715,9 @@ inline void item_selected_data::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, id_),
            0,
-           offsetof(Impl_, selected_id_) -
+           offsetof(Impl_, parameter_) -
                offsetof(Impl_, id_) +
-               sizeof(Impl_::selected_id_));
+               sizeof(Impl_::parameter_));
 }
 item_selected_data::~item_selected_data() {
   // @@protoc_insertion_point(destructor:celeritas.proto.client.item_selected_data)
@@ -1769,16 +1776,16 @@ item_selected_data::GetClassData() const {
   return item_selected_data_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 0, 0, 2>
+const ::_pbi::TcParseTable<3, 6, 0, 0, 2>
 item_selected_data::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_._has_bits_),
     0, // no _extensions_
-    4, 24,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
+    6,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     item_selected_data_class_data_.base(),
@@ -1788,9 +1795,7 @@ item_selected_data::_table_ = {
     ::_pbi::TcParser::GetTable<::celeritas::proto::client::item_selected_data>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int64 selected_id = 4;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(item_selected_data, _impl_.selected_id_), 3>(),
-     {32, 3, 0, PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_.selected_id_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // int64 id = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(item_selected_data, _impl_.id_), 0>(),
      {8, 0, 0, PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_.id_)}},
@@ -1800,6 +1805,16 @@ item_selected_data::_table_ = {
     // int32 child_type = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(item_selected_data, _impl_.child_type_), 2>(),
      {24, 2, 0, PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_.child_type_)}},
+    // int64 operation_id = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(item_selected_data, _impl_.operation_id_), 3>(),
+     {32, 3, 0, PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_.operation_id_)}},
+    // int32 parameter = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(item_selected_data, _impl_.parameter_), 5>(),
+     {40, 5, 0, PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_.parameter_)}},
+    // int64 selected_id = 6;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(item_selected_data, _impl_.selected_id_), 4>(),
+     {48, 4, 0, PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_.selected_id_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -1809,8 +1824,12 @@ item_selected_data::_table_ = {
     {PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_.item_type_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
     // int32 child_type = 3;
     {PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_.child_type_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int64 selected_id = 4;
-    {PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_.selected_id_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // int64 operation_id = 4;
+    {PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_.operation_id_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // int32 parameter = 5;
+    {PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_.parameter_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int64 selected_id = 6;
+    {PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_.selected_id_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
   }},
   // no aux_entries
   {{
@@ -1824,10 +1843,10 @@ PROTOBUF_NOINLINE void item_selected_data::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if ((cached_has_bits & 0x0000000fU) != 0) {
+  if ((cached_has_bits & 0x0000003fU) != 0) {
     ::memset(&_impl_.id_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.selected_id_) -
-        reinterpret_cast<char*>(&_impl_.id_)) + sizeof(_impl_.selected_id_));
+        reinterpret_cast<char*>(&_impl_.parameter_) -
+        reinterpret_cast<char*>(&_impl_.id_)) + sizeof(_impl_.parameter_));
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -1878,11 +1897,29 @@ PROTOBUF_NOINLINE void item_selected_data::Clear() {
     }
   }
 
-  // int64 selected_id = 4;
+  // int64 operation_id = 4;
   if ((this_._impl_._has_bits_[0] & 0x00000008U) != 0) {
-    if (this_._internal_selected_id() != 0) {
+    if (this_._internal_operation_id() != 0) {
       target =
           ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<4>(
+              stream, this_._internal_operation_id(), target);
+    }
+  }
+
+  // int32 parameter = 5;
+  if ((this_._impl_._has_bits_[0] & 0x00000020U) != 0) {
+    if (this_._internal_parameter() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<5>(
+              stream, this_._internal_parameter(), target);
+    }
+  }
+
+  // int64 selected_id = 6;
+  if ((this_._impl_._has_bits_[0] & 0x00000010U) != 0) {
+    if (this_._internal_selected_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<6>(
               stream, this_._internal_selected_id(), target);
     }
   }
@@ -1912,7 +1949,7 @@ PROTOBUF_NOINLINE void item_selected_data::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x0000000fU) != 0) {
+  if ((cached_has_bits & 0x0000003fU) != 0) {
     // int64 id = 1;
     if ((cached_has_bits & 0x00000001U) != 0) {
       if (this_._internal_id() != 0) {
@@ -1934,11 +1971,25 @@ PROTOBUF_NOINLINE void item_selected_data::Clear() {
             this_._internal_child_type());
       }
     }
-    // int64 selected_id = 4;
+    // int64 operation_id = 4;
     if ((cached_has_bits & 0x00000008U) != 0) {
+      if (this_._internal_operation_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+            this_._internal_operation_id());
+      }
+    }
+    // int64 selected_id = 6;
+    if ((cached_has_bits & 0x00000010U) != 0) {
       if (this_._internal_selected_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
             this_._internal_selected_id());
+      }
+    }
+    // int32 parameter = 5;
+    if ((cached_has_bits & 0x00000020U) != 0) {
+      if (this_._internal_parameter() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_parameter());
       }
     }
   }
@@ -1958,7 +2009,7 @@ void item_selected_data::MergeImpl(::google::protobuf::MessageLite& to_msg, cons
   (void) cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x0000000fU) != 0) {
+  if ((cached_has_bits & 0x0000003fU) != 0) {
     if ((cached_has_bits & 0x00000001U) != 0) {
       if (from._internal_id() != 0) {
         _this->_impl_.id_ = from._impl_.id_;
@@ -1975,8 +2026,18 @@ void item_selected_data::MergeImpl(::google::protobuf::MessageLite& to_msg, cons
       }
     }
     if ((cached_has_bits & 0x00000008U) != 0) {
+      if (from._internal_operation_id() != 0) {
+        _this->_impl_.operation_id_ = from._impl_.operation_id_;
+      }
+    }
+    if ((cached_has_bits & 0x00000010U) != 0) {
       if (from._internal_selected_id() != 0) {
         _this->_impl_.selected_id_ = from._impl_.selected_id_;
+      }
+    }
+    if ((cached_has_bits & 0x00000020U) != 0) {
+      if (from._internal_parameter() != 0) {
+        _this->_impl_.parameter_ = from._impl_.parameter_;
       }
     }
   }
@@ -1997,8 +2058,8 @@ void item_selected_data::InternalSwap(item_selected_data* PROTOBUF_RESTRICT PROT
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_.selected_id_)
-      + sizeof(item_selected_data::_impl_.selected_id_)
+      PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_.parameter_)
+      + sizeof(item_selected_data::_impl_.parameter_)
       - PROTOBUF_FIELD_OFFSET(item_selected_data, _impl_.id_)>(
           reinterpret_cast<char*>(&_impl_.id_),
           reinterpret_cast<char*>(&other->_impl_.id_));

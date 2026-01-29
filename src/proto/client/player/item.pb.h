@@ -263,7 +263,9 @@ class item_selected_data final : public ::google::protobuf::Message
     kIdFieldNumber = 1,
     kItemTypeFieldNumber = 2,
     kChildTypeFieldNumber = 3,
-    kSelectedIdFieldNumber = 4,
+    kOperationIdFieldNumber = 4,
+    kSelectedIdFieldNumber = 6,
+    kParameterFieldNumber = 5,
   };
   // int64 id = 1;
   void clear_id() ;
@@ -295,7 +297,17 @@ class item_selected_data final : public ::google::protobuf::Message
   void _internal_set_child_type(::int32_t value);
 
   public:
-  // int64 selected_id = 4;
+  // int64 operation_id = 4;
+  void clear_operation_id() ;
+  ::int64_t operation_id() const;
+  void set_operation_id(::int64_t value);
+
+  private:
+  ::int64_t _internal_operation_id() const;
+  void _internal_set_operation_id(::int64_t value);
+
+  public:
+  // int64 selected_id = 6;
   void clear_selected_id() ;
   ::int64_t selected_id() const;
   void set_selected_id(::int64_t value);
@@ -305,11 +317,21 @@ class item_selected_data final : public ::google::protobuf::Message
   void _internal_set_selected_id(::int64_t value);
 
   public:
+  // int32 parameter = 5;
+  void clear_parameter() ;
+  ::int32_t parameter() const;
+  void set_parameter(::int32_t value);
+
+  private:
+  ::int32_t _internal_parameter() const;
+  void _internal_set_parameter(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.item_selected_data)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 4,
+  static const ::google::protobuf::internal::TcParseTable<3, 6,
                                    0, 0,
                                    2>
       _table_;
@@ -334,7 +356,9 @@ class item_selected_data final : public ::google::protobuf::Message
     ::int64_t id_;
     ::int32_t item_type_;
     ::int32_t child_type_;
+    ::int64_t operation_id_;
     ::int64_t selected_id_;
+    ::int32_t parameter_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2991,11 +3015,59 @@ inline void item_selected_data::_internal_set_child_type(::int32_t value) {
   _impl_.child_type_ = value;
 }
 
-// int64 selected_id = 4;
+// int64 operation_id = 4;
+inline void item_selected_data::clear_operation_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.operation_id_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000008U;
+}
+inline ::int64_t item_selected_data::operation_id() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.item_selected_data.operation_id)
+  return _internal_operation_id();
+}
+inline void item_selected_data::set_operation_id(::int64_t value) {
+  _internal_set_operation_id(value);
+  _impl_._has_bits_[0] |= 0x00000008U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.item_selected_data.operation_id)
+}
+inline ::int64_t item_selected_data::_internal_operation_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.operation_id_;
+}
+inline void item_selected_data::_internal_set_operation_id(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.operation_id_ = value;
+}
+
+// int32 parameter = 5;
+inline void item_selected_data::clear_parameter() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.parameter_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000020U;
+}
+inline ::int32_t item_selected_data::parameter() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.item_selected_data.parameter)
+  return _internal_parameter();
+}
+inline void item_selected_data::set_parameter(::int32_t value) {
+  _internal_set_parameter(value);
+  _impl_._has_bits_[0] |= 0x00000020U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.item_selected_data.parameter)
+}
+inline ::int32_t item_selected_data::_internal_parameter() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.parameter_;
+}
+inline void item_selected_data::_internal_set_parameter(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.parameter_ = value;
+}
+
+// int64 selected_id = 6;
 inline void item_selected_data::clear_selected_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.selected_id_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000008U;
+  _impl_._has_bits_[0] &= ~0x00000010U;
 }
 inline ::int64_t item_selected_data::selected_id() const {
   // @@protoc_insertion_point(field_get:celeritas.proto.client.item_selected_data.selected_id)
@@ -3003,7 +3075,7 @@ inline ::int64_t item_selected_data::selected_id() const {
 }
 inline void item_selected_data::set_selected_id(::int64_t value) {
   _internal_set_selected_id(value);
-  _impl_._has_bits_[0] |= 0x00000008U;
+  _impl_._has_bits_[0] |= 0x00000010U;
   // @@protoc_insertion_point(field_set:celeritas.proto.client.item_selected_data.selected_id)
 }
 inline ::int64_t item_selected_data::_internal_selected_id() const {

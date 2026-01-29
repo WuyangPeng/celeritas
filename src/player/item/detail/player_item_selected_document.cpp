@@ -26,11 +26,16 @@ celeritas::traits::document_array_type celeritas::player_item_selected_document:
     return documents;
 }
 
-bool celeritas::player_item_selected_document::change_item_selected(const const_app_config_shared_ptr& app_config, config::item_type item_type, int child_type, int64_t selected_id)
+bool celeritas::player_item_selected_document::change_item_selected(const const_app_config_shared_ptr& app_config,
+                                                                    const config::item_type item_type,
+                                                                    const config::item_selected_child_type child_type,
+                                                                    const int64_t operation_id,
+                                                                    const int parameter,
+                                                                    const int64_t selected_id)
 {
-    const item_selected_key key{ item_type, child_type };
-    const auto iter = item_selected_.find(key);
-    if (iter != item_selected_.end())
+    const item_selected_key key{ item_type, child_type, operation_id, parameter };
+    if (const auto iter = item_selected_.find(key);
+        iter != item_selected_.cend())
     {
         if (selected_id == iter->second.get_selected_id())
         {
@@ -53,9 +58,11 @@ bool celeritas::player_item_selected_document::change_item_selected(const const_
         data.set_id(snowflake_generator::get_instance().generate(server_config->get_datacenter_id(), server_config->get_worker_id()));
         data.set_item_type(item_type);
         data.set_child_type(child_type);
+        data.set_operation_id(operation_id);
+        data.set_parameter(parameter);
         data.set_selected_id(selected_id);
 
-        item_selected_.emplace(item_selected_key{ key }, data);
+        item_selected_.emplace(key, data);
     }
 
     return true;
@@ -63,5 +70,5 @@ bool celeritas::player_item_selected_document::change_item_selected(const const_
 
 void celeritas::player_item_selected_document::add_item_selected_data(const item_selected_data& item_selected)
 {
-    item_selected_.emplace(item_selected_key{ item_selected.get_item_type(), item_selected.get_child_type() }, item_selected);
+    item_selected_.emplace(item_selected_key{ item_selected.get_item_type(), item_selected.get_child_type(), item_selected.get_operation_id(), item_selected.get_parameter() }, item_selected);
 }

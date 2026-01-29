@@ -30,7 +30,9 @@ message item_selected_data {
     int64 id = 1;
     int32 item_type = 2;
     int32 child_type = 3;
-    int64 selected_id = 4;
+    int64 operation_id = 4;
+    int32 parameter = 5;
+    int64 selected_id = 6;
 }
 
 message item_response {

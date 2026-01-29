@@ -23,7 +23,7 @@ namespace celeritas
 
         [[nodiscard]] traits::document_array_type get_item_selected() const;
 
-        [[nodiscard]] bool change_item_selected(const const_app_config_shared_ptr& app_config, config::item_type item_type, int child_type, int64_t selected_id);
+        [[nodiscard]] bool change_item_selected(const const_app_config_shared_ptr& app_config, config::item_type item_type, config::item_selected_child_type child_type, int64_t operation_id, int parameter, int64_t selected_id);
 
     private:
         using item_selected_data_container = std::map<item_selected_key, item_selected_data>;
