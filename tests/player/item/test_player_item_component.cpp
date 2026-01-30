@@ -7,6 +7,7 @@
 #include "player/mock/mock_database_pool.h"
 #include "player/mock/mock_player_state.h"
 #include "config/luban/generated/schema.h"
+#include "player/item/item_container.h"
 
 #include <boost/asio/io_context.hpp>
 #include <boost/test/unit_test.hpp>

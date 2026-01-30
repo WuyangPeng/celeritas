@@ -56,6 +56,29 @@ celeritas::custom_data celeritas::custom_data::from_document(const document_type
     throw celeritas_error{ "custom_data::from_document() failed." };
 }
 
+celeritas::custom_data::kind celeritas::custom_data::get_kind() const noexcept
+{
+    if (std::holds_alternative<equipment_data>(detail_))
+    {
+        return kind::equipment;
+    }
+    if (std::holds_alternative<consumable_data>(detail_))
+    {
+        return kind::consumable;
+    }
+    return kind::none;
+}
+
+const celeritas::equipment_data* celeritas::custom_data::get_equipment() const noexcept
+{
+    return std::get_if<equipment_data>(&detail_);
+}
+
+const celeritas::consumable_data* celeritas::custom_data::get_consumable() const noexcept
+{
+    return std::get_if<consumable_data>(&detail_);
+}
+
 std::string celeritas::custom_data::get_type(const document_type& document)
 {
     for (const auto& element : document)

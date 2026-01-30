@@ -5,7 +5,6 @@
 #include "database/basic/database_data_type_traits.h"
 #include "database/document/inventory_data.h"
 #include "player/component/player_state.h"
-#include "player/item/item_container.h"
 
 #include <boost/asio/awaitable.hpp>
 
@@ -19,6 +18,11 @@ namespace celeritas
         using class_type = player_item_document;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
+        using const_item_config_shared_ptr = std::shared_ptr<const config::game::item_config>;
+        using id_container = std::vector<int64_t>;
+        using inventory_data_container = std::map<int64_t, inventory_data>;
+        using inventory_data_container_iter = inventory_data_container::iterator;
+        using inventory_data_container_const_iter = inventory_data_container::const_iterator;
 
         player_item_document(player_state* player_state);
 
@@ -36,28 +40,13 @@ namespace celeritas
 
         [[nodiscard]] bool change_item(const const_app_config_shared_ptr& app_config, const item_container& item);
 
+        [[nodiscard]] inventory_data_container_iter get_inventory_data(int64_t item_id);
+
+        [[nodiscard]] inventory_data_container_const_iter end() const;
+
         void on_dependencies_ready();
 
-    private:
-        using inventory_data_container = std::map<int64_t, inventory_data>;
-        using id_container = std::vector<int64_t>;
-        using template_container = std::map<int, id_container>;
-        using position_container = std::vector<int64_t>;
-        using const_item_config_shared_ptr = std::shared_ptr<const config::game::item_config>;
-
-        [[nodiscard]] int get_next_position(bool is_squares) const;
-
-        void add_inventory_data(const inventory_data& inventory_data);
-
-        [[nodiscard]] int64_t add_to_existing_stacks(int template_id, int64_t count, int stacked);
-
-        [[nodiscard]] int64_t remove_from_existing_stacks(int template_id, int64_t count);
-
-        [[nodiscard]] int64_t add_new_item(int template_id,
-                                           int64_t count,
-                                           int stacked,
-                                           bool squares,
-                                           const server_config& server_config);
+        void remove_inventory_data(int64_t item_id);
 
         [[nodiscard]] static const_item_config_shared_ptr get_item_config(int template_id);
 
@@ -65,7 +54,17 @@ namespace celeritas
 
         [[nodiscard]] const id_container* get_id_container(int template_id) const;
 
-        void send_item_message(int rpc, const inventory_data_container& inventory);
+        [[nodiscard]] int get_next_position(bool is_squares) const;
+
+        void add_inventory_data(const inventory_data& inventory_data);
+
+        void send_item_message(const inventory_data_container& inventory);
+
+        void send_delete_item_message(const id_container& id);
+
+    private:
+        using template_container = std::map<int, id_container>;
+        using position_container = std::vector<int64_t>;
 
         inventory_data_container inventory_data_;
         template_container template_data_;

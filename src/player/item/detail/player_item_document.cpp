@@ -1,9 +1,8 @@
-﻿#include "player_item_document.h"
+﻿#include "execute_change_item.h"
+#include "player_item_document.h"
 #include "boost/numeric/conversion/cast.hpp"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
-#include "common/core/snowflake_generator.h"
-#include "config/aggregate/app_config.h"
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
 #include "database/basic/basis_database.tpp"
@@ -41,39 +40,14 @@ celeritas::traits::document_array_type celeritas::player_item_document::get_item
     return documents;
 }
 
-bool celeritas::player_item_document::change_item(const const_app_config_shared_ptr& app_config, const int template_id, int64_t count)
+bool celeritas::player_item_document::change_item(const const_app_config_shared_ptr& app_config, const int template_id, const int64_t count)
 {
-    if (count == 0)
-    {
-        return false;
-    }
+    execute_change_item execute{ this, app_config, template_id, count };
 
-    const auto item = get_item_config(template_id);
-    const auto stacked = item->stacked;
+    execute.execute();
+    execute.send_message();
 
-    if (count > 0)
-    {
-        count = add_to_existing_stacks(template_id, count, stacked);
-    }
-    else
-    {
-        count = remove_from_existing_stacks(template_id, count);
-    }
-
-    if (count < 0)
-    {
-        LOG_CHANNEL(player_channel, error) << "item count is error ,template id = " << template_id << ",count = " << count;
-        return true;
-    }
-
-    const auto server_config = app_config->get_server_config();
-
-    while (0 < count)
-    {
-        count = add_new_item(template_id, count, stacked, item->squares, *server_config);
-    }
-
-    return true;
+    return execute.is_change();
 }
 
 bool celeritas::player_item_document::can_consume_item(const int template_id, const int64_t count) const
@@ -108,20 +82,32 @@ bool celeritas::player_item_document::can_consume_item(const item_container& ite
 
 bool celeritas::player_item_document::change_item(const const_app_config_shared_ptr& app_config, const item_container& item)
 {
-    auto result = false;
-    for (const auto& element : item)
-    {
-        if (change_item(app_config, element.get_template_id(), element.get_count()))
-        {
-            result = true;
-        }
-    }
-    return result;
+    execute_change_item execute{ this, app_config, item };
+
+    execute.execute();
+    execute.send_message();
+
+    return execute.is_change();
+}
+
+celeritas::player_item_document::inventory_data_container_iter celeritas::player_item_document::get_inventory_data(const int64_t item_id)
+{
+    return inventory_data_.find(item_id);
+}
+
+celeritas::player_item_document::inventory_data_container_const_iter celeritas::player_item_document::end() const
+{
+    return inventory_data_.cend();
 }
 
 void celeritas::player_item_document::on_dependencies_ready()
 {
-    send_item_message(0, inventory_data_);
+    send_item_message(inventory_data_);
+}
+
+void celeritas::player_item_document::remove_inventory_data(int64_t item_id)
+{
+    inventory_data_.erase(item_id);
 }
 
 int celeritas::player_item_document::get_next_position(const bool is_squares) const
@@ -164,69 +150,6 @@ void celeritas::player_item_document::add_inventory_data(const inventory_data& i
     position_data_.at(inventory_data.get_position()) = inventory_data.get_item_id();
 }
 
-int64_t celeritas::player_item_document::add_to_existing_stacks(const int template_id, int64_t count, const int stacked)
-{
-    if (const auto* id_container = get_id_container(template_id))
-    {
-        for (auto& element : std::ranges::reverse_view(*id_container))
-        {
-            if (auto inventory_iter = inventory_data_.find(element);
-                inventory_iter != inventory_data_.cend())
-            {
-                inventory_iter->second.add_count(count);
-                if (stacked > 0 && inventory_iter->second.get_count() > stacked)
-                {
-                    count = inventory_iter->second.get_count() - stacked;
-                    inventory_iter->second.set_count(stacked);
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-        }
-    }
-    return count;
-}
-
-int64_t celeritas::player_item_document::remove_from_existing_stacks(const int template_id, int64_t count)
-{
-    if (auto* id_container = get_id_container(template_id))
-    {
-        for (auto id_iter = id_container->rbegin(); id_iter != id_container->rend();)
-        {
-            if (auto inventory_iter = inventory_data_.find(*id_iter);
-                inventory_iter != inventory_data_.cend())
-            {
-                if (inventory_iter->second.get_count() >= -count)
-                {
-                    inventory_iter->second.add_count(count);
-                    return 0;
-                }
-
-                count += inventory_iter->second.get_count();
-                inventory_data_.erase(inventory_iter->second.get_item_id());
-                id_iter = std::make_reverse_iterator(id_container->erase(std::next(id_iter).base()));
-                continue;
-            }
-            ++id_iter;
-        }
-    }
-    return count;
-}
-
-int64_t celeritas::player_item_document::add_new_item(const int template_id, int64_t count, const int stacked, const bool squares, const server_config& server_config)
-{
-    const auto item_id = snowflake_generator::get_instance().generate(server_config.get_datacenter_id(), server_config.get_worker_id());
-    const auto current_count = 0 < stacked && stacked < count ? stacked : count;
-    count -= current_count;
-
-    const inventory_data inventory_data{ item_id, template_id, current_count, get_next_position(squares) };
-    add_inventory_data(inventory_data);
-
-    return count;
-}
-
 celeritas::player_item_document::const_item_config_shared_ptr celeritas::player_item_document::get_item_config(int template_id)
 {
     const auto game_tables = game_config::get_instance().get_game_tables();
@@ -255,9 +178,9 @@ const celeritas::player_item_document::id_container* celeritas::player_item_docu
     return nullptr;
 }
 
-void celeritas::player_item_document::send_item_message(int rpc, const inventory_data_container& inventory)
+void celeritas::player_item_document::send_item_message(const inventory_data_container& inventory)
 {
-    const header header{ rpc, player_state_->get_user_id() };
+    const header header{ player_state_->get_user_id() };
 
     proto::celeritas response{};
     auto* item_response = response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_item()->mutable_item();
@@ -269,6 +192,33 @@ void celeritas::player_item_document::send_item_message(int rpc, const inventory
         inventory_data->set_template_id(element.get_template_id());
         inventory_data->set_count(element.get_count());
         inventory_data->set_position(element.get_position());
+
+        switch (const auto custom_data = element.get_custom_data();
+            custom_data.get_kind())
+        {
+            case custom_data::kind::none:
+            {
+                inventory_data->mutable_custom();
+            }
+            break;
+            case custom_data::kind::consumable:
+            {
+                auto* consumable = inventory_data->mutable_consumable();
+                const auto* data = custom_data.get_consumable();
+
+                consumable->set_expire_time(data->get_expire_time());
+            }
+            break;
+            case custom_data::kind::equipment:
+            {
+                auto* equipment = inventory_data->mutable_equipment();
+                const auto* data = custom_data.get_equipment();
+
+                equipment->set_durability(data->get_durability());
+                equipment->set_strength(data->get_strength());
+            }
+            break;
+        }
     }
 
     if (!player_state_->write(gateway_type.data(), player_state_->get_instance_id(), header, response))
@@ -276,3 +226,21 @@ void celeritas::player_item_document::send_item_message(int rpc, const inventory
         LOG_CHANNEL(player_channel, error) << "send message error.";
     }
 }
+
+void celeritas::player_item_document::send_delete_item_message(const id_container& id)
+{
+    const header header{ player_state_->get_user_id() };
+
+    proto::celeritas response{};
+    auto* item_response = response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_item()->mutable_item_delete();
+    for (const auto& element : id)
+    {
+        item_response->add_item_id(element);
+    }
+
+    if (!player_state_->write(gateway_type.data(), player_state_->get_instance_id(), header, response))
+    {
+        LOG_CHANNEL(player_channel, error) << "send message error.";
+    }
+}
+

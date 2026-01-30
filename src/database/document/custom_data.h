@@ -25,6 +25,14 @@ namespace celeritas
         static constexpr std::string_view equipment_description = "equipment";
         static constexpr std::string_view consumable_description = "consumable";
 
+        enum class kind { none, consumable, equipment };
+
+        [[nodiscard]] kind get_kind() const noexcept;
+
+        [[nodiscard]] const equipment_data* get_equipment() const noexcept;
+
+        [[nodiscard]] const consumable_data* get_consumable() const noexcept;
+
     private:
         using variant_type = std::variant<std::monostate, equipment_data, consumable_data>;
 
