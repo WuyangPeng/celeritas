@@ -61,7 +61,7 @@ celeritas::player_service_base::void_awaitable_type celeritas::change_name::resp
 
 celeritas::change_name::optional_priority_item_container_type celeritas::change_name::get_rename_cost(const container_type& container) const
 {
-    const auto change_count = player_role_component_->get_name_change_count();
+    const auto change_count = player_role_component_->get_name_change_count() + 1;
     for (const auto& item : container.getDataList())
     {
         if (const auto& rename_count = item->renameCount;
