@@ -36,15 +36,18 @@ celeritas::player_service_base::void_awaitable_type celeritas::change_name::resp
         co_return;
     }
 
-    const auto& rename_cost = *optional_rename_cost;
-    auto optional_cost_item = get_cost_item(rename_cost);
-    if (!optional_cost_item)
+    if (const auto& rename_cost = *optional_rename_cost;
+        !rename_cost.empty())
     {
-        get_player_state()->send_error_message(get_rpc(), game_error_type::insufficient_item_of_name_change);
-        co_return;
-    }
+        const auto optional_cost_item = get_cost_item(rename_cost);
+        if (optional_cost_item)
+        {
+            get_player_state()->send_error_message(get_rpc(), game_error_type::insufficient_item_of_name_change);
+            co_return;
+        }
 
-    cost_item(*optional_cost_item);
+        cost_item(*optional_cost_item);
+    }
 
     if (const auto game_error = co_await player_role_component_->change_name(request_.surname(), request_.name());
         game_error != game_error_type::success)
