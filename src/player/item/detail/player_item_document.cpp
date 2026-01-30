@@ -7,8 +7,19 @@
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
 #include "database/basic/basis_database.tpp"
+#include "initializer/initializer_constant.h"
+#include "message/basic/header.h"
+#include "proto/celeritas.pb.h"
 
 #include <ranges>
+
+celeritas::player_item_document::player_item_document(player_state* player_state)
+    : inventory_data_{},
+      template_data_{},
+      position_data_{},
+      player_state_{ player_state }
+{
+}
 
 void celeritas::player_item_document::set_item(traits::param_type::document_array_type item_document)
 {
@@ -106,6 +117,11 @@ bool celeritas::player_item_document::change_item(const const_app_config_shared_
         }
     }
     return result;
+}
+
+void celeritas::player_item_document::on_dependencies_ready()
+{
+    send_item_message(0, inventory_data_);
 }
 
 int celeritas::player_item_document::get_next_position(const bool is_squares) const
@@ -237,4 +253,26 @@ const celeritas::player_item_document::id_container* celeritas::player_item_docu
     }
 
     return nullptr;
+}
+
+void celeritas::player_item_document::send_item_message(int rpc, const inventory_data_container& inventory)
+{
+    const header header{ rpc, player_state_->get_user_id() };
+
+    proto::celeritas response{};
+    auto* item_response = response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_item()->mutable_item();
+    for (const auto& element : inventory | std::views::values)
+    {
+        auto* inventory_data = item_response->add_inventory();
+
+        inventory_data->set_item_id(element.get_item_id());
+        inventory_data->set_template_id(element.get_template_id());
+        inventory_data->set_count(element.get_count());
+        inventory_data->set_position(element.get_position());
+    }
+
+    if (!player_state_->write(gateway_type.data(), player_state_->get_instance_id(), header, response))
+    {
+        LOG_CHANNEL(player_channel, error) << "send message error.";
+    }
 }

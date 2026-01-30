@@ -4,6 +4,7 @@
 #include "config/luban/generated/schema.h"
 #include "database/basic/database_data_type_traits.h"
 #include "database/document/inventory_data.h"
+#include "player/component/player_state.h"
 #include "player/item/item_container.h"
 
 #include <boost/asio/awaitable.hpp>
@@ -19,6 +20,8 @@ namespace celeritas
         using void_awaitable_type = boost::asio::awaitable<void>;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
 
+        player_item_document(player_state* player_state);
+
         void set_item(traits::param_type::document_array_type item_document);
 
         [[nodiscard]] traits::document_array_type get_item() const;
@@ -32,6 +35,8 @@ namespace celeritas
         [[nodiscard]] bool can_consume_item(const item_container& item) const;
 
         [[nodiscard]] bool change_item(const const_app_config_shared_ptr& app_config, const item_container& item);
+
+        void on_dependencies_ready();
 
     private:
         using inventory_data_container = std::map<int64_t, inventory_data>;
@@ -60,8 +65,11 @@ namespace celeritas
 
         [[nodiscard]] const id_container* get_id_container(int template_id) const;
 
+        void send_item_message(int rpc, const inventory_data_container& inventory);
+
         inventory_data_container inventory_data_;
         template_container template_data_;
         position_container position_data_;
+        player_state* player_state_;
     };
 }

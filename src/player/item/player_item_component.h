@@ -2,6 +2,8 @@
 
 #include "detail/player_item_database.h"
 #include "detail/player_item_document.h"
+#include "detail/player_item_selected_database.h"
+#include "detail/player_item_selected_document.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
 
@@ -36,10 +38,23 @@ namespace celeritas
 
         void change_item(const const_app_config_shared_ptr& app_config, const item_container& item);
 
+        void change_item_selected(const const_app_config_shared_ptr& app_config,
+                                  config::item_type item_type,
+                                  config::item_selected_child_type child_type,
+                                  int64_t operation_id,
+                                  int parameter,
+                                  int64_t selected_id);
+
+        [[nodiscard]] void_awaitable_type on_dependencies_ready() override;
+
     private:
+        using delete_item_id_container = std::vector<int64_t>;
+
         void update_document();
 
         player_item_database database_;
         player_item_document document_;
+        player_item_selected_database selected_database_;
+        player_item_selected_document selected_document_;
     };
 }

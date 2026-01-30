@@ -68,6 +68,10 @@ bool celeritas::player_item_selected_document::change_item_selected(const const_
     return true;
 }
 
+void celeritas::player_item_selected_document::on_dependencies_ready()
+{
+}
+
 void celeritas::player_item_selected_document::add_item_selected_data(const item_selected_data& item_selected)
 {
     item_selected_.emplace(item_selected_key{ item_selected.get_item_type(), item_selected.get_child_type(), item_selected.get_operation_id(), item_selected.get_parameter() }, item_selected);
