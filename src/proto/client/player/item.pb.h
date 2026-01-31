@@ -92,6 +92,10 @@ class inventory_data;
 struct inventory_dataDefaultTypeInternal;
 extern inventory_dataDefaultTypeInternal _inventory_data_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull inventory_data_class_data_;
+class item_delete_data;
+struct item_delete_dataDefaultTypeInternal;
+extern item_delete_dataDefaultTypeInternal _item_delete_data_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull item_delete_data_class_data_;
 class item_delete_response;
 struct item_delete_responseDefaultTypeInternal;
 extern item_delete_responseDefaultTypeInternal _item_delete_response_default_instance_;
@@ -323,7 +327,7 @@ class item_selected_data final : public ::google::protobuf::Message
     return *reinterpret_cast<const item_selected_data*>(
         &_item_selected_data_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(item_selected_data& a, item_selected_data& b) { a.Swap(&b); }
   inline void Swap(item_selected_data* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -519,30 +523,30 @@ class item_selected_data final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull item_selected_data_class_data_;
 // -------------------------------------------------------------------
 
-class item_delete_response final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:celeritas.proto.client.item_delete_response) */ {
+class item_delete_data final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client.item_delete_data) */ {
  public:
-  inline item_delete_response() : item_delete_response(nullptr) {}
-  ~item_delete_response() PROTOBUF_FINAL;
+  inline item_delete_data() : item_delete_data(nullptr) {}
+  ~item_delete_data() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(item_delete_response* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+  void operator delete(item_delete_data* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
     SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(item_delete_response));
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(item_delete_data));
   }
 #endif
 
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR item_delete_response(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR item_delete_data(::google::protobuf::internal::ConstantInitialized);
 
-  inline item_delete_response(const item_delete_response& from) : item_delete_response(nullptr, from) {}
-  inline item_delete_response(item_delete_response&& from) noexcept
-      : item_delete_response(nullptr, ::std::move(from)) {}
-  inline item_delete_response& operator=(const item_delete_response& from) {
+  inline item_delete_data(const item_delete_data& from) : item_delete_data(nullptr, from) {}
+  inline item_delete_data(item_delete_data&& from) noexcept
+      : item_delete_data(nullptr, ::std::move(from)) {}
+  inline item_delete_data& operator=(const item_delete_data& from) {
     CopyFrom(from);
     return *this;
   }
-  inline item_delete_response& operator=(item_delete_response&& from) noexcept {
+  inline item_delete_data& operator=(item_delete_data&& from) noexcept {
     if (this == &from) return *this;
     if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
       InternalSwap(&from);
@@ -570,13 +574,13 @@ class item_delete_response final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const item_delete_response& default_instance() {
-    return *reinterpret_cast<const item_delete_response*>(
-        &_item_delete_response_default_instance_);
+  static const item_delete_data& default_instance() {
+    return *reinterpret_cast<const item_delete_data*>(
+        &_item_delete_data_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 10;
-  friend void swap(item_delete_response& a, item_delete_response& b) { a.Swap(&b); }
-  inline void Swap(item_delete_response* PROTOBUF_NONNULL other) {
+  static constexpr int kIndexInFileMessages = 8;
+  friend void swap(item_delete_data& a, item_delete_data& b) { a.Swap(&b); }
+  inline void Swap(item_delete_data* PROTOBUF_NONNULL other) {
     if (other == this) return;
     if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
       InternalSwap(other);
@@ -584,7 +588,7 @@ class item_delete_response final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(item_delete_response* PROTOBUF_NONNULL other) {
+  void UnsafeArenaSwap(item_delete_data* PROTOBUF_NONNULL other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -592,13 +596,13 @@ class item_delete_response final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  item_delete_response* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<item_delete_response>(arena);
+  item_delete_data* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<item_delete_data>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const item_delete_response& from);
+  void CopyFrom(const item_delete_data& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const item_delete_response& from) { item_delete_response::MergeImpl(*this, from); }
+  void MergeFrom(const item_delete_data& from) { item_delete_data::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(::google::protobuf::MessageLite& to_msg,
@@ -634,18 +638,18 @@ class item_delete_response final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
   static void SharedDtor(MessageLite& self);
-  void InternalSwap(item_delete_response* PROTOBUF_NONNULL other);
+  void InternalSwap(item_delete_data* PROTOBUF_NONNULL other);
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.item_delete_response"; }
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.item_delete_data"; }
 
  protected:
-  explicit item_delete_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  item_delete_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const item_delete_response& from);
-  item_delete_response(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, item_delete_response&& from) noexcept
-      : item_delete_response(arena) {
+  explicit item_delete_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  item_delete_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const item_delete_data& from);
+  item_delete_data(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, item_delete_data&& from) noexcept
+      : item_delete_data(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
@@ -663,30 +667,33 @@ class item_delete_response final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kItemIdFieldNumber = 1,
+    kTemplateIdFieldNumber = 2,
   };
-  // repeated int64 item_id = 1;
-  int item_id_size() const;
-  private:
-  int _internal_item_id_size() const;
-
-  public:
+  // int64 item_id = 1;
   void clear_item_id() ;
-  ::int64_t item_id(int index) const;
-  void set_item_id(int index, ::int64_t value);
-  void add_item_id(::int64_t value);
-  const ::google::protobuf::RepeatedField<::int64_t>& item_id() const;
-  ::google::protobuf::RepeatedField<::int64_t>* PROTOBUF_NONNULL mutable_item_id();
+  ::int64_t item_id() const;
+  void set_item_id(::int64_t value);
 
   private:
-  const ::google::protobuf::RepeatedField<::int64_t>& _internal_item_id() const;
-  ::google::protobuf::RepeatedField<::int64_t>* PROTOBUF_NONNULL _internal_mutable_item_id();
+  ::int64_t _internal_item_id() const;
+  void _internal_set_item_id(::int64_t value);
 
   public:
-  // @@protoc_insertion_point(class_scope:celeritas.proto.client.item_delete_response)
+  // int32 template_id = 2;
+  void clear_template_id() ;
+  ::int32_t template_id() const;
+  void set_template_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_template_id() const;
+  void _internal_set_template_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client.item_delete_data)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
                                    0, 0,
                                    2>
       _table_;
@@ -705,17 +712,18 @@ class item_delete_response final : public ::google::protobuf::Message
     inline explicit Impl_(
         ::google::protobuf::internal::InternalVisibility visibility,
         ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const item_delete_response& from_msg);
-    ::google::protobuf::RepeatedField<::int64_t> item_id_;
-    ::google::protobuf::internal::CachedSize _item_id_cached_byte_size_;
+        const item_delete_data& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    ::int64_t item_id_;
+    ::int32_t template_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_proto_2fclient_2fplayer_2fitem_2eproto;
 };
 
-extern const ::google::protobuf::internal::ClassDataFull item_delete_response_class_data_;
+extern const ::google::protobuf::internal::ClassDataFull item_delete_data_class_data_;
 // -------------------------------------------------------------------
 
 class hero_data final : public ::google::protobuf::internal::ZeroFieldsBase
@@ -1707,7 +1715,7 @@ class item_selected_response final : public ::google::protobuf::Message
     return *reinterpret_cast<const item_selected_response*>(
         &_item_selected_response_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 12;
+  static constexpr int kIndexInFileMessages = 13;
   friend void swap(item_selected_response& a, item_selected_response& b) { a.Swap(&b); }
   inline void Swap(item_selected_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1917,7 +1925,7 @@ class item_selected_request final : public ::google::protobuf::Message
     return *reinterpret_cast<const item_selected_request*>(
         &_item_selected_request_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 11;
+  static constexpr int kIndexInFileMessages = 12;
   friend void swap(item_selected_request& a, item_selected_request& b) { a.Swap(&b); }
   inline void Swap(item_selected_request* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2056,6 +2064,203 @@ class item_selected_request final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull item_selected_request_class_data_;
+// -------------------------------------------------------------------
+
+class item_delete_response final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client.item_delete_response) */ {
+ public:
+  inline item_delete_response() : item_delete_response(nullptr) {}
+  ~item_delete_response() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(item_delete_response* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(item_delete_response));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR item_delete_response(::google::protobuf::internal::ConstantInitialized);
+
+  inline item_delete_response(const item_delete_response& from) : item_delete_response(nullptr, from) {}
+  inline item_delete_response(item_delete_response&& from) noexcept
+      : item_delete_response(nullptr, ::std::move(from)) {}
+  inline item_delete_response& operator=(const item_delete_response& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline item_delete_response& operator=(item_delete_response&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const item_delete_response& default_instance() {
+    return *reinterpret_cast<const item_delete_response*>(
+        &_item_delete_response_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 11;
+  friend void swap(item_delete_response& a, item_delete_response& b) { a.Swap(&b); }
+  inline void Swap(item_delete_response* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(item_delete_response* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  item_delete_response* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<item_delete_response>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const item_delete_response& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const item_delete_response& from) { item_delete_response::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(item_delete_response* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.item_delete_response"; }
+
+ protected:
+  explicit item_delete_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  item_delete_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const item_delete_response& from);
+  item_delete_response(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, item_delete_response&& from) noexcept
+      : item_delete_response(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kDataFieldNumber = 1,
+  };
+  // repeated .celeritas.proto.client.item_delete_data data = 1;
+  int data_size() const;
+  private:
+  int _internal_data_size() const;
+
+  public:
+  void clear_data() ;
+  ::celeritas::proto::client::item_delete_data* PROTOBUF_NONNULL mutable_data(int index);
+  ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::item_delete_data>* PROTOBUF_NONNULL mutable_data();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::item_delete_data>& _internal_data() const;
+  ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::item_delete_data>* PROTOBUF_NONNULL _internal_mutable_data();
+  public:
+  const ::celeritas::proto::client::item_delete_data& data(int index) const;
+  ::celeritas::proto::client::item_delete_data* PROTOBUF_NONNULL add_data();
+  const ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::item_delete_data>& data() const;
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client.item_delete_response)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   1, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const item_delete_response& from_msg);
+    ::google::protobuf::RepeatedPtrField< ::celeritas::proto::client::item_delete_data > data_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fclient_2fplayer_2fitem_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull item_delete_response_class_data_;
 // -------------------------------------------------------------------
 
 class inventory_data final : public ::google::protobuf::Message
@@ -2513,7 +2718,7 @@ class item_response final : public ::google::protobuf::Message
     return *reinterpret_cast<const item_response*>(
         &_item_response_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 9;
+  static constexpr int kIndexInFileMessages = 10;
   friend void swap(item_response& a, item_response& b) { a.Swap(&b); }
   inline void Swap(item_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2727,7 +2932,7 @@ class client_item_request final : public ::google::protobuf::Message
     kItemSelected = 1,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 13;
+  static constexpr int kIndexInFileMessages = 14;
   friend void swap(client_item_request& a, client_item_request& b) { a.Swap(&b); }
   inline void Swap(client_item_request* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2942,7 +3147,7 @@ class client_item_response final : public ::google::protobuf::Message
     kItemSelected = 3,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 14;
+  static constexpr int kIndexInFileMessages = 15;
   friend void swap(client_item_response& a, client_item_response& b) { a.Swap(&b); }
   inline void Swap(client_item_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3929,6 +4134,58 @@ inline inventory_data::PayloadCase inventory_data::payload_case() const {
 }
 // -------------------------------------------------------------------
 
+// item_delete_data
+
+// int64 item_id = 1;
+inline void item_delete_data::clear_item_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.item_id_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000001U;
+}
+inline ::int64_t item_delete_data::item_id() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.item_delete_data.item_id)
+  return _internal_item_id();
+}
+inline void item_delete_data::set_item_id(::int64_t value) {
+  _internal_set_item_id(value);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.item_delete_data.item_id)
+}
+inline ::int64_t item_delete_data::_internal_item_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.item_id_;
+}
+inline void item_delete_data::_internal_set_item_id(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.item_id_ = value;
+}
+
+// int32 template_id = 2;
+inline void item_delete_data::clear_template_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.template_id_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002U;
+}
+inline ::int32_t item_delete_data::template_id() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.item_delete_data.template_id)
+  return _internal_template_id();
+}
+inline void item_delete_data::set_template_id(::int32_t value) {
+  _internal_set_template_id(value);
+  _impl_._has_bits_[0] |= 0x00000002U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.item_delete_data.template_id)
+}
+inline ::int32_t item_delete_data::_internal_template_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.template_id_;
+}
+inline void item_delete_data::_internal_set_template_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.template_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
 // item_selected_data
 
 // int64 id = 1;
@@ -4157,50 +4414,54 @@ inline void item_response::_internal_set_is_login(bool value) {
 
 // item_delete_response
 
-// repeated int64 item_id = 1;
-inline int item_delete_response::_internal_item_id_size() const {
-  return _internal_item_id().size();
+// repeated .celeritas.proto.client.item_delete_data data = 1;
+inline int item_delete_response::_internal_data_size() const {
+  return _internal_data().size();
 }
-inline int item_delete_response::item_id_size() const {
-  return _internal_item_id_size();
+inline int item_delete_response::data_size() const {
+  return _internal_data_size();
 }
-inline void item_delete_response::clear_item_id() {
+inline void item_delete_response::clear_data() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.item_id_.Clear();
+  _impl_.data_.Clear();
 }
-inline ::int64_t item_delete_response::item_id(int index) const {
-  // @@protoc_insertion_point(field_get:celeritas.proto.client.item_delete_response.item_id)
-  return _internal_item_id().Get(index);
-}
-inline void item_delete_response::set_item_id(int index, ::int64_t value) {
-  _internal_mutable_item_id()->Set(index, value);
-  // @@protoc_insertion_point(field_set:celeritas.proto.client.item_delete_response.item_id)
-}
-inline void item_delete_response::add_item_id(::int64_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _internal_mutable_item_id()->Add(value);
-  // @@protoc_insertion_point(field_add:celeritas.proto.client.item_delete_response.item_id)
-}
-inline const ::google::protobuf::RepeatedField<::int64_t>& item_delete_response::item_id() const
+inline ::celeritas::proto::client::item_delete_data* PROTOBUF_NONNULL item_delete_response::mutable_data(int index)
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:celeritas.proto.client.item_delete_response.item_id)
-  return _internal_item_id();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.item_delete_response.data)
+  return _internal_mutable_data()->Mutable(index);
 }
-inline ::google::protobuf::RepeatedField<::int64_t>* PROTOBUF_NONNULL item_delete_response::mutable_item_id()
+inline ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::item_delete_data>* PROTOBUF_NONNULL item_delete_response::mutable_data()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:celeritas.proto.client.item_delete_response.item_id)
+  // @@protoc_insertion_point(field_mutable_list:celeritas.proto.client.item_delete_response.data)
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_item_id();
+  return _internal_mutable_data();
 }
-inline const ::google::protobuf::RepeatedField<::int64_t>&
-item_delete_response::_internal_item_id() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.item_id_;
+inline const ::celeritas::proto::client::item_delete_data& item_delete_response::data(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.item_delete_response.data)
+  return _internal_data().Get(index);
 }
-inline ::google::protobuf::RepeatedField<::int64_t>* PROTOBUF_NONNULL
-item_delete_response::_internal_mutable_item_id() {
+inline ::celeritas::proto::client::item_delete_data* PROTOBUF_NONNULL item_delete_response::add_data()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::celeritas::proto::client::item_delete_data* _add = _internal_mutable_data()->Add();
+  // @@protoc_insertion_point(field_add:celeritas.proto.client.item_delete_response.data)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::item_delete_data>& item_delete_response::data() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:celeritas.proto.client.item_delete_response.data)
+  return _internal_data();
+}
+inline const ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::item_delete_data>&
+item_delete_response::_internal_data() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.item_id_;
+  return _impl_.data_;
+}
+inline ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::item_delete_data>* PROTOBUF_NONNULL
+item_delete_response::_internal_mutable_data() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.data_;
 }
 
 // -------------------------------------------------------------------

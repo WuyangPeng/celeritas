@@ -10,7 +10,7 @@ celeritas::execute_change_item::execute_change_item(player_item_document* player
       app_config_{ std::move(app_config) },
       item_{},
       inventory_data_{},
-      id_{},
+      delete_inventory_data_{},
       change_{ false }
 {
     item_.add_item_info(template_id, count);
@@ -23,7 +23,7 @@ celeritas::execute_change_item::execute_change_item(player_item_document* player
       app_config_{ std::move(app_config) },
       item_{ std::move(item) },
       inventory_data_{},
-      id_{},
+      delete_inventory_data_{},
       change_{ false }
 {
 }
@@ -46,9 +46,9 @@ void celeritas::execute_change_item::send_message()
         player_item_document_->send_item_message(false, inventory_data_);
     }
 
-    if (!id_.empty())
+    if (!delete_inventory_data_.empty())
     {
-        player_item_document_->send_delete_item_message(id_);
+        player_item_document_->send_delete_item_message(delete_inventory_data_);
     }
 }
 
@@ -140,7 +140,7 @@ int64_t celeritas::execute_change_item::remove_from_existing_stacks(const int te
                 count += inventory.get_count();
                 player_item_document_->remove_inventory_data(inventory.get_item_id());
                 id_iter = std::make_reverse_iterator(id_container->erase(std::next(id_iter).base()));
-                id_.emplace_back(inventory.get_item_id());
+                delete_inventory_data_.emplace(inventory.get_item_id(), inventory);
                 continue;
             }
             ++id_iter;

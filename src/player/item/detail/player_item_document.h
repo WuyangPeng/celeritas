@@ -60,7 +60,7 @@ namespace celeritas
 
         void send_item_message(bool is_login, const inventory_data_container& inventory) const;
 
-        void send_delete_item_message(const id_container& id);
+        void send_delete_item_message(const inventory_data_container& inventory) const;
 
     private:
         using template_container = std::map<int, id_container>;

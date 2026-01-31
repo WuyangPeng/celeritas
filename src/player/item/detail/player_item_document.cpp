@@ -259,15 +259,17 @@ void celeritas::player_item_document::send_item_message(const bool is_login, con
     }
 }
 
-void celeritas::player_item_document::send_delete_item_message(const id_container& id)
+void celeritas::player_item_document::send_delete_item_message(const inventory_data_container& inventory) const
 {
     const header header{ player_state_->get_user_id() };
 
     proto::celeritas response{};
     auto* item_response = response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_item()->mutable_item_delete();
-    for (const auto& element : id)
+    for (const auto& element : inventory | std::views::values)
     {
-        item_response->add_item_id(element);
+        auto* data = item_response->add_data();
+        data->set_item_id(element.get_item_id());
+        data->set_template_id(element.get_template_id());
     }
 
     if (!player_state_->write(gateway_type.data(), player_state_->get_instance_id(), header, response))

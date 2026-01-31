@@ -46,7 +46,7 @@ namespace celeritas
         const_app_config_shared_ptr app_config_;
         item_container item_;
         inventory_data_container inventory_data_;
-        id_container id_;
+        inventory_data_container delete_inventory_data_;
         bool change_;
     };
 }
