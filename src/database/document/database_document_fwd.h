@@ -8,6 +8,10 @@ namespace celeritas
     class equipment_data;
     class inventory_data;
     class item_selected_data;
+    class avatar_data;
+    class frame_data;
+    class title_data;
+    class hero_data;
     class player_time_refresh;
     class red_dost;
     class server_role;

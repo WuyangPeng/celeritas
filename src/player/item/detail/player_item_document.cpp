@@ -184,7 +184,7 @@ void celeritas::player_item_document::add_inventory_data(const inventory_data& i
     position_data_.at(inventory_data.get_position()) = inventory_data.get_item_id();
 }
 
-void celeritas::player_item_document::send_item_message(const bool is_login, const inventory_data_container& inventory)
+void celeritas::player_item_document::send_item_message(const bool is_login, const inventory_data_container& inventory) const
 {
     const header header{ player_state_->get_user_id() };
 
@@ -203,6 +203,11 @@ void celeritas::player_item_document::send_item_message(const bool is_login, con
         switch (const auto custom_data = element.get_custom_data();
             custom_data.get_kind())
         {
+            case config::item_type::custom:
+            {
+                inventory_data->mutable_custom();
+            }
+            break;
             case config::item_type::consumable:
             {
                 auto* consumable = inventory_data->mutable_consumable();
@@ -218,6 +223,26 @@ void celeritas::player_item_document::send_item_message(const bool is_login, con
 
                 equipment->set_durability(data->get_durability());
                 equipment->set_strength(data->get_strength());
+            }
+            break;
+            case config::item_type::avatar:
+            {
+                inventory_data->mutable_avatar();
+            }
+            break;
+            case config::item_type::frame:
+            {
+                inventory_data->mutable_frame();
+            }
+            break;
+            case config::item_type::title:
+            {
+                inventory_data->mutable_title();
+            }
+            break;
+            case config::item_type::hero:
+            {
+                inventory_data->mutable_hero();
             }
             break;
             default:
