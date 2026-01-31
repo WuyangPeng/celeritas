@@ -19,6 +19,15 @@ celeritas::item_selected::item_selected(protobuf_handle_parameter_shared_ptr han
 celeritas::player_service_base::void_awaitable_type celeritas::item_selected::response()
 {
     const auto& item_selected = request_.item_selected();
+    if (item_selected.selected_id() != 0)
+    {
+        if (!player_item_component_->has_item(item_selected.selected_id()))
+        {
+            get_player_state()->send_error_message(get_rpc(), game_error_type::item_not_exist);
+            co_return;
+        }
+    }
+
     const auto optional_item_selected_data = player_item_component_->change_item_selected(get_config(),
                                                                                           underlying_cast_enum<config::item_type>(item_selected.item_type()),
                                                                                           underlying_cast_enum<config::item_selected_child_type>(item_selected.child_type()),
@@ -31,8 +40,6 @@ celeritas::player_service_base::void_awaitable_type celeritas::item_selected::re
     }
     else
     {
-        get_player_state()->send_error_message(get_rpc(), game_error_type::account_bound);
+        get_player_state()->send_error_message(get_rpc(), game_error_type::item_selected_error);
     }
-
-    co_return;
 }

@@ -50,6 +50,8 @@ namespace celeritas
 
         void send_item_message(bool is_login, int rpc, const item_selected_data& item_selected);
 
+        [[nodiscard]] bool has_item(int64_t item_id) const;
+
     private:
         using delete_item_id_container = std::vector<int64_t>;
 

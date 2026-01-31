@@ -46,6 +46,8 @@ namespace celeritas
 
         void remove_inventory_data(int64_t item_id);
 
+        [[nodiscard]] bool has_item(int64_t item_id) const;
+
         [[nodiscard]] static const_item_config_shared_ptr get_item_config(int template_id);
 
         [[nodiscard]] id_container* get_id_container(int template_id);

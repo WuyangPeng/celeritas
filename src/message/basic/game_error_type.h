@@ -51,6 +51,7 @@ namespace celeritas
 
         // 物品模块
         item_selected_error = 60600,
+        item_not_exist = 60601,
 
         // 养成模块
         max_develop = 60700,

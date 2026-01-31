@@ -111,6 +111,11 @@ void celeritas::player_item_document::remove_inventory_data(const int64_t item_i
     inventory_data_.erase(item_id);
 }
 
+bool celeritas::player_item_document::has_item(const int64_t item_id) const
+{
+    return inventory_data_.contains(item_id);
+}
+
 celeritas::player_item_document::const_item_config_shared_ptr celeritas::player_item_document::get_item_config(int template_id)
 {
     const auto game_tables = game_config::get_instance().get_game_tables();

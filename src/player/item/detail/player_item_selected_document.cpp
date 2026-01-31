@@ -52,30 +52,29 @@ celeritas::player_item_selected_document::optional_item_selected_data celeritas:
         }
 
         iter->second.set_selected_id(selected_id);
- return iter->second;
+
+        return iter->second;
     }
-    else
+
+    if (selected_id == 0)
     {
-        if (selected_id == 0)
-        {
-            return std::nullopt;
-        }
-
-        const auto server_config = app_config->get_server_config();
-
-        item_selected_data data{};
-
-        data.set_id(snowflake_generator::get_instance().generate(server_config->get_datacenter_id(), server_config->get_worker_id()));
-        data.set_item_type(item_type);
-        data.set_child_type(child_type);
-        data.set_operation_id(operation_id);
-        data.set_parameter(parameter);
-        data.set_selected_id(selected_id);
-
-        item_selected_.emplace(key, data);
-
-        return data;
+        return std::nullopt;
     }
+
+    const auto server_config = app_config->get_server_config();
+
+    item_selected_data data{};
+
+    data.set_id(snowflake_generator::get_instance().generate(server_config->get_datacenter_id(), server_config->get_worker_id()));
+    data.set_item_type(item_type);
+    data.set_child_type(child_type);
+    data.set_operation_id(operation_id);
+    data.set_parameter(parameter);
+    data.set_selected_id(selected_id);
+
+    item_selected_.emplace(key, data);
+
+    return data;
 }
 
 void celeritas::player_item_selected_document::on_dependencies_ready()
