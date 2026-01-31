@@ -98,7 +98,7 @@ void celeritas::player_item_component::send_item_message(const bool is_login, co
     selected_document_.send_item_message(is_login, rpc, player_item_selected_document::item_selected_data_container{ { item_selected_key, item_selected } });
 }
 
-bool celeritas::player_item_component::has_item(int64_t item_id) const
+bool celeritas::player_item_component::has_item(const int64_t item_id) const
 {
     return document_.has_item(item_id);
 }
