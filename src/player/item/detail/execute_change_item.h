@@ -16,9 +16,9 @@ namespace celeritas
         using class_type = execute_change_item;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
 
-        execute_change_item(player_item_document* player_item_document, const const_app_config_shared_ptr& app_config, int template_id, int64_t count);
+        execute_change_item(player_item_document* player_item_document, const_app_config_shared_ptr app_config, int template_id, int64_t count);
 
-        execute_change_item(player_item_document* player_item_document, const const_app_config_shared_ptr& app_config, const item_container& item);
+        execute_change_item(player_item_document* player_item_document, const_app_config_shared_ptr app_config, item_container item);
 
         void execute();
 

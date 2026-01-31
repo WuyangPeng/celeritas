@@ -90,14 +90,15 @@ bool celeritas::player_item_document::change_item(const const_app_config_shared_
     return execute.is_change();
 }
 
-celeritas::player_item_document::inventory_data_container_iter celeritas::player_item_document::get_inventory_data(const int64_t item_id)
+celeritas::player_item_document::optional_inventory_data_container_iter celeritas::player_item_document::get_inventory_data(const int64_t item_id)
 {
-    return inventory_data_.find(item_id);
-}
+    if (const auto iter = inventory_data_.find(item_id);
+        iter != inventory_data_.cend())
+    {
+        return iter;
+    }
 
-celeritas::player_item_document::inventory_data_container_const_iter celeritas::player_item_document::end() const
-{
-    return inventory_data_.cend();
+    return std::nullopt;
 }
 
 void celeritas::player_item_document::on_dependencies_ready()
@@ -105,9 +106,37 @@ void celeritas::player_item_document::on_dependencies_ready()
     send_item_message(inventory_data_);
 }
 
-void celeritas::player_item_document::remove_inventory_data(int64_t item_id)
+void celeritas::player_item_document::remove_inventory_data(const int64_t item_id)
 {
     inventory_data_.erase(item_id);
+}
+
+celeritas::player_item_document::const_item_config_shared_ptr celeritas::player_item_document::get_item_config(int template_id)
+{
+    const auto game_tables = game_config::get_instance().get_game_tables();
+    const auto item = game_tables->get_tables()->item_config_container.get(template_id);
+    if (!item)
+    {
+        throw celeritas_error{ "item not found,template id = {}", template_id };
+    }
+
+    return *item;
+}
+
+celeritas::player_item_document::id_container* celeritas::player_item_document::get_id_container(const int template_id)
+{
+    return const_cast<id_container*>(static_cast<const class_type*>(this)->get_id_container(template_id));
+}
+
+const celeritas::player_item_document::id_container* celeritas::player_item_document::get_id_container(const int template_id) const
+{
+    if (const auto template_iter = template_data_.find(template_id);
+        template_iter != template_data_.cend())
+    {
+        return &template_iter->second;
+    }
+
+    return nullptr;
 }
 
 int celeritas::player_item_document::get_next_position(const bool is_squares) const
@@ -150,34 +179,6 @@ void celeritas::player_item_document::add_inventory_data(const inventory_data& i
     position_data_.at(inventory_data.get_position()) = inventory_data.get_item_id();
 }
 
-celeritas::player_item_document::const_item_config_shared_ptr celeritas::player_item_document::get_item_config(int template_id)
-{
-    const auto game_tables = game_config::get_instance().get_game_tables();
-    const auto item = game_tables->get_tables()->item_config_container.get(template_id);
-    if (!item)
-    {
-        throw celeritas_error{ "item not found,template id = {}", template_id };
-    }
-
-    return *item;
-}
-
-celeritas::player_item_document::id_container* celeritas::player_item_document::get_id_container(const int template_id)
-{
-    return const_cast<id_container*>(static_cast<const class_type*>(this)->get_id_container(template_id));
-}
-
-const celeritas::player_item_document::id_container* celeritas::player_item_document::get_id_container(const int template_id) const
-{
-    if (const auto template_iter = template_data_.find(template_id);
-        template_iter != template_data_.cend())
-    {
-        return &template_iter->second;
-    }
-
-    return nullptr;
-}
-
 void celeritas::player_item_document::send_item_message(const inventory_data_container& inventory)
 {
     const header header{ player_state_->get_user_id() };
@@ -196,12 +197,7 @@ void celeritas::player_item_document::send_item_message(const inventory_data_con
         switch (const auto custom_data = element.get_custom_data();
             custom_data.get_kind())
         {
-            case custom_data::kind::none:
-            {
-                inventory_data->mutable_custom();
-            }
-            break;
-            case custom_data::kind::consumable:
+            case config::item_type::consumable:
             {
                 auto* consumable = inventory_data->mutable_consumable();
                 const auto* data = custom_data.get_consumable();
@@ -209,13 +205,18 @@ void celeritas::player_item_document::send_item_message(const inventory_data_con
                 consumable->set_expire_time(data->get_expire_time());
             }
             break;
-            case custom_data::kind::equipment:
+            case config::item_type::equipment:
             {
                 auto* equipment = inventory_data->mutable_equipment();
                 const auto* data = custom_data.get_equipment();
 
                 equipment->set_durability(data->get_durability());
                 equipment->set_strength(data->get_strength());
+            }
+            break;
+            default:
+            {
+                inventory_data->mutable_custom();
             }
             break;
         }

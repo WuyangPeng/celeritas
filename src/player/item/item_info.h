@@ -15,6 +15,8 @@ namespace celeritas
 
         [[nodiscard]] int64_t get_count() const;
 
+        void add_count(int64_t count);
+
     private:
         int template_id_;
         int64_t count_;

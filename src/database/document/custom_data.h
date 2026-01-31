@@ -2,6 +2,7 @@
 
 #include "consumable_data.h"
 #include "equipment_data.h"
+#include "config/luban/generated/schema.h"
 #include "database/basic/database_data_type_traits.h"
 
 #include <variant>
@@ -25,9 +26,7 @@ namespace celeritas
         static constexpr std::string_view equipment_description = "equipment";
         static constexpr std::string_view consumable_description = "consumable";
 
-        enum class kind { none, consumable, equipment };
-
-        [[nodiscard]] kind get_kind() const noexcept;
+        [[nodiscard]] config::item_type get_kind() const noexcept;
 
         [[nodiscard]] const equipment_data* get_equipment() const noexcept;
 

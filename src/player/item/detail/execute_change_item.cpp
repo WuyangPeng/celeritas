@@ -2,14 +2,29 @@
 #include "common/core/snowflake_generator.h"
 #include "common/logging/logger.h"
 
-celeritas::execute_change_item::execute_change_item(player_item_document* player_item_document, const const_app_config_shared_ptr& app_config, const int template_id, const int64_t count)
-    : player_item_document_{ player_item_document }, app_config_{ app_config }, item_{}, inventory_data_{}, id_{}, change_{ false }
+celeritas::execute_change_item::execute_change_item(player_item_document* player_item_document,
+                                                    const_app_config_shared_ptr app_config,
+                                                    const int template_id,
+                                                    const int64_t count)
+    : player_item_document_{ player_item_document },
+      app_config_{ std::move(app_config) },
+      item_{},
+      inventory_data_{},
+      id_{},
+      change_{ false }
 {
     item_.add_item_info(template_id, count);
 }
 
-celeritas::execute_change_item::execute_change_item(player_item_document* player_item_document, const const_app_config_shared_ptr& app_config, const item_container& item)
-    : player_item_document_{ player_item_document }, app_config_{ app_config }, item_{ item }, inventory_data_{}, id_{}, change_{ false }
+celeritas::execute_change_item::execute_change_item(player_item_document* player_item_document,
+                                                    const_app_config_shared_ptr app_config,
+                                                    item_container item)
+    : player_item_document_{ player_item_document },
+      app_config_{ std::move(app_config) },
+      item_{ std::move(item) },
+      inventory_data_{},
+      id_{},
+      change_{ false }
 {
 }
 
@@ -49,7 +64,7 @@ bool celeritas::execute_change_item::execute(const int template_id, int64_t coun
         return false;
     }
 
-    const auto item = player_item_document_->get_item_config(template_id);
+    const auto item = player_item_document::get_item_config(template_id);
     const auto stacked = item->stacked;
 
     if (count > 0)
@@ -83,21 +98,22 @@ int64_t celeritas::execute_change_item::add_to_existing_stacks(const int templat
     {
         for (auto& element : std::ranges::reverse_view(*id_container))
         {
-            if (auto inventory_iter = player_item_document_->get_inventory_data(element);
-                inventory_iter != player_item_document_->end())
+            if (auto optional_inventory_iter = player_item_document_->get_inventory_data(element);
+                optional_inventory_iter)
             {
-                inventory_iter->second.add_count(count);
-                if (stacked > 0 && inventory_iter->second.get_count() > stacked)
+                auto& inventory = optional_inventory_iter.value()->second;
+                inventory.add_count(count);
+                if (stacked > 0 && inventory.get_count() > stacked)
                 {
-                    count = inventory_iter->second.get_count() - stacked;
-                    inventory_iter->second.set_count(stacked);
+                    count = inventory.get_count() - stacked;
+                    inventory.set_count(stacked);
                 }
                 else
                 {
                     return 0;
                 }
 
-                inventory_data_.emplace(inventory_iter->second.get_item_id(), inventory_iter->second);
+                inventory_data_.emplace(inventory.get_item_id(), inventory);
             }
         }
     }
@@ -110,20 +126,21 @@ int64_t celeritas::execute_change_item::remove_from_existing_stacks(const int te
     {
         for (auto id_iter = id_container->rbegin(); id_iter != id_container->rend();)
         {
-            if (auto inventory_iter = player_item_document_->get_inventory_data(*id_iter);
-                inventory_iter != player_item_document_->end())
+            if (auto optional_inventory_iter = player_item_document_->get_inventory_data(*id_iter);
+                optional_inventory_iter)
             {
-                if (inventory_iter->second.get_count() >= -count)
+                auto& inventory = optional_inventory_iter.value()->second;
+                if (inventory.get_count() >= -count)
                 {
-                    inventory_iter->second.add_count(count);
-                    inventory_data_.emplace(inventory_iter->second.get_item_id(), inventory_iter->second);
+                    inventory.add_count(count);
+                    inventory_data_.emplace(inventory.get_item_id(), inventory);
                     return 0;
                 }
 
-                count += inventory_iter->second.get_count();
-                player_item_document_->remove_inventory_data(inventory_iter->second.get_item_id());
+                count += inventory.get_count();
+                player_item_document_->remove_inventory_data(inventory.get_item_id());
                 id_iter = std::make_reverse_iterator(id_container->erase(std::next(id_iter).base()));
-                id_.emplace_back(inventory_iter->second.get_item_id());
+                id_.emplace_back(inventory.get_item_id());
                 continue;
             }
             ++id_iter;

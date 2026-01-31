@@ -14,3 +14,8 @@ int64_t celeritas::item_info::get_count() const
 {
     return count_;
 }
+
+void celeritas::item_info::add_count(const int64_t count)
+{
+    count_ += count;
+}

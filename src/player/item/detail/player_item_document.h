@@ -21,10 +21,10 @@ namespace celeritas
         using const_item_config_shared_ptr = std::shared_ptr<const config::game::item_config>;
         using id_container = std::vector<int64_t>;
         using inventory_data_container = std::map<int64_t, inventory_data>;
-        using inventory_data_container_iter = inventory_data_container::iterator;
-        using inventory_data_container_const_iter = inventory_data_container::const_iterator;
+        using inventory_data_container_iter = std::map<int64_t, inventory_data>::iterator;
+        using optional_inventory_data_container_iter = std::optional<inventory_data_container_iter>;
 
-        player_item_document(player_state* player_state);
+        explicit player_item_document(player_state* player_state);
 
         void set_item(traits::param_type::document_array_type item_document);
 
@@ -40,9 +40,7 @@ namespace celeritas
 
         [[nodiscard]] bool change_item(const const_app_config_shared_ptr& app_config, const item_container& item);
 
-        [[nodiscard]] inventory_data_container_iter get_inventory_data(int64_t item_id);
-
-        [[nodiscard]] inventory_data_container_const_iter end() const;
+        [[nodiscard]] optional_inventory_data_container_iter get_inventory_data(int64_t item_id);
 
         void on_dependencies_ready();
 
