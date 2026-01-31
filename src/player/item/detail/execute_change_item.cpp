@@ -43,7 +43,7 @@ void celeritas::execute_change_item::send_message()
 {
     if (!inventory_data_.empty())
     {
-        player_item_document_->send_item_message(inventory_data_);
+        player_item_document_->send_item_message(false, inventory_data_);
     }
 
     if (!id_.empty())

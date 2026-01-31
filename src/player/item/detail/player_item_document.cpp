@@ -103,7 +103,7 @@ celeritas::player_item_document::optional_inventory_data_container_iter celerita
 
 void celeritas::player_item_document::on_dependencies_ready()
 {
-    send_item_message(inventory_data_);
+    send_item_message(true, inventory_data_);
 }
 
 void celeritas::player_item_document::remove_inventory_data(const int64_t item_id)
@@ -179,12 +179,13 @@ void celeritas::player_item_document::add_inventory_data(const inventory_data& i
     position_data_.at(inventory_data.get_position()) = inventory_data.get_item_id();
 }
 
-void celeritas::player_item_document::send_item_message(const inventory_data_container& inventory)
+void celeritas::player_item_document::send_item_message(const bool is_login, const inventory_data_container& inventory)
 {
     const header header{ player_state_->get_user_id() };
 
     proto::celeritas response{};
     auto* item_response = response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_item()->mutable_item();
+    item_response->set_is_login(is_login);
     for (const auto& element : inventory | std::views::values)
     {
         auto* inventory_data = item_response->add_inventory();

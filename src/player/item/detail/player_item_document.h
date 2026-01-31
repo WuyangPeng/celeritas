@@ -56,7 +56,7 @@ namespace celeritas
 
         void add_inventory_data(const inventory_data& inventory_data);
 
-        void send_item_message(const inventory_data_container& inventory);
+        void send_item_message(bool is_login, const inventory_data_container& inventory);
 
         void send_delete_item_message(const id_container& id);
 

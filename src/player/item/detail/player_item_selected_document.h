@@ -5,6 +5,7 @@
 #include "config/luban/generated/schema.h"
 #include "database/basic/database_data_type_traits.h"
 #include "database/document/item_selected_data.h"
+#include "player/component/player_state.h"
 
 #include <boost/asio/awaitable.hpp>
 
@@ -18,6 +19,9 @@ namespace celeritas
         using class_type = player_item_selected_document;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
+        using item_selected_data_container = std::map<item_selected_key, item_selected_data>;
+
+        explicit player_item_selected_document(player_state* player_state);
 
         void set_item_selected(traits::param_type::document_array_type item_selected_document);
 
@@ -27,11 +31,12 @@ namespace celeritas
 
         void on_dependencies_ready();
 
-    private:
-        using item_selected_data_container = std::map<item_selected_key, item_selected_data>;
+        void send_item_message(bool is_login, int rpc, const item_selected_data_container& item_selected);
 
+    private:
         void add_item_selected_data(const item_selected_data& item_selected);
 
         item_selected_data_container item_selected_;
+        player_state* player_state_;
     };
 }
