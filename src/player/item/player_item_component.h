@@ -14,6 +14,7 @@ namespace celeritas
     public:
         using class_type = player_item_component;
         using base_type = player_component;
+        using optional_item_selected_data = std::optional<item_selected_data>;
 
         explicit player_item_component(player_state* player_state) noexcept;
 
@@ -38,14 +39,16 @@ namespace celeritas
 
         void change_item(const const_app_config_shared_ptr& app_config, const item_container& item);
 
-        void change_item_selected(const const_app_config_shared_ptr& app_config,
-                                  config::item_type item_type,
-                                  config::item_selected_child_type child_type,
-                                  int64_t operation_id,
-                                  int parameter,
-                                  int64_t selected_id);
+        [[nodiscard]] optional_item_selected_data change_item_selected(const const_app_config_shared_ptr& app_config,
+                                                                       config::item_type item_type,
+                                                                       config::item_selected_child_type child_type,
+                                                                       int64_t operation_id,
+                                                                       int parameter,
+                                                                       int64_t selected_id);
 
         [[nodiscard]] void_awaitable_type on_dependencies_ready() override;
+
+        void send_item_message(bool is_login, int rpc, const item_selected_data& item_selected);
 
     private:
         using delete_item_id_container = std::vector<int64_t>;

@@ -35,12 +35,12 @@ celeritas::traits::document_array_type celeritas::player_item_selected_document:
     return documents;
 }
 
-bool celeritas::player_item_selected_document::change_item_selected(const const_app_config_shared_ptr& app_config,
-                                                                    const config::item_type item_type,
-                                                                    const config::item_selected_child_type child_type,
-                                                                    const int64_t operation_id,
-                                                                    const int parameter,
-                                                                    const int64_t selected_id)
+celeritas::player_item_selected_document::optional_item_selected_data celeritas::player_item_selected_document::change_item_selected(const const_app_config_shared_ptr& app_config,
+                                                                                                                                     const config::item_type item_type,
+                                                                                                                                     const config::item_selected_child_type child_type,
+                                                                                                                                     const int64_t operation_id,
+                                                                                                                                     const int parameter,
+                                                                                                                                     const int64_t selected_id)
 {
     const item_selected_key key{ item_type, child_type, operation_id, parameter };
     if (const auto iter = item_selected_.find(key);
@@ -48,16 +48,17 @@ bool celeritas::player_item_selected_document::change_item_selected(const const_
     {
         if (selected_id == iter->second.get_selected_id())
         {
-            return false;
+            return std::nullopt;
         }
 
         iter->second.set_selected_id(selected_id);
+ return iter->second;
     }
     else
     {
         if (selected_id == 0)
         {
-            return false;
+            return std::nullopt;
         }
 
         const auto server_config = app_config->get_server_config();
@@ -72,9 +73,9 @@ bool celeritas::player_item_selected_document::change_item_selected(const const_
         data.set_selected_id(selected_id);
 
         item_selected_.emplace(key, data);
-    }
 
-    return true;
+        return data;
+    }
 }
 
 void celeritas::player_item_selected_document::on_dependencies_ready()

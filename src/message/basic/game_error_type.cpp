@@ -39,6 +39,8 @@ std::string celeritas::get_game_error_description(const game_error_type game_err
                                                 { game_error_type::item_id_error, "item id error" },
                                                 { game_error_type::item_count_error, "item count error" },
 
+                                                { game_error_type::item_selected_error, "item selected error" },
+
                                                 { game_error_type::max_develop, "max develop" },
                                                 { game_error_type::non_resettable, "non resettable" },
                                                 { game_error_type::develop_not_exist, "develop not exist" }

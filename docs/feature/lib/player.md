@@ -68,13 +68,23 @@
 * **💓 心跳 (`heartbeat`)**
     - **作用**：处理客户端与服务器之间的心跳消息，以维持连接的活跃状态。
 
-
 ## debug components (调试组件)
 
 * **🐛 玩家调试组件 (`player_debug_component`)**
     - **作用**：一个具体的玩家组件，负责处理游戏中的调试和作弊命令。
 
 
+* **🛠️ 调试基类 (`debug_base`)**
+    - **作用**：所有调试命令处理类的基类，继承自 `player_service_base`。
+    - **功能**：
+        - 提供统一的接口 `do_response()` 供子类实现具体的调试逻辑。
+        - 提供 `get_id()` 和 `get_parameter()` 等辅助方法获取调试参数。
+        - 负责解析和分发具体的调试请求。
+
+
+* **➕ 添加道具 (`add_item`)**
+    - **作用**：处理添加道具的调试命令。
+    - **功能**：继承自 `debug_base`，解析请求中的道具ID和数量，并调用 `player_item_component` 添加道具。
 
 ## time components (时间组件)
 
@@ -112,6 +122,12 @@
     - **作用**：表示一个具体的道具实例信息。
     - **内容**：包含 `template_id` (道具模板ID) 和 `count` (道具数量)。
 
+
+* **✅ 道具选择 (`item_selected`)**
+    - **作用**：处理玩家选择道具的业务逻辑。
+    - **功能**：继承自 `player_service_base`，接收 `item_selected_request` 请求，并调用 `player_item_component`
+      来处理道具的选择逻辑，例如更新道具状态、触发道具效果等。
+
 ## develop components (养成组件)
 
 * **🛠️ 玩家养成组件 (`player_develop_component`)**
@@ -146,7 +162,6 @@
 
 * **🗺️ 玩家副本组件 (`player_instance_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的副本进度和状态。
-
 
 ## finish components (完成组件)
 

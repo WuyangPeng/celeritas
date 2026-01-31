@@ -234,3 +234,16 @@
 * **🔌 离线请求消息处理器 (`offline_request_message_handler`)**
     - **作用**：处理玩家离线请求。
     - **功能**：接收并处理`offline_request`消息，处理玩家下线逻辑。
+
+
+* **🧩 物品选择消息处理器 (`item_selected_message_handler`)**
+    - **作用**：处理玩家在客户端选择或切换物品的请求。
+    - **功能**：接收并处理 `item_selected_request` 消息，调用 `player/item/item_selected`
+      相关逻辑来更新玩家的已选择项；在成功更新后向客户端推送当前的选择状态（`item_selected_response`）。
+
+
+* **🔧 调试消息处理器 (`debug_message_handler`)**
+    - **作用**：处理运行时调试或管理类的请求（仅用于开发/管理用途）。
+    - **功能**：接收并分发 `debug` 类型的请求（如 `add_item` 等子类型），执行相应的调试动作，并将结果或错误信息返回给调用方。
+
+

@@ -26,6 +26,7 @@ namespace celeritas
     class add_item;
     class player_debug_component;
 
+    class item_selected;
     class player_time_component;
     class player_time_refresh_key;
 

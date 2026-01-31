@@ -67,17 +67,20 @@ void celeritas::player_item_component::change_item(const const_app_config_shared
     }
 }
 
-void celeritas::player_item_component::change_item_selected(const const_app_config_shared_ptr& app_config,
-                                                            const config::item_type item_type,
-                                                            const config::item_selected_child_type child_type,
-                                                            const int64_t operation_id,
-                                                            const int parameter,
-                                                            const int64_t selected_id)
+celeritas::player_item_component::optional_item_selected_data celeritas::player_item_component::change_item_selected(const const_app_config_shared_ptr& app_config,
+                                                                                                                     const config::item_type item_type,
+                                                                                                                     const config::item_selected_child_type child_type,
+                                                                                                                     const int64_t operation_id,
+                                                                                                                     const int parameter,
+                                                                                                                     const int64_t selected_id)
 {
-    if (selected_document_.change_item_selected(app_config, item_type, child_type, operation_id, parameter, selected_id))
+    const auto optional_selected_data = selected_document_.change_item_selected(app_config, item_type, child_type, operation_id, parameter, selected_id);
+    if (optional_selected_data)
     {
         selected_database_.set_item(selected_document_.get_item_selected());
     }
+
+    return optional_selected_data;
 }
 
 celeritas::player_component::void_awaitable_type celeritas::player_item_component::on_dependencies_ready()
@@ -86,6 +89,13 @@ celeritas::player_component::void_awaitable_type celeritas::player_item_componen
     selected_document_.on_dependencies_ready();
 
     co_return;
+}
+
+void celeritas::player_item_component::send_item_message(const bool is_login, const int rpc, const item_selected_data& item_selected)
+{
+    const item_selected_key item_selected_key{ item_selected.get_item_type(), item_selected.get_child_type(), item_selected.get_operation_id(), item_selected.get_parameter() };
+
+    selected_document_.send_item_message(is_login, rpc, player_item_selected_document::item_selected_data_container{ { item_selected_key, item_selected } });
 }
 
 void celeritas::player_item_component::update_document()
