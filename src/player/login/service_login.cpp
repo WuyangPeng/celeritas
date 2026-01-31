@@ -1,6 +1,7 @@
 ﻿#include "create_account.h"
 #include "create_user.h"
 #include "service_login.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 #include "common/core/time_helper.h"
 #include "config/aggregate/app_config.h"
@@ -16,11 +17,11 @@
 #include "proto/celeritas.pb.h"
 
 celeritas::service_login::service_login(protobuf_handle_parameter_shared_ptr protobuf_handle_parameter, const proto::service::service_login_request& login)
-    : protobuf_handle_parameter_{ std::move(protobuf_handle_parameter) }, login_{ login }
+    : protobuf_handle_parameter_{ std::move(protobuf_handle_parameter) }, login_{ login }, is_new_user_{ false }
 {
 }
 
-celeritas::service_login::int64_awaitable_type celeritas::service_login::response() const
+celeritas::service_login::int64_awaitable_type celeritas::service_login::response()
 {
     if (login_.new_account())
     {
@@ -42,11 +43,19 @@ celeritas::service_login::int64_awaitable_type celeritas::service_login::respons
 
     LOG_CHANNEL(player_channel, debug) << "login add player = " << login_.account_id() << ",bind id = " << login_.account_bind_id();
 
-    const auto player = player_manager::get_instance().add_player(*user, protobuf_handle_parameter_->get_resource_loader(), protobuf_handle_parameter_->get_any_io_executor(), protobuf_handle_parameter_->get_instance_id(), login_);
+    const auto player = player_manager::get_instance().add_player(*user, protobuf_handle_parameter_->get_resource_loader(), protobuf_handle_parameter_->get_any_io_executor(), protobuf_handle_parameter_->get_instance_id(), login_, is_new_user_);
 
     send_success_message(user->get_user_id());
 
-    co_await load_player(user, player);
+    co_spawn(player->get_any_io_executor(),
+             noexcept_safe_call_and_log_awaitable([player = player,
+                                                      user = user,
+                                                      self = shared_from_this()] {
+                                                      return self->load_player(user, player);;
+                                                  },
+                                                  player_channel,
+                                                  "load player error: "),
+             boost::asio::detached);
 
     co_return user->get_user_id();
 }
@@ -75,7 +84,7 @@ void celeritas::service_login::send_success_message(const int64_t user_id) const
     protobuf_handle_parameter_->write_to_response(header, response);
 }
 
-celeritas::service_login::optional_user_awaitable_type celeritas::service_login::get_user() const
+celeritas::service_login::optional_user_awaitable_type celeritas::service_login::get_user()
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_player_db_name.data());
     const auto key = std::make_shared<basis_database_container>(basis_database_container::object_container{ { user::account_id_describe, login_.account_id() },
@@ -93,6 +102,7 @@ celeritas::service_login::optional_user_awaitable_type celeritas::service_login:
             co_return std::nullopt;
         }
 
+        is_new_user_ = true;
         co_return user;
     }
 
@@ -104,7 +114,7 @@ celeritas::service_login::void_awaitable_type celeritas::service_login::load_pla
     if (player->get_player_state_type() != player_state_type::online || user->is_overload_db() || login_.new_game_server_id())
     {
         co_await player->on_load_db();
-        co_await player->on_db_analysis();
+        co_await player->on_db_analysis(protobuf_handle_parameter_->get_app_config());
 
         player->set_player_state_type(player_state_type::online);
     }

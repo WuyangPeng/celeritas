@@ -8,7 +8,7 @@
 
 namespace celeritas
 {
-    class service_login
+    class service_login : public std::enable_shared_from_this<service_login>
     {
     public:
         using class_type = service_login;
@@ -18,7 +18,7 @@ namespace celeritas
 
         service_login(protobuf_handle_parameter_shared_ptr protobuf_handle_parameter, const proto::service::service_login_request& login);
 
-        [[nodiscard]] int64_awaitable_type response() const;
+        [[nodiscard]] int64_awaitable_type response();
 
         void send_error_message(game_error_type game_error_type) const;
 
@@ -29,11 +29,12 @@ namespace celeritas
 
         void send_success_message(int64_t user_id) const;
 
-        [[nodiscard]] optional_user_awaitable_type get_user() const;
+        [[nodiscard]] optional_user_awaitable_type get_user();
 
         [[nodiscard]] void_awaitable_type load_player(const optional_user& user, const player_state_shared_ptr& player) const;
 
         protobuf_handle_parameter_shared_ptr protobuf_handle_parameter_;
         const proto::service::service_login_request& login_;
+        bool is_new_user_;
     };
 }

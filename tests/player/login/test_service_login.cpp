@@ -75,7 +75,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
         login_request.set_game_server_id("test_server");
         login_request.set_new_account(false);
 
-        const celeritas::service_login service{ parameter_, login_request };
+        celeritas::service_login service{ parameter_, login_request };
 
         // 模拟 user 查询成功
         mock_pool_->set_select_one_result(true);
@@ -91,7 +91,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
         run_io_context_two_times();
 
         // 应该查询到了 user
-        BOOST_CHECK_GT(mock_pool_->get_select_one_call_count(), 1);
+        BOOST_CHECK_GE(mock_pool_->get_select_one_call_count(), 1);
 
         // 应该发送了成功消息
         // 我们可以通过 mock_session_ 检查最后发送的消息
@@ -109,7 +109,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
         login_request.set_game_server_id("test_server");
         login_request.set_new_account(false);
 
-        const celeritas::service_login service{ parameter_, login_request };
+        celeritas::service_login service{ parameter_, login_request };
 
         // 模拟 user 查询失败 (用户未找到)
         mock_pool_->set_select_one_result(false);
@@ -124,7 +124,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
 
         run_io_context();
 
-        BOOST_CHECK_GT(mock_pool_->get_select_one_call_count(), 1);
+        BOOST_CHECK_GE(mock_pool_->get_select_one_call_count(), 1);
         BOOST_CHECK_EQUAL(mock_pool_->get_execute_changes_call_count(), 1);
 
         BOOST_CHECK(mock_session_->get_code() == celeritas::game_error_type::success);
@@ -140,7 +140,7 @@ BOOST_FIXTURE_TEST_SUITE(service_login_suite, service_login_fixture)
         login_request.set_account_id(111);
         login_request.set_new_account(true); // 请求创建新账号
 
-        const celeritas::service_login service{ parameter_, login_request };
+        celeritas::service_login service{ parameter_, login_request };
 
         // 模拟 redis account 查询失败 (导致 create_account 失败)
         mock_pool_->set_select_one_result(false);

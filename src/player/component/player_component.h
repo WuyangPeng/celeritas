@@ -36,7 +36,7 @@ namespace celeritas
         [[nodiscard]] virtual void_awaitable_type on_load_db();
 
         // 数据库数据解析
-        [[nodiscard]] virtual void_awaitable_type on_db_analysis();
+        [[nodiscard]] virtual void_awaitable_type on_db_analysis(const const_app_config_shared_ptr& app_config);
 
         // 安全地访问其他组件的数据，解决组件间的依赖关系。
         [[nodiscard]] virtual void_awaitable_type on_dependencies_ready();

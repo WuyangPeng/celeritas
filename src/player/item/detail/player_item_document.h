@@ -38,7 +38,7 @@ namespace celeritas
 
         [[nodiscard]] bool can_consume_item(const item_container& item) const;
 
-        [[nodiscard]] bool change_item(const const_app_config_shared_ptr& app_config, const item_container& item);
+        [[nodiscard]] bool change_item(const const_app_config_shared_ptr& app_config, const item_container& item, bool is_login);
 
         [[nodiscard]] optional_inventory_data_container_iter get_inventory_data(int64_t item_id);
 

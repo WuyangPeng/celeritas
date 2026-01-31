@@ -17,7 +17,7 @@ celeritas::player_component::void_awaitable_type celeritas::player_component::on
     co_return;
 }
 
-celeritas::player_component::void_awaitable_type celeritas::player_component::on_db_analysis()
+celeritas::player_component::void_awaitable_type celeritas::player_component::on_db_analysis(const const_app_config_shared_ptr& app_config)
 {
     co_return;
 }

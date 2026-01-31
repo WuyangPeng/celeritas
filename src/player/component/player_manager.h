@@ -32,7 +32,8 @@ namespace celeritas
                                                          const resource_loader_shared_ptr& resource_loader,
                                                          const any_io_executor& any_io_executor,
                                                          const std::string& instance_id,
-                                                         const service_login_request_type& login);
+                                                         const service_login_request_type& login,
+                                                         bool is_new_user);
 
         [[nodiscard]] player_state_shared_ptr get_player(int64_t user_id);
 

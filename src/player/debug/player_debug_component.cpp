@@ -15,7 +15,7 @@ celeritas::player_debug_component::player_debug_component(player_state* player_s
 {
 }
 
-celeritas::player_component::void_awaitable_type celeritas::player_debug_component::on_db_analysis()
+celeritas::player_component::void_awaitable_type celeritas::player_debug_component::on_db_analysis(const const_app_config_shared_ptr& app_config)
 {
     const auto game_server_id = get_player_state()->get_game_server_id();
     if (const auto optional_server_cell = server_cell_repository::get_instance().get_server_cell(game_server_id))

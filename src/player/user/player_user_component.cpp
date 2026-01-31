@@ -9,7 +9,7 @@ celeritas::player_user_component::player_user_component(user user, player_state*
 {
 }
 
-celeritas::player_user_component::void_awaitable_type celeritas::player_user_component::on_db_analysis()
+celeritas::player_user_component::void_awaitable_type celeritas::player_user_component::on_db_analysis(const const_app_config_shared_ptr& app_config)
 {
     user_.set_overload_db(false);
 

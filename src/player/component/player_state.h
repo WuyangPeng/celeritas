@@ -27,12 +27,14 @@ namespace celeritas
         using io_context_type = boost::asio::io_context;
         using any_io_executor = boost::asio::any_io_executor;
         using service_login_request_type = proto::service::service_login_request;
+        using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
 
         player_state(const user& user,
                      const resource_loader_shared_ptr& resource_loader,
                      const any_io_executor& any_io_executor,
                      std::string instance_id,
-                     const service_login_request_type& login);
+                     const service_login_request_type& login,
+                     bool is_new_user);
 
         virtual ~player_state() noexcept = default;
 
@@ -53,7 +55,7 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type on_load_db();
 
         // 数据库数据解析
-        [[nodiscard]] void_awaitable_type on_db_analysis();
+        [[nodiscard]] void_awaitable_type on_db_analysis(const const_app_config_shared_ptr& app_config);
 
         // 安全地访问其他组件的数据，解决组件间的依赖关系。
         [[nodiscard]] void_awaitable_type on_dependencies_ready();
@@ -98,6 +100,8 @@ namespace celeritas
 
         void send_error_message(int rpc, game_error_type game_error_type);
 
+        [[nodiscard]] bool is_new_user() const noexcept;
+
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
@@ -111,5 +115,6 @@ namespace celeritas
         resource_loader_weak_ptr resource_loader_;
         std::string instance_id_;
         any_io_executor strand_;
+        bool is_new_user_;
     };
 }

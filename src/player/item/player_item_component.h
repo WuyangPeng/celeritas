@@ -25,6 +25,8 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type on_load_db() override;
 
+        [[nodiscard]] void_awaitable_type on_db_analysis(const const_app_config_shared_ptr& app_config) override;
+
         [[nodiscard]] void_awaitable_type save_db() override;
 
         [[nodiscard]] bool is_modify() const override;
@@ -37,7 +39,7 @@ namespace celeritas
 
         [[nodiscard]] bool can_consume_item(const item_container& item) const;
 
-        void change_item(const const_app_config_shared_ptr& app_config, const item_container& item);
+        void change_item(const const_app_config_shared_ptr& app_config, const item_container& item, bool is_login = false);
 
         [[nodiscard]] optional_item_selected_data change_item_selected(const const_app_config_shared_ptr& app_config,
                                                                        config::item_type item_type,

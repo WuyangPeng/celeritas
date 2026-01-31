@@ -29,7 +29,8 @@ celeritas::player_state::player_state(const user& user,
                                       const resource_loader_shared_ptr& resource_loader,
                                       const any_io_executor& any_io_executor,
                                       std::string instance_id,
-                                      const service_login_request_type& login)
+                                      const service_login_request_type& login,
+                                      const bool is_new_user)
     : dirty_{ false },
       player_state_{ player_state_type::loading },
       components_{ std::make_shared<player_user_component>(user, this),
@@ -50,7 +51,8 @@ celeritas::player_state::player_state(const user& user,
                    std::make_shared<player_null_component>(this) },
       resource_loader_{ resource_loader },
       instance_id_{ std::move(instance_id) },
-      strand_{ boost::asio::make_strand(any_io_executor) }
+      strand_{ boost::asio::make_strand(any_io_executor) },
+      is_new_user_{ is_new_user }
 {
     check();
 }
@@ -68,11 +70,11 @@ celeritas::player_state::void_awaitable_type celeritas::player_state::on_load_db
     }
 }
 
-celeritas::player_state::void_awaitable_type celeritas::player_state::on_db_analysis()
+celeritas::player_state::void_awaitable_type celeritas::player_state::on_db_analysis(const const_app_config_shared_ptr& app_config)
 {
     for (const auto& element : components_)
     {
-        co_await element->on_db_analysis();
+        co_await element->on_db_analysis(app_config);
     }
 }
 
@@ -221,6 +223,11 @@ void celeritas::player_state::send_error_message(const int rpc, const game_error
     {
         LOG_CHANNEL(player_channel, error) << "send message error.";
     }
+}
+
+bool celeritas::player_state::is_new_user() const noexcept
+{
+    return is_new_user_;
 }
 
 void celeritas::player_state::check() const

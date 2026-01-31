@@ -1,4 +1,7 @@
-﻿#include "player_item_component.h"
+﻿#include "item_container.h"
+#include "player_item_component.h"
+#include "config/game/game_config.h"
+#include "config/game/game_tables.h"
 
 celeritas::player_item_component::player_item_component(player_state* player_state) noexcept
     : base_type{ get_player_component_type(), player_state },
@@ -18,6 +21,25 @@ celeritas::player_component::void_awaitable_type celeritas::player_item_componen
     co_await selected_database_.load_user_item();
 
     selected_document_.set_item_selected(selected_document_.get_item_selected());
+
+    co_return;
+}
+
+celeritas::player_component::void_awaitable_type celeritas::player_item_component::on_db_analysis(const const_app_config_shared_ptr& app_config)
+{
+    if (get_player_state()->is_new_user())
+    {
+        item_container container{};
+        for (const auto& item_config : game_config::get_instance().get_game_tables()->get_tables()->default_item_config_container.getDataList())
+        {
+            for (const auto& element : item_config->playerItem)
+            {
+                container.add_item_info(element->itemId, element->itemCount);
+            }
+        }
+
+        change_item(app_config, container, true);
+    }
 
     co_return;
 }
@@ -59,9 +81,9 @@ bool celeritas::player_item_component::can_consume_item(const item_container& it
     return document_.can_consume_item(item);
 }
 
-void celeritas::player_item_component::change_item(const const_app_config_shared_ptr& app_config, const item_container& item)
+void celeritas::player_item_component::change_item(const const_app_config_shared_ptr& app_config, const item_container& item, const bool is_login)
 {
-    if (document_.change_item(app_config, item))
+    if (document_.change_item(app_config, item, is_login))
     {
         update_document();
     }

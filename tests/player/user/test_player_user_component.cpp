@@ -1,4 +1,5 @@
-﻿#include "config/basic/database_type.h"
+﻿#include "config/aggregate/app_config.h"
+#include "config/basic/database_type.h"
 #include "database/pool/database_pool_base.h"
 #include "database/pool/database_pool_manager.h"
 #include "database/generated/mysql/player/user.h"
@@ -92,7 +93,7 @@ BOOST_FIXTURE_TEST_SUITE(player_user_component_suite, player_user_component_fixt
         celeritas::player_user_component component{ test_user_, &mock_player_state_ };
 
         // 调用并执行协程
-        boost::asio::co_spawn(io_context_, component.on_db_analysis(), boost::asio::detached);
+        boost::asio::co_spawn(io_context_, component.on_db_analysis(std::make_shared<celeritas::app_config>()), boost::asio::detached);
         run_io_context();
 
         // 验证 overload_db 已被设为 false

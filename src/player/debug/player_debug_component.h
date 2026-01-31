@@ -18,7 +18,7 @@ namespace celeritas
             return player_component_type::debug;
         }
 
-        [[nodiscard]] void_awaitable_type on_db_analysis() override;
+        [[nodiscard]] void_awaitable_type on_db_analysis(const const_app_config_shared_ptr& app_config) override;
 
         [[nodiscard]] void_awaitable_type send_initial_sync() override;
 
