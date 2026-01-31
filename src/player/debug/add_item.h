@@ -17,7 +17,7 @@ namespace celeritas
     private:
         using player_item_component_shared_ptr = std::shared_ptr<player_item_component>;
 
-        [[nodiscard]] game_error_awaitable_type do_response();
+        [[nodiscard]] game_error_awaitable_type do_response() override;
 
         player_item_component_shared_ptr player_item_component_;
     };
