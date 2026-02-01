@@ -1,0 +1,15 @@
+.git/
+.svn/
+.idea/
+bin/
+cmake*/
+Library/
+Logs/
+obj/
+.vs/
+*.o
+*.a
+*.exe
+*.dll
+*.bin
+*.log
