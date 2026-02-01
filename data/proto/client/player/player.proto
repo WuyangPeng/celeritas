@@ -8,6 +8,7 @@ import "proto/client/player/role.proto";
 import "proto/client/player/debug.proto";
 import "proto/client/player/red_dot.proto";
 import "proto/client/player/item.proto";
+import "proto/client/player/develop.proto";
 
 message client_player_request {
   oneof payload {
@@ -17,6 +18,7 @@ message client_player_request {
     client_role_request role = 4;
     client_red_dot_request red_dot = 5;
     client_item_request item = 6;
+    client_develop_request develop = 7;
   }
 }
 
@@ -28,5 +30,6 @@ message client_player_response {
     client_role_response role = 4;
     client_red_dot_response red_dot = 5;
     client_item_response item = 6;
+    client_develop_response develop = 7;
   }
 }

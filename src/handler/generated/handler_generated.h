@@ -29,6 +29,8 @@
 #include "handler/generated/celeritas_message_handler.h"
 #include "handler/generated/client_debug_request_message_handler.h"
 #include "handler/generated/client_debug_response_message_handler.h"
+#include "handler/generated/client_develop_request_message_handler.h"
+#include "handler/generated/client_develop_response_message_handler.h"
 #include "handler/generated/client_heartbeat_request_message_handler.h"
 #include "handler/generated/client_heartbeat_response_message_handler.h"
 #include "handler/generated/client_item_request_message_handler.h"

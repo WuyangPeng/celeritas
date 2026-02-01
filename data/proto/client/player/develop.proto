@@ -1,0 +1,46 @@
+﻿syntax = "proto3";
+
+package celeritas.proto.client;
+
+ message develop_data {
+     int32 system_id = 1;
+     int64 instance_id = 2;
+     int32 level = 3;
+     int64 exp = 4;
+}
+
+message develop_response {
+  repeated develop_data develop = 1;
+  bool is_login = 2;
+}
+
+message develop_level_request {
+     develop_data develop = 1;
+}
+
+message develop_level_response {
+     develop_data develop = 1;
+}
+
+message develop_reset_request {
+     develop_data develop = 1;
+}
+
+message develop_reset_response {
+     develop_data develop = 1;
+}
+
+message client_develop_request {
+  oneof payload {
+    develop_level_request develop_level = 1;
+    develop_reset_request develop_reset = 2;
+  }
+}
+
+message client_develop_response {
+  oneof payload {
+    develop_response develop = 1;
+    develop_level_response develop_level = 2;
+    develop_reset_response develop_reset = 3;
+  }
+}

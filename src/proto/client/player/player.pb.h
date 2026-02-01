@@ -35,6 +35,7 @@
 #include "proto/client/player/debug.pb.h"
 #include "proto/client/player/red_dot.pb.h"
 #include "proto/client/player/item.pb.h"
+#include "proto/client/player/develop.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -148,6 +149,7 @@ class client_player_request final : public ::google::protobuf::Message
     kRole = 4,
     kRedDot = 5,
     kItem = 6,
+    kDevelop = 7,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 0;
@@ -244,6 +246,7 @@ class client_player_request final : public ::google::protobuf::Message
     kRoleFieldNumber = 4,
     kRedDotFieldNumber = 5,
     kItemFieldNumber = 6,
+    kDevelopFieldNumber = 7,
   };
   // .celeritas.proto.client.client_login_request login = 1;
   bool has_login() const;
@@ -359,6 +362,25 @@ class client_player_request final : public ::google::protobuf::Message
   ::celeritas::proto::client::client_item_request* PROTOBUF_NONNULL _internal_mutable_item();
 
   public:
+  // .celeritas.proto.client.client_develop_request develop = 7;
+  bool has_develop() const;
+  private:
+  bool _internal_has_develop() const;
+
+  public:
+  void clear_develop() ;
+  const ::celeritas::proto::client::client_develop_request& develop() const;
+  [[nodiscard]] ::celeritas::proto::client::client_develop_request* PROTOBUF_NULLABLE release_develop();
+  ::celeritas::proto::client::client_develop_request* PROTOBUF_NONNULL mutable_develop();
+  void set_allocated_develop(::celeritas::proto::client::client_develop_request* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_develop(::celeritas::proto::client::client_develop_request* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::client_develop_request* PROTOBUF_NULLABLE unsafe_arena_release_develop();
+
+  private:
+  const ::celeritas::proto::client::client_develop_request& _internal_develop() const;
+  ::celeritas::proto::client::client_develop_request* PROTOBUF_NONNULL _internal_mutable_develop();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_player_request)
@@ -370,11 +392,12 @@ class client_player_request final : public ::google::protobuf::Message
   void set_has_role();
   void set_has_red_dot();
   void set_has_item();
+  void set_has_develop();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 6,
-                                   6, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 7,
+                                   7, 0,
                                    2>
       _table_;
 
@@ -402,6 +425,7 @@ class client_player_request final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE role_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE red_dot_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE item_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE develop_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -476,6 +500,7 @@ class client_player_response final : public ::google::protobuf::Message
     kRole = 4,
     kRedDot = 5,
     kItem = 6,
+    kDevelop = 7,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 1;
@@ -572,6 +597,7 @@ class client_player_response final : public ::google::protobuf::Message
     kRoleFieldNumber = 4,
     kRedDotFieldNumber = 5,
     kItemFieldNumber = 6,
+    kDevelopFieldNumber = 7,
   };
   // .celeritas.proto.client.client_login_response login = 1;
   bool has_login() const;
@@ -687,6 +713,25 @@ class client_player_response final : public ::google::protobuf::Message
   ::celeritas::proto::client::client_item_response* PROTOBUF_NONNULL _internal_mutable_item();
 
   public:
+  // .celeritas.proto.client.client_develop_response develop = 7;
+  bool has_develop() const;
+  private:
+  bool _internal_has_develop() const;
+
+  public:
+  void clear_develop() ;
+  const ::celeritas::proto::client::client_develop_response& develop() const;
+  [[nodiscard]] ::celeritas::proto::client::client_develop_response* PROTOBUF_NULLABLE release_develop();
+  ::celeritas::proto::client::client_develop_response* PROTOBUF_NONNULL mutable_develop();
+  void set_allocated_develop(::celeritas::proto::client::client_develop_response* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_develop(::celeritas::proto::client::client_develop_response* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::client_develop_response* PROTOBUF_NULLABLE unsafe_arena_release_develop();
+
+  private:
+  const ::celeritas::proto::client::client_develop_response& _internal_develop() const;
+  ::celeritas::proto::client::client_develop_response* PROTOBUF_NONNULL _internal_mutable_develop();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_player_response)
@@ -698,11 +743,12 @@ class client_player_response final : public ::google::protobuf::Message
   void set_has_role();
   void set_has_red_dot();
   void set_has_item();
+  void set_has_develop();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 6,
-                                   6, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 7,
+                                   7, 0,
                                    2>
       _table_;
 
@@ -730,6 +776,7 @@ class client_player_response final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE role_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE red_dot_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE item_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE develop_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -1177,6 +1224,76 @@ inline ::celeritas::proto::client::client_item_request* PROTOBUF_NONNULL client_
   return _msg;
 }
 
+// .celeritas.proto.client.client_develop_request develop = 7;
+inline bool client_player_request::has_develop() const {
+  return payload_case() == kDevelop;
+}
+inline bool client_player_request::_internal_has_develop() const {
+  return payload_case() == kDevelop;
+}
+inline void client_player_request::set_has_develop() {
+  _impl_._oneof_case_[0] = kDevelop;
+}
+inline ::celeritas::proto::client::client_develop_request* PROTOBUF_NULLABLE client_player_request::release_develop() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_player_request.develop)
+  if (payload_case() == kDevelop) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_develop_request*>(_impl_.payload_.develop_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.develop_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::client_develop_request& client_player_request::_internal_develop() const {
+  return payload_case() == kDevelop ? *reinterpret_cast<::celeritas::proto::client::client_develop_request*>(_impl_.payload_.develop_) : reinterpret_cast<::celeritas::proto::client::client_develop_request&>(::celeritas::proto::client::_client_develop_request_default_instance_);
+}
+inline const ::celeritas::proto::client::client_develop_request& client_player_request::develop() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_player_request.develop)
+  return _internal_develop();
+}
+inline ::celeritas::proto::client::client_develop_request* PROTOBUF_NULLABLE client_player_request::unsafe_arena_release_develop() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_player_request.develop)
+  if (payload_case() == kDevelop) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_develop_request*>(_impl_.payload_.develop_);
+    _impl_.payload_.develop_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_player_request::unsafe_arena_set_allocated_develop(
+    ::celeritas::proto::client::client_develop_request* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_develop();
+    _impl_.payload_.develop_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_player_request.develop)
+}
+inline ::celeritas::proto::client::client_develop_request* PROTOBUF_NONNULL client_player_request::_internal_mutable_develop() {
+  if (payload_case() != kDevelop) {
+    clear_payload();
+    set_has_develop();
+    _impl_.payload_.develop_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_develop_request>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::client::client_develop_request*>(_impl_.payload_.develop_);
+}
+inline ::celeritas::proto::client::client_develop_request* PROTOBUF_NONNULL client_player_request::mutable_develop()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::client_develop_request* _msg = _internal_mutable_develop();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_player_request.develop)
+  return _msg;
+}
+
 inline bool client_player_request::has_payload() const {
   return payload_case() != PAYLOAD_NOT_SET;
 }
@@ -1607,6 +1724,76 @@ inline ::celeritas::proto::client::client_item_response* PROTOBUF_NONNULL client
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::client::client_item_response* _msg = _internal_mutable_item();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_player_response.item)
+  return _msg;
+}
+
+// .celeritas.proto.client.client_develop_response develop = 7;
+inline bool client_player_response::has_develop() const {
+  return payload_case() == kDevelop;
+}
+inline bool client_player_response::_internal_has_develop() const {
+  return payload_case() == kDevelop;
+}
+inline void client_player_response::set_has_develop() {
+  _impl_._oneof_case_[0] = kDevelop;
+}
+inline ::celeritas::proto::client::client_develop_response* PROTOBUF_NULLABLE client_player_response::release_develop() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_player_response.develop)
+  if (payload_case() == kDevelop) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_develop_response*>(_impl_.payload_.develop_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.develop_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::client_develop_response& client_player_response::_internal_develop() const {
+  return payload_case() == kDevelop ? *reinterpret_cast<::celeritas::proto::client::client_develop_response*>(_impl_.payload_.develop_) : reinterpret_cast<::celeritas::proto::client::client_develop_response&>(::celeritas::proto::client::_client_develop_response_default_instance_);
+}
+inline const ::celeritas::proto::client::client_develop_response& client_player_response::develop() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_player_response.develop)
+  return _internal_develop();
+}
+inline ::celeritas::proto::client::client_develop_response* PROTOBUF_NULLABLE client_player_response::unsafe_arena_release_develop() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_player_response.develop)
+  if (payload_case() == kDevelop) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_develop_response*>(_impl_.payload_.develop_);
+    _impl_.payload_.develop_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_player_response::unsafe_arena_set_allocated_develop(
+    ::celeritas::proto::client::client_develop_response* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_develop();
+    _impl_.payload_.develop_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_player_response.develop)
+}
+inline ::celeritas::proto::client::client_develop_response* PROTOBUF_NONNULL client_player_response::_internal_mutable_develop() {
+  if (payload_case() != kDevelop) {
+    clear_payload();
+    set_has_develop();
+    _impl_.payload_.develop_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_develop_response>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::client::client_develop_response*>(_impl_.payload_.develop_);
+}
+inline ::celeritas::proto::client::client_develop_response* PROTOBUF_NONNULL client_player_response::mutable_develop()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::client_develop_response* _msg = _internal_mutable_develop();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_player_response.develop)
   return _msg;
 }
 
