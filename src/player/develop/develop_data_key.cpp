@@ -27,5 +27,5 @@ bool celeritas::operator<(const develop_data_key& lhs, const develop_data_key& r
         return false;
     }
 
-    return lhs.get_instance_id() < rhs.get_system_id();
+    return lhs.get_instance_id() < rhs.get_instance_id();
 }

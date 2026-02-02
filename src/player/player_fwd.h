@@ -42,7 +42,6 @@ namespace celeritas
     class develop_level;
     class develop_reset;
     class player_develop_component;
-    class develop_data_key;
 
     class player_mail_component;
 

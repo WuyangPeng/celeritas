@@ -19,6 +19,7 @@ namespace celeritas
         using class_type = player_develop_document;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
+        using optional_develop_data = std::optional<develop_data>;
 
         explicit player_develop_document(player_state* player_state);
 
@@ -32,7 +33,7 @@ namespace celeritas
 
         void send_initial_sync();
 
-        [[nodiscard]] const develop_data& get_develop_data(const develop_data_key& key) const;
+        [[nodiscard]] optional_develop_data get_develop_data(const develop_data_key& key) const;
 
     private:
         using develop_data_container = std::map<develop_data_key, develop_data>;

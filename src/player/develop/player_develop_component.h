@@ -12,6 +12,7 @@ namespace celeritas
     public:
         using class_type = player_develop_component;
         using base_type = player_component;
+        using optional_develop_data = std::optional<develop_data>;
 
         explicit player_develop_component(player_state* player_state) noexcept;
 
@@ -36,7 +37,7 @@ namespace celeritas
 
         void send_reset_message(int rpc, const develop_data& develop_data);
 
-        [[nodiscard]] const develop_data& get_develop_data(const develop_data_key& key) const;
+        [[nodiscard]] optional_develop_data get_develop_data(const develop_data_key& key) const;
 
     private:
         void update_document();

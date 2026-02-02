@@ -110,7 +110,7 @@ void celeritas::player_develop_document::send_initial_sync()
     }
 }
 
-const celeritas::develop_data& celeritas::player_develop_document::get_develop_data(const develop_data_key& key) const
+celeritas::player_develop_document::optional_develop_data celeritas::player_develop_document::get_develop_data(const develop_data_key& key) const
 {
     if (const auto iter = develop_data_.find(key);
         iter != develop_data_.cend())
@@ -118,7 +118,7 @@ const celeritas::develop_data& celeritas::player_develop_document::get_develop_d
         return iter->second;
     }
 
-    throw celeritas_error{ "develop config not found,id = {}", key.get_system_id() };
+    return std::nullopt;
 }
 
 void celeritas::player_develop_document::add_develop_data(const develop_data& develop_data)

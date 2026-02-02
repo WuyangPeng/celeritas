@@ -95,7 +95,7 @@ void celeritas::player_develop_component::send_reset_message(int rpc, const deve
     }
 }
 
-const celeritas::develop_data& celeritas::player_develop_component::get_develop_data(const develop_data_key& key) const
+celeritas::player_develop_component::optional_develop_data celeritas::player_develop_component::get_develop_data(const develop_data_key& key) const
 {
     return document_.get_develop_data(key);
 }
