@@ -4,6 +4,7 @@
 #include "config/game/pretreatment_config.h"
 #include "player/item/item_container.h"
 #include "player/item/player_item_component.h"
+#include "player/component/player_state.tpp"
 
 celeritas::develop_level::develop_level_shared_ptr celeritas::develop_level::create(protobuf_handle_parameter_shared_ptr handle_parameter, player_state_shared_ptr player_state, request_type request)
 {
