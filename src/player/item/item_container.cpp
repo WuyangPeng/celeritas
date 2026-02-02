@@ -27,3 +27,13 @@ celeritas::item_container::container_type_const_iter celeritas::item_container::
 {
     return container_.cend();
 }
+
+celeritas::item_container celeritas::item_container::to_consume() const
+{
+    item_container container{};
+    for (const auto& element : *this)
+    {
+        container.add_item_info(element.get_template_id(), -element.get_count());
+    }
+    return container;
+}

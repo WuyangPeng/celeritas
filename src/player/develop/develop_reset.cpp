@@ -66,7 +66,7 @@ celeritas::player_service_base::void_awaitable_type celeritas::develop_reset::re
         }
     }
 
-    player_item_component_->add_item(get_config(), container);
+    player_item_component_->produce_item(get_config(), container);
 
     develop.clear();
 

@@ -92,7 +92,7 @@ celeritas::change_name::optional_priority_item_type celeritas::change_name::get_
 
 void celeritas::change_name::cost_item(const priority_item_type& priority_item)
 {
-    player_item_component_->add_item(get_config(), priority_item->itemId, priority_item->itemCount);
+    player_item_component_->produce_item(get_config(), priority_item->itemId, priority_item->itemCount);
 }
 
 

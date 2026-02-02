@@ -25,7 +25,7 @@ celeritas::debug_base::game_error_awaitable_type celeritas::add_item::do_respons
         co_return game_error_type::item_id_error;
     }
 
-    player_item_component_->add_item(get_config(), id, count);
+    player_item_component_->produce_item(get_config(), id, count);
 
     co_return game_error_type::success;
 }

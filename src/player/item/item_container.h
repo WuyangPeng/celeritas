@@ -19,6 +19,8 @@ namespace celeritas
 
         [[nodiscard]] container_type_const_iter end() const;
 
+        [[nodiscard]] item_container to_consume() const;
+
     private:
         container_type container_;
     };
