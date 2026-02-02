@@ -30,6 +30,14 @@ namespace celeritas
 
         [[nodiscard]] game_error_type develop_reset(const develop_data_key& key);
 
+        [[nodiscard]] void_awaitable_type send_initial_sync() override;
+
+        void send_level_message(int rpc, const develop_data& develop_data);
+
+        void send_reset_message(int rpc, const develop_data& develop_data);
+
+        [[nodiscard]] const develop_data& get_develop_data(const develop_data_key& key) const;
+
     private:
         void update_document();
 

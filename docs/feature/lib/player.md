@@ -138,6 +138,18 @@
     - **作用**：作为养成数据的唯一标识符。
     - **特点**：包含系统ID (`system_id`) 和实例ID (`instance_id`)，用于唯一标识一个养成数据项。
 
+
+* **📈 养成升级 (`develop_level`)**
+    - **作用**：处理玩家养成系统升级的业务逻辑。
+    - **功能**：继承自 `player_service_base`，接收 `develop_level_request` 请求，并调用 `player_develop_component`
+      来处理养成项的升级逻辑。
+
+
+* **🔄 养成重置 (`develop_reset`)**
+    - **作用**：处理玩家养成系统重置的业务逻辑。
+    - **功能**：继承自 `player_service_base`，接收 `develop_reset_request` 请求，并调用 `player_develop_component`
+      来处理养成项的重置逻辑。
+
 ## mail components (邮件组件)
 
 * **📧 玩家邮件组件 (`player_mail_component`)**

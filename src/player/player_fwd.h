@@ -39,6 +39,8 @@ namespace celeritas
     class item_info;
     class item_container;
 
+    class develop_level;
+    class develop_reset;
     class player_develop_component;
     class develop_data_key;
 

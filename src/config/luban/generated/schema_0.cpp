@@ -63,6 +63,33 @@ bool game::develop_config::deserializedevelop_config(::luban::ByteBuf& _buf, ::l
 }
 
 
+bool game::develop_level_config::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(id)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; developSystemType = develop_system_type(__enum_temp__); }
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; developSubType = develop_sub_type(__enum_temp__); }
+    if(!_buf.readInt(level)) return false;
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); playerItem.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<item> _e; if(!item::deserializeitem(_buf, _e)) return false; playerItem.push_back(_e);}}
+
+    return true;
+}
+
+bool game::develop_level_config::deserializedevelop_level_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::develop_level_config>& _out)
+{
+    _out.reset(LUBAN_NEW(game::develop_level_config));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
 bool game::item_config::deserialize(::luban::ByteBuf& _buf)
 {
 

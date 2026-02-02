@@ -42,6 +42,10 @@ namespace celeritas {namespace config {
         /// 无
         /// </summary>
         none = 0,
+        /// <summary>
+        /// 升级
+        /// </summary>
+        level = 1,
     };
 
  
@@ -54,6 +58,10 @@ namespace celeritas {namespace config {
         /// 无
         /// </summary>
         none = 0,
+        /// <summary>
+        /// 英雄
+        /// </summary>
+        hero = 1,
     };
 
  
@@ -193,6 +201,7 @@ namespace celeritas {namespace config {
 
 namespace game { struct default_item_config; }
 namespace game { struct develop_config; }
+namespace game { struct develop_level_config; }
 namespace game { struct item_config; }
 namespace game { struct name_config; }
 namespace game { struct red_dot_config; }
@@ -248,6 +257,32 @@ struct develop_config : public luban::CfgBean
     develop_reset_type developResetType;
 
     static constexpr int __ID__ = 1902983392;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+}
+
+namespace game {
+
+struct develop_level_config : public luban::CfgBean 
+{
+    static bool deserializedevelop_level_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<develop_level_config>& _out);
+
+    virtual ~develop_level_config() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * id
+     */
+    ::luban::int32 id;
+    develop_system_type developSystemType;
+    develop_sub_type developSubType;
+    ::luban::int32 level;
+    ::luban::Vector<::luban::SharedPtr<item>> playerItem;
+
+    static constexpr int __ID__ = 1411329915;
 
     int getTypeId() const override { return __ID__; }
 };
@@ -694,6 +729,66 @@ class red_dot_config_container
 namespace game {
 
 /**
+ * 改名消耗
+ */
+
+class rename_cost_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::rename_cost_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::rename_cost_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::rename_cost_config> _v;
+            if(!game::rename_cost_config::deserializerename_cost_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->id] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::rename_cost_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::rename_cost_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::rename_cost_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::rename_cost_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
+namespace game {
+
+/**
  * 物品
  */
 
@@ -735,6 +830,66 @@ class item_config_container
     }
 
     std::optional<::luban::SharedPtr<game::item_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
+namespace game {
+
+/**
+ * 默认物品
+ */
+
+class default_item_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::default_item_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::default_item_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::default_item_config> _v;
+            if(!game::default_item_config::deserializedefault_item_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->id] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::default_item_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::default_item_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::default_item_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::default_item_config>> get(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -814,14 +969,14 @@ class develop_config_container
 namespace game {
 
 /**
- * 改名消耗
+ * 养成升级
  */
 
-class rename_cost_config_container
+class develop_level_config_container
 {
     private:
-    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::rename_cost_config>> _dataMap;
-    ::luban::Vector<::luban::SharedPtr<game::rename_cost_config>> _dataList;
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::develop_level_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::develop_level_config>> _dataList;
     
     public:
     bool load(::luban::ByteBuf& _buf)
@@ -830,18 +985,18 @@ class rename_cost_config_container
         if (!_buf.readSize(n)) return false;
         for(; n > 0 ; --n)
         {
-            ::luban::SharedPtr<game::rename_cost_config> _v;
-            if(!game::rename_cost_config::deserializerename_cost_config(_buf, _v)) return false;
+            ::luban::SharedPtr<game::develop_level_config> _v;
+            if(!game::develop_level_config::deserializedevelop_level_config(_buf, _v)) return false;
             _dataList.push_back(_v);
             _dataMap[_v->id] = _v;
         }
         return true;
     }
 
-    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::rename_cost_config>>& getDataMap() const { return _dataMap; }
-    const ::luban::Vector<::luban::SharedPtr<game::rename_cost_config>>& getDataList() const { return _dataList; }
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::develop_level_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::develop_level_config>>& getDataList() const { return _dataList; }
 
-    std::optional<game::rename_cost_config*> getRaw(::luban::int32 key) const
+    std::optional<game::develop_level_config*> getRaw(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -854,67 +1009,7 @@ class rename_cost_config_container
         }
     }
 
-    std::optional<::luban::SharedPtr<game::rename_cost_config>> get(::luban::int32 key) const
-    { 
-        auto it = _dataMap.find(key);
-        if(it != _dataMap.end())
-        {
-            return it->second;
-        }
-        else
-        {
-            return std::nullopt;
-        }
-    }
-
-};
-
-}
-
-namespace game {
-
-/**
- * 默认物品
- */
-
-class default_item_config_container
-{
-    private:
-    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::default_item_config>> _dataMap;
-    ::luban::Vector<::luban::SharedPtr<game::default_item_config>> _dataList;
-    
-    public:
-    bool load(::luban::ByteBuf& _buf)
-    {        
-        int n;
-        if (!_buf.readSize(n)) return false;
-        for(; n > 0 ; --n)
-        {
-            ::luban::SharedPtr<game::default_item_config> _v;
-            if(!game::default_item_config::deserializedefault_item_config(_buf, _v)) return false;
-            _dataList.push_back(_v);
-            _dataMap[_v->id] = _v;
-        }
-        return true;
-    }
-
-    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::default_item_config>>& getDataMap() const { return _dataMap; }
-    const ::luban::Vector<::luban::SharedPtr<game::default_item_config>>& getDataList() const { return _dataList; }
-
-    std::optional<game::default_item_config*> getRaw(::luban::int32 key) const
-    { 
-        auto it = _dataMap.find(key);
-        if(it != _dataMap.end())
-        {
-            return it->second.get();
-        }
-        else
-        {
-            return std::nullopt;
-        }
-    }
-
-    std::optional<::luban::SharedPtr<game::default_item_config>> get(::luban::int32 key) const
+    std::optional<::luban::SharedPtr<game::develop_level_config>> get(::luban::int32 key) const
     { 
         auto it = _dataMap.find(key);
         if(it != _dataMap.end())
@@ -947,21 +1042,25 @@ class tables
      */
      game::red_dot_config_container red_dot_config_container;
     /**
+     * 改名消耗
+     */
+     game::rename_cost_config_container rename_cost_config_container;
+    /**
      * 物品
      */
      game::item_config_container item_config_container;
+    /**
+     * 默认物品
+     */
+     game::default_item_config_container default_item_config_container;
     /**
      * 养成
      */
      game::develop_config_container develop_config_container;
     /**
-     * 改名消耗
+     * 养成升级
      */
-     game::rename_cost_config_container rename_cost_config_container;
-    /**
-     * 默认物品
-     */
-     game::default_item_config_container default_item_config_container;
+     game::develop_level_config_container develop_level_config_container;
 
     bool load(::luban::Loader<::luban::ByteBuf> loader)
     {
@@ -976,17 +1075,20 @@ class tables
         if (!loader(buf, "red_dot_config_container")) return false;
         if (!red_dot_config_container.load(buf)) return false;
         buf.clear();
+        if (!loader(buf, "rename_cost_config_container")) return false;
+        if (!rename_cost_config_container.load(buf)) return false;
+        buf.clear();
         if (!loader(buf, "item_config_container")) return false;
         if (!item_config_container.load(buf)) return false;
+        buf.clear();
+        if (!loader(buf, "default_item_config_container")) return false;
+        if (!default_item_config_container.load(buf)) return false;
         buf.clear();
         if (!loader(buf, "develop_config_container")) return false;
         if (!develop_config_container.load(buf)) return false;
         buf.clear();
-        if (!loader(buf, "rename_cost_config_container")) return false;
-        if (!rename_cost_config_container.load(buf)) return false;
-        buf.clear();
-        if (!loader(buf, "default_item_config_container")) return false;
-        if (!default_item_config_container.load(buf)) return false;
+        if (!loader(buf, "develop_level_config_container")) return false;
+        if (!develop_level_config_container.load(buf)) return false;
         return true;
     }
 };

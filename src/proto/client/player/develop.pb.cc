@@ -58,9 +58,8 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr develop_response::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        develop_{},
-        is_login_{false} {}
+      : develop_{},
+        _cached_size_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR develop_response::develop_response(::_pbi::ConstantInitialized)
@@ -254,13 +253,8 @@ const ::uint32_t
         0,
         2,
         3,
-        0x081, // bitmap
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_response, _impl_._has_bits_),
-        5, // hasbit index offset
+        0x000, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_response, _impl_.develop_),
-        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_response, _impl_.is_login_),
-        ~0u,
-        0,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_level_request, _impl_._has_bits_),
         4, // hasbit index offset
@@ -298,12 +292,12 @@ static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::celeritas::proto::client::develop_data)},
         {11, sizeof(::celeritas::proto::client::develop_response)},
-        {18, sizeof(::celeritas::proto::client::develop_level_request)},
-        {23, sizeof(::celeritas::proto::client::develop_level_response)},
-        {28, sizeof(::celeritas::proto::client::develop_reset_request)},
-        {33, sizeof(::celeritas::proto::client::develop_reset_response)},
-        {38, sizeof(::celeritas::proto::client::client_develop_request)},
-        {43, sizeof(::celeritas::proto::client::client_develop_response)},
+        {13, sizeof(::celeritas::proto::client::develop_level_request)},
+        {18, sizeof(::celeritas::proto::client::develop_level_response)},
+        {23, sizeof(::celeritas::proto::client::develop_reset_request)},
+        {28, sizeof(::celeritas::proto::client::develop_reset_response)},
+        {33, sizeof(::celeritas::proto::client::client_develop_request)},
+        {38, sizeof(::celeritas::proto::client::client_develop_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::client::_develop_data_default_instance_._instance,
@@ -320,34 +314,34 @@ const char descriptor_table_protodef_proto_2fclient_2fplayer_2fdevelop_2eproto[]
     "\n!proto/client/player/develop.proto\022\026cel"
     "eritas.proto.client\"R\n\014develop_data\022\021\n\ts"
     "ystem_id\030\001 \001(\005\022\023\n\013instance_id\030\002 \001(\003\022\r\n\005l"
-    "evel\030\003 \001(\005\022\013\n\003exp\030\004 \001(\003\"[\n\020develop_respo"
+    "evel\030\003 \001(\005\022\013\n\003exp\030\004 \001(\003\"I\n\020develop_respo"
     "nse\0225\n\007develop\030\001 \003(\0132$.celeritas.proto.c"
-    "lient.develop_data\022\020\n\010is_login\030\002 \001(\010\"N\n\025"
-    "develop_level_request\0225\n\007develop\030\001 \001(\0132$"
-    ".celeritas.proto.client.develop_data\"O\n\026"
-    "develop_level_response\0225\n\007develop\030\001 \001(\0132"
-    "$.celeritas.proto.client.develop_data\"N\n"
-    "\025develop_reset_request\0225\n\007develop\030\001 \001(\0132"
-    "$.celeritas.proto.client.develop_data\"O\n"
-    "\026develop_reset_response\0225\n\007develop\030\001 \001(\013"
-    "2$.celeritas.proto.client.develop_data\"\263"
-    "\001\n\026client_develop_request\022F\n\rdevelop_lev"
-    "el\030\001 \001(\0132-.celeritas.proto.client.develo"
-    "p_level_requestH\000\022F\n\rdevelop_reset\030\002 \001(\013"
-    "2-.celeritas.proto.client.develop_reset_"
-    "requestH\000B\t\n\007payload\"\363\001\n\027client_develop_"
-    "response\022;\n\007develop\030\001 \001(\0132(.celeritas.pr"
-    "oto.client.develop_responseH\000\022G\n\rdevelop"
-    "_level\030\002 \001(\0132..celeritas.proto.client.de"
-    "velop_level_responseH\000\022G\n\rdevelop_reset\030"
-    "\003 \001(\0132..celeritas.proto.client.develop_r"
-    "eset_responseH\000B\t\n\007payloadb\006proto3"
+    "lient.develop_data\"N\n\025develop_level_requ"
+    "est\0225\n\007develop\030\001 \001(\0132$.celeritas.proto.c"
+    "lient.develop_data\"O\n\026develop_level_resp"
+    "onse\0225\n\007develop\030\001 \001(\0132$.celeritas.proto."
+    "client.develop_data\"N\n\025develop_reset_req"
+    "uest\0225\n\007develop\030\001 \001(\0132$.celeritas.proto."
+    "client.develop_data\"O\n\026develop_reset_res"
+    "ponse\0225\n\007develop\030\001 \001(\0132$.celeritas.proto"
+    ".client.develop_data\"\263\001\n\026client_develop_"
+    "request\022F\n\rdevelop_level\030\001 \001(\0132-.celerit"
+    "as.proto.client.develop_level_requestH\000\022"
+    "F\n\rdevelop_reset\030\002 \001(\0132-.celeritas.proto"
+    ".client.develop_reset_requestH\000B\t\n\007paylo"
+    "ad\"\363\001\n\027client_develop_response\022;\n\007develo"
+    "p\030\001 \001(\0132(.celeritas.proto.client.develop"
+    "_responseH\000\022G\n\rdevelop_level\030\002 \001(\0132..cel"
+    "eritas.proto.client.develop_level_respon"
+    "seH\000\022G\n\rdevelop_reset\030\003 \001(\0132..celeritas."
+    "proto.client.develop_reset_responseH\000B\t\n"
+    "\007payloadb\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fclient_2fplayer_2fdevelop_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fclient_2fplayer_2fdevelop_2eproto = {
     false,
     false,
-    994,
+    976,
     descriptor_table_protodef_proto_2fclient_2fplayer_2fdevelop_2eproto,
     "proto/client/player/develop.proto",
     &descriptor_table_proto_2fclient_2fplayer_2fdevelop_2eproto_once,
@@ -706,10 +700,6 @@ void develop_data::InternalSwap(develop_data* PROTOBUF_RESTRICT PROTOBUF_NONNULL
 
 class develop_response::_Internal {
  public:
-  using HasBits =
-      decltype(::std::declval<develop_response>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(develop_response, _impl_._has_bits_);
 };
 
 develop_response::develop_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
@@ -725,9 +715,8 @@ PROTOBUF_NDEBUG_INLINE develop_response::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
     [[maybe_unused]] const ::celeritas::proto::client::develop_response& from_msg)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0},
-        develop_{visibility, arena, from.develop_} {}
+      : develop_{visibility, arena, from.develop_},
+        _cached_size_{0} {}
 
 develop_response::develop_response(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
@@ -742,19 +731,17 @@ develop_response::develop_response(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  _impl_.is_login_ = from._impl_.is_login_;
 
   // @@protoc_insertion_point(copy_constructor:celeritas.proto.client.develop_response)
 }
 PROTOBUF_NDEBUG_INLINE develop_response::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-      : _cached_size_{0},
-        develop_{visibility, arena} {}
+      : develop_{visibility, arena},
+        _cached_size_{0} {}
 
 inline void develop_response::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.is_login_ = {};
 }
 develop_response::~develop_response() {
   // @@protoc_insertion_point(destructor:celeritas.proto.client.develop_response)
@@ -825,16 +812,16 @@ develop_response::GetClassData() const {
   return develop_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 1, 0, 2>
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
 develop_response::_table_ = {
   {
-    PROTOBUF_FIELD_OFFSET(develop_response, _impl_._has_bits_),
+    0,  // no _has_bits_
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    1, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967294,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    1,  // num_field_entries
     1,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     develop_response_class_data_.base(),
@@ -844,9 +831,6 @@ develop_response::_table_ = {
     ::_pbi::TcParser::GetTable<::celeritas::proto::client::develop_response>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // bool is_login = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(develop_response, _impl_.is_login_), 0>(),
-     {16, 0, 0, PROTOBUF_FIELD_OFFSET(develop_response, _impl_.is_login_)}},
     // repeated .celeritas.proto.client.develop_data develop = 1;
     {::_pbi::TcParser::FastMtR1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(develop_response, _impl_.develop_)}},
@@ -854,9 +838,7 @@ develop_response::_table_ = {
     65535, 65535
   }}, {{
     // repeated .celeritas.proto.client.develop_data develop = 1;
-    {PROTOBUF_FIELD_OFFSET(develop_response, _impl_.develop_), -1, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // bool is_login = 2;
-    {PROTOBUF_FIELD_OFFSET(develop_response, _impl_.is_login_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    {PROTOBUF_FIELD_OFFSET(develop_response, _impl_.develop_), 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::client::develop_data>()},
@@ -872,8 +854,6 @@ PROTOBUF_NOINLINE void develop_response::Clear() {
   (void) cached_has_bits;
 
   _impl_.develop_.Clear();
-  _impl_.is_login_ = false;
-  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -904,15 +884,6 @@ PROTOBUF_NOINLINE void develop_response::Clear() {
         ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
             1, repfield, repfield.GetCachedSize(),
             target, stream);
-  }
-
-  // bool is_login = 2;
-  if ((this_._impl_._has_bits_[0] & 0x00000001U) != 0) {
-    if (this_._internal_is_login() != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          2, this_._internal_is_login(), target);
-    }
   }
 
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -948,15 +919,6 @@ PROTOBUF_NOINLINE void develop_response::Clear() {
       }
     }
   }
-   {
-    // bool is_login = 2;
-    cached_has_bits = this_._impl_._has_bits_[0];
-    if ((cached_has_bits & 0x00000001U) != 0) {
-      if (this_._internal_is_login() != 0) {
-        total_size += 2;
-      }
-    }
-  }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
                                              &this_._impl_._cached_size_);
 }
@@ -974,13 +936,6 @@ void develop_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
 
   _this->_internal_mutable_develop()->MergeFrom(
       from._internal_develop());
-  cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000001U) != 0) {
-    if (from._internal_is_login() != 0) {
-      _this->_impl_.is_login_ = from._impl_.is_login_;
-    }
-  }
-  _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -995,9 +950,7 @@ void develop_response::CopyFrom(const develop_response& from) {
 void develop_response::InternalSwap(develop_response* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   using ::std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   _impl_.develop_.InternalSwap(&other->_impl_.develop_);
-  swap(_impl_.is_login_, other->_impl_.is_login_);
 }
 
 ::google::protobuf::Metadata develop_response::GetMetadata() const {
