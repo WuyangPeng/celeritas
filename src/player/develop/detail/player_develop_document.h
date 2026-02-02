@@ -5,7 +5,7 @@
 #include "database/document/develop_data.h"
 #include "message/message_fwd.h"
 #include "player/component/player_state.h"
-#include "player/develop/develop_data_key.h"
+#include "../../../config/game/develop_data_key.h"
 
 #include <boost/asio/awaitable.hpp>
 

@@ -7,7 +7,7 @@ celeritas::develop_level_config::develop_level_config(const develop_level_config
     init_develop_level(container);
 }
 
-celeritas::develop_level_config::const_optional_develop_level_config_shared_ptr celeritas::develop_level_config::get_develop_level(const develop_config_data_key& key) const
+celeritas::develop_level_config::const_optional_develop_level_config_shared_ptr celeritas::develop_level_config::get_develop_level(const develop_level_data_key& key) const
 {
     if (const auto iter = container_.find(key);
         iter != container_.cend())
@@ -22,7 +22,7 @@ void celeritas::develop_level_config::init_develop_level(const develop_level_con
 {
     for (const auto& element : container.getDataList())
     {
-        container_.emplace(develop_config_data_key{ enum_cast_underlying(element->developSystemType), enum_cast_underlying(element->developSubType), element->level }, element);
+        container_.emplace(develop_level_data_key{ enum_cast_underlying(element->developSystemType), enum_cast_underlying(element->developSubType), element->level }, element);
     }
 }
 

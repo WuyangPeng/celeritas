@@ -2,9 +2,9 @@
 #include "player_develop_component.h"
 #include "config/game/game_tables.h"
 #include "config/game/pretreatment_config.h"
+#include "player/component/player_state.tpp"
 #include "player/item/item_container.h"
 #include "player/item/player_item_component.h"
-#include "player/component/player_state.tpp"
 
 celeritas::develop_level::develop_level_shared_ptr celeritas::develop_level::create(protobuf_handle_parameter_shared_ptr handle_parameter, player_state_shared_ptr player_state, request_type request)
 {
@@ -31,26 +31,34 @@ celeritas::player_service_base::void_awaitable_type celeritas::develop_level::re
         optional_develop = develop_data{ request_develop.system_id(), request_develop.instance_id() };
     }
 
-    const auto& develop = *optional_develop;
+    auto& develop = *optional_develop;
 
-    auto index = develop.get_level();
-    item_container container{};
-    for (; index < request_develop.level(); ++index)
+    auto level = develop.get_level();
+    const auto develop_config = get_game_tables()->get_pretreatment_config()->get_develop_config()->get_develop(develop_data_key);
+    if (!develop_config)
     {
-        const develop_config_data_key develop_config_data_key{ develop.get_system_id(), develop.get_instance_id(), index };
+        get_player_state()->send_error_message(get_rpc(), game_error_type::max_develop);
+        co_return;
+    }
+
+    item_container container{};
+    for (; level < request_develop.level(); ++level)
+    {
+        const develop_level_data_key develop_config_data_key{ develop.get_system_id(), develop.get_instance_id(), level };
 
         const auto develop_level = develop_level_config->get_develop_level(develop_config_data_key);
-        if (!develop_level)
+        if (!develop_level || (*develop_config)->maxLevel <= level)
         {
             break;
         }
+
         for (const auto& player_item : (*develop_level)->playerItem)
         {
             container.add_item_info(player_item->itemId, player_item->itemCount);
         }
     }
 
-    if (index == develop.get_level())
+    if (level == develop.get_level())
     {
         get_player_state()->send_error_message(get_rpc(), game_error_type::max_develop);
         co_return;
@@ -62,7 +70,9 @@ celeritas::player_service_base::void_awaitable_type celeritas::develop_level::re
         co_return;
     }
 
-    player_item_component_->change_item(get_config(), container);
+    player_item_component_->add_item(get_config(), container);
+
+    develop.set_level(level);
 
     if (const auto game_error_type = player_develop_component_->develop_level(develop);
         game_error_type == game_error_type::success)

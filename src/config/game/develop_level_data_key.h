@@ -4,12 +4,12 @@
 
 namespace celeritas
 {
-    class develop_config_data_key
+    class develop_level_data_key
     {
     public:
-        using class_type = develop_config_data_key;
+        using class_type = develop_level_data_key;
 
-        develop_config_data_key(int system_id, int64_t instance_id, int level);
+        develop_level_data_key(int system_id, int64_t instance_id, int level);
 
         [[nodiscard]] int get_system_id() const;
 
@@ -23,5 +23,5 @@ namespace celeritas
         int level_ = 0;
     };
 
-    [[nodiscard]] bool operator<(const develop_config_data_key& lhs, const develop_config_data_key& rhs);
+    [[nodiscard]] bool operator<(const develop_level_data_key& lhs, const develop_level_data_key& rhs);
 }

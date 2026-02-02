@@ -38,7 +38,7 @@ celeritas::player_component::void_awaitable_type celeritas::player_item_componen
             }
         }
 
-        change_item(app_config, container, true);
+        add_item(app_config, container, true);
     }
 
     co_return;
@@ -58,7 +58,7 @@ bool celeritas::player_item_component::is_modify() const
     return database_.is_modify() || selected_database_.is_modify();
 }
 
-void celeritas::player_item_component::change_item(const const_app_config_shared_ptr& app_config, const int template_id, const int64_t count)
+void celeritas::player_item_component::add_item(const const_app_config_shared_ptr& app_config, const int template_id, const int64_t count)
 {
     if (document_.change_item(app_config, template_id, count))
     {
@@ -81,7 +81,7 @@ bool celeritas::player_item_component::can_consume_item(const item_container& it
     return document_.can_consume_item(item);
 }
 
-void celeritas::player_item_component::change_item(const const_app_config_shared_ptr& app_config, const item_container& item, const bool is_login)
+void celeritas::player_item_component::add_item(const const_app_config_shared_ptr& app_config, const item_container& item, const bool is_login)
 {
     if (document_.change_item(app_config, item, is_login))
     {

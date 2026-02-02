@@ -27,5 +27,8 @@ namespace celeritas
     class weight_config;
     class rename_cost_config;
 
-    class develop_config_data_key;
+    class develop_data_key;
+    class develop_level_data_key;
+    class develop_config;
+    class develop_level_config;
 }

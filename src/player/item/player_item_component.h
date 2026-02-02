@@ -31,7 +31,7 @@ namespace celeritas
 
         [[nodiscard]] bool is_modify() const override;
 
-        void change_item(const const_app_config_shared_ptr& app_config, int template_id, int64_t count);
+        void add_item(const const_app_config_shared_ptr& app_config, int template_id, int64_t count);
 
         [[nodiscard]] bool can_consume_item(int template_id, int64_t count) const;
 
@@ -39,7 +39,7 @@ namespace celeritas
 
         [[nodiscard]] bool can_consume_item(const item_container& item) const;
 
-        void change_item(const const_app_config_shared_ptr& app_config, const item_container& item, bool is_login = false);
+        void add_item(const const_app_config_shared_ptr& app_config, const item_container& item, bool is_login = false);
 
         [[nodiscard]] optional_item_selected_data change_item_selected(const const_app_config_shared_ptr& app_config,
                                                                        config::item_type item_type,

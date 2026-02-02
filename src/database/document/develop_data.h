@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "database/basic/database_data_type_traits.h"
-#include "player/develop/develop_data_key.h"
+#include "../../config/game/develop_data_key.h"
 
 #include <cstdint>
 
@@ -53,7 +53,7 @@ namespace celeritas
         static constexpr std::string_view exp_description = "exp";
         static constexpr std::string_view updated_time_description = "updated_time";
 
-        static constexpr auto default_level = 1;
+        static constexpr auto default_level = 0;
 
     private:
         int system_id_ = 0;

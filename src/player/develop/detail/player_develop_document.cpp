@@ -52,24 +52,9 @@ celeritas::game_error_type celeritas::player_develop_document::develop_level(con
 
 celeritas::game_error_type celeritas::player_develop_document::develop_reset(const develop_data_key& key)
 {
-    const auto develop_config = game_config::get_instance().get_game_tables()->get_tables()->develop_config_container.get(key.get_system_id());
-    if (!develop_config)
+    if (const auto iter = develop_data_.find(key);
+        iter != develop_data_.cend())
     {
-        throw celeritas_error{ "develop config not found,id = {}", key.get_system_id() };
-    }
-
-    if ((*develop_config)->developResetType == config::develop_reset_type::non_resettable)
-    {
-        return game_error_type::non_resettable;
-    }
-
-    if (const auto iter = develop_data_.find(key); iter != develop_data_.cend())
-    {
-        if (iter->second.get_level() == 0)
-        {
-            return game_error_type::non_resettable;
-        }
-
         iter->second.clear();
     }
     else

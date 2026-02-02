@@ -126,9 +126,30 @@
         - **`init_rename_cost`**：初始化改名消耗配置。
 
 
-* **🔑 养成数据键 (`develop_config_data_key`)**
+* **🌱 养成配置 (`develop_config`)**
+    - **作用**：管理养成系统的基础配置。
+    - **功能**：
+        - **`get_develop_config(key)`**：根据养成数据键获取对应的养成配置。
+    - **初始化**：
+        - **`init_develop_config`**：初始化养成配置。
+
+
+* **📈 养成升级配置 (`develop_level_config`)**
+    - **作用**：管理养成系统的升级配置。
+    - **功能**：
+        - **`get_develop_level_config(key)`**：根据养成升级数据键获取对应的升级配置。
+    - **初始化**：
+        - **`init_develop_level_config`**：初始化养成升级配置。
+
+
+* **🔑 养成数据键 (`develop_data_key`)**
     - **作用**：作为养成数据的唯一标识符。
-    - **特点**：包含系统ID (`system_id`) ，实例ID (`instance_id`)和等级 (`level`)，用于唯一标识一个养成数据项。
+    - **特点**：包含系统ID (`system_id`) 和实例ID (`instance_id`)，用于唯一标识一个养成数据项。
+
+
+* **🔑 养成升级数据键 (`develop_level_data_key`)**
+    - **作用**：作为养成数据的唯一标识符。
+    - **特点**：包含系统ID (`system_id`) ，实例ID (`instance_id`)和等级 (`level`)，用于唯一标识一个养成升级数据项。
 
 ## luban configuration (Luban 配置)
 
