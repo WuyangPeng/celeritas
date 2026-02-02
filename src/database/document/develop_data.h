@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "database/basic/database_data_type_traits.h"
+#include "player/develop/develop_data_key.h"
 
 #include <cstdint>
 
@@ -43,6 +44,8 @@ namespace celeritas
         [[nodiscard]] document_type to_document_type() const;
 
         [[nodiscard]] static develop_data from_document(const document_type& document);
+
+        [[nodiscard]] develop_data_key get_develop_data_key() const;
 
         static constexpr std::string_view system_id_description = "system_id";
         static constexpr std::string_view instance_id_description = "instance_id";

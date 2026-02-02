@@ -34,26 +34,17 @@ celeritas::traits::document_array_type celeritas::player_develop_document::get_d
     return documents;
 }
 
-celeritas::game_error_type celeritas::player_develop_document::develop_level(const develop_data_key& key)
+celeritas::game_error_type celeritas::player_develop_document::develop_level(const develop_data& develop_data)
 {
-    const auto develop_config = game_config::get_instance().get_game_tables()->get_tables()->develop_config_container.get(key.get_system_id());
-    if (!develop_config)
+    const auto develop_data_key = develop_data.get_develop_data_key();
+    if (const auto iter = develop_data_.find(develop_data_key);
+        iter != develop_data_.cend())
     {
-        throw celeritas_error{ "develop config not found,id = {}", key.get_system_id() };
-    }
-
-    if (const auto iter = develop_data_.find(key); iter != develop_data_.cend())
-    {
-        if (iter->second.get_level() >= (*develop_config)->maxLevel)
-        {
-            return game_error_type::max_develop;
-        }
-
-        iter->second.add_level();
+        iter->second.set_level(develop_data.get_level());
     }
     else
     {
-        develop_data_.emplace(key, develop_data{ key.get_system_id(), key.get_instance_id() });
+        develop_data_.emplace(develop_data_key, develop_data);
     }
 
     return game_error_type::success;

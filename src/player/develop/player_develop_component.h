@@ -27,7 +27,7 @@ namespace celeritas
 
         [[nodiscard]] bool is_modify() const override;
 
-        [[nodiscard]] game_error_type develop_level(const develop_data_key& key);
+        [[nodiscard]] game_error_type develop_level(const develop_data& develop_data);
 
         [[nodiscard]] game_error_type develop_reset(const develop_data_key& key);
 

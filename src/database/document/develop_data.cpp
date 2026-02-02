@@ -115,3 +115,8 @@ celeritas::develop_data celeritas::develop_data::from_document(const document_ty
 
     return data;
 }
+
+celeritas::develop_data_key celeritas::develop_data::get_develop_data_key() const
+{
+    return develop_data_key{ system_id_, instance_id_ };
+}

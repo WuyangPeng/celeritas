@@ -57,6 +57,7 @@ namespace celeritas
         max_develop = 60700,
         non_resettable = 60701,
         develop_not_exist = 60702,
+        develop_item_not_insufficient = 60703,
     };
 
     [[nodiscard]] std::string get_game_error_description(game_error_type game_error);

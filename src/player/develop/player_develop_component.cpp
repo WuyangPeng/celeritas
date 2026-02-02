@@ -30,9 +30,9 @@ bool celeritas::player_develop_component::is_modify() const
     return database_.is_modify();
 }
 
-celeritas::game_error_type celeritas::player_develop_component::develop_level(const develop_data_key& key)
+celeritas::game_error_type celeritas::player_develop_component::develop_level(const develop_data& develop_data)
 {
-    const auto game_error = document_.develop_level(key);
+    const auto game_error = document_.develop_level(develop_data);
     if (game_error == game_error_type::success)
     {
         update_document();
