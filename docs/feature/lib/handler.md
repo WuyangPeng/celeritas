@@ -247,3 +247,31 @@
     - **功能**：接收并分发 `debug` 类型的请求（如 `add_item` 等子类型），执行相应的调试动作，并将结果或错误信息返回给调用方。
 
 
+* **📬 同步邮件消息处理器 (`mail_sync_message_handler`)**
+    - **作用**：处理客户端发起的同步邮件请求。
+    - **功能**：接收并处理 `mail_sync_request` 消息，向客户端同步邮件列表。
+
+
+* **📖 读取邮件消息处理器 (`mail_read_message_handler`)**
+    - **作用**：处理客户端发起的读取邮件请求。
+    - **功能**：接收并处理 `mail_read_request` 消息，将指定邮件标记为已读。
+
+
+* **🗑️ 删除邮件消息处理器 (`mail_delete_message_handler`)**
+    - **作用**：处理客户端发起的删除邮件请求。
+    - **功能**：接收并处理 `mail_delete_request` 消息，删除指定的邮件。
+
+
+* **🗑️ 删除所有已读邮件消息处理器 (`mail_delete_all_read_message_handler`)**
+    - **作用**：处理客户端发起的删除所有已读邮件请求。
+    - **功能**：接收并处理 `mail_delete_all_read_request` 消息，删除所有已读邮件。
+
+
+* **📎 领取附件消息处理器 (`mail_collect_attachment_message_handler`)**
+    - **作用**：处理客户端发起的领取邮件附件请求。
+    - **功能**：接收并处理 `mail_collect_attachment_request` 消息，向玩家发放邮件附件。
+
+
+* **📎 领取所有附件消息处理器 (`mail_collect_all_attachments_message_handler`)**
+    - **作用**：处理客户端发起的领取所有邮件附件请求。
+    - **功能**：接收并处理 `mail_collect_all_attachments_request` 消息，向玩家发放所有可领取邮件的附件。

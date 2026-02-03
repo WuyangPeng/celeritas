@@ -154,6 +154,46 @@
 
 * **📧 玩家邮件组件 (`player_mail_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的邮件信息。
+    - **功能**：
+        - **`add_mail(mail_info)`**：添加一封新邮件。
+        - **`remove_mail(mail_id)`**：根据邮件ID移除一封邮件。
+        - **`get_mail(mail_id)`**：根据邮件ID获取邮件信息。
+        - **`get_all_mails()`**：获取所有邮件。
+        - **`on_collect_attachment(mail_id)`**：处理领取附件的逻辑。
+        - **`on_collect_all_attachments()`**：处理一键领取所有附件的逻辑。
+
+
+* **📬 同步邮件 (`mail_sync`)**
+    - **作用**：处理客户端同步邮件列表的请求。
+    - **功能**：继承自 `player_service_base`，接收 `mail_sync_request` 请求，并调用 `player_mail_component` 同步玩家的邮件列表。
+
+
+* **📖 读取邮件 (`mail_read`)**
+    - **作用**：处理客户端将邮件标记为已读的请求。
+    - **功能**：继承自 `player_service_base`，接收 `mail_read_request` 请求，并调用 `player_mail_component` 将指定邮件标记为已读。
+
+
+* **🗑️ 删除邮件 (`mail_delete`)**
+    - **作用**：处理客户端删除邮件的请求。
+    - **功能**：继承自 `player_service_base`，接收 `mail_delete_request` 请求，并调用 `player_mail_component` 删除指定邮件。
+
+
+* **🗑️ 删除所有已读邮件 (`mail_delete_all_read`)**
+    - **作用**：处理客户端删除所有已读邮件的请求。
+    - **功能**：继承自 `player_service_base`，接收 `mail_delete_all_read_request` 请求，并调用 `player_mail_component`
+      删除所有已读邮件。
+
+
+* **📎 领取附件 (`mail_collect_attachment`)**
+    - **作用**：处理客户端领取邮件附件的请求。
+    - **功能**：继承自 `player_service_base`，接收 `mail_collect_attachment_request` 请求，并调用 `player_mail_component`
+      处理附件的领取逻辑。
+
+
+* **📎 领取所有附件 (`mail_collect_all_attachments`)**
+    - **作用**：处理客户端一键领取所有邮件附件的请求。
+    - **功能**：继承自 `player_service_base`，接收 `mail_collect_all_attachments_request` 请求，并调用
+      `player_mail_component` 处理一键领取所有附件的逻辑。
 
 ## task components (任务组件)
 
