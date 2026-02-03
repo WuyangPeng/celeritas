@@ -1,10 +1,11 @@
-#include "server_mail_manager.h"
+﻿#include "server_mail_manager.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "common/core/time_helper.h"
 #include "common/logging/logger.h"
 #include "config/basic/database_type.h"
 #include "database/pool/database_pool_base.h"
 #include "database/pool/database_pool_manager.h"
+#include "player/component/player_manager.h"
 
 #include <ranges>
 
@@ -106,12 +107,14 @@ celeritas::server_mail_manager::server_mail_container celeritas::server_mail_man
     return result;
 }
 
-void celeritas::server_mail_manager::add_mail(const const_server_mail_shared_ptr& mail)
+void celeritas::server_mail_manager::add_mail(const const_app_config_shared_ptr& app_config, const const_server_mail_shared_ptr& mail)
 {
-    std::unique_lock lock{ mutex_ };
-    mails_[mail->get_id()] = mail;
+    {
+        std::unique_lock lock{ mutex_ };
+        mails_[mail->get_id()] = mail;
+    }   LOG_CHANNEL(player_channel, info) << "server_mail_manager added mail with id: " << mail->get_id();
 
-    LOG_CHANNEL(player_channel, info) << "server_mail_manager added mail with id: " << mail->get_id();
+    player_manager::get_instance().add_server_mail(app_config, mail);
 }
 
 void celeritas::server_mail_manager::remove_mail(const int64_t mail_id)

@@ -6,6 +6,7 @@
 #include "common/core/time_helper.h"
 #include "common/logging/logger.h"
 #include "player/component/player_state.tpp"
+#include "player/mail/player_mail_component.h"
 #include "player/online/player_online_component.h"
 #include "player/time/player_time_refresh_key.h"
 
@@ -93,6 +94,24 @@ void celeritas::player_manager::save_db()
         {
             LOG_CHANNEL(player_channel, error) << "save db error: " << exception.what();
         }
+    }
+}
+
+void celeritas::player_manager::add_server_mail(const const_app_config_shared_ptr& app_config, const const_server_mail_shared_ptr& server_mail)
+{
+    std::shared_lock lock{ mutex_ };
+
+    for (const auto& element : container_ | std::views::values)
+    {
+        co_spawn(element->get_any_io_executor(),
+                 noexcept_safe_call_and_log_awaitable([player_mail = element->get_component<player_mail_component>(),
+                                                          app_config = app_config,
+                                                          server_mail = server_mail] {
+                                                          return player_mail->add_server_mail(app_config, server_mail);
+                                                      },
+                                                      player_channel,
+                                                      "add server mail error: "),
+                 boost::asio::detached);
     }
 }
 

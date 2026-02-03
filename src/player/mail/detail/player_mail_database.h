@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "database/generated/mongo/admin/server_mail.h"
 #include "database/generated/mongo/player/user_mail.h"
 #include "player/player_fwd.h"
 
@@ -21,6 +22,7 @@ namespace celeritas
         using optional_user_mail = std::optional<user_mail_shared_ptr>;
         using delete_mail_container = std::set<user_mail_shared_ptr>;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
+        using const_server_mail_shared_ptr = std::shared_ptr<const server_mail>;
 
         player_mail_database(player_state* player_state, player_mail_component* player_mail_component);
 
@@ -41,6 +43,8 @@ namespace celeritas
         [[nodiscard]] void_awaitable_type delete_mail(const user_mail_shared_ptr& mail);
 
         [[nodiscard]] void_awaitable_type delete_mail(const delete_mail_container& mail);
+
+        [[nodiscard]] void_awaitable_type add_server_mail(const const_app_config_shared_ptr& app_config, const const_server_mail_shared_ptr& server_mail);
 
     private:
         player_state* player_state_;

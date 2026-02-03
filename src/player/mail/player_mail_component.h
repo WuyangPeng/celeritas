@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "database/document/database_document_fwd.h"
+#include "database/generated/mongo/admin/server_mail.h"
 #include "detail/player_mail_database.h"
 #include "message/message_fwd.h"
 #include "player/component/player_component.h"
@@ -14,6 +15,7 @@ namespace celeritas
         using class_type = player_mail_component;
         using base_type = player_component;
         using game_error_type_awaitable_type = boost::asio::awaitable<game_error_type>;
+        using const_server_mail_shared_ptr = std::shared_ptr<const server_mail>;
 
         explicit player_mail_component(player_state* player_state) noexcept;
 
@@ -41,6 +43,8 @@ namespace celeritas
         [[nodiscard]] game_error_type collect_all_mail_attachments();
 
         [[nodiscard]] game_error_type_awaitable_type delete_all_read_mails();
+
+        [[nodiscard]] void_awaitable_type add_server_mail(const const_app_config_shared_ptr& app_config, const const_server_mail_shared_ptr& server_mail);
 
     private:
         player_mail_database database_;

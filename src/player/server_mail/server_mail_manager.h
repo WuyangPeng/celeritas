@@ -23,6 +23,7 @@ namespace celeritas
         using void_awaitable_type = boost::asio::awaitable<void>;
         using database_pool_shared_ptr = std::shared_ptr<database_pool_base>;
         using any_io_executor = boost::asio::any_io_executor;
+        using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
 
         [[nodiscard]] static server_mail_manager& get_instance();
 
@@ -45,7 +46,7 @@ namespace celeritas
         [[nodiscard]] server_mail_container get_mails_greater_than_id(int64_t mail_id);
 
         // 添加邮件
-        void add_mail(const const_server_mail_shared_ptr& mail);
+        void add_mail(const const_app_config_shared_ptr& app_config, const const_server_mail_shared_ptr& mail);
 
         // 根据id删除邮件
         void remove_mail(int64_t mail_id);

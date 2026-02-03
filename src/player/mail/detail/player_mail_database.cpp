@@ -1,4 +1,4 @@
-#include "player_mail_database.h"
+﻿#include "player_mail_database.h"
 #include "common/core/snowflake_generator.h"
 #include "common/logging/logger.h"
 #include "config/aggregate/app_config.h"
@@ -139,6 +139,42 @@ celeritas::player_mail_database::void_awaitable_type celeritas::player_mail_data
     for (const auto& element : mail)
     {
         co_await delete_mail(element);
+    }
+}
+
+celeritas::player_mail_database::void_awaitable_type celeritas::player_mail_database::add_server_mail(const const_app_config_shared_ptr& app_config, const const_server_mail_shared_ptr& server_mail)
+{
+    const auto server_mail_id = server_mail->get_id();
+
+    for (const auto& user_mail : mail_container_ | std::views::values)
+    {
+        if (user_mail->get_server_mail_id() == server_mail_id)
+        {
+            co_return;
+        }
+    }
+
+    const auto user_id = player_state_->get_user_id();
+    const auto server_config = app_config->get_server_config();
+
+    const auto user_mail_id = snowflake_generator::get_instance().generate(server_config->get_datacenter_id(), server_config->get_worker_id());
+
+    user_mail mail{ database_type::mongo, user_mail_id };
+    mail.set_user_id(user_id);
+    mail.set_server_mail_id(server_mail_id);
+    mail.set_type(server_mail->get_type());
+    mail.set_multilingual(server_mail->is_multilingual());
+    mail.set_title(server_mail->get_title());
+    mail.set_content(server_mail->get_content());
+    mail.set_attachments(server_mail->get_attachments());
+    mail.set_send_time(server_mail->get_send_time());
+    mail.set_expire_time(server_mail->get_expire_time());
+
+    mail_container_.emplace(user_mail_id, std::make_shared<user_mail>(mail));
+
+    if (server_mail_id > max_server_mail_id_)
+    {
+        max_server_mail_id_ = server_mail_id;
     }
 }
 

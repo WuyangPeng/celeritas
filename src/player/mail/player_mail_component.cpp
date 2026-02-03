@@ -1,4 +1,4 @@
-﻿#include "player_mail_component.h"
+#include "player_mail_component.h"
 #include "common/core/enum_cast.h"
 #include "common/logging/logger.h"
 #include "database/document/inventory_data.h"
@@ -208,4 +208,9 @@ celeritas::player_mail_component::game_error_type_awaitable_type celeritas::play
     co_await database_.delete_mail(container);
 
     co_return game_error_type::success;
+}
+
+celeritas::player_component::void_awaitable_type celeritas::player_mail_component::add_server_mail(const const_app_config_shared_ptr& app_config, const const_server_mail_shared_ptr& server_mail)
+{
+    co_await database_.add_server_mail(app_config, server_mail);
 }

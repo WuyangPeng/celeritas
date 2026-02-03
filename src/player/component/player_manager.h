@@ -2,6 +2,7 @@
 
 #include "common/common_fwd.h"
 #include "database/generated/mysql/player/user.h"
+#include "database/generated/mongo/admin/server_mail.h"
 #include "player/player_fwd.h"
 #include "proto/service/player.pb.h"
 
@@ -25,6 +26,8 @@ namespace celeritas
         using io_context_type = boost::asio::io_context;
         using service_login_request_type = proto::service::service_login_request;
         using any_io_executor = boost::asio::any_io_executor;
+        using const_server_mail_shared_ptr = std::shared_ptr<const server_mail>;
+        using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
 
         [[nodiscard]] static player_manager& get_instance();
 
@@ -38,6 +41,8 @@ namespace celeritas
         [[nodiscard]] player_state_shared_ptr get_player(int64_t user_id);
 
         void save_db();
+
+        void add_server_mail(const const_app_config_shared_ptr& app_config, const const_server_mail_shared_ptr& server_mail);
 
         void time_callback(time_refresh_type time_refresh_type, int64_t parameter);
 
