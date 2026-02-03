@@ -132,6 +132,66 @@ celeritas::player_item_document::const_item_config_shared_ptr celeritas::player_
     return *item;
 }
 
+void celeritas::player_item_document::set_inventory_data_proto(proto_inventory_data* proto_data, const inventory_data& inventory_data)
+{
+    proto_data->set_item_id(inventory_data.get_item_id());
+    proto_data->set_template_id(inventory_data.get_template_id());
+    proto_data->set_count(inventory_data.get_count());
+    proto_data->set_position(inventory_data.get_position());
+
+    switch (const auto custom_data = inventory_data.get_custom_data();
+        custom_data.get_kind())
+    {
+        case config::item_type::custom:
+        {
+            proto_data->mutable_custom();
+        }
+        break;
+        case config::item_type::consumable:
+        {
+            auto* consumable = proto_data->mutable_consumable();
+            const auto* data = custom_data.get_consumable();
+
+            consumable->set_expire_time(data->get_expire_time());
+        }
+        break;
+        case config::item_type::equipment:
+        {
+            auto* equipment = proto_data->mutable_equipment();
+            const auto* data = custom_data.get_equipment();
+
+            equipment->set_durability(data->get_durability());
+            equipment->set_strength(data->get_strength());
+        }
+        break;
+        case config::item_type::avatar:
+        {
+            proto_data->mutable_avatar();
+        }
+        break;
+        case config::item_type::frame:
+        {
+            proto_data->mutable_frame();
+        }
+        break;
+        case config::item_type::title:
+        {
+            proto_data->mutable_title();
+        }
+        break;
+        case config::item_type::hero:
+        {
+            proto_data->mutable_hero();
+        }
+        break;
+        default:
+        {
+            proto_data->mutable_custom();
+        }
+        break;
+    }
+}
+
 celeritas::player_item_document::id_container* celeritas::player_item_document::get_id_container(const int template_id)
 {
     return const_cast<id_container*>(static_cast<const class_type*>(this)->get_id_container(template_id));
@@ -198,63 +258,7 @@ void celeritas::player_item_document::send_item_message(const bool is_login, con
     for (const auto& element : inventory | std::views::values)
     {
         auto* inventory_data = item_response->add_inventory();
-
-        inventory_data->set_item_id(element.get_item_id());
-        inventory_data->set_template_id(element.get_template_id());
-        inventory_data->set_count(element.get_count());
-        inventory_data->set_position(element.get_position());
-
-        switch (const auto custom_data = element.get_custom_data();
-            custom_data.get_kind())
-        {
-            case config::item_type::custom:
-            {
-                inventory_data->mutable_custom();
-            }
-            break;
-            case config::item_type::consumable:
-            {
-                auto* consumable = inventory_data->mutable_consumable();
-                const auto* data = custom_data.get_consumable();
-
-                consumable->set_expire_time(data->get_expire_time());
-            }
-            break;
-            case config::item_type::equipment:
-            {
-                auto* equipment = inventory_data->mutable_equipment();
-                const auto* data = custom_data.get_equipment();
-
-                equipment->set_durability(data->get_durability());
-                equipment->set_strength(data->get_strength());
-            }
-            break;
-            case config::item_type::avatar:
-            {
-                inventory_data->mutable_avatar();
-            }
-            break;
-            case config::item_type::frame:
-            {
-                inventory_data->mutable_frame();
-            }
-            break;
-            case config::item_type::title:
-            {
-                inventory_data->mutable_title();
-            }
-            break;
-            case config::item_type::hero:
-            {
-                inventory_data->mutable_hero();
-            }
-            break;
-            default:
-            {
-                inventory_data->mutable_custom();
-            }
-            break;
-        }
+        set_inventory_data_proto(inventory_data, element);
     }
 
     if (!player_state_->write(gateway_type.data(), player_state_->get_instance_id(), header, response))

@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package celeritas.proto.client;
+
+import "proto/common/item.proto";
+
+message mail_data {
+    int64 mail_id = 1;
+    int32 type = 2;
+    string title = 3;
+    string content = 4;
+    int64 send_time = 5;
+    int64 expire_time = 6;
+    bool read = 7;
+    bool attachment_collected = 8;
+    repeated common.inventory_data attachments = 9;
+}
+
+message mail_request {
+    int64 max_mail_id = 1;
+    int32 language_type = 2;
+}
+
+message mail_response {
+    repeated mail_data mail = 1;
+}
+
+message mail_read_request {
+    int64 mail_id = 1;
+}
+
+message mail_read_response {
+    int64 mail_id = 1;
+}
+
+message mail_collect_attachment_request {
+    int64 mail_id = 1;
+}
+
+message mail_collect_attachment_response {
+    int64 mail_id = 1;
+}
+
+message mail_delete_request {
+    int64 mail_id = 1;
+}
+
+message mail_delete_response {
+    int64 mail_id = 1;
+}
+
+message mail_collect_all_attachments_request {
+}
+
+message mail_collect_all_attachments_response {
+    repeated int64 mail_ids = 1;
+}
+
+message mail_delete_all_read_request {
+}
+
+message mail_delete_all_read_response {
+    repeated int64 mail_ids = 1;
+}
+
+message client_mail_request {
+  oneof payload {
+    mail_request mail = 1;
+    mail_read_request mail_read = 2;
+    mail_collect_attachment_request mail_collect_attachment = 3;
+    mail_delete_request mail_delete = 4;
+    mail_collect_all_attachments_request mail_collect_all_attachments = 5;
+    mail_delete_all_read_request mail_delete_all_read = 6;
+  }
+}
+
+message client_mail_response {
+  oneof payload {
+    mail_response mail = 1;
+    mail_read_response mail_read = 2;
+    mail_collect_attachment_response mail_collect_attachment = 3;
+    mail_delete_response mail_delete = 4;
+    mail_collect_all_attachments_response mail_collect_all_attachments = 5;
+    mail_delete_all_read_response mail_delete_all_read = 6;
+  }
+}

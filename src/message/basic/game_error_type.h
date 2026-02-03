@@ -58,6 +58,13 @@ namespace celeritas
         non_resettable = 60701,
         develop_not_exist = 60702,
         develop_item_not_insufficient = 60703,
+
+        // 邮件模块
+        mail_not_exist = 60800,
+        mail_attachment_collected = 60801,
+        mail_no_attachment = 60802,
+        mail_not_read = 60803,
+        mail_attachment_not_collected = 60804,
     };
 
     [[nodiscard]] std::string get_game_error_description(game_error_type game_error);

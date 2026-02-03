@@ -45,7 +45,13 @@ std::string celeritas::get_game_error_description(const game_error_type game_err
                                                 { game_error_type::max_develop, "max develop" },
                                                 { game_error_type::non_resettable, "non resettable" },
                                                 { game_error_type::develop_not_exist, "develop not exist" },
-                                                { game_error_type::develop_item_not_insufficient, "develop item not insufficient" }
+                                                { game_error_type::develop_item_not_insufficient, "develop item not insufficient" },
+
+                                                { game_error_type::mail_not_exist, "mail not exist" },
+                                                { game_error_type::mail_attachment_collected, "mail attachment collected" },
+                                                { game_error_type::mail_no_attachment, "mail no attachment" },
+                                                { game_error_type::mail_not_read, "mail not read" },
+                                                { game_error_type::mail_attachment_not_collected, "mail attachment not collected" }
 
     };
 

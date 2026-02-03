@@ -36,6 +36,7 @@
 #include "proto/client/player/red_dot.pb.h"
 #include "proto/client/player/item.pb.h"
 #include "proto/client/player/develop.pb.h"
+#include "proto/client/player/mail.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -150,6 +151,7 @@ class client_player_request final : public ::google::protobuf::Message
     kRedDot = 5,
     kItem = 6,
     kDevelop = 7,
+    kMail = 8,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 0;
@@ -247,6 +249,7 @@ class client_player_request final : public ::google::protobuf::Message
     kRedDotFieldNumber = 5,
     kItemFieldNumber = 6,
     kDevelopFieldNumber = 7,
+    kMailFieldNumber = 8,
   };
   // .celeritas.proto.client.client_login_request login = 1;
   bool has_login() const;
@@ -381,6 +384,25 @@ class client_player_request final : public ::google::protobuf::Message
   ::celeritas::proto::client::client_develop_request* PROTOBUF_NONNULL _internal_mutable_develop();
 
   public:
+  // .celeritas.proto.client.client_mail_request mail = 8;
+  bool has_mail() const;
+  private:
+  bool _internal_has_mail() const;
+
+  public:
+  void clear_mail() ;
+  const ::celeritas::proto::client::client_mail_request& mail() const;
+  [[nodiscard]] ::celeritas::proto::client::client_mail_request* PROTOBUF_NULLABLE release_mail();
+  ::celeritas::proto::client::client_mail_request* PROTOBUF_NONNULL mutable_mail();
+  void set_allocated_mail(::celeritas::proto::client::client_mail_request* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_mail(::celeritas::proto::client::client_mail_request* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::client_mail_request* PROTOBUF_NULLABLE unsafe_arena_release_mail();
+
+  private:
+  const ::celeritas::proto::client::client_mail_request& _internal_mail() const;
+  ::celeritas::proto::client::client_mail_request* PROTOBUF_NONNULL _internal_mutable_mail();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_player_request)
@@ -393,11 +415,12 @@ class client_player_request final : public ::google::protobuf::Message
   void set_has_red_dot();
   void set_has_item();
   void set_has_develop();
+  void set_has_mail();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 7,
-                                   7, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 8,
+                                   8, 0,
                                    2>
       _table_;
 
@@ -426,6 +449,7 @@ class client_player_request final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE red_dot_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE item_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE develop_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE mail_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -501,6 +525,7 @@ class client_player_response final : public ::google::protobuf::Message
     kRedDot = 5,
     kItem = 6,
     kDevelop = 7,
+    kMail = 8,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 1;
@@ -598,6 +623,7 @@ class client_player_response final : public ::google::protobuf::Message
     kRedDotFieldNumber = 5,
     kItemFieldNumber = 6,
     kDevelopFieldNumber = 7,
+    kMailFieldNumber = 8,
   };
   // .celeritas.proto.client.client_login_response login = 1;
   bool has_login() const;
@@ -732,6 +758,25 @@ class client_player_response final : public ::google::protobuf::Message
   ::celeritas::proto::client::client_develop_response* PROTOBUF_NONNULL _internal_mutable_develop();
 
   public:
+  // .celeritas.proto.client.client_mail_response mail = 8;
+  bool has_mail() const;
+  private:
+  bool _internal_has_mail() const;
+
+  public:
+  void clear_mail() ;
+  const ::celeritas::proto::client::client_mail_response& mail() const;
+  [[nodiscard]] ::celeritas::proto::client::client_mail_response* PROTOBUF_NULLABLE release_mail();
+  ::celeritas::proto::client::client_mail_response* PROTOBUF_NONNULL mutable_mail();
+  void set_allocated_mail(::celeritas::proto::client::client_mail_response* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_mail(::celeritas::proto::client::client_mail_response* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::client_mail_response* PROTOBUF_NULLABLE unsafe_arena_release_mail();
+
+  private:
+  const ::celeritas::proto::client::client_mail_response& _internal_mail() const;
+  ::celeritas::proto::client::client_mail_response* PROTOBUF_NONNULL _internal_mutable_mail();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_player_response)
@@ -744,11 +789,12 @@ class client_player_response final : public ::google::protobuf::Message
   void set_has_red_dot();
   void set_has_item();
   void set_has_develop();
+  void set_has_mail();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 7,
-                                   7, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 8,
+                                   8, 0,
                                    2>
       _table_;
 
@@ -777,6 +823,7 @@ class client_player_response final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE red_dot_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE item_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE develop_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE mail_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -1294,6 +1341,76 @@ inline ::celeritas::proto::client::client_develop_request* PROTOBUF_NONNULL clie
   return _msg;
 }
 
+// .celeritas.proto.client.client_mail_request mail = 8;
+inline bool client_player_request::has_mail() const {
+  return payload_case() == kMail;
+}
+inline bool client_player_request::_internal_has_mail() const {
+  return payload_case() == kMail;
+}
+inline void client_player_request::set_has_mail() {
+  _impl_._oneof_case_[0] = kMail;
+}
+inline ::celeritas::proto::client::client_mail_request* PROTOBUF_NULLABLE client_player_request::release_mail() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_player_request.mail)
+  if (payload_case() == kMail) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_mail_request*>(_impl_.payload_.mail_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.mail_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::client_mail_request& client_player_request::_internal_mail() const {
+  return payload_case() == kMail ? *reinterpret_cast<::celeritas::proto::client::client_mail_request*>(_impl_.payload_.mail_) : reinterpret_cast<::celeritas::proto::client::client_mail_request&>(::celeritas::proto::client::_client_mail_request_default_instance_);
+}
+inline const ::celeritas::proto::client::client_mail_request& client_player_request::mail() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_player_request.mail)
+  return _internal_mail();
+}
+inline ::celeritas::proto::client::client_mail_request* PROTOBUF_NULLABLE client_player_request::unsafe_arena_release_mail() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_player_request.mail)
+  if (payload_case() == kMail) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_mail_request*>(_impl_.payload_.mail_);
+    _impl_.payload_.mail_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_player_request::unsafe_arena_set_allocated_mail(
+    ::celeritas::proto::client::client_mail_request* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_mail();
+    _impl_.payload_.mail_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_player_request.mail)
+}
+inline ::celeritas::proto::client::client_mail_request* PROTOBUF_NONNULL client_player_request::_internal_mutable_mail() {
+  if (payload_case() != kMail) {
+    clear_payload();
+    set_has_mail();
+    _impl_.payload_.mail_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_mail_request>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::client::client_mail_request*>(_impl_.payload_.mail_);
+}
+inline ::celeritas::proto::client::client_mail_request* PROTOBUF_NONNULL client_player_request::mutable_mail()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::client_mail_request* _msg = _internal_mutable_mail();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_player_request.mail)
+  return _msg;
+}
+
 inline bool client_player_request::has_payload() const {
   return payload_case() != PAYLOAD_NOT_SET;
 }
@@ -1794,6 +1911,76 @@ inline ::celeritas::proto::client::client_develop_response* PROTOBUF_NONNULL cli
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::client::client_develop_response* _msg = _internal_mutable_develop();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_player_response.develop)
+  return _msg;
+}
+
+// .celeritas.proto.client.client_mail_response mail = 8;
+inline bool client_player_response::has_mail() const {
+  return payload_case() == kMail;
+}
+inline bool client_player_response::_internal_has_mail() const {
+  return payload_case() == kMail;
+}
+inline void client_player_response::set_has_mail() {
+  _impl_._oneof_case_[0] = kMail;
+}
+inline ::celeritas::proto::client::client_mail_response* PROTOBUF_NULLABLE client_player_response::release_mail() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_player_response.mail)
+  if (payload_case() == kMail) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_mail_response*>(_impl_.payload_.mail_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.mail_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::client_mail_response& client_player_response::_internal_mail() const {
+  return payload_case() == kMail ? *reinterpret_cast<::celeritas::proto::client::client_mail_response*>(_impl_.payload_.mail_) : reinterpret_cast<::celeritas::proto::client::client_mail_response&>(::celeritas::proto::client::_client_mail_response_default_instance_);
+}
+inline const ::celeritas::proto::client::client_mail_response& client_player_response::mail() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_player_response.mail)
+  return _internal_mail();
+}
+inline ::celeritas::proto::client::client_mail_response* PROTOBUF_NULLABLE client_player_response::unsafe_arena_release_mail() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_player_response.mail)
+  if (payload_case() == kMail) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::client_mail_response*>(_impl_.payload_.mail_);
+    _impl_.payload_.mail_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_player_response::unsafe_arena_set_allocated_mail(
+    ::celeritas::proto::client::client_mail_response* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_mail();
+    _impl_.payload_.mail_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_player_response.mail)
+}
+inline ::celeritas::proto::client::client_mail_response* PROTOBUF_NONNULL client_player_response::_internal_mutable_mail() {
+  if (payload_case() != kMail) {
+    clear_payload();
+    set_has_mail();
+    _impl_.payload_.mail_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::client_mail_response>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::client::client_mail_response*>(_impl_.payload_.mail_);
+}
+inline ::celeritas::proto::client::client_mail_response* PROTOBUF_NONNULL client_player_response::mutable_mail()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::client_mail_response* _msg = _internal_mutable_mail();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_player_response.mail)
   return _msg;
 }
 

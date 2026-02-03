@@ -29,6 +29,8 @@ void celeritas::register_handler_helper::register_handler() const
     message_registry_->register_handler(std::make_shared<client_item_response_message_handler>());
     message_registry_->register_handler(std::make_shared<client_login_request_message_handler>());
     message_registry_->register_handler(std::make_shared<client_login_response_message_handler>());
+    message_registry_->register_handler(std::make_shared<client_mail_request_message_handler>());
+    message_registry_->register_handler(std::make_shared<client_mail_response_message_handler>());
     message_registry_->register_handler(std::make_shared<client_player_request_message_handler>());
     message_registry_->register_handler(std::make_shared<client_player_response_message_handler>());
     message_registry_->register_handler(std::make_shared<client_red_dot_response_message_handler>());

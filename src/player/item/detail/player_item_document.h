@@ -5,6 +5,7 @@
 #include "database/basic/database_data_type_traits.h"
 #include "database/document/inventory_data.h"
 #include "player/component/player_state.h"
+#include "proto/common/item.pb.h"
 
 #include <boost/asio/awaitable.hpp>
 
@@ -23,6 +24,7 @@ namespace celeritas
         using inventory_data_container = std::map<int64_t, inventory_data>;
         using inventory_data_container_iter = std::map<int64_t, inventory_data>::iterator;
         using optional_inventory_data_container_iter = std::optional<inventory_data_container_iter>;
+        using proto_inventory_data = proto::common::inventory_data;
 
         explicit player_item_document(player_state* player_state);
 
@@ -61,6 +63,8 @@ namespace celeritas
         void send_item_message(bool is_login, const inventory_data_container& inventory) const;
 
         void send_delete_item_message(const inventory_data_container& inventory) const;
+
+        static void set_inventory_data_proto(proto_inventory_data* proto_data, const inventory_data& inventory_data);
 
     private:
         using template_container = std::map<int, id_container>;

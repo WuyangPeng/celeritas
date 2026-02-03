@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package celeritas.proto.common;
+
+message custom_data {
+}
+
+message consumable_data {
+    int64 expire_time = 1;
+}
+
+message equipment_data {
+    int32 strength = 1;
+    int32 durability = 2;
+}
+
+message avatar_data {
+}
+
+message frame_data {
+}
+
+message title_data {
+}
+
+message hero_data {
+}
+
+message inventory_data {
+    int64 item_id = 1;
+    int32 template_id = 2;
+    int64 count = 3;
+    int32 position = 4;
+    oneof payload {
+        custom_data custom = 5;
+        consumable_data consumable = 6;
+        equipment_data equipment = 7;
+        avatar_data avatar = 8;
+        frame_data frame = 9;
+        title_data title = 10;
+        hero_data hero = 11;
+    }
+}

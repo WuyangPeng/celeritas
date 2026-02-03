@@ -37,6 +37,8 @@
 #include "handler/generated/client_item_response_message_handler.h"
 #include "handler/generated/client_login_request_message_handler.h"
 #include "handler/generated/client_login_response_message_handler.h"
+#include "handler/generated/client_mail_request_message_handler.h"
+#include "handler/generated/client_mail_response_message_handler.h"
 #include "handler/generated/client_player_request_message_handler.h"
 #include "handler/generated/client_player_response_message_handler.h"
 #include "handler/generated/client_red_dot_response_message_handler.h"
