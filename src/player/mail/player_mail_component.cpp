@@ -170,10 +170,12 @@ celeritas::player_mail_component::game_error_type_awaitable_type celeritas::play
     co_return game_error_type::success;
 }
 
-celeritas::game_error_type celeritas::player_mail_component::collect_all_mail_attachments()
+celeritas::player_mail_component::mail_id_container celeritas::player_mail_component::collect_all_mail_attachments()
 {
+    mail_id_container mail_ids{};
+
     for (auto& mail_container = database_.get_mail_data();
-         auto& mail : mail_container | std::views::values)
+         const auto& mail : mail_container | std::views::values)
     {
         const auto status = mail->get_status();
 
@@ -181,15 +183,17 @@ celeritas::game_error_type celeritas::player_mail_component::collect_all_mail_at
             !attachments.empty() && status != enum_cast_underlying(mail_status::attachment_collected))
         {
             mail->set_status(enum_cast_underlying(mail_status::attachment_collected));
+            mail_ids.emplace_back(mail->get_id());
         }
     }
 
-    return game_error_type::success;
+    return mail_ids;
 }
 
-celeritas::player_mail_component::game_error_type_awaitable_type celeritas::player_mail_component::delete_all_read_mails()
+celeritas::player_mail_component::mail_id_container_awaitable_type celeritas::player_mail_component::delete_all_read_mails()
 {
     player_mail_database::delete_mail_container container{};
+    mail_id_container mail_ids{};
 
     for (const auto& mail_container = database_.get_mail_data();
          const auto& element : mail_container | std::views::values)
@@ -201,13 +205,14 @@ celeritas::player_mail_component::game_error_type_awaitable_type celeritas::play
                 attachments.empty() || status == enum_cast_underlying(mail_status::attachment_collected))
             {
                 container.emplace(element);
+                mail_ids.emplace_back(element->get_id());
             }
         }
     }
 
     co_await database_.delete_mail(container);
 
-    co_return game_error_type::success;
+    co_return mail_ids;
 }
 
 celeritas::player_component::void_awaitable_type celeritas::player_mail_component::add_server_mail(const const_app_config_shared_ptr& app_config, const const_server_mail_shared_ptr& server_mail)

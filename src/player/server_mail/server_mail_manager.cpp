@@ -112,7 +112,9 @@ void celeritas::server_mail_manager::add_mail(const const_app_config_shared_ptr&
     {
         std::unique_lock lock{ mutex_ };
         mails_[mail->get_id()] = mail;
-    }   LOG_CHANNEL(player_channel, info) << "server_mail_manager added mail with id: " << mail->get_id();
+    }
+
+    LOG_CHANNEL(player_channel, info) << "server_mail_manager added mail with id: " << mail->get_id();
 
     player_manager::get_instance().add_server_mail(app_config, mail);
 }

@@ -2,6 +2,8 @@
 
 package celeritas.proto.service;
 
+import "proto/client/player/mail.proto";
+
 // 重载配置数据库
 message reload_config_db_request {
   string db_name = 1;
@@ -40,12 +42,21 @@ message service_login_response {
 message offline_request {
 }
 
+// 发送全服邮件
+message send_server_mail_request {
+  client.mail_data mail = 1;
+}
+
+message send_server_mail_response {
+}
+
 message service_player_request {
   oneof payload {
     reload_config_db_request reload_config_db = 1;
     reload_game_config_request reload_game_config = 2;
     service_login_request service_login = 3;
     offline_request offline = 4;
+    send_server_mail_request send_server_mail = 5;
   }
 }
 
@@ -54,6 +65,7 @@ message service_player_response {
     reload_config_db_response reload_config_db = 1;
     reload_game_config_response reload_game_config = 2;
     service_login_response service_login = 3;
+    send_server_mail_response send_server_mail = 5;
   }
 }
 

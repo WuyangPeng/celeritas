@@ -16,6 +16,8 @@ namespace celeritas
         using base_type = player_component;
         using game_error_type_awaitable_type = boost::asio::awaitable<game_error_type>;
         using const_server_mail_shared_ptr = std::shared_ptr<const server_mail>;
+        using mail_id_container = std::vector<int64_t>;
+        using mail_id_container_awaitable_type = boost::asio::awaitable<mail_id_container>;
 
         explicit player_mail_component(player_state* player_state) noexcept;
 
@@ -40,9 +42,9 @@ namespace celeritas
 
         [[nodiscard]] game_error_type_awaitable_type delete_mail(int64_t mail_id);
 
-        [[nodiscard]] game_error_type collect_all_mail_attachments();
+        [[nodiscard]] mail_id_container collect_all_mail_attachments();
 
-        [[nodiscard]] game_error_type_awaitable_type delete_all_read_mails();
+        [[nodiscard]] mail_id_container_awaitable_type delete_all_read_mails();
 
         [[nodiscard]] void_awaitable_type add_server_mail(const const_app_config_shared_ptr& app_config, const const_server_mail_shared_ptr& server_mail);
 

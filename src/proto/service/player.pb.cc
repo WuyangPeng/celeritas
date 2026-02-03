@@ -97,6 +97,24 @@ struct service_login_requestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 service_login_requestDefaultTypeInternal _service_login_request_default_instance_;
 template <typename>
+PROTOBUF_CONSTEXPR send_server_mail_response::send_server_mail_response(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(send_server_mail_response_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct send_server_mail_responseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR send_server_mail_responseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~send_server_mail_responseDefaultTypeInternal() {}
+  union {
+    send_server_mail_response _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 send_server_mail_responseDefaultTypeInternal _send_server_mail_response_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR reload_game_config_response::reload_game_config_response(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::internal::ZeroFieldsBase(reload_game_config_response_class_data_.base()){}
@@ -223,6 +241,31 @@ struct service_player_responseDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 service_player_responseDefaultTypeInternal _service_player_response_default_instance_;
 
+inline constexpr send_server_mail_request::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        mail_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR send_server_mail_request::send_server_mail_request(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(send_server_mail_request_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct send_server_mail_requestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR send_server_mail_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~send_server_mail_requestDefaultTypeInternal() {}
+  union {
+    send_server_mail_request _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 send_server_mail_requestDefaultTypeInternal _send_server_mail_request_default_instance_;
+
 inline constexpr service_player_request::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : payload_{},
@@ -301,6 +344,12 @@ const ::uint32_t
         3,
         0,
         0x000, // bitmap
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::send_server_mail_request, _impl_._has_bits_),
+        4, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::send_server_mail_request, _impl_.mail_),
+        0,
+        0x000, // bitmap
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_._oneof_case_[0]),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
@@ -308,8 +357,10 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_request, _impl_.payload_),
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_response, _impl_._oneof_case_[0]),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_player_response, _impl_.payload_),
@@ -325,8 +376,10 @@ static const ::_pbi::MigrationSchema
         {10, sizeof(::celeritas::proto::service::service_login_request)},
         {31, sizeof(::celeritas::proto::service::service_login_response)},
         {42, sizeof(::celeritas::proto::service::offline_request)},
-        {43, sizeof(::celeritas::proto::service::service_player_request)},
-        {50, sizeof(::celeritas::proto::service::service_player_response)},
+        {43, sizeof(::celeritas::proto::service::send_server_mail_request)},
+        {48, sizeof(::celeritas::proto::service::send_server_mail_response)},
+        {49, sizeof(::celeritas::proto::service::service_player_request)},
+        {57, sizeof(::celeritas::proto::service::service_player_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::service::_reload_config_db_request_default_instance_._instance,
@@ -336,53 +389,66 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::service::_service_login_request_default_instance_._instance,
     &::celeritas::proto::service::_service_login_response_default_instance_._instance,
     &::celeritas::proto::service::_offline_request_default_instance_._instance,
+    &::celeritas::proto::service::_send_server_mail_request_default_instance_._instance,
+    &::celeritas::proto::service::_send_server_mail_response_default_instance_._instance,
     &::celeritas::proto::service::_service_player_request_default_instance_._instance,
     &::celeritas::proto::service::_service_player_response_default_instance_._instance,
 };
 const char descriptor_table_protodef_proto_2fservice_2fplayer_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\032proto/service/player.proto\022\027celeritas."
-    "proto.service\"7\n\030reload_config_db_reques"
-    "t\022\017\n\007db_name\030\001 \001(\t\022\n\n\002id\030\002 \001(\003\"\033\n\031reload"
-    "_config_db_response\"\034\n\032reload_game_confi"
-    "g_request\"\035\n\033reload_game_config_response"
-    "\"\333\001\n\025service_login_request\022\022\n\naccount_id"
-    "\030\001 \001(\003\022\023\n\013new_account\030\002 \001(\010\022\027\n\017account_b"
-    "ind_id\030\003 \001(\003\022\032\n\022new_game_server_id\030\004 \001(\010"
-    "\022\026\n\016game_server_id\030\005 \001(\t\022\021\n\tdevice_id\030\006 "
-    "\001(\t\022\023\n\013app_version\030\007 \001(\t\022\022\n\nsession_id\030\010"
-    " \001(\003\022\020\n\010protocol\030\t \001(\005\"i\n\026service_login_"
-    "response\022\024\n\014current_time\030\001 \001(\003\022\022\n\nsessio"
-    "n_id\030\002 \001(\003\022\020\n\010protocol\030\003 \001(\005\022\023\n\013instance"
-    "_id\030\004 \001(\t\"\021\n\017offline_request\"\313\002\n\026service"
-    "_player_request\022M\n\020reload_config_db\030\001 \001("
-    "\01321.celeritas.proto.service.reload_confi"
-    "g_db_requestH\000\022Q\n\022reload_game_config\030\002 \001"
-    "(\01323.celeritas.proto.service.reload_game"
-    "_config_requestH\000\022G\n\rservice_login\030\003 \001(\013"
-    "2..celeritas.proto.service.service_login"
-    "_requestH\000\022;\n\007offline\030\004 \001(\0132(.celeritas."
-    "proto.service.offline_requestH\000B\t\n\007paylo"
-    "ad\"\222\002\n\027service_player_response\022N\n\020reload"
-    "_config_db\030\001 \001(\01322.celeritas.proto.servi"
-    "ce.reload_config_db_responseH\000\022R\n\022reload"
-    "_game_config\030\002 \001(\01324.celeritas.proto.ser"
-    "vice.reload_game_config_responseH\000\022H\n\rse"
-    "rvice_login\030\003 \001(\0132/.celeritas.proto.serv"
-    "ice.service_login_responseH\000B\t\n\007payloadb"
-    "\006proto3"
+    "proto.service\032\036proto/client/player/mail."
+    "proto\"7\n\030reload_config_db_request\022\017\n\007db_"
+    "name\030\001 \001(\t\022\n\n\002id\030\002 \001(\003\"\033\n\031reload_config_"
+    "db_response\"\034\n\032reload_game_config_reques"
+    "t\"\035\n\033reload_game_config_response\"\333\001\n\025ser"
+    "vice_login_request\022\022\n\naccount_id\030\001 \001(\003\022\023"
+    "\n\013new_account\030\002 \001(\010\022\027\n\017account_bind_id\030\003"
+    " \001(\003\022\032\n\022new_game_server_id\030\004 \001(\010\022\026\n\016game"
+    "_server_id\030\005 \001(\t\022\021\n\tdevice_id\030\006 \001(\t\022\023\n\013a"
+    "pp_version\030\007 \001(\t\022\022\n\nsession_id\030\010 \001(\003\022\020\n\010"
+    "protocol\030\t \001(\005\"i\n\026service_login_response"
+    "\022\024\n\014current_time\030\001 \001(\003\022\022\n\nsession_id\030\002 \001"
+    "(\003\022\020\n\010protocol\030\003 \001(\005\022\023\n\013instance_id\030\004 \001("
+    "\t\"\021\n\017offline_request\"K\n\030send_server_mail"
+    "_request\022/\n\004mail\030\001 \001(\0132!.celeritas.proto"
+    ".client.mail_data\"\033\n\031send_server_mail_re"
+    "sponse\"\232\003\n\026service_player_request\022M\n\020rel"
+    "oad_config_db\030\001 \001(\01321.celeritas.proto.se"
+    "rvice.reload_config_db_requestH\000\022Q\n\022relo"
+    "ad_game_config\030\002 \001(\01323.celeritas.proto.s"
+    "ervice.reload_game_config_requestH\000\022G\n\rs"
+    "ervice_login\030\003 \001(\0132..celeritas.proto.ser"
+    "vice.service_login_requestH\000\022;\n\007offline\030"
+    "\004 \001(\0132(.celeritas.proto.service.offline_"
+    "requestH\000\022M\n\020send_server_mail\030\005 \001(\01321.ce"
+    "leritas.proto.service.send_server_mail_r"
+    "equestH\000B\t\n\007payload\"\342\002\n\027service_player_r"
+    "esponse\022N\n\020reload_config_db\030\001 \001(\01322.cele"
+    "ritas.proto.service.reload_config_db_res"
+    "ponseH\000\022R\n\022reload_game_config\030\002 \001(\01324.ce"
+    "leritas.proto.service.reload_game_config"
+    "_responseH\000\022H\n\rservice_login\030\003 \001(\0132/.cel"
+    "eritas.proto.service.service_login_respo"
+    "nseH\000\022N\n\020send_server_mail\030\005 \001(\01322.celeri"
+    "tas.proto.service.send_server_mail_respo"
+    "nseH\000B\t\n\007payloadb\006proto3"
+};
+static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
+    descriptor_table_proto_2fservice_2fplayer_2eproto_deps[1] = {
+        &::descriptor_table_proto_2fclient_2fplayer_2fmail_2eproto,
 };
 static ::absl::once_flag descriptor_table_proto_2fservice_2fplayer_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fplayer_2eproto = {
     false,
     false,
-    1167,
+    1464,
     descriptor_table_protodef_proto_2fservice_2fplayer_2eproto,
     "proto/service/player.proto",
     &descriptor_table_proto_2fservice_2fplayer_2eproto_once,
-    nullptr,
-    0,
-    9,
+    descriptor_table_proto_2fservice_2fplayer_2eproto_deps,
+    1,
+    11,
     schemas,
     file_default_instances,
     TableStruct_proto_2fservice_2fplayer_2eproto::offsets,
@@ -2049,6 +2115,387 @@ offline_request::_table_ = {
 }
 // ===================================================================
 
+class send_server_mail_request::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<send_server_mail_request>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(send_server_mail_request, _impl_._has_bits_);
+};
+
+void send_server_mail_request::clear_mail() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mail_ != nullptr) _impl_.mail_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001U;
+}
+send_server_mail_request::send_server_mail_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, send_server_mail_request_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.send_server_mail_request)
+}
+PROTOBUF_NDEBUG_INLINE send_server_mail_request::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::celeritas::proto::service::send_server_mail_request& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+send_server_mail_request::send_server_mail_request(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const send_server_mail_request& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, send_server_mail_request_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  send_server_mail_request* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.mail_ = ((cached_has_bits & 0x00000001U) != 0)
+                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.mail_)
+                : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.send_server_mail_request)
+}
+PROTOBUF_NDEBUG_INLINE send_server_mail_request::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void send_server_mail_request::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.mail_ = {};
+}
+send_server_mail_request::~send_server_mail_request() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.service.send_server_mail_request)
+  SharedDtor(*this);
+}
+inline void send_server_mail_request::SharedDtor(MessageLite& self) {
+  send_server_mail_request& this_ = static_cast<send_server_mail_request&>(self);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.mail_;
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL send_server_mail_request::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) send_server_mail_request(arena);
+}
+constexpr auto send_server_mail_request::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(send_server_mail_request),
+                                            alignof(send_server_mail_request));
+}
+constexpr auto send_server_mail_request::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_send_server_mail_request_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &send_server_mail_request::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<send_server_mail_request>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &send_server_mail_request::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<send_server_mail_request>(), &send_server_mail_request::ByteSizeLong,
+              &send_server_mail_request::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(send_server_mail_request, _impl_._cached_size_),
+          false,
+      },
+      &send_server_mail_request::kDescriptorMethods,
+      &descriptor_table_proto_2fservice_2fplayer_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull send_server_mail_request_class_data_ =
+        send_server_mail_request::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+send_server_mail_request::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&send_server_mail_request_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(send_server_mail_request_class_data_.tc_table);
+  return send_server_mail_request_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
+send_server_mail_request::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(send_server_mail_request, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    send_server_mail_request_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::service::send_server_mail_request>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .celeritas.proto.client.mail_data mail = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(send_server_mail_request, _impl_.mail_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .celeritas.proto.client.mail_data mail = 1;
+    {PROTOBUF_FIELD_OFFSET(send_server_mail_request, _impl_.mail_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }},
+  {{
+      {::_pbi::TcParser::GetTable<::celeritas::proto::client::mail_data>()},
+  }},
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void send_server_mail_request::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.service.send_server_mail_request)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    ABSL_DCHECK(_impl_.mail_ != nullptr);
+    _impl_.mail_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL send_server_mail_request::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const send_server_mail_request& this_ = static_cast<const send_server_mail_request&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL send_server_mail_request::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const send_server_mail_request& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.service.send_server_mail_request)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // .celeritas.proto.client.mail_data mail = 1;
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, *this_._impl_.mail_, this_._impl_.mail_->GetCachedSize(), target,
+        stream);
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.service.send_server_mail_request)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t send_server_mail_request::ByteSizeLong(const MessageLite& base) {
+  const send_server_mail_request& this_ = static_cast<const send_server_mail_request&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t send_server_mail_request::ByteSizeLong() const {
+  const send_server_mail_request& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.service.send_server_mail_request)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+   {
+    // .celeritas.proto.client.mail_data mail = 1;
+    cached_has_bits = this_._impl_._has_bits_[0];
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.mail_);
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void send_server_mail_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<send_server_mail_request*>(&to_msg);
+  auto& from = static_cast<const send_server_mail_request&>(from_msg);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    from.VerifyHasBitConsistency();
+  }
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.service.send_server_mail_request)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    ABSL_DCHECK(from._impl_.mail_ != nullptr);
+    if (_this->_impl_.mail_ == nullptr) {
+      _this->_impl_.mail_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.mail_);
+    } else {
+      _this->_impl_.mail_->MergeFrom(*from._impl_.mail_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void send_server_mail_request::CopyFrom(const send_server_mail_request& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.service.send_server_mail_request)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void send_server_mail_request::InternalSwap(send_server_mail_request* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.mail_, other->_impl_.mail_);
+}
+
+::google::protobuf::Metadata send_server_mail_request::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class send_server_mail_response::_Internal {
+ public:
+};
+
+send_server_mail_response::send_server_mail_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, send_server_mail_response_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.service.send_server_mail_response)
+}
+send_server_mail_response::send_server_mail_response(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const send_server_mail_response& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, send_server_mail_response_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  send_server_mail_response* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.service.send_server_mail_response)
+}
+
+inline void* PROTOBUF_NONNULL send_server_mail_response::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) send_server_mail_response(arena);
+}
+constexpr auto send_server_mail_response::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(send_server_mail_response),
+                                            alignof(send_server_mail_response));
+}
+constexpr auto send_server_mail_response::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_send_server_mail_response_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &send_server_mail_response::MergeImpl,
+          ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<send_server_mail_response>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &send_server_mail_response::SharedDtor,
+          ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<send_server_mail_response>(), &send_server_mail_response::ByteSizeLong,
+              &send_server_mail_response::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(send_server_mail_response, _impl_._cached_size_),
+          false,
+      },
+      &send_server_mail_response::kDescriptorMethods,
+      &descriptor_table_proto_2fservice_2fplayer_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull send_server_mail_response_class_data_ =
+        send_server_mail_response::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+send_server_mail_response::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&send_server_mail_response_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(send_server_mail_response_class_data_.tc_table);
+  return send_server_mail_response_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
+send_server_mail_response::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    send_server_mail_response_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::service::send_server_mail_response>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+::google::protobuf::Metadata send_server_mail_response::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class service_player_request::_Internal {
  public:
   static constexpr ::int32_t kOneofCaseOffset =
@@ -2107,6 +2554,19 @@ void service_player_request::set_allocated_offline(::celeritas::proto::service::
   }
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_player_request.offline)
 }
+void service_player_request::set_allocated_send_server_mail(::celeritas::proto::service::send_server_mail_request* PROTOBUF_NULLABLE send_server_mail) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (send_server_mail) {
+    ::google::protobuf::Arena* submessage_arena = send_server_mail->GetArena();
+    if (message_arena != submessage_arena) {
+      send_server_mail = ::google::protobuf::internal::GetOwnedMessage(message_arena, send_server_mail, submessage_arena);
+    }
+    set_has_send_server_mail();
+    _impl_.payload_.send_server_mail_ = send_server_mail;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_player_request.send_server_mail)
+}
 service_player_request::service_player_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, service_player_request_class_data_.base()) {
@@ -2151,6 +2611,9 @@ service_player_request::service_player_request(
         break;
       case kOffline:
         _impl_.payload_.offline_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.offline_);
+        break;
+      case kSendServerMail:
+        _impl_.payload_.send_server_mail_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.send_server_mail_);
         break;
   }
 
@@ -2219,6 +2682,14 @@ void service_player_request::clear_payload() {
       }
       break;
     }
+    case kSendServerMail: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.send_server_mail_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.send_server_mail_);
+      }
+      break;
+    }
     case PAYLOAD_NOT_SET: {
       break;
     }
@@ -2270,17 +2741,17 @@ service_player_request::GetClassData() const {
   return service_player_request_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 4, 4, 0, 2>
+const ::_pbi::TcParseTable<0, 5, 5, 0, 2>
 service_player_request::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    4, 0,  // max_field_number, fast_idx_mask
+    5, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
-    4,  // num_aux_entries
+    5,  // num_field_entries
+    5,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     service_player_request_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -2301,12 +2772,15 @@ service_player_request::_table_ = {
     {PROTOBUF_FIELD_OFFSET(service_player_request, _impl_.payload_.service_login_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.service.offline_request offline = 4;
     {PROTOBUF_FIELD_OFFSET(service_player_request, _impl_.payload_.offline_), _Internal::kOneofCaseOffset + 0, 3, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.service.send_server_mail_request send_server_mail = 5;
+    {PROTOBUF_FIELD_OFFSET(service_player_request, _impl_.payload_.send_server_mail_), _Internal::kOneofCaseOffset + 0, 4, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_config_db_request>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_game_config_request>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_login_request>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::offline_request>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::service::send_server_mail_request>()},
   }},
   {{
   }},
@@ -2365,6 +2839,12 @@ PROTOBUF_NOINLINE void service_player_request::Clear() {
           stream);
       break;
     }
+    case kSendServerMail: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          5, *this_._impl_.payload_.send_server_mail_, this_._impl_.payload_.send_server_mail_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     default:
       break;
   }
@@ -2414,6 +2894,12 @@ PROTOBUF_NOINLINE void service_player_request::Clear() {
     case kOffline: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.offline_);
+      break;
+    }
+    // .celeritas.proto.service.send_server_mail_request send_server_mail = 5;
+    case kSendServerMail: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.send_server_mail_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -2476,6 +2962,14 @@ void service_player_request::MergeImpl(::google::protobuf::MessageLite& to_msg, 
           _this->_impl_.payload_.offline_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.offline_);
         } else {
           _this->_impl_.payload_.offline_->MergeFrom(*from._impl_.payload_.offline_);
+        }
+        break;
+      }
+      case kSendServerMail: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.send_server_mail_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.send_server_mail_);
+        } else {
+          _this->_impl_.payload_.send_server_mail_->MergeFrom(*from._impl_.payload_.send_server_mail_);
         }
         break;
       }
@@ -2551,6 +3045,19 @@ void service_player_response::set_allocated_service_login(::celeritas::proto::se
   }
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_player_response.service_login)
 }
+void service_player_response::set_allocated_send_server_mail(::celeritas::proto::service::send_server_mail_response* PROTOBUF_NULLABLE send_server_mail) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (send_server_mail) {
+    ::google::protobuf::Arena* submessage_arena = send_server_mail->GetArena();
+    if (message_arena != submessage_arena) {
+      send_server_mail = ::google::protobuf::internal::GetOwnedMessage(message_arena, send_server_mail, submessage_arena);
+    }
+    set_has_send_server_mail();
+    _impl_.payload_.send_server_mail_ = send_server_mail;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_player_response.send_server_mail)
+}
 service_player_response::service_player_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, service_player_response_class_data_.base()) {
@@ -2592,6 +3099,9 @@ service_player_response::service_player_response(
         break;
       case kServiceLogin:
         _impl_.payload_.service_login_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.service_login_);
+        break;
+      case kSendServerMail:
+        _impl_.payload_.send_server_mail_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.send_server_mail_);
         break;
   }
 
@@ -2652,6 +3162,14 @@ void service_player_response::clear_payload() {
       }
       break;
     }
+    case kSendServerMail: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.send_server_mail_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.send_server_mail_);
+      }
+      break;
+    }
     case PAYLOAD_NOT_SET: {
       break;
     }
@@ -2703,17 +3221,17 @@ service_player_response::GetClassData() const {
   return service_player_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 3, 3, 0, 2>
+const ::_pbi::TcParseTable<0, 4, 4, 0, 2>
 service_player_response::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    3, 0,  // max_field_number, fast_idx_mask
+    5, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967272,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    3,  // num_aux_entries
+    4,  // num_field_entries
+    4,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     service_player_response_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -2732,11 +3250,14 @@ service_player_response::_table_ = {
     {PROTOBUF_FIELD_OFFSET(service_player_response, _impl_.payload_.reload_game_config_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.service.service_login_response service_login = 3;
     {PROTOBUF_FIELD_OFFSET(service_player_response, _impl_.payload_.service_login_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.service.send_server_mail_response send_server_mail = 5;
+    {PROTOBUF_FIELD_OFFSET(service_player_response, _impl_.payload_.send_server_mail_), _Internal::kOneofCaseOffset + 0, 3, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_config_db_response>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::reload_game_config_response>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_login_response>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::service::send_server_mail_response>()},
   }},
   {{
   }},
@@ -2789,6 +3310,12 @@ PROTOBUF_NOINLINE void service_player_response::Clear() {
           stream);
       break;
     }
+    case kSendServerMail: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          5, *this_._impl_.payload_.send_server_mail_, this_._impl_.payload_.send_server_mail_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     default:
       break;
   }
@@ -2832,6 +3359,12 @@ PROTOBUF_NOINLINE void service_player_response::Clear() {
     case kServiceLogin: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.service_login_);
+      break;
+    }
+    // .celeritas.proto.service.send_server_mail_response send_server_mail = 5;
+    case kSendServerMail: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.send_server_mail_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -2886,6 +3419,14 @@ void service_player_response::MergeImpl(::google::protobuf::MessageLite& to_msg,
           _this->_impl_.payload_.service_login_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.service_login_);
         } else {
           _this->_impl_.payload_.service_login_->MergeFrom(*from._impl_.payload_.service_login_);
+        }
+        break;
+      }
+      case kSendServerMail: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.send_server_mail_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.send_server_mail_);
+        } else {
+          _this->_impl_.payload_.send_server_mail_->MergeFrom(*from._impl_.payload_.send_server_mail_);
         }
         break;
       }
