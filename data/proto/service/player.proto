@@ -2,7 +2,7 @@
 
 package celeritas.proto.service;
 
-import "proto/client/player/mail.proto";
+import "proto/common/item.proto";
 
 // 重载配置数据库
 message reload_config_db_request {
@@ -42,9 +42,25 @@ message service_login_response {
 message offline_request {
 }
 
+message server_mail_content_data {
+    int32 type = 1;
+    string content = 2;
+}
+
+message server_mail_data {
+    int64 mail_id = 1;
+    int32 type = 2;
+    bool multilingual = 3;
+    repeated server_mail_content_data title = 4;
+    repeated server_mail_content_data content = 5;
+    int64 send_time = 6;
+    int64 expire_time = 7;
+    repeated common.inventory_data attachments = 8;
+}
+
 // 发送全服邮件
 message send_server_mail_request {
-  client.mail_data mail = 1;
+  server_mail_data mail = 1;
 }
 
 message send_server_mail_response {

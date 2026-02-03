@@ -30,7 +30,7 @@
 #include "google/protobuf/repeated_field.h"  // IWYU pragma: export
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/unknown_field_set.h"
-#include "proto/client/player/mail.pb.h"
+#include "proto/common/item.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -85,6 +85,14 @@ class send_server_mail_response;
 struct send_server_mail_responseDefaultTypeInternal;
 extern send_server_mail_responseDefaultTypeInternal _send_server_mail_response_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull send_server_mail_response_class_data_;
+class server_mail_content_data;
+struct server_mail_content_dataDefaultTypeInternal;
+extern server_mail_content_dataDefaultTypeInternal _server_mail_content_data_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull server_mail_content_data_class_data_;
+class server_mail_data;
+struct server_mail_dataDefaultTypeInternal;
+extern server_mail_dataDefaultTypeInternal _server_mail_data_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull server_mail_data_class_data_;
 class service_login_request;
 struct service_login_requestDefaultTypeInternal;
 extern service_login_requestDefaultTypeInternal _service_login_request_default_instance_;
@@ -652,6 +660,214 @@ class service_login_request final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull service_login_request_class_data_;
 // -------------------------------------------------------------------
 
+class server_mail_content_data final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.service.server_mail_content_data) */ {
+ public:
+  inline server_mail_content_data() : server_mail_content_data(nullptr) {}
+  ~server_mail_content_data() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(server_mail_content_data* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(server_mail_content_data));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR server_mail_content_data(::google::protobuf::internal::ConstantInitialized);
+
+  inline server_mail_content_data(const server_mail_content_data& from) : server_mail_content_data(nullptr, from) {}
+  inline server_mail_content_data(server_mail_content_data&& from) noexcept
+      : server_mail_content_data(nullptr, ::std::move(from)) {}
+  inline server_mail_content_data& operator=(const server_mail_content_data& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline server_mail_content_data& operator=(server_mail_content_data&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const server_mail_content_data& default_instance() {
+    return *reinterpret_cast<const server_mail_content_data*>(
+        &_server_mail_content_data_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(server_mail_content_data& a, server_mail_content_data& b) { a.Swap(&b); }
+  inline void Swap(server_mail_content_data* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(server_mail_content_data* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  server_mail_content_data* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<server_mail_content_data>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const server_mail_content_data& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const server_mail_content_data& from) { server_mail_content_data::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(server_mail_content_data* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.service.server_mail_content_data"; }
+
+ protected:
+  explicit server_mail_content_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  server_mail_content_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const server_mail_content_data& from);
+  server_mail_content_data(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, server_mail_content_data&& from) noexcept
+      : server_mail_content_data(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kContentFieldNumber = 2,
+    kTypeFieldNumber = 1,
+  };
+  // string content = 2;
+  void clear_content() ;
+  const ::std::string& content() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_content(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_content();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_content();
+  void set_allocated_content(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_content() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_content(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_content();
+
+  public:
+  // int32 type = 1;
+  void clear_type() ;
+  ::int32_t type() const;
+  void set_type(::int32_t value);
+
+  private:
+  ::int32_t _internal_type() const;
+  void _internal_set_type(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:celeritas.proto.service.server_mail_content_data)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   0, 64,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const server_mail_content_data& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr content_;
+    ::int32_t type_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fservice_2fplayer_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull server_mail_content_data_class_data_;
+// -------------------------------------------------------------------
+
 class send_server_mail_response final : public ::google::protobuf::internal::ZeroFieldsBase
 /* @@protoc_insertion_point(class_definition:celeritas.proto.service.send_server_mail_response) */ {
  public:
@@ -706,7 +922,7 @@ class send_server_mail_response final : public ::google::protobuf::internal::Zer
     return *reinterpret_cast<const send_server_mail_response*>(
         &_send_server_mail_response_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 10;
   friend void swap(send_server_mail_response& a, send_server_mail_response& b) { a.Swap(&b); }
   inline void Swap(send_server_mail_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1597,7 +1813,7 @@ class service_player_response final : public ::google::protobuf::Message
     kSendServerMail = 5,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 10;
+  static constexpr int kIndexInFileMessages = 12;
   friend void swap(service_player_response& a, service_player_response& b) { a.Swap(&b); }
   inline void Swap(service_player_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1817,6 +2033,302 @@ class service_player_response final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull service_player_response_class_data_;
 // -------------------------------------------------------------------
 
+class server_mail_data final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.service.server_mail_data) */ {
+ public:
+  inline server_mail_data() : server_mail_data(nullptr) {}
+  ~server_mail_data() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(server_mail_data* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(server_mail_data));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR server_mail_data(::google::protobuf::internal::ConstantInitialized);
+
+  inline server_mail_data(const server_mail_data& from) : server_mail_data(nullptr, from) {}
+  inline server_mail_data(server_mail_data&& from) noexcept
+      : server_mail_data(nullptr, ::std::move(from)) {}
+  inline server_mail_data& operator=(const server_mail_data& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline server_mail_data& operator=(server_mail_data&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const server_mail_data& default_instance() {
+    return *reinterpret_cast<const server_mail_data*>(
+        &_server_mail_data_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 8;
+  friend void swap(server_mail_data& a, server_mail_data& b) { a.Swap(&b); }
+  inline void Swap(server_mail_data* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(server_mail_data* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  server_mail_data* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<server_mail_data>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const server_mail_data& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const server_mail_data& from) { server_mail_data::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(server_mail_data* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.service.server_mail_data"; }
+
+ protected:
+  explicit server_mail_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  server_mail_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const server_mail_data& from);
+  server_mail_data(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, server_mail_data&& from) noexcept
+      : server_mail_data(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kTitleFieldNumber = 4,
+    kContentFieldNumber = 5,
+    kAttachmentsFieldNumber = 8,
+    kMailIdFieldNumber = 1,
+    kTypeFieldNumber = 2,
+    kMultilingualFieldNumber = 3,
+    kSendTimeFieldNumber = 6,
+    kExpireTimeFieldNumber = 7,
+  };
+  // repeated .celeritas.proto.service.server_mail_content_data title = 4;
+  int title_size() const;
+  private:
+  int _internal_title_size() const;
+
+  public:
+  void clear_title() ;
+  ::celeritas::proto::service::server_mail_content_data* PROTOBUF_NONNULL mutable_title(int index);
+  ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>* PROTOBUF_NONNULL mutable_title();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>& _internal_title() const;
+  ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>* PROTOBUF_NONNULL _internal_mutable_title();
+  public:
+  const ::celeritas::proto::service::server_mail_content_data& title(int index) const;
+  ::celeritas::proto::service::server_mail_content_data* PROTOBUF_NONNULL add_title();
+  const ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>& title() const;
+  // repeated .celeritas.proto.service.server_mail_content_data content = 5;
+  int content_size() const;
+  private:
+  int _internal_content_size() const;
+
+  public:
+  void clear_content() ;
+  ::celeritas::proto::service::server_mail_content_data* PROTOBUF_NONNULL mutable_content(int index);
+  ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>* PROTOBUF_NONNULL mutable_content();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>& _internal_content() const;
+  ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>* PROTOBUF_NONNULL _internal_mutable_content();
+  public:
+  const ::celeritas::proto::service::server_mail_content_data& content(int index) const;
+  ::celeritas::proto::service::server_mail_content_data* PROTOBUF_NONNULL add_content();
+  const ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>& content() const;
+  // repeated .celeritas.proto.common.inventory_data attachments = 8;
+  int attachments_size() const;
+  private:
+  int _internal_attachments_size() const;
+
+  public:
+  void clear_attachments() ;
+  ::celeritas::proto::common::inventory_data* PROTOBUF_NONNULL mutable_attachments(int index);
+  ::google::protobuf::RepeatedPtrField<::celeritas::proto::common::inventory_data>* PROTOBUF_NONNULL mutable_attachments();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::celeritas::proto::common::inventory_data>& _internal_attachments() const;
+  ::google::protobuf::RepeatedPtrField<::celeritas::proto::common::inventory_data>* PROTOBUF_NONNULL _internal_mutable_attachments();
+  public:
+  const ::celeritas::proto::common::inventory_data& attachments(int index) const;
+  ::celeritas::proto::common::inventory_data* PROTOBUF_NONNULL add_attachments();
+  const ::google::protobuf::RepeatedPtrField<::celeritas::proto::common::inventory_data>& attachments() const;
+  // int64 mail_id = 1;
+  void clear_mail_id() ;
+  ::int64_t mail_id() const;
+  void set_mail_id(::int64_t value);
+
+  private:
+  ::int64_t _internal_mail_id() const;
+  void _internal_set_mail_id(::int64_t value);
+
+  public:
+  // int32 type = 2;
+  void clear_type() ;
+  ::int32_t type() const;
+  void set_type(::int32_t value);
+
+  private:
+  ::int32_t _internal_type() const;
+  void _internal_set_type(::int32_t value);
+
+  public:
+  // bool multilingual = 3;
+  void clear_multilingual() ;
+  bool multilingual() const;
+  void set_multilingual(bool value);
+
+  private:
+  bool _internal_multilingual() const;
+  void _internal_set_multilingual(bool value);
+
+  public:
+  // int64 send_time = 6;
+  void clear_send_time() ;
+  ::int64_t send_time() const;
+  void set_send_time(::int64_t value);
+
+  private:
+  ::int64_t _internal_send_time() const;
+  void _internal_set_send_time(::int64_t value);
+
+  public:
+  // int64 expire_time = 7;
+  void clear_expire_time() ;
+  ::int64_t expire_time() const;
+  void set_expire_time(::int64_t value);
+
+  private:
+  ::int64_t _internal_expire_time() const;
+  void _internal_set_expire_time(::int64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:celeritas.proto.service.server_mail_data)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<3, 8,
+                                   3, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const server_mail_data& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::celeritas::proto::service::server_mail_content_data > title_;
+    ::google::protobuf::RepeatedPtrField< ::celeritas::proto::service::server_mail_content_data > content_;
+    ::google::protobuf::RepeatedPtrField< ::celeritas::proto::common::inventory_data > attachments_;
+    ::int64_t mail_id_;
+    ::int32_t type_;
+    bool multilingual_;
+    ::int64_t send_time_;
+    ::int64_t expire_time_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fservice_2fplayer_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull server_mail_data_class_data_;
+// -------------------------------------------------------------------
+
 class send_server_mail_request final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:celeritas.proto.service.send_server_mail_request) */ {
  public:
@@ -1872,7 +2384,7 @@ class send_server_mail_request final : public ::google::protobuf::Message
     return *reinterpret_cast<const send_server_mail_request*>(
         &_send_server_mail_request_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(send_server_mail_request& a, send_server_mail_request& b) { a.Swap(&b); }
   inline void Swap(send_server_mail_request* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1962,19 +2474,19 @@ class send_server_mail_request final : public ::google::protobuf::Message
   enum : int {
     kMailFieldNumber = 1,
   };
-  // .celeritas.proto.client.mail_data mail = 1;
+  // .celeritas.proto.service.server_mail_data mail = 1;
   bool has_mail() const;
   void clear_mail() ;
-  const ::celeritas::proto::client::mail_data& mail() const;
-  [[nodiscard]] ::celeritas::proto::client::mail_data* PROTOBUF_NULLABLE release_mail();
-  ::celeritas::proto::client::mail_data* PROTOBUF_NONNULL mutable_mail();
-  void set_allocated_mail(::celeritas::proto::client::mail_data* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_mail(::celeritas::proto::client::mail_data* PROTOBUF_NULLABLE value);
-  ::celeritas::proto::client::mail_data* PROTOBUF_NULLABLE unsafe_arena_release_mail();
+  const ::celeritas::proto::service::server_mail_data& mail() const;
+  [[nodiscard]] ::celeritas::proto::service::server_mail_data* PROTOBUF_NULLABLE release_mail();
+  ::celeritas::proto::service::server_mail_data* PROTOBUF_NONNULL mutable_mail();
+  void set_allocated_mail(::celeritas::proto::service::server_mail_data* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_mail(::celeritas::proto::service::server_mail_data* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::service::server_mail_data* PROTOBUF_NULLABLE unsafe_arena_release_mail();
 
   private:
-  const ::celeritas::proto::client::mail_data& _internal_mail() const;
-  ::celeritas::proto::client::mail_data* PROTOBUF_NONNULL _internal_mutable_mail();
+  const ::celeritas::proto::service::server_mail_data& _internal_mail() const;
+  ::celeritas::proto::service::server_mail_data* PROTOBUF_NONNULL _internal_mutable_mail();
 
   public:
   // @@protoc_insertion_point(class_scope:celeritas.proto.service.send_server_mail_request)
@@ -2003,7 +2515,7 @@ class send_server_mail_request final : public ::google::protobuf::Message
         const send_server_mail_request& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::celeritas::proto::client::mail_data* PROTOBUF_NULLABLE mail_;
+    ::celeritas::proto::service::server_mail_data* PROTOBUF_NULLABLE mail_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2076,7 +2588,7 @@ class service_player_request final : public ::google::protobuf::Message
     kSendServerMail = 5,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 9;
+  static constexpr int kIndexInFileMessages = 11;
   friend void swap(service_player_request& a, service_player_request& b) { a.Swap(&b); }
   inline void Swap(service_player_request* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2924,30 +3436,398 @@ inline void service_login_response::set_allocated_instance_id(::std::string* PRO
 
 // -------------------------------------------------------------------
 
+// server_mail_content_data
+
+// int32 type = 1;
+inline void server_mail_content_data::clear_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002U;
+}
+inline ::int32_t server_mail_content_data::type() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.server_mail_content_data.type)
+  return _internal_type();
+}
+inline void server_mail_content_data::set_type(::int32_t value) {
+  _internal_set_type(value);
+  _impl_._has_bits_[0] |= 0x00000002U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.server_mail_content_data.type)
+}
+inline ::int32_t server_mail_content_data::_internal_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.type_;
+}
+inline void server_mail_content_data::_internal_set_type(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.type_ = value;
+}
+
+// string content = 2;
+inline void server_mail_content_data::clear_content() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.content_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000001U;
+}
+inline const ::std::string& server_mail_content_data::content() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.server_mail_content_data.content)
+  return _internal_content();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void server_mail_content_data::set_content(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  _impl_.content_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.server_mail_content_data.content)
+}
+inline ::std::string* PROTOBUF_NONNULL server_mail_content_data::mutable_content()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_content();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.server_mail_content_data.content)
+  return _s;
+}
+inline const ::std::string& server_mail_content_data::_internal_content() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.content_.Get();
+}
+inline void server_mail_content_data::_internal_set_content(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  _impl_.content_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL server_mail_content_data::_internal_mutable_content() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  return _impl_.content_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE server_mail_content_data::release_content() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.server_mail_content_data.content)
+  if ((_impl_._has_bits_[0] & 0x00000001U) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001U;
+  auto* released = _impl_.content_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.content_.Set("", GetArena());
+  }
+  return released;
+}
+inline void server_mail_content_data::set_allocated_content(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001U;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001U;
+  }
+  _impl_.content_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.content_.IsDefault()) {
+    _impl_.content_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.server_mail_content_data.content)
+}
+
+// -------------------------------------------------------------------
+
+// server_mail_data
+
+// int64 mail_id = 1;
+inline void server_mail_data::clear_mail_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.mail_id_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000001U;
+}
+inline ::int64_t server_mail_data::mail_id() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.server_mail_data.mail_id)
+  return _internal_mail_id();
+}
+inline void server_mail_data::set_mail_id(::int64_t value) {
+  _internal_set_mail_id(value);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.server_mail_data.mail_id)
+}
+inline ::int64_t server_mail_data::_internal_mail_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.mail_id_;
+}
+inline void server_mail_data::_internal_set_mail_id(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.mail_id_ = value;
+}
+
+// int32 type = 2;
+inline void server_mail_data::clear_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.type_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002U;
+}
+inline ::int32_t server_mail_data::type() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.server_mail_data.type)
+  return _internal_type();
+}
+inline void server_mail_data::set_type(::int32_t value) {
+  _internal_set_type(value);
+  _impl_._has_bits_[0] |= 0x00000002U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.server_mail_data.type)
+}
+inline ::int32_t server_mail_data::_internal_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.type_;
+}
+inline void server_mail_data::_internal_set_type(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.type_ = value;
+}
+
+// bool multilingual = 3;
+inline void server_mail_data::clear_multilingual() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.multilingual_ = false;
+  _impl_._has_bits_[0] &= ~0x00000004U;
+}
+inline bool server_mail_data::multilingual() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.server_mail_data.multilingual)
+  return _internal_multilingual();
+}
+inline void server_mail_data::set_multilingual(bool value) {
+  _internal_set_multilingual(value);
+  _impl_._has_bits_[0] |= 0x00000004U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.server_mail_data.multilingual)
+}
+inline bool server_mail_data::_internal_multilingual() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.multilingual_;
+}
+inline void server_mail_data::_internal_set_multilingual(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.multilingual_ = value;
+}
+
+// repeated .celeritas.proto.service.server_mail_content_data title = 4;
+inline int server_mail_data::_internal_title_size() const {
+  return _internal_title().size();
+}
+inline int server_mail_data::title_size() const {
+  return _internal_title_size();
+}
+inline void server_mail_data::clear_title() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.title_.Clear();
+}
+inline ::celeritas::proto::service::server_mail_content_data* PROTOBUF_NONNULL server_mail_data::mutable_title(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.server_mail_data.title)
+  return _internal_mutable_title()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>* PROTOBUF_NONNULL server_mail_data::mutable_title()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:celeritas.proto.service.server_mail_data.title)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_title();
+}
+inline const ::celeritas::proto::service::server_mail_content_data& server_mail_data::title(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.server_mail_data.title)
+  return _internal_title().Get(index);
+}
+inline ::celeritas::proto::service::server_mail_content_data* PROTOBUF_NONNULL server_mail_data::add_title()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::celeritas::proto::service::server_mail_content_data* _add = _internal_mutable_title()->Add();
+  // @@protoc_insertion_point(field_add:celeritas.proto.service.server_mail_data.title)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>& server_mail_data::title() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:celeritas.proto.service.server_mail_data.title)
+  return _internal_title();
+}
+inline const ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>&
+server_mail_data::_internal_title() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.title_;
+}
+inline ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>* PROTOBUF_NONNULL
+server_mail_data::_internal_mutable_title() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.title_;
+}
+
+// repeated .celeritas.proto.service.server_mail_content_data content = 5;
+inline int server_mail_data::_internal_content_size() const {
+  return _internal_content().size();
+}
+inline int server_mail_data::content_size() const {
+  return _internal_content_size();
+}
+inline void server_mail_data::clear_content() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.content_.Clear();
+}
+inline ::celeritas::proto::service::server_mail_content_data* PROTOBUF_NONNULL server_mail_data::mutable_content(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.server_mail_data.content)
+  return _internal_mutable_content()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>* PROTOBUF_NONNULL server_mail_data::mutable_content()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:celeritas.proto.service.server_mail_data.content)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_content();
+}
+inline const ::celeritas::proto::service::server_mail_content_data& server_mail_data::content(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.server_mail_data.content)
+  return _internal_content().Get(index);
+}
+inline ::celeritas::proto::service::server_mail_content_data* PROTOBUF_NONNULL server_mail_data::add_content()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::celeritas::proto::service::server_mail_content_data* _add = _internal_mutable_content()->Add();
+  // @@protoc_insertion_point(field_add:celeritas.proto.service.server_mail_data.content)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>& server_mail_data::content() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:celeritas.proto.service.server_mail_data.content)
+  return _internal_content();
+}
+inline const ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>&
+server_mail_data::_internal_content() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.content_;
+}
+inline ::google::protobuf::RepeatedPtrField<::celeritas::proto::service::server_mail_content_data>* PROTOBUF_NONNULL
+server_mail_data::_internal_mutable_content() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.content_;
+}
+
+// int64 send_time = 6;
+inline void server_mail_data::clear_send_time() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.send_time_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000008U;
+}
+inline ::int64_t server_mail_data::send_time() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.server_mail_data.send_time)
+  return _internal_send_time();
+}
+inline void server_mail_data::set_send_time(::int64_t value) {
+  _internal_set_send_time(value);
+  _impl_._has_bits_[0] |= 0x00000008U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.server_mail_data.send_time)
+}
+inline ::int64_t server_mail_data::_internal_send_time() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.send_time_;
+}
+inline void server_mail_data::_internal_set_send_time(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.send_time_ = value;
+}
+
+// int64 expire_time = 7;
+inline void server_mail_data::clear_expire_time() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.expire_time_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000010U;
+}
+inline ::int64_t server_mail_data::expire_time() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.server_mail_data.expire_time)
+  return _internal_expire_time();
+}
+inline void server_mail_data::set_expire_time(::int64_t value) {
+  _internal_set_expire_time(value);
+  _impl_._has_bits_[0] |= 0x00000010U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.server_mail_data.expire_time)
+}
+inline ::int64_t server_mail_data::_internal_expire_time() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.expire_time_;
+}
+inline void server_mail_data::_internal_set_expire_time(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.expire_time_ = value;
+}
+
+// repeated .celeritas.proto.common.inventory_data attachments = 8;
+inline int server_mail_data::_internal_attachments_size() const {
+  return _internal_attachments().size();
+}
+inline int server_mail_data::attachments_size() const {
+  return _internal_attachments_size();
+}
+inline ::celeritas::proto::common::inventory_data* PROTOBUF_NONNULL server_mail_data::mutable_attachments(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.server_mail_data.attachments)
+  return _internal_mutable_attachments()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::celeritas::proto::common::inventory_data>* PROTOBUF_NONNULL server_mail_data::mutable_attachments()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:celeritas.proto.service.server_mail_data.attachments)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_attachments();
+}
+inline const ::celeritas::proto::common::inventory_data& server_mail_data::attachments(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.server_mail_data.attachments)
+  return _internal_attachments().Get(index);
+}
+inline ::celeritas::proto::common::inventory_data* PROTOBUF_NONNULL server_mail_data::add_attachments()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::celeritas::proto::common::inventory_data* _add = _internal_mutable_attachments()->Add();
+  // @@protoc_insertion_point(field_add:celeritas.proto.service.server_mail_data.attachments)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::celeritas::proto::common::inventory_data>& server_mail_data::attachments() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:celeritas.proto.service.server_mail_data.attachments)
+  return _internal_attachments();
+}
+inline const ::google::protobuf::RepeatedPtrField<::celeritas::proto::common::inventory_data>&
+server_mail_data::_internal_attachments() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.attachments_;
+}
+inline ::google::protobuf::RepeatedPtrField<::celeritas::proto::common::inventory_data>* PROTOBUF_NONNULL
+server_mail_data::_internal_mutable_attachments() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.attachments_;
+}
+
+// -------------------------------------------------------------------
+
 // send_server_mail_request
 
-// .celeritas.proto.client.mail_data mail = 1;
+// .celeritas.proto.service.server_mail_data mail = 1;
 inline bool send_server_mail_request::has_mail() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001U) != 0;
   PROTOBUF_ASSUME(!value || _impl_.mail_ != nullptr);
   return value;
 }
-inline const ::celeritas::proto::client::mail_data& send_server_mail_request::_internal_mail() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::celeritas::proto::client::mail_data* p = _impl_.mail_;
-  return p != nullptr ? *p : reinterpret_cast<const ::celeritas::proto::client::mail_data&>(::celeritas::proto::client::_mail_data_default_instance_);
+inline void send_server_mail_request::clear_mail() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mail_ != nullptr) _impl_.mail_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001U;
 }
-inline const ::celeritas::proto::client::mail_data& send_server_mail_request::mail() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline const ::celeritas::proto::service::server_mail_data& send_server_mail_request::_internal_mail() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::celeritas::proto::service::server_mail_data* p = _impl_.mail_;
+  return p != nullptr ? *p : reinterpret_cast<const ::celeritas::proto::service::server_mail_data&>(::celeritas::proto::service::_server_mail_data_default_instance_);
+}
+inline const ::celeritas::proto::service::server_mail_data& send_server_mail_request::mail() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:celeritas.proto.service.send_server_mail_request.mail)
   return _internal_mail();
 }
 inline void send_server_mail_request::unsafe_arena_set_allocated_mail(
-    ::celeritas::proto::client::mail_data* PROTOBUF_NULLABLE value) {
+    ::celeritas::proto::service::server_mail_data* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (GetArena() == nullptr) {
     delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mail_);
   }
-  _impl_.mail_ = reinterpret_cast<::celeritas::proto::client::mail_data*>(value);
+  _impl_.mail_ = reinterpret_cast<::celeritas::proto::service::server_mail_data*>(value);
   if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001U;
   } else {
@@ -2955,11 +3835,11 @@ inline void send_server_mail_request::unsafe_arena_set_allocated_mail(
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.service.send_server_mail_request.mail)
 }
-inline ::celeritas::proto::client::mail_data* PROTOBUF_NULLABLE send_server_mail_request::release_mail() {
+inline ::celeritas::proto::service::server_mail_data* PROTOBUF_NULLABLE send_server_mail_request::release_mail() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
   _impl_._has_bits_[0] &= ~0x00000001U;
-  ::celeritas::proto::client::mail_data* released = _impl_.mail_;
+  ::celeritas::proto::service::server_mail_data* released = _impl_.mail_;
   _impl_.mail_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
     auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
@@ -2974,31 +3854,31 @@ inline ::celeritas::proto::client::mail_data* PROTOBUF_NULLABLE send_server_mail
   }
   return released;
 }
-inline ::celeritas::proto::client::mail_data* PROTOBUF_NULLABLE send_server_mail_request::unsafe_arena_release_mail() {
+inline ::celeritas::proto::service::server_mail_data* PROTOBUF_NULLABLE send_server_mail_request::unsafe_arena_release_mail() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:celeritas.proto.service.send_server_mail_request.mail)
 
   _impl_._has_bits_[0] &= ~0x00000001U;
-  ::celeritas::proto::client::mail_data* temp = _impl_.mail_;
+  ::celeritas::proto::service::server_mail_data* temp = _impl_.mail_;
   _impl_.mail_ = nullptr;
   return temp;
 }
-inline ::celeritas::proto::client::mail_data* PROTOBUF_NONNULL send_server_mail_request::_internal_mutable_mail() {
+inline ::celeritas::proto::service::server_mail_data* PROTOBUF_NONNULL send_server_mail_request::_internal_mutable_mail() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.mail_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::mail_data>(GetArena());
-    _impl_.mail_ = reinterpret_cast<::celeritas::proto::client::mail_data*>(p);
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::service::server_mail_data>(GetArena());
+    _impl_.mail_ = reinterpret_cast<::celeritas::proto::service::server_mail_data*>(p);
   }
   return _impl_.mail_;
 }
-inline ::celeritas::proto::client::mail_data* PROTOBUF_NONNULL send_server_mail_request::mutable_mail()
+inline ::celeritas::proto::service::server_mail_data* PROTOBUF_NONNULL send_server_mail_request::mutable_mail()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   _impl_._has_bits_[0] |= 0x00000001U;
-  ::celeritas::proto::client::mail_data* _msg = _internal_mutable_mail();
+  ::celeritas::proto::service::server_mail_data* _msg = _internal_mutable_mail();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.service.send_server_mail_request.mail)
   return _msg;
 }
-inline void send_server_mail_request::set_allocated_mail(::celeritas::proto::client::mail_data* PROTOBUF_NULLABLE value) {
+inline void send_server_mail_request::set_allocated_mail(::celeritas::proto::service::server_mail_data* PROTOBUF_NULLABLE value) {
   ::google::protobuf::Arena* message_arena = GetArena();
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (message_arena == nullptr) {
@@ -3006,7 +3886,7 @@ inline void send_server_mail_request::set_allocated_mail(::celeritas::proto::cli
   }
 
   if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(value)->GetArena();
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
@@ -3015,7 +3895,7 @@ inline void send_server_mail_request::set_allocated_mail(::celeritas::proto::cli
     _impl_._has_bits_[0] &= ~0x00000001U;
   }
 
-  _impl_.mail_ = reinterpret_cast<::celeritas::proto::client::mail_data*>(value);
+  _impl_.mail_ = reinterpret_cast<::celeritas::proto::service::server_mail_data*>(value);
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.send_server_mail_request.mail)
 }
 
