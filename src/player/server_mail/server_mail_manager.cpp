@@ -185,5 +185,5 @@ celeritas::server_mail_manager::void_awaitable_type celeritas::server_mail_manag
 
     mails_ = std::move(loaded_mails);
 
-    LOG_CHANNEL(player_channel, info) << "server mail manager loaded " << loaded_mails.size() << " mails";
+    LOG_CHANNEL(player_channel, info) << "server mail manager loaded " << mails_.size() << " mails";
 }
