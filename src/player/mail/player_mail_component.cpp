@@ -22,6 +22,13 @@ celeritas::player_component::void_awaitable_type celeritas::player_mail_componen
     co_return co_await database_.load_user_mail();
 }
 
+celeritas::player_component::void_awaitable_type celeritas::player_mail_component::on_db_analysis(const const_app_config_shared_ptr& app_config)
+{
+    database_.load_server_mail(app_config);
+
+    co_return;
+}
+
 celeritas::player_component::void_awaitable_type celeritas::player_mail_component::save_db()
 {
     co_return co_await database_.save_db();
