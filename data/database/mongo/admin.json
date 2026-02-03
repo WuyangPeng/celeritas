@@ -1,0 +1,42 @@
+[
+  {
+    "class_name": "server_mail",
+    "database_name": "server_mail",
+    "entity": [
+      {
+        "entity_name": "id",
+        "data_type": "int64",
+        "index_type": "key"
+      },
+      {
+        "entity_name": "type",
+        "data_type": "int32"
+      },
+      {
+        "entity_name": "title",
+        "data_type": "document",
+        "document_type": "language_data"
+      },
+      {
+        "entity_name": "content",
+        "data_type": "document",
+        "document_type": "language_data"
+      },
+      {
+        "entity_name": "attachments",
+        "data_type": "document_array",
+        "document_type": "inventory_data"
+      },
+      {
+        "entity_name": "send_time",
+        "data_type": "int64",
+        "comment": "发送时间"
+      },
+      {
+        "entity_name": "expire_time",
+        "data_type": "int64",
+        "comment": "过期时间"
+      }
+    ]
+  }
+]

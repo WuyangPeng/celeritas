@@ -15,4 +15,7 @@ namespace celeritas
     class player_time_refresh;
     class red_dost;
     class server_role;
+    class language_data;
+
+    enum class language_type;
 }

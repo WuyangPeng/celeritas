@@ -65,6 +65,7 @@ namespace celeritas
         [[nodiscard]] database_pool_shared_ptr get_mongo_player_database_pool();
 
         [[nodiscard]] database_pool_shared_ptr get_mongo_auth_database_pool();
+ [[nodiscard]] database_pool_shared_ptr get_mongo_admin_database_pool();
 
         [[nodiscard]] virtual bool is_modify() const;
 

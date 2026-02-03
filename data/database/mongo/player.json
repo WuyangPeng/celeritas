@@ -171,5 +171,58 @@
         "comment": "最后保存时间"
       }
     ]
+  },
+  {
+    "class_name": "user_mail",
+    "database_name": "user_mail",
+    "entity": [
+      {
+        "entity_name": "id",
+        "data_type": "int64",
+        "index_type": "key"
+      },
+      {
+        "entity_name": "user_id",
+        "data_type": "int64",
+        "index_type": "index"
+      },
+      {
+        "entity_name": "server_mail_id",
+        "data_type": "int64"
+      },
+      {
+        "entity_name": "type",
+        "data_type": "int32"
+      },
+      {
+        "entity_name": "title",
+        "data_type": "document",
+        "document_type": "language_data"
+      },
+      {
+        "entity_name": "content",
+        "data_type": "document",
+        "document_type": "language_data"
+      },
+      {
+        "entity_name": "attachments",
+        "data_type": "document_array",
+        "document_type": "inventory_data"
+      },
+      {
+        "entity_name": "status",
+        "data_type": "int32"
+      },
+      {
+        "entity_name": "send_time",
+        "data_type": "int64",
+        "comment": "发送时间"
+      },
+      {
+        "entity_name": "expire_time",
+        "data_type": "int64",
+        "comment": "过期时间"
+      }
+    ]
   }
 ]
