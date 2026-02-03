@@ -43,6 +43,12 @@ namespace celeritas
     class develop_reset;
     class player_develop_component;
 
+    class mail_sync;
+    class mail_read;
+    class mail_collect_attachment;
+    class mail_delete;
+    class mail_collect_all_attachments;
+    class mail_delete_all_read;
     class player_mail_component;
 
     class player_task_component;
