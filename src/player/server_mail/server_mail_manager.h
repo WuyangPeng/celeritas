@@ -41,6 +41,9 @@ namespace celeritas
         // 获取所有邮件
         [[nodiscard]] server_mail_container get_all_mails();
 
+        // 获取比某个id大且有效的所有邮件
+        [[nodiscard]] server_mail_container get_mails_greater_than_id(int64_t mail_id);
+
         // 添加邮件
         void add_mail(const const_server_mail_shared_ptr& mail);
 

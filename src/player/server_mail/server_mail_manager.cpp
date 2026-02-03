@@ -1,7 +1,6 @@
 #include "server_mail_manager.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "common/core/time_helper.h"
-
 #include "common/logging/logger.h"
 #include "config/basic/database_type.h"
 #include "database/pool/database_pool_base.h"
@@ -44,7 +43,6 @@ celeritas::server_mail_manager::server_mail_container celeritas::server_mail_man
     std::shared_lock lock{ mutex_ };
 
     server_mail_container result{};
-    result.reserve(mails_.size());
 
     for (const auto& mail : mails_ | std::views::values)
     {
@@ -62,8 +60,7 @@ celeritas::server_mail_manager::server_mail_container celeritas::server_mail_man
     std::shared_lock lock{ mutex_ };
 
     const auto current_time = time_helper::get_current_milliseconds();
-    server_mail_container result;
-    result.reserve(mails_.size());
+    server_mail_container result{};
 
     for (const auto& mail : mails_ | std::views::values)
     {
@@ -86,6 +83,24 @@ celeritas::server_mail_manager::server_mail_container celeritas::server_mail_man
     for (const auto& mail : mails_ | std::views::values)
     {
         result.emplace_back(mail);
+    }
+
+    return result;
+}
+
+celeritas::server_mail_manager::server_mail_container celeritas::server_mail_manager::get_mails_greater_than_id(const int64_t mail_id)
+{
+    std::shared_lock lock{ mutex_ };
+
+    const auto current_time = time_helper::get_current_milliseconds();
+    server_mail_container result{};
+
+    for (const auto& mail : mails_ | std::views::values)
+    {
+        if (mail->get_id() > mail_id && !is_expired(*mail, current_time))
+        {
+            result.emplace_back(mail);
+        }
     }
 
     return result;
