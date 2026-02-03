@@ -66,6 +66,8 @@ namespace celeritas
 
         static void set_inventory_data_proto(proto_inventory_data* proto_data, const inventory_data& inventory_data);
 
+        [[nodiscard]] static inventory_data get_inventory_data_by_proto(const proto_inventory_data* proto_data);
+
     private:
         using template_container = std::map<int, id_container>;
         using position_container = std::vector<int64_t>;

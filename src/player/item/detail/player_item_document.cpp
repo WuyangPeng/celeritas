@@ -192,6 +192,93 @@ void celeritas::player_item_document::set_inventory_data_proto(proto_inventory_d
     }
 }
 
+celeritas::inventory_data celeritas::player_item_document::get_inventory_data_by_proto(const proto_inventory_data* proto_data)
+{
+    inventory_data inventory_data{};
+
+    inventory_data.set_item_id(proto_data->item_id());
+    inventory_data.set_template_id(proto_data->template_id());
+    inventory_data.set_count(proto_data->count());
+    inventory_data.set_position(proto_data->position());
+
+    custom_data custom_data{};
+
+    switch (proto_data->payload_case())
+    {
+        case proto_inventory_data::kCustom:
+        {
+        }
+        break;
+        case proto_inventory_data::kConsumable:
+        {
+            const auto& consumable_proto = proto_data->consumable();
+            const consumable_data consumable{ consumable_proto.expire_time() };
+
+            traits::document_type document{};
+            document.emplace_back(custom_data::type_description, custom_data::consumable_description.data());
+            document.emplace_back(custom_data::data_description, consumable.to_document_type());
+            custom_data = custom_data::from_document(document);
+        }
+        break;
+        case proto_inventory_data::kEquipment:
+        {
+            const auto& equipment_proto = proto_data->equipment();
+            const equipment_data equipment{ equipment_proto.strength(), equipment_proto.durability() };
+
+            traits::document_type document{};
+            document.emplace_back(custom_data::type_description, custom_data::equipment_description.data());
+            document.emplace_back(custom_data::data_description, equipment.to_document_type());
+            custom_data = custom_data::from_document(document);
+        }
+        break;
+        case proto_inventory_data::kAvatar:
+        {
+            const avatar_data avatar{};
+            traits::document_type document{};
+            document.emplace_back(custom_data::type_description, custom_data::avatar_description.data());
+            document.emplace_back(custom_data::data_description, avatar.to_document_type());
+            custom_data = custom_data::from_document(document);
+        }
+        break;
+        case proto_inventory_data::kFrame:
+        {
+            const frame_data frame{};
+            traits::document_type document{};
+            document.emplace_back(custom_data::type_description, custom_data::frame_description.data());
+            document.emplace_back(custom_data::data_description, frame.to_document_type());
+            custom_data = custom_data::from_document(document);
+        }
+        break;
+        case proto_inventory_data::kTitle:
+        {
+            const title_data title{};
+            traits::document_type document{};
+            document.emplace_back(custom_data::type_description, custom_data::title_description.data());
+            document.emplace_back(custom_data::data_description, title.to_document_type());
+            custom_data = custom_data::from_document(document);
+        }
+        break;
+        case proto_inventory_data::kHero:
+        {
+            const hero_data hero{};
+            traits::document_type document{};
+            document.emplace_back(custom_data::type_description, custom_data::hero_description.data());
+            document.emplace_back(custom_data::data_description, hero.to_document_type());
+            custom_data = custom_data::from_document(document);
+        }
+        break;
+        case proto_inventory_data::PAYLOAD_NOT_SET:
+        default:
+        {
+            break;
+        }
+    }
+
+    inventory_data.set_custom_data(custom_data);
+
+    return inventory_data;
+}
+
 celeritas::player_item_document::id_container* celeritas::player_item_document::get_id_container(const int template_id)
 {
     return const_cast<id_container*>(static_cast<const class_type*>(this)->get_id_container(template_id));
