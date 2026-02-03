@@ -4,7 +4,7 @@
 #include "message/basic/header.h"
 #include "proto/celeritas.pb.h"
 
-celeritas::item_selected::debug_shared_ptr celeritas::item_selected::create(protobuf_handle_parameter_shared_ptr handle_parameter, player_state_shared_ptr player_state, request_type request)
+celeritas::item_selected::item_selected_shared_ptr celeritas::item_selected::create(protobuf_handle_parameter_shared_ptr handle_parameter, player_state_shared_ptr player_state, request_type request)
 {
     return std::make_shared<class_type>(std::move(handle_parameter), std::move(player_state), std::move(request));
 }
