@@ -61,7 +61,7 @@
         <port>27017</port>
         <user>celeritas_user</user>
         <password>celeritas_pass</password>
-        <db_name>admin</db_name>
+        <db_name>management</db_name>
         <min_connections>4</min_connections>
         <max_connections>10</max_connections>
         <timeout_seconds>5</timeout_seconds>
