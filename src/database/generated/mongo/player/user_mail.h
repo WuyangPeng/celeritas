@@ -29,6 +29,8 @@ namespace celeritas
 
         [[nodiscard]] traits::int32_type get_type() const noexcept;
 
+        [[nodiscard]] traits::bool_type is_multilingual() const noexcept;
+
         [[nodiscard]] traits::document_type get_title() const;
 
         [[nodiscard]] traits::document_type get_content() const;
@@ -48,6 +50,8 @@ namespace celeritas
         void set_server_mail_id(traits::param_type::int64_type server_mail_id);
 
         void set_type(traits::param_type::int32_type type);
+
+        void set_multilingual(traits::param_type::bool_type multilingual);
 
         void set_title(traits::param_type::document_type title);
 
@@ -81,6 +85,7 @@ namespace celeritas
         static constexpr std::string_view user_id_describe{ "user_id" };
         static constexpr std::string_view server_mail_id_describe{ "server_mail_id" };
         static constexpr std::string_view type_describe{ "type" };
+        static constexpr std::string_view multilingual_describe{ "multilingual" };
         static constexpr std::string_view title_describe{ "title" };
         static constexpr std::string_view content_describe{ "content" };
         static constexpr std::string_view attachments_describe{ "attachments" };
@@ -95,6 +100,7 @@ namespace celeritas
         entity<user_id_describe, database_data_type::int64_type, database_index_type::index> user_id_;
         entity<server_mail_id_describe, database_data_type::int64_type> server_mail_id_;
         entity<type_describe, database_data_type::int32_type> type_;
+        entity<multilingual_describe, database_data_type::bool_type> multilingual_;
         entity<title_describe, database_data_type::document_type> title_;
         entity<content_describe, database_data_type::document_type> content_;
         entity<attachments_describe, database_data_type::document_array_type> attachments_;

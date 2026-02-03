@@ -329,10 +329,11 @@ inline constexpr mail_data::Impl_::Impl_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         mail_id_{::int64_t{0}},
-        send_time_{::int64_t{0}},
         type_{0},
+        multilingual_{false},
         read_{false},
         attachment_collected_{false},
+        send_time_{::int64_t{0}},
         expire_time_{::int64_t{0}} {}
 
 template <typename>
@@ -417,9 +418,10 @@ const ::uint32_t
         protodesc_cold) = {
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::mail_data, _impl_._has_bits_),
-        12, // hasbit index offset
+        13, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::mail_data, _impl_.mail_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::mail_data, _impl_.type_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::mail_data, _impl_.multilingual_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::mail_data, _impl_.title_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::mail_data, _impl_.content_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::mail_data, _impl_.send_time_),
@@ -428,11 +430,12 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::mail_data, _impl_.attachment_collected_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::mail_data, _impl_.attachments_),
         2,
+        3,
         4,
         0,
         1,
-        3,
         7,
+        8,
         5,
         6,
         ~0u,
@@ -504,20 +507,20 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::celeritas::proto::client::mail_data)},
-        {21, sizeof(::celeritas::proto::client::mail_request)},
-        {28, sizeof(::celeritas::proto::client::mail_response)},
-        {30, sizeof(::celeritas::proto::client::mail_read_request)},
-        {35, sizeof(::celeritas::proto::client::mail_read_response)},
-        {40, sizeof(::celeritas::proto::client::mail_collect_attachment_request)},
-        {45, sizeof(::celeritas::proto::client::mail_collect_attachment_response)},
-        {50, sizeof(::celeritas::proto::client::mail_delete_request)},
-        {55, sizeof(::celeritas::proto::client::mail_delete_response)},
-        {60, sizeof(::celeritas::proto::client::mail_collect_all_attachments_request)},
-        {61, sizeof(::celeritas::proto::client::mail_collect_all_attachments_response)},
-        {63, sizeof(::celeritas::proto::client::mail_delete_all_read_request)},
-        {64, sizeof(::celeritas::proto::client::mail_delete_all_read_response)},
-        {66, sizeof(::celeritas::proto::client::client_mail_request)},
-        {75, sizeof(::celeritas::proto::client::client_mail_response)},
+        {23, sizeof(::celeritas::proto::client::mail_request)},
+        {30, sizeof(::celeritas::proto::client::mail_response)},
+        {32, sizeof(::celeritas::proto::client::mail_read_request)},
+        {37, sizeof(::celeritas::proto::client::mail_read_response)},
+        {42, sizeof(::celeritas::proto::client::mail_collect_attachment_request)},
+        {47, sizeof(::celeritas::proto::client::mail_collect_attachment_response)},
+        {52, sizeof(::celeritas::proto::client::mail_delete_request)},
+        {57, sizeof(::celeritas::proto::client::mail_delete_response)},
+        {62, sizeof(::celeritas::proto::client::mail_collect_all_attachments_request)},
+        {63, sizeof(::celeritas::proto::client::mail_collect_all_attachments_response)},
+        {65, sizeof(::celeritas::proto::client::mail_delete_all_read_request)},
+        {66, sizeof(::celeritas::proto::client::mail_delete_all_read_response)},
+        {68, sizeof(::celeritas::proto::client::client_mail_request)},
+        {77, sizeof(::celeritas::proto::client::client_mail_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::client::_mail_data_default_instance_._instance,
@@ -540,52 +543,52 @@ const char descriptor_table_protodef_proto_2fclient_2fplayer_2fmail_2eproto[] AB
     protodesc_cold) = {
     "\n\036proto/client/player/mail.proto\022\026celeri"
     "tas.proto.client\032\027proto/common/item.prot"
-    "o\"\333\001\n\tmail_data\022\017\n\007mail_id\030\001 \001(\003\022\014\n\004type"
-    "\030\002 \001(\005\022\r\n\005title\030\003 \001(\t\022\017\n\007content\030\004 \001(\t\022\021"
-    "\n\tsend_time\030\005 \001(\003\022\023\n\013expire_time\030\006 \001(\003\022\014"
-    "\n\004read\030\007 \001(\010\022\034\n\024attachment_collected\030\010 \001"
-    "(\010\022;\n\013attachments\030\t \003(\0132&.celeritas.prot"
-    "o.common.inventory_data\":\n\014mail_request\022"
-    "\023\n\013max_mail_id\030\001 \001(\003\022\025\n\rlanguage_type\030\002 "
-    "\001(\005\"@\n\rmail_response\022/\n\004mail\030\001 \003(\0132!.cel"
-    "eritas.proto.client.mail_data\"$\n\021mail_re"
-    "ad_request\022\017\n\007mail_id\030\001 \001(\003\"%\n\022mail_read"
-    "_response\022\017\n\007mail_id\030\001 \001(\003\"2\n\037mail_colle"
-    "ct_attachment_request\022\017\n\007mail_id\030\001 \001(\003\"3"
-    "\n mail_collect_attachment_response\022\017\n\007ma"
-    "il_id\030\001 \001(\003\"&\n\023mail_delete_request\022\017\n\007ma"
-    "il_id\030\001 \001(\003\"\'\n\024mail_delete_response\022\017\n\007m"
-    "ail_id\030\001 \001(\003\"&\n$mail_collect_all_attachm"
-    "ents_request\"9\n%mail_collect_all_attachm"
-    "ents_response\022\020\n\010mail_ids\030\001 \003(\003\"\036\n\034mail_"
-    "delete_all_read_request\"1\n\035mail_delete_a"
-    "ll_read_response\022\020\n\010mail_ids\030\001 \003(\003\"\362\003\n\023c"
-    "lient_mail_request\0224\n\004mail\030\001 \001(\0132$.celer"
-    "itas.proto.client.mail_requestH\000\022>\n\tmail"
-    "_read\030\002 \001(\0132).celeritas.proto.client.mai"
-    "l_read_requestH\000\022Z\n\027mail_collect_attachm"
-    "ent\030\003 \001(\01327.celeritas.proto.client.mail_"
-    "collect_attachment_requestH\000\022B\n\013mail_del"
-    "ete\030\004 \001(\0132+.celeritas.proto.client.mail_"
-    "delete_requestH\000\022d\n\034mail_collect_all_att"
-    "achments\030\005 \001(\0132<.celeritas.proto.client."
-    "mail_collect_all_attachments_requestH\000\022T"
-    "\n\024mail_delete_all_read\030\006 \001(\01324.celeritas"
-    ".proto.client.mail_delete_all_read_reque"
-    "stH\000B\t\n\007payload\"\371\003\n\024client_mail_response"
-    "\0225\n\004mail\030\001 \001(\0132%.celeritas.proto.client."
-    "mail_responseH\000\022\?\n\tmail_read\030\002 \001(\0132*.cel"
-    "eritas.proto.client.mail_read_responseH\000"
-    "\022[\n\027mail_collect_attachment\030\003 \001(\01328.cele"
-    "ritas.proto.client.mail_collect_attachme"
-    "nt_responseH\000\022C\n\013mail_delete\030\004 \001(\0132,.cel"
-    "eritas.proto.client.mail_delete_response"
-    "H\000\022e\n\034mail_collect_all_attachments\030\005 \001(\013"
-    "2=.celeritas.proto.client.mail_collect_a"
-    "ll_attachments_responseH\000\022U\n\024mail_delete"
-    "_all_read\030\006 \001(\01325.celeritas.proto.client"
-    ".mail_delete_all_read_responseH\000B\t\n\007payl"
-    "oadb\006proto3"
+    "o\"\361\001\n\tmail_data\022\017\n\007mail_id\030\001 \001(\003\022\014\n\004type"
+    "\030\002 \001(\005\022\024\n\014multilingual\030\003 \001(\010\022\r\n\005title\030\004 "
+    "\001(\t\022\017\n\007content\030\005 \001(\t\022\021\n\tsend_time\030\006 \001(\003\022"
+    "\023\n\013expire_time\030\007 \001(\003\022\014\n\004read\030\010 \001(\010\022\034\n\024at"
+    "tachment_collected\030\t \001(\010\022;\n\013attachments\030"
+    "\n \003(\0132&.celeritas.proto.common.inventory"
+    "_data\":\n\014mail_request\022\023\n\013max_mail_id\030\001 \001"
+    "(\003\022\025\n\rlanguage_type\030\002 \001(\005\"@\n\rmail_respon"
+    "se\022/\n\004mail\030\001 \003(\0132!.celeritas.proto.clien"
+    "t.mail_data\"$\n\021mail_read_request\022\017\n\007mail"
+    "_id\030\001 \001(\003\"%\n\022mail_read_response\022\017\n\007mail_"
+    "id\030\001 \001(\003\"2\n\037mail_collect_attachment_requ"
+    "est\022\017\n\007mail_id\030\001 \001(\003\"3\n mail_collect_att"
+    "achment_response\022\017\n\007mail_id\030\001 \001(\003\"&\n\023mai"
+    "l_delete_request\022\017\n\007mail_id\030\001 \001(\003\"\'\n\024mai"
+    "l_delete_response\022\017\n\007mail_id\030\001 \001(\003\"&\n$ma"
+    "il_collect_all_attachments_request\"9\n%ma"
+    "il_collect_all_attachments_response\022\020\n\010m"
+    "ail_ids\030\001 \003(\003\"\036\n\034mail_delete_all_read_re"
+    "quest\"1\n\035mail_delete_all_read_response\022\020"
+    "\n\010mail_ids\030\001 \003(\003\"\362\003\n\023client_mail_request"
+    "\0224\n\004mail\030\001 \001(\0132$.celeritas.proto.client."
+    "mail_requestH\000\022>\n\tmail_read\030\002 \001(\0132).cele"
+    "ritas.proto.client.mail_read_requestH\000\022Z"
+    "\n\027mail_collect_attachment\030\003 \001(\01327.celeri"
+    "tas.proto.client.mail_collect_attachment"
+    "_requestH\000\022B\n\013mail_delete\030\004 \001(\0132+.celeri"
+    "tas.proto.client.mail_delete_requestH\000\022d"
+    "\n\034mail_collect_all_attachments\030\005 \001(\0132<.c"
+    "eleritas.proto.client.mail_collect_all_a"
+    "ttachments_requestH\000\022T\n\024mail_delete_all_"
+    "read\030\006 \001(\01324.celeritas.proto.client.mail"
+    "_delete_all_read_requestH\000B\t\n\007payload\"\371\003"
+    "\n\024client_mail_response\0225\n\004mail\030\001 \001(\0132%.c"
+    "eleritas.proto.client.mail_responseH\000\022\?\n"
+    "\tmail_read\030\002 \001(\0132*.celeritas.proto.clien"
+    "t.mail_read_responseH\000\022[\n\027mail_collect_a"
+    "ttachment\030\003 \001(\01328.celeritas.proto.client"
+    ".mail_collect_attachment_responseH\000\022C\n\013m"
+    "ail_delete\030\004 \001(\0132,.celeritas.proto.clien"
+    "t.mail_delete_responseH\000\022e\n\034mail_collect"
+    "_all_attachments\030\005 \001(\0132=.celeritas.proto"
+    ".client.mail_collect_all_attachments_res"
+    "ponseH\000\022U\n\024mail_delete_all_read\030\006 \001(\01325."
+    "celeritas.proto.client.mail_delete_all_r"
+    "ead_responseH\000B\t\n\007payloadb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_proto_2fclient_2fplayer_2fmail_2eproto_deps[1] = {
@@ -595,7 +598,7 @@ static ::absl::once_flag descriptor_table_proto_2fclient_2fplayer_2fmail_2eproto
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fclient_2fplayer_2fmail_2eproto = {
     false,
     false,
-    1891,
+    1913,
     descriptor_table_protodef_proto_2fclient_2fplayer_2fmail_2eproto,
     "proto/client/player/mail.proto",
     &descriptor_table_proto_2fclient_2fplayer_2fmail_2eproto_once,
@@ -755,16 +758,16 @@ mail_data::GetClassData() const {
   return mail_data_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<4, 9, 1, 61, 2>
+const ::_pbi::TcParseTable<4, 10, 1, 61, 2>
 mail_data::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(mail_data, _impl_._has_bits_),
     0, // no _extensions_
-    9, 120,  // max_field_number, fast_idx_mask
+    10, 120,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294966784,  // skipmap
+    4294966272,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    9,  // num_field_entries
+    10,  // num_field_entries
     1,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     mail_data_class_data_.base(),
@@ -779,30 +782,32 @@ mail_data::_table_ = {
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(mail_data, _impl_.mail_id_), 2>(),
      {8, 2, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.mail_id_)}},
     // int32 type = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(mail_data, _impl_.type_), 4>(),
-     {16, 4, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.type_)}},
-    // string title = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(mail_data, _impl_.type_), 3>(),
+     {16, 3, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.type_)}},
+    // bool multilingual = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(mail_data, _impl_.multilingual_), 4>(),
+     {24, 4, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.multilingual_)}},
+    // string title = 4;
     {::_pbi::TcParser::FastUS1,
-     {26, 0, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.title_)}},
-    // string content = 4;
+     {34, 0, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.title_)}},
+    // string content = 5;
     {::_pbi::TcParser::FastUS1,
-     {34, 1, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.content_)}},
-    // int64 send_time = 5;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(mail_data, _impl_.send_time_), 3>(),
-     {40, 3, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.send_time_)}},
-    // int64 expire_time = 6;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(mail_data, _impl_.expire_time_), 7>(),
-     {48, 7, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.expire_time_)}},
-    // bool read = 7;
+     {42, 1, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.content_)}},
+    // int64 send_time = 6;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(mail_data, _impl_.send_time_), 7>(),
+     {48, 7, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.send_time_)}},
+    // int64 expire_time = 7;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(mail_data, _impl_.expire_time_), 8>(),
+     {56, 8, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.expire_time_)}},
+    // bool read = 8;
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(mail_data, _impl_.read_), 5>(),
-     {56, 5, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.read_)}},
-    // bool attachment_collected = 8;
+     {64, 5, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.read_)}},
+    // bool attachment_collected = 9;
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(mail_data, _impl_.attachment_collected_), 6>(),
-     {64, 6, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.attachment_collected_)}},
-    // repeated .celeritas.proto.common.inventory_data attachments = 9;
+     {72, 6, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.attachment_collected_)}},
+    // repeated .celeritas.proto.common.inventory_data attachments = 10;
     {::_pbi::TcParser::FastMtR1,
-     {74, 63, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.attachments_)}},
-    {::_pbi::TcParser::MiniParse, {}},
+     {82, 63, 0, PROTOBUF_FIELD_OFFSET(mail_data, _impl_.attachments_)}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -814,27 +819,29 @@ mail_data::_table_ = {
     // int64 mail_id = 1;
     {PROTOBUF_FIELD_OFFSET(mail_data, _impl_.mail_id_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
     // int32 type = 2;
-    {PROTOBUF_FIELD_OFFSET(mail_data, _impl_.type_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // string title = 3;
+    {PROTOBUF_FIELD_OFFSET(mail_data, _impl_.type_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // bool multilingual = 3;
+    {PROTOBUF_FIELD_OFFSET(mail_data, _impl_.multilingual_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    // string title = 4;
     {PROTOBUF_FIELD_OFFSET(mail_data, _impl_.title_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string content = 4;
+    // string content = 5;
     {PROTOBUF_FIELD_OFFSET(mail_data, _impl_.content_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // int64 send_time = 5;
-    {PROTOBUF_FIELD_OFFSET(mail_data, _impl_.send_time_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
-    // int64 expire_time = 6;
-    {PROTOBUF_FIELD_OFFSET(mail_data, _impl_.expire_time_), _Internal::kHasBitsOffset + 7, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
-    // bool read = 7;
+    // int64 send_time = 6;
+    {PROTOBUF_FIELD_OFFSET(mail_data, _impl_.send_time_), _Internal::kHasBitsOffset + 7, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // int64 expire_time = 7;
+    {PROTOBUF_FIELD_OFFSET(mail_data, _impl_.expire_time_), _Internal::kHasBitsOffset + 8, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // bool read = 8;
     {PROTOBUF_FIELD_OFFSET(mail_data, _impl_.read_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool attachment_collected = 8;
+    // bool attachment_collected = 9;
     {PROTOBUF_FIELD_OFFSET(mail_data, _impl_.attachment_collected_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // repeated .celeritas.proto.common.inventory_data attachments = 9;
+    // repeated .celeritas.proto.common.inventory_data attachments = 10;
     {PROTOBUF_FIELD_OFFSET(mail_data, _impl_.attachments_), -1, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::common::inventory_data>()},
   }},
   {{
-    "\40\0\0\5\7\0\0\0\0\0\0\0\0\0\0\0"
+    "\40\0\0\0\5\7\0\0\0\0\0\0\0\0\0\0"
     "celeritas.proto.client.mail_data"
     "title"
     "content"
@@ -859,9 +866,10 @@ PROTOBUF_NOINLINE void mail_data::Clear() {
   }
   if ((cached_has_bits & 0x000000fcU) != 0) {
     ::memset(&_impl_.mail_id_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.expire_time_) -
-        reinterpret_cast<char*>(&_impl_.mail_id_)) + sizeof(_impl_.expire_time_));
+        reinterpret_cast<char*>(&_impl_.send_time_) -
+        reinterpret_cast<char*>(&_impl_.mail_id_)) + sizeof(_impl_.send_time_));
   }
+  _impl_.expire_time_ = ::int64_t{0};
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -894,7 +902,7 @@ PROTOBUF_NOINLINE void mail_data::Clear() {
   }
 
   // int32 type = 2;
-  if ((this_._impl_._has_bits_[0] & 0x00000010U) != 0) {
+  if ((this_._impl_._has_bits_[0] & 0x00000008U) != 0) {
     if (this_._internal_type() != 0) {
       target =
           ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
@@ -902,70 +910,79 @@ PROTOBUF_NOINLINE void mail_data::Clear() {
     }
   }
 
-  // string title = 3;
+  // bool multilingual = 3;
+  if ((this_._impl_._has_bits_[0] & 0x00000010U) != 0) {
+    if (this_._internal_multilingual() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteBoolToArray(
+          3, this_._internal_multilingual(), target);
+    }
+  }
+
+  // string title = 4;
   if ((this_._impl_._has_bits_[0] & 0x00000001U) != 0) {
     if (!this_._internal_title().empty()) {
       const ::std::string& _s = this_._internal_title();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.client.mail_data.title");
-      target = stream->WriteStringMaybeAliased(3, _s, target);
+      target = stream->WriteStringMaybeAliased(4, _s, target);
     }
   }
 
-  // string content = 4;
+  // string content = 5;
   if ((this_._impl_._has_bits_[0] & 0x00000002U) != 0) {
     if (!this_._internal_content().empty()) {
       const ::std::string& _s = this_._internal_content();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.client.mail_data.content");
-      target = stream->WriteStringMaybeAliased(4, _s, target);
+      target = stream->WriteStringMaybeAliased(5, _s, target);
     }
   }
 
-  // int64 send_time = 5;
-  if ((this_._impl_._has_bits_[0] & 0x00000008U) != 0) {
+  // int64 send_time = 6;
+  if ((this_._impl_._has_bits_[0] & 0x00000080U) != 0) {
     if (this_._internal_send_time() != 0) {
       target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<5>(
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<6>(
               stream, this_._internal_send_time(), target);
     }
   }
 
-  // int64 expire_time = 6;
-  if ((this_._impl_._has_bits_[0] & 0x00000080U) != 0) {
+  // int64 expire_time = 7;
+  if ((this_._impl_._has_bits_[0] & 0x00000100U) != 0) {
     if (this_._internal_expire_time() != 0) {
       target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<6>(
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<7>(
               stream, this_._internal_expire_time(), target);
     }
   }
 
-  // bool read = 7;
+  // bool read = 8;
   if ((this_._impl_._has_bits_[0] & 0x00000020U) != 0) {
     if (this_._internal_read() != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          7, this_._internal_read(), target);
+          8, this_._internal_read(), target);
     }
   }
 
-  // bool attachment_collected = 8;
+  // bool attachment_collected = 9;
   if ((this_._impl_._has_bits_[0] & 0x00000040U) != 0) {
     if (this_._internal_attachment_collected() != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          8, this_._internal_attachment_collected(), target);
+          9, this_._internal_attachment_collected(), target);
     }
   }
 
-  // repeated .celeritas.proto.common.inventory_data attachments = 9;
+  // repeated .celeritas.proto.common.inventory_data attachments = 10;
   for (unsigned i = 0, n = static_cast<unsigned>(
                            this_._internal_attachments_size());
        i < n; i++) {
     const auto& repfield = this_._internal_attachments().Get(i);
     target =
         ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            9, repfield, repfield.GetCachedSize(),
+            10, repfield, repfield.GetCachedSize(),
             target, stream);
   }
 
@@ -994,7 +1011,7 @@ PROTOBUF_NOINLINE void mail_data::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
    {
-    // repeated .celeritas.proto.common.inventory_data attachments = 9;
+    // repeated .celeritas.proto.common.inventory_data attachments = 10;
     {
       total_size += 1UL * this_._internal_attachments_size();
       for (const auto& msg : this_._internal_attachments()) {
@@ -1004,14 +1021,14 @@ PROTOBUF_NOINLINE void mail_data::Clear() {
   }
   cached_has_bits = this_._impl_._has_bits_[0];
   if ((cached_has_bits & 0x000000ffU) != 0) {
-    // string title = 3;
+    // string title = 4;
     if ((cached_has_bits & 0x00000001U) != 0) {
       if (!this_._internal_title().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_title());
       }
     }
-    // string content = 4;
+    // string content = 5;
     if ((cached_has_bits & 0x00000002U) != 0) {
       if (!this_._internal_content().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -1025,34 +1042,42 @@ PROTOBUF_NOINLINE void mail_data::Clear() {
             this_._internal_mail_id());
       }
     }
-    // int64 send_time = 5;
-    if ((cached_has_bits & 0x00000008U) != 0) {
-      if (this_._internal_send_time() != 0) {
-        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
-            this_._internal_send_time());
-      }
-    }
     // int32 type = 2;
-    if ((cached_has_bits & 0x00000010U) != 0) {
+    if ((cached_has_bits & 0x00000008U) != 0) {
       if (this_._internal_type() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
             this_._internal_type());
       }
     }
-    // bool read = 7;
+    // bool multilingual = 3;
+    if ((cached_has_bits & 0x00000010U) != 0) {
+      if (this_._internal_multilingual() != 0) {
+        total_size += 2;
+      }
+    }
+    // bool read = 8;
     if ((cached_has_bits & 0x00000020U) != 0) {
       if (this_._internal_read() != 0) {
         total_size += 2;
       }
     }
-    // bool attachment_collected = 8;
+    // bool attachment_collected = 9;
     if ((cached_has_bits & 0x00000040U) != 0) {
       if (this_._internal_attachment_collected() != 0) {
         total_size += 2;
       }
     }
-    // int64 expire_time = 6;
+    // int64 send_time = 6;
     if ((cached_has_bits & 0x00000080U) != 0) {
+      if (this_._internal_send_time() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+            this_._internal_send_time());
+      }
+    }
+  }
+   {
+    // int64 expire_time = 7;
+    if ((cached_has_bits & 0x00000100U) != 0) {
       if (this_._internal_expire_time() != 0) {
         total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
             this_._internal_expire_time());
@@ -1102,13 +1127,13 @@ void mail_data::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::googl
       }
     }
     if ((cached_has_bits & 0x00000008U) != 0) {
-      if (from._internal_send_time() != 0) {
-        _this->_impl_.send_time_ = from._impl_.send_time_;
+      if (from._internal_type() != 0) {
+        _this->_impl_.type_ = from._impl_.type_;
       }
     }
     if ((cached_has_bits & 0x00000010U) != 0) {
-      if (from._internal_type() != 0) {
-        _this->_impl_.type_ = from._impl_.type_;
+      if (from._internal_multilingual() != 0) {
+        _this->_impl_.multilingual_ = from._impl_.multilingual_;
       }
     }
     if ((cached_has_bits & 0x00000020U) != 0) {
@@ -1122,9 +1147,14 @@ void mail_data::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::googl
       }
     }
     if ((cached_has_bits & 0x00000080U) != 0) {
-      if (from._internal_expire_time() != 0) {
-        _this->_impl_.expire_time_ = from._impl_.expire_time_;
+      if (from._internal_send_time() != 0) {
+        _this->_impl_.send_time_ = from._impl_.send_time_;
       }
+    }
+  }
+  if ((cached_has_bits & 0x00000100U) != 0) {
+    if (from._internal_expire_time() != 0) {
+      _this->_impl_.expire_time_ = from._impl_.expire_time_;
     }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;

@@ -2622,17 +2622,18 @@ class mail_data final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kAttachmentsFieldNumber = 9,
-    kTitleFieldNumber = 3,
-    kContentFieldNumber = 4,
+    kAttachmentsFieldNumber = 10,
+    kTitleFieldNumber = 4,
+    kContentFieldNumber = 5,
     kMailIdFieldNumber = 1,
-    kSendTimeFieldNumber = 5,
     kTypeFieldNumber = 2,
-    kReadFieldNumber = 7,
-    kAttachmentCollectedFieldNumber = 8,
-    kExpireTimeFieldNumber = 6,
+    kMultilingualFieldNumber = 3,
+    kReadFieldNumber = 8,
+    kAttachmentCollectedFieldNumber = 9,
+    kSendTimeFieldNumber = 6,
+    kExpireTimeFieldNumber = 7,
   };
-  // repeated .celeritas.proto.common.inventory_data attachments = 9;
+  // repeated .celeritas.proto.common.inventory_data attachments = 10;
   int attachments_size() const;
   private:
   int _internal_attachments_size() const;
@@ -2649,7 +2650,7 @@ class mail_data final : public ::google::protobuf::Message
   const ::celeritas::proto::common::inventory_data& attachments(int index) const;
   ::celeritas::proto::common::inventory_data* PROTOBUF_NONNULL add_attachments();
   const ::google::protobuf::RepeatedPtrField<::celeritas::proto::common::inventory_data>& attachments() const;
-  // string title = 3;
+  // string title = 4;
   void clear_title() ;
   const ::std::string& title() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -2664,7 +2665,7 @@ class mail_data final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_title();
 
   public:
-  // string content = 4;
+  // string content = 5;
   void clear_content() ;
   const ::std::string& content() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -2689,16 +2690,6 @@ class mail_data final : public ::google::protobuf::Message
   void _internal_set_mail_id(::int64_t value);
 
   public:
-  // int64 send_time = 5;
-  void clear_send_time() ;
-  ::int64_t send_time() const;
-  void set_send_time(::int64_t value);
-
-  private:
-  ::int64_t _internal_send_time() const;
-  void _internal_set_send_time(::int64_t value);
-
-  public:
   // int32 type = 2;
   void clear_type() ;
   ::int32_t type() const;
@@ -2709,7 +2700,17 @@ class mail_data final : public ::google::protobuf::Message
   void _internal_set_type(::int32_t value);
 
   public:
-  // bool read = 7;
+  // bool multilingual = 3;
+  void clear_multilingual() ;
+  bool multilingual() const;
+  void set_multilingual(bool value);
+
+  private:
+  bool _internal_multilingual() const;
+  void _internal_set_multilingual(bool value);
+
+  public:
+  // bool read = 8;
   void clear_read() ;
   bool read() const;
   void set_read(bool value);
@@ -2719,7 +2720,7 @@ class mail_data final : public ::google::protobuf::Message
   void _internal_set_read(bool value);
 
   public:
-  // bool attachment_collected = 8;
+  // bool attachment_collected = 9;
   void clear_attachment_collected() ;
   bool attachment_collected() const;
   void set_attachment_collected(bool value);
@@ -2729,7 +2730,17 @@ class mail_data final : public ::google::protobuf::Message
   void _internal_set_attachment_collected(bool value);
 
   public:
-  // int64 expire_time = 6;
+  // int64 send_time = 6;
+  void clear_send_time() ;
+  ::int64_t send_time() const;
+  void set_send_time(::int64_t value);
+
+  private:
+  ::int64_t _internal_send_time() const;
+  void _internal_set_send_time(::int64_t value);
+
+  public:
+  // int64 expire_time = 7;
   void clear_expire_time() ;
   ::int64_t expire_time() const;
   void set_expire_time(::int64_t value);
@@ -2743,7 +2754,7 @@ class mail_data final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<4, 9,
+  static const ::google::protobuf::internal::TcParseTable<4, 10,
                                    1, 61,
                                    2>
       _table_;
@@ -2769,10 +2780,11 @@ class mail_data final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr title_;
     ::google::protobuf::internal::ArenaStringPtr content_;
     ::int64_t mail_id_;
-    ::int64_t send_time_;
     ::int32_t type_;
+    bool multilingual_;
     bool read_;
     bool attachment_collected_;
+    ::int64_t send_time_;
     ::int64_t expire_time_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3351,7 +3363,7 @@ inline void mail_data::_internal_set_mail_id(::int64_t value) {
 inline void mail_data::clear_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.type_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000010U;
+  _impl_._has_bits_[0] &= ~0x00000008U;
 }
 inline ::int32_t mail_data::type() const {
   // @@protoc_insertion_point(field_get:celeritas.proto.client.mail_data.type)
@@ -3359,7 +3371,7 @@ inline ::int32_t mail_data::type() const {
 }
 inline void mail_data::set_type(::int32_t value) {
   _internal_set_type(value);
-  _impl_._has_bits_[0] |= 0x00000010U;
+  _impl_._has_bits_[0] |= 0x00000008U;
   // @@protoc_insertion_point(field_set:celeritas.proto.client.mail_data.type)
 }
 inline ::int32_t mail_data::_internal_type() const {
@@ -3371,7 +3383,31 @@ inline void mail_data::_internal_set_type(::int32_t value) {
   _impl_.type_ = value;
 }
 
-// string title = 3;
+// bool multilingual = 3;
+inline void mail_data::clear_multilingual() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.multilingual_ = false;
+  _impl_._has_bits_[0] &= ~0x00000010U;
+}
+inline bool mail_data::multilingual() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.mail_data.multilingual)
+  return _internal_multilingual();
+}
+inline void mail_data::set_multilingual(bool value) {
+  _internal_set_multilingual(value);
+  _impl_._has_bits_[0] |= 0x00000010U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.mail_data.multilingual)
+}
+inline bool mail_data::_internal_multilingual() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.multilingual_;
+}
+inline void mail_data::_internal_set_multilingual(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.multilingual_ = value;
+}
+
+// string title = 4;
 inline void mail_data::clear_title() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.title_.ClearToEmpty();
@@ -3436,7 +3472,7 @@ inline void mail_data::set_allocated_title(::std::string* PROTOBUF_NULLABLE valu
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.mail_data.title)
 }
 
-// string content = 4;
+// string content = 5;
 inline void mail_data::clear_content() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.content_.ClearToEmpty();
@@ -3501,11 +3537,11 @@ inline void mail_data::set_allocated_content(::std::string* PROTOBUF_NULLABLE va
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.mail_data.content)
 }
 
-// int64 send_time = 5;
+// int64 send_time = 6;
 inline void mail_data::clear_send_time() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.send_time_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000008U;
+  _impl_._has_bits_[0] &= ~0x00000080U;
 }
 inline ::int64_t mail_data::send_time() const {
   // @@protoc_insertion_point(field_get:celeritas.proto.client.mail_data.send_time)
@@ -3513,7 +3549,7 @@ inline ::int64_t mail_data::send_time() const {
 }
 inline void mail_data::set_send_time(::int64_t value) {
   _internal_set_send_time(value);
-  _impl_._has_bits_[0] |= 0x00000008U;
+  _impl_._has_bits_[0] |= 0x00000080U;
   // @@protoc_insertion_point(field_set:celeritas.proto.client.mail_data.send_time)
 }
 inline ::int64_t mail_data::_internal_send_time() const {
@@ -3525,11 +3561,11 @@ inline void mail_data::_internal_set_send_time(::int64_t value) {
   _impl_.send_time_ = value;
 }
 
-// int64 expire_time = 6;
+// int64 expire_time = 7;
 inline void mail_data::clear_expire_time() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.expire_time_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000080U;
+  _impl_._has_bits_[0] &= ~0x00000100U;
 }
 inline ::int64_t mail_data::expire_time() const {
   // @@protoc_insertion_point(field_get:celeritas.proto.client.mail_data.expire_time)
@@ -3537,7 +3573,7 @@ inline ::int64_t mail_data::expire_time() const {
 }
 inline void mail_data::set_expire_time(::int64_t value) {
   _internal_set_expire_time(value);
-  _impl_._has_bits_[0] |= 0x00000080U;
+  _impl_._has_bits_[0] |= 0x00000100U;
   // @@protoc_insertion_point(field_set:celeritas.proto.client.mail_data.expire_time)
 }
 inline ::int64_t mail_data::_internal_expire_time() const {
@@ -3549,7 +3585,7 @@ inline void mail_data::_internal_set_expire_time(::int64_t value) {
   _impl_.expire_time_ = value;
 }
 
-// bool read = 7;
+// bool read = 8;
 inline void mail_data::clear_read() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.read_ = false;
@@ -3573,7 +3609,7 @@ inline void mail_data::_internal_set_read(bool value) {
   _impl_.read_ = value;
 }
 
-// bool attachment_collected = 8;
+// bool attachment_collected = 9;
 inline void mail_data::clear_attachment_collected() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.attachment_collected_ = false;
@@ -3597,7 +3633,7 @@ inline void mail_data::_internal_set_attachment_collected(bool value) {
   _impl_.attachment_collected_ = value;
 }
 
-// repeated .celeritas.proto.common.inventory_data attachments = 9;
+// repeated .celeritas.proto.common.inventory_data attachments = 10;
 inline int mail_data::_internal_attachments_size() const {
   return _internal_attachments().size();
 }

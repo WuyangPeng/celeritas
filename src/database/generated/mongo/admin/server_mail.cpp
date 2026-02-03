@@ -12,6 +12,7 @@ celeritas::server_mail::server_mail(const database_entity_change& entity)
     : base_type{ entity.get_database_entity_change(id_describe)  },
       id_{ entity.get_value<database_data_type::int64_type>(id_describe) },
       type_{ entity.get_value<database_data_type::int32_type>(type_describe) },
+      multilingual_{ entity.get_value<database_data_type::bool_type>(multilingual_describe) },
       title_{ entity.get_value<database_data_type::document_type>(title_describe) },
       content_{ entity.get_value<database_data_type::document_type>(content_describe) },
       attachments_{ entity.get_value<database_data_type::document_array_type>(attachments_describe) },
@@ -24,6 +25,7 @@ celeritas::server_mail::server_mail(const database_type database_type, const dat
     : base_type{ database_type, entity.get_database_entity_change(id_describe) },
       id_{ entity.get_value<database_data_type::int64_type>(id_describe) },
       type_{ entity.get_value<database_data_type::int32_type>(type_describe) },
+      multilingual_{ entity.get_value<database_data_type::bool_type>(multilingual_describe) },
       title_{ entity.get_value<database_data_type::document_type>(title_describe) },
       content_{ entity.get_value<database_data_type::document_type>(content_describe) },
       attachments_{ entity.get_value<database_data_type::document_array_type>(attachments_describe) },
@@ -34,6 +36,7 @@ celeritas::server_mail::server_mail(const database_type database_type, const dat
     {
         add_modify(id_describe, get_id());
         add_modify(type_describe, get_type());
+        add_modify(multilingual_describe, is_multilingual());
         add_modify(title_describe, get_title());
         add_modify(content_describe, get_content());
         add_modify(attachments_describe, get_attachments());
@@ -46,6 +49,7 @@ celeritas::server_mail::server_mail(const database_type database_type, traits::p
     : base_type{ database_type, database_name, get_key_basis_database_container(id) },
       id_{ id },
       type_{ traits::int32_type{} },
+      multilingual_{ traits::bool_type{} },
       title_{ traits::document_type{} },
       content_{ traits::document_type{} },
       attachments_{ traits::document_array_type{} },
@@ -63,6 +67,11 @@ celeritas::traits::int64_type celeritas::server_mail::get_id() const noexcept
 celeritas::traits::int32_type celeritas::server_mail::get_type() const noexcept
 {
     return type_.get_value();
+}
+
+celeritas::traits::bool_type celeritas::server_mail::is_multilingual() const noexcept
+{
+    return multilingual_.get_value();
 }
 
 celeritas::traits::document_type celeritas::server_mail::get_title() const
@@ -107,6 +116,16 @@ void celeritas::server_mail::set_type(traits::param_type::int32_type type)
         type_.set_value(type);
 
         add_modify(type_describe, get_type());
+    }
+}
+
+void celeritas::server_mail::set_multilingual(traits::param_type::bool_type multilingual)
+{
+    if (multilingual != is_multilingual())
+    {
+        multilingual_.set_value(multilingual);
+
+        add_modify(multilingual_describe, is_multilingual());
     }
 }
 
@@ -186,6 +205,7 @@ const celeritas::database_entity::database_field_container& celeritas::server_ma
 {
     static const database_field_container field_name_container{ decltype(id_)::get_database_field(),
                                                                 decltype(type_)::get_database_field(),
+                                                                decltype(multilingual_)::get_database_field(),
                                                                 decltype(title_)::get_database_field(),
                                                                 decltype(content_)::get_database_field(),
                                                                 decltype(attachments_)::get_database_field(),

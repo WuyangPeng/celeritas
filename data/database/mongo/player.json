@@ -195,6 +195,11 @@
         "data_type": "int32"
       },
       {
+        "entity_name": "multilingual",
+        "data_type": "bool",
+        "comment": "是否是多语言"
+      },
+      {
         "entity_name": "title",
         "data_type": "document",
         "document_type": "language_data"

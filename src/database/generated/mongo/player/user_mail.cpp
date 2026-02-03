@@ -14,6 +14,7 @@ celeritas::user_mail::user_mail(const database_entity_change& entity)
       user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       server_mail_id_{ entity.get_value<database_data_type::int64_type>(server_mail_id_describe) },
       type_{ entity.get_value<database_data_type::int32_type>(type_describe) },
+      multilingual_{ entity.get_value<database_data_type::bool_type>(multilingual_describe) },
       title_{ entity.get_value<database_data_type::document_type>(title_describe) },
       content_{ entity.get_value<database_data_type::document_type>(content_describe) },
       attachments_{ entity.get_value<database_data_type::document_array_type>(attachments_describe) },
@@ -29,6 +30,7 @@ celeritas::user_mail::user_mail(const database_type database_type, const databas
       user_id_{ entity.get_value<database_data_type::int64_type>(user_id_describe) },
       server_mail_id_{ entity.get_value<database_data_type::int64_type>(server_mail_id_describe) },
       type_{ entity.get_value<database_data_type::int32_type>(type_describe) },
+      multilingual_{ entity.get_value<database_data_type::bool_type>(multilingual_describe) },
       title_{ entity.get_value<database_data_type::document_type>(title_describe) },
       content_{ entity.get_value<database_data_type::document_type>(content_describe) },
       attachments_{ entity.get_value<database_data_type::document_array_type>(attachments_describe) },
@@ -42,6 +44,7 @@ celeritas::user_mail::user_mail(const database_type database_type, const databas
         add_modify(user_id_describe, get_user_id());
         add_modify(server_mail_id_describe, get_server_mail_id());
         add_modify(type_describe, get_type());
+        add_modify(multilingual_describe, is_multilingual());
         add_modify(title_describe, get_title());
         add_modify(content_describe, get_content());
         add_modify(attachments_describe, get_attachments());
@@ -57,6 +60,7 @@ celeritas::user_mail::user_mail(const database_type database_type, traits::param
       user_id_{ traits::int64_type{} },
       server_mail_id_{ traits::int64_type{} },
       type_{ traits::int32_type{} },
+      multilingual_{ traits::bool_type{} },
       title_{ traits::document_type{} },
       content_{ traits::document_type{} },
       attachments_{ traits::document_array_type{} },
@@ -85,6 +89,11 @@ celeritas::traits::int64_type celeritas::user_mail::get_server_mail_id() const n
 celeritas::traits::int32_type celeritas::user_mail::get_type() const noexcept
 {
     return type_.get_value();
+}
+
+celeritas::traits::bool_type celeritas::user_mail::is_multilingual() const noexcept
+{
+    return multilingual_.get_value();
 }
 
 celeritas::traits::document_type celeritas::user_mail::get_title() const
@@ -154,6 +163,16 @@ void celeritas::user_mail::set_type(traits::param_type::int32_type type)
         type_.set_value(type);
 
         add_modify(type_describe, get_type());
+    }
+}
+
+void celeritas::user_mail::set_multilingual(traits::param_type::bool_type multilingual)
+{
+    if (multilingual != is_multilingual())
+    {
+        multilingual_.set_value(multilingual);
+
+        add_modify(multilingual_describe, is_multilingual());
     }
 }
 
@@ -245,6 +264,7 @@ const celeritas::database_entity::database_field_container& celeritas::user_mail
                                                                 decltype(user_id_)::get_database_field(),
                                                                 decltype(server_mail_id_)::get_database_field(),
                                                                 decltype(type_)::get_database_field(),
+                                                                decltype(multilingual_)::get_database_field(),
                                                                 decltype(title_)::get_database_field(),
                                                                 decltype(content_)::get_database_field(),
                                                                 decltype(attachments_)::get_database_field(),

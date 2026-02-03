@@ -7,13 +7,14 @@ import "proto/common/item.proto";
 message mail_data {
     int64 mail_id = 1;
     int32 type = 2;
-    string title = 3;
-    string content = 4;
-    int64 send_time = 5;
-    int64 expire_time = 6;
-    bool read = 7;
-    bool attachment_collected = 8;
-    repeated common.inventory_data attachments = 9;
+    bool multilingual = 3;
+    string title = 4;
+    string content = 5;
+    int64 send_time = 6;
+    int64 expire_time = 7;
+    bool read = 8;
+    bool attachment_collected = 9;
+    repeated common.inventory_data attachments = 10;
 }
 
 message mail_request {

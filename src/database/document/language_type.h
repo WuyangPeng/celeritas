@@ -4,7 +4,7 @@ namespace celeritas
 {
     enum class language_type
     {
-        unknown = 0,
+        multilingual = 0,
         chinese_simplified = 1,
         chinese_traditional = 2,
         english = 3,

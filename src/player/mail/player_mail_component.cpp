@@ -50,14 +50,15 @@ celeritas::player_component::void_awaitable_type celeritas::player_mail_componen
         auto* mail_proto = mail_response->add_mail();
         mail_proto->set_mail_id(mail->get_id());
         mail_proto->set_type(mail->get_type());
+        mail_proto->set_multilingual(mail->is_multilingual());
 
         const auto title_document = mail->get_title();
         const auto title_data = language_data::from_document(title_document);
-        mail_proto->set_title(title_data.get_language_text(language_type));
+        mail_proto->set_title(title_data.get_language_text(mail->is_multilingual() ? language_type::multilingual : language_type));
 
         const auto content_document = mail->get_content();
         const auto content_data = language_data::from_document(content_document);
-        mail_proto->set_content(content_data.get_language_text(language_type));
+        mail_proto->set_content(content_data.get_language_text(mail->is_multilingual() ? language_type::multilingual : language_type));
 
         mail_proto->set_send_time(mail->get_send_time());
         mail_proto->set_expire_time(mail->get_expire_time());
