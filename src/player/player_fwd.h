@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 namespace celeritas
 {
@@ -54,4 +54,6 @@ namespace celeritas
     class player_instance_component;
 
     class player_finish_component;
+
+    class server_mail_manager;
 }

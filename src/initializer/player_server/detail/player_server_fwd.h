@@ -6,7 +6,9 @@ namespace celeritas
 {
     class player_state_check_timer;
     class player_default_timer;
+    class server_mail_check_timer;
 
     constexpr auto player_state_check_seconds = std::chrono::minutes(5);
     constexpr auto player_default_time_seconds = std::chrono::hours(1);
+    constexpr auto server_mail_check_seconds = std::chrono::minutes(10);
 }

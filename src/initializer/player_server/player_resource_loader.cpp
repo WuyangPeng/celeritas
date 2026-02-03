@@ -3,6 +3,7 @@
 #include "common/core/time_helper.h"
 #include "database/config/config_manager.h"
 #include "detail/player_server_fwd.h"
+#include "player/server_mail/server_mail_manager.h"
 
 #include <chrono>
 
@@ -15,18 +16,19 @@ void celeritas::player_resource_loader::service_initialize_resource(const any_io
 {
     load_from_db(any_io_executor);
     load_database_config(any_io_executor);
-    start_health_check_timer(any_io_executor, network_message_callback);
-    start_player_default_timer(any_io_executor, network_message_callback);
+    start_health_check_timer(any_io_executor);
+    start_player_default_timer(any_io_executor);
+    start_server_mail_check_timer(any_io_executor);
 }
 
-void celeritas::player_resource_loader::start_health_check_timer(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback)
+void celeritas::player_resource_loader::start_health_check_timer(const resource_loader::any_io_executor& any_io_executor)
 {
     player_state_check_timer_ = std::make_unique<player_state_check_timer>(any_io_executor, player_state_check_seconds);
 
     player_state_check_timer_->start();
 }
 
-void celeritas::player_resource_loader::start_player_default_timer(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback)
+void celeritas::player_resource_loader::start_player_default_timer(const resource_loader::any_io_executor& any_io_executor)
 {
     const auto now = std::chrono::system_clock::now();
 
@@ -55,6 +57,13 @@ void celeritas::player_resource_loader::start_player_default_timer(const any_io_
     player_default_timer_->start();
 }
 
+void celeritas::player_resource_loader::start_server_mail_check_timer(const any_io_executor& any_io_executor)
+{
+    server_mail_check_timer_ = std::make_unique<server_mail_check_timer>(any_io_executor, server_mail_check_seconds);
+
+    server_mail_check_timer_->start();
+}
+
 void celeritas::player_resource_loader::load_database_config(const any_io_executor& any_io_executor)
 {
     config_manager::get_instance().load_from_db(any_io_executor);
@@ -63,4 +72,5 @@ void celeritas::player_resource_loader::load_database_config(const any_io_execut
 void celeritas::player_resource_loader::load_from_db(const any_io_executor& any_io_executor)
 {
     server_cell_repository::get_instance().load_from_db(any_io_executor);
+    server_mail_manager::get_instance().load_all_mails(any_io_executor);
 }

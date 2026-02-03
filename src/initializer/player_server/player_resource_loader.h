@@ -2,6 +2,7 @@
 
 #include "detail/player_default_timer.h"
 #include "detail/player_state_check_timer.h"
+#include "detail/server_mail_check_timer.h"
 #include "initializer/loader_base/resource_loader.h"
 
 namespace celeritas
@@ -17,12 +18,15 @@ namespace celeritas
     private:
         using player_state_check_timer_shared_ptr = std::shared_ptr<player_state_check_timer>;
         using player_default_timer_shared_ptr = std::shared_ptr<player_default_timer>;
+        using server_mail_timer_shared_ptr = std::shared_ptr<server_mail_check_timer>;
 
         void service_initialize_resource(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback) override;
 
-        void start_health_check_timer(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback);
+        void start_health_check_timer(const resource_loader::any_io_executor& any_io_executor);
 
-        void start_player_default_timer(const any_io_executor& any_io_executor, const network_message_callback_weak_ptr& network_message_callback);
+        void start_player_default_timer(const resource_loader::any_io_executor& any_io_executor);
+
+        void start_server_mail_check_timer(const any_io_executor& any_io_executor);
 
         void load_database_config(const any_io_executor& any_io_executor);
 
@@ -30,5 +34,6 @@ namespace celeritas
 
         player_state_check_timer_shared_ptr player_state_check_timer_;
         player_default_timer_shared_ptr player_default_timer_;
+        server_mail_timer_shared_ptr server_mail_check_timer_;
     };
 }
