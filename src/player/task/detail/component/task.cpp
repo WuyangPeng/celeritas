@@ -10,7 +10,7 @@ celeritas::task::task(player_state* player_state) noexcept
 {
 }
 
-celeritas::config::task_event_type celeritas::task::get_task_event_type(int cfg_id) const
+celeritas::config::task_event_type celeritas::task::get_task_event_type(int cfg_id)
 {
     const auto config = game_config::get_instance().get_game_tables()->get_tables()->task_config_container.get(cfg_id);
     if (!config)
@@ -24,6 +24,7 @@ celeritas::config::task_event_type celeritas::task::get_task_event_type(int cfg_
 void celeritas::task::add_task_progress(const task_progress_shared_ptr& task_progress)
 {
     task_progress_.emplace(task_progress->get_id(), task_progress);
+
     const auto event_type = get_task_event_type(task_progress->get_cfg_id());
     const auto iter = event_.find(event_type);
     if (iter == event_.cend())

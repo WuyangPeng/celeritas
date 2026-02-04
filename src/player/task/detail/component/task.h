@@ -32,7 +32,7 @@ namespace celeritas
 
         [[nodiscard]] virtual task_component_type get_task_component_type() const = 0;
 
-        [[nodiscard]] config::task_event_type get_task_event_type(int cfg_id) const;
+        [[nodiscard]] static config::task_event_type get_task_event_type(int cfg_id);
 
         void add_task_progress(const task_progress_shared_ptr& task_progress);
 
