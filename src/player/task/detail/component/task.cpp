@@ -3,7 +3,7 @@
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
 #include "player/task/detail/base/task_context.h"
-#include "player/task/detail/base/task_progress.h"
+#include "../../../../database/document/task_progress.h"
 #include "player/task/detail/condition/task_condition.h"
 
 celeritas::task::task(player_state* player_state) noexcept

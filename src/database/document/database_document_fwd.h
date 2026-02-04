@@ -16,6 +16,8 @@ namespace celeritas
     class red_dost;
     class server_role;
     class language_data;
+    class task_progress;
 
     enum class language_type;
+    enum class task_status_type;
 }

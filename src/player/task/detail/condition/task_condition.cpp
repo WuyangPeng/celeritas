@@ -4,7 +4,7 @@
 #include "common/core/celeritas_error.h"
 #include "player/task/detail/base/task_change_type.h"
 #include "player/task/detail/base/task_context.h"
-#include "player/task/detail/base/task_progress.h"
+#include "../../../../database/document/task_progress.h"
 
 celeritas::task_condition::task_condition_unique_ptr celeritas::task_condition::create(const config::task_event_type type, int target_id)
 {
