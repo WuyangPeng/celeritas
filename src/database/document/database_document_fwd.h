@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 namespace celeritas
 {
@@ -17,6 +17,8 @@ namespace celeritas
     class server_role;
     class language_data;
     class task_progress;
+    class task_component;
+    class task_data;
 
     enum class language_type;
     enum class task_status_type;

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "player/task/detail/player_task_internal_fwd.h"
 #include "config/luban/generated/schema.h"
+#include "database/document/database_document_fwd.h"
+#include "player/task/detail/player_task_internal_fwd.h"
 
 namespace celeritas
 {

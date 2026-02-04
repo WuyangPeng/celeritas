@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "config/luban/generated/schema.h"
+#include "database/document/task_progress.h"
 #include "player/player_fwd.h"
 #include "player/task/detail/player_task_internal_fwd.h"
 
