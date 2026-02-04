@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "database/generated/mongo/admin/server_mail.h"
 
