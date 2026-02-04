@@ -6,6 +6,7 @@
 #include "database/generated/mysql/player/user.h"
 #include "message/basic/header.h"
 #include "player/component/player_component_type.h"
+#include "player/task/detail/base/task_context.h"
 #include "proto/service/player.pb.h"
 
 #include <boost/asio/awaitable.hpp>
@@ -101,6 +102,8 @@ namespace celeritas
         void send_error_message(int rpc, game_error_type game_error_type);
 
         [[nodiscard]] bool is_new_user() const noexcept;
+
+        void update_task_progress(const task_context& task_context, bool is_login);
 
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;

@@ -38,12 +38,16 @@ namespace celeritas
 
         void update_task_progress(const task_context& task_context);
 
+        void finish_task(int64_t id);
+
     protected:
         using task_progress_container = std::map<int64_t, task_progress_shared_ptr>;
-        using event_container = std::map<config::task_event_type, std::set<int64_t> >;
+        using id_container = std::set<int64_t>;
+        using event_container = std::map<config::task_event_type, id_container>;
 
         player_state* player_state_;
         task_progress_container task_progress_;
         event_container event_;
+        id_container finish_task_ids_;
     };
 }

@@ -230,6 +230,11 @@ bool celeritas::player_state::is_new_user() const noexcept
     return is_new_user_;
 }
 
+void celeritas::player_state::update_task_progress(const task_context& task_context, bool is_login)
+{
+    get_component<player_task_component>()->update_task_progress(task_context, is_login);
+}
+
 void celeritas::player_state::check() const
 {
     for (auto index = 0; index < static_cast<int>(player_component_type::max_component); ++index)

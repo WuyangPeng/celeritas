@@ -8,3 +8,11 @@ celeritas::player_task_component::player_task_component(player_state* player_sta
               std::make_shared<daily_task>(player_state) }
 {
 }
+
+void celeritas::player_task_component::update_task_progress(const task_context& task_context, bool is_login)
+{
+    for (const auto& element : tasks_)
+    {
+        element->update_task_progress(task_context);
+    }
+}

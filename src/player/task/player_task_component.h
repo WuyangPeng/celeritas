@@ -22,6 +22,8 @@ namespace celeritas
             return player_component_type::task;
         }
 
+        void update_task_progress(const task_context& task_context, bool is_login);
+
     private:
         task_container tasks_;
     };
