@@ -37,3 +37,11 @@ celeritas::item_container celeritas::item_container::to_consume() const
     }
     return container;
 }
+
+void celeritas::item_container::proportion_item(int proportion)
+{
+    for (auto& element : container_)
+    {
+        element.proportion_count(proportion);
+    }
+}

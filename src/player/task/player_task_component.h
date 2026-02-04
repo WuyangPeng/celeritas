@@ -1,5 +1,7 @@
-﻿#pragma once
+#pragma once
 
+#include "common/core/enum_cast.h"
+#include "detail/component/task.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
 
@@ -10,6 +12,8 @@ namespace celeritas
     public:
         using class_type = player_task_component;
         using base_type = player_component;
+        using task_shared_ptr = task::task_shared_ptr;
+        using task_container = std::array<task_shared_ptr, enum_cast_underlying(task_component_type::max)>;
 
         explicit player_task_component(player_state* player_state) noexcept;
 
@@ -17,5 +21,8 @@ namespace celeritas
         {
             return player_component_type::task;
         }
+
+    private:
+        task_container tasks_;
     };
 }

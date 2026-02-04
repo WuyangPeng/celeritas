@@ -21,6 +21,8 @@ namespace celeritas
 
         [[nodiscard]] item_container to_consume() const;
 
+        void proportion_item(int proportion);
+
     private:
         container_type container_;
     };

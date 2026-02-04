@@ -31,15 +31,24 @@ celeritas::player_service_base::void_awaitable_type celeritas::develop_reset::re
         co_return;
     }
 
-    auto& develop = *optional_develop;
-
     const auto develop_config = get_game_tables()->get_pretreatment_config()->get_develop_config();
-    if (const auto optional_current_develop_config = develop_config->get_develop(develop_data_key);
-        !optional_current_develop_config)
+    const auto optional_current_develop_config = develop_config->get_develop(develop_data_key);
+    if (!optional_current_develop_config)
     {
         get_player_state()->send_error_message(get_rpc(), game_error_type::develop_not_exist);
         co_return;
     }
+
+    const auto& current_develop_config = *optional_current_develop_config;
+    const auto develop_reset_type = current_develop_config->developResetType;
+
+    if (develop_reset_type == config::develop_reset_type::non_resettable)
+    {
+        get_player_state()->send_error_message(get_rpc(), game_error_type::non_resettable);
+        co_return;
+    }
+
+    auto& develop = *optional_develop;
 
     const auto level = develop.get_level();
     if (level == 0)
@@ -64,6 +73,11 @@ celeritas::player_service_base::void_awaitable_type celeritas::develop_reset::re
         {
             container.add_item_info(player_item->itemId, player_item->itemCount);
         }
+    }
+
+    if (develop_reset_type == config::develop_reset_type::refund)
+    {
+        container.proportion_item(current_develop_config->refundProportion);
     }
 
     player_item_component_->produce_item(get_config(), container);

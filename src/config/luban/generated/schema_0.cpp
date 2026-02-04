@@ -44,6 +44,7 @@ bool game::develop_config::deserialize(::luban::ByteBuf& _buf)
     {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; developSubType = develop_sub_type(__enum_temp__); }
     if(!_buf.readInt(maxLevel)) return false;
     {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; developResetType = develop_reset_type(__enum_temp__); }
+    if(!_buf.readInt(refundProportion)) return false;
 
     return true;
 }

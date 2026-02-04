@@ -199,6 +199,26 @@ namespace celeritas {namespace config {
  
 
 
+ 
+    enum class task_event_type
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        none = 0,
+        /// <summary>
+        /// 击杀怪物
+        /// </summary>
+        kill_monster = 1,
+        /// <summary>
+        /// 升级
+        /// </summary>
+        upgrade_level = 2,
+    };
+
+ 
+
+
 namespace game { struct default_item_config; }
 namespace game { struct develop_config; }
 namespace game { struct develop_level_config; }
@@ -255,6 +275,7 @@ struct develop_config : public luban::CfgBean
     develop_sub_type developSubType;
     ::luban::int32 maxLevel;
     develop_reset_type developResetType;
+    ::luban::int32 refundProportion;
 
     static constexpr int __ID__ = 1902983392;
 

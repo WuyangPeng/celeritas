@@ -71,4 +71,6 @@ namespace celeritas
 
     constexpr auto one_kibibyte = 1024;
     constexpr auto one_mebibyte = one_kibibyte * one_kibibyte;
+
+    constexpr auto ten_thousand = 10000.0;
 }

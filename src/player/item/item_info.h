@@ -17,6 +17,8 @@ namespace celeritas
 
         void add_count(int64_t count);
 
+        void proportion_count(int proportion);
+
     private:
         int template_id_;
         int64_t count_;
