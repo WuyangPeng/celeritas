@@ -220,6 +220,33 @@ bool game::surname_config::deserializesurname_config(::luban::ByteBuf& _buf, ::l
 }
 
 
+bool game::task_config::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(id)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; taskComponentType = task_component_type(__enum_temp__); }
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; taskEventType = task_event_type(__enum_temp__); }
+    if(!_buf.readInt(targetId)) return false;
+    if(!_buf.readInt(progress)) return false;
+
+    return true;
+}
+
+bool game::task_config::deserializetask_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::task_config>& _out)
+{
+    _out.reset(LUBAN_NEW(game::task_config));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
 bool interval::deserialize(::luban::ByteBuf& _buf)
 {
 

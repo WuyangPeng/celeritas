@@ -13,7 +13,7 @@ namespace celeritas
         using class_type = player_task_component;
         using base_type = player_component;
         using task_shared_ptr = task::task_shared_ptr;
-        using task_container = std::array<task_shared_ptr, enum_cast_underlying(task_component_type::max)>;
+        using task_container = std::array<task_shared_ptr, enum_cast_underlying(config::task_component_type::max)>;
 
         explicit player_task_component(player_state* player_state) noexcept;
 

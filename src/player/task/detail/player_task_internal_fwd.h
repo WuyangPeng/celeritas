@@ -2,8 +2,6 @@
 
 namespace celeritas
 {
-    enum class task_component_type;
-
     class task;
     class main_task;
     class daily_task;

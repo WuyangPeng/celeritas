@@ -200,6 +200,23 @@ namespace celeritas {namespace config {
 
 
  
+    enum class task_component_type
+    {
+        /// <summary>
+        /// 主线
+        /// </summary>
+        main = 0,
+        /// <summary>
+        /// 每日
+        /// </summary>
+        daily = 1,
+        max = 2,
+    };
+
+ 
+
+
+ 
     enum class task_event_type
     {
         /// <summary>
@@ -227,6 +244,7 @@ namespace game { struct name_config; }
 namespace game { struct red_dot_config; }
 namespace game { struct rename_cost_config; }
 namespace game { struct surname_config; }
+namespace game { struct task_config; }
  struct interval; 
  struct item; 
  struct priority_item; 
@@ -470,6 +488,32 @@ struct surname_config : public luban::CfgBean
     ::luban::int32 weight;
 
     static constexpr int __ID__ = -1803387742;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+}
+
+namespace game {
+
+struct task_config : public luban::CfgBean 
+{
+    static bool deserializetask_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<task_config>& _out);
+
+    virtual ~task_config() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * id
+     */
+    ::luban::int32 id;
+    task_component_type taskComponentType;
+    task_event_type taskEventType;
+    ::luban::int32 targetId;
+    ::luban::int32 progress;
+
+    static constexpr int __ID__ = -757095616;
 
     int getTypeId() const override { return __ID__; }
 };
@@ -1047,6 +1091,66 @@ class develop_level_config_container
 
 }
 
+namespace game {
+
+/**
+ * 任务
+ */
+
+class task_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::task_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::task_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::task_config> _v;
+            if(!game::task_config::deserializetask_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->id] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::task_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::task_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::task_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::task_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
 class tables
 {
     public:
@@ -1082,6 +1186,10 @@ class tables
      * 养成升级
      */
      game::develop_level_config_container develop_level_config_container;
+    /**
+     * 任务
+     */
+     game::task_config_container task_config_container;
 
     bool load(::luban::Loader<::luban::ByteBuf> loader)
     {
@@ -1110,6 +1218,9 @@ class tables
         buf.clear();
         if (!loader(buf, "develop_level_config_container")) return false;
         if (!develop_level_config_container.load(buf)) return false;
+        buf.clear();
+        if (!loader(buf, "task_config_container")) return false;
+        if (!task_config_container.load(buf)) return false;
         return true;
     }
 };

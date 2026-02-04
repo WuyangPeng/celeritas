@@ -5,7 +5,8 @@ celeritas::daily_task::daily_task(player_state* player_state) noexcept
 {
 }
 
-celeritas::task::task_type celeritas::daily_task::get_task_component_type() const
+celeritas::task::task_component_type celeritas::daily_task::get_task_component_type() const
 {
-    return task_type::daily;
+    return task_component_type::daily;
 }
+
