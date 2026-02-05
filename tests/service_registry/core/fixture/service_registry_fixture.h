@@ -10,6 +10,6 @@ namespace celeritas
         ~service_registry_fixture();
 
     private:
-        void clear_services();
+        static void clear_services();
     };
 }
