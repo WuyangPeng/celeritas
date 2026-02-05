@@ -57,7 +57,7 @@ portainer/portainer
 ## 安装 svnadmin
 
 docker run -d --name svnadmin \
--p 35080:80 -p 33690:3690 \
+-p 35003:80 -p 35004:3690 \
 -v /data/svnadmin/:/home/svnadmin/ \
 -v /data/svnadmin/conf.d/:/etc/httpd/conf.d/ \
 -v /data/svnadmin/sasl2/:/etc/sasl2/ \
