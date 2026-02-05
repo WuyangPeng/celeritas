@@ -10,7 +10,9 @@ namespace celeritas
     class io_context_fixture
     {
     public:
-        using awaitable_function = std::function<boost::asio::awaitable<void>()>;
+        using class_type = io_context_fixture;
+        using void_awaitable_type = boost::asio::awaitable<void>;
+        using awaitable_function = std::function<void_awaitable_type()>;
 
         io_context_fixture();
 

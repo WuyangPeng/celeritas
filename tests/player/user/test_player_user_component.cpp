@@ -21,7 +21,7 @@ BOOST_FIXTURE_TEST_SUITE(player_user_component_suite, celeritas::player_user_com
         BOOST_CHECK_EQUAL(component.get_game_server_id(), test_user.get_game_server_id());
         BOOST_CHECK_EQUAL(component.get_user_id(), test_user.get_user_id());
 
-        run([this,&component]() -> boost::asio::awaitable<void> {
+        run([this,&component]() -> void_awaitable_type {
             co_await component.save_db();
 
             set_test_end(true);
@@ -42,7 +42,7 @@ BOOST_FIXTURE_TEST_SUITE(player_user_component_suite, celeritas::player_user_com
 
         celeritas::player_user_component component{ test_user, &get_mock_player_state() };
 
-        run([&component ,this]() -> boost::asio::awaitable<void> {
+        run([&component ,this]() -> void_awaitable_type {
             co_await component.save_db();
 
             set_test_end(true);
@@ -62,7 +62,7 @@ BOOST_FIXTURE_TEST_SUITE(player_user_component_suite, celeritas::player_user_com
 
         celeritas::player_user_component component{ test_user, &get_mock_player_state() };
 
-        run([&component ,this]() -> boost::asio::awaitable<void> {
+        run([&component ,this]() -> void_awaitable_type {
             co_await component.on_db_analysis(std::make_shared<celeritas::app_config>());
 
             set_test_end(true);

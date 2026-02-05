@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_SUITE(player_time_refresh_key_suite)
 
         const celeritas::player_time_refresh_key key{ refresh_type, parameter, time_id };
 
-        BOOST_CHECK_EQUAL(static_cast<int>(key.get_time_refresh_type()), static_cast<int>(refresh_type));
+        BOOST_CHECK(key.get_time_refresh_type() == refresh_type);
         BOOST_CHECK_EQUAL(key.get_parameter(), parameter);
         BOOST_CHECK_EQUAL(key.get_time_id(), time_id);
     }
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_SUITE(player_time_refresh_key_suite)
 
         const celeritas::player_time_refresh_key key{ refresh_type, parameter };
 
-        BOOST_CHECK_EQUAL(static_cast<int>(key.get_time_refresh_type()), static_cast<int>(refresh_type));
+        BOOST_CHECK(key.get_time_refresh_type() == refresh_type);
         BOOST_CHECK_EQUAL(key.get_parameter(), parameter);
         BOOST_CHECK_EQUAL(key.get_time_id(), 0);
     }
@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_SUITE(player_time_refresh_key_suite)
 
         const celeritas::player_time_refresh_key key{ refresh_data };
 
-        BOOST_CHECK_EQUAL(static_cast<int>(key.get_time_refresh_type()), static_cast<int>(refresh_data.get_time_refresh_type()));
+        BOOST_CHECK(key.get_time_refresh_type() == refresh_data.get_time_refresh_type());
         BOOST_CHECK_EQUAL(key.get_parameter(), refresh_data.get_parameter());
         BOOST_CHECK_EQUAL(key.get_time_id(), refresh_data.get_time_id());
     }
@@ -66,21 +66,21 @@ BOOST_AUTO_TEST_SUITE(player_time_refresh_key_suite)
     {
         std::map<celeritas::player_time_refresh_key, int> test_map{};
 
-        const celeritas::player_time_refresh_key key1{ celeritas::time_refresh_type::daily, 1, 1 };
-        const celeritas::player_time_refresh_key key2{ celeritas::time_refresh_type::weekly, 2, 2 };
+        const celeritas::player_time_refresh_key key0{ celeritas::time_refresh_type::daily, 1, 1 };
+        const celeritas::player_time_refresh_key key1{ celeritas::time_refresh_type::weekly, 2, 2 };
 
-        test_map[key1] = 100;
-        test_map[key2] = 200;
+        test_map[key0] = 100;
+        test_map[key1] = 200;
 
         BOOST_CHECK_EQUAL(test_map.size(), 2);
-        BOOST_CHECK_EQUAL(test_map.at(key1), 100);
-        BOOST_CHECK_EQUAL(test_map.at(key2), 200);
+        BOOST_CHECK_EQUAL(test_map.at(key0), 100);
+        BOOST_CHECK_EQUAL(test_map.at(key1), 200);
 
-        const celeritas::player_time_refresh_key key1_copy{ celeritas::time_refresh_type::daily, 1, 1 };
-        BOOST_CHECK(test_map.count(key1_copy));
+        const celeritas::player_time_refresh_key key2{ celeritas::time_refresh_type::daily, 1, 1 };
+        BOOST_CHECK(test_map.count(key2));
 
-        test_map[key1_copy] = 101;
-        BOOST_CHECK_EQUAL(test_map.at(key1), 101);
+        test_map[key2] = 101;
+        BOOST_CHECK_EQUAL(test_map.at(key0), 101);
     }
 
 BOOST_AUTO_TEST_SUITE_END()
