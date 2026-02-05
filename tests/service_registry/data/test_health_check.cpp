@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(health_check_suite)
         const celeritas::health_check check{ instance_id, level };
 
         BOOST_CHECK_EQUAL(check.get_instance_id(), instance_id);
-        BOOST_CHECK_EQUAL(static_cast<int>(check.get_health_check_level()), static_cast<int>(level));
+        BOOST_CHECK(check.get_health_check_level() == level);
     }
 
     BOOST_AUTO_TEST_CASE(test_setters)
@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_SUITE(health_check_suite)
 
         constexpr auto level = celeritas::health_check_level_type::unhealthy;
         check.set_health_check_level(level);
-        BOOST_CHECK_EQUAL(static_cast<int>(check.get_health_check_level()), static_cast<int>(level));
+        BOOST_CHECK(check.get_health_check_level() == level);
     }
 
     BOOST_AUTO_TEST_CASE(test_json_serialization)
@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_SUITE(health_check_suite)
         const auto check_from_json = celeritas::health_check::from_json_string(json_string);
 
         BOOST_CHECK_EQUAL(check_from_json.get_instance_id(), instance_id);
-        BOOST_CHECK_EQUAL(static_cast<int>(check_from_json.get_health_check_level()), static_cast<int>(level));
+        BOOST_CHECK(check.get_health_check_level() == level);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

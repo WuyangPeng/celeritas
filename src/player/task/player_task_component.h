@@ -5,6 +5,8 @@
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
 
+#include <array>
+
 namespace celeritas
 {
     class player_task_component final : public player_component

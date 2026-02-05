@@ -1,10 +1,12 @@
 ﻿#include "config/basic/server_network_type.h"
+#include "fixture/service_registry_fixture.h"
 #include "service_registry/core/service_registry.h"
 #include "service_registry/data/health_check_level_type.h"
 #include "service_registry/data/protocol_port.h"
 #include "service_registry/data/service_info.h"
 
 #include <boost/test/unit_test.hpp>
+
 #include <vector>
 
 namespace
@@ -24,25 +26,15 @@ namespace
         info.set_health_check_level_type(health);
         return info;
     }
-
-    struct service_registry_fixture
-    {
-        ~service_registry_fixture()
-        {
-            celeritas::service_registry::clear_services("test_service");
-            celeritas::service_registry::clear_services("idle_service_test");
-            celeritas::service_registry::clear_services("health_test_service");
-        }
-    };
 }
 
-BOOST_FIXTURE_TEST_SUITE(service_registry_suite, service_registry_fixture)
+BOOST_FIXTURE_TEST_SUITE(service_registry_suite, celeritas::service_registry_fixture)
 
     BOOST_AUTO_TEST_CASE(test_register_and_get_service)
     {
         const std::string service_name{ "test_service" };
-        auto info1 = create_service_info("instance1", service_name, "", celeritas::health_check_level_type::health);
-        auto info2 = create_service_info("instance2", service_name, "", celeritas::health_check_level_type::health);
+        const auto info1 = create_service_info("instance1", service_name, "", celeritas::health_check_level_type::health);
+        const auto info2 = create_service_info("instance2", service_name, "", celeritas::health_check_level_type::health);
 
         celeritas::service_registry::register_service(info1);
         celeritas::service_registry::register_service(info2);
@@ -50,9 +42,9 @@ BOOST_FIXTURE_TEST_SUITE(service_registry_suite, service_registry_fixture)
         auto services = celeritas::service_registry::get_services(service_name);
         BOOST_CHECK_EQUAL(services.size(), 2);
 
-        auto service1 = celeritas::service_registry::get_services_by_instance_id("instance1");
-        BOOST_CHECK(service1.has_value());
-        BOOST_CHECK_EQUAL(service1->get_instance_id(), "instance1");
+        auto service = celeritas::service_registry::get_services_by_instance_id("instance1");
+        BOOST_CHECK(service.has_value());
+        BOOST_CHECK_EQUAL(service->get_instance_id(), "instance1");
 
         auto non_existent_service = celeritas::service_registry::get_services_by_instance_id("non_existent");
         BOOST_CHECK(!non_existent_service.has_value());
@@ -79,7 +71,7 @@ BOOST_FIXTURE_TEST_SUITE(service_registry_suite, service_registry_fixture)
         celeritas::service_registry::remove_instance("instance_to_remove");
         const auto services = celeritas::service_registry::get_services(service_name);
         BOOST_CHECK_EQUAL(services.size(), 1);
-        BOOST_CHECK_EQUAL(services[0].get_instance_id(), "instance_to_keep");
+        BOOST_CHECK_EQUAL(services.at(0).get_instance_id(), "instance_to_keep");
     }
 
     BOOST_AUTO_TEST_CASE(test_get_idle_services)
@@ -92,12 +84,12 @@ BOOST_FIXTURE_TEST_SUITE(service_registry_suite, service_registry_fixture)
         auto idle_services = celeritas::service_registry::get_idle_services(service_name);
         BOOST_CHECK_EQUAL(idle_services.size(), 2);
 
-        auto idle_service1 = celeritas::service_registry::get_idle_services(service_name, "game1");
-        BOOST_CHECK(idle_service1.has_value());
-        BOOST_CHECK_EQUAL(idle_service1->get_instance_id(), "idle1");
+        auto idle_service0 = celeritas::service_registry::get_idle_services(service_name, "game1");
+        BOOST_CHECK(idle_service0.has_value());
+        BOOST_CHECK_EQUAL(idle_service0->get_instance_id(), "idle1");
 
-        auto idle_service3 = celeritas::service_registry::get_idle_services(service_name, "game3");
-        BOOST_CHECK(!idle_service3.has_value());
+        auto idle_service1 = celeritas::service_registry::get_idle_services(service_name, "game3");
+        BOOST_CHECK(!idle_service1.has_value());
     }
 
     BOOST_AUTO_TEST_CASE(test_set_service_health)
