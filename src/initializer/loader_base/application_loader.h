@@ -47,6 +47,8 @@ namespace celeritas
 
         void submit_task(task_type task) override;
 
+        virtual void game_loop();
+
     private:
         using worker_pool_unique_ptr = std::unique_ptr<worker_pool>;
         using message_registry_shared_ptr = std::shared_ptr<protobuf_message_registry>;

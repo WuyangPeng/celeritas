@@ -23,6 +23,7 @@ celeritas::server_config_reader::const_server_shared_ptr celeritas::server_confi
     const auto game_server_id = node.get<std::string>("game_server_id", "");
     const auto worker_pool = node.get<int>("worker_pool", default_worker_pool_size);
     const auto load_game_config = node.get<bool>("load_game_config", false);
+    const auto frame = node.get<int>("frame", 0);
 
     if (datacenter_id > max_datacenter_id || datacenter_id < 0)
     {
@@ -44,7 +45,7 @@ celeritas::server_config_reader::const_server_shared_ptr celeritas::server_confi
         }
     }
 
-    return std::make_shared<server_config>(instance_id, service_name, container, game_server_id, host, worker_pool, datacenter_id, worker_id, load_game_config);
+    return std::make_shared<server_config>(instance_id, service_name, container, game_server_id, host, worker_pool, datacenter_id, worker_id, frame, load_game_config);
 }
 
 celeritas::server_network_config celeritas::server_config_reader::get_server_network_config(const node_type& node)

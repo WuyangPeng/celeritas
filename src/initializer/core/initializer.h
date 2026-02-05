@@ -56,6 +56,7 @@ namespace celeritas
         using executor_work_guard_type = boost::asio::executor_work_guard<executor_type>;
         using signal_set_type = boost::asio::signal_set;
         using daemon_unique_ptr = std::unique_ptr<daemon>;
+        using void_awaitable_type = boost::asio::awaitable<void>;
 
         [[nodiscard]] std::string get_server_type() const;
 
@@ -68,6 +69,10 @@ namespace celeritas
         void initialize_resource();
 
         void initialize_application();
+
+        void initialize_game_loop();
+
+        [[nodiscard]] void_awaitable_type game_loop(int frame);
 
         // 设置信号处理
         void setup_signal_handler();
@@ -82,6 +87,7 @@ namespace celeritas
         io_context_type io_context_;
         executor_work_guard_type work_guard_;
         daemon_unique_ptr daemon_;
+        std::atomic_bool is_stop_;
 
         // 信号集成员变量
         signal_set_type signals_;

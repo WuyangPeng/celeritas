@@ -8,6 +8,7 @@
     <datacenter_id>0</datacenter_id>
     <worker_id>0</worker_id>
     <load_game_config>false</load_game_config>
+    <frame>60</frame>
     <network>
         <network_type>tcp</network_type>
         <port>30800</port>

@@ -27,6 +27,7 @@ celeritas::initializer::initializer(const std::string_view& server_type, std::st
       io_context_{},
       work_guard_{ boost::asio::make_work_guard(io_context_) },
       daemon_{ std::make_unique<daemon>(server_type) },
+      is_stop_{ false },
       signals_{ io_context_, SIGINT, SIGTERM }
 {
 }
@@ -38,6 +39,7 @@ void celeritas::initializer::initialize()
     initialize_config();
     initialize_resource();
     initialize_application();
+    initialize_game_loop();
 }
 
 void celeritas::initializer::run()
@@ -186,6 +188,42 @@ void celeritas::initializer::initialize_application()
     application_loader_->initialize();
 }
 
+void celeritas::initializer::initialize_game_loop()
+{
+    const auto frame = configuration_loader_->get_app_config()->get_server_config()->get_frame();
+
+    if (0 < frame)
+    {
+        boost::asio::co_spawn(boost::asio::make_strand(io_context_),
+                              noexcept_safe_call_and_log_awaitable([self = boost::polymorphic_pointer_downcast<class_type>(shared_from_this()),frame] {
+                                                                       return self->game_loop(frame);
+                                                                   },
+                                                                   initializer_channel,
+                                                                   "initialize game loop error:"),
+                              boost::asio::detached);
+    }
+}
+
+celeritas::initializer::void_awaitable_type celeritas::initializer::game_loop(const int frame)
+{
+    auto timer = boost::asio::steady_timer{ co_await boost::asio::this_coro::executor };
+    const auto frame_duration = std::chrono::milliseconds(milliseconds / frame);
+
+    while (!is_stop_)
+    {
+        const auto start = std::chrono::steady_clock::now();
+
+        noexcept_safe_call_and_log([this] {
+                                       application_loader_->game_loop();
+                                   },
+                                   initializer_channel,
+                                   "application loader loop error:");
+
+        timer.expires_at(start + frame_duration);
+        co_await timer.async_wait(boost::asio::use_awaitable);
+    }
+}
+
 void celeritas::initializer::setup_signal_handler()
 {
     // 异步等待信号
@@ -213,6 +251,8 @@ void celeritas::initializer::setup_signal_handler()
 
 void celeritas::initializer::stop()
 {
+    is_stop_ = true;
+
     daemon_.reset();
     player_manager::get_instance().clear();
 

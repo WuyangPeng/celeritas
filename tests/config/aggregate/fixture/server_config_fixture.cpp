@@ -7,7 +7,7 @@ const std::string celeritas::server_config_fixture::host{ "127.0.0.1" };
 
 celeritas::server_config celeritas::server_config_fixture::create_config(const server_network_container& networks)
 {
-    return { instance_id, service_name, networks, game_server_id, host, worker_pool_size, datacenter_id, worker_id, load_game_config };
+    return { instance_id, service_name, networks, game_server_id, host, worker_pool_size, datacenter_id, worker_id, 0, load_game_config };
 }
 
 celeritas::server_config celeritas::server_config_fixture::create_config()

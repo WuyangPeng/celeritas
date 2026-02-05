@@ -61,13 +61,13 @@ BOOST_AUTO_TEST_SUITE(server_config_suite)
 
     BOOST_AUTO_TEST_CASE(test_is_not_service_registry_server)
     {
-        const celeritas::server_config config{ "server_01", "game_service", {}, "game_server_id_01", "localhost", 4, 1, 1, false };
+        const celeritas::server_config config{ "server_01", "game_service", {}, "game_server_id_01", "localhost", 4, 1, 1, 0, false };
         BOOST_CHECK(!config.is_service_registry_server());
     }
 
     BOOST_AUTO_TEST_CASE(test_is_service_registry_server)
     {
-        const celeritas::server_config config{ "server_02", "service_registry_server", {}, "game_server_id_02", "localhost", 4, 1, 1, false };
+        const celeritas::server_config config{ "server_02", "service_registry_server", {}, "game_server_id_02", "localhost", 4, 1, 1, 0, false };
         BOOST_CHECK(config.is_service_registry_server());
     }
 
