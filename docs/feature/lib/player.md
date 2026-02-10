@@ -220,6 +220,11 @@
 * **🏁 玩家完成组件 (`player_finish_component`)**
     - **作用**：一个具体的玩家组件，负责管理玩家的成就或完成度相关数据。
 
+## building components (建筑组件)
+
+* **🏗️ 玩家建筑组件 (`player_building_component`)**
+    - **作用**：一个具体的玩家组件，负责管理玩家的建筑信息。
+
 ## server mail components (服务器邮件组件)
 
 * **📧 服务器邮件管理器 (`server_mail_manager`)**

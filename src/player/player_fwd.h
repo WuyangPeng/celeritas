@@ -58,6 +58,7 @@ namespace celeritas
     class player_attribute_component;
 
     class player_instance_component;
+ class player_building_component;
 
     class player_finish_component;
 
