@@ -3,12 +3,16 @@
 #include "database/basic/basis_database.tpp"
 
 celeritas::server_role::server_role()
-    : game_server_id_{}, role_surname_{}, role_name_{}, last_login_time_{}
+    : game_server_id_{}, role_surname_{}, role_name_{}, modify_name_{}, last_login_time_{}
 {
 }
 
-celeritas::server_role::server_role(std::string game_server_id, std::string role_surname, std::string role_name)
-    : game_server_id_{ std::move(game_server_id) }, role_surname_{ std::move(role_surname) }, role_name_{ std::move(role_name) }, last_login_time_{ time_helper::get_current_milliseconds() }
+celeritas::server_role::server_role(std::string game_server_id, std::string role_surname, std::string role_name, const bool modify_name)
+    : game_server_id_{ std::move(game_server_id) },
+      role_surname_{ std::move(role_surname) },
+      role_name_{ std::move(role_name) },
+      modify_name_{ modify_name },
+      last_login_time_{ time_helper::get_current_milliseconds() }
 {
 }
 
@@ -42,6 +46,16 @@ void celeritas::server_role::set_role_name(const std::string& role_name)
     role_name_ = role_name;
 }
 
+bool celeritas::server_role::is_modify_name() const
+{
+    return modify_name_;
+}
+
+void celeritas::server_role::set_modify_name(const bool modifyName)
+{
+    modify_name_ = modifyName;
+}
+
 int64_t celeritas::server_role::get_last_login_time() const
 {
     return last_login_time_;
@@ -59,6 +73,7 @@ celeritas::server_role::document_type celeritas::server_role::to_document_type()
     document.emplace_back(game_server_id_description, game_server_id_);
     document.emplace_back(role_surname_description, role_surname_);
     document.emplace_back(role_name_description, role_name_);
+    document.emplace_back(modify_name_description, modify_name_);
     document.emplace_back(last_login_time_description, last_login_time_);
 
     return document;
@@ -81,6 +96,10 @@ celeritas::server_role celeritas::server_role::from_document(const document_type
         else if (element.get_field_name() == role_name_description)
         {
             role.set_role_name(element.get_value<database_data_type::string_type>());
+        }
+        else if (element.get_field_name() == modify_name_description)
+        {
+            role.set_modify_name(element.get_value<database_data_type::bool_type>());
         }
         else if (element.get_field_name() == last_login_time_description)
         {

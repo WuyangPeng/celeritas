@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_SUITE(server_role_suite)
     BOOST_AUTO_TEST_CASE(test_parameterized_constructor)
     {
         const auto before = celeritas::time_helper::get_current_milliseconds();
-        const celeritas::server_role data{ "server1", "Doe", "John" };
+        const celeritas::server_role data{ "server1", "Doe", "John", true };
         const auto after = celeritas::time_helper::get_current_milliseconds();
 
         BOOST_CHECK_EQUAL(data.get_game_server_id(), "server1");
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_SUITE(server_role_suite)
 
     BOOST_AUTO_TEST_CASE(test_round_trip)
     {
-        celeritas::server_role original{ "s1", "Smith", "Agent" };
+        celeritas::server_role original{ "s1", "Smith", "Agent", true };
         original.set_last_login_time(123456789);
 
         const auto document = original.to_document_type();

@@ -15,7 +15,7 @@ namespace celeritas
 
         player_role() noexcept = default;
 
-        player_role(std::string role_name, int64_t last_login_time);
+        player_role(std::string role_surname, std::string role_name, bool modify_name, int64_t last_login_time);
 
         [[nodiscard]] std::string get_role_name() const;
 
@@ -25,11 +25,23 @@ namespace celeritas
 
         void set_last_login_time(int64_t last_login_time);
 
+        [[nodiscard]] std::string get_role_surname() const;
+
+        void set_role_surname(const std::string& roleSurname);
+
+        [[nodiscard]] bool is_modify_name() const;
+
+        void set_modify_name(bool modifyName);
+
+        static constexpr std::string_view role_surname_description = "role_surname_name";
         static constexpr std::string_view role_name_description = "role_name";
+        static constexpr std::string_view modify_name_description = "modify_name";
         static constexpr std::string_view last_login_time_description = "last_login_time";
 
     private:
+        std::string role_surname_;
         std::string role_name_;
+        bool modify_name_ = false;
         int64_t last_login_time_ = 0;
     };
 

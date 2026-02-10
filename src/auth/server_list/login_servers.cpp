@@ -107,7 +107,7 @@ celeritas::login_server_info celeritas::login_servers::get_login_server_info(con
     if (const auto server_role = server_role_.find(server_cell.get_game_server_id());
         server_role != server_role_.cend())
     {
-        login_server_info.set_player_role(player_role{ server_role->second.get_role_name(), server_role->second.get_last_login_time() });
+        login_server_info.set_player_role(player_role{ server_role->second.get_role_surname(), server_role->second.get_role_name(), server_role->second.is_modify_name(), server_role->second.get_last_login_time() });
     }
 
     return login_server_info;

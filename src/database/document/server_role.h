@@ -15,7 +15,7 @@ namespace celeritas
 
         server_role();
 
-        server_role(std::string game_server_id, std::string role_surname, std::string role_name);
+        server_role(std::string game_server_id, std::string role_surname, std::string role_name, bool modify_name);
 
         [[nodiscard]] std::string get_game_server_id() const;
 
@@ -29,6 +29,10 @@ namespace celeritas
 
         void set_role_name(const std::string& role_name);
 
+        [[nodiscard]] bool is_modify_name() const;
+
+        void set_modify_name(bool modifyName);
+
         [[nodiscard]] int64_t get_last_login_time() const;
 
         void set_last_login_time(int64_t last_login_time);
@@ -40,12 +44,14 @@ namespace celeritas
         static constexpr std::string_view game_server_id_description = "game_server_id";
         static constexpr std::string_view role_surname_description = "role_surname";
         static constexpr std::string_view role_name_description = "role_name";
+        static constexpr std::string_view modify_name_description = "modify_name";
         static constexpr std::string_view last_login_time_description = "last_login_time";
 
     private:
         std::string game_server_id_;
         std::string role_surname_;
         std::string role_name_;
+        bool modify_name_;
         int64_t last_login_time_;
     };
 }

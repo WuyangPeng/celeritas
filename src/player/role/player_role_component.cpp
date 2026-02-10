@@ -215,7 +215,7 @@ void celeritas::player_role_component::set_server_role()
 
     if (!server_role_)
     {
-        server_role_ = server_role{ player_user->get_game_server_id(), user_role_->get_surname(), user_role_->get_name() };
+        server_role_ = server_role{ player_user->get_game_server_id(), user_role_->get_surname(), user_role_->get_name(), user_role_->is_modify_name() };
 
         user_server_roles_->add_servers(server_role_->to_document_type());
         user_server_roles_->set_update_time(time_helper::get_current_milliseconds());
