@@ -136,22 +136,34 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_
 void celeritas::http_session_run::call_back(const std::string& path, const urls_params_view_type& params)
 {
     const auto session = get_session();
-
-    if (const auto callback = session_callback_.get_network_message_callback_shared_ptr();
-        callback != nullptr && session != nullptr)
+    if (!session)
     {
-        LOG_CHANNEL(network_channel, trace) << "session call back session id =" << session->get_session_id();
-        callback->call_back(path, params, session);
+        return;
     }
+
+    const auto callback = session_callback_.get_network_message_callback_shared_ptr();
+    if (!callback)
+    {
+        return;
+    }
+
+    LOG_CHANNEL(network_channel, trace) << "session call back session id =" << session->get_session_id();
+    callback->call_back(path, params, session);
 }
 
 void celeritas::http_session_run::call_back(const std::string& path, const std::string& params)
 {
     const auto session = get_session();
-
-    if (const auto callback = session_callback_.get_network_message_callback_shared_ptr();
-        callback != nullptr && session != nullptr)
+    if (!session)
     {
-        callback->call_back(path, params, session);
+        return;
     }
+
+    const auto callback = session_callback_.get_network_message_callback_shared_ptr();
+    if (!callback)
+    {
+        return;
+    }
+
+    callback->call_back(path, params, session);
 }
