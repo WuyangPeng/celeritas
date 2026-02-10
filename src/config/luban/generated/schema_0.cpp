@@ -12,6 +12,62 @@
 namespace celeritas {namespace config {
 
 
+bool attribute_bonus::deserialize(::luban::ByteBuf& _buf)
+{
+
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; type = attribute_type(__enum_temp__); }
+    if(!_buf.readInt(value)) return false;
+
+    return true;
+}
+
+bool attribute_bonus::deserializeattribute_bonus(::luban::ByteBuf& _buf, ::luban::SharedPtr<attribute_bonus>& _out)
+{
+    _out.reset(LUBAN_NEW(attribute_bonus));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
+bool game::avatar_config::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(itemTemplateId)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; quality = quality_type(__enum_temp__); }
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; type = avatar_type(__enum_temp__); }
+    if(!_buf.readString(iconRes)) return false;
+    if(!_buf.readString(fullRes)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; unlockType = task_event_type(__enum_temp__); }
+    if(!_buf.readInt(unlockParam)) return false;
+    if (!_buf.readBool(hidden)) return false;
+    if(!_buf.readString(desc)) return false;
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); attribute.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<attribute_bonus> _e; if(!attribute_bonus::deserializeattribute_bonus(_buf, _e)) return false; attribute.push_back(_e);}}
+
+    return true;
+}
+
+bool game::avatar_config::deserializeavatar_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::avatar_config>& _out)
+{
+    _out.reset(LUBAN_NEW(game::avatar_config));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
 bool game::default_item_config::deserialize(::luban::ByteBuf& _buf)
 {
 
@@ -97,6 +153,7 @@ bool game::item_config::deserialize(::luban::ByteBuf& _buf)
     if(!_buf.readInt(itemTemplateId)) return false;
     {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; itemType = item_type(__enum_temp__); }
     if(!_buf.readInt(stacked)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; quality = quality_type(__enum_temp__); }
     if (!_buf.readBool(squares)) return false;
 
     return true;

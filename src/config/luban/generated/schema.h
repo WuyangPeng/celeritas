@@ -16,6 +16,34 @@
 namespace celeritas {namespace config {
 
  
+    enum class attribute_type
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        none = 0,
+    };
+
+ 
+
+
+ 
+    enum class avatar_type
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        none = 0,
+        /// <summary>
+        /// 普通
+        /// </summary>
+        common = 1,
+    };
+
+ 
+
+
+ 
     enum class develop_reset_type
     {
         /// <summary>
@@ -114,6 +142,42 @@ namespace celeritas {namespace config {
         /// 英雄
         /// </summary>
         hero = 7,
+    };
+
+ 
+
+
+ 
+    enum class quality_type
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        none = 0,
+        /// <summary>
+        /// 白
+        /// </summary>
+        common = 1,
+        /// <summary>
+        /// 绿
+        /// </summary>
+        uncommon = 2,
+        /// <summary>
+        /// 蓝
+        /// </summary>
+        rare = 3,
+        /// <summary>
+        /// 紫
+        /// </summary>
+        epic = 4,
+        /// <summary>
+        /// 橙
+        /// </summary>
+        legendary = 5,
+        /// <summary>
+        /// 红
+        /// </summary>
+        mythic = 6,
     };
 
  
@@ -236,6 +300,8 @@ namespace celeritas {namespace config {
  
 
 
+ struct attribute_bonus; 
+namespace game { struct avatar_config; }
 namespace game { struct default_item_config; }
 namespace game { struct develop_config; }
 namespace game { struct develop_level_config; }
@@ -248,6 +314,93 @@ namespace game { struct task_config; }
  struct interval; 
  struct item; 
  struct priority_item; 
+
+
+
+/**
+ * 属性加成
+ */
+struct attribute_bonus : public luban::CfgBean 
+{
+    static bool deserializeattribute_bonus(::luban::ByteBuf& _buf, ::luban::SharedPtr<attribute_bonus>& _out);
+
+    virtual ~attribute_bonus() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 属性类型
+     */
+    attribute_type type;
+    /**
+     * 值
+     */
+    ::luban::int32 value;
+
+    static constexpr int __ID__ = -689846084;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+
+
+namespace game {
+
+struct avatar_config : public luban::CfgBean 
+{
+    static bool deserializeavatar_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<avatar_config>& _out);
+
+    virtual ~avatar_config() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 头像编号
+     */
+    ::luban::int32 itemTemplateId;
+    /**
+     * 品质
+     */
+    quality_type quality;
+    /**
+     * 类型
+     */
+    avatar_type type;
+    /**
+     * 小图资源路径
+     */
+    ::luban::String iconRes;
+    /**
+     * 详情时的资源路径
+     */
+    ::luban::String fullRes;
+    /**
+     * 解锁条件类型
+     */
+    task_event_type unlockType;
+    /**
+     * 解锁条件参数
+     */
+    ::luban::int32 unlockParam;
+    /**
+     * 未解锁时是否在列表中可见
+     */
+    bool hidden;
+    /**
+     * 获取途径描述文案
+     */
+    ::luban::String desc;
+    /**
+     * 属性加成
+     */
+    ::luban::Vector<::luban::SharedPtr<attribute_bonus>> attribute;
+
+    static constexpr int __ID__ = -2081427476;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+}
 
 namespace game {
 
@@ -350,6 +503,10 @@ struct item_config : public luban::CfgBean
      * 堆叠数
      */
     ::luban::int32 stacked;
+    /**
+     * 品质
+     */
+    quality_type quality;
     /**
      * 格子
      */
@@ -1151,6 +1308,66 @@ class task_config_container
 
 }
 
+namespace game {
+
+/**
+ * 头像
+ */
+
+class avatar_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::avatar_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::avatar_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::avatar_config> _v;
+            if(!game::avatar_config::deserializeavatar_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->itemTemplateId] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::avatar_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::avatar_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::avatar_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::avatar_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
 class tables
 {
     public:
@@ -1190,6 +1407,10 @@ class tables
      * 任务
      */
      game::task_config_container task_config_container;
+    /**
+     * 头像
+     */
+     game::avatar_config_container avatar_config_container;
 
     bool load(::luban::Loader<::luban::ByteBuf> loader)
     {
@@ -1221,6 +1442,9 @@ class tables
         buf.clear();
         if (!loader(buf, "task_config_container")) return false;
         if (!task_config_container.load(buf)) return false;
+        buf.clear();
+        if (!loader(buf, "avatar_config_container")) return false;
+        if (!avatar_config_container.load(buf)) return false;
         return true;
     }
 };
