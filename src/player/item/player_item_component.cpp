@@ -30,15 +30,41 @@ celeritas::player_component::void_awaitable_type celeritas::player_item_componen
     if (get_player_state()->is_new_user())
     {
         item_container container{};
+        std::vector<int> wear_container{};
         for (const auto& item_config : game_config::get_instance().get_game_tables()->get_tables()->default_item_config_container.getDataList())
         {
             for (const auto& element : item_config->playerItem)
             {
                 container.add_item_info(element->itemId, element->itemCount);
+                if (item_config->wear)
+                {
+                    wear_container.emplace_back(element->itemId);
+                }
             }
         }
 
         produce_item(app_config, container, true);
+
+        if (!wear_container.empty())
+        {
+            const auto item_config_container = game_config::get_instance().get_game_tables()->get_tables()->item_config_container;
+            for (const auto element : wear_container)
+            {
+                if (const auto item_document = document_.get_id_container(element);
+                    item_document != nullptr && !item_document->empty())
+                {
+                    if (const auto item_config = item_config_container.get(element))
+                    {
+                        std::ignore = change_item_selected(app_config,
+                                                           (*item_config)->itemType,
+                                                           config::item_selected_child_type::none,
+                                                           0,
+                                                           0,
+                                                           item_document->at(0));
+                    }
+                }
+            }
+        }
     }
 
     co_return;

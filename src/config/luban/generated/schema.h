@@ -420,6 +420,10 @@ struct default_item_config : public luban::CfgBean
      * 默认物品
      */
     ::luban::Vector<::luban::SharedPtr<item>> playerItem;
+    /**
+     * 是否穿戴
+     */
+    bool wear;
 
     static constexpr int __ID__ = -157206284;
 

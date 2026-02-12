@@ -73,6 +73,7 @@ bool game::default_item_config::deserialize(::luban::ByteBuf& _buf)
 
     if(!_buf.readInt(id)) return false;
     {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); playerItem.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<item> _e; if(!item::deserializeitem(_buf, _e)) return false; playerItem.push_back(_e);}}
+    if (!_buf.readBool(wear)) return false;
 
     return true;
 }
