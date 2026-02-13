@@ -23,6 +23,12 @@ celeritas::client_item_response_message_handler::client_item_response_message_ha
                             const message_registry_shared_ptr& message_registry) -> bool {
                              return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::item_selected);
                          });
+    add_handler_function(proto::client::client_item_response::PayloadCase::kUnlockItem,
+                         [](const protobuf_handle_parameter_shared_ptr& handle_parameter,
+                            const message_type& current_message,
+                            const message_registry_shared_ptr& message_registry) -> bool {
+                             return handle_dispatch(handle_parameter, current_message, message_registry, &message_type::unlock_item);
+                         });
 
 }
 

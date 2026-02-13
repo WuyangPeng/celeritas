@@ -18,13 +18,15 @@ namespace celeritas
                                                            request_type request);
 
         unlock_item(protobuf_handle_parameter_shared_ptr handle_parameter,
-                   player_state_shared_ptr player_state,
-                   request_type request);
+                    player_state_shared_ptr player_state,
+                    request_type request);
 
         [[nodiscard]] void_awaitable_type response() override;
 
     private:
         using player_item_component_shared_ptr = std::shared_ptr<player_item_component>;
+
+        void send_unlock_item_response();
 
         request_type request_;
         player_item_component_shared_ptr player_item_component_;

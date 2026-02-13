@@ -1,7 +1,9 @@
-#include "unlock_item.h"
 #include "player_item_component.h"
+#include "unlock_item.h"
+#include "common/logging/logger.h"
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
+#include "initializer/initializer_constant.h"
 #include "message/basic/header.h"
 #include "player/task/player_task_component.h"
 #include "proto/celeritas.pb.h"
@@ -43,6 +45,7 @@ celeritas::player_service_base::void_awaitable_type celeritas::unlock_item::resp
     if (unlock_task_id == 0)
     {
         player_item_component_->produce_item(get_config(), template_id, 1);
+        send_unlock_item_response();
         co_return;
     }
 
@@ -66,6 +69,22 @@ celeritas::player_service_base::void_awaitable_type celeritas::unlock_item::resp
     }
 
     player_item_component_->produce_item(get_config(), template_id, 1);
+    send_unlock_item_response();
 
     co_return;
+}
+
+void celeritas::unlock_item::send_unlock_item_response()
+{
+    const auto player_state = get_player_state();
+
+    const header header{ get_rpc(), player_state->get_user_id() };
+
+    proto::celeritas response{};
+    response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_item()->mutable_unlock_item();
+
+    if (!player_state->write(gateway_type.data(), player_state->get_instance_id(), header, response))
+    {
+        LOG_CHANNEL(player_channel, error) << "send unlock item response error.";
+    }
 }

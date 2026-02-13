@@ -27,6 +27,24 @@ namespace _fl = ::google::protobuf::internal::field_layout;
 namespace celeritas {
 namespace proto {
 namespace client {
+template <typename>
+PROTOBUF_CONSTEXPR unlock_item_response::unlock_item_response(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(unlock_item_response_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct unlock_item_responseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR unlock_item_responseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~unlock_item_responseDefaultTypeInternal() {}
+  union {
+    unlock_item_response _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 unlock_item_responseDefaultTypeInternal _unlock_item_response_default_instance_;
 
 inline constexpr unlock_item_request::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -320,6 +338,7 @@ const ::uint32_t
         4, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::unlock_item_request, _impl_.template_id_),
         0,
+        0x000, // bitmap
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_item_request, _impl_._oneof_case_[0]),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_item_request, _impl_.payload_),
@@ -327,6 +346,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_item_request, _impl_.payload_),
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_item_response, _impl_._oneof_case_[0]),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_item_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_item_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_item_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_item_response, _impl_.payload_),
@@ -342,8 +362,9 @@ static const ::_pbi::MigrationSchema
         {31, sizeof(::celeritas::proto::client::item_selected_request)},
         {36, sizeof(::celeritas::proto::client::item_selected_response)},
         {43, sizeof(::celeritas::proto::client::unlock_item_request)},
-        {48, sizeof(::celeritas::proto::client::client_item_request)},
-        {53, sizeof(::celeritas::proto::client::client_item_response)},
+        {48, sizeof(::celeritas::proto::client::unlock_item_response)},
+        {49, sizeof(::celeritas::proto::client::client_item_request)},
+        {54, sizeof(::celeritas::proto::client::client_item_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::client::_item_delete_data_default_instance_._instance,
@@ -353,6 +374,7 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::client::_item_selected_request_default_instance_._instance,
     &::celeritas::proto::client::_item_selected_response_default_instance_._instance,
     &::celeritas::proto::client::_unlock_item_request_default_instance_._instance,
+    &::celeritas::proto::client::_unlock_item_response_default_instance_._instance,
     &::celeritas::proto::client::_client_item_request_default_instance_._instance,
     &::celeritas::proto::client::_client_item_response_default_instance_._instance,
 };
@@ -375,17 +397,20 @@ const char descriptor_table_protodef_proto_2fclient_2fplayer_2fitem_2eproto[] AB
     "esponse\022A\n\ritem_selected\030\001 \003(\0132*.celerit"
     "as.proto.client.item_selected_data\022\020\n\010is"
     "_login\030\002 \001(\010\"*\n\023unlock_item_request\022\023\n\013t"
-    "emplate_id\030\001 \001(\005\"\254\001\n\023client_item_request"
-    "\022F\n\ritem_selected\030\001 \001(\0132-.celeritas.prot"
-    "o.client.item_selected_requestH\000\022B\n\013unlo"
-    "ck_item\030\002 \001(\0132+.celeritas.proto.client.u"
-    "nlock_item_requestH\000B\t\n\007payload\"\346\001\n\024clie"
-    "nt_item_response\0225\n\004item\030\001 \001(\0132%.celerit"
-    "as.proto.client.item_responseH\000\022C\n\013item_"
-    "delete\030\002 \001(\0132,.celeritas.proto.client.it"
-    "em_delete_responseH\000\022G\n\ritem_selected\030\003 "
-    "\001(\0132..celeritas.proto.client.item_select"
-    "ed_responseH\000B\t\n\007payloadb\006proto3"
+    "emplate_id\030\001 \001(\005\"\026\n\024unlock_item_response"
+    "\"\254\001\n\023client_item_request\022F\n\ritem_selecte"
+    "d\030\001 \001(\0132-.celeritas.proto.client.item_se"
+    "lected_requestH\000\022B\n\013unlock_item\030\002 \001(\0132+."
+    "celeritas.proto.client.unlock_item_reque"
+    "stH\000B\t\n\007payload\"\253\002\n\024client_item_response"
+    "\0225\n\004item\030\001 \001(\0132%.celeritas.proto.client."
+    "item_responseH\000\022C\n\013item_delete\030\002 \001(\0132,.c"
+    "eleritas.proto.client.item_delete_respon"
+    "seH\000\022G\n\ritem_selected\030\003 \001(\0132..celeritas."
+    "proto.client.item_selected_responseH\000\022C\n"
+    "\013unlock_item\030\004 \001(\0132,.celeritas.proto.cli"
+    "ent.unlock_item_responseH\000B\t\n\007payloadb\006p"
+    "roto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_proto_2fclient_2fplayer_2fitem_2eproto_deps[1] = {
@@ -395,13 +420,13 @@ static ::absl::once_flag descriptor_table_proto_2fclient_2fplayer_2fitem_2eproto
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fclient_2fplayer_2fitem_2eproto = {
     false,
     false,
-    1112,
+    1205,
     descriptor_table_protodef_proto_2fclient_2fplayer_2fitem_2eproto,
     "proto/client/player/item.proto",
     &descriptor_table_proto_2fclient_2fplayer_2fitem_2eproto_once,
     descriptor_table_proto_2fclient_2fplayer_2fitem_2eproto_deps,
     1,
-    9,
+    10,
     schemas,
     file_default_instances,
     TableStruct_proto_2fclient_2fplayer_2fitem_2eproto::offsets,
@@ -2469,6 +2494,115 @@ void unlock_item_request::InternalSwap(unlock_item_request* PROTOBUF_RESTRICT PR
 }
 // ===================================================================
 
+class unlock_item_response::_Internal {
+ public:
+};
+
+unlock_item_response::unlock_item_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, unlock_item_response_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.client.unlock_item_response)
+}
+unlock_item_response::unlock_item_response(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const unlock_item_response& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, unlock_item_response_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  unlock_item_response* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.client.unlock_item_response)
+}
+
+inline void* PROTOBUF_NONNULL unlock_item_response::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) unlock_item_response(arena);
+}
+constexpr auto unlock_item_response::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(unlock_item_response),
+                                            alignof(unlock_item_response));
+}
+constexpr auto unlock_item_response::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_unlock_item_response_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &unlock_item_response::MergeImpl,
+          ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<unlock_item_response>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &unlock_item_response::SharedDtor,
+          ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<unlock_item_response>(), &unlock_item_response::ByteSizeLong,
+              &unlock_item_response::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(unlock_item_response, _impl_._cached_size_),
+          false,
+      },
+      &unlock_item_response::kDescriptorMethods,
+      &descriptor_table_proto_2fclient_2fplayer_2fitem_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull unlock_item_response_class_data_ =
+        unlock_item_response::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+unlock_item_response::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&unlock_item_response_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(unlock_item_response_class_data_.tc_table);
+  return unlock_item_response_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
+unlock_item_response::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    unlock_item_response_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::client::unlock_item_response>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+::google::protobuf::Metadata unlock_item_response::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class client_item_request::_Internal {
  public:
   static constexpr ::int32_t kOneofCaseOffset =
@@ -2877,6 +3011,19 @@ void client_item_response::set_allocated_item_selected(::celeritas::proto::clien
   }
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.client_item_response.item_selected)
 }
+void client_item_response::set_allocated_unlock_item(::celeritas::proto::client::unlock_item_response* PROTOBUF_NULLABLE unlock_item) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (unlock_item) {
+    ::google::protobuf::Arena* submessage_arena = unlock_item->GetArena();
+    if (message_arena != submessage_arena) {
+      unlock_item = ::google::protobuf::internal::GetOwnedMessage(message_arena, unlock_item, submessage_arena);
+    }
+    set_has_unlock_item();
+    _impl_.payload_.unlock_item_ = unlock_item;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.client_item_response.unlock_item)
+}
 client_item_response::client_item_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, client_item_response_class_data_.base()) {
@@ -2918,6 +3065,9 @@ client_item_response::client_item_response(
         break;
       case kItemSelected:
         _impl_.payload_.item_selected_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.item_selected_);
+        break;
+      case kUnlockItem:
+        _impl_.payload_.unlock_item_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.unlock_item_);
         break;
   }
 
@@ -2978,6 +3128,14 @@ void client_item_response::clear_payload() {
       }
       break;
     }
+    case kUnlockItem: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.unlock_item_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.unlock_item_);
+      }
+      break;
+    }
     case PAYLOAD_NOT_SET: {
       break;
     }
@@ -3029,17 +3187,17 @@ client_item_response::GetClassData() const {
   return client_item_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 3, 3, 0, 2>
+const ::_pbi::TcParseTable<0, 4, 4, 0, 2>
 client_item_response::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    3, 0,  // max_field_number, fast_idx_mask
+    4, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    3,  // num_aux_entries
+    4,  // num_field_entries
+    4,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     client_item_response_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -3058,11 +3216,14 @@ client_item_response::_table_ = {
     {PROTOBUF_FIELD_OFFSET(client_item_response, _impl_.payload_.item_delete_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.client.item_selected_response item_selected = 3;
     {PROTOBUF_FIELD_OFFSET(client_item_response, _impl_.payload_.item_selected_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.client.unlock_item_response unlock_item = 4;
+    {PROTOBUF_FIELD_OFFSET(client_item_response, _impl_.payload_.unlock_item_), _Internal::kOneofCaseOffset + 0, 3, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::client::item_response>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::client::item_delete_response>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::client::item_selected_response>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::client::unlock_item_response>()},
   }},
   {{
   }},
@@ -3115,6 +3276,12 @@ PROTOBUF_NOINLINE void client_item_response::Clear() {
           stream);
       break;
     }
+    case kUnlockItem: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          4, *this_._impl_.payload_.unlock_item_, this_._impl_.payload_.unlock_item_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     default:
       break;
   }
@@ -3158,6 +3325,12 @@ PROTOBUF_NOINLINE void client_item_response::Clear() {
     case kItemSelected: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.item_selected_);
+      break;
+    }
+    // .celeritas.proto.client.unlock_item_response unlock_item = 4;
+    case kUnlockItem: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.unlock_item_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -3212,6 +3385,14 @@ void client_item_response::MergeImpl(::google::protobuf::MessageLite& to_msg, co
           _this->_impl_.payload_.item_selected_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.item_selected_);
         } else {
           _this->_impl_.payload_.item_selected_->MergeFrom(*from._impl_.payload_.item_selected_);
+        }
+        break;
+      }
+      case kUnlockItem: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.unlock_item_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.unlock_item_);
+        } else {
+          _this->_impl_.payload_.unlock_item_->MergeFrom(*from._impl_.payload_.unlock_item_);
         }
         break;
       }

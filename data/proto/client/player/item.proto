@@ -40,6 +40,9 @@ message unlock_item_request {
     int32 template_id = 1;
 }
 
+message unlock_item_response {
+}
+
 message client_item_request {
   oneof payload {
     item_selected_request item_selected = 1;
@@ -52,5 +55,6 @@ message client_item_response {
     item_response item = 1;
     item_delete_response item_delete = 2;
     item_selected_response item_selected = 3;
+    unlock_item_response unlock_item = 4;
   }
 }
