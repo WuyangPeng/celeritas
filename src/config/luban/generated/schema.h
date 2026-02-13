@@ -38,6 +38,18 @@ namespace celeritas {namespace config {
         /// 普通
         /// </summary>
         common = 1,
+        /// <summary>
+        /// 帝王
+        /// </summary>
+        emperor = 2,
+        /// <summary>
+        /// 后宫
+        /// </summary>
+        harem = 3,
+        /// <summary>
+        /// 名臣
+        /// </summary>
+        minister = 4,
     };
 
  
@@ -90,6 +102,34 @@ namespace celeritas {namespace config {
         /// 英雄
         /// </summary>
         hero = 1,
+    };
+
+ 
+
+
+ 
+    enum class hero_type
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        none = 0,
+        /// <summary>
+        /// 普通
+        /// </summary>
+        common = 1,
+        /// <summary>
+        /// 帝王
+        /// </summary>
+        emperor = 2,
+        /// <summary>
+        /// 后宫
+        /// </summary>
+        harem = 3,
+        /// <summary>
+        /// 名臣
+        /// </summary>
+        minister = 4,
     };
 
  
@@ -313,6 +353,7 @@ namespace game { struct avatar_config; }
 namespace game { struct default_item_config; }
 namespace game { struct develop_config; }
 namespace game { struct develop_level_config; }
+namespace game { struct hero_config; }
 namespace game { struct item_config; }
 namespace game { struct name_config; }
 namespace game { struct red_dot_config; }
@@ -386,6 +427,10 @@ struct avatar_config : public luban::CfgBean
      * 未解锁时是否在列表中可见
      */
     bool hidden;
+    /**
+     * 英雄是否开放
+     */
+    bool isOpen;
     /**
      * 获取途径描述文案
      */
@@ -479,6 +524,56 @@ struct develop_level_config : public luban::CfgBean
     ::luban::Vector<::luban::SharedPtr<item>> playerItem;
 
     static constexpr int __ID__ = 1411329915;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+}
+
+namespace game {
+
+struct hero_config : public luban::CfgBean 
+{
+    static bool deserializehero_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<hero_config>& _out);
+
+    virtual ~hero_config() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 英雄编号
+     */
+    ::luban::int32 itemTemplateId;
+    /**
+     * 品质
+     */
+    quality_type quality;
+    /**
+     * 类型
+     */
+    hero_type type;
+    /**
+     * 小图资源路径
+     */
+    ::luban::String iconRes;
+    /**
+     * 详情时的资源路径
+     */
+    ::luban::String fullRes;
+    /**
+     * 未解锁时是否在列表中可见
+     */
+    bool hidden;
+    /**
+     * 获取途径描述文案
+     */
+    ::luban::String desc;
+    /**
+     * 属性加成
+     */
+    ::luban::Vector<::luban::SharedPtr<attribute_bonus>> attribute;
+
+    static constexpr int __ID__ = -1265808597;
 
     int getTypeId() const override { return __ID__; }
 };
@@ -1139,6 +1234,126 @@ class default_item_config_container
 namespace game {
 
 /**
+ * 头像
+ */
+
+class avatar_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::avatar_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::avatar_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::avatar_config> _v;
+            if(!game::avatar_config::deserializeavatar_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->itemTemplateId] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::avatar_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::avatar_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::avatar_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::avatar_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
+namespace game {
+
+/**
+ * 英雄
+ */
+
+class hero_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::hero_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::hero_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::hero_config> _v;
+            if(!game::hero_config::deserializehero_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->itemTemplateId] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::hero_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::hero_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::hero_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::hero_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
+namespace game {
+
+/**
  * 养成
  */
 
@@ -1316,66 +1531,6 @@ class task_config_container
 
 }
 
-namespace game {
-
-/**
- * 头像
- */
-
-class avatar_config_container
-{
-    private:
-    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::avatar_config>> _dataMap;
-    ::luban::Vector<::luban::SharedPtr<game::avatar_config>> _dataList;
-    
-    public:
-    bool load(::luban::ByteBuf& _buf)
-    {        
-        int n;
-        if (!_buf.readSize(n)) return false;
-        for(; n > 0 ; --n)
-        {
-            ::luban::SharedPtr<game::avatar_config> _v;
-            if(!game::avatar_config::deserializeavatar_config(_buf, _v)) return false;
-            _dataList.push_back(_v);
-            _dataMap[_v->itemTemplateId] = _v;
-        }
-        return true;
-    }
-
-    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::avatar_config>>& getDataMap() const { return _dataMap; }
-    const ::luban::Vector<::luban::SharedPtr<game::avatar_config>>& getDataList() const { return _dataList; }
-
-    std::optional<game::avatar_config*> getRaw(::luban::int32 key) const
-    { 
-        auto it = _dataMap.find(key);
-        if(it != _dataMap.end())
-        {
-            return it->second.get();
-        }
-        else
-        {
-            return std::nullopt;
-        }
-    }
-
-    std::optional<::luban::SharedPtr<game::avatar_config>> get(::luban::int32 key) const
-    { 
-        auto it = _dataMap.find(key);
-        if(it != _dataMap.end())
-        {
-            return it->second;
-        }
-        else
-        {
-            return std::nullopt;
-        }
-    }
-
-};
-
-}
-
 class tables
 {
     public:
@@ -1404,6 +1559,14 @@ class tables
      */
      game::default_item_config_container default_item_config_container;
     /**
+     * 头像
+     */
+     game::avatar_config_container avatar_config_container;
+    /**
+     * 英雄
+     */
+     game::hero_config_container hero_config_container;
+    /**
      * 养成
      */
      game::develop_config_container develop_config_container;
@@ -1415,10 +1578,6 @@ class tables
      * 任务
      */
      game::task_config_container task_config_container;
-    /**
-     * 头像
-     */
-     game::avatar_config_container avatar_config_container;
 
     bool load(::luban::Loader<::luban::ByteBuf> loader)
     {
@@ -1442,6 +1601,12 @@ class tables
         if (!loader(buf, "default_item_config_container")) return false;
         if (!default_item_config_container.load(buf)) return false;
         buf.clear();
+        if (!loader(buf, "avatar_config_container")) return false;
+        if (!avatar_config_container.load(buf)) return false;
+        buf.clear();
+        if (!loader(buf, "hero_config_container")) return false;
+        if (!hero_config_container.load(buf)) return false;
+        buf.clear();
         if (!loader(buf, "develop_config_container")) return false;
         if (!develop_config_container.load(buf)) return false;
         buf.clear();
@@ -1450,9 +1615,6 @@ class tables
         buf.clear();
         if (!loader(buf, "task_config_container")) return false;
         if (!task_config_container.load(buf)) return false;
-        buf.clear();
-        if (!loader(buf, "avatar_config_container")) return false;
-        if (!avatar_config_container.load(buf)) return false;
         return true;
     }
 };
