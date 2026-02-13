@@ -5,6 +5,7 @@
 #include "config/game/game_tables.h"
 #include "initializer/initializer_constant.h"
 #include "message/basic/header.h"
+#include "player/component/player_state.tpp"
 #include "player/task/player_task_component.h"
 #include "proto/celeritas.pb.h"
 
