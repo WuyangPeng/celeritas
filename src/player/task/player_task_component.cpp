@@ -25,14 +25,19 @@ celeritas::player_component::void_awaitable_type celeritas::player_task_componen
     }
 }
 
-int celeritas::player_task_component::get_default_progress(const config::task_event_type task_event_type, const int target_id)
+int celeritas::player_task_component::get_default_progress(const config::task_event_type task_event_type, const int target_id) const
 {
     if (const auto it = calculators_.find(task_event_type);
-        it != calculators_.end())
+        it != calculators_.cend())
     {
         return it->second->calculate(task_event_type, target_id);
     }
     return 0;
+}
+
+int celeritas::player_task_component::get_progress(const config::task_component_type task_component_type, const int cfg_id) const
+{
+    return tasks_.at(enum_cast_underlying(task_component_type))->get_progress_by_cfg_id(cfg_id);
 }
 
 void celeritas::player_task_component::update_task_progress(const task_context& task_context, bool is_login)

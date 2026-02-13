@@ -52,6 +52,7 @@ namespace celeritas
         // 物品模块
         item_selected_error = 60600,
         item_not_exist = 60601,
+        item_already_exist = 60602,
 
         // 养成模块
         max_develop = 60700,
@@ -65,6 +66,10 @@ namespace celeritas
         mail_no_attachment = 60802,
         mail_not_read = 60803,
         mail_attachment_not_collected = 60804,
+
+        // 任务模块
+        task_not_exist = 60900,
+        task_progress_not_enough = 60901,
     };
 
     [[nodiscard]] std::string get_game_error_description(game_error_type game_error);

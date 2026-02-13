@@ -41,6 +41,7 @@ std::string celeritas::get_game_error_description(const game_error_type game_err
 
                                                 { game_error_type::item_selected_error, "item selected error" },
                                                 { game_error_type::item_not_exist, "item not exist" },
+                                                { game_error_type::item_already_exist, "item already exist" },
 
                                                 { game_error_type::max_develop, "max develop" },
                                                 { game_error_type::non_resettable, "non resettable" },
@@ -51,7 +52,10 @@ std::string celeritas::get_game_error_description(const game_error_type game_err
                                                 { game_error_type::mail_attachment_collected, "mail attachment collected" },
                                                 { game_error_type::mail_no_attachment, "mail no attachment" },
                                                 { game_error_type::mail_not_read, "mail not read" },
-                                                { game_error_type::mail_attachment_not_collected, "mail attachment not collected" }
+                                                { game_error_type::mail_attachment_not_collected, "mail attachment not collected" },
+
+                                                { game_error_type::task_not_exist, "task not exist" },
+                                                { game_error_type::task_progress_not_enough, "task progress not enough" }
 
     };
 

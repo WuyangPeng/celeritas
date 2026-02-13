@@ -46,6 +46,8 @@ namespace celeritas
 
         void finish_task(int64_t id);
 
+        [[nodiscard]] int get_progress_by_cfg_id(int cfg_id) const;
+
         [[nodiscard]] virtual void_awaitable_type on_db_analysis(const const_app_config_shared_ptr& app_config) = 0;
 
     protected:

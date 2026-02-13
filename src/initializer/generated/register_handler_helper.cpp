@@ -68,6 +68,7 @@ void celeritas::register_handler_helper::register_handler() const
     message_registry_->register_handler(std::make_shared<reload_game_config_message_handler>());
     message_registry_->register_handler(std::make_shared<send_server_mail_message_handler>());
     message_registry_->register_handler(std::make_shared<service_login_request_message_handler>());
+    message_registry_->register_handler(std::make_shared<unlock_item_message_handler>());
     message_registry_->register_handler(std::make_shared<close_request_message_handler>());
     message_registry_->register_handler(std::make_shared<discover_request_message_handler>());
     message_registry_->register_handler(std::make_shared<discover_response_message_handler>());

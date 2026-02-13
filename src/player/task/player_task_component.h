@@ -26,7 +26,9 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type on_db_analysis(const const_app_config_shared_ptr& app_config) override;
 
-        [[nodiscard]] int get_default_progress(config::task_event_type task_event_type, int target_id);
+        [[nodiscard]] int get_default_progress(config::task_event_type task_event_type, int target_id) const;
+
+        [[nodiscard]] int get_progress(config::task_component_type task_component_type, int cfg_id) const;
 
         [[nodiscard]] static constexpr player_component_type get_player_component_type()
         {

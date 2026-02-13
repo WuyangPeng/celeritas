@@ -80,6 +80,7 @@
 #include "handler/player/reload_game_config_message_handler.h"
 #include "handler/player/send_server_mail_message_handler.h"
 #include "handler/player/service_login_request_message_handler.h"
+#include "handler/player/unlock_item_message_handler.h"
 #include "handler/service_registry/close_request_message_handler.h"
 #include "handler/service_registry/discover_request_message_handler.h"
 #include "handler/service_registry/discover_response_message_handler.h"

@@ -2,9 +2,11 @@
 #include "common/core/celeritas_error.h"
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
+#include "database/document/task_progress.h"
 #include "player/task/detail/base/task_context.h"
-#include "../../../../database/document/task_progress.h"
 #include "player/task/detail/condition/task_condition.h"
+
+#include <ranges>
 
 celeritas::task::task(player_state* player_state) noexcept
     : player_state_{ player_state }, task_progress_{}, event_{}, finish_task_ids_{}
@@ -92,6 +94,18 @@ void celeritas::task::finish_task(int64_t id)
         }
         task_progress_.erase(iter);
     }
+}
+
+int celeritas::task::get_progress_by_cfg_id(const int cfg_id) const
+{
+    for (const auto& progress : task_progress_ | std::views::values)
+    {
+        if (progress->get_cfg_id() == cfg_id)
+        {
+            return progress->get_progress();
+        }
+    }
+    return 0;
 }
 
 

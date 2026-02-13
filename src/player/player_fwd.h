@@ -27,6 +27,7 @@ namespace celeritas
     class player_debug_component;
 
     class item_selected;
+    class unlock_item;
     class player_time_component;
     class player_time_refresh_key;
 
@@ -58,7 +59,8 @@ namespace celeritas
     class player_attribute_component;
 
     class player_instance_component;
- class player_building_component;
+
+    class player_building_component;
 
     class player_finish_component;
 
