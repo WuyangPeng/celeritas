@@ -4,13 +4,13 @@
 
 namespace celeritas
 {
-    class main_task final : public task
+    class avatar_task final : public task
     {
     public:
-        using class_type = main_task;
+        using class_type = avatar_task;
         using base_type = task;
 
-        explicit main_task(player_state* player_state) noexcept;
+        explicit avatar_task(player_state* player_state) noexcept;
 
         [[nodiscard]] task_component_type get_task_component_type() const override;
 

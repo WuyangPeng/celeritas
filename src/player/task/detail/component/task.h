@@ -1,9 +1,12 @@
 ﻿#pragma once
 
+#include "config/config_fwd.h"
 #include "config/luban/generated/schema.h"
 #include "database/document/task_progress.h"
 #include "player/player_fwd.h"
 #include "player/task/detail/player_task_internal_fwd.h"
+
+#include <boost/asio/awaitable.hpp>
 
 #include <map>
 #include <memory>
@@ -18,6 +21,8 @@ namespace celeritas
         using task_component_type = config::task_component_type;
         using task_shared_ptr = std::shared_ptr<class_type>;
         using task_progress_shared_ptr = std::shared_ptr<task_progress>;
+        using void_awaitable_type = boost::asio::awaitable<void>;
+        using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
 
         explicit task(player_state* player_state) noexcept;
 
@@ -40,6 +45,8 @@ namespace celeritas
         void update_task_progress(const task_context& task_context);
 
         void finish_task(int64_t id);
+
+        [[nodiscard]] virtual void_awaitable_type on_db_analysis(const const_app_config_shared_ptr& app_config) = 0;
 
     protected:
         using task_progress_container = std::map<int64_t, task_progress_shared_ptr>;

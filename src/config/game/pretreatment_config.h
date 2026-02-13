@@ -3,6 +3,7 @@
 #include "develop_config.h"
 #include "develop_level_config.h"
 #include "rename_cost_config.h"
+#include "task_config.h"
 #include "weight_config.h"
 
 namespace celeritas
@@ -16,6 +17,7 @@ namespace celeritas
         using const_rename_cost_config_shared_ptr = std::shared_ptr<const rename_cost_config>;
         using const_develop_config_shared_ptr = std::shared_ptr<const develop_config>;
         using const_develop_level_config_shared_ptr = std::shared_ptr<const develop_level_config>;
+        using const_task_config_shared_ptr = std::shared_ptr<const task_config>;
 
         explicit pretreatment_config(const const_tables_shared_ptr& tables);
 
@@ -27,10 +29,13 @@ namespace celeritas
 
         [[nodiscard]] const_develop_level_config_shared_ptr get_develop_level_config() const;
 
+        [[nodiscard]] const_task_config_shared_ptr get_task_config() const;
+
     private:
         const_weight_config_shared_ptr weight_config_;
         const_rename_cost_config_shared_ptr rename_cost_config_;
         const_develop_config_shared_ptr develop_config_;
         const_develop_level_config_shared_ptr develop_level_config_;
+        const_task_config_shared_ptr task_config_;
     };
 }

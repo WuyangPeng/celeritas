@@ -274,7 +274,11 @@ namespace celeritas {namespace config {
         /// 每日
         /// </summary>
         daily = 1,
-        max = 2,
+        /// <summary>
+        /// 头像
+        /// </summary>
+        avatar = 2,
+        max = 3,
     };
 
  
@@ -295,6 +299,10 @@ namespace celeritas {namespace config {
         /// 升级
         /// </summary>
         upgrade_level = 2,
+        /// <summary>
+        /// 拥有物品
+        /// </summary>
+        hold_item = 3,
     };
 
  
@@ -374,14 +382,6 @@ struct avatar_config : public luban::CfgBean
      * 详情时的资源路径
      */
     ::luban::String fullRes;
-    /**
-     * 解锁条件类型
-     */
-    task_event_type unlockType;
-    /**
-     * 解锁条件参数
-     */
-    ::luban::int32 unlockParam;
     /**
      * 未解锁时是否在列表中可见
      */
@@ -515,6 +515,10 @@ struct item_config : public luban::CfgBean
      * 格子
      */
     bool squares;
+    /**
+     * 解锁条件id
+     */
+    ::luban::int32 unlockTaskId;
 
     static constexpr int __ID__ = 1115922930;
 

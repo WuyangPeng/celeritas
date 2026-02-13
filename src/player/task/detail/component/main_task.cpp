@@ -10,3 +10,8 @@ celeritas::task::task_component_type celeritas::main_task::get_task_component_ty
     return task_component_type::main;
 }
 
+celeritas::task::void_awaitable_type celeritas::main_task::on_db_analysis(const const_app_config_shared_ptr& app_config)
+{
+    co_return;
+}
+

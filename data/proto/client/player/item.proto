@@ -36,9 +36,14 @@ message item_selected_response {
     bool is_login = 2;
 }
 
+message unlock_item_request {
+    int32 template_id = 1;
+}
+
 message client_item_request {
   oneof payload {
     item_selected_request item_selected = 1;
+    unlock_item_request unlock_item = 2;
   }
 }
 

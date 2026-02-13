@@ -1,10 +1,11 @@
-﻿#include "kill_monster_condition.h"
+﻿#include "hold_item_condition.h"
+#include "kill_monster_condition.h"
 #include "task_condition.h"
 #include "upgrade_level_condition.h"
 #include "common/core/celeritas_error.h"
+#include "database/document/task_progress.h"
 #include "player/task/detail/base/task_change_type.h"
 #include "player/task/detail/base/task_context.h"
-#include "../../../../database/document/task_progress.h"
 
 celeritas::task_condition::task_condition_unique_ptr celeritas::task_condition::create(const config::task_event_type type, int target_id)
 {
@@ -14,6 +15,8 @@ celeritas::task_condition::task_condition_unique_ptr celeritas::task_condition::
             return std::make_unique<kill_monster_condition>(target_id);
         case config::task_event_type::upgrade_level:
             return std::make_unique<upgrade_level_condition>();
+        case config::task_event_type::hold_item:
+            return std::make_unique<hold_item_condition>(target_id);
         default:
             throw celeritas_error{ "unsupported task_event_type" };
     }

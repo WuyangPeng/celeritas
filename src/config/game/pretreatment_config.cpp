@@ -4,7 +4,8 @@ celeritas::pretreatment_config::pretreatment_config(const const_tables_shared_pt
     : weight_config_{ std::make_shared<weight_config>(tables->surname_config_container, tables->name_config_container) },
       rename_cost_config_{ std::make_shared<rename_cost_config>(tables->rename_cost_config_container) },
       develop_config_{ std::make_shared<develop_config>(tables->develop_config_container) },
-      develop_level_config_{ std::make_shared<develop_level_config>(tables->develop_level_config_container) }
+      develop_level_config_{ std::make_shared<develop_level_config>(tables->develop_level_config_container) },
+      task_config_{ std::make_shared<task_config>(tables->task_config_container) }
 {
 }
 
@@ -26,4 +27,9 @@ celeritas::pretreatment_config::const_develop_config_shared_ptr celeritas::pretr
 celeritas::pretreatment_config::const_develop_level_config_shared_ptr celeritas::pretreatment_config::get_develop_level_config() const
 {
     return develop_level_config_;
+}
+
+celeritas::pretreatment_config::const_task_config_shared_ptr celeritas::pretreatment_config::get_task_config() const
+{
+    return task_config_;
 }
