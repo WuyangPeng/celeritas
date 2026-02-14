@@ -229,21 +229,57 @@ celeritas::custom_data celeritas::custom_data::from_consumable_description(const
 
 celeritas::custom_data celeritas::custom_data::from_avatar_description(const document_type& document)
 {
-    return custom_data{};
+    custom_data custom_data{};
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == data_description)
+        {
+            custom_data.detail_ = avatar_data::from_document(element.get_value<database_data_type::document_type>());
+            break;
+        }
+    }
+    return custom_data;
 }
 
 celeritas::custom_data celeritas::custom_data::from_frame_description(const document_type& document)
 {
-    return custom_data{};
+    custom_data custom_data{};
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == data_description)
+        {
+            custom_data.detail_ = frame_data::from_document(element.get_value<database_data_type::document_type>());
+            break;
+        }
+    }
+    return custom_data;
 }
 
 celeritas::custom_data celeritas::custom_data::from_title_description(const document_type& document)
 {
-    return custom_data{};
+    custom_data custom_data{};
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == data_description)
+        {
+            custom_data.detail_ = title_data::from_document(element.get_value<database_data_type::document_type>());
+            break;
+        }
+    }
+    return custom_data;
 }
 
 celeritas::custom_data celeritas::custom_data::from_hero_description(const document_type& document)
 {
-    return custom_data{};
+    custom_data custom_data{};
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == data_description)
+        {
+            custom_data.detail_ = hero_data::from_document(element.get_value<database_data_type::document_type>());
+            break;
+        }
+    }
+    return custom_data;
 }
 
