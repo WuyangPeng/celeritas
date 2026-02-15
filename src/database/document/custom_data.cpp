@@ -7,6 +7,11 @@ celeritas::custom_data::custom_data()
 {
 }
 
+celeritas::custom_data::custom_data(std::string_view type)
+    : detail_{ get_variant_type(type) }
+{
+}
+
 celeritas::custom_data::document_type celeritas::custom_data::to_document_type() const
 {
     document_type document{};
@@ -281,5 +286,45 @@ celeritas::custom_data celeritas::custom_data::from_hero_description(const docum
         }
     }
     return custom_data;
+}
+
+celeritas::custom_data::variant_type celeritas::custom_data::get_variant_type(const std::string_view type)
+{
+    if (type == custom_description)
+    {
+        return std::monostate{};
+    }
+
+    if (type == consumable_description)
+    {
+        return consumable_data();
+    }
+
+    if (type == equipment_description)
+    {
+        return equipment_data();
+    }
+
+    if (type == avatar_description)
+    {
+        return avatar_data();
+    }
+
+    if (type == frame_description)
+    {
+        return frame_data();
+    }
+
+    if (type == title_description)
+    {
+        return title_data();
+    }
+
+    if (type == hero_description)
+    {
+        return hero_data();
+    }
+
+    throw celeritas_error{ "custom_data type failed." };
 }
 

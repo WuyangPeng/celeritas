@@ -21,12 +21,15 @@ namespace celeritas
 
         custom_data();
 
+        explicit custom_data(std::string_view type);
+
         [[nodiscard]] document_type to_document_type() const;
 
         [[nodiscard]] static custom_data from_document(const document_type& document);
 
         static constexpr std::string_view type_description = "type";
         static constexpr std::string_view data_description = "data";
+        static constexpr std::string_view custom_description = "custom";
         static constexpr std::string_view consumable_description = "consumable";
         static constexpr std::string_view equipment_description = "equipment";
         static constexpr std::string_view avatar_description = "avatar";
@@ -64,6 +67,7 @@ namespace celeritas
         [[nodiscard]] static custom_data from_title_description(const document_type& document);
 
         [[nodiscard]] static custom_data from_hero_description(const document_type& document);
+ [[nodiscard]] static variant_type get_variant_type(std::string_view type);
 
         variant_type detail_;
     };

@@ -52,6 +52,8 @@ namespace celeritas
         static constexpr std::string_view custom_data_description = "custom_data";
 
     private:
+        [[nodiscard]] static std::string_view get_custom_data(int template_id);
+
         int64_t item_id_ = 0;
         int template_id_ = 0;
         int64_t count_ = 0;
