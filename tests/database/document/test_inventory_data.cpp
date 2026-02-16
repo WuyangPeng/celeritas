@@ -2,6 +2,9 @@
 #include "database/document/custom_data.h"
 #include "database/document/equipment_data.h"
 #include "database/document/inventory_data.h"
+#include "config/game/game_config.h"
+#include "config/game/game_tables.h"
+#include "config/luban/generated/schema.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -20,9 +23,32 @@ namespace
         }
         BOOST_CHECK(found_type);
     }
+
+    struct inventory_data_fixture
+    {
+        inventory_data_fixture()
+        {
+            init_game_config();
+        }
+
+        static void init_game_config()
+        {
+            const auto tables = std::make_shared<celeritas::config::tables>();
+            const auto dataMap = const_cast<::luban::HashMap<::luban::int32, ::luban::SharedPtr<celeritas::config::game::item_config> >*>(&tables->item_config_container.getDataMap());
+
+            // 添加测试用的物品配置
+            auto item_config = std::make_shared<celeritas::config::game::item_config>();
+            item_config->itemTemplateId = 101;
+            item_config->itemType = celeritas::config::item_type::equipment;
+            dataMap->emplace(item_config->itemTemplateId, item_config);
+
+            const auto game_tables = std::make_shared<celeritas::game_tables>(tables);
+            celeritas::game_config::get_instance().set_game_tables(game_tables);
+        }
+    };
 }
 
-BOOST_AUTO_TEST_SUITE(inventory_data_suite)
+BOOST_FIXTURE_TEST_SUITE(inventory_data_suite, inventory_data_fixture)
 
     BOOST_AUTO_TEST_CASE(test_default_constructor)
     {
