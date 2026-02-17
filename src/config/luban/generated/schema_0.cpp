@@ -147,6 +147,37 @@ bool game::develop_level_config::deserializedevelop_level_config(::luban::ByteBu
 }
 
 
+bool game::frame_config::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(itemTemplateId)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; quality = quality_type(__enum_temp__); }
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; type = avatar_type(__enum_temp__); }
+    if(!_buf.readString(iconRes)) return false;
+    if(!_buf.readString(fullRes)) return false;
+    if (!_buf.readBool(hidden)) return false;
+    if (!_buf.readBool(isOpen)) return false;
+    if(!_buf.readString(desc)) return false;
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); attribute.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<attribute_bonus> _e; if(!attribute_bonus::deserializeattribute_bonus(_buf, _e)) return false; attribute.push_back(_e);}}
+
+    return true;
+}
+
+bool game::frame_config::deserializeframe_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::frame_config>& _out)
+{
+    _out.reset(LUBAN_NEW(game::frame_config));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
 bool game::hero_config::deserialize(::luban::ByteBuf& _buf)
 {
 

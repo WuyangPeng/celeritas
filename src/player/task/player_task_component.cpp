@@ -1,6 +1,7 @@
 #include "player_task_component.h"
 #include "detail/component/avatar_task.h"
 #include "detail/component/daily_task.h"
+#include "detail/component/frame_task.h"
 #include "detail/component/main_task.h"
 #include "detail/default_progress/kill_monster_progress_calculator.h"
 #include "detail/default_progress/upgrade_level_progress_calculator.h"
@@ -10,7 +11,8 @@ celeritas::player_task_component::player_task_component(player_state* player_sta
     : base_type{ get_player_component_type(), player_state },
       tasks_{ std::make_shared<main_task>(player_state),
               std::make_shared<daily_task>(player_state),
-              std::make_shared<avatar_task>(player_state) },
+              std::make_shared<avatar_task>(player_state),
+              std::make_shared<frame_task>(player_state) },
       calculators_{ { config::task_event_type::kill_monster, std::make_shared<kill_monster_progress_calculator>(player_state) },
                     { config::task_event_type::upgrade_level, std::make_shared<upgrade_level_progress_calculator>(player_state) },
                     { config::task_event_type::hold_item, std::make_shared<hold_item_progress_calculator>(player_state) } }

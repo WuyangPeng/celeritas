@@ -108,6 +108,22 @@ namespace celeritas {namespace config {
 
 
  
+    enum class frame_type
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        none = 0,
+        /// <summary>
+        /// 普通
+        /// </summary>
+        common = 1,
+    };
+
+ 
+
+
+ 
     enum class hero_type
     {
         /// <summary>
@@ -318,7 +334,11 @@ namespace celeritas {namespace config {
         /// 头像
         /// </summary>
         avatar = 2,
-        max = 3,
+        /// <summary>
+        /// 头像框
+        /// </summary>
+        frame = 3,
+        max = 4,
     };
 
  
@@ -353,6 +373,7 @@ namespace game { struct avatar_config; }
 namespace game { struct default_item_config; }
 namespace game { struct develop_config; }
 namespace game { struct develop_level_config; }
+namespace game { struct frame_config; }
 namespace game { struct hero_config; }
 namespace game { struct item_config; }
 namespace game { struct name_config; }
@@ -428,7 +449,7 @@ struct avatar_config : public luban::CfgBean
      */
     bool hidden;
     /**
-     * 英雄是否开放
+     * 头像是否开放
      */
     bool isOpen;
     /**
@@ -524,6 +545,60 @@ struct develop_level_config : public luban::CfgBean
     ::luban::Vector<::luban::SharedPtr<item>> playerItem;
 
     static constexpr int __ID__ = 1411329915;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+}
+
+namespace game {
+
+struct frame_config : public luban::CfgBean 
+{
+    static bool deserializeframe_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<frame_config>& _out);
+
+    virtual ~frame_config() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 头像框编号
+     */
+    ::luban::int32 itemTemplateId;
+    /**
+     * 品质
+     */
+    quality_type quality;
+    /**
+     * 类型
+     */
+    avatar_type type;
+    /**
+     * 小图资源路径
+     */
+    ::luban::String iconRes;
+    /**
+     * 详情时的资源路径
+     */
+    ::luban::String fullRes;
+    /**
+     * 未解锁时是否在列表中可见
+     */
+    bool hidden;
+    /**
+     * 头像是否开放
+     */
+    bool isOpen;
+    /**
+     * 获取途径描述文案
+     */
+    ::luban::String desc;
+    /**
+     * 属性加成
+     */
+    ::luban::Vector<::luban::SharedPtr<attribute_bonus>> attribute;
+
+    static constexpr int __ID__ = -2093864240;
 
     int getTypeId() const override { return __ID__; }
 };
@@ -1294,6 +1369,66 @@ class avatar_config_container
 namespace game {
 
 /**
+ * 头像框
+ */
+
+class frame_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::frame_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::frame_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::frame_config> _v;
+            if(!game::frame_config::deserializeframe_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->itemTemplateId] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::frame_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::frame_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::frame_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::frame_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
+namespace game {
+
+/**
  * 英雄
  */
 
@@ -1563,6 +1698,10 @@ class tables
      */
      game::avatar_config_container avatar_config_container;
     /**
+     * 头像框
+     */
+     game::frame_config_container frame_config_container;
+    /**
      * 英雄
      */
      game::hero_config_container hero_config_container;
@@ -1603,6 +1742,9 @@ class tables
         buf.clear();
         if (!loader(buf, "avatar_config_container")) return false;
         if (!avatar_config_container.load(buf)) return false;
+        buf.clear();
+        if (!loader(buf, "frame_config_container")) return false;
+        if (!frame_config_container.load(buf)) return false;
         buf.clear();
         if (!loader(buf, "hero_config_container")) return false;
         if (!hero_config_container.load(buf)) return false;
