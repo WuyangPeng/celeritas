@@ -136,6 +136,8 @@ std::string_view celeritas::inventory_data::get_custom_data(const int template_i
             return custom_data::title_description;
         case config::item_type::hero:
             return custom_data::hero_description;
+        case config::item_type::exp:
+            return custom_data::exp_description;
         default:
             throw celeritas_error("invalid item type");
     }

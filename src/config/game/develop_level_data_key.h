@@ -9,17 +9,14 @@ namespace celeritas
     public:
         using class_type = develop_level_data_key;
 
-        develop_level_data_key(int system_id, int64_t instance_id, int level);
+        develop_level_data_key(int develop_id, int level);
 
-        [[nodiscard]] int get_system_id() const;
-
-        [[nodiscard]] int64_t get_instance_id() const;
+        [[nodiscard]] int get_develop_id() const;
 
         [[nodiscard]] int get_level() const;
 
     private:
-        int system_id_ = 0;
-        int64_t instance_id_ = 0;
+        int develop_id_ = 0;
         int level_ = 0;
     };
 

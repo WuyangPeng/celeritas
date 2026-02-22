@@ -31,5 +31,6 @@ namespace celeritas
     class develop_level_data_key;
     class develop_config;
     class develop_level_config;
+    class develop_system_key;
     class task_config;
 }

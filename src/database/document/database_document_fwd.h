@@ -12,6 +12,7 @@ namespace celeritas
     class frame_data;
     class title_data;
     class hero_data;
+    class exp_data;
     class player_time_refresh;
     class red_dost;
     class server_role;

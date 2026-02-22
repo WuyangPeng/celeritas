@@ -34,7 +34,7 @@ celeritas::player_service_base::void_awaitable_type celeritas::develop_level::re
     auto& develop = *optional_develop;
 
     auto level = develop.get_level();
-    const auto develop_config = get_game_tables()->get_pretreatment_config()->get_develop_config()->get_develop(develop_data_key);
+    const auto develop_config = get_game_tables()->get_tables()->develop_config_container.get(request_develop.system_id());
     if (!develop_config)
     {
         get_player_state()->send_error_message(get_rpc(), game_error_type::max_develop);
@@ -44,7 +44,7 @@ celeritas::player_service_base::void_awaitable_type celeritas::develop_level::re
     item_container container{};
     for (; level < request_develop.level(); ++level)
     {
-        const develop_level_data_key develop_config_data_key{ develop.get_system_id(), develop.get_instance_id(), level };
+        const develop_level_data_key develop_config_data_key{ develop.get_system_id(), level };
 
         const auto develop_level = develop_level_config->get_develop_level(develop_config_data_key);
         if (!develop_level || (*develop_config)->maxLevel <= level)

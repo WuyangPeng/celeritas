@@ -475,6 +475,7 @@ class develop_response final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kDevelopFieldNumber = 1,
+    kIsLoginFieldNumber = 2,
   };
   // repeated .celeritas.proto.client.develop_data develop = 1;
   int develop_size() const;
@@ -493,11 +494,21 @@ class develop_response final : public ::google::protobuf::Message
   const ::celeritas::proto::client::develop_data& develop(int index) const;
   ::celeritas::proto::client::develop_data* PROTOBUF_NONNULL add_develop();
   const ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::develop_data>& develop() const;
+  // bool is_login = 2;
+  void clear_is_login() ;
+  bool is_login() const;
+  void set_is_login(bool value);
+
+  private:
+  bool _internal_is_login() const;
+  void _internal_set_is_login(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.develop_response)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
                                    1, 0,
                                    2>
       _table_;
@@ -517,8 +528,10 @@ class develop_response final : public ::google::protobuf::Message
         ::google::protobuf::internal::InternalVisibility visibility,
         ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
         const develop_response& from_msg);
-    ::google::protobuf::RepeatedPtrField< ::celeritas::proto::client::develop_data > develop_;
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::celeritas::proto::client::develop_data > develop_;
+    bool is_login_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -1970,6 +1983,30 @@ inline ::google::protobuf::RepeatedPtrField<::celeritas::proto::client::develop_
 develop_response::_internal_mutable_develop() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.develop_;
+}
+
+// bool is_login = 2;
+inline void develop_response::clear_is_login() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_login_ = false;
+  _impl_._has_bits_[0] &= ~0x00000001U;
+}
+inline bool develop_response::is_login() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.develop_response.is_login)
+  return _internal_is_login();
+}
+inline void develop_response::set_is_login(bool value) {
+  _internal_set_is_login(value);
+  _impl_._has_bits_[0] |= 0x00000001U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.develop_response.is_login)
+}
+inline bool develop_response::_internal_is_login() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.is_login_;
+}
+inline void develop_response::_internal_set_is_login(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_login_ = value;
 }
 
 // -------------------------------------------------------------------

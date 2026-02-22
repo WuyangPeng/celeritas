@@ -10,7 +10,7 @@
 #include <ranges>
 
 celeritas::player_develop_document::player_develop_document(player_state* player_state)
-    : player_state_{ player_state }
+    : develop_data_{}, player_state_{ player_state }
 {
 }
 
@@ -50,6 +50,17 @@ celeritas::game_error_type celeritas::player_develop_document::develop_level(con
     return game_error_type::success;
 }
 
+celeritas::player_develop_document::optional_develop_data celeritas::player_develop_document::develop_level(const const_develop_config_shared_ptr& develop_config)
+{
+    if (const auto iter = develop_data_.find(develop_data_key{ develop_config->id, 0 });
+        iter != develop_data_.cend())
+    {
+        return iter->second;
+    }
+
+    return std::nullopt;
+}
+
 celeritas::game_error_type celeritas::player_develop_document::develop_reset(const develop_data_key& key)
 {
     if (const auto iter = develop_data_.find(key);
@@ -79,6 +90,8 @@ void celeritas::player_develop_document::send_initial_sync()
         develop->set_level(element.get_level());
         develop->set_exp(element.get_exp());
     }
+
+    develop_response->set_is_login(true);
 
     if (!player_state_->write(gateway_type.data(), player_state_->get_instance_id(), header, response))
     {

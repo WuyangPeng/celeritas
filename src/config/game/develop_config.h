@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "develop_data_key.h"
+#include "develop_system_key.h"
 #include "config/luban/generated/schema.h"
 
 #include <map>
@@ -17,10 +18,10 @@ namespace celeritas
 
         explicit develop_config(const develop_config_container& container);
 
-        [[nodiscard]] const_optional_develop_config_shared_ptr get_develop(const develop_data_key& key) const;
+        [[nodiscard]] const_optional_develop_config_shared_ptr get_develop(const develop_system_key& key) const;
 
     private:
-        using container_type = std::map<develop_data_key, const_develop_config_shared_ptr>;
+        using container_type = std::map<develop_system_key, const_develop_config_shared_ptr>;
 
         void init_develop(const develop_config_container& container);
 

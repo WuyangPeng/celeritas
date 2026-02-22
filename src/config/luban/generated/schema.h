@@ -99,9 +99,17 @@ namespace celeritas {namespace config {
         /// </summary>
         none = 0,
         /// <summary>
+        /// 角色
+        /// </summary>
+        role = 1,
+        /// <summary>
+        /// vip
+        /// </summary>
+        vip = 2,
+        /// <summary>
         /// 英雄
         /// </summary>
-        hero = 1,
+        hero = 3,
     };
 
  
@@ -198,6 +206,10 @@ namespace celeritas {namespace config {
         /// 英雄
         /// </summary>
         hero = 7,
+        /// <summary>
+        /// 经验
+        /// </summary>
+        exp = 8,
     };
 
  
@@ -539,8 +551,7 @@ struct develop_level_config : public luban::CfgBean
      * id
      */
     ::luban::int32 id;
-    develop_system_type developSystemType;
-    develop_sub_type developSubType;
+    ::luban::int32 developId;
     ::luban::int32 level;
     ::luban::Vector<::luban::SharedPtr<item>> playerItem;
 
@@ -689,6 +700,14 @@ struct item_config : public luban::CfgBean
      * 解锁条件id
      */
     ::luban::int32 unlockTaskId;
+    /**
+     * 关联参数0
+     */
+    ::luban::int32 parameter0;
+    /**
+     * 关联参数1
+     */
+    ::luban::int32 parameter1;
 
     static constexpr int __ID__ = 1115922930;
 

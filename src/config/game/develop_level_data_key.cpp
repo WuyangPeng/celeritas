@@ -1,18 +1,13 @@
 ﻿#include "develop_level_data_key.h"
 
-celeritas::develop_level_data_key::develop_level_data_key(const int system_id, const int64_t instance_id, int level)
-    : system_id_{ system_id }, instance_id_{ instance_id }, level_{ level }
+celeritas::develop_level_data_key::develop_level_data_key(const int develop_id, const int level)
+    : develop_id_{ develop_id }, level_{ level }
 {
 }
 
-int celeritas::develop_level_data_key::get_system_id() const
+int celeritas::develop_level_data_key::get_develop_id() const
 {
-    return system_id_;
-}
-
-int64_t celeritas::develop_level_data_key::get_instance_id() const
-{
-    return instance_id_;
+    return develop_id_;
 }
 
 int celeritas::develop_level_data_key::get_level() const
@@ -22,22 +17,12 @@ int celeritas::develop_level_data_key::get_level() const
 
 bool celeritas::operator<(const develop_level_data_key& lhs, const develop_level_data_key& rhs)
 {
-    if (lhs.get_system_id() < rhs.get_system_id())
+    if (lhs.get_develop_id() < rhs.get_develop_id())
     {
         return true;
     }
 
-    if (rhs.get_system_id() < lhs.get_system_id())
-    {
-        return false;
-    }
-
-    if (lhs.get_instance_id() < rhs.get_instance_id())
-    {
-        return true;
-    }
-
-    if (rhs.get_instance_id() < lhs.get_instance_id())
+    if (rhs.get_develop_id() < lhs.get_develop_id())
     {
         return false;
     }

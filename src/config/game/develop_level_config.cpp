@@ -22,7 +22,7 @@ void celeritas::develop_level_config::init_develop_level(const develop_level_con
 {
     for (const auto& element : container.getDataList())
     {
-        container_.emplace(develop_level_data_key{ enum_cast_underlying(element->developSystemType), enum_cast_underlying(element->developSubType), element->level }, element);
+        container_.emplace(develop_level_data_key{ element->developId, element->level }, element);
     }
 }
 

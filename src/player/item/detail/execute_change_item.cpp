@@ -1,30 +1,41 @@
 ﻿#include "execute_change_item.h"
 #include "common/core/snowflake_generator.h"
 #include "common/logging/logger.h"
+#include "initializer/initializer_constant.h"
+#include "player/develop/player_develop_component.h"
+#include "proto/celeritas.pb.h"
 
-celeritas::execute_change_item::execute_change_item(player_item_document* player_item_document,
+celeritas::execute_change_item::execute_change_item(player_state* player_state,
+                                                    player_item_document* player_item_document,
                                                     const_app_config_shared_ptr app_config,
                                                     const int template_id,
                                                     const int64_t count)
-    : player_item_document_{ player_item_document },
+    : player_state_{ player_state },
+      player_item_document_{ player_item_document },
       app_config_{ std::move(app_config) },
       item_{},
       inventory_data_{},
       delete_inventory_data_{},
-      change_{ false }
+      develop_{},
+      change_{ false },
+      change_develop_{}
 {
     item_.add_item_info(template_id, count);
 }
 
-celeritas::execute_change_item::execute_change_item(player_item_document* player_item_document,
+celeritas::execute_change_item::execute_change_item(player_state* player_state,
+                                                    player_item_document* player_item_document,
                                                     const_app_config_shared_ptr app_config,
                                                     item_container item)
-    : player_item_document_{ player_item_document },
+    : player_state_{ player_state },
+      player_item_document_{ player_item_document },
       app_config_{ std::move(app_config) },
       item_{ std::move(item) },
       inventory_data_{},
       delete_inventory_data_{},
-      change_{ false }
+      develop_{},
+      change_{ false },
+      change_develop_{}
 {
 }
 
@@ -52,6 +63,29 @@ void celeritas::execute_change_item::send_message()
     }
 }
 
+void celeritas::execute_change_item::send_develop_message()
+{
+    const header header{ player_state_->get_user_id() };
+
+    proto::celeritas response{};
+    auto* develop_response = response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_develop()->mutable_develop();
+    for (const auto& element : change_develop_)
+    {
+        auto* develop = develop_response->add_develop();
+        develop->set_system_id(element.get_system_id());
+        develop->set_instance_id(element.get_instance_id());
+        develop->set_level(element.get_level());
+        develop->set_exp(element.get_exp());
+    }
+
+    develop_response->set_is_login(false);
+
+    if (!player_state_->write(gateway_type.data(), player_state_->get_instance_id(), header, response))
+    {
+        LOG_CHANNEL(player_channel, error) << "send message error.";
+    }
+}
+
 bool celeritas::execute_change_item::is_change() const noexcept
 {
     return change_;
@@ -69,6 +103,11 @@ bool celeritas::execute_change_item::execute(const int template_id, int64_t coun
 
     if (count > 0)
     {
+        if (item->itemType == config::item_type::exp)
+        {
+            develop_.emplace(item);
+        }
+
         count = add_to_existing_stacks(template_id, count, stacked);
     }
     else
@@ -160,4 +199,21 @@ int64_t celeritas::execute_change_item::add_new_item(const int template_id, int6
 
     inventory_data_.emplace(inventory_data.get_item_id(), inventory_data);
     return count;
+}
+
+void celeritas::execute_change_item::execute_develop()
+{
+    if (develop_.empty())
+    {
+        return;
+    }
+
+    const auto develop_component = player_state_->get_component<player_develop_component>();
+    for (const auto& element : develop_)
+    {
+        if (const auto result = develop_component->develop_level(app_config_, element))
+        {
+            change_develop_.emplace_back(*result);
+        }
+    }
 }

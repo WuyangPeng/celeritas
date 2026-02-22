@@ -20,6 +20,7 @@ namespace celeritas
         using void_awaitable_type = boost::asio::awaitable<void>;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
         using optional_develop_data = std::optional<develop_data>;
+        using const_develop_config_shared_ptr = std::shared_ptr<const config::game::develop_config>;
 
         explicit player_develop_document(player_state* player_state);
 
@@ -28,6 +29,8 @@ namespace celeritas
         [[nodiscard]] traits::document_array_type get_develop() const;
 
         [[nodiscard]] game_error_type develop_level(const develop_data& develop_data);
+
+        [[nodiscard]] optional_develop_data develop_level(const const_develop_config_shared_ptr& develop_config);
 
         [[nodiscard]] game_error_type develop_reset(const develop_data_key& key);
 

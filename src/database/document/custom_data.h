@@ -3,6 +3,7 @@
 #include "avatar_data.h"
 #include "consumable_data.h"
 #include "equipment_data.h"
+#include "exp_data.h"
 #include "frame_data.h"
 #include "hero_data.h"
 #include "title_data.h"
@@ -36,6 +37,7 @@ namespace celeritas
         static constexpr std::string_view frame_description = "frame";
         static constexpr std::string_view title_description = "title";
         static constexpr std::string_view hero_description = "hero";
+        static constexpr std::string_view exp_description = "exp";
 
         [[nodiscard]] config::item_type get_kind() const noexcept;
 
@@ -52,7 +54,7 @@ namespace celeritas
         [[nodiscard]] const hero_data* get_hero() const;
 
     private:
-        using variant_type = std::variant<std::monostate, consumable_data, equipment_data, avatar_data, frame_data, title_data, hero_data>;
+        using variant_type = std::variant<std::monostate, consumable_data, equipment_data, avatar_data, frame_data, title_data, hero_data, exp_data>;
 
         [[nodiscard]] static std::string get_type(const document_type& document);
 
@@ -67,7 +69,8 @@ namespace celeritas
         [[nodiscard]] static custom_data from_title_description(const document_type& document);
 
         [[nodiscard]] static custom_data from_hero_description(const document_type& document);
- [[nodiscard]] static variant_type get_variant_type(std::string_view type);
+
+        [[nodiscard]] static variant_type get_variant_type(std::string_view type);
 
         variant_type detail_;
     };

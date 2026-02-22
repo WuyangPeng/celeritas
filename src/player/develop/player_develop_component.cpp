@@ -1,7 +1,13 @@
 ﻿#include "player_develop_component.h"
+#include "common/core/enum_cast.h"
 #include "common/logging/logger.h"
+#include "config/game/game_config.h"
+#include "config/game/game_tables.h"
+#include "config/game/pretreatment_config.h"
 #include "initializer/initializer_constant.h"
 #include "message/basic/game_error_type.h"
+#include "player/item/item_container.h"
+#include "player/item/player_item_component.h"
 #include "proto/celeritas.pb.h"
 
 celeritas::player_develop_component::player_develop_component(player_state* player_state) noexcept
@@ -38,6 +44,60 @@ celeritas::game_error_type celeritas::player_develop_component::develop_level(co
         update_document();
     }
     return game_error;
+}
+
+celeritas::player_develop_component::optional_develop_data celeritas::player_develop_component::develop_level(const const_app_config_shared_ptr& app_config, const const_item_config_shared_ptr& item_config)
+{
+    const auto pretreatment_config = game_config::get_instance().get_game_tables()->get_pretreatment_config();
+    if (const auto optional_develop = pretreatment_config->get_develop_config()->get_develop(develop_system_key{ underlying_cast_enum<config::develop_system_type>(item_config->parameter0), underlying_cast_enum<config::develop_sub_type>(item_config->parameter1) }))
+    {
+        const auto& develop = *optional_develop;
+
+        auto optional_develop_data = document_.develop_level(develop);
+        if (!optional_develop_data)
+        {
+            optional_develop_data = develop_data{ develop->id, 0 };
+        }
+
+        const auto item_component = get_player_state()->get_component<player_item_component>();
+
+        auto& develop_data = *optional_develop_data;
+        item_container container{};
+        auto result_level = 0;
+        for (auto level = develop_data.get_level(); level < develop->maxLevel; ++level)
+        {
+            const auto optional_develop_level_config = pretreatment_config->get_develop_level_config()->get_develop_level(develop_level_data_key{ develop->id, level });
+            if (!optional_develop_level_config)
+            {
+                break;
+            }
+            for (const auto& player_item : (*optional_develop_level_config)->playerItem)
+            {
+                container.add_item_info(player_item->itemId, player_item->itemCount);
+            }
+
+            if (!item_component->can_consume_item(container))
+            {
+                break;
+            }
+
+            result_level = level;
+        }
+
+        item_component->consume_item(app_config, container);
+
+        develop_data.set_level(result_level);
+
+        if (const auto game_error = document_.develop_level(develop_data);
+            game_error == game_error_type::success)
+        {
+            update_document();
+        }
+
+        return develop_data;
+    }
+
+    return std::nullopt;
 }
 
 celeritas::game_error_type celeritas::player_develop_component::develop_reset(const develop_data_key& key)

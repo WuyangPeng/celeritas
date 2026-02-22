@@ -42,10 +42,12 @@ celeritas::traits::document_array_type celeritas::player_item_document::get_item
 
 bool celeritas::player_item_document::change_item(const const_app_config_shared_ptr& app_config, const int template_id, const int64_t count)
 {
-    execute_change_item execute{ this, app_config, template_id, count };
+    execute_change_item execute{ player_state_, this, app_config, template_id, count };
 
     execute.execute();
     execute.send_message();
+    execute.execute_develop();
+    execute.send_develop_message();
 
     return execute.is_change();
 }
@@ -82,13 +84,19 @@ bool celeritas::player_item_document::can_consume_item(const item_container& ite
 
 bool celeritas::player_item_document::change_item(const const_app_config_shared_ptr& app_config, const item_container& item, const bool is_login)
 {
-    execute_change_item execute{ this, app_config, item };
+    execute_change_item execute{ player_state_, this, app_config, item };
 
     execute.execute();
 
     if (!is_login)
     {
         execute.send_message();
+    }
+
+    execute.execute_develop();
+    if (!is_login)
+    {
+        execute.send_develop_message();
     }
 
     return execute.is_change();
@@ -182,6 +190,11 @@ void celeritas::player_item_document::set_inventory_data_proto(proto_inventory_d
         case config::item_type::hero:
         {
             proto_data->mutable_hero();
+        }
+        break;
+        case config::item_type::exp:
+        {
+            proto_data->mutable_exp();
         }
         break;
         default:

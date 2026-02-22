@@ -1,4 +1,5 @@
 ﻿#include "custom_data.h"
+#include "exp_data.h"
 #include "common/core/celeritas_error.h"
 #include "database/basic/basis_database.tpp"
 
@@ -126,6 +127,11 @@ celeritas::config::item_type celeritas::custom_data::get_kind() const noexcept
     if (std::holds_alternative<hero_data>(detail_))
     {
         return config::item_type::hero;
+    }
+
+    if (std::holds_alternative<exp_data>(detail_))
+    {
+        return config::item_type::exp;
     }
 
     return config::item_type::none;

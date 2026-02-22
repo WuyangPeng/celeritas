@@ -31,8 +31,8 @@ celeritas::player_service_base::void_awaitable_type celeritas::develop_reset::re
         co_return;
     }
 
-    const auto develop_config = get_game_tables()->get_pretreatment_config()->get_develop_config();
-    const auto optional_current_develop_config = develop_config->get_develop(develop_data_key);
+    const auto develop_config = get_game_tables()->get_tables()->develop_config_container;
+    const auto optional_current_develop_config = develop_config.get(request_develop.system_id());
     if (!optional_current_develop_config)
     {
         get_player_state()->send_error_message(get_rpc(), game_error_type::develop_not_exist);
@@ -61,7 +61,7 @@ celeritas::player_service_base::void_awaitable_type celeritas::develop_reset::re
     item_container container{};
     for (auto i = 0; i < level; ++i)
     {
-        const develop_level_data_key develop_config_data_key{ develop.get_system_id(), develop.get_instance_id(), i };
+        const develop_level_data_key develop_config_data_key{ develop.get_system_id(), i };
 
         const auto develop_level = develop_level_config->get_develop_level(develop_config_data_key);
         if (!develop_level)

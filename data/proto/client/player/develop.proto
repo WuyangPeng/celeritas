@@ -11,6 +11,7 @@ package celeritas.proto.client;
 
 message develop_response {
   repeated develop_data develop = 1;
+  bool is_login = 2;
 }
 
 message develop_level_request {
