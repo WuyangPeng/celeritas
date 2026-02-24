@@ -2,6 +2,7 @@
 
 #include "player_event_dispatcher.h"
 #include "player/component/player_component.h"
+#include "player/component/player_component_type.h"
 
 namespace celeritas
 {
@@ -16,7 +17,10 @@ namespace celeritas
 
         explicit player_event_component(player_state* player_state) noexcept;
 
-        ~player_event_component() noexcept override = default;
+        [[nodiscard]] static constexpr player_component_type get_player_component_type()
+        {
+            return player_component_type::event;
+        }
 
         // 注册事件监听器
         [[nodiscard]] listener_id_type register_listener(player_event_type event_type, const player_event_listener_shared_ptr& listener);

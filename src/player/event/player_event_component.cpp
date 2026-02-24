@@ -1,8 +1,7 @@
 #include "player_event_component.h"
-#include "player/component/player_component_type.h"
 
 celeritas::player_event_component::player_event_component(player_state* player_state) noexcept
-    : player_component{ player_component_type::event, player_state }
+    : player_component{ get_player_component_type(), player_state }
 {
 }
 
