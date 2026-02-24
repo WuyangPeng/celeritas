@@ -56,6 +56,46 @@ namespace celeritas {namespace config {
 
 
  
+    enum class currency_type
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        none = 0,
+        /// <summary>
+        /// 黄金
+        /// </summary>
+        gold = 1001001,
+        /// <summary>
+        /// 白银
+        /// </summary>
+        silver = 1001002,
+        /// <summary>
+        /// 铜钱
+        /// </summary>
+        copper_coin = 1001003,
+        /// <summary>
+        /// 粮食
+        /// </summary>
+        food = 1021001,
+        /// <summary>
+        /// 木材
+        /// </summary>
+        wood = 1021002,
+        /// <summary>
+        /// 石头
+        /// </summary>
+        stone = 1021003,
+        /// <summary>
+        /// 铁矿
+        /// </summary>
+        iron_ore = 1021004,
+    };
+
+ 
+
+
+ 
     enum class develop_reset_type
     {
         /// <summary>
