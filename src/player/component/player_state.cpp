@@ -10,6 +10,7 @@
 #include "player/building/player_building_component.h"
 #include "player/debug/player_debug_component.h"
 #include "player/develop/player_develop_component.h"
+#include "player/event/player_event_component.h"
 #include "player/finish/player_finish_component.h"
 #include "player/instance/player_instance_component.h"
 #include "player/item/player_item_component.h"
@@ -48,6 +49,7 @@ celeritas::player_state::player_state(const user& user,
                    std::make_shared<player_attribute_component>(this),
                    std::make_shared<player_instance_component>(this),
                    std::make_shared<player_building_component>(this),
+                   std::make_shared<player_event_component>(this),
 
                    std::make_shared<player_finish_component>(this),
                    std::make_shared<player_null_component>(this) },
@@ -232,9 +234,30 @@ bool celeritas::player_state::is_new_user() const noexcept
     return is_new_user_;
 }
 
-void celeritas::player_state::update_task_progress(const task_context& task_context, bool is_login)
+void celeritas::player_state::update_task_progress(const task_context& task_context, const bool is_login)
 {
     get_component<player_task_component>()->update_task_progress(task_context, is_login);
+}
+
+celeritas::player_state::listener_id_type celeritas::player_state::register_listener(const player_event_type event_type,
+                                                                                     const player_event_listener_shared_ptr& listener)
+{
+    return get_component<player_event_component>()->register_listener(event_type, listener);
+}
+
+void celeritas::player_state::unregister_listener(const player_event_type event_type, const listener_id_type listener_id)
+{
+    get_component<player_event_component>()->unregister_listener(event_type, listener_id);
+}
+
+celeritas::player_state::void_awaitable_type celeritas::player_state::trigger_event(const player_event_shared_ptr& event)
+{
+    co_await get_component<player_event_component>()->trigger_event(event);
+}
+
+celeritas::player_state::void_awaitable_type celeritas::player_state::trigger_event(const player_event_type event_type)
+{
+    co_await get_component<player_event_component>()->trigger_event(event_type);
 }
 
 void celeritas::player_state::check() const

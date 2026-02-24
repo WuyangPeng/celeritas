@@ -18,6 +18,7 @@ namespace celeritas
         attribute = 11,
         instance = 12,
         building = 13,
+        event = 14,
         finish,
         mock, // 测试使用
         max_component = finish + 2,

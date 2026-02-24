@@ -64,5 +64,14 @@ namespace celeritas
 
     class player_finish_component;
 
+    enum class player_event_type;
+    enum class player_event_priority;
+
+    class player_event_component;
+    class player_event;
+    class player_event_listener;
+    class player_event_function_listener;
+    class player_event_dispatcher;
+
     class server_mail_manager;
 }

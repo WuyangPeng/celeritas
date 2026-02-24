@@ -6,6 +6,7 @@
 #include "database/generated/mysql/player/user.h"
 #include "message/basic/header.h"
 #include "player/component/player_component_type.h"
+#include "player/event/player_event_dispatcher.h"
 #include "player/task/detail/base/task_context.h"
 #include "proto/service/player.pb.h"
 
@@ -29,6 +30,9 @@ namespace celeritas
         using any_io_executor = boost::asio::any_io_executor;
         using service_login_request_type = proto::service::service_login_request;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
+        using player_event_shared_ptr = std::shared_ptr<player_event>;
+        using player_event_listener_shared_ptr = std::shared_ptr<player_event_listener>;
+        using listener_id_type = player_event_dispatcher::listener_id_type;
 
         player_state(const user& user,
                      const resource_loader_shared_ptr& resource_loader,
@@ -104,6 +108,14 @@ namespace celeritas
         [[nodiscard]] bool is_new_user() const noexcept;
 
         void update_task_progress(const task_context& task_context, bool is_login);
+
+        [[nodiscard]] listener_id_type register_listener(player_event_type event_type, const player_event_listener_shared_ptr& listener);
+
+        void unregister_listener(player_event_type event_type, listener_id_type listener_id);
+
+        [[nodiscard]] void_awaitable_type trigger_event(const player_event_shared_ptr& event);
+
+        [[nodiscard]] void_awaitable_type trigger_event(player_event_type event_type);
 
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;
