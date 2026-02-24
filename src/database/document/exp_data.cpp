@@ -1,7 +1,7 @@
 ﻿#include "exp_data.h"
 #include "database/basic/basis_database.tpp"
 
-celeritas::exp_data::avatar_data()
+celeritas::exp_data::exp_data()
 {
 }
 
