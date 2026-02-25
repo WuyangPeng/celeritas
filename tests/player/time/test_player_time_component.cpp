@@ -35,9 +35,9 @@ BOOST_FIXTURE_TEST_SUITE(player_time_component_suite, celeritas::player_time_com
         // 停掉定时器，不然测试会卡死
         get_component()->stop_timer();
 
-        set_test_end(false);
-
         run([this]() -> void_awaitable_type {
+            set_test_end(false);
+
             co_await get_component()->save_db();
 
             set_test_end(true);
@@ -64,9 +64,9 @@ BOOST_FIXTURE_TEST_SUITE(player_time_component_suite, celeritas::player_time_com
         // 停掉定时器，不然测试会卡死
         get_component()->stop_timer();
 
-        set_test_end(false);
-
         run([this]() -> void_awaitable_type {
+            set_test_end(false);
+
             co_await get_component()->save_db();
 
             set_test_end(true);
@@ -151,8 +151,8 @@ BOOST_FIXTURE_TEST_SUITE(player_time_component_suite, celeritas::player_time_com
         BOOST_CHECK_EQUAL(get_mock_player_component()->get_time_callback_is_login(), 0);
         BOOST_CHECK_EQUAL(get_mock_player_component()->get_time_callback_is_not_login(), 0);
 
-        set_test_end(false);
         run([this,&key]() -> void_awaitable_type {
+            set_test_end(false);
             co_await get_component()->time_callback(key, true);
             set_test_end(true);
         });
@@ -160,8 +160,8 @@ BOOST_FIXTURE_TEST_SUITE(player_time_component_suite, celeritas::player_time_com
         BOOST_CHECK_EQUAL(get_mock_player_component()->get_time_callback_is_login(), 1);
         BOOST_CHECK_EQUAL(get_mock_player_component()->get_time_callback_is_not_login(), 0);
 
-        set_test_end(false);
         run([this,&key]() -> void_awaitable_type {
+            set_test_end(false);
             co_await get_component()->time_callback(key, false);
             set_test_end(true);
         });
@@ -182,8 +182,6 @@ BOOST_FIXTURE_TEST_SUITE(player_time_component_suite, celeritas::player_time_com
 
         // 停掉定时器，不然测试会卡死
         get_component()->stop_timer();
-
-        set_test_end(false);
 
         BOOST_CHECK_EQUAL(get_mock_player_component()->get_time_callback_is_login(), 0);
         BOOST_CHECK_EQUAL(get_mock_player_component()->get_time_callback_is_not_login(), 0);
