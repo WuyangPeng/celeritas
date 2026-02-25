@@ -1,4 +1,4 @@
-﻿#define BOOST_TEST_MODULE "Celeritas Tests"
+﻿#define BOOST_TEST_MODULE "celeritas tests"
 
 #include <boost/test/unit_test.hpp>
 
