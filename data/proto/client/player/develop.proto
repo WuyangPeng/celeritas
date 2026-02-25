@@ -7,6 +7,7 @@ package celeritas.proto.client;
      int64 instance_id = 2;
      int32 level = 3;
      int64 exp = 4;
+     int32 reward_level = 5;
 }
 
 message develop_response {
@@ -30,10 +31,19 @@ message develop_reset_response {
      develop_data develop = 1;
 }
 
+message develop_claim_reward_request {
+     develop_data develop = 1;
+}
+
+message develop_claim_reward_response {
+     develop_data develop = 1;
+}
+
 message client_develop_request {
   oneof payload {
     develop_level_request develop_level = 1;
     develop_reset_request develop_reset = 2;
+    develop_claim_reward_request develop_claim_reward = 3;
   }
 }
 
@@ -42,5 +52,6 @@ message client_develop_response {
     develop_response develop = 1;
     develop_level_response develop_level = 2;
     develop_reset_response develop_reset = 3;
+    develop_claim_reward_response develop_claim_reward = 4;
   }
 }

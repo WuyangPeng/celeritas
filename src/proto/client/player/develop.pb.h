@@ -63,6 +63,14 @@ class client_develop_response;
 struct client_develop_responseDefaultTypeInternal;
 extern client_develop_responseDefaultTypeInternal _client_develop_response_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull client_develop_response_class_data_;
+class develop_claim_reward_request;
+struct develop_claim_reward_requestDefaultTypeInternal;
+extern develop_claim_reward_requestDefaultTypeInternal _develop_claim_reward_request_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull develop_claim_reward_request_class_data_;
+class develop_claim_reward_response;
+struct develop_claim_reward_responseDefaultTypeInternal;
+extern develop_claim_reward_responseDefaultTypeInternal _develop_claim_reward_response_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull develop_claim_reward_response_class_data_;
 class develop_data;
 struct develop_dataDefaultTypeInternal;
 extern develop_dataDefaultTypeInternal _develop_data_default_instance_;
@@ -251,6 +259,7 @@ class develop_data final : public ::google::protobuf::Message
     kSystemIdFieldNumber = 1,
     kLevelFieldNumber = 3,
     kExpFieldNumber = 4,
+    kRewardLevelFieldNumber = 5,
   };
   // int64 instance_id = 2;
   void clear_instance_id() ;
@@ -292,11 +301,21 @@ class develop_data final : public ::google::protobuf::Message
   void _internal_set_exp(::int64_t value);
 
   public:
+  // int32 reward_level = 5;
+  void clear_reward_level() ;
+  ::int32_t reward_level() const;
+  void set_reward_level(::int32_t value);
+
+  private:
+  ::int32_t _internal_reward_level() const;
+  void _internal_set_reward_level(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.develop_data)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 4,
+  static const ::google::protobuf::internal::TcParseTable<3, 5,
                                    0, 0,
                                    2>
       _table_;
@@ -322,6 +341,7 @@ class develop_data final : public ::google::protobuf::Message
     ::int32_t system_id_;
     ::int32_t level_;
     ::int64_t exp_;
+    ::int32_t reward_level_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -1325,6 +1345,398 @@ class develop_level_request final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull develop_level_request_class_data_;
 // -------------------------------------------------------------------
 
+class develop_claim_reward_response final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client.develop_claim_reward_response) */ {
+ public:
+  inline develop_claim_reward_response() : develop_claim_reward_response(nullptr) {}
+  ~develop_claim_reward_response() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(develop_claim_reward_response* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(develop_claim_reward_response));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR develop_claim_reward_response(::google::protobuf::internal::ConstantInitialized);
+
+  inline develop_claim_reward_response(const develop_claim_reward_response& from) : develop_claim_reward_response(nullptr, from) {}
+  inline develop_claim_reward_response(develop_claim_reward_response&& from) noexcept
+      : develop_claim_reward_response(nullptr, ::std::move(from)) {}
+  inline develop_claim_reward_response& operator=(const develop_claim_reward_response& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline develop_claim_reward_response& operator=(develop_claim_reward_response&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const develop_claim_reward_response& default_instance() {
+    return *reinterpret_cast<const develop_claim_reward_response*>(
+        &_develop_claim_reward_response_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(develop_claim_reward_response& a, develop_claim_reward_response& b) { a.Swap(&b); }
+  inline void Swap(develop_claim_reward_response* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(develop_claim_reward_response* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  develop_claim_reward_response* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<develop_claim_reward_response>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const develop_claim_reward_response& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const develop_claim_reward_response& from) { develop_claim_reward_response::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(develop_claim_reward_response* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.develop_claim_reward_response"; }
+
+ protected:
+  explicit develop_claim_reward_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  develop_claim_reward_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const develop_claim_reward_response& from);
+  develop_claim_reward_response(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, develop_claim_reward_response&& from) noexcept
+      : develop_claim_reward_response(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kDevelopFieldNumber = 1,
+  };
+  // .celeritas.proto.client.develop_data develop = 1;
+  bool has_develop() const;
+  void clear_develop() ;
+  const ::celeritas::proto::client::develop_data& develop() const;
+  [[nodiscard]] ::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE release_develop();
+  ::celeritas::proto::client::develop_data* PROTOBUF_NONNULL mutable_develop();
+  void set_allocated_develop(::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_develop(::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE unsafe_arena_release_develop();
+
+  private:
+  const ::celeritas::proto::client::develop_data& _internal_develop() const;
+  ::celeritas::proto::client::develop_data* PROTOBUF_NONNULL _internal_mutable_develop();
+
+  public:
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client.develop_claim_reward_response)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   1, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const develop_claim_reward_response& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE develop_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fclient_2fplayer_2fdevelop_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull develop_claim_reward_response_class_data_;
+// -------------------------------------------------------------------
+
+class develop_claim_reward_request final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:celeritas.proto.client.develop_claim_reward_request) */ {
+ public:
+  inline develop_claim_reward_request() : develop_claim_reward_request(nullptr) {}
+  ~develop_claim_reward_request() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(develop_claim_reward_request* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(develop_claim_reward_request));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR develop_claim_reward_request(::google::protobuf::internal::ConstantInitialized);
+
+  inline develop_claim_reward_request(const develop_claim_reward_request& from) : develop_claim_reward_request(nullptr, from) {}
+  inline develop_claim_reward_request(develop_claim_reward_request&& from) noexcept
+      : develop_claim_reward_request(nullptr, ::std::move(from)) {}
+  inline develop_claim_reward_request& operator=(const develop_claim_reward_request& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline develop_claim_reward_request& operator=(develop_claim_reward_request&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const develop_claim_reward_request& default_instance() {
+    return *reinterpret_cast<const develop_claim_reward_request*>(
+        &_develop_claim_reward_request_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(develop_claim_reward_request& a, develop_claim_reward_request& b) { a.Swap(&b); }
+  inline void Swap(develop_claim_reward_request* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(develop_claim_reward_request* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  develop_claim_reward_request* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<develop_claim_reward_request>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const develop_claim_reward_request& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const develop_claim_reward_request& from) { develop_claim_reward_request::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(develop_claim_reward_request* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "celeritas.proto.client.develop_claim_reward_request"; }
+
+ protected:
+  explicit develop_claim_reward_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  develop_claim_reward_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const develop_claim_reward_request& from);
+  develop_claim_reward_request(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, develop_claim_reward_request&& from) noexcept
+      : develop_claim_reward_request(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kDevelopFieldNumber = 1,
+  };
+  // .celeritas.proto.client.develop_data develop = 1;
+  bool has_develop() const;
+  void clear_develop() ;
+  const ::celeritas::proto::client::develop_data& develop() const;
+  [[nodiscard]] ::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE release_develop();
+  ::celeritas::proto::client::develop_data* PROTOBUF_NONNULL mutable_develop();
+  void set_allocated_develop(::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_develop(::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE unsafe_arena_release_develop();
+
+  private:
+  const ::celeritas::proto::client::develop_data& _internal_develop() const;
+  ::celeritas::proto::client::develop_data* PROTOBUF_NONNULL _internal_mutable_develop();
+
+  public:
+  // @@protoc_insertion_point(class_scope:celeritas.proto.client.develop_claim_reward_request)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   1, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const develop_claim_reward_request& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE develop_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_proto_2fclient_2fplayer_2fdevelop_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull develop_claim_reward_request_class_data_;
+// -------------------------------------------------------------------
+
 class client_develop_response final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:celeritas.proto.client.client_develop_response) */ {
  public:
@@ -1384,9 +1796,10 @@ class client_develop_response final : public ::google::protobuf::Message
     kDevelop = 1,
     kDevelopLevel = 2,
     kDevelopReset = 3,
+    kDevelopClaimReward = 4,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(client_develop_response& a, client_develop_response& b) { a.Swap(&b); }
   inline void Swap(client_develop_response* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1477,6 +1890,7 @@ class client_develop_response final : public ::google::protobuf::Message
     kDevelopFieldNumber = 1,
     kDevelopLevelFieldNumber = 2,
     kDevelopResetFieldNumber = 3,
+    kDevelopClaimRewardFieldNumber = 4,
   };
   // .celeritas.proto.client.develop_response develop = 1;
   bool has_develop() const;
@@ -1535,6 +1949,25 @@ class client_develop_response final : public ::google::protobuf::Message
   ::celeritas::proto::client::develop_reset_response* PROTOBUF_NONNULL _internal_mutable_develop_reset();
 
   public:
+  // .celeritas.proto.client.develop_claim_reward_response develop_claim_reward = 4;
+  bool has_develop_claim_reward() const;
+  private:
+  bool _internal_has_develop_claim_reward() const;
+
+  public:
+  void clear_develop_claim_reward() ;
+  const ::celeritas::proto::client::develop_claim_reward_response& develop_claim_reward() const;
+  [[nodiscard]] ::celeritas::proto::client::develop_claim_reward_response* PROTOBUF_NULLABLE release_develop_claim_reward();
+  ::celeritas::proto::client::develop_claim_reward_response* PROTOBUF_NONNULL mutable_develop_claim_reward();
+  void set_allocated_develop_claim_reward(::celeritas::proto::client::develop_claim_reward_response* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_develop_claim_reward(::celeritas::proto::client::develop_claim_reward_response* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::develop_claim_reward_response* PROTOBUF_NULLABLE unsafe_arena_release_develop_claim_reward();
+
+  private:
+  const ::celeritas::proto::client::develop_claim_reward_response& _internal_develop_claim_reward() const;
+  ::celeritas::proto::client::develop_claim_reward_response* PROTOBUF_NONNULL _internal_mutable_develop_claim_reward();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_develop_response)
@@ -1543,11 +1976,12 @@ class client_develop_response final : public ::google::protobuf::Message
   void set_has_develop();
   void set_has_develop_level();
   void set_has_develop_reset();
+  void set_has_develop_claim_reward();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 3,
-                                   3, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 4,
+                                   4, 0,
                                    2>
       _table_;
 
@@ -1572,6 +2006,7 @@ class client_develop_response final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE develop_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE develop_level_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE develop_reset_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE develop_claim_reward_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -1642,9 +2077,10 @@ class client_develop_request final : public ::google::protobuf::Message
   enum PayloadCase {
     kDevelopLevel = 1,
     kDevelopReset = 2,
+    kDevelopClaimReward = 3,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(client_develop_request& a, client_develop_request& b) { a.Swap(&b); }
   inline void Swap(client_develop_request* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1734,6 +2170,7 @@ class client_develop_request final : public ::google::protobuf::Message
   enum : int {
     kDevelopLevelFieldNumber = 1,
     kDevelopResetFieldNumber = 2,
+    kDevelopClaimRewardFieldNumber = 3,
   };
   // .celeritas.proto.client.develop_level_request develop_level = 1;
   bool has_develop_level() const;
@@ -1773,6 +2210,25 @@ class client_develop_request final : public ::google::protobuf::Message
   ::celeritas::proto::client::develop_reset_request* PROTOBUF_NONNULL _internal_mutable_develop_reset();
 
   public:
+  // .celeritas.proto.client.develop_claim_reward_request develop_claim_reward = 3;
+  bool has_develop_claim_reward() const;
+  private:
+  bool _internal_has_develop_claim_reward() const;
+
+  public:
+  void clear_develop_claim_reward() ;
+  const ::celeritas::proto::client::develop_claim_reward_request& develop_claim_reward() const;
+  [[nodiscard]] ::celeritas::proto::client::develop_claim_reward_request* PROTOBUF_NULLABLE release_develop_claim_reward();
+  ::celeritas::proto::client::develop_claim_reward_request* PROTOBUF_NONNULL mutable_develop_claim_reward();
+  void set_allocated_develop_claim_reward(::celeritas::proto::client::develop_claim_reward_request* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_develop_claim_reward(::celeritas::proto::client::develop_claim_reward_request* PROTOBUF_NULLABLE value);
+  ::celeritas::proto::client::develop_claim_reward_request* PROTOBUF_NULLABLE unsafe_arena_release_develop_claim_reward();
+
+  private:
+  const ::celeritas::proto::client::develop_claim_reward_request& _internal_develop_claim_reward() const;
+  ::celeritas::proto::client::develop_claim_reward_request* PROTOBUF_NONNULL _internal_mutable_develop_claim_reward();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:celeritas.proto.client.client_develop_request)
@@ -1780,11 +2236,12 @@ class client_develop_request final : public ::google::protobuf::Message
   class _Internal;
   void set_has_develop_level();
   void set_has_develop_reset();
+  void set_has_develop_claim_reward();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 2,
-                                   2, 0,
+  static const ::google::protobuf::internal::TcParseTable<0, 3,
+                                   3, 0,
                                    2>
       _table_;
 
@@ -1806,8 +2263,9 @@ class client_develop_request final : public ::google::protobuf::Message
     union PayloadUnion {
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
-      ::celeritas::proto::client::develop_level_request* PROTOBUF_NULLABLE develop_level_;
-      ::celeritas::proto::client::develop_reset_request* PROTOBUF_NULLABLE develop_reset_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE develop_level_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE develop_reset_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE develop_claim_reward_;
     } payload_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -1929,6 +2387,30 @@ inline ::int64_t develop_data::_internal_exp() const {
 inline void develop_data::_internal_set_exp(::int64_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.exp_ = value;
+}
+
+// int32 reward_level = 5;
+inline void develop_data::clear_reward_level() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reward_level_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000010U;
+}
+inline ::int32_t develop_data::reward_level() const {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.develop_data.reward_level)
+  return _internal_reward_level();
+}
+inline void develop_data::set_reward_level(::int32_t value) {
+  _internal_set_reward_level(value);
+  _impl_._has_bits_[0] |= 0x00000010U;
+  // @@protoc_insertion_point(field_set:celeritas.proto.client.develop_data.reward_level)
+}
+inline ::int32_t develop_data::_internal_reward_level() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.reward_level_;
+}
+inline void develop_data::_internal_set_reward_level(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reward_level_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -2419,6 +2901,210 @@ inline void develop_reset_response::set_allocated_develop(::celeritas::proto::cl
 
 // -------------------------------------------------------------------
 
+// develop_claim_reward_request
+
+// .celeritas.proto.client.develop_data develop = 1;
+inline bool develop_claim_reward_request::has_develop() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001U) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.develop_ != nullptr);
+  return value;
+}
+inline void develop_claim_reward_request::clear_develop() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.develop_ != nullptr) _impl_.develop_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001U;
+}
+inline const ::celeritas::proto::client::develop_data& develop_claim_reward_request::_internal_develop() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::celeritas::proto::client::develop_data* p = _impl_.develop_;
+  return p != nullptr ? *p : reinterpret_cast<const ::celeritas::proto::client::develop_data&>(::celeritas::proto::client::_develop_data_default_instance_);
+}
+inline const ::celeritas::proto::client::develop_data& develop_claim_reward_request::develop() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.develop_claim_reward_request.develop)
+  return _internal_develop();
+}
+inline void develop_claim_reward_request::unsafe_arena_set_allocated_develop(
+    ::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.develop_);
+  }
+  _impl_.develop_ = reinterpret_cast<::celeritas::proto::client::develop_data*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001U;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001U;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.develop_claim_reward_request.develop)
+}
+inline ::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE develop_claim_reward_request::release_develop() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001U;
+  ::celeritas::proto::client::develop_data* released = _impl_.develop_;
+  _impl_.develop_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE develop_claim_reward_request::unsafe_arena_release_develop() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.develop_claim_reward_request.develop)
+
+  _impl_._has_bits_[0] &= ~0x00000001U;
+  ::celeritas::proto::client::develop_data* temp = _impl_.develop_;
+  _impl_.develop_ = nullptr;
+  return temp;
+}
+inline ::celeritas::proto::client::develop_data* PROTOBUF_NONNULL develop_claim_reward_request::_internal_mutable_develop() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.develop_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::develop_data>(GetArena());
+    _impl_.develop_ = reinterpret_cast<::celeritas::proto::client::develop_data*>(p);
+  }
+  return _impl_.develop_;
+}
+inline ::celeritas::proto::client::develop_data* PROTOBUF_NONNULL develop_claim_reward_request::mutable_develop()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001U;
+  ::celeritas::proto::client::develop_data* _msg = _internal_mutable_develop();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.develop_claim_reward_request.develop)
+  return _msg;
+}
+inline void develop_claim_reward_request::set_allocated_develop(::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.develop_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001U;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001U;
+  }
+
+  _impl_.develop_ = reinterpret_cast<::celeritas::proto::client::develop_data*>(value);
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.develop_claim_reward_request.develop)
+}
+
+// -------------------------------------------------------------------
+
+// develop_claim_reward_response
+
+// .celeritas.proto.client.develop_data develop = 1;
+inline bool develop_claim_reward_response::has_develop() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001U) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.develop_ != nullptr);
+  return value;
+}
+inline void develop_claim_reward_response::clear_develop() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.develop_ != nullptr) _impl_.develop_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001U;
+}
+inline const ::celeritas::proto::client::develop_data& develop_claim_reward_response::_internal_develop() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::celeritas::proto::client::develop_data* p = _impl_.develop_;
+  return p != nullptr ? *p : reinterpret_cast<const ::celeritas::proto::client::develop_data&>(::celeritas::proto::client::_develop_data_default_instance_);
+}
+inline const ::celeritas::proto::client::develop_data& develop_claim_reward_response::develop() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.develop_claim_reward_response.develop)
+  return _internal_develop();
+}
+inline void develop_claim_reward_response::unsafe_arena_set_allocated_develop(
+    ::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.develop_);
+  }
+  _impl_.develop_ = reinterpret_cast<::celeritas::proto::client::develop_data*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001U;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001U;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.develop_claim_reward_response.develop)
+}
+inline ::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE develop_claim_reward_response::release_develop() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001U;
+  ::celeritas::proto::client::develop_data* released = _impl_.develop_;
+  _impl_.develop_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE develop_claim_reward_response::unsafe_arena_release_develop() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.develop_claim_reward_response.develop)
+
+  _impl_._has_bits_[0] &= ~0x00000001U;
+  ::celeritas::proto::client::develop_data* temp = _impl_.develop_;
+  _impl_.develop_ = nullptr;
+  return temp;
+}
+inline ::celeritas::proto::client::develop_data* PROTOBUF_NONNULL develop_claim_reward_response::_internal_mutable_develop() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.develop_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::develop_data>(GetArena());
+    _impl_.develop_ = reinterpret_cast<::celeritas::proto::client::develop_data*>(p);
+  }
+  return _impl_.develop_;
+}
+inline ::celeritas::proto::client::develop_data* PROTOBUF_NONNULL develop_claim_reward_response::mutable_develop()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001U;
+  ::celeritas::proto::client::develop_data* _msg = _internal_mutable_develop();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.develop_claim_reward_response.develop)
+  return _msg;
+}
+inline void develop_claim_reward_response::set_allocated_develop(::celeritas::proto::client::develop_data* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.develop_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001U;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001U;
+  }
+
+  _impl_.develop_ = reinterpret_cast<::celeritas::proto::client::develop_data*>(value);
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.develop_claim_reward_response.develop)
+}
+
+// -------------------------------------------------------------------
+
 // client_develop_request
 
 // .celeritas.proto.client.develop_level_request develop_level = 1;
@@ -2446,7 +3132,7 @@ inline ::celeritas::proto::client::develop_level_request* PROTOBUF_NULLABLE clie
   // @@protoc_insertion_point(field_release:celeritas.proto.client.client_develop_request.develop_level)
   if (payload_case() == kDevelopLevel) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.develop_level_;
+    auto* temp = reinterpret_cast<::celeritas::proto::client::develop_level_request*>(_impl_.payload_.develop_level_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -2457,7 +3143,7 @@ inline ::celeritas::proto::client::develop_level_request* PROTOBUF_NULLABLE clie
   }
 }
 inline const ::celeritas::proto::client::develop_level_request& client_develop_request::_internal_develop_level() const {
-  return payload_case() == kDevelopLevel ? *_impl_.payload_.develop_level_ : reinterpret_cast<::celeritas::proto::client::develop_level_request&>(::celeritas::proto::client::_develop_level_request_default_instance_);
+  return payload_case() == kDevelopLevel ? *reinterpret_cast<::celeritas::proto::client::develop_level_request*>(_impl_.payload_.develop_level_) : reinterpret_cast<::celeritas::proto::client::develop_level_request&>(::celeritas::proto::client::_develop_level_request_default_instance_);
 }
 inline const ::celeritas::proto::client::develop_level_request& client_develop_request::develop_level() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:celeritas.proto.client.client_develop_request.develop_level)
@@ -2467,7 +3153,7 @@ inline ::celeritas::proto::client::develop_level_request* PROTOBUF_NULLABLE clie
   // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_develop_request.develop_level)
   if (payload_case() == kDevelopLevel) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.develop_level_;
+    auto* temp = reinterpret_cast<::celeritas::proto::client::develop_level_request*>(_impl_.payload_.develop_level_);
     _impl_.payload_.develop_level_ = nullptr;
     return temp;
   } else {
@@ -2482,7 +3168,7 @@ inline void client_develop_request::unsafe_arena_set_allocated_develop_level(
   clear_payload();
   if (value) {
     set_has_develop_level();
-    _impl_.payload_.develop_level_ = value;
+    _impl_.payload_.develop_level_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_develop_request.develop_level)
 }
@@ -2490,10 +3176,10 @@ inline ::celeritas::proto::client::develop_level_request* PROTOBUF_NONNULL clien
   if (payload_case() != kDevelopLevel) {
     clear_payload();
     set_has_develop_level();
-    _impl_.payload_.develop_level_ = 
-        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::develop_level_request>(GetArena());
+    _impl_.payload_.develop_level_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::develop_level_request>(GetArena()));
   }
-  return _impl_.payload_.develop_level_;
+  return reinterpret_cast<::celeritas::proto::client::develop_level_request*>(_impl_.payload_.develop_level_);
 }
 inline ::celeritas::proto::client::develop_level_request* PROTOBUF_NONNULL client_develop_request::mutable_develop_level()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -2527,7 +3213,7 @@ inline ::celeritas::proto::client::develop_reset_request* PROTOBUF_NULLABLE clie
   // @@protoc_insertion_point(field_release:celeritas.proto.client.client_develop_request.develop_reset)
   if (payload_case() == kDevelopReset) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.develop_reset_;
+    auto* temp = reinterpret_cast<::celeritas::proto::client::develop_reset_request*>(_impl_.payload_.develop_reset_);
     if (GetArena() != nullptr) {
       temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
     }
@@ -2538,7 +3224,7 @@ inline ::celeritas::proto::client::develop_reset_request* PROTOBUF_NULLABLE clie
   }
 }
 inline const ::celeritas::proto::client::develop_reset_request& client_develop_request::_internal_develop_reset() const {
-  return payload_case() == kDevelopReset ? *_impl_.payload_.develop_reset_ : reinterpret_cast<::celeritas::proto::client::develop_reset_request&>(::celeritas::proto::client::_develop_reset_request_default_instance_);
+  return payload_case() == kDevelopReset ? *reinterpret_cast<::celeritas::proto::client::develop_reset_request*>(_impl_.payload_.develop_reset_) : reinterpret_cast<::celeritas::proto::client::develop_reset_request&>(::celeritas::proto::client::_develop_reset_request_default_instance_);
 }
 inline const ::celeritas::proto::client::develop_reset_request& client_develop_request::develop_reset() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:celeritas.proto.client.client_develop_request.develop_reset)
@@ -2548,7 +3234,7 @@ inline ::celeritas::proto::client::develop_reset_request* PROTOBUF_NULLABLE clie
   // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_develop_request.develop_reset)
   if (payload_case() == kDevelopReset) {
     clear_has_payload();
-    auto* temp = _impl_.payload_.develop_reset_;
+    auto* temp = reinterpret_cast<::celeritas::proto::client::develop_reset_request*>(_impl_.payload_.develop_reset_);
     _impl_.payload_.develop_reset_ = nullptr;
     return temp;
   } else {
@@ -2563,7 +3249,7 @@ inline void client_develop_request::unsafe_arena_set_allocated_develop_reset(
   clear_payload();
   if (value) {
     set_has_develop_reset();
-    _impl_.payload_.develop_reset_ = value;
+    _impl_.payload_.develop_reset_ = reinterpret_cast<::google::protobuf::Message*>(value);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_develop_request.develop_reset)
 }
@@ -2571,15 +3257,96 @@ inline ::celeritas::proto::client::develop_reset_request* PROTOBUF_NONNULL clien
   if (payload_case() != kDevelopReset) {
     clear_payload();
     set_has_develop_reset();
-    _impl_.payload_.develop_reset_ = 
-        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::develop_reset_request>(GetArena());
+    _impl_.payload_.develop_reset_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::develop_reset_request>(GetArena()));
   }
-  return _impl_.payload_.develop_reset_;
+  return reinterpret_cast<::celeritas::proto::client::develop_reset_request*>(_impl_.payload_.develop_reset_);
 }
 inline ::celeritas::proto::client::develop_reset_request* PROTOBUF_NONNULL client_develop_request::mutable_develop_reset()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::client::develop_reset_request* _msg = _internal_mutable_develop_reset();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_develop_request.develop_reset)
+  return _msg;
+}
+
+// .celeritas.proto.client.develop_claim_reward_request develop_claim_reward = 3;
+inline bool client_develop_request::has_develop_claim_reward() const {
+  return payload_case() == kDevelopClaimReward;
+}
+inline bool client_develop_request::_internal_has_develop_claim_reward() const {
+  return payload_case() == kDevelopClaimReward;
+}
+inline void client_develop_request::set_has_develop_claim_reward() {
+  _impl_._oneof_case_[0] = kDevelopClaimReward;
+}
+inline void client_develop_request::clear_develop_claim_reward() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kDevelopClaimReward) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.develop_claim_reward_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.develop_claim_reward_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::celeritas::proto::client::develop_claim_reward_request* PROTOBUF_NULLABLE client_develop_request::release_develop_claim_reward() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_develop_request.develop_claim_reward)
+  if (payload_case() == kDevelopClaimReward) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::develop_claim_reward_request*>(_impl_.payload_.develop_claim_reward_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.develop_claim_reward_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::develop_claim_reward_request& client_develop_request::_internal_develop_claim_reward() const {
+  return payload_case() == kDevelopClaimReward ? *reinterpret_cast<::celeritas::proto::client::develop_claim_reward_request*>(_impl_.payload_.develop_claim_reward_) : reinterpret_cast<::celeritas::proto::client::develop_claim_reward_request&>(::celeritas::proto::client::_develop_claim_reward_request_default_instance_);
+}
+inline const ::celeritas::proto::client::develop_claim_reward_request& client_develop_request::develop_claim_reward() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_develop_request.develop_claim_reward)
+  return _internal_develop_claim_reward();
+}
+inline ::celeritas::proto::client::develop_claim_reward_request* PROTOBUF_NULLABLE client_develop_request::unsafe_arena_release_develop_claim_reward() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_develop_request.develop_claim_reward)
+  if (payload_case() == kDevelopClaimReward) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::develop_claim_reward_request*>(_impl_.payload_.develop_claim_reward_);
+    _impl_.payload_.develop_claim_reward_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_develop_request::unsafe_arena_set_allocated_develop_claim_reward(
+    ::celeritas::proto::client::develop_claim_reward_request* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_develop_claim_reward();
+    _impl_.payload_.develop_claim_reward_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_develop_request.develop_claim_reward)
+}
+inline ::celeritas::proto::client::develop_claim_reward_request* PROTOBUF_NONNULL client_develop_request::_internal_mutable_develop_claim_reward() {
+  if (payload_case() != kDevelopClaimReward) {
+    clear_payload();
+    set_has_develop_claim_reward();
+    _impl_.payload_.develop_claim_reward_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::develop_claim_reward_request>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::client::develop_claim_reward_request*>(_impl_.payload_.develop_claim_reward_);
+}
+inline ::celeritas::proto::client::develop_claim_reward_request* PROTOBUF_NONNULL client_develop_request::mutable_develop_claim_reward()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::develop_claim_reward_request* _msg = _internal_mutable_develop_claim_reward();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_develop_request.develop_claim_reward)
   return _msg;
 }
 
@@ -2836,6 +3603,87 @@ inline ::celeritas::proto::client::develop_reset_response* PROTOBUF_NONNULL clie
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::celeritas::proto::client::develop_reset_response* _msg = _internal_mutable_develop_reset();
   // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_develop_response.develop_reset)
+  return _msg;
+}
+
+// .celeritas.proto.client.develop_claim_reward_response develop_claim_reward = 4;
+inline bool client_develop_response::has_develop_claim_reward() const {
+  return payload_case() == kDevelopClaimReward;
+}
+inline bool client_develop_response::_internal_has_develop_claim_reward() const {
+  return payload_case() == kDevelopClaimReward;
+}
+inline void client_develop_response::set_has_develop_claim_reward() {
+  _impl_._oneof_case_[0] = kDevelopClaimReward;
+}
+inline void client_develop_response::clear_develop_claim_reward() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kDevelopClaimReward) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.develop_claim_reward_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.develop_claim_reward_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::celeritas::proto::client::develop_claim_reward_response* PROTOBUF_NULLABLE client_develop_response::release_develop_claim_reward() {
+  // @@protoc_insertion_point(field_release:celeritas.proto.client.client_develop_response.develop_claim_reward)
+  if (payload_case() == kDevelopClaimReward) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::develop_claim_reward_response*>(_impl_.payload_.develop_claim_reward_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.develop_claim_reward_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::celeritas::proto::client::develop_claim_reward_response& client_develop_response::_internal_develop_claim_reward() const {
+  return payload_case() == kDevelopClaimReward ? *reinterpret_cast<::celeritas::proto::client::develop_claim_reward_response*>(_impl_.payload_.develop_claim_reward_) : reinterpret_cast<::celeritas::proto::client::develop_claim_reward_response&>(::celeritas::proto::client::_develop_claim_reward_response_default_instance_);
+}
+inline const ::celeritas::proto::client::develop_claim_reward_response& client_develop_response::develop_claim_reward() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.client.client_develop_response.develop_claim_reward)
+  return _internal_develop_claim_reward();
+}
+inline ::celeritas::proto::client::develop_claim_reward_response* PROTOBUF_NULLABLE client_develop_response::unsafe_arena_release_develop_claim_reward() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:celeritas.proto.client.client_develop_response.develop_claim_reward)
+  if (payload_case() == kDevelopClaimReward) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::celeritas::proto::client::develop_claim_reward_response*>(_impl_.payload_.develop_claim_reward_);
+    _impl_.payload_.develop_claim_reward_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void client_develop_response::unsafe_arena_set_allocated_develop_claim_reward(
+    ::celeritas::proto::client::develop_claim_reward_response* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_develop_claim_reward();
+    _impl_.payload_.develop_claim_reward_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:celeritas.proto.client.client_develop_response.develop_claim_reward)
+}
+inline ::celeritas::proto::client::develop_claim_reward_response* PROTOBUF_NONNULL client_develop_response::_internal_mutable_develop_claim_reward() {
+  if (payload_case() != kDevelopClaimReward) {
+    clear_payload();
+    set_has_develop_claim_reward();
+    _impl_.payload_.develop_claim_reward_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::celeritas::proto::client::develop_claim_reward_response>(GetArena()));
+  }
+  return reinterpret_cast<::celeritas::proto::client::develop_claim_reward_response*>(_impl_.payload_.develop_claim_reward_);
+}
+inline ::celeritas::proto::client::develop_claim_reward_response* PROTOBUF_NONNULL client_develop_response::mutable_develop_claim_reward()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::celeritas::proto::client::develop_claim_reward_response* _msg = _internal_mutable_develop_claim_reward();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.client.client_develop_response.develop_claim_reward)
   return _msg;
 }
 

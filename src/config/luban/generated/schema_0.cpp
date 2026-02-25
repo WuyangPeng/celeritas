@@ -127,6 +127,7 @@ bool game::develop_level_config::deserialize(::luban::ByteBuf& _buf)
     if(!_buf.readInt(developId)) return false;
     if(!_buf.readInt(level)) return false;
     {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); playerItem.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<item> _e; if(!item::deserializeitem(_buf, _e)) return false; playerItem.push_back(_e);}}
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); reward.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<item> _e; if(!item::deserializeitem(_buf, _e)) return false; reward.push_back(_e);}}
 
     return true;
 }

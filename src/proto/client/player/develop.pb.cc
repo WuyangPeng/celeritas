@@ -34,7 +34,8 @@ inline constexpr develop_data::Impl_::Impl_(
         instance_id_{::int64_t{0}},
         system_id_{0},
         level_{0},
-        exp_{::int64_t{0}} {}
+        exp_{::int64_t{0}},
+        reward_level_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR develop_data::develop_data(::_pbi::ConstantInitialized)
@@ -182,6 +183,56 @@ struct develop_level_requestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 develop_level_requestDefaultTypeInternal _develop_level_request_default_instance_;
 
+inline constexpr develop_claim_reward_response::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        develop_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR develop_claim_reward_response::develop_claim_reward_response(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(develop_claim_reward_response_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct develop_claim_reward_responseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR develop_claim_reward_responseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~develop_claim_reward_responseDefaultTypeInternal() {}
+  union {
+    develop_claim_reward_response _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 develop_claim_reward_responseDefaultTypeInternal _develop_claim_reward_response_default_instance_;
+
+inline constexpr develop_claim_reward_request::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        develop_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR develop_claim_reward_request::develop_claim_reward_request(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(develop_claim_reward_request_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct develop_claim_reward_requestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR develop_claim_reward_requestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~develop_claim_reward_requestDefaultTypeInternal() {}
+  union {
+    develop_claim_reward_request _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 develop_claim_reward_requestDefaultTypeInternal _develop_claim_reward_request_default_instance_;
+
 inline constexpr client_develop_response::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : payload_{},
@@ -245,15 +296,17 @@ const ::uint32_t
         protodesc_cold) = {
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_data, _impl_._has_bits_),
-        7, // hasbit index offset
+        8, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_data, _impl_.system_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_data, _impl_.instance_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_data, _impl_.level_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_data, _impl_.exp_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_data, _impl_.reward_level_),
         1,
         0,
         2,
         3,
+        4,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_response, _impl_._has_bits_),
         5, // hasbit index offset
@@ -281,8 +334,19 @@ const ::uint32_t
         4, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_reset_response, _impl_.develop_),
         0,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_claim_reward_request, _impl_._has_bits_),
+        4, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_claim_reward_request, _impl_.develop_),
+        0,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_claim_reward_response, _impl_._has_bits_),
+        4, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::develop_claim_reward_response, _impl_.develop_),
+        0,
         0x004, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_develop_request, _impl_._oneof_case_[0]),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_develop_request, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_develop_request, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_develop_request, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_develop_request, _impl_.payload_),
@@ -292,18 +356,21 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_develop_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_develop_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_develop_response, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::client::client_develop_response, _impl_.payload_),
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::celeritas::proto::client::develop_data)},
-        {11, sizeof(::celeritas::proto::client::develop_response)},
-        {18, sizeof(::celeritas::proto::client::develop_level_request)},
-        {23, sizeof(::celeritas::proto::client::develop_level_response)},
-        {28, sizeof(::celeritas::proto::client::develop_reset_request)},
-        {33, sizeof(::celeritas::proto::client::develop_reset_response)},
-        {38, sizeof(::celeritas::proto::client::client_develop_request)},
-        {43, sizeof(::celeritas::proto::client::client_develop_response)},
+        {13, sizeof(::celeritas::proto::client::develop_response)},
+        {20, sizeof(::celeritas::proto::client::develop_level_request)},
+        {25, sizeof(::celeritas::proto::client::develop_level_response)},
+        {30, sizeof(::celeritas::proto::client::develop_reset_request)},
+        {35, sizeof(::celeritas::proto::client::develop_reset_response)},
+        {40, sizeof(::celeritas::proto::client::develop_claim_reward_request)},
+        {45, sizeof(::celeritas::proto::client::develop_claim_reward_response)},
+        {50, sizeof(::celeritas::proto::client::client_develop_request)},
+        {56, sizeof(::celeritas::proto::client::client_develop_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::client::_develop_data_default_instance_._instance,
@@ -312,48 +379,60 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::client::_develop_level_response_default_instance_._instance,
     &::celeritas::proto::client::_develop_reset_request_default_instance_._instance,
     &::celeritas::proto::client::_develop_reset_response_default_instance_._instance,
+    &::celeritas::proto::client::_develop_claim_reward_request_default_instance_._instance,
+    &::celeritas::proto::client::_develop_claim_reward_response_default_instance_._instance,
     &::celeritas::proto::client::_client_develop_request_default_instance_._instance,
     &::celeritas::proto::client::_client_develop_response_default_instance_._instance,
 };
 const char descriptor_table_protodef_proto_2fclient_2fplayer_2fdevelop_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n!proto/client/player/develop.proto\022\026cel"
-    "eritas.proto.client\"R\n\014develop_data\022\021\n\ts"
+    "eritas.proto.client\"h\n\014develop_data\022\021\n\ts"
     "ystem_id\030\001 \001(\005\022\023\n\013instance_id\030\002 \001(\003\022\r\n\005l"
-    "evel\030\003 \001(\005\022\013\n\003exp\030\004 \001(\003\"[\n\020develop_respo"
-    "nse\0225\n\007develop\030\001 \003(\0132$.celeritas.proto.c"
-    "lient.develop_data\022\020\n\010is_login\030\002 \001(\010\"N\n\025"
-    "develop_level_request\0225\n\007develop\030\001 \001(\0132$"
-    ".celeritas.proto.client.develop_data\"O\n\026"
-    "develop_level_response\0225\n\007develop\030\001 \001(\0132"
-    "$.celeritas.proto.client.develop_data\"N\n"
-    "\025develop_reset_request\0225\n\007develop\030\001 \001(\0132"
-    "$.celeritas.proto.client.develop_data\"O\n"
-    "\026develop_reset_response\0225\n\007develop\030\001 \001(\013"
-    "2$.celeritas.proto.client.develop_data\"\263"
-    "\001\n\026client_develop_request\022F\n\rdevelop_lev"
-    "el\030\001 \001(\0132-.celeritas.proto.client.develo"
-    "p_level_requestH\000\022F\n\rdevelop_reset\030\002 \001(\013"
-    "2-.celeritas.proto.client.develop_reset_"
-    "requestH\000B\t\n\007payload\"\363\001\n\027client_develop_"
-    "response\022;\n\007develop\030\001 \001(\0132(.celeritas.pr"
-    "oto.client.develop_responseH\000\022G\n\rdevelop"
-    "_level\030\002 \001(\0132..celeritas.proto.client.de"
-    "velop_level_responseH\000\022G\n\rdevelop_reset\030"
-    "\003 \001(\0132..celeritas.proto.client.develop_r"
-    "eset_responseH\000B\t\n\007payloadb\006proto3"
+    "evel\030\003 \001(\005\022\013\n\003exp\030\004 \001(\003\022\024\n\014reward_level\030"
+    "\005 \001(\005\"[\n\020develop_response\0225\n\007develop\030\001 \003"
+    "(\0132$.celeritas.proto.client.develop_data"
+    "\022\020\n\010is_login\030\002 \001(\010\"N\n\025develop_level_requ"
+    "est\0225\n\007develop\030\001 \001(\0132$.celeritas.proto.c"
+    "lient.develop_data\"O\n\026develop_level_resp"
+    "onse\0225\n\007develop\030\001 \001(\0132$.celeritas.proto."
+    "client.develop_data\"N\n\025develop_reset_req"
+    "uest\0225\n\007develop\030\001 \001(\0132$.celeritas.proto."
+    "client.develop_data\"O\n\026develop_reset_res"
+    "ponse\0225\n\007develop\030\001 \001(\0132$.celeritas.proto"
+    ".client.develop_data\"U\n\034develop_claim_re"
+    "ward_request\0225\n\007develop\030\001 \001(\0132$.celerita"
+    "s.proto.client.develop_data\"V\n\035develop_c"
+    "laim_reward_response\0225\n\007develop\030\001 \001(\0132$."
+    "celeritas.proto.client.develop_data\"\211\002\n\026"
+    "client_develop_request\022F\n\rdevelop_level\030"
+    "\001 \001(\0132-.celeritas.proto.client.develop_l"
+    "evel_requestH\000\022F\n\rdevelop_reset\030\002 \001(\0132-."
+    "celeritas.proto.client.develop_reset_req"
+    "uestH\000\022T\n\024develop_claim_reward\030\003 \001(\01324.c"
+    "eleritas.proto.client.develop_claim_rewa"
+    "rd_requestH\000B\t\n\007payload\"\312\002\n\027client_devel"
+    "op_response\022;\n\007develop\030\001 \001(\0132(.celeritas"
+    ".proto.client.develop_responseH\000\022G\n\rdeve"
+    "lop_level\030\002 \001(\0132..celeritas.proto.client"
+    ".develop_level_responseH\000\022G\n\rdevelop_res"
+    "et\030\003 \001(\0132..celeritas.proto.client.develo"
+    "p_reset_responseH\000\022U\n\024develop_claim_rewa"
+    "rd\030\004 \001(\01325.celeritas.proto.client.develo"
+    "p_claim_reward_responseH\000B\t\n\007payloadb\006pr"
+    "oto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fclient_2fplayer_2fdevelop_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fclient_2fplayer_2fdevelop_2eproto = {
     false,
     false,
-    994,
+    1364,
     descriptor_table_protodef_proto_2fclient_2fplayer_2fdevelop_2eproto,
     "proto/client/player/develop.proto",
     &descriptor_table_proto_2fclient_2fplayer_2fdevelop_2eproto_once,
     nullptr,
     0,
-    8,
+    10,
     schemas,
     file_default_instances,
     TableStruct_proto_2fclient_2fplayer_2fdevelop_2eproto::offsets,
@@ -403,9 +482,9 @@ inline void develop_data::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, instance_id_),
            0,
-           offsetof(Impl_, exp_) -
+           offsetof(Impl_, reward_level_) -
                offsetof(Impl_, instance_id_) +
-               sizeof(Impl_::exp_));
+               sizeof(Impl_::reward_level_));
 }
 develop_data::~develop_data() {
   // @@protoc_insertion_point(destructor:celeritas.proto.client.develop_data)
@@ -464,16 +543,16 @@ develop_data::GetClassData() const {
   return develop_data_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 0, 0, 2>
+const ::_pbi::TcParseTable<3, 5, 0, 0, 2>
 develop_data::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(develop_data, _impl_._has_bits_),
     0, // no _extensions_
-    4, 24,  // max_field_number, fast_idx_mask
+    5, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
+    5,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     develop_data_class_data_.base(),
@@ -483,9 +562,7 @@ develop_data::_table_ = {
     ::_pbi::TcParser::GetTable<::celeritas::proto::client::develop_data>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int64 exp = 4;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(develop_data, _impl_.exp_), 3>(),
-     {32, 3, 0, PROTOBUF_FIELD_OFFSET(develop_data, _impl_.exp_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // int32 system_id = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(develop_data, _impl_.system_id_), 1>(),
      {8, 1, 0, PROTOBUF_FIELD_OFFSET(develop_data, _impl_.system_id_)}},
@@ -495,6 +572,14 @@ develop_data::_table_ = {
     // int32 level = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(develop_data, _impl_.level_), 2>(),
      {24, 2, 0, PROTOBUF_FIELD_OFFSET(develop_data, _impl_.level_)}},
+    // int64 exp = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(develop_data, _impl_.exp_), 3>(),
+     {32, 3, 0, PROTOBUF_FIELD_OFFSET(develop_data, _impl_.exp_)}},
+    // int32 reward_level = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(develop_data, _impl_.reward_level_), 4>(),
+     {40, 4, 0, PROTOBUF_FIELD_OFFSET(develop_data, _impl_.reward_level_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -506,6 +591,8 @@ develop_data::_table_ = {
     {PROTOBUF_FIELD_OFFSET(develop_data, _impl_.level_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
     // int64 exp = 4;
     {PROTOBUF_FIELD_OFFSET(develop_data, _impl_.exp_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // int32 reward_level = 5;
+    {PROTOBUF_FIELD_OFFSET(develop_data, _impl_.reward_level_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
@@ -519,10 +606,10 @@ PROTOBUF_NOINLINE void develop_data::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if ((cached_has_bits & 0x0000000fU) != 0) {
+  if ((cached_has_bits & 0x0000001fU) != 0) {
     ::memset(&_impl_.instance_id_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.exp_) -
-        reinterpret_cast<char*>(&_impl_.instance_id_)) + sizeof(_impl_.exp_));
+        reinterpret_cast<char*>(&_impl_.reward_level_) -
+        reinterpret_cast<char*>(&_impl_.instance_id_)) + sizeof(_impl_.reward_level_));
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -582,6 +669,15 @@ PROTOBUF_NOINLINE void develop_data::Clear() {
     }
   }
 
+  // int32 reward_level = 5;
+  if ((this_._impl_._has_bits_[0] & 0x00000010U) != 0) {
+    if (this_._internal_reward_level() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<5>(
+              stream, this_._internal_reward_level(), target);
+    }
+  }
+
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -607,7 +703,7 @@ PROTOBUF_NOINLINE void develop_data::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x0000000fU) != 0) {
+  if ((cached_has_bits & 0x0000001fU) != 0) {
     // int64 instance_id = 2;
     if ((cached_has_bits & 0x00000001U) != 0) {
       if (this_._internal_instance_id() != 0) {
@@ -636,6 +732,13 @@ PROTOBUF_NOINLINE void develop_data::Clear() {
             this_._internal_exp());
       }
     }
+    // int32 reward_level = 5;
+    if ((cached_has_bits & 0x00000010U) != 0) {
+      if (this_._internal_reward_level() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_reward_level());
+      }
+    }
   }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
                                              &this_._impl_._cached_size_);
@@ -653,7 +756,7 @@ void develop_data::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::go
   (void) cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if ((cached_has_bits & 0x0000000fU) != 0) {
+  if ((cached_has_bits & 0x0000001fU) != 0) {
     if ((cached_has_bits & 0x00000001U) != 0) {
       if (from._internal_instance_id() != 0) {
         _this->_impl_.instance_id_ = from._impl_.instance_id_;
@@ -674,6 +777,11 @@ void develop_data::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::go
         _this->_impl_.exp_ = from._impl_.exp_;
       }
     }
+    if ((cached_has_bits & 0x00000010U) != 0) {
+      if (from._internal_reward_level() != 0) {
+        _this->_impl_.reward_level_ = from._impl_.reward_level_;
+      }
+    }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
@@ -692,8 +800,8 @@ void develop_data::InternalSwap(develop_data* PROTOBUF_RESTRICT PROTOBUF_NONNULL
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(develop_data, _impl_.exp_)
-      + sizeof(develop_data::_impl_.exp_)
+      PROTOBUF_FIELD_OFFSET(develop_data, _impl_.reward_level_)
+      + sizeof(develop_data::_impl_.reward_level_)
       - PROTOBUF_FIELD_OFFSET(develop_data, _impl_.instance_id_)>(
           reinterpret_cast<char*>(&_impl_.instance_id_),
           reinterpret_cast<char*>(&other->_impl_.instance_id_));
@@ -2073,6 +2181,540 @@ void develop_reset_response::InternalSwap(develop_reset_response* PROTOBUF_RESTR
 }
 // ===================================================================
 
+class develop_claim_reward_request::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<develop_claim_reward_request>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(develop_claim_reward_request, _impl_._has_bits_);
+};
+
+develop_claim_reward_request::develop_claim_reward_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, develop_claim_reward_request_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.client.develop_claim_reward_request)
+}
+PROTOBUF_NDEBUG_INLINE develop_claim_reward_request::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::celeritas::proto::client::develop_claim_reward_request& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+develop_claim_reward_request::develop_claim_reward_request(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const develop_claim_reward_request& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, develop_claim_reward_request_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  develop_claim_reward_request* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.develop_ = ((cached_has_bits & 0x00000001U) != 0)
+                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.develop_)
+                : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.client.develop_claim_reward_request)
+}
+PROTOBUF_NDEBUG_INLINE develop_claim_reward_request::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void develop_claim_reward_request::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.develop_ = {};
+}
+develop_claim_reward_request::~develop_claim_reward_request() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.client.develop_claim_reward_request)
+  SharedDtor(*this);
+}
+inline void develop_claim_reward_request::SharedDtor(MessageLite& self) {
+  develop_claim_reward_request& this_ = static_cast<develop_claim_reward_request&>(self);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.develop_;
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL develop_claim_reward_request::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) develop_claim_reward_request(arena);
+}
+constexpr auto develop_claim_reward_request::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(develop_claim_reward_request),
+                                            alignof(develop_claim_reward_request));
+}
+constexpr auto develop_claim_reward_request::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_develop_claim_reward_request_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &develop_claim_reward_request::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<develop_claim_reward_request>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &develop_claim_reward_request::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<develop_claim_reward_request>(), &develop_claim_reward_request::ByteSizeLong,
+              &develop_claim_reward_request::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(develop_claim_reward_request, _impl_._cached_size_),
+          false,
+      },
+      &develop_claim_reward_request::kDescriptorMethods,
+      &descriptor_table_proto_2fclient_2fplayer_2fdevelop_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull develop_claim_reward_request_class_data_ =
+        develop_claim_reward_request::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+develop_claim_reward_request::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&develop_claim_reward_request_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(develop_claim_reward_request_class_data_.tc_table);
+  return develop_claim_reward_request_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
+develop_claim_reward_request::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(develop_claim_reward_request, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    develop_claim_reward_request_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::client::develop_claim_reward_request>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .celeritas.proto.client.develop_data develop = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(develop_claim_reward_request, _impl_.develop_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .celeritas.proto.client.develop_data develop = 1;
+    {PROTOBUF_FIELD_OFFSET(develop_claim_reward_request, _impl_.develop_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }},
+  {{
+      {::_pbi::TcParser::GetTable<::celeritas::proto::client::develop_data>()},
+  }},
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void develop_claim_reward_request::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.client.develop_claim_reward_request)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    ABSL_DCHECK(_impl_.develop_ != nullptr);
+    _impl_.develop_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL develop_claim_reward_request::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const develop_claim_reward_request& this_ = static_cast<const develop_claim_reward_request&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL develop_claim_reward_request::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const develop_claim_reward_request& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.client.develop_claim_reward_request)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // .celeritas.proto.client.develop_data develop = 1;
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, *this_._impl_.develop_, this_._impl_.develop_->GetCachedSize(), target,
+        stream);
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.client.develop_claim_reward_request)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t develop_claim_reward_request::ByteSizeLong(const MessageLite& base) {
+  const develop_claim_reward_request& this_ = static_cast<const develop_claim_reward_request&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t develop_claim_reward_request::ByteSizeLong() const {
+  const develop_claim_reward_request& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.client.develop_claim_reward_request)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+   {
+    // .celeritas.proto.client.develop_data develop = 1;
+    cached_has_bits = this_._impl_._has_bits_[0];
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.develop_);
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void develop_claim_reward_request::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<develop_claim_reward_request*>(&to_msg);
+  auto& from = static_cast<const develop_claim_reward_request&>(from_msg);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    from.VerifyHasBitConsistency();
+  }
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.client.develop_claim_reward_request)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    ABSL_DCHECK(from._impl_.develop_ != nullptr);
+    if (_this->_impl_.develop_ == nullptr) {
+      _this->_impl_.develop_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.develop_);
+    } else {
+      _this->_impl_.develop_->MergeFrom(*from._impl_.develop_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void develop_claim_reward_request::CopyFrom(const develop_claim_reward_request& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.client.develop_claim_reward_request)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void develop_claim_reward_request::InternalSwap(develop_claim_reward_request* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.develop_, other->_impl_.develop_);
+}
+
+::google::protobuf::Metadata develop_claim_reward_request::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class develop_claim_reward_response::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<develop_claim_reward_response>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(develop_claim_reward_response, _impl_._has_bits_);
+};
+
+develop_claim_reward_response::develop_claim_reward_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, develop_claim_reward_response_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.client.develop_claim_reward_response)
+}
+PROTOBUF_NDEBUG_INLINE develop_claim_reward_response::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::celeritas::proto::client::develop_claim_reward_response& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+develop_claim_reward_response::develop_claim_reward_response(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const develop_claim_reward_response& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, develop_claim_reward_response_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  develop_claim_reward_response* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.develop_ = ((cached_has_bits & 0x00000001U) != 0)
+                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.develop_)
+                : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.client.develop_claim_reward_response)
+}
+PROTOBUF_NDEBUG_INLINE develop_claim_reward_response::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void develop_claim_reward_response::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.develop_ = {};
+}
+develop_claim_reward_response::~develop_claim_reward_response() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.client.develop_claim_reward_response)
+  SharedDtor(*this);
+}
+inline void develop_claim_reward_response::SharedDtor(MessageLite& self) {
+  develop_claim_reward_response& this_ = static_cast<develop_claim_reward_response&>(self);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.develop_;
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL develop_claim_reward_response::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) develop_claim_reward_response(arena);
+}
+constexpr auto develop_claim_reward_response::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(develop_claim_reward_response),
+                                            alignof(develop_claim_reward_response));
+}
+constexpr auto develop_claim_reward_response::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_develop_claim_reward_response_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &develop_claim_reward_response::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<develop_claim_reward_response>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &develop_claim_reward_response::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<develop_claim_reward_response>(), &develop_claim_reward_response::ByteSizeLong,
+              &develop_claim_reward_response::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(develop_claim_reward_response, _impl_._cached_size_),
+          false,
+      },
+      &develop_claim_reward_response::kDescriptorMethods,
+      &descriptor_table_proto_2fclient_2fplayer_2fdevelop_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull develop_claim_reward_response_class_data_ =
+        develop_claim_reward_response::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+develop_claim_reward_response::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&develop_claim_reward_response_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(develop_claim_reward_response_class_data_.tc_table);
+  return develop_claim_reward_response_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
+develop_claim_reward_response::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(develop_claim_reward_response, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    develop_claim_reward_response_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::client::develop_claim_reward_response>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .celeritas.proto.client.develop_data develop = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(develop_claim_reward_response, _impl_.develop_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .celeritas.proto.client.develop_data develop = 1;
+    {PROTOBUF_FIELD_OFFSET(develop_claim_reward_response, _impl_.develop_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }},
+  {{
+      {::_pbi::TcParser::GetTable<::celeritas::proto::client::develop_data>()},
+  }},
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void develop_claim_reward_response::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.client.develop_claim_reward_response)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    ABSL_DCHECK(_impl_.develop_ != nullptr);
+    _impl_.develop_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL develop_claim_reward_response::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const develop_claim_reward_response& this_ = static_cast<const develop_claim_reward_response&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL develop_claim_reward_response::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const develop_claim_reward_response& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.client.develop_claim_reward_response)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // .celeritas.proto.client.develop_data develop = 1;
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, *this_._impl_.develop_, this_._impl_.develop_->GetCachedSize(), target,
+        stream);
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.client.develop_claim_reward_response)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t develop_claim_reward_response::ByteSizeLong(const MessageLite& base) {
+  const develop_claim_reward_response& this_ = static_cast<const develop_claim_reward_response&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t develop_claim_reward_response::ByteSizeLong() const {
+  const develop_claim_reward_response& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.client.develop_claim_reward_response)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+   {
+    // .celeritas.proto.client.develop_data develop = 1;
+    cached_has_bits = this_._impl_._has_bits_[0];
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.develop_);
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void develop_claim_reward_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<develop_claim_reward_response*>(&to_msg);
+  auto& from = static_cast<const develop_claim_reward_response&>(from_msg);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    from.VerifyHasBitConsistency();
+  }
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.client.develop_claim_reward_response)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    ABSL_DCHECK(from._impl_.develop_ != nullptr);
+    if (_this->_impl_.develop_ == nullptr) {
+      _this->_impl_.develop_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.develop_);
+    } else {
+      _this->_impl_.develop_->MergeFrom(*from._impl_.develop_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void develop_claim_reward_response::CopyFrom(const develop_claim_reward_response& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.client.develop_claim_reward_response)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void develop_claim_reward_response::InternalSwap(develop_claim_reward_response* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.develop_, other->_impl_.develop_);
+}
+
+::google::protobuf::Metadata develop_claim_reward_response::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class client_develop_request::_Internal {
  public:
   static constexpr ::int32_t kOneofCaseOffset =
@@ -2104,6 +2746,19 @@ void client_develop_request::set_allocated_develop_reset(::celeritas::proto::cli
     _impl_.payload_.develop_reset_ = develop_reset;
   }
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.client_develop_request.develop_reset)
+}
+void client_develop_request::set_allocated_develop_claim_reward(::celeritas::proto::client::develop_claim_reward_request* PROTOBUF_NULLABLE develop_claim_reward) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (develop_claim_reward) {
+    ::google::protobuf::Arena* submessage_arena = develop_claim_reward->GetArena();
+    if (message_arena != submessage_arena) {
+      develop_claim_reward = ::google::protobuf::internal::GetOwnedMessage(message_arena, develop_claim_reward, submessage_arena);
+    }
+    set_has_develop_claim_reward();
+    _impl_.payload_.develop_claim_reward_ = develop_claim_reward;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.client_develop_request.develop_claim_reward)
 }
 client_develop_request::client_develop_request(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
@@ -2143,6 +2798,9 @@ client_develop_request::client_develop_request(
         break;
       case kDevelopReset:
         _impl_.payload_.develop_reset_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.develop_reset_);
+        break;
+      case kDevelopClaimReward:
+        _impl_.payload_.develop_claim_reward_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.develop_claim_reward_);
         break;
   }
 
@@ -2192,6 +2850,14 @@ void client_develop_request::clear_payload() {
         delete _impl_.payload_.develop_reset_;
       } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
         ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.develop_reset_);
+      }
+      break;
+    }
+    case kDevelopClaimReward: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.develop_claim_reward_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.develop_claim_reward_);
       }
       break;
     }
@@ -2246,17 +2912,17 @@ client_develop_request::GetClassData() const {
   return client_develop_request_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 2, 2, 0, 2>
+const ::_pbi::TcParseTable<0, 3, 3, 0, 2>
 client_develop_request::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 0,  // max_field_number, fast_idx_mask
+    3, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
-    2,  // num_aux_entries
+    3,  // num_field_entries
+    3,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     client_develop_request_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -2273,10 +2939,13 @@ client_develop_request::_table_ = {
     {PROTOBUF_FIELD_OFFSET(client_develop_request, _impl_.payload_.develop_level_), _Internal::kOneofCaseOffset + 0, 0, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.client.develop_reset_request develop_reset = 2;
     {PROTOBUF_FIELD_OFFSET(client_develop_request, _impl_.payload_.develop_reset_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.client.develop_claim_reward_request develop_claim_reward = 3;
+    {PROTOBUF_FIELD_OFFSET(client_develop_request, _impl_.payload_.develop_claim_reward_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::client::develop_level_request>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::client::develop_reset_request>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::client::develop_claim_reward_request>()},
   }},
   {{
   }},
@@ -2323,6 +2992,12 @@ PROTOBUF_NOINLINE void client_develop_request::Clear() {
           stream);
       break;
     }
+    case kDevelopClaimReward: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          3, *this_._impl_.payload_.develop_claim_reward_, this_._impl_.payload_.develop_claim_reward_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     default:
       break;
   }
@@ -2360,6 +3035,12 @@ PROTOBUF_NOINLINE void client_develop_request::Clear() {
     case kDevelopReset: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.develop_reset_);
+      break;
+    }
+    // .celeritas.proto.client.develop_claim_reward_request develop_claim_reward = 3;
+    case kDevelopClaimReward: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.develop_claim_reward_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -2406,6 +3087,14 @@ void client_develop_request::MergeImpl(::google::protobuf::MessageLite& to_msg, 
           _this->_impl_.payload_.develop_reset_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.develop_reset_);
         } else {
           _this->_impl_.payload_.develop_reset_->MergeFrom(*from._impl_.payload_.develop_reset_);
+        }
+        break;
+      }
+      case kDevelopClaimReward: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.develop_claim_reward_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.develop_claim_reward_);
+        } else {
+          _this->_impl_.payload_.develop_claim_reward_->MergeFrom(*from._impl_.payload_.develop_claim_reward_);
         }
         break;
       }
@@ -2481,6 +3170,19 @@ void client_develop_response::set_allocated_develop_reset(::celeritas::proto::cl
   }
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.client_develop_response.develop_reset)
 }
+void client_develop_response::set_allocated_develop_claim_reward(::celeritas::proto::client::develop_claim_reward_response* PROTOBUF_NULLABLE develop_claim_reward) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (develop_claim_reward) {
+    ::google::protobuf::Arena* submessage_arena = develop_claim_reward->GetArena();
+    if (message_arena != submessage_arena) {
+      develop_claim_reward = ::google::protobuf::internal::GetOwnedMessage(message_arena, develop_claim_reward, submessage_arena);
+    }
+    set_has_develop_claim_reward();
+    _impl_.payload_.develop_claim_reward_ = develop_claim_reward;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.client.client_develop_response.develop_claim_reward)
+}
 client_develop_response::client_develop_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, client_develop_response_class_data_.base()) {
@@ -2522,6 +3224,9 @@ client_develop_response::client_develop_response(
         break;
       case kDevelopReset:
         _impl_.payload_.develop_reset_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.develop_reset_);
+        break;
+      case kDevelopClaimReward:
+        _impl_.payload_.develop_claim_reward_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.develop_claim_reward_);
         break;
   }
 
@@ -2582,6 +3287,14 @@ void client_develop_response::clear_payload() {
       }
       break;
     }
+    case kDevelopClaimReward: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.develop_claim_reward_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.develop_claim_reward_);
+      }
+      break;
+    }
     case PAYLOAD_NOT_SET: {
       break;
     }
@@ -2633,17 +3346,17 @@ client_develop_response::GetClassData() const {
   return client_develop_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 3, 3, 0, 2>
+const ::_pbi::TcParseTable<0, 4, 4, 0, 2>
 client_develop_response::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    3, 0,  // max_field_number, fast_idx_mask
+    4, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    3,  // num_aux_entries
+    4,  // num_field_entries
+    4,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     client_develop_response_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -2662,11 +3375,14 @@ client_develop_response::_table_ = {
     {PROTOBUF_FIELD_OFFSET(client_develop_response, _impl_.payload_.develop_level_), _Internal::kOneofCaseOffset + 0, 1, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.client.develop_reset_response develop_reset = 3;
     {PROTOBUF_FIELD_OFFSET(client_develop_response, _impl_.payload_.develop_reset_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.client.develop_claim_reward_response develop_claim_reward = 4;
+    {PROTOBUF_FIELD_OFFSET(client_develop_response, _impl_.payload_.develop_claim_reward_), _Internal::kOneofCaseOffset + 0, 3, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::client::develop_response>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::client::develop_level_response>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::client::develop_reset_response>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::client::develop_claim_reward_response>()},
   }},
   {{
   }},
@@ -2719,6 +3435,12 @@ PROTOBUF_NOINLINE void client_develop_response::Clear() {
           stream);
       break;
     }
+    case kDevelopClaimReward: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          4, *this_._impl_.payload_.develop_claim_reward_, this_._impl_.payload_.develop_claim_reward_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     default:
       break;
   }
@@ -2762,6 +3484,12 @@ PROTOBUF_NOINLINE void client_develop_response::Clear() {
     case kDevelopReset: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.develop_reset_);
+      break;
+    }
+    // .celeritas.proto.client.develop_claim_reward_response develop_claim_reward = 4;
+    case kDevelopClaimReward: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.develop_claim_reward_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -2816,6 +3544,14 @@ void client_develop_response::MergeImpl(::google::protobuf::MessageLite& to_msg,
           _this->_impl_.payload_.develop_reset_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.develop_reset_);
         } else {
           _this->_impl_.payload_.develop_reset_->MergeFrom(*from._impl_.payload_.develop_reset_);
+        }
+        break;
+      }
+      case kDevelopClaimReward: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.develop_claim_reward_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.develop_claim_reward_);
+        } else {
+          _this->_impl_.payload_.develop_claim_reward_->MergeFrom(*from._impl_.payload_.develop_claim_reward_);
         }
         break;
       }

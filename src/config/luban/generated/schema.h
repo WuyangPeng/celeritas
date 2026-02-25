@@ -594,6 +594,7 @@ struct develop_level_config : public luban::CfgBean
     ::luban::int32 developId;
     ::luban::int32 level;
     ::luban::Vector<::luban::SharedPtr<item>> playerItem;
+    ::luban::Vector<::luban::SharedPtr<item>> reward;
 
     static constexpr int __ID__ = 1411329915;
 
