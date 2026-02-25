@@ -12,6 +12,8 @@
 #include "player/event/player_event_type.h"
 #include "player/component/player_state.h"
 
+#include <boost/polymorphic_pointer_cast.hpp>
+
 celeritas::player_task_component::player_task_component(player_state* player_state) noexcept
     : base_type{ get_player_component_type(), player_state },
       tasks_{ std::make_shared<main_task>(player_state),
@@ -35,8 +37,8 @@ celeritas::player_component::void_awaitable_type celeritas::player_task_componen
 celeritas::player_component::void_awaitable_type celeritas::player_task_component::on_register_event()
 {
     std::ignore = get_player_state()->register_listener(player_event_type::on_item_add,
-                                                        std::make_shared<player_event_function_listener>([this](const std::shared_ptr<player_event>& event) -> boost::asio::awaitable<void> {
-                                                                                                             return on_item_add_event(event);
+                                                        std::make_shared<player_event_function_listener>([self = boost::polymorphic_pointer_downcast<class_type>(shared_from_this())](const player_event_shared_ptr& event) -> void_awaitable_type {
+                                                                                                             return self->on_item_add_event(event);
                                                                                                          },
                                                                                                          player_event_priority::normal));
 

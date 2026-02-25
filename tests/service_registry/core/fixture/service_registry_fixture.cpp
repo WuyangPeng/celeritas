@@ -4,9 +4,7 @@
 
 celeritas::service_registry_fixture::~service_registry_fixture()
 {
-    noexcept_safe_call_and_log([this] {
-                                   this->clear_services();
-                               },
+    noexcept_safe_call_and_log(clear_services,
                                default_channel,
                                "clear services error: ");
 }
