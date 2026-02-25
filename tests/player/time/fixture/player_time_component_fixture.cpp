@@ -1,5 +1,4 @@
 #include "player_time_component_fixture.h"
-
 #include "database/pool/database_pool_manager.h"
 
 #include <boost/asio/strand.hpp>
