@@ -104,17 +104,21 @@ BOOST_FIXTURE_TEST_SUITE(player_item_component_suite, player_item_component_fixt
     {
         load_component();
 
-        component_->produce_item(app_config_, 1001, 50);
+        boost::asio::co_spawn(io_context_, component_->produce_item(app_config_, 1001, 50), boost::asio::detached);
+        run_io_context();
         BOOST_CHECK_EQUAL(component_->get_count(1001), 50);
         BOOST_CHECK(component_->is_modify());
 
-        component_->produce_item(app_config_, 1001, 60);
+        boost::asio::co_spawn(io_context_, component_->produce_item(app_config_, 1001, 60), boost::asio::detached);
+        run_io_context();
         BOOST_CHECK_EQUAL(component_->get_count(1001), 110);
 
-        component_->produce_item(app_config_, 1001, -10);
+        boost::asio::co_spawn(io_context_, component_->produce_item(app_config_, 1001, -10), boost::asio::detached);
+        run_io_context();
         BOOST_CHECK_EQUAL(component_->get_count(1001), 100);
 
-        component_->produce_item(app_config_, 1001, -100);
+        boost::asio::co_spawn(io_context_, component_->produce_item(app_config_, 1001, -100), boost::asio::detached);
+        run_io_context();
         BOOST_CHECK_EQUAL(component_->get_count(1001), 0);
     }
 
@@ -122,7 +126,8 @@ BOOST_FIXTURE_TEST_SUITE(player_item_component_suite, player_item_component_fixt
     {
         load_component();
 
-        component_->produce_item(app_config_, 1001, 100);
+        boost::asio::co_spawn(io_context_, component_->produce_item(app_config_, 1001, 100), boost::asio::detached);
+        run_io_context();
 
         BOOST_CHECK(component_->can_consume_item(1001, 50));
         BOOST_CHECK(component_->can_consume_item(1001, 100));
@@ -138,7 +143,8 @@ BOOST_FIXTURE_TEST_SUITE(player_item_component_suite, player_item_component_fixt
         container.add_item_info(1001, 50);
         container.add_item_info(1002, 1);
 
-        component_->produce_item(app_config_, container);
+        boost::asio::co_spawn(io_context_, component_->produce_item(app_config_, container), boost::asio::detached);
+        run_io_context();
         BOOST_CHECK_EQUAL(component_->get_count(1001), 50);
         BOOST_CHECK_EQUAL(component_->get_count(1002), 1);
 
@@ -155,7 +161,8 @@ BOOST_FIXTURE_TEST_SUITE(player_item_component_suite, player_item_component_fixt
 
         BOOST_CHECK(!component_->is_modify());
 
-        component_->produce_item(app_config_, 1001, 10);
+        boost::asio::co_spawn(io_context_, component_->produce_item(app_config_, 1001, 10), boost::asio::detached);
+        run_io_context();
         BOOST_CHECK(component_->is_modify());
 
         boost::asio::co_spawn(io_context_, component_->save_db(), boost::asio::detached);

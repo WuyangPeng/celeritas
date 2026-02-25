@@ -70,7 +70,7 @@ celeritas::player_service_base::void_awaitable_type celeritas::develop_level::re
         co_return;
     }
 
-    player_item_component_->consume_item(get_config(), container);
+    co_await player_item_component_->consume_item(get_config(), container);
 
     develop.set_level(level);
 

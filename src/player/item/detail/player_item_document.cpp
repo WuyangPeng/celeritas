@@ -40,16 +40,21 @@ celeritas::traits::document_array_type celeritas::player_item_document::get_item
     return documents;
 }
 
-bool celeritas::player_item_document::change_item(const const_app_config_shared_ptr& app_config, const int template_id, const int64_t count)
+celeritas::player_item_document::bool_awaitable_type celeritas::player_item_document::change_item(const const_app_config_shared_ptr& app_config,
+                                                                                                  const int template_id,
+                                                                                                  const int64_t count,
+                                                                                                  const bool is_login)
 {
     execute_change_item execute{ player_state_, this, app_config, template_id, count };
 
     execute.execute();
     execute.send_message();
-    execute.execute_develop();
+    co_await execute.execute_develop();
     execute.send_develop_message();
 
-    return execute.is_change();
+    co_await execute.trigger_item_event(is_login);
+
+    co_return execute.is_change();
 }
 
 bool celeritas::player_item_document::can_consume_item(const int template_id, const int64_t count) const
@@ -82,7 +87,9 @@ bool celeritas::player_item_document::can_consume_item(const item_container& ite
     });
 }
 
-bool celeritas::player_item_document::change_item(const const_app_config_shared_ptr& app_config, const item_container& item, const bool is_login)
+celeritas::player_item_document::bool_awaitable_type celeritas::player_item_document::change_item(const const_app_config_shared_ptr& app_config,
+                                                                                                  const item_container& item,
+                                                                                                  const bool is_login)
 {
     execute_change_item execute{ player_state_, this, app_config, item };
 
@@ -93,13 +100,15 @@ bool celeritas::player_item_document::change_item(const const_app_config_shared_
         execute.send_message();
     }
 
-    execute.execute_develop();
+    co_await execute.execute_develop();
     if (!is_login)
     {
         execute.send_develop_message();
     }
 
-    return execute.is_change();
+    co_await execute.trigger_item_event(is_login);
+
+    co_return execute.is_change();
 }
 
 celeritas::player_item_document::optional_inventory_data_container_iter celeritas::player_item_document::get_inventory_data(const int64_t item_id)

@@ -46,7 +46,7 @@ celeritas::player_service_base::void_awaitable_type celeritas::change_name::resp
             co_return;
         }
 
-        cost_item(*optional_cost_item);
+        co_await cost_item(*optional_cost_item);
     }
 
     if (const auto game_error = co_await player_role_component_->change_name(request_.surname(), request_.name());
@@ -90,9 +90,9 @@ celeritas::change_name::optional_priority_item_type celeritas::change_name::get_
     return std::nullopt;
 }
 
-void celeritas::change_name::cost_item(const priority_item_type& priority_item)
+celeritas::change_name::void_awaitable_type celeritas::change_name::cost_item(const priority_item_type& priority_item)
 {
-    player_item_component_->produce_item(get_config(), priority_item->itemId, priority_item->itemCount);
+    co_await player_item_component_->produce_item(get_config(), priority_item->itemId, priority_item->itemCount);
 }
 
 

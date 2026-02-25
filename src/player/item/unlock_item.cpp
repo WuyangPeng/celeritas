@@ -45,7 +45,7 @@ celeritas::player_service_base::void_awaitable_type celeritas::unlock_item::resp
 
     if (unlock_task_id == 0)
     {
-        player_item_component_->produce_item(get_config(), template_id, 1);
+        co_await player_item_component_->produce_item(get_config(), template_id, 1);
         send_unlock_item_response();
         co_return;
     }
@@ -69,7 +69,7 @@ celeritas::player_service_base::void_awaitable_type celeritas::unlock_item::resp
         co_return;
     }
 
-    player_item_component_->produce_item(get_config(), template_id, 1);
+    co_await player_item_component_->produce_item(get_config(), template_id, 1);
     send_unlock_item_response();
 
     co_return;

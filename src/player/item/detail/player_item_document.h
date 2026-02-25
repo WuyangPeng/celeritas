@@ -18,6 +18,7 @@ namespace celeritas
     public:
         using class_type = player_item_document;
         using void_awaitable_type = boost::asio::awaitable<void>;
+        using bool_awaitable_type = boost::asio::awaitable<bool>;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
         using const_item_config_shared_ptr = std::shared_ptr<const config::game::item_config>;
         using id_container = std::vector<int64_t>;
@@ -32,7 +33,7 @@ namespace celeritas
 
         [[nodiscard]] traits::document_array_type get_item() const;
 
-        [[nodiscard]] bool change_item(const const_app_config_shared_ptr& app_config, int template_id, int64_t count);
+        [[nodiscard]] bool_awaitable_type change_item(const const_app_config_shared_ptr& app_config, int template_id, int64_t count, bool is_login = false);
 
         [[nodiscard]] bool can_consume_item(int template_id, int64_t count) const;
 
@@ -40,7 +41,7 @@ namespace celeritas
 
         [[nodiscard]] bool can_consume_item(const item_container& item) const;
 
-        [[nodiscard]] bool change_item(const const_app_config_shared_ptr& app_config, const item_container& item, bool is_login);
+        [[nodiscard]] bool_awaitable_type change_item(const const_app_config_shared_ptr& app_config, const item_container& item, bool is_login);
 
         [[nodiscard]] optional_inventory_data_container_iter get_inventory_data(int64_t item_id);
 

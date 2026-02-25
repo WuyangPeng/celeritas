@@ -14,6 +14,7 @@ namespace celeritas
         using base_type = player_component;
         using optional_develop_data = std::optional<develop_data>;
         using const_item_config_shared_ptr = std::shared_ptr<const config::game::item_config>;
+        using optional_develop_data_awaitable = boost::asio::awaitable<optional_develop_data>;
 
         explicit player_develop_component(player_state* player_state) noexcept;
 
@@ -30,7 +31,7 @@ namespace celeritas
 
         [[nodiscard]] game_error_type develop_level(const develop_data& develop_data);
 
-        [[nodiscard]] optional_develop_data develop_level(const const_app_config_shared_ptr& app_config, const const_item_config_shared_ptr& item_config);
+        [[nodiscard]] optional_develop_data_awaitable develop_level(const const_app_config_shared_ptr& app_config, const const_item_config_shared_ptr& item_config);
 
         [[nodiscard]] game_error_type develop_reset(const develop_data_key& key);
 

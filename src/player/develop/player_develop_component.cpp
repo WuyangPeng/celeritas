@@ -46,7 +46,7 @@ celeritas::game_error_type celeritas::player_develop_component::develop_level(co
     return game_error;
 }
 
-celeritas::player_develop_component::optional_develop_data celeritas::player_develop_component::develop_level(const const_app_config_shared_ptr& app_config, const const_item_config_shared_ptr& item_config)
+celeritas::player_develop_component::optional_develop_data_awaitable celeritas::player_develop_component::develop_level(const const_app_config_shared_ptr& app_config, const const_item_config_shared_ptr& item_config)
 {
     const auto pretreatment_config = game_config::get_instance().get_game_tables()->get_pretreatment_config();
     if (const auto optional_develop = pretreatment_config->get_develop_config()->get_develop(develop_system_key{ underlying_cast_enum<config::develop_system_type>(item_config->parameter0), underlying_cast_enum<config::develop_sub_type>(item_config->parameter1) }))
@@ -84,7 +84,7 @@ celeritas::player_develop_component::optional_develop_data celeritas::player_dev
             result_level = level;
         }
 
-        item_component->consume_item(app_config, container);
+        co_await item_component->consume_item(app_config, container);
 
         develop_data.set_level(result_level);
 
@@ -94,10 +94,10 @@ celeritas::player_develop_component::optional_develop_data celeritas::player_dev
             update_document();
         }
 
-        return develop_data;
+        co_return develop_data;
     }
 
-    return std::nullopt;
+    co_return std::nullopt;
 }
 
 celeritas::game_error_type celeritas::player_develop_component::develop_reset(const develop_data_key& key)

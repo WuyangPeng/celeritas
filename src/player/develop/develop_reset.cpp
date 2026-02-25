@@ -80,7 +80,7 @@ celeritas::player_service_base::void_awaitable_type celeritas::develop_reset::re
         container.proportion_item(current_develop_config->refundProportion);
     }
 
-    player_item_component_->produce_item(get_config(), container);
+    co_await player_item_component_->produce_item(get_config(), container);
 
     develop.clear();
 

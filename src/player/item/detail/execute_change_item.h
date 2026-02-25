@@ -26,7 +26,7 @@ namespace celeritas
 
         void send_message();
 
-        void execute_develop();
+        [[nodiscard]] void_awaitable_type execute_develop();
 
         void send_develop_message();
 

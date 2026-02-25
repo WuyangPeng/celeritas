@@ -3,6 +3,9 @@
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
 
+#include <boost/asio/co_spawn.hpp>
+#include <boost/asio/detached.hpp>
+
 celeritas::player_item_component::player_item_component(player_state* player_state) noexcept
     : base_type{ get_player_component_type(), player_state },
       database_{ player_state, this },
@@ -43,7 +46,7 @@ celeritas::player_component::void_awaitable_type celeritas::player_item_componen
             }
         }
 
-        produce_item(app_config, container, true);
+        co_await produce_item(app_config, container, true);
 
         if (!wear_container.empty())
         {
@@ -84,9 +87,12 @@ bool celeritas::player_item_component::is_modify() const
     return database_.is_modify() || selected_database_.is_modify();
 }
 
-void celeritas::player_item_component::produce_item(const const_app_config_shared_ptr& app_config, const int template_id, const int64_t count)
+celeritas::player_component::void_awaitable_type celeritas::player_item_component::produce_item(const const_app_config_shared_ptr& app_config,
+                                                                                                const int template_id,
+                                                                                                const int64_t count,
+                                                                                                const bool is_login)
 {
-    if (document_.change_item(app_config, template_id, count))
+    if (co_await document_.change_item(app_config, template_id, count, is_login))
     {
         update_document();
     }
@@ -94,10 +100,16 @@ void celeritas::player_item_component::produce_item(const const_app_config_share
 
 void celeritas::player_item_component::consume_item(const const_app_config_shared_ptr& app_config, const int template_id, const int64_t count)
 {
-    if (document_.change_item(app_config, template_id, -count))
-    {
-        update_document();
-    }
+    // consume_item 保持同步，因为它是负数，不触发 on_item_add 事件
+    // 如果需要，可以后续添加 on_item_remove 事件
+    boost::asio::co_spawn(get_player_state()->get_any_io_executor(),
+                          [this, app_config, template_id, count]() -> boost::asio::awaitable<void> {
+                              if (co_await document_.change_item(app_config, template_id, -count, false))
+                              {
+                                  update_document();
+                              }
+                          },
+                          boost::asio::detached);
 }
 
 bool celeritas::player_item_component::can_consume_item(const int template_id, const int64_t count) const
@@ -115,17 +127,19 @@ bool celeritas::player_item_component::can_consume_item(const item_container& it
     return document_.can_consume_item(item);
 }
 
-void celeritas::player_item_component::produce_item(const const_app_config_shared_ptr& app_config, const item_container& item, const bool is_login)
+celeritas::player_component::void_awaitable_type celeritas::player_item_component::produce_item(const const_app_config_shared_ptr& app_config,
+                                                                                                const item_container& item,
+                                                                                                const bool is_login)
 {
-    if (document_.change_item(app_config, item, is_login))
+    if (co_await document_.change_item(app_config, item, is_login))
     {
         update_document();
     }
 }
 
-void celeritas::player_item_component::consume_item(const const_app_config_shared_ptr& app_config, const item_container& item)
+celeritas::player_component::void_awaitable_type celeritas::player_item_component::consume_item(const const_app_config_shared_ptr& app_config, const item_container& item)
 {
-    if (document_.change_item(app_config, item.to_consume(), false))
+    if (co_await document_.change_item(app_config, item.to_consume(), false))
     {
         update_document();
     }

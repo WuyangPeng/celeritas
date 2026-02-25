@@ -221,17 +221,17 @@ int64_t celeritas::execute_change_item::add_new_item(const int template_id, int6
     return count;
 }
 
-void celeritas::execute_change_item::execute_develop()
+celeritas::execute_change_item::void_awaitable_type celeritas::execute_change_item::execute_develop()
 {
     if (develop_.empty())
     {
-        return;
+        co_return;
     }
 
     const auto develop_component = player_state_->get_component<player_develop_component>();
     for (const auto& element : develop_)
     {
-        if (const auto result = develop_component->develop_level(app_config_, element))
+        if (const auto result = co_await develop_component->develop_level(app_config_, element))
         {
             change_develop_.emplace_back(*result);
         }

@@ -40,7 +40,7 @@ namespace celeritas
 
         [[nodiscard]] optional_priority_item_type get_cost_item(const priority_item_container_type& priority_item);
 
-        void cost_item(const priority_item_type& priority_item);
+        [[nodiscard]] void_awaitable_type cost_item(const priority_item_type& priority_item);
 
         request_type request_;
         player_role_component_shared_ptr player_role_component_;
