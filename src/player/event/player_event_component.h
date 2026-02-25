@@ -13,7 +13,6 @@ namespace celeritas
         using class_type = player_event_component;
         using player_event_shared_ptr = std::shared_ptr<player_event>;
         using player_event_listener_shared_ptr = std::shared_ptr<player_event_listener>;
-        using listener_id_type = player_event_dispatcher::listener_id_type;
 
         explicit player_event_component(player_state* player_state) noexcept;
 
@@ -23,16 +22,16 @@ namespace celeritas
         }
 
         // 注册事件监听器
-        [[nodiscard]] listener_id_type register_listener(player_event_type event_type, const player_event_listener_shared_ptr& listener);
+        [[nodiscard]] int64_t register_listener(player_event_type event_type, const player_event_listener_shared_ptr& listener);
 
         // 注销事件监听器
-        void unregister_listener(player_event_type event_type, listener_id_type listener_id);
+        void unregister_listener(player_event_type event_type, int64_t listener_id);
 
         // 触发事件
         [[nodiscard]] void_awaitable_type trigger_event(const player_event_shared_ptr& event);
 
         // 创建并触发事件
-        [[nodiscard]] void_awaitable_type trigger_event(player_event_type event_type);
+        [[nodiscard]] void_awaitable_type trigger_event(player_event_type event_type, bool is_login = false);
 
         [[nodiscard]] void_awaitable_type on_logout() override;
 

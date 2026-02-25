@@ -2,7 +2,10 @@
 #include "common/core/snowflake_generator.h"
 #include "common/logging/logger.h"
 #include "initializer/initializer_constant.h"
+#include "player/component/player_state.h"
 #include "player/develop/player_develop_component.h"
+#include "player/event/player_event.h"
+#include "player/event/player_event_type.h"
 #include "proto/celeritas.pb.h"
 
 celeritas::execute_change_item::execute_change_item(player_state* player_state,
@@ -89,6 +92,23 @@ void celeritas::execute_change_item::send_develop_message()
 bool celeritas::execute_change_item::is_change() const noexcept
 {
     return change_;
+}
+
+celeritas::execute_change_item::void_awaitable_type celeritas::execute_change_item::trigger_item_event(const bool is_login)
+{
+    for (const auto& element : item_)
+    {
+        if (element.get_count() > 0)
+        {
+            const auto count = player_item_document_->get_count(element.get_template_id());
+
+            auto event = std::make_shared<player_event>(player_event_type::on_item_add, is_login);
+            event->set_data("item_id", element.get_template_id());
+            event->set_data("count", count);
+
+            co_await player_state_->trigger_event(event);
+        }
+    }
 }
 
 bool celeritas::execute_change_item::execute(const int template_id, int64_t count)

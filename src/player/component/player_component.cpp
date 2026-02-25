@@ -22,6 +22,11 @@ celeritas::player_component::void_awaitable_type celeritas::player_component::on
     co_return;
 }
 
+celeritas::player_component::void_awaitable_type celeritas::player_component::on_register_event()
+{
+    co_return;
+}
+
 celeritas::player_component::void_awaitable_type celeritas::player_component::on_dependencies_ready()
 {
     co_return;

@@ -115,6 +115,7 @@ celeritas::service_login::void_awaitable_type celeritas::service_login::load_pla
     {
         co_await player->on_load_db();
         co_await player->on_db_analysis(protobuf_handle_parameter_->get_app_config());
+        co_await player->on_register_event();
 
         player->set_player_state_type(player_state_type::online);
     }

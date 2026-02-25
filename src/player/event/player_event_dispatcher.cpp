@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <ranges>
 
-celeritas::player_event_dispatcher::listener_id_type celeritas::player_event_dispatcher::register_listener(const player_event_type event_type, const player_event_listener_shared_ptr& listener)
+int64_t celeritas::player_event_dispatcher::register_listener(const player_event_type event_type, const player_event_listener_shared_ptr& listener)
 {
     const auto id = next_listener_id_++;
     auto& listeners = listeners_[event_type];
@@ -18,7 +18,7 @@ celeritas::player_event_dispatcher::listener_id_type celeritas::player_event_dis
     return id;
 }
 
-void celeritas::player_event_dispatcher::unregister_listener(const player_event_type event_type, const listener_id_type listener_id)
+void celeritas::player_event_dispatcher::unregister_listener(const player_event_type event_type, const int64_t listener_id)
 {
     if (const auto iter = listeners_.find(event_type);
         iter != listeners_.cend())

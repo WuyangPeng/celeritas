@@ -21,10 +21,13 @@ namespace celeritas
         using task_container = std::array<task_shared_ptr, enum_cast_underlying(config::task_component_type::max)>;
         using calculator_shared_ptr = std::shared_ptr<default_progress_calculator>;
         using calculator_container = std::unordered_map<config::task_event_type, calculator_shared_ptr>;
+        using player_event_shared_ptr = std::shared_ptr<player_event>;
 
         explicit player_task_component(player_state* player_state) noexcept;
 
         [[nodiscard]] void_awaitable_type on_db_analysis(const const_app_config_shared_ptr& app_config) override;
+
+        [[nodiscard]] void_awaitable_type on_register_event() override;
 
         [[nodiscard]] int get_default_progress(config::task_event_type task_event_type, int target_id) const;
 
@@ -38,6 +41,8 @@ namespace celeritas
         void update_task_progress(const task_context& task_context, bool is_login);
 
     private:
+        [[nodiscard]] void_awaitable_type on_item_add_event(const player_event_shared_ptr& event);
+
         task_container tasks_;
         calculator_container calculators_;
     };

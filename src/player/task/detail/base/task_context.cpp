@@ -1,11 +1,11 @@
 ﻿#include "task_context.h"
 
-celeritas::task_context::task_context(const config::task_event_type type, const task_change_type change_type, const int target_id, const int value)
+celeritas::task_context::task_context(const config::task_event_type type, const task_change_type change_type, const int target_id, const int64_t value)
     : type_{ type }, change_type_{ change_type }, target_id_{ target_id }, value_{ value }
 {
 }
 
-celeritas::task_context::task_context(const config::task_event_type type, const task_change_type change_type, const int value)
+celeritas::task_context::task_context(const config::task_event_type type, const task_change_type change_type, const int64_t value)
     : class_type{ type, change_type, 0, value }
 {
 }
@@ -25,7 +25,7 @@ int celeritas::task_context::get_target_id() const
     return target_id_;
 }
 
-int celeritas::task_context::get_value() const
+int64_t celeritas::task_context::get_value() const
 {
     return value_;
 }

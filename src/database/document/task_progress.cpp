@@ -8,7 +8,7 @@ celeritas::task_progress::task_progress(const int64_t id, const int cfg_id)
 {
 }
 
-celeritas::task_progress::task_progress(const int64_t id, const int cfg_id, const int progress)
+celeritas::task_progress::task_progress(const int64_t id, const int cfg_id, const int64_t progress)
     : id_{ id }, cfg_id_{ cfg_id }, progress_{ progress }, status_{ task_status_type::in_progress }
 {
 }
@@ -33,12 +33,12 @@ celeritas::task_status_type celeritas::task_progress::get_status() const
     return status_;
 }
 
-void celeritas::task_progress::set_progress(const int progress)
+void celeritas::task_progress::set_progress(const int64_t progress)
 {
     progress_ = progress;
 }
 
-void celeritas::task_progress::add_progress(const int progress)
+void celeritas::task_progress::add_progress(const int64_t progress)
 {
     progress_ += progress;
 }

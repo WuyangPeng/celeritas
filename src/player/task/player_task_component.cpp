@@ -1,4 +1,5 @@
 #include "player_task_component.h"
+#include "detail/base/task_change_type.h"
 #include "detail/component/avatar_task.h"
 #include "detail/component/daily_task.h"
 #include "detail/component/frame_task.h"
@@ -6,6 +7,10 @@
 #include "detail/default_progress/kill_monster_progress_calculator.h"
 #include "detail/default_progress/upgrade_level_progress_calculator.h"
 #include "detail/default_progress/hold_item_progress_calculator.h"
+#include "player/event/player_event.h"
+#include "player/event/player_event_function_listener.h"
+#include "player/event/player_event_type.h"
+#include "player/component/player_state.h"
 
 celeritas::player_task_component::player_task_component(player_state* player_state) noexcept
     : base_type{ get_player_component_type(), player_state },
@@ -27,12 +32,37 @@ celeritas::player_component::void_awaitable_type celeritas::player_task_componen
     }
 }
 
+celeritas::player_component::void_awaitable_type celeritas::player_task_component::on_register_event()
+{
+    std::ignore = get_player_state()->register_listener(player_event_type::on_item_add,
+                                                        std::make_shared<player_event_function_listener>([this](const std::shared_ptr<player_event>& event) -> boost::asio::awaitable<void> {
+                                                                                                             return on_item_add_event(event);
+                                                                                                         },
+                                                                                                         player_event_priority::normal));
+
+    co_return;
+}
+
+celeritas::player_component::void_awaitable_type celeritas::player_task_component::on_item_add_event(const player_event_shared_ptr& event)
+{
+    if (event->has_data("item_id"))
+    {
+        const auto item_id = event->get_data<int32_t>("item_id");
+        const auto count = event->get_data<int64_t>("count");
+
+        const task_context context{ config::task_event_type::hold_item, task_change_type::set, item_id, count };
+
+        update_task_progress(context, event->is_login());
+    }
+    co_return;
+}
+
 int celeritas::player_task_component::get_default_progress(const config::task_event_type task_event_type, const int target_id) const
 {
-    if (const auto it = calculators_.find(task_event_type);
-        it != calculators_.cend())
+    if (const auto iter = calculators_.find(task_event_type);
+        iter != calculators_.cend())
     {
-        return it->second->calculate(task_event_type, target_id);
+        return iter->second->calculate(task_event_type, target_id);
     }
     return 0;
 }

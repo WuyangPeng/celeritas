@@ -82,6 +82,14 @@ celeritas::player_state::void_awaitable_type celeritas::player_state::on_db_anal
     }
 }
 
+celeritas::player_state::void_awaitable_type celeritas::player_state::on_register_event()
+{
+    for (const auto& element : components_)
+    {
+        co_await element->on_register_event();
+    }
+}
+
 celeritas::player_state::void_awaitable_type celeritas::player_state::on_dependencies_ready()
 {
     for (const auto& element : components_)
@@ -239,13 +247,12 @@ void celeritas::player_state::update_task_progress(const task_context& task_cont
     get_component<player_task_component>()->update_task_progress(task_context, is_login);
 }
 
-celeritas::player_state::listener_id_type celeritas::player_state::register_listener(const player_event_type event_type,
-                                                                                     const player_event_listener_shared_ptr& listener)
+int64_t celeritas::player_state::register_listener(const player_event_type event_type, const player_event_listener_shared_ptr& listener)
 {
     return get_component<player_event_component>()->register_listener(event_type, listener);
 }
 
-void celeritas::player_state::unregister_listener(const player_event_type event_type, const listener_id_type listener_id)
+void celeritas::player_state::unregister_listener(const player_event_type event_type, const int64_t listener_id)
 {
     get_component<player_event_component>()->unregister_listener(event_type, listener_id);
 }
@@ -255,9 +262,9 @@ celeritas::player_state::void_awaitable_type celeritas::player_state::trigger_ev
     co_await get_component<player_event_component>()->trigger_event(event);
 }
 
-celeritas::player_state::void_awaitable_type celeritas::player_state::trigger_event(const player_event_type event_type)
+celeritas::player_state::void_awaitable_type celeritas::player_state::trigger_event(const player_event_type event_type, const bool is_login)
 {
-    co_await get_component<player_event_component>()->trigger_event(event_type);
+    co_await get_component<player_event_component>()->trigger_event(event_type, is_login);
 }
 
 void celeritas::player_state::check() const

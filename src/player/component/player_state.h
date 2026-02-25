@@ -32,7 +32,6 @@ namespace celeritas
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
         using player_event_shared_ptr = std::shared_ptr<player_event>;
         using player_event_listener_shared_ptr = std::shared_ptr<player_event_listener>;
-        using listener_id_type = player_event_dispatcher::listener_id_type;
 
         player_state(const user& user,
                      const resource_loader_shared_ptr& resource_loader,
@@ -61,6 +60,9 @@ namespace celeritas
 
         // 数据库数据解析
         [[nodiscard]] void_awaitable_type on_db_analysis(const const_app_config_shared_ptr& app_config);
+
+        // 注册事件
+        [[nodiscard]] virtual void_awaitable_type on_register_event();
 
         // 安全地访问其他组件的数据，解决组件间的依赖关系。
         [[nodiscard]] void_awaitable_type on_dependencies_ready();
@@ -109,13 +111,13 @@ namespace celeritas
 
         void update_task_progress(const task_context& task_context, bool is_login);
 
-        [[nodiscard]] listener_id_type register_listener(player_event_type event_type, const player_event_listener_shared_ptr& listener);
+        [[nodiscard]] int64_t register_listener(player_event_type event_type, const player_event_listener_shared_ptr& listener);
 
-        void unregister_listener(player_event_type event_type, listener_id_type listener_id);
+        void unregister_listener(player_event_type event_type, int64_t listener_id);
 
         [[nodiscard]] void_awaitable_type trigger_event(const player_event_shared_ptr& event);
 
-        [[nodiscard]] void_awaitable_type trigger_event(player_event_type event_type);
+        [[nodiscard]] void_awaitable_type trigger_event(player_event_type event_type, bool is_login = false);
 
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;

@@ -16,6 +16,7 @@ namespace celeritas
     public:
         using class_type = execute_change_item;
         using const_app_config_shared_ptr = std::shared_ptr<const app_config>;
+        using void_awaitable_type = boost::asio::awaitable<void>;
 
         execute_change_item(player_state* player_state, player_item_document* player_item_document, const_app_config_shared_ptr app_config, int template_id, int64_t count);
 
@@ -28,6 +29,8 @@ namespace celeritas
         void execute_develop();
 
         void send_develop_message();
+
+        [[nodiscard]] void_awaitable_type trigger_item_event(bool is_login);
 
         [[nodiscard]] bool is_change() const noexcept;
 

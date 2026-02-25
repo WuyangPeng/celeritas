@@ -15,11 +15,15 @@ namespace celeritas
     public:
         using class_type = player_event;
 
-        explicit player_event(player_event_type type);
+        explicit player_event(player_event_type type, bool is_login = false);
 
         [[nodiscard]] player_event_type get_type() const noexcept;
 
         [[nodiscard]] int64_t get_timestamp() const noexcept;
+
+        [[nodiscard]] bool is_login() const noexcept;
+
+        void set_is_login(bool is_login) noexcept;
 
         template <typename T>
         void set_data(const std::string& key, T&& value)
@@ -44,6 +48,7 @@ namespace celeritas
         using container_type = std::unordered_map<std::string, std::any>;
         player_event_type type_;
         int64_t timestamp_;
+        bool is_login_;
         container_type data_;
     };
 }
