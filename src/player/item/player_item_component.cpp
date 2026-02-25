@@ -3,9 +3,6 @@
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
 
-#include <boost/asio/co_spawn.hpp>
-#include <boost/asio/detached.hpp>
-
 celeritas::player_item_component::player_item_component(player_state* player_state) noexcept
     : base_type{ get_player_component_type(), player_state },
       database_{ player_state, this },
@@ -98,18 +95,12 @@ celeritas::player_component::void_awaitable_type celeritas::player_item_componen
     }
 }
 
-void celeritas::player_item_component::consume_item(const const_app_config_shared_ptr& app_config, const int template_id, const int64_t count)
+celeritas::player_component::void_awaitable_type celeritas::player_item_component::consume_item(const const_app_config_shared_ptr& app_config, const int template_id, const int64_t count)
 {
-    // consume_item 保持同步，因为它是负数，不触发 on_item_add 事件
-    // 如果需要，可以后续添加 on_item_remove 事件
-    boost::asio::co_spawn(get_player_state()->get_any_io_executor(),
-                          [this, app_config, template_id, count]() -> boost::asio::awaitable<void> {
-                              if (co_await document_.change_item(app_config, template_id, -count, false))
-                              {
-                                  update_document();
-                              }
-                          },
-                          boost::asio::detached);
+    if (co_await document_.change_item(app_config, template_id, -count, false))
+    {
+        update_document();
+    }
 }
 
 bool celeritas::player_item_component::can_consume_item(const int template_id, const int64_t count) const

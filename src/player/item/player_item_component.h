@@ -33,7 +33,7 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type produce_item(const const_app_config_shared_ptr& app_config, int template_id, int64_t count, bool is_login = false);
 
-        void consume_item(const const_app_config_shared_ptr& app_config, int template_id, int64_t count);
+        [[nodiscard]] void_awaitable_type consume_item(const const_app_config_shared_ptr& app_config, int template_id, int64_t count);
 
         [[nodiscard]] bool can_consume_item(int template_id, int64_t count) const;
 
