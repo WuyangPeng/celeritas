@@ -34,6 +34,8 @@ namespace celeritas
 
         [[nodiscard]] game_error_type develop_reset(const develop_data_key& key);
 
+        [[nodiscard]] game_error_type develop_claim_reward(const develop_data& develop_data);
+
         void send_initial_sync();
 
         [[nodiscard]] optional_develop_data get_develop_data(const develop_data_key& key) const;

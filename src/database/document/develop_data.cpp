@@ -80,6 +80,7 @@ celeritas::develop_data::document_type celeritas::develop_data::to_document_type
     document.emplace_back(instance_id_description, instance_id_);
     document.emplace_back(level_description, level_);
     document.emplace_back(exp_description, exp_);
+    document.emplace_back(reward_level_description, reward_level);
     document.emplace_back(updated_time_description, updated_time_);
 
     return document;
@@ -107,6 +108,10 @@ celeritas::develop_data celeritas::develop_data::from_document(const document_ty
         {
             data.exp_ = element.get_value<database_data_type::int64_type>();
         }
+        else if (element.get_field_name() == reward_level_description)
+        {
+            data.reward_level = element.get_value<database_data_type::int32_type>();
+        }
         else if (element.get_field_name() == updated_time_description)
         {
             data.updated_time_ = element.get_value<database_data_type::int64_type>();
@@ -119,4 +124,14 @@ celeritas::develop_data celeritas::develop_data::from_document(const document_ty
 celeritas::develop_data_key celeritas::develop_data::get_develop_data_key() const
 {
     return develop_data_key{ system_id_, instance_id_ };
+}
+
+int celeritas::develop_data::get_reward_level() const
+{
+    return reward_level;
+}
+
+void celeritas::develop_data::set_reward_level(const int rewardLevel)
+{
+    reward_level = rewardLevel;
 }

@@ -59,6 +59,7 @@ namespace celeritas
         non_resettable = 60701,
         develop_not_exist = 60702,
         develop_item_not_insufficient = 60703,
+        develop_reward_already_claimed = 60704,
 
         // 邮件模块
         mail_not_exist = 60800,

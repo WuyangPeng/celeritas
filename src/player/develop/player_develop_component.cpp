@@ -110,6 +110,16 @@ celeritas::game_error_type celeritas::player_develop_component::develop_reset(co
     return game_error;
 }
 
+celeritas::game_error_type celeritas::player_develop_component::develop_claim_reward(const develop_data& develop_data)
+{
+    const auto game_error = document_.develop_claim_reward(develop_data);
+    if (game_error == game_error_type::success)
+    {
+        update_document();
+    }
+    return game_error;
+}
+
 celeritas::player_component::void_awaitable_type celeritas::player_develop_component::send_initial_sync()
 {
     document_.send_initial_sync();
@@ -148,6 +158,26 @@ void celeritas::player_develop_component::send_reset_message(int rpc, const deve
     develop->set_instance_id(develop_data.get_instance_id());
     develop->set_level(develop_data.get_level());
     develop->set_exp(develop_data.get_exp());
+
+    if (!get_player_state()->write(gateway_type.data(), get_player_state()->get_instance_id(), header, response))
+    {
+        LOG_CHANNEL(player_channel, error) << "send message error.";
+    }
+}
+
+void celeritas::player_develop_component::send_claim_reward_message(int rpc, const develop_data& develop_data)
+{
+    const header header{ rpc, get_player_state()->get_user_id() };
+
+    proto::celeritas response{};
+    auto* develop_response = response.mutable_celeritas_response()->mutable_client()->mutable_player()->mutable_develop()->mutable_develop_claim_reward();
+    auto* develop = develop_response->mutable_develop();
+
+    develop->set_system_id(develop_data.get_system_id());
+    develop->set_instance_id(develop_data.get_instance_id());
+    develop->set_level(develop_data.get_level());
+    develop->set_exp(develop_data.get_exp());
+    develop->set_reward_level(develop_data.get_reward_level());
 
     if (!get_player_state()->write(gateway_type.data(), get_player_state()->get_instance_id(), header, response))
     {

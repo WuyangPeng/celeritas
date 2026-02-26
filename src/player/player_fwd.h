@@ -42,6 +42,7 @@ namespace celeritas
 
     class develop_level;
     class develop_reset;
+    class develop_claim_reward;
     class player_develop_component;
 
     class mail_sync;

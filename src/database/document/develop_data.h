@@ -39,6 +39,10 @@ namespace celeritas
 
         void set_updated_time(int64_t updated_time);
 
+        [[nodiscard]] int get_reward_level() const;
+
+        void set_reward_level(int rewardLevel);
+
         void clear();
 
         [[nodiscard]] document_type to_document_type() const;
@@ -51,6 +55,7 @@ namespace celeritas
         static constexpr std::string_view instance_id_description = "instance_id";
         static constexpr std::string_view level_description = "level";
         static constexpr std::string_view exp_description = "exp";
+        static constexpr std::string_view reward_level_description = "reward_level";
         static constexpr std::string_view updated_time_description = "updated_time";
 
         static constexpr auto default_level = 0;
@@ -60,6 +65,7 @@ namespace celeritas
         int64_t instance_id_ = 0;
         int level_ = default_level;
         int64_t exp_ = 0;
+        int reward_level = 0;
         int64_t updated_time_ = 0;
     };
 }

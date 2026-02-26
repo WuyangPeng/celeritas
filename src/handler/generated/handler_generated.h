@@ -64,6 +64,7 @@
 #include "handler/payment/reload_sdk_payment_providers_db_message_handler.h"
 #include "handler/player/change_role_name_message_handler.h"
 #include "handler/player/debug_message_handler.h"
+#include "handler/player/develop_claim_reward_message_handler.h"
 #include "handler/player/develop_level_message_handler.h"
 #include "handler/player/develop_reset_message_handler.h"
 #include "handler/player/heartbeat_request_message_handler.h"

@@ -76,6 +76,22 @@ celeritas::game_error_type celeritas::player_develop_document::develop_reset(con
     return game_error_type::success;
 }
 
+celeritas::game_error_type celeritas::player_develop_document::develop_claim_reward(const develop_data& develop_data)
+{
+    const auto develop_data_key = develop_data.get_develop_data_key();
+    if (const auto iter = develop_data_.find(develop_data_key);
+        iter != develop_data_.cend())
+    {
+        iter->second.set_reward_level(develop_data.get_reward_level());
+    }
+    else
+    {
+        return game_error_type::develop_not_exist;
+    }
+
+    return game_error_type::success;
+}
+
 void celeritas::player_develop_document::send_initial_sync()
 {
     const header header{ player_state_->get_user_id() };
@@ -89,6 +105,7 @@ void celeritas::player_develop_document::send_initial_sync()
         develop->set_instance_id(element.get_instance_id());
         develop->set_level(element.get_level());
         develop->set_exp(element.get_exp());
+        develop->set_reward_level(element.get_reward_level());
     }
 
     develop_response->set_is_login(true);
