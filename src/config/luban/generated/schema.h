@@ -250,6 +250,10 @@ namespace celeritas {namespace config {
         /// 经验
         /// </summary>
         exp = 8,
+        /// <summary>
+        /// 建筑
+        /// </summary>
+        building = 9,
     };
 
  

@@ -29,6 +29,10 @@ message hero_data {
 message exp_data {
 }
 
+message building_data {
+    int32 level = 1;
+}
+
 message inventory_data {
     int64 item_id = 1;
     int32 template_id = 2;
@@ -43,5 +47,6 @@ message inventory_data {
         title_data title = 10;
         hero_data hero = 11;
         exp_data exp = 12;
+        building_data building = 13;
     }
 }

@@ -206,6 +206,14 @@ void celeritas::player_item_document::set_inventory_data_proto(proto_inventory_d
             proto_data->mutable_exp();
         }
         break;
+        case config::item_type::building:
+        {
+            auto* building = proto_data->mutable_building();
+            const auto* data = custom_data.get_building();
+
+            building->set_level(data->get_level());
+        }
+        break;
         default:
         {
             proto_data->mutable_custom();
@@ -286,6 +294,17 @@ celeritas::inventory_data celeritas::player_item_document::get_inventory_data_by
             traits::document_type document{};
             document.emplace_back(custom_data::type_description, custom_data::hero_description.data());
             document.emplace_back(custom_data::data_description, hero.to_document_type());
+            custom_data = custom_data::from_document(document);
+        }
+        break;
+        case proto_inventory_data::kBuilding:
+        {
+            const auto& building_proto = proto_data->building();
+            const building_data building{ building_proto.level() };
+
+            traits::document_type document{};
+            document.emplace_back(custom_data::type_description, custom_data::building_description.data());
+            document.emplace_back(custom_data::data_description, building.to_document_type());
             custom_data = custom_data::from_document(document);
         }
         break;

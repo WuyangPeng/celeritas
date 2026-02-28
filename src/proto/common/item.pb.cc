@@ -168,6 +168,31 @@ struct consumable_dataDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 consumable_dataDefaultTypeInternal _consumable_data_default_instance_;
+
+inline constexpr building_data::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        level_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR building_data::building_data(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(building_data_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct building_dataDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR building_dataDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~building_dataDefaultTypeInternal() {}
+  union {
+    building_data _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 building_dataDefaultTypeInternal _building_data_default_instance_;
 template <typename>
 PROTOBUF_CONSTEXPR avatar_data::avatar_data(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
@@ -244,14 +269,20 @@ const ::uint32_t
         0x000, // bitmap
         0x000, // bitmap
         0x000, // bitmap
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::building_data, _impl_._has_bits_),
+        4, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::building_data, _impl_.level_),
+        0,
         0x085, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_._oneof_case_[0]),
-        17, // hasbit index offset
+        18, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.item_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.template_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.count_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.position_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.payload_),
@@ -273,6 +304,7 @@ const ::uint32_t
         ~0u,
         ~0u,
         ~0u,
+        ~0u,
 };
 
 static const ::_pbi::MigrationSchema
@@ -285,7 +317,8 @@ static const ::_pbi::MigrationSchema
         {15, sizeof(::celeritas::proto::common::title_data)},
         {16, sizeof(::celeritas::proto::common::hero_data)},
         {17, sizeof(::celeritas::proto::common::exp_data)},
-        {18, sizeof(::celeritas::proto::common::inventory_data)},
+        {18, sizeof(::celeritas::proto::common::building_data)},
+        {23, sizeof(::celeritas::proto::common::inventory_data)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::common::_custom_data_default_instance_._instance,
@@ -296,6 +329,7 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::common::_title_data_default_instance_._instance,
     &::celeritas::proto::common::_hero_data_default_instance_._instance,
     &::celeritas::proto::common::_exp_data_default_instance_._instance,
+    &::celeritas::proto::common::_building_data_default_instance_._instance,
     &::celeritas::proto::common::_inventory_data_default_instance_._instance,
 };
 const char descriptor_table_protodef_proto_2fcommon_2fitem_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
@@ -305,33 +339,35 @@ const char descriptor_table_protodef_proto_2fcommon_2fitem_2eproto[] ABSL_ATTRIB
     "ata\022\023\n\013expire_time\030\001 \001(\003\"6\n\016equipment_da"
     "ta\022\020\n\010strength\030\001 \001(\005\022\022\n\ndurability\030\002 \001(\005"
     "\"\r\n\013avatar_data\"\014\n\nframe_data\"\014\n\ntitle_d"
-    "ata\"\013\n\thero_data\"\n\n\010exp_data\"\232\004\n\016invento"
-    "ry_data\022\017\n\007item_id\030\001 \001(\003\022\023\n\013template_id\030"
-    "\002 \001(\005\022\r\n\005count\030\003 \001(\003\022\020\n\010position\030\004 \001(\005\0225"
-    "\n\006custom\030\005 \001(\0132#.celeritas.proto.common."
-    "custom_dataH\000\022=\n\nconsumable\030\006 \001(\0132\'.cele"
-    "ritas.proto.common.consumable_dataH\000\022;\n\t"
-    "equipment\030\007 \001(\0132&.celeritas.proto.common"
-    ".equipment_dataH\000\0225\n\006avatar\030\010 \001(\0132#.cele"
-    "ritas.proto.common.avatar_dataH\000\0223\n\005fram"
-    "e\030\t \001(\0132\".celeritas.proto.common.frame_d"
-    "ataH\000\0223\n\005title\030\n \001(\0132\".celeritas.proto.c"
-    "ommon.title_dataH\000\0221\n\004hero\030\013 \001(\0132!.celer"
-    "itas.proto.common.hero_dataH\000\022/\n\003exp\030\014 \001"
-    "(\0132 .celeritas.proto.common.exp_dataH\000B\t"
-    "\n\007payloadb\006proto3"
+    "ata\"\013\n\thero_data\"\n\n\010exp_data\"\036\n\rbuilding"
+    "_data\022\r\n\005level\030\001 \001(\005\"\325\004\n\016inventory_data\022"
+    "\017\n\007item_id\030\001 \001(\003\022\023\n\013template_id\030\002 \001(\005\022\r\n"
+    "\005count\030\003 \001(\003\022\020\n\010position\030\004 \001(\005\0225\n\006custom"
+    "\030\005 \001(\0132#.celeritas.proto.common.custom_d"
+    "ataH\000\022=\n\nconsumable\030\006 \001(\0132\'.celeritas.pr"
+    "oto.common.consumable_dataH\000\022;\n\tequipmen"
+    "t\030\007 \001(\0132&.celeritas.proto.common.equipme"
+    "nt_dataH\000\0225\n\006avatar\030\010 \001(\0132#.celeritas.pr"
+    "oto.common.avatar_dataH\000\0223\n\005frame\030\t \001(\0132"
+    "\".celeritas.proto.common.frame_dataH\000\0223\n"
+    "\005title\030\n \001(\0132\".celeritas.proto.common.ti"
+    "tle_dataH\000\0221\n\004hero\030\013 \001(\0132!.celeritas.pro"
+    "to.common.hero_dataH\000\022/\n\003exp\030\014 \001(\0132 .cel"
+    "eritas.proto.common.exp_dataH\000\0229\n\010buildi"
+    "ng\030\r \001(\0132%.celeritas.proto.common.buildi"
+    "ng_dataH\000B\t\n\007payloadb\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fcommon_2fitem_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fcommon_2fitem_2eproto = {
     false,
     false,
-    777,
+    868,
     descriptor_table_protodef_proto_2fcommon_2fitem_2eproto,
     "proto/common/item.proto",
     &descriptor_table_proto_2fcommon_2fitem_2eproto_once,
     nullptr,
     0,
-    9,
+    10,
     schemas,
     file_default_instances,
     TableStruct_proto_2fcommon_2fitem_2eproto::offsets,
@@ -1527,6 +1563,249 @@ exp_data::_table_ = {
 }
 // ===================================================================
 
+class building_data::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<building_data>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(building_data, _impl_._has_bits_);
+};
+
+building_data::building_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, building_data_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.common.building_data)
+}
+building_data::building_data(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const building_data& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, building_data_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+PROTOBUF_NDEBUG_INLINE building_data::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void building_data::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.level_ = {};
+}
+building_data::~building_data() {
+  // @@protoc_insertion_point(destructor:celeritas.proto.common.building_data)
+  SharedDtor(*this);
+}
+inline void building_data::SharedDtor(MessageLite& self) {
+  building_data& this_ = static_cast<building_data&>(self);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL building_data::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) building_data(arena);
+}
+constexpr auto building_data::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(building_data),
+                                            alignof(building_data));
+}
+constexpr auto building_data::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_building_data_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &building_data::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<building_data>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &building_data::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<building_data>(), &building_data::ByteSizeLong,
+              &building_data::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(building_data, _impl_._cached_size_),
+          false,
+      },
+      &building_data::kDescriptorMethods,
+      &descriptor_table_proto_2fcommon_2fitem_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull building_data_class_data_ =
+        building_data::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+building_data::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&building_data_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(building_data_class_data_.tc_table);
+  return building_data_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
+building_data::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(building_data, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    building_data_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::common::building_data>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int32 level = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(building_data, _impl_.level_), 0>(),
+     {8, 0, 0, PROTOBUF_FIELD_OFFSET(building_data, _impl_.level_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 level = 1;
+    {PROTOBUF_FIELD_OFFSET(building_data, _impl_.level_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void building_data::Clear() {
+// @@protoc_insertion_point(message_clear_start:celeritas.proto.common.building_data)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.level_ = 0;
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL building_data::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const building_data& this_ = static_cast<const building_data&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL building_data::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const building_data& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    this_.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:celeritas.proto.common.building_data)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // int32 level = 1;
+  if ((this_._impl_._has_bits_[0] & 0x00000001U) != 0) {
+    if (this_._internal_level() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<1>(
+              stream, this_._internal_level(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:celeritas.proto.common.building_data)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t building_data::ByteSizeLong(const MessageLite& base) {
+  const building_data& this_ = static_cast<const building_data&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t building_data::ByteSizeLong() const {
+  const building_data& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:celeritas.proto.common.building_data)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+   {
+    // int32 level = 1;
+    cached_has_bits = this_._impl_._has_bits_[0];
+    if ((cached_has_bits & 0x00000001U) != 0) {
+      if (this_._internal_level() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_level());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void building_data::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<building_data*>(&to_msg);
+  auto& from = static_cast<const building_data&>(from_msg);
+  if constexpr (::_pbi::DebugHardenVerifyHasBitConsistency()) {
+    from.VerifyHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:celeritas.proto.common.building_data)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001U) != 0) {
+    if (from._internal_level() != 0) {
+      _this->_impl_.level_ = from._impl_.level_;
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void building_data::CopyFrom(const building_data& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:celeritas.proto.common.building_data)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void building_data::InternalSwap(building_data* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.level_, other->_impl_.level_);
+}
+
+::google::protobuf::Metadata building_data::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class inventory_data::_Internal {
  public:
   using HasBits =
@@ -1641,6 +1920,19 @@ void inventory_data::set_allocated_exp(::celeritas::proto::common::exp_data* PRO
   }
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.common.inventory_data.exp)
 }
+void inventory_data::set_allocated_building(::celeritas::proto::common::building_data* PROTOBUF_NULLABLE building) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (building) {
+    ::google::protobuf::Arena* submessage_arena = building->GetArena();
+    if (message_arena != submessage_arena) {
+      building = ::google::protobuf::internal::GetOwnedMessage(message_arena, building, submessage_arena);
+    }
+    set_has_building();
+    _impl_.payload_.building_ = building;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.common.inventory_data.building)
+}
 inventory_data::inventory_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, inventory_data_class_data_.base()) {
@@ -1705,6 +1997,9 @@ inventory_data::inventory_data(
         break;
       case kExp:
         _impl_.payload_.exp_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.exp_);
+        break;
+      case kBuilding:
+        _impl_.payload_.building_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.building_);
         break;
   }
 
@@ -1811,6 +2106,14 @@ void inventory_data::clear_payload() {
       }
       break;
     }
+    case kBuilding: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.building_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.building_);
+      }
+      break;
+    }
     case PAYLOAD_NOT_SET: {
       break;
     }
@@ -1862,17 +2165,17 @@ inventory_data::GetClassData() const {
   return inventory_data_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 12, 8, 0, 2>
+const ::_pbi::TcParseTable<2, 13, 9, 0, 2>
 inventory_data::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(inventory_data, _impl_._has_bits_),
     0, // no _extensions_
-    12, 24,  // max_field_number, fast_idx_mask
+    13, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294963200,  // skipmap
+    4294959104,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    12,  // num_field_entries
-    8,  // num_aux_entries
+    13,  // num_field_entries
+    9,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     inventory_data_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -1920,6 +2223,8 @@ inventory_data::_table_ = {
     {PROTOBUF_FIELD_OFFSET(inventory_data, _impl_.payload_.hero_), _Internal::kOneofCaseOffset + 0, 6, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.common.exp_data exp = 12;
     {PROTOBUF_FIELD_OFFSET(inventory_data, _impl_.payload_.exp_), _Internal::kOneofCaseOffset + 0, 7, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.common.building_data building = 13;
+    {PROTOBUF_FIELD_OFFSET(inventory_data, _impl_.payload_.building_), _Internal::kOneofCaseOffset + 0, 8, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::common::custom_data>()},
@@ -1930,6 +2235,7 @@ inventory_data::_table_ = {
       {::_pbi::TcParser::GetTable<::celeritas::proto::common::title_data>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::common::hero_data>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::common::exp_data>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::common::building_data>()},
   }},
   {{
   }},
@@ -2055,6 +2361,12 @@ PROTOBUF_NOINLINE void inventory_data::Clear() {
           stream);
       break;
     }
+    case kBuilding: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          13, *this_._impl_.payload_.building_, this_._impl_.payload_.building_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     default:
       break;
   }
@@ -2160,6 +2472,12 @@ PROTOBUF_NOINLINE void inventory_data::Clear() {
     case kExp: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.exp_);
+      break;
+    }
+    // .celeritas.proto.common.building_data building = 13;
+    case kBuilding: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.building_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -2278,6 +2596,14 @@ void inventory_data::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::
           _this->_impl_.payload_.exp_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.exp_);
         } else {
           _this->_impl_.payload_.exp_->MergeFrom(*from._impl_.payload_.exp_);
+        }
+        break;
+      }
+      case kBuilding: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.building_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.building_);
+        } else {
+          _this->_impl_.payload_.building_->MergeFrom(*from._impl_.payload_.building_);
         }
         break;
       }

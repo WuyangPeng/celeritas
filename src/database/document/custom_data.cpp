@@ -50,6 +50,11 @@ celeritas::custom_data::document_type celeritas::custom_data::to_document_type()
                 document.emplace_back(type_description, std::string{ hero_description });
                 document.emplace_back(data_description, arg.to_document_type());
             }
+            else if constexpr (std::is_same_v<T, building_data>)
+            {
+                document.emplace_back(type_description, std::string{ building_description });
+                document.emplace_back(data_description, arg.to_document_type());
+            }
             else if constexpr (std::is_same_v<T, std::monostate>)
             {
                 // monostate结果为空文档
@@ -93,6 +98,10 @@ celeritas::custom_data celeritas::custom_data::from_document(const document_type
     {
         return from_hero_description(document);
     }
+    if (type == building_description)
+    {
+        return from_building_description(document);
+    }
 
     throw celeritas_error{ "custom_data::from_document() failed." };
 }
@@ -132,6 +141,11 @@ celeritas::config::item_type celeritas::custom_data::get_kind() const noexcept
     if (std::holds_alternative<exp_data>(detail_))
     {
         return config::item_type::exp;
+    }
+
+    if (std::holds_alternative<building_data>(detail_))
+    {
+        return config::item_type::building;
     }
 
     return config::item_type::none;
@@ -195,6 +209,16 @@ const celeritas::hero_data* celeritas::custom_data::get_hero() const
     }
 
     throw celeritas_error{ "custom_data::get_hero() failed, custom_data is not hero." };
+}
+
+const celeritas::building_data* celeritas::custom_data::get_building() const
+{
+    if (const auto result = std::get_if<building_data>(&detail_))
+    {
+        return result;
+    }
+
+    throw celeritas_error{ "custom_data::get_building() failed, custom_data is not building." };
 }
 
 std::string celeritas::custom_data::get_type(const document_type& document)
@@ -294,6 +318,20 @@ celeritas::custom_data celeritas::custom_data::from_hero_description(const docum
     return custom_data;
 }
 
+celeritas::custom_data celeritas::custom_data::from_building_description(const document_type& document)
+{
+    custom_data custom_data{};
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == data_description)
+        {
+            custom_data.detail_ = building_data::from_document(element.get_value<database_data_type::document_type>());
+            break;
+        }
+    }
+    return custom_data;
+}
+
 celeritas::custom_data::variant_type celeritas::custom_data::get_variant_type(const std::string_view type)
 {
     if (type == custom_description)
@@ -329,6 +367,11 @@ celeritas::custom_data::variant_type celeritas::custom_data::get_variant_type(co
     if (type == hero_description)
     {
         return hero_data();
+    }
+
+    if (type == building_description)
+    {
+        return building_data();
     }
 
     throw celeritas_error{ "custom_data type failed." };
