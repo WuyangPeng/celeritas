@@ -77,7 +77,7 @@ celeritas::player_item_selected_document::optional_item_selected_data celeritas:
     return data;
 }
 
-void celeritas::player_item_selected_document::on_dependencies_ready()
+void celeritas::player_item_selected_document::send_initial_sync()
 {
     send_item_message(true, 0, item_selected_);
 }

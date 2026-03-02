@@ -20,7 +20,7 @@ celeritas::player_component::void_awaitable_type celeritas::player_item_componen
 
     co_await selected_database_.load_user_item();
 
-    selected_document_.set_item_selected(selected_document_.get_item_selected());
+    selected_document_.set_item_selected(selected_database_.get_item_selected_data());
 
     co_return;
 }
@@ -152,10 +152,10 @@ celeritas::player_item_component::optional_item_selected_data celeritas::player_
     return optional_selected_data;
 }
 
-celeritas::player_component::void_awaitable_type celeritas::player_item_component::on_dependencies_ready()
+celeritas::player_component::void_awaitable_type celeritas::player_item_component::send_initial_sync()
 {
-    document_.on_dependencies_ready();
-    selected_document_.on_dependencies_ready();
+    document_.send_initial_sync();
+    selected_document_.send_initial_sync();
 
     co_return;
 }

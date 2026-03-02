@@ -122,7 +122,7 @@ celeritas::player_item_document::optional_inventory_data_container_iter celerita
     return std::nullopt;
 }
 
-void celeritas::player_item_document::on_dependencies_ready()
+void celeritas::player_item_document::send_initial_sync()
 {
     send_item_message(true, inventory_data_);
 }

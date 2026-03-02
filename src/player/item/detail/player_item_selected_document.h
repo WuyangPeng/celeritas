@@ -30,7 +30,7 @@ namespace celeritas
 
         [[nodiscard]] optional_item_selected_data change_item_selected(const const_app_config_shared_ptr& app_config, config::item_type item_type, config::item_selected_child_type child_type, int64_t operation_id, int parameter, int64_t selected_id);
 
-        void on_dependencies_ready();
+        void send_initial_sync();
 
         void send_item_message(bool is_login, int rpc, const item_selected_data_container& item_selected);
 

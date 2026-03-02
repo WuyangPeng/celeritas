@@ -52,7 +52,7 @@ namespace celeritas
                                                                        int parameter,
                                                                        int64_t selected_id);
 
-        [[nodiscard]] void_awaitable_type on_dependencies_ready() override;
+        [[nodiscard]] void_awaitable_type send_initial_sync() override;
 
         void send_item_message(bool is_login, int rpc, const item_selected_data& item_selected);
 

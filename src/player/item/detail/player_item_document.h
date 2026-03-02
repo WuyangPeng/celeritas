@@ -45,7 +45,7 @@ namespace celeritas
 
         [[nodiscard]] optional_inventory_data_container_iter get_inventory_data(int64_t item_id);
 
-        void on_dependencies_ready();
+        void send_initial_sync();
 
         void remove_inventory_data(int64_t item_id);
 
