@@ -47,6 +47,8 @@ namespace celeritas
 
         [[nodiscard]] optional_develop_data get_develop_data(const develop_data_key& key) const;
 
+        [[nodiscard]] int get_max_level(int system_id) const;
+
     private:
         void update_document();
 

@@ -4,6 +4,7 @@
 #include "detail/component/daily_task.h"
 #include "detail/component/frame_task.h"
 #include "detail/component/main_task.h"
+#include "detail/component/title_task.h"
 #include "detail/default_progress/kill_monster_progress_calculator.h"
 #include "detail/default_progress/upgrade_level_progress_calculator.h"
 #include "detail/default_progress/hold_item_progress_calculator.h"
@@ -19,7 +20,8 @@ celeritas::player_task_component::player_task_component(player_state* player_sta
       tasks_{ std::make_shared<main_task>(player_state),
               std::make_shared<daily_task>(player_state),
               std::make_shared<avatar_task>(player_state),
-              std::make_shared<frame_task>(player_state) },
+              std::make_shared<frame_task>(player_state),
+              std::make_shared<title_task>(player_state) },
       calculators_{ { config::task_event_type::kill_monster, std::make_shared<kill_monster_progress_calculator>(player_state) },
                     { config::task_event_type::upgrade_level, std::make_shared<upgrade_level_progress_calculator>(player_state) },
                     { config::task_event_type::hold_item, std::make_shared<hold_item_progress_calculator>(player_state) } }
@@ -42,6 +44,12 @@ celeritas::player_component::void_awaitable_type celeritas::player_task_componen
                                                                                                          },
                                                                                                          player_event_priority::normal));
 
+    std::ignore = get_player_state()->register_listener(player_event_type::on_develop_level,
+                                                        std::make_shared<player_event_function_listener>([self = boost::polymorphic_pointer_downcast<class_type>(shared_from_this())](const player_event_shared_ptr& event) -> void_awaitable_type {
+                                                                                                             return self->on_develop_level_event(event);
+                                                                                                         },
+                                                                                                         player_event_priority::normal));
+
     co_return;
 }
 
@@ -53,6 +61,20 @@ celeritas::player_component::void_awaitable_type celeritas::player_task_componen
         const auto count = event->get_data<int64_t>("count");
 
         const task_context context{ config::task_event_type::hold_item, task_change_type::set, item_id, count };
+
+        update_task_progress(context, event->is_login());
+    }
+    co_return;
+}
+
+celeritas::player_component::void_awaitable_type celeritas::player_task_component::on_develop_level_event(const player_event_shared_ptr& event)
+{
+    if (event->has_data("develop_id"))
+    {
+        const auto develop_id = event->get_data<int32_t>("develop_id");
+        const auto level = event->get_data<int64_t>("level");
+
+        const task_context context{ config::task_event_type::upgrade_level, task_change_type::set, develop_id, level };
 
         update_task_progress(context, event->is_login());
     }

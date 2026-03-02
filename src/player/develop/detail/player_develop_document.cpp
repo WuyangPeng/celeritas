@@ -127,6 +127,20 @@ celeritas::player_develop_document::optional_develop_data celeritas::player_deve
     return std::nullopt;
 }
 
+int celeritas::player_develop_document::get_max_level(const int system_id) const
+{
+    auto max_level = 0;
+    for (const auto& element : develop_data_ | std::views::values)
+    {
+        if (element.get_system_id() == system_id && element.get_level() > max_level)
+        {
+            max_level = element.get_level();
+        }
+    }
+
+    return max_level;
+}
+
 void celeritas::player_develop_document::add_develop_data(const develop_data& develop_data)
 {
     develop_data_.emplace(develop_data_key{ develop_data.get_system_id(), develop_data.get_instance_id() }, develop_data);

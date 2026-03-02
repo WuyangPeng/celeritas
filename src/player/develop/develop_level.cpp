@@ -72,6 +72,8 @@ celeritas::player_service_base::void_awaitable_type celeritas::develop_level::re
 
     co_await player_item_component_->consume_item(get_config(), container);
 
+    const auto old_max_level = player_develop_component_->get_max_level(request_develop.system_id());
+
     develop.set_level(level);
 
     if (const auto game_error_type = player_develop_component_->develop_level(develop);
@@ -82,5 +84,15 @@ celeritas::player_service_base::void_awaitable_type celeritas::develop_level::re
     else
     {
         get_player_state()->send_error_message(get_rpc(), game_error_type);
+    }
+
+    if (const auto current_max_level = player_develop_component_->get_max_level(request_develop.system_id());
+        old_max_level < current_max_level)
+    {
+        const auto event = std::make_shared<player_event>(player_event_type::on_develop_level, false);
+        event->set_data("develop_id", request_develop.system_id());
+        event->set_data("level", current_max_level);
+
+        co_await get_player_state()->trigger_event(event);
     }
 }

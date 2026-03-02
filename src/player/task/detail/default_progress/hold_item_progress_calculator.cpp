@@ -7,7 +7,7 @@ celeritas::hold_item_progress_calculator::hold_item_progress_calculator(player_s
 {
 }
 
-int celeritas::hold_item_progress_calculator::calculate(const config::task_event_type task_event_type, int target_id) const
+int celeritas::hold_item_progress_calculator::calculate(const config::task_event_type task_event_type, const int target_id) const
 {
     if (task_event_type != config::task_event_type::hold_item)
     {

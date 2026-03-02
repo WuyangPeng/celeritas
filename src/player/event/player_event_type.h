@@ -7,5 +7,8 @@ namespace celeritas
     {
         // 物品相关
         on_item_add = 60000,
+
+        // 养成相关
+        on_develop_level = 70000,
     };
 }

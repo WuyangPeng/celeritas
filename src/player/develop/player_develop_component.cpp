@@ -190,6 +190,11 @@ celeritas::player_develop_component::optional_develop_data celeritas::player_dev
     return document_.get_develop_data(key);
 }
 
+int celeritas::player_develop_component::get_max_level(int system_id) const
+{
+    return document_.get_max_level(system_id);
+}
+
 void celeritas::player_develop_component::update_document()
 {
     database_.set_develop(document_.get_develop());

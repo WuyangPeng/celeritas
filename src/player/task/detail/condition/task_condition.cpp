@@ -14,7 +14,7 @@ celeritas::task_condition::task_condition_unique_ptr celeritas::task_condition::
         case config::task_event_type::kill_monster:
             return std::make_unique<kill_monster_condition>(target_id);
         case config::task_event_type::upgrade_level:
-            return std::make_unique<upgrade_level_condition>();
+            return std::make_unique<upgrade_level_condition>(target_id);
         case config::task_event_type::hold_item:
             return std::make_unique<hold_item_condition>(target_id);
         default:

@@ -6,6 +6,7 @@ namespace celeritas
     class main_task;
     class daily_task;
     class avatar_task;
+    class title_task;
 
     enum class task_change_type;
     class task_context;

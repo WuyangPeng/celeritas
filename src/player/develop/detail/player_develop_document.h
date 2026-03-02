@@ -40,6 +40,8 @@ namespace celeritas
 
         [[nodiscard]] optional_develop_data get_develop_data(const develop_data_key& key) const;
 
+        [[nodiscard]] int get_max_level(int system_id) const;
+
     private:
         using develop_data_container = std::map<develop_data_key, develop_data>;
 

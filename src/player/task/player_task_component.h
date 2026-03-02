@@ -43,6 +43,8 @@ namespace celeritas
     private:
         [[nodiscard]] void_awaitable_type on_item_add_event(const player_event_shared_ptr& event);
 
+        [[nodiscard]] void_awaitable_type on_develop_level_event(const player_event_shared_ptr& event);
+
         task_container tasks_;
         calculator_container calculators_;
     };
