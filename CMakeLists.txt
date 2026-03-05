@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.26)
 
 project(celeritas)
 
-# C++标准为C++20
-set(CMAKE_CXX_STANDARD 20)
+# C++标准为C++23
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (CMAKE_BUILD_TYPE AND (CMAKE_BUILD_TYPE STREQUAL "Debug"))
