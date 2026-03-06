@@ -19,7 +19,7 @@ celeritas::sdk_providers celeritas::app_sdk_providers::get_sdk_providers(const s
     if (const auto iter = sdk_providers_.find(sdk_providers_key);
         iter != sdk_providers_.cend())
     {
-        if (iter->second.is_active())
+        if (!iter->second.is_active())
         {
             throw celeritas_error{ "sdk providers is close." };
         }

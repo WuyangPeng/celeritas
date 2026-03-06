@@ -19,7 +19,7 @@ celeritas::email_providers celeritas::app_email_providers::get_email_providers(c
     if (const auto iter = email_providers_.find(provider_id);
         iter != email_providers_.cend())
     {
-        if (iter->second.is_active())
+        if (!iter->second.is_active())
         {
             throw celeritas_error{ "email providers is close." };
         }

@@ -13,9 +13,8 @@ namespace celeritas
     {
     public:
         using class_type = app_email_providers;
-        using io_context_type = boost::asio::io_context;
-        using void_awaitable_type = boost::asio::awaitable<void>;
         using any_io_executor = boost::asio::any_io_executor;
+        using void_awaitable_type = boost::asio::awaitable<void>;
 
         [[nodiscard]] static app_email_providers& get_instance();
 
@@ -31,6 +30,7 @@ namespace celeritas
         app_email_providers() noexcept = default;
 
         [[nodiscard]] void_awaitable_type load_from_db();
+
         [[nodiscard]] void_awaitable_type load_from_db(int64_t provider_id);
 
         email_providers_type email_providers_;
