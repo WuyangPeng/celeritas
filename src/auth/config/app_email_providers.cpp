@@ -85,13 +85,13 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
     email_providers_ = std::move(container);
 }
 
-void celeritas::app_email_providers::add_email_providers(const optional_database_entity_change& optional_provider)
+void celeritas::app_email_providers::add_email_provider(const optional_database_entity_change& optional_provider)
 {
-    const auto provider = std::make_shared<email_providers>(*optional_provider);
+    auto provider = std::make_shared<email_providers>(*optional_provider);
     const auto provider_id = provider->get_provider_id();
 
     std::lock_guard lock{ mutex_ };
-    email_providers_.insert_or_assign(provider_id, provider);
+    email_providers_.insert_or_assign(provider_id, std::move(provider));
 
     LOG_CHANNEL(auth_channel, info) << "loaded email provider from db, provider_id: " << provider_id;
 }
@@ -102,7 +102,7 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
 
     if (const auto optional_provider = co_await mysql_pool->select_one<email_providers>(database_type::mysql, provider_id))
     {
-        add_email_providers(optional_provider);
+        add_email_provider(optional_provider);
     }
     else
     {
