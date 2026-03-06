@@ -64,6 +64,7 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
 
     email_providers_container container{};
     container.reserve(apps_result.size());
+
     for (const auto& row : apps_result)
     {
         const auto provider = std::make_shared<email_providers>(row);

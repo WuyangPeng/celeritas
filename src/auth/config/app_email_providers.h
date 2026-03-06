@@ -21,9 +21,9 @@ namespace celeritas
 
         [[nodiscard]] const_email_providers_shared_ptr get_email_providers(int64_t provider_id);
 
-        void reload_from_db(const any_io_executor& any_io_executor, int64_t provider_id);
+        static void reload_from_db(const any_io_executor& any_io_executor, int64_t provider_id);
 
-        void load_from_db(const any_io_executor& any_io_executor);
+        static void load_from_db(const any_io_executor& any_io_executor);
 
     private:
         using email_providers_container = std::unordered_map<int64_t, const_email_providers_shared_ptr>;
