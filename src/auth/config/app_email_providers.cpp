@@ -61,15 +61,15 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
 
     const auto apps_result = co_await mysql_pool->select_all<email_providers>(database_type::mysql);
 
-    email_providers_type email_providers_type{};
+    email_providers_container container{};
     for (const auto& row : apps_result)
     {
         const email_providers email_providers{ row };
-        email_providers_type.emplace(email_providers.get_provider_id(), email_providers);
+        container.emplace(email_providers.get_provider_id(), email_providers);
     }
 
     std::lock_guard lock{ mutex_ };
-    email_providers_ = std::move(email_providers_type);
+    email_providers_ = std::move(container);
 }
 
 celeritas::app_email_providers::void_awaitable_type celeritas::app_email_providers::load_from_db(const int64_t provider_id)

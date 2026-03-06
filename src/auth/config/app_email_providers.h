@@ -25,7 +25,7 @@ namespace celeritas
         void load_from_db(const any_io_executor& any_io_executor);
 
     private:
-        using email_providers_type = std::unordered_map<int64_t, email_providers>;
+        using email_providers_container = std::unordered_map<int64_t, email_providers>;
 
         app_email_providers() noexcept = default;
 
@@ -33,7 +33,7 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type load_from_db(int64_t provider_id);
 
-        email_providers_type email_providers_;
+        email_providers_container email_providers_;
         std::shared_mutex mutex_;
     };
 }
