@@ -171,8 +171,8 @@ celeritas::connection_pool<SessionType>::bool_awaitable_type celeritas::connecti
                                                                 co_return co_await self->do_execute_changes(database, expiration_time);
                                                             },
                                                             database_channel,
-                                                            "execute changes error: ",
-                                                            false);
+                                                            false,
+                                                            "execute changes error: ");
 }
 
 template <typename SessionType>

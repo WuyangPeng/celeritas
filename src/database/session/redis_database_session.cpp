@@ -57,8 +57,8 @@ celeritas::database_session::bool_awaitable_type celeritas::redis_database_sessi
                                              return true;
                                          },
                                          database_channel,
-                                         "Redis health check failed with celeritas error: ",
-                                         false);
+                                         false,
+                                         "Redis health check failed with celeritas error: ");
 }
 
 celeritas::redis_key_commands& celeritas::redis_database_session::get_redis_key_commands()

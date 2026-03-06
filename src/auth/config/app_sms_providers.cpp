@@ -84,6 +84,6 @@ celeritas::app_sms_providers::void_awaitable_type celeritas::app_sms_providers::
         const sms_providers sms_providers{ *optional_sms_providers };
 
         std::lock_guard lock{ mutex_ };
-        sms_providers_.emplace(sms_providers.get_provider_id(), sms_providers);
+        sms_providers_.insert_or_assign(sms_providers.get_provider_id(), sms_providers);
     }
 }

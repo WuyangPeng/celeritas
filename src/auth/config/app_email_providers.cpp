@@ -42,7 +42,8 @@ void celeritas::app_email_providers::reload_from_db(const any_io_executor& any_i
                       return get_instance().load_from_db(provider_id);
                   },
                   auth_channel,
-                  "load email providers from db error, provider_id: " + std::to_string(provider_id));
+                  "load email providers from db error, provider_id: {}",
+                  provider_id);
 }
 
 void celeritas::app_email_providers::load_from_db(const any_io_executor& any_io_executor)
@@ -64,8 +65,11 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
     email_providers_container container{};
     for (const auto& row : apps_result)
     {
-        const email_providers email_providers{ row };
-        container.emplace(email_providers.get_provider_id(), email_providers);
+        const email_providers provider{ row };
+        const auto provider_id = provider.get_provider_id();
+        container.emplace(provider_id, provider);
+
+        LOG_CHANNEL(auth_channel, info) << "loaded email provider from db, provider_id: " << provider_id;
     }
 
     std::lock_guard lock{ mutex_ };
@@ -76,11 +80,17 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
-    if (const auto optional_sms_providers = co_await mysql_pool->select_one<email_providers>(database_type::mysql, provider_id))
+    if (const auto optional_email_providers = co_await mysql_pool->select_one<email_providers>(database_type::mysql, provider_id))
     {
-        const email_providers email_providers{ *optional_sms_providers };
+        const email_providers email_providers{ *optional_email_providers };
 
         std::lock_guard lock{ mutex_ };
-        email_providers_.emplace(email_providers.get_provider_id(), email_providers);
+        email_providers_.insert_or_assign(provider_id, email_providers);
+
+        LOG_CHANNEL(auth_channel, info) << "loaded email provider from db, provider_id: " << provider_id;
+    }
+    else
+    {
+        LOG_CHANNEL(auth_channel, warning) << "email provider not found in database, provider_id: " << provider_id;
     }
 }

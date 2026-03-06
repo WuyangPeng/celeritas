@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_SUITE(noexcept_safe_call_and_log_suite)
             return 42;
         };
 
-        const auto result = celeritas::noexcept_safe_call_and_log(func, "test_channel", "error message", 0);
+        const auto result = celeritas::noexcept_safe_call_and_log(func, "test_channel", 0, "error message");
         BOOST_CHECK_EQUAL(result, 42);
     }
 
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_SUITE(noexcept_safe_call_and_log_suite)
             throw std::runtime_error("runtime error");
         };
 
-        const auto result = celeritas::noexcept_safe_call_and_log(func, "test_channel", "error message", -1);
+        const auto result = celeritas::noexcept_safe_call_and_log(func, "test_channel", -1, "error message");
         BOOST_CHECK_EQUAL(result, -1);
     }
 
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_SUITE(noexcept_safe_call_and_log_suite)
             throw 123;
         };
 
-        const auto result = celeritas::noexcept_safe_call_and_log(func, "test_channel", "error message", -1);
+        const auto result = celeritas::noexcept_safe_call_and_log(func, "test_channel", -1, "error message");
         BOOST_CHECK_EQUAL(result, -1);
     }
 
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_SUITE(noexcept_safe_call_and_log_suite)
         };
 
         auto awaitable = [&]() -> boost::asio::awaitable<void> {
-            result = co_await celeritas::noexcept_safe_call_and_log_awaitable(func, "test_channel", "error message", -1);
+            result = co_await celeritas::noexcept_safe_call_and_log_awaitable(func, "test_channel", -1, "error message");
         };
 
         boost::asio::co_spawn(io_context, awaitable, boost::asio::detached);
@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_SUITE(noexcept_safe_call_and_log_suite)
         };
 
         auto awaitable = [&]() -> boost::asio::awaitable<void> {
-            result = co_await celeritas::noexcept_safe_call_and_log_awaitable(func, "test_channel", "error message", -1);
+            result = co_await celeritas::noexcept_safe_call_and_log_awaitable(func, "test_channel", -1, "error message");
         };
 
         boost::asio::co_spawn(io_context, awaitable, boost::asio::detached);
@@ -212,7 +212,7 @@ BOOST_AUTO_TEST_SUITE(noexcept_safe_call_and_log_suite)
         };
 
         auto awaitable = [&]() -> boost::asio::awaitable<void> {
-            result = co_await celeritas::noexcept_safe_call_and_log_awaitable(func, "test_channel", "error message", -1);
+            result = co_await celeritas::noexcept_safe_call_and_log_awaitable(func, "test_channel", -1, "error message");
         };
 
         boost::asio::co_spawn(io_context, awaitable, boost::asio::detached);

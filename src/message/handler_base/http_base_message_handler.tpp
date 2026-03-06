@@ -2,23 +2,26 @@
 
 #include "http_base_message_handler.h"
 
-template <typename HttpServiceType>
-void celeritas::http_base_message_handler::co_spawn_response(http_handle_parameter_shared_ptr handle_parameter, const std::string_view channel_name, const std::string& error_message)
+template <typename HttpServiceType, typename... Args>
+void celeritas::http_base_message_handler::co_spawn_response(http_handle_parameter_shared_ptr handle_parameter, 
+                                                              const std::string_view channel_name, 
+                                                              std::format_string<Args...> format,
+                                                              Args... args)
 {
-    co_spawn(handle_parameter->get_any_io_executor(),
-             noexcept_safe_call_and_log_awaitable([handle_parameter = handle_parameter,
-                                                      channel_name = channel_name,
-                                                      error_message = error_message] {
-                                                      return response<HttpServiceType>(handle_parameter, channel_name, error_message);
-                                                  },
-                                                  channel_name,
-                                                  error_message),
-
-             boost::asio::detached);
+    safe_co_spawn(handle_parameter->get_any_io_executor(),
+                  [handle_parameter, channel_name, format, args...] {
+                      return response<HttpServiceType>(handle_parameter, channel_name, format, args...);
+                  },
+                  channel_name,
+                  format,
+                  args...);
 }
 
-template <typename HttpServiceType>
-celeritas::http_base_message_handler::void_awaitable_type celeritas::http_base_message_handler::response(http_handle_parameter_shared_ptr handle_parameter, const std::string_view channel_name, const std::string& error_message)
+template <typename HttpServiceType, typename... Args>
+celeritas::http_base_message_handler::void_awaitable_type celeritas::http_base_message_handler::response(http_handle_parameter_shared_ptr handle_parameter, 
+                                                                                                          const std::string_view channel_name, 
+                                                                                                          std::format_string<Args...> format,
+                                                                                                          Args... args)
 {
     auto http_service = std::make_shared<HttpServiceType>(std::move(handle_parameter));
 
@@ -27,8 +30,9 @@ celeritas::http_base_message_handler::void_awaitable_type celeritas::http_base_m
                                                            co_return true;
                                                        },
                                                        channel_name,
-                                                       error_message,
-                                                       false))
+                                                       false,
+                                                       format,
+                                                       args...))
     {
         co_await http_service->send_error_response();
     }

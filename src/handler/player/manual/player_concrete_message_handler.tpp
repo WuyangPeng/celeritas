@@ -10,37 +10,34 @@
 #include <boost/asio/detached.hpp>
 
 template <typename Message>
-template <typename ServiceType>
+template <typename ServiceType, typename... Args>
 void celeritas::player_concrete_message_handler<Message>::player_co_spawn_response(const protobuf_handle_parameter_shared_ptr& handle_parameter,
                                                                                    const message_type& current_message,
                                                                                    std::string_view channel_name,
-                                                                                   const std::string& error_message)
+                                                                                   std::format_string<Args...> format,
+                                                                                   Args... args)
 {
     if (auto player = player_manager::get_instance().get_player(handle_parameter->get_user_id());
         player != nullptr)
     {
-        co_spawn(player->get_any_io_executor(),
-                 noexcept_safe_call_and_log_awaitable([handle_parameter = handle_parameter,
-                                                          current_message = current_message,
-                                                          channel_name = channel_name,
-                                                          error_message = error_message,
-                                                          player = player] {
-                                                          return player_response<ServiceType>(handle_parameter, player, current_message, channel_name, error_message);
-                                                      },
-                                                      channel_name,
-                                                      error_message),
-
-                 boost::asio::detached);
+        safe_co_spawn(player->get_any_io_executor(),
+                      [handle_parameter, current_message, channel_name, format, player, args...] {
+                          return player_response<ServiceType>(handle_parameter, player, current_message, channel_name, format, args...);
+                      },
+                      channel_name,
+                      format,
+                      args...);
     }
 }
 
 template <typename Message>
-template <typename ServiceType>
+template <typename ServiceType, typename... Args>
 celeritas::player_concrete_message_handler<Message>::void_awaitable_type celeritas::player_concrete_message_handler<Message>::player_response(protobuf_handle_parameter_shared_ptr handle_parameter,
                                                                                                                                               const player_state_shared_ptr& player_state,
                                                                                                                                               const message_type& current_message,
                                                                                                                                               std::string_view channel_name,
-                                                                                                                                              const std::string& error_message)
+                                                                                                                                              std::format_string<Args...> format,
+                                                                                                                                              Args... args)
 {
     const auto rpc = handle_parameter->get_rpc();
     if (auto service = ServiceType::create(std::move(handle_parameter), player_state, current_message);
@@ -49,8 +46,9 @@ celeritas::player_concrete_message_handler<Message>::void_awaitable_type celerit
                                                            co_return true;
                                                        },
                                                        channel_name,
-                                                       error_message,
-                                                       false))
+                                                       false,
+                                                       format,
+                                                       args...))
     {
         player_state->send_error_message(rpc, game_error_type::unknown);
     }

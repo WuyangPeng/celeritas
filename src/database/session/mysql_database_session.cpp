@@ -63,8 +63,8 @@ celeritas::database_session::bool_awaitable_type celeritas::mysql_database_sessi
                                                                 co_return true;
                                                             },
                                                             database_channel,
-                                                            "mysql health check failed with error: ",
-                                                            false);
+                                                            false,
+                                                            "mysql health check failed with error: ");
 }
 
 celeritas::mysql_database_session::void_awaitable_type celeritas::mysql_database_session::execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time)

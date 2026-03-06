@@ -45,8 +45,8 @@ bool celeritas::worker_pool::execute_task() noexcept
                                           return this->get_and_run_task();
                                       },
                                       common_channel,
-                                      "Task threw an exception: ",
-                                      false);
+                                      false,
+                                      "Task threw an exception: ");
 }
 
 bool celeritas::worker_pool::get_and_run_task()

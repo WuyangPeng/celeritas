@@ -37,14 +37,16 @@ namespace celeritas
 
         [[nodiscard]] virtual std::string get_server_type() const;
 
-        template <typename HttpServiceType>
+        template <typename HttpServiceType, typename... Args>
         void co_spawn_response(http_handle_parameter_shared_ptr handle_parameter,
                                std::string_view channel_name,
-                               const std::string& error_message);
+                               std::format_string<Args...> format,
+                               Args... args);
 
-        template <typename HttpServiceType>
+        template <typename HttpServiceType, typename... Args>
         [[nodiscard]] static void_awaitable_type response(http_handle_parameter_shared_ptr handle_parameter,
                                                           std::string_view channel_name,
-                                                          const std::string& error_message);
+                                                          std::format_string<Args...> format,
+                                                          Args... args);
     };
 }

@@ -62,8 +62,8 @@ celeritas::database_session::bool_awaitable_type celeritas::mongo_database_sessi
                                              return self->do_is_health();
                                          },
                                          database_channel,
-                                         "MongoDB health check failed: ",
-                                         false);
+                                         false,
+                                         "MongoDB health check failed: ");
 }
 
 celeritas::mongo_database_session::void_awaitable_type celeritas::mongo_database_session::execute_changes(const const_database_entity_change_shared_ptr& database, int expiration_time)
