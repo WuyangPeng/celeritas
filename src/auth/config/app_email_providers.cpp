@@ -90,10 +90,10 @@ void celeritas::app_email_providers::add_email_provider(const optional_database_
     auto provider = std::make_shared<email_providers>(*optional_provider);
     const auto provider_id = provider->get_provider_id();
 
+    LOG_CHANNEL(auth_channel, info) << "loaded email provider from db, provider_id: " << provider_id;
+
     std::lock_guard lock{ mutex_ };
     email_providers_.insert_or_assign(provider_id, std::move(provider));
-
-    LOG_CHANNEL(auth_channel, info) << "loaded email provider from db, provider_id: " << provider_id;
 }
 
 celeritas::app_email_providers::void_awaitable_type celeritas::app_email_providers::load_from_db(const int64_t provider_id)
