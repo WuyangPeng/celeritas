@@ -3,6 +3,9 @@
 #include "common/logging/logger.h"
 
 #include <boost/asio/awaitable.hpp>
+#include <boost/asio/co_spawn.hpp>
+#include <boost/asio/detached.hpp>
+#include <boost/asio/any_io_executor.hpp>
 
 namespace celeritas
 {
@@ -133,5 +136,18 @@ namespace celeritas
         }
 
         co_return default_value;
+    }
+
+    template <typename Func>
+    void safe_co_spawn(const boost::asio::any_io_executor& executor,
+                       Func&& func,
+                       const std::string_view channel_name,
+                       std::string error_message)
+    {
+        boost::asio::co_spawn(executor,
+                              noexcept_safe_call_and_log_awaitable(std::forward<Func>(func),
+                                                                   channel_name,
+                                                                   std::move(error_message)),
+                              boost::asio::detached);
     }
 }

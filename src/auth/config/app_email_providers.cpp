@@ -34,33 +34,32 @@ void celeritas::app_email_providers::reload_from_db(const any_io_executor& any_i
     if (provider_id == 0)
     {
         load_from_db(any_io_executor);
+        return;
     }
 
-    boost::asio::co_spawn(any_io_executor,
-                          noexcept_safe_call_and_log_awaitable([provider_id] {
-                                                                   return get_instance().load_from_db(provider_id);
-                                                               },
-                                                               auth_channel,
-                                                               "load email providers from db error"),
-                          boost::asio::detached);
+    safe_co_spawn(any_io_executor,
+                  [provider_id] {
+                      return get_instance().load_from_db(provider_id);
+                  },
+                  auth_channel,
+                  "load email providers from db error");
 }
 
 void celeritas::app_email_providers::load_from_db(const any_io_executor& any_io_executor)
 {
-    boost::asio::co_spawn(any_io_executor,
-                          noexcept_safe_call_and_log_awaitable([] {
-                                                                   return get_instance().load_from_db();
-                                                               },
-                                                               auth_channel,
-                                                               "load email providers from db error"),
-                          boost::asio::detached);
+    safe_co_spawn(any_io_executor,
+                  [] {
+                      return get_instance().load_from_db();
+                  },
+                  auth_channel,
+                  "load email providers from db error");
 }
 
 celeritas::app_email_providers::void_awaitable_type celeritas::app_email_providers::load_from_db()
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
-    const auto apps_result = co_await mysql_pool->select_all(email_providers::get_select(database_type::mysql), email_providers::get_database_field_container());
+    const auto apps_result = co_await mysql_pool->select_all<email_providers>(database_type::mysql);
 
     email_providers_type email_providers_type{};
     for (const auto& row : apps_result)
@@ -77,7 +76,7 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
-    if (const auto optional_sms_providers = co_await mysql_pool->select_one(email_providers::get_select(database_type::mysql, provider_id), email_providers::get_database_field_container()))
+    if (const auto optional_sms_providers = co_await mysql_pool->select_one<email_providers>(database_type::mysql, provider_id))
     {
         const email_providers email_providers{ *optional_sms_providers };
 

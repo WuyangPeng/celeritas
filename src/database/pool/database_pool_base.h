@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "config/basic/database_type.h"
 #include "database/database_constant.h"
 #include "detail/cleanup_database_session_timer.h"
 
@@ -52,6 +53,18 @@ namespace celeritas
         [[nodiscard]] virtual optional_database_entity_change_awaitable_type select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) = 0;
 
         [[nodiscard]] virtual result_container_awaitable_type select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) = 0;
+
+        template <typename T>
+        [[nodiscard]] result_container_awaitable_type select_all(database_type database_type)
+        {
+            return select_all(T::get_select(database_type), T::get_database_field_container());
+        }
+
+        template <typename T, typename IdType>
+        [[nodiscard]] optional_database_entity_change_awaitable_type select_one(database_type database_type, IdType id)
+        {
+            return select_one(T::get_select(database_type, id), T::get_database_field_container());
+        }
 
     private:
         using cleanup_database_session_timer_shared_ptr = std::shared_ptr<cleanup_database_session_timer>;
