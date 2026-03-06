@@ -65,7 +65,7 @@ celeritas::http_service_base::void_awaitable_type celeritas::send_email::send_sd
 {
     const auto email_providers = app_email_providers::get_instance().get_email_providers(apps.get_sms_provider_id());
 
-    const auto provider = send_email_to_providers::create(sms_code, email_providers);
+    const auto provider = send_email_to_providers::create(sms_code, *email_providers);
 
     co_return co_await provider->execute();
 }

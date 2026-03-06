@@ -12,14 +12,14 @@ celeritas::app_email_providers& celeritas::app_email_providers::get_instance()
     return instance;
 }
 
-celeritas::email_providers celeritas::app_email_providers::get_email_providers(const int64_t provider_id)
+celeritas::app_email_providers::const_email_providers_shared_ptr celeritas::app_email_providers::get_email_providers(const int64_t provider_id)
 {
     std::shared_lock lock{ mutex_ };
 
     if (const auto iter = email_providers_.find(provider_id);
         iter != email_providers_.cend())
     {
-        if (!iter->second.is_active())
+        if (!iter->second->is_active())
         {
             throw celeritas_error{ "email providers is close." };
         }
@@ -65,8 +65,8 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
     email_providers_container container{};
     for (const auto& row : apps_result)
     {
-        const email_providers provider{ row };
-        const auto provider_id = provider.get_provider_id();
+        const auto provider = std::make_shared<email_providers>(row);
+        const auto provider_id = provider->get_provider_id();
         container.emplace(provider_id, provider);
 
         LOG_CHANNEL(auth_channel, info) << "loaded email provider from db, provider_id: " << provider_id;
@@ -82,10 +82,10 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
 
     if (const auto optional_email_providers = co_await mysql_pool->select_one<email_providers>(database_type::mysql, provider_id))
     {
-        const email_providers email_providers{ *optional_email_providers };
+        const auto provider = std::make_shared<email_providers>(*optional_email_providers);
 
         std::lock_guard lock{ mutex_ };
-        email_providers_.insert_or_assign(provider_id, email_providers);
+        email_providers_.insert_or_assign(provider_id, provider);
 
         LOG_CHANNEL(auth_channel, info) << "loaded email provider from db, provider_id: " << provider_id;
     }

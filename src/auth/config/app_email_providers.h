@@ -15,17 +15,18 @@ namespace celeritas
         using class_type = app_email_providers;
         using any_io_executor = boost::asio::any_io_executor;
         using void_awaitable_type = boost::asio::awaitable<void>;
+        using const_email_providers_shared_ptr = std::shared_ptr<const email_providers>;
 
         [[nodiscard]] static app_email_providers& get_instance();
 
-        [[nodiscard]] email_providers get_email_providers(int64_t provider_id);
+        [[nodiscard]] const_email_providers_shared_ptr get_email_providers(int64_t provider_id);
 
         void reload_from_db(const any_io_executor& any_io_executor, int64_t provider_id);
 
         void load_from_db(const any_io_executor& any_io_executor);
 
     private:
-        using email_providers_container = std::unordered_map<int64_t, email_providers>;
+        using email_providers_container = std::unordered_map<int64_t, const_email_providers_shared_ptr>;
 
         app_email_providers() noexcept = default;
 
