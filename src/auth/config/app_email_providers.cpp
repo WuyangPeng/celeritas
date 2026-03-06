@@ -42,7 +42,7 @@ void celeritas::app_email_providers::reload_from_db(const any_io_executor& any_i
                       return get_instance().load_from_db(provider_id);
                   },
                   auth_channel,
-                  "load email providers from db error");
+                  "load email providers from db error, provider_id: " + std::to_string(provider_id));
 }
 
 void celeritas::app_email_providers::load_from_db(const any_io_executor& any_io_executor)
