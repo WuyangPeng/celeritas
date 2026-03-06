@@ -63,6 +63,7 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
     const auto apps_result = co_await mysql_pool->select_all<email_providers>(database_type::mysql);
 
     email_providers_container container{};
+    container.reserve(apps_result.size());
     for (const auto& row : apps_result)
     {
         const auto provider = std::make_shared<email_providers>(row);
@@ -80,9 +81,9 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
-    if (const auto optional_email_providers = co_await mysql_pool->select_one<email_providers>(database_type::mysql, provider_id))
+    if (const auto optional_provider = co_await mysql_pool->select_one<email_providers>(database_type::mysql, provider_id))
     {
-        const auto provider = std::make_shared<email_providers>(*optional_email_providers);
+        const auto provider = std::make_shared<email_providers>(*optional_provider);
 
         std::lock_guard lock{ mutex_ };
         email_providers_.insert_or_assign(provider_id, provider);
