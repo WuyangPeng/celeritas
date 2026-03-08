@@ -57,13 +57,13 @@ namespace celeritas
         template <typename T>
         [[nodiscard]] result_container_awaitable_type select_all(database_type database_type)
         {
-            return select_all(T::get_select(database_type), T::get_database_field_container());
+            co_return co_await select_all(T::get_select(database_type), T::get_database_field_container());
         }
 
         template <typename T, typename IdType>
         [[nodiscard]] optional_database_entity_change_awaitable_type select_one(database_type database_type, IdType id)
         {
-            return select_one(T::get_select(database_type, id), T::get_database_field_container());
+            co_return co_await select_one(T::get_select(database_type, id), T::get_database_field_container());
         }
 
     private:
