@@ -36,7 +36,7 @@ celeritas::sdk_login::void_awaitable_type celeritas::sdk_login::response()
 
     const auto sdk_providers = app_sdk_providers::get_instance().get_sdk_providers(sdk_providers_key{ app_id, process_type });
 
-    sdk_process_parameter sdk_process_parameter{ sdk_token, sdk_providers };
+    sdk_process_parameter sdk_process_parameter{ sdk_token, *sdk_providers };
 
     const auto sdk_process = sdk_process::create_sdk_process(sdk_process_parameter);
 

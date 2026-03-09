@@ -21,12 +21,12 @@ celeritas::app_email_providers::const_email_providers_shared_ptr celeritas::app_
     {
         if (!iter->second->is_active())
         {
-            throw celeritas_error{ "email providers is close." };
+            throw celeritas_error{ "email providers is close. provider_id = {}.", provider_id };
         }
         return iter->second;
     }
 
-    throw celeritas_error{ "email providers not registered" };
+    throw celeritas_error{ "email providers not registered. provider_id = {}.", provider_id };
 }
 
 void celeritas::app_email_providers::reload_from_db(const any_io_executor& any_io_executor, const int64_t provider_id)
@@ -42,7 +42,7 @@ void celeritas::app_email_providers::reload_from_db(const any_io_executor& any_i
                       return get_instance().load_from_db(provider_id);
                   },
                   auth_channel,
-                  "load email providers from db error, provider_id: {}",
+                  "load email providers from db error, provider id = {}.",
                   provider_id);
 }
 
@@ -53,24 +53,7 @@ void celeritas::app_email_providers::load_from_db(const any_io_executor& any_io_
                       return get_instance().load_from_db();
                   },
                   auth_channel,
-                  "load email providers from db error");
-}
-
-celeritas::app_email_providers::email_providers_container celeritas::app_email_providers::get_email_providers_container(const database_entity_change_container& apps_result)
-{
-    email_providers_container container{};
-    container.reserve(apps_result.size());
-
-    for (const auto& row : apps_result)
-    {
-        const auto provider = std::make_shared<email_providers>(row);
-        const auto provider_id = provider->get_provider_id();
-        container.emplace(provider_id, provider);
-
-        LOG_CHANNEL(auth_channel, info) << "loaded email provider from db, provider_id: " << provider_id;
-    }
-
-    return container;
+                  "load email providers from db error:");
 }
 
 celeritas::app_email_providers::void_awaitable_type celeritas::app_email_providers::load_from_db()
@@ -85,17 +68,6 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
     email_providers_ = std::move(container);
 }
 
-void celeritas::app_email_providers::add_email_provider(const optional_database_entity_change& optional_provider)
-{
-    auto provider = std::make_shared<email_providers>(*optional_provider);
-    const auto provider_id = provider->get_provider_id();
-
-    LOG_CHANNEL(auth_channel, info) << "loaded email provider from db, provider_id: " << provider_id;
-
-    std::lock_guard lock{ mutex_ };
-    email_providers_.insert_or_assign(provider_id, std::move(provider));
-}
-
 celeritas::app_email_providers::void_awaitable_type celeritas::app_email_providers::load_from_db(const int64_t provider_id)
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
@@ -106,6 +78,34 @@ celeritas::app_email_providers::void_awaitable_type celeritas::app_email_provide
     }
     else
     {
-        LOG_CHANNEL(auth_channel, warning) << "email provider not found in database, provider_id: " << provider_id;
+        LOG_CHANNEL(auth_channel, warning) << "email provider not found in database, provider id = " << provider_id;
     }
+}
+
+void celeritas::app_email_providers::add_email_provider(const optional_database_entity_change& optional_provider)
+{
+    auto provider = std::make_shared<email_providers>(*optional_provider);
+    const auto provider_id = provider->get_provider_id();
+
+    LOG_CHANNEL(auth_channel, info) << "loaded email provider from db, provider id = " << provider_id;
+
+    std::lock_guard lock{ mutex_ };
+    email_providers_.insert_or_assign(provider_id, std::move(provider));
+}
+
+celeritas::app_email_providers::email_providers_container celeritas::app_email_providers::get_email_providers_container(const database_entity_change_container& apps_result)
+{
+    email_providers_container container{};
+    container.reserve(apps_result.size());
+
+    for (const auto& row : apps_result)
+    {
+        const auto provider = std::make_shared<email_providers>(row);
+        const auto provider_id = provider->get_provider_id();
+        container.emplace(provider_id, provider);
+
+        LOG_CHANNEL(auth_channel, info) << "loaded email provider from db, provider id = " << provider_id;
+    }
+
+    return container;
 }
