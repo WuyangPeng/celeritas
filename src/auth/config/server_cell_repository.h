@@ -13,12 +13,11 @@ namespace celeritas
     {
     public:
         using class_type = server_cell_repository;
-        using io_context_type = boost::asio::io_context;
+        using any_io_executor = boost::asio::any_io_executor;
         using void_awaitable_type = boost::asio::awaitable<void>;
         using optional_server_cell_type = std::optional<server_cell>;
         using server_cell_container_type = std::vector<server_cell>;
         using optional_string = std::optional<std::string>;
-        using any_io_executor = boost::asio::any_io_executor;
 
         [[nodiscard]] static server_cell_repository& get_instance();
 

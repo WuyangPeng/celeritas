@@ -62,5 +62,3 @@ namespace celeritas
         std::shared_mutex mutex_;
     };
 }
-
-#include "provider_manager.tpp"

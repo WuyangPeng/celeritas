@@ -21,25 +21,22 @@ void celeritas::server_cell_repository::reload_from_db(const any_io_executor& an
         load_from_db(any_io_executor);
     }
 
-    boost::asio::co_spawn(any_io_executor,
-                          noexcept_safe_call_and_log_awaitable([cell_id] {
-                                                                   return get_instance().load_from_db(cell_id);
-                                                               },
-                                                               auth_channel,
-                                                               "load server cell from db error:"),
-
-                          boost::asio::detached);
+    safe_co_spawn(any_io_executor,
+                  [cell_id] {
+                      return get_instance().load_from_db(cell_id);
+                  },
+                  auth_channel,
+                  "load server cell from db error:");
 }
 
 void celeritas::server_cell_repository::load_from_db(const any_io_executor& any_io_executor)
 {
-    boost::asio::co_spawn(any_io_executor,
-                          noexcept_safe_call_and_log_awaitable([] {
-                                                                   return get_instance().load_from_db();
-                                                               },
-                                                               auth_channel,
-                                                               "load server cell from db error:"),
-                          boost::asio::detached);
+    safe_co_spawn(any_io_executor,
+                  [] {
+                      return get_instance().load_from_db();
+                  },
+                  auth_channel,
+                  "load server cell from db error:");
 }
 
 celeritas::server_cell_repository::optional_server_cell_type celeritas::server_cell_repository::get_server_cell(const std::string& game_server_id)
@@ -101,7 +98,7 @@ celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_re
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
-    const auto apps_result = co_await mysql_pool->select_all(server_cell::get_select(database_type::mysql), server_cell::get_database_field_container());
+    const auto apps_result = co_await mysql_pool->select_all<server_cell>(database_type::mysql);
 
     server_cell_type server_cell_type{};
     game_server_type game_server_type{};
@@ -133,7 +130,7 @@ celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_re
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
-    if (const auto optional_server_cell = co_await mysql_pool->select_one(server_cell::get_select(database_type::mysql, cell_id), server_cell::get_database_field_container()))
+    if (const auto optional_server_cell = co_await mysql_pool->select_one<server_cell>(database_type::mysql, cell_id))
     {
         const server_cell server_cell{ *optional_server_cell };
 
