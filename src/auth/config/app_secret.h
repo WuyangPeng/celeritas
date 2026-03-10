@@ -26,6 +26,12 @@ namespace celeritas
         [[nodiscard]] std::string format_key_info(const key_type& key) const override;
 
     private:
-        app_secret() noexcept = default;
+        enum class app_secret_create
+        {
+            init,
+        };
+
+    public:
+        explicit app_secret(app_secret_create type) noexcept;
     };
 }

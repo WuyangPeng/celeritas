@@ -7,7 +7,7 @@
 
 celeritas::app_sdk_providers& celeritas::app_sdk_providers::get_instance()
 {
-    static std::shared_ptr<app_sdk_providers> instance{ new app_sdk_providers{} };
+    static auto instance = std::make_shared<app_sdk_providers>(app_sdk_providers_create::init);
 
     return *instance;
 }
@@ -42,4 +42,8 @@ void celeritas::app_sdk_providers::before_add_entity(entity_container& container
     erase_if(container, [sdk_id = entity->get_sdk_id()](const auto& element) {
         return element.second->get_sdk_id() == sdk_id;
     });
+}
+
+celeritas::app_sdk_providers::app_sdk_providers(app_sdk_providers_create type) noexcept
+{
 }

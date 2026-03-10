@@ -24,6 +24,12 @@ namespace celeritas
         [[nodiscard]] std::string format_key_info(const key_type& key) const override;
 
     private:
-        app_sms_providers() noexcept = default;
+        enum class app_sms_providers_create
+        {
+            init,
+        };
+
+    public:
+        explicit app_sms_providers(app_sms_providers_create type) noexcept;
     };
 }

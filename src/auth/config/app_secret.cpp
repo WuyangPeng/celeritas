@@ -7,7 +7,7 @@
 
 celeritas::app_secret& celeritas::app_secret::get_instance()
 {
-    static std::shared_ptr<app_secret> instance{ new app_secret{} };
+    static auto instance = std::make_shared<app_secret>(app_secret_create::init);
 
     return *instance;
 }
@@ -40,4 +40,8 @@ std::string celeritas::app_secret::get_entity_name() const
 std::string celeritas::app_secret::format_key_info(const key_type& key) const
 {
     return std::format("app id = {}", key);
+}
+
+celeritas::app_secret::app_secret(app_secret_create type) noexcept
+{
 }

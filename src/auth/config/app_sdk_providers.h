@@ -27,6 +27,12 @@ namespace celeritas
         void before_add_entity(entity_container& container, const const_entity_shared_ptr& entity) override;
 
     private:
-        app_sdk_providers() noexcept = default;
+        enum class app_sdk_providers_create
+        {
+            init,
+        };
+
+    public:
+        explicit app_sdk_providers(app_sdk_providers_create type) noexcept;
     };
 }

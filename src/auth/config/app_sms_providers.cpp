@@ -5,7 +5,7 @@
 
 celeritas::app_sms_providers& celeritas::app_sms_providers::get_instance()
 {
-    static std::shared_ptr<app_sms_providers> instance{ new app_sms_providers{} };
+    static auto instance = std::make_shared<app_sms_providers>(app_sms_providers_create::init);
 
     return *instance;
 }
@@ -33,4 +33,8 @@ std::string celeritas::app_sms_providers::get_entity_name() const
 std::string celeritas::app_sms_providers::format_key_info(const key_type& key) const
 {
     return std::format("provider id = {}", key);
+}
+
+celeritas::app_sms_providers::app_sms_providers(app_sms_providers_create type) noexcept
+{
 }
