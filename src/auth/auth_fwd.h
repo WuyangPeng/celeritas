@@ -1,8 +1,13 @@
 ﻿#pragma once
 
+#include <cstdint>
+
 namespace celeritas
 {
     enum class server_mode_type;
+
+    template <typename EntityType, typename KeyType>
+    class provider_manager;
 
     class app_secret;
     class app_sms_providers;
