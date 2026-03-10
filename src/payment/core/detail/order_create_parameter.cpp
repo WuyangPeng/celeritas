@@ -133,7 +133,7 @@ void celeritas::order_create_parameter::init()
     product_id_ = *optional_product_id;
     amount_ = boost::lexical_cast<int>(*optional_amount);
     platform_ = static_cast<payment_platform_type>(boost::lexical_cast<int>(*optional_platform));
-    apps_ = app_secret::get_instance().get_apps(get_app_id());
+    apps_ = *app_secret::get_instance().get_apps(get_app_id());
 
     if (const auto http_response = get_http_parameter())
     {

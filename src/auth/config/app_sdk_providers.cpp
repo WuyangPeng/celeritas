@@ -1,6 +1,7 @@
 ﻿#include "app_sdk_providers.h"
 #include "auth/sdk/sdk_process_type.h"
 #include "common/core/celeritas_error.h"
+#include "common/core/enum_cast.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 #include "database/database_constant.h"
@@ -60,7 +61,7 @@ celeritas::app_sdk_providers::void_awaitable_type celeritas::app_sdk_providers::
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
-    const auto apps_result = co_await mysql_pool->select_all(sdk_providers::get_select(database_type::mysql), sdk_providers::get_database_field_container());
+    const auto apps_result = co_await mysql_pool->select_all<sdk_providers>(database_type::mysql);
 
     auto container = get_sdk_providers_container(apps_result);
 
@@ -72,7 +73,7 @@ celeritas::app_sdk_providers::void_awaitable_type celeritas::app_sdk_providers::
 {
     const auto mysql_pool = database_pool_manager::get_instance().get_pool(mysql_auth_db_name.data());
 
-    if (const auto optional_sdk_providers = co_await mysql_pool->select_one(sdk_providers::get_select(database_type::mysql, sdk_id), sdk_providers::get_database_field_container()))
+    if (const auto optional_sdk_providers = co_await mysql_pool->select_one<sdk_providers>(database_type::mysql, sdk_id))
     {
         add_sdk_provider(optional_sdk_providers);
     }
@@ -95,7 +96,7 @@ void celeritas::app_sdk_providers::add_sdk_provider(const optional_database_enti
         return element.second->get_sdk_id() == sdk_id;
     });
 
-    sdk_providers_.emplace(sdk_providers_key{ provider->get_app_id(), static_cast<sdk_process_type>(provider->get_process_type()) }, provider);
+    sdk_providers_.emplace(sdk_providers_key{ provider->get_app_id(), underlying_cast_enum<sdk_process_type>(provider->get_process_type()) }, provider);
 }
 
 celeritas::app_sdk_providers::sdk_providers_container celeritas::app_sdk_providers::get_sdk_providers_container(const database_entity_change_container& apps_result)
@@ -104,7 +105,7 @@ celeritas::app_sdk_providers::sdk_providers_container celeritas::app_sdk_provide
     for (const auto& row : apps_result)
     {
         const auto provider = std::make_shared<sdk_providers>(row);
-        sdk_providers_type.emplace(sdk_providers_key{ provider->get_app_id(), static_cast<sdk_process_type>(provider->get_process_type()) }, provider);
+        sdk_providers_type.emplace(sdk_providers_key{ provider->get_app_id(), underlying_cast_enum<sdk_process_type>(provider->get_process_type()) }, provider);
 
         LOG_CHANNEL(auth_channel, info) << "loaded sdk provider from db, sdk id = " << provider->get_sdk_id();
     }

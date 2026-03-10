@@ -64,7 +64,7 @@ celeritas::send_sms::void_awaitable_type celeritas::send_sms::send_sdk_sms(const
 {
     const auto sms_providers = app_sms_providers::get_instance().get_sms_providers(apps.get_sms_provider_id());
 
-    const auto provider = send_sms_to_providers::create(sms_code, sms_providers);
+    const auto provider = send_sms_to_providers::create(sms_code, *sms_providers);
 
     co_return co_await provider->execute();
 }

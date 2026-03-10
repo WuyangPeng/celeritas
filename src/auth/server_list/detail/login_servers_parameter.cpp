@@ -84,7 +84,7 @@ void celeritas::login_servers_parameter::init()
         response_ = login_servers_response{ *http_response };
     }
 
-    apps_ = app_secret::get_instance().get_apps(get_app_id());
+    apps_ = *app_secret::get_instance().get_apps(get_app_id());
 
     if (const auto hmac_sha256 = hmac_sha256::calculate_with_args(get_apps().get_app_secret(), get_app_id(), token_, get_actual_zone(), only_preferred_, include_details_, websocket_, get_timestamp());
         hmac_sha256 != get_sign())

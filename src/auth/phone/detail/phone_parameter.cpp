@@ -41,7 +41,7 @@ celeritas::auth_parameter::optional_http_response celeritas::phone_parameter::ge
         return *http_response;
     }
 
-    apps_ = app_secret::get_instance().get_apps(get_app_id());
+    apps_ = *app_secret::get_instance().get_apps(get_app_id());
 
     return std::nullopt;
 }
