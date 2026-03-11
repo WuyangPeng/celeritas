@@ -63,11 +63,6 @@ std::string_view celeritas::provider_manager<EntityType, KeyType>::get_database_
 }
 
 template <typename EntityType, typename KeyType>
-void celeritas::provider_manager<EntityType, KeyType>::on_entity_loaded(const const_entity_shared_ptr& entity)
-{
-}
-
-template <typename EntityType, typename KeyType>
 void celeritas::provider_manager<EntityType, KeyType>::before_add_entity(entity_container& container, const const_entity_shared_ptr& entity)
 {
 }

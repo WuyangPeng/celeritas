@@ -26,7 +26,8 @@ void celeritas::server_cell_repository::reload_from_db(const any_io_executor& an
                       return get_instance().load_from_db(cell_id);
                   },
                   auth_channel,
-                  "load server cell from db error:");
+                  "load server cell from db error, cell_id = {}.",
+                  cell_id);
 }
 
 void celeritas::server_cell_repository::load_from_db(const any_io_executor& any_io_executor)
@@ -39,7 +40,7 @@ void celeritas::server_cell_repository::load_from_db(const any_io_executor& any_
                   "load server cell from db error:");
 }
 
-celeritas::server_cell_repository::optional_server_cell_type celeritas::server_cell_repository::get_server_cell(const std::string& game_server_id)
+celeritas::server_cell_repository::optional_server_cell celeritas::server_cell_repository::get_server_cell(const std::string& game_server_id)
 {
     if (const auto iter = game_server_.find(game_server_id);
         iter != game_server_.cend())
@@ -50,7 +51,7 @@ celeritas::server_cell_repository::optional_server_cell_type celeritas::server_c
     return std::nullopt;
 }
 
-celeritas::server_cell_repository::optional_server_cell_type celeritas::server_cell_repository::get_last_server_cell(const int64_t app_id)
+celeritas::server_cell_repository::optional_server_cell celeritas::server_cell_repository::get_last_server_cell(const int64_t app_id)
 {
     std::shared_lock lock{ mutex_ };
 
@@ -60,7 +61,8 @@ celeritas::server_cell_repository::optional_server_cell_type celeritas::server_c
         const auto current_milliseconds = time_helper::get_current_milliseconds();
         for (const auto& server_cell : iter->second)
         {
-            if (current_milliseconds >= server_cell.get_launch_time())
+            // app_id_server_的值存储的是已序数组，取已经开服的第一个服务器
+            if (server_cell.get_launch_time() <= current_milliseconds)
             {
                 return server_cell;
             }
@@ -70,7 +72,7 @@ celeritas::server_cell_repository::optional_server_cell_type celeritas::server_c
     return std::nullopt;
 }
 
-celeritas::server_cell_repository::server_cell_container_type celeritas::server_cell_repository::get_server_cell_by_app_id(const int64_t app_id, const optional_string& zone)
+celeritas::server_cell_repository::server_cell_container celeritas::server_cell_repository::get_server_cell_by_app_id(const int64_t app_id, const optional_string& zone)
 {
     std::shared_lock lock{ mutex_ };
 
@@ -79,10 +81,10 @@ celeritas::server_cell_repository::server_cell_container_type celeritas::server_
     {
         const auto current_milliseconds = time_helper::get_current_milliseconds();
 
-        server_cell_container_type container{};
+        server_cell_container container{};
         for (const auto& server_cell : iter->second)
         {
-            if ((!zone || server_cell.get_zone() == zone) && current_milliseconds >= server_cell.get_launch_time())
+            if ((!zone || server_cell.get_zone() == zone) && server_cell.get_launch_time() <= current_milliseconds)
             {
                 container.emplace_back(server_cell);
             }
@@ -100,20 +102,20 @@ celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_re
 
     const auto apps_result = co_await mysql_pool->select_all<server_cell>(database_type::mysql);
 
-    server_cell_type server_cell_type{};
-    game_server_type game_server_type{};
-    app_id_server_type app_id_server_type{};
+    server_cell_mapping server_cell_mapping{};
+    game_server_container game_server_container{};
+    app_id_server_container app_id_server_container{};
     for (const auto& row : apps_result)
     {
         const server_cell server_cell{ row };
-        server_cell_type.emplace(server_cell.get_cell_id(), server_cell);
-        game_server_type.emplace(server_cell.get_game_server_id(), server_cell);
+        server_cell_mapping.emplace(server_cell.get_cell_id(), server_cell);
+        game_server_container.emplace(server_cell.get_game_server_id(), server_cell);
 
         const auto app_id = server_cell.get_app_id();
-        app_id_server_type[app_id].emplace_back(server_cell);
+        app_id_server_container[app_id].emplace_back(server_cell);
     }
 
-    for (auto& element : app_id_server_type | std::views::values)
+    for (auto& element : app_id_server_container | std::views::values)
     {
         std::ranges::sort(element, [](const auto& lhs, const auto& rhs) {
             return lhs.get_launch_time() < rhs.get_launch_time();
@@ -121,9 +123,9 @@ celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_re
     }
 
     std::lock_guard lock{ mutex_ };
-    server_cell_ = std::move(server_cell_type);
-    game_server_ = std::move(game_server_type);
-    app_id_server_ = std::move(app_id_server_type);
+    server_cell_ = std::move(server_cell_mapping);
+    game_server_ = std::move(game_server_container);
+    app_id_server_ = std::move(app_id_server_container);
 }
 
 celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_repository::load_from_db(const int64_t cell_id)

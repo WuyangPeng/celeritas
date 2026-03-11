@@ -45,8 +45,6 @@ namespace celeritas
 
         [[nodiscard]] virtual std::string_view get_database_name() const;
 
-        virtual void on_entity_loaded(const const_entity_shared_ptr& entity);
-
         virtual void before_add_entity(entity_container& container, const const_entity_shared_ptr& entity);
 
         [[nodiscard]] void_awaitable_type load_all_from_db();
