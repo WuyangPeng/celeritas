@@ -19,6 +19,7 @@ void celeritas::server_cell_repository::reload_from_db(const any_io_executor& an
     if (cell_id == 0)
     {
         load_from_db(any_io_executor);
+        return;
     }
 
     safe_co_spawn(any_io_executor,
@@ -42,6 +43,8 @@ void celeritas::server_cell_repository::load_from_db(const any_io_executor& any_
 
 celeritas::server_cell_repository::optional_server_cell celeritas::server_cell_repository::get_server_cell(const std::string& game_server_id)
 {
+    std::shared_lock lock{ mutex_ };
+
     if (const auto iter = game_server_.find(game_server_id);
         iter != game_server_.cend())
     {
@@ -158,13 +161,10 @@ celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_re
         server_cell_.emplace(server_cell.get_cell_id(), server_cell);
         game_server_.emplace(server_cell.get_game_server_id(), server_cell);
 
-        if (const auto current = app_id_server_.find(server_cell.get_app_id());
-            current != app_id_server_.cend())
-        {
-            current->second.emplace_back(server_cell);
-            std::ranges::sort(current->second, [](const auto& lhs, const auto& rhs) {
-                return lhs.get_launch_time() < rhs.get_launch_time();
-            });
-        }
+        auto& app_server = app_id_server_[server_cell.get_app_id()];
+        app_server.emplace_back(server_cell);
+        std::ranges::sort(app_server, [](const auto& lhs, const auto& rhs) {
+            return lhs.get_launch_time() < rhs.get_launch_time();
+        });
     }
 }
