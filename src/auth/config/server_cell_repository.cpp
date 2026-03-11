@@ -155,6 +155,11 @@ celeritas::server_cell_repository::void_awaitable_type celeritas::server_cell_re
                 std::erase_if(current->second, [cell_id](const auto& element) {
                     return element.get_cell_id() == cell_id;
                 });
+
+                if (current->second.empty())
+                {
+                    app_id_server_.erase(app_id);
+                }
             }
         }
 
