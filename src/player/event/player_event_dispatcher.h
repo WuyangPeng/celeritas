@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "player_event.h"
 #include "player_event_listener.h"
