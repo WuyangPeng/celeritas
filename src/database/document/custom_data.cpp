@@ -55,6 +55,11 @@ celeritas::custom_data::document_type celeritas::custom_data::to_document_type()
                 document.emplace_back(type_description, std::string{ building_description });
                 document.emplace_back(data_description, arg.to_document_type());
             }
+            else if constexpr (std::is_same_v<T, resource_data>)
+            {
+                document.emplace_back(type_description, std::string{ resource_description });
+                document.emplace_back(data_description, arg.to_document_type());
+            }
             else if constexpr (std::is_same_v<T, std::monostate>)
             {
                 // monostate结果为空文档
@@ -101,6 +106,10 @@ celeritas::custom_data celeritas::custom_data::from_document(const document_type
     if (type == building_description)
     {
         return from_building_description(document);
+    }
+    if (type == resource_description)
+    {
+        return from_resource_description(document);
     }
 
     throw celeritas_error{ "custom_data::from_document() failed." };
@@ -221,6 +230,16 @@ const celeritas::building_data* celeritas::custom_data::get_building() const
     throw celeritas_error{ "custom_data::get_building() failed, custom_data is not building." };
 }
 
+const celeritas::resource_data* celeritas::custom_data::get_resource() const
+{
+    if (const auto result = std::get_if<resource_data>(&detail_))
+    {
+        return result;
+    }
+
+    throw celeritas_error{ "custom_data::get_resource() failed, custom_data is not resource." };
+}
+
 std::string celeritas::custom_data::get_type(const document_type& document)
 {
     for (const auto& element : document)
@@ -332,6 +351,20 @@ celeritas::custom_data celeritas::custom_data::from_building_description(const d
     return custom_data;
 }
 
+celeritas::custom_data celeritas::custom_data::from_resource_description(const document_type& document)
+{
+    custom_data custom_data{};
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == data_description)
+        {
+            custom_data.detail_ = building_data::from_document(element.get_value<database_data_type::document_type>());
+            break;
+        }
+    }
+    return custom_data;
+}
+
 celeritas::custom_data::variant_type celeritas::custom_data::get_variant_type(const std::string_view type)
 {
     if (type == custom_description)
@@ -341,37 +374,42 @@ celeritas::custom_data::variant_type celeritas::custom_data::get_variant_type(co
 
     if (type == consumable_description)
     {
-        return consumable_data();
+        return consumable_data{};
     }
 
     if (type == equipment_description)
     {
-        return equipment_data();
+        return equipment_data{};
     }
 
     if (type == avatar_description)
     {
-        return avatar_data();
+        return avatar_data{};
     }
 
     if (type == frame_description)
     {
-        return frame_data();
+        return frame_data{};
     }
 
     if (type == title_description)
     {
-        return title_data();
+        return title_data{};
     }
 
     if (type == hero_description)
     {
-        return hero_data();
+        return hero_data{};
     }
 
     if (type == building_description)
     {
-        return building_data();
+        return building_data{};
+    }
+
+    if (type == resource_description)
+    {
+        return resource_data{};
     }
 
     throw celeritas_error{ "custom_data type failed." };

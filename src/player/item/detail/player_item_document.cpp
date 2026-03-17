@@ -6,6 +6,7 @@
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
 #include "database/basic/basis_database.tpp"
+#include "database/document/resource_data.h"
 #include "initializer/initializer_constant.h"
 #include "message/basic/header.h"
 #include "proto/celeritas.pb.h"
@@ -214,6 +215,11 @@ void celeritas::player_item_document::set_inventory_data_proto(proto_inventory_d
             building->set_level(data->get_level());
         }
         break;
+        case config::item_type::resource:
+        {
+            proto_data->mutable_resource();
+        }
+        break;
         default:
         {
             proto_data->mutable_custom();
@@ -305,6 +311,16 @@ celeritas::inventory_data celeritas::player_item_document::get_inventory_data_by
             traits::document_type document{};
             document.emplace_back(custom_data::type_description, custom_data::building_description.data());
             document.emplace_back(custom_data::data_description, building.to_document_type());
+            custom_data = custom_data::from_document(document);
+        }
+        break;
+        case proto_inventory_data::kResource:
+        {
+            const resource_data resource{};
+
+            traits::document_type document{};
+            document.emplace_back(custom_data::type_description, custom_data::resource_description.data());
+            document.emplace_back(custom_data::data_description, resource.to_document_type());
             custom_data = custom_data::from_document(document);
         }
         break;

@@ -46,6 +46,24 @@ struct title_dataDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 title_dataDefaultTypeInternal _title_data_default_instance_;
 template <typename>
+PROTOBUF_CONSTEXPR resource_data::resource_data(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(resource_data_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct resource_dataDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR resource_dataDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~resource_dataDefaultTypeInternal() {}
+  union {
+    resource_data _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 resource_dataDefaultTypeInternal _resource_data_default_instance_;
+template <typename>
 PROTOBUF_CONSTEXPR hero_data::hero_data(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::internal::ZeroFieldsBase(hero_data_class_data_.base()){}
@@ -274,14 +292,16 @@ const ::uint32_t
         4, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::building_data, _impl_.level_),
         0,
+        0x000, // bitmap
         0x085, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_._oneof_case_[0]),
-        18, // hasbit index offset
+        19, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.item_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.template_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.count_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.position_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::common::inventory_data, _impl_.payload_),
@@ -305,6 +325,7 @@ const ::uint32_t
         ~0u,
         ~0u,
         ~0u,
+        ~0u,
 };
 
 static const ::_pbi::MigrationSchema
@@ -318,7 +339,8 @@ static const ::_pbi::MigrationSchema
         {16, sizeof(::celeritas::proto::common::hero_data)},
         {17, sizeof(::celeritas::proto::common::exp_data)},
         {18, sizeof(::celeritas::proto::common::building_data)},
-        {23, sizeof(::celeritas::proto::common::inventory_data)},
+        {23, sizeof(::celeritas::proto::common::resource_data)},
+        {24, sizeof(::celeritas::proto::common::inventory_data)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::common::_custom_data_default_instance_._instance,
@@ -330,6 +352,7 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::common::_hero_data_default_instance_._instance,
     &::celeritas::proto::common::_exp_data_default_instance_._instance,
     &::celeritas::proto::common::_building_data_default_instance_._instance,
+    &::celeritas::proto::common::_resource_data_default_instance_._instance,
     &::celeritas::proto::common::_inventory_data_default_instance_._instance,
 };
 const char descriptor_table_protodef_proto_2fcommon_2fitem_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
@@ -340,34 +363,36 @@ const char descriptor_table_protodef_proto_2fcommon_2fitem_2eproto[] ABSL_ATTRIB
     "ta\022\020\n\010strength\030\001 \001(\005\022\022\n\ndurability\030\002 \001(\005"
     "\"\r\n\013avatar_data\"\014\n\nframe_data\"\014\n\ntitle_d"
     "ata\"\013\n\thero_data\"\n\n\010exp_data\"\036\n\rbuilding"
-    "_data\022\r\n\005level\030\001 \001(\005\"\325\004\n\016inventory_data\022"
-    "\017\n\007item_id\030\001 \001(\003\022\023\n\013template_id\030\002 \001(\005\022\r\n"
-    "\005count\030\003 \001(\003\022\020\n\010position\030\004 \001(\005\0225\n\006custom"
-    "\030\005 \001(\0132#.celeritas.proto.common.custom_d"
-    "ataH\000\022=\n\nconsumable\030\006 \001(\0132\'.celeritas.pr"
-    "oto.common.consumable_dataH\000\022;\n\tequipmen"
-    "t\030\007 \001(\0132&.celeritas.proto.common.equipme"
-    "nt_dataH\000\0225\n\006avatar\030\010 \001(\0132#.celeritas.pr"
-    "oto.common.avatar_dataH\000\0223\n\005frame\030\t \001(\0132"
-    "\".celeritas.proto.common.frame_dataH\000\0223\n"
-    "\005title\030\n \001(\0132\".celeritas.proto.common.ti"
-    "tle_dataH\000\0221\n\004hero\030\013 \001(\0132!.celeritas.pro"
-    "to.common.hero_dataH\000\022/\n\003exp\030\014 \001(\0132 .cel"
-    "eritas.proto.common.exp_dataH\000\0229\n\010buildi"
-    "ng\030\r \001(\0132%.celeritas.proto.common.buildi"
-    "ng_dataH\000B\t\n\007payloadb\006proto3"
+    "_data\022\r\n\005level\030\001 \001(\005\"\017\n\rresource_data\"\220\005"
+    "\n\016inventory_data\022\017\n\007item_id\030\001 \001(\003\022\023\n\013tem"
+    "plate_id\030\002 \001(\005\022\r\n\005count\030\003 \001(\003\022\020\n\010positio"
+    "n\030\004 \001(\005\0225\n\006custom\030\005 \001(\0132#.celeritas.prot"
+    "o.common.custom_dataH\000\022=\n\nconsumable\030\006 \001"
+    "(\0132\'.celeritas.proto.common.consumable_d"
+    "ataH\000\022;\n\tequipment\030\007 \001(\0132&.celeritas.pro"
+    "to.common.equipment_dataH\000\0225\n\006avatar\030\010 \001"
+    "(\0132#.celeritas.proto.common.avatar_dataH"
+    "\000\0223\n\005frame\030\t \001(\0132\".celeritas.proto.commo"
+    "n.frame_dataH\000\0223\n\005title\030\n \001(\0132\".celerita"
+    "s.proto.common.title_dataH\000\0221\n\004hero\030\013 \001("
+    "\0132!.celeritas.proto.common.hero_dataH\000\022/"
+    "\n\003exp\030\014 \001(\0132 .celeritas.proto.common.exp"
+    "_dataH\000\0229\n\010building\030\r \001(\0132%.celeritas.pr"
+    "oto.common.building_dataH\000\0229\n\010resource\030\016"
+    " \001(\0132%.celeritas.proto.common.resource_d"
+    "ataH\000B\t\n\007payloadb\006proto3"
 };
 static ::absl::once_flag descriptor_table_proto_2fcommon_2fitem_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fcommon_2fitem_2eproto = {
     false,
     false,
-    868,
+    944,
     descriptor_table_protodef_proto_2fcommon_2fitem_2eproto,
     "proto/common/item.proto",
     &descriptor_table_proto_2fcommon_2fitem_2eproto_once,
     nullptr,
     0,
-    10,
+    11,
     schemas,
     file_default_instances,
     TableStruct_proto_2fcommon_2fitem_2eproto::offsets,
@@ -1806,6 +1831,115 @@ void building_data::InternalSwap(building_data* PROTOBUF_RESTRICT PROTOBUF_NONNU
 }
 // ===================================================================
 
+class resource_data::_Internal {
+ public:
+};
+
+resource_data::resource_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, resource_data_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:celeritas.proto.common.resource_data)
+}
+resource_data::resource_data(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const resource_data& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, resource_data_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  resource_data* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:celeritas.proto.common.resource_data)
+}
+
+inline void* PROTOBUF_NONNULL resource_data::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) resource_data(arena);
+}
+constexpr auto resource_data::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(resource_data),
+                                            alignof(resource_data));
+}
+constexpr auto resource_data::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_resource_data_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &resource_data::MergeImpl,
+          ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<resource_data>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &resource_data::SharedDtor,
+          ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<resource_data>(), &resource_data::ByteSizeLong,
+              &resource_data::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(resource_data, _impl_._cached_size_),
+          false,
+      },
+      &resource_data::kDescriptorMethods,
+      &descriptor_table_proto_2fcommon_2fitem_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull resource_data_class_data_ =
+        resource_data::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+resource_data::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&resource_data_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(resource_data_class_data_.tc_table);
+  return resource_data_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
+resource_data::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    resource_data_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::celeritas::proto::common::resource_data>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+::google::protobuf::Metadata resource_data::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class inventory_data::_Internal {
  public:
   using HasBits =
@@ -1933,6 +2067,19 @@ void inventory_data::set_allocated_building(::celeritas::proto::common::building
   }
   // @@protoc_insertion_point(field_set_allocated:celeritas.proto.common.inventory_data.building)
 }
+void inventory_data::set_allocated_resource(::celeritas::proto::common::resource_data* PROTOBUF_NULLABLE resource) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (resource) {
+    ::google::protobuf::Arena* submessage_arena = resource->GetArena();
+    if (message_arena != submessage_arena) {
+      resource = ::google::protobuf::internal::GetOwnedMessage(message_arena, resource, submessage_arena);
+    }
+    set_has_resource();
+    _impl_.payload_.resource_ = resource;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.common.inventory_data.resource)
+}
 inventory_data::inventory_data(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, inventory_data_class_data_.base()) {
@@ -2000,6 +2147,9 @@ inventory_data::inventory_data(
         break;
       case kBuilding:
         _impl_.payload_.building_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.building_);
+        break;
+      case kResource:
+        _impl_.payload_.resource_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.resource_);
         break;
   }
 
@@ -2114,6 +2264,14 @@ void inventory_data::clear_payload() {
       }
       break;
     }
+    case kResource: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.resource_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.resource_);
+      }
+      break;
+    }
     case PAYLOAD_NOT_SET: {
       break;
     }
@@ -2165,17 +2323,17 @@ inventory_data::GetClassData() const {
   return inventory_data_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 13, 9, 0, 2>
+const ::_pbi::TcParseTable<2, 14, 10, 0, 2>
 inventory_data::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(inventory_data, _impl_._has_bits_),
     0, // no _extensions_
-    13, 24,  // max_field_number, fast_idx_mask
+    14, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294959104,  // skipmap
+    4294950912,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    13,  // num_field_entries
-    9,  // num_aux_entries
+    14,  // num_field_entries
+    10,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     inventory_data_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -2225,6 +2383,8 @@ inventory_data::_table_ = {
     {PROTOBUF_FIELD_OFFSET(inventory_data, _impl_.payload_.exp_), _Internal::kOneofCaseOffset + 0, 7, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.common.building_data building = 13;
     {PROTOBUF_FIELD_OFFSET(inventory_data, _impl_.payload_.building_), _Internal::kOneofCaseOffset + 0, 8, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.common.resource_data resource = 14;
+    {PROTOBUF_FIELD_OFFSET(inventory_data, _impl_.payload_.resource_), _Internal::kOneofCaseOffset + 0, 9, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::common::custom_data>()},
@@ -2236,6 +2396,7 @@ inventory_data::_table_ = {
       {::_pbi::TcParser::GetTable<::celeritas::proto::common::hero_data>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::common::exp_data>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::common::building_data>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::common::resource_data>()},
   }},
   {{
   }},
@@ -2367,6 +2528,12 @@ PROTOBUF_NOINLINE void inventory_data::Clear() {
           stream);
       break;
     }
+    case kResource: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          14, *this_._impl_.payload_.resource_, this_._impl_.payload_.resource_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     default:
       break;
   }
@@ -2478,6 +2645,12 @@ PROTOBUF_NOINLINE void inventory_data::Clear() {
     case kBuilding: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.building_);
+      break;
+    }
+    // .celeritas.proto.common.resource_data resource = 14;
+    case kResource: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.resource_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -2604,6 +2777,14 @@ void inventory_data::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::
           _this->_impl_.payload_.building_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.building_);
         } else {
           _this->_impl_.payload_.building_->MergeFrom(*from._impl_.payload_.building_);
+        }
+        break;
+      }
+      case kResource: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.resource_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.resource_);
+        } else {
+          _this->_impl_.payload_.resource_->MergeFrom(*from._impl_.payload_.resource_);
         }
         break;
       }

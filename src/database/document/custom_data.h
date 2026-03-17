@@ -7,6 +7,7 @@
 #include "exp_data.h"
 #include "frame_data.h"
 #include "hero_data.h"
+#include "resource_data.h"
 #include "title_data.h"
 #include "config/luban/generated/schema.h"
 #include "database/basic/database_data_type_traits.h"
@@ -40,6 +41,7 @@ namespace celeritas
         static constexpr std::string_view hero_description = "hero";
         static constexpr std::string_view exp_description = "exp";
         static constexpr std::string_view building_description = "building";
+        static constexpr std::string_view resource_description = "resource";
 
         [[nodiscard]] config::item_type get_kind() const noexcept;
 
@@ -57,8 +59,10 @@ namespace celeritas
 
         [[nodiscard]] const building_data* get_building() const;
 
+        [[nodiscard]] const resource_data* get_resource() const;
+
     private:
-        using variant_type = std::variant<std::monostate, consumable_data, equipment_data, avatar_data, frame_data, title_data, hero_data, exp_data, building_data>;
+        using variant_type = std::variant<std::monostate, consumable_data, equipment_data, avatar_data, frame_data, title_data, hero_data, exp_data, building_data, resource_data>;
 
         [[nodiscard]] static std::string get_type(const document_type& document);
 
@@ -75,6 +79,8 @@ namespace celeritas
         [[nodiscard]] static custom_data from_hero_description(const document_type& document);
 
         [[nodiscard]] static custom_data from_building_description(const document_type& document);
+
+        [[nodiscard]] static custom_data from_resource_description(const document_type& document);
 
         [[nodiscard]] static variant_type get_variant_type(std::string_view type);
 
