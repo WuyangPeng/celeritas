@@ -4,6 +4,7 @@
 #include "detail/player_item_document.h"
 #include "detail/player_item_selected_database.h"
 #include "detail/player_item_selected_document.h"
+#include "detail/player_resource.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
 
@@ -67,5 +68,6 @@ namespace celeritas
         player_item_document document_;
         player_item_selected_database selected_database_;
         player_item_selected_document selected_document_;
+        player_resource resource_;
     };
 }

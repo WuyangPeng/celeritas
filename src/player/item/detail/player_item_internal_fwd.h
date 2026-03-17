@@ -8,4 +8,5 @@ namespace celeritas
     class player_item_selected_document;
     class item_selected_key;
     class execute_change_item;
+    class player_resource;
 }

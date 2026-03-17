@@ -8,7 +8,8 @@ celeritas::player_item_component::player_item_component(player_state* player_sta
       database_{ player_state, this },
       document_{ player_state },
       selected_database_{ player_state, this },
-      selected_document_{ player_state }
+      selected_document_{ player_state },
+      resource_{ &document_ }
 {
 }
 
