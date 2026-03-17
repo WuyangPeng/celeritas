@@ -2,7 +2,7 @@
 <databases>
     <database name="mysql_payment_db">
         <database_type>mysql</database_type>
-        <host>118.195.143.70</host>
+        <host>127.0.0.1</host>
         <port>3306</port>
         <user>celeritas_user</user>
         <password>celeritas_pass</password>
