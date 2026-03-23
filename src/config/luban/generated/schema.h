@@ -56,6 +56,38 @@ namespace celeritas {namespace config {
 
 
  
+    enum class building_type
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        none = 0,
+        /// <summary>
+        /// 农田
+        /// </summary>
+        farmland = 1,
+        /// <summary>
+        /// 伐木场
+        /// </summary>
+        lumber_mill = 2,
+        /// <summary>
+        /// 采石场
+        /// </summary>
+        quarry = 3,
+        /// <summary>
+        /// 矿场
+        /// </summary>
+        mine = 4,
+        /// <summary>
+        /// 民居
+        /// </summary>
+        folk_house = 5,
+    };
+
+ 
+
+
+ 
     enum class currency_type
     {
         /// <summary>
@@ -150,6 +182,10 @@ namespace celeritas {namespace config {
         /// 英雄
         /// </summary>
         hero = 3,
+        /// <summary>
+        /// 建筑
+        /// </summary>
+        building = 4,
     };
 
  
@@ -434,6 +470,7 @@ namespace celeritas {namespace config {
 
  struct attribute_bonus; 
 namespace game { struct avatar_config; }
+namespace game { struct building_config; }
 namespace game { struct default_item_config; }
 namespace game { struct develop_config; }
 namespace game { struct develop_level_config; }
@@ -527,6 +564,72 @@ struct avatar_config : public luban::CfgBean
     ::luban::Vector<::luban::SharedPtr<attribute_bonus>> attribute;
 
     static constexpr int __ID__ = -2081427476;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+}
+
+namespace game {
+
+struct building_config : public luban::CfgBean 
+{
+    static bool deserializebuilding_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<building_config>& _out);
+
+    virtual ~building_config() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 建筑编号
+     */
+    ::luban::int32 itemTemplateId;
+    /**
+     * 品质
+     */
+    quality_type quality;
+    /**
+     * 类型
+     */
+    building_type type;
+    /**
+     * 产出物品
+     */
+    ::luban::int32 produceItem;
+    /**
+     * 产出基础值
+     */
+    ::luban::int32 produceBase;
+    /**
+     * 产出倍率
+     */
+    ::luban::int32 produceMultiplying;
+    /**
+     * 小图资源路径
+     */
+    ::luban::String iconRes;
+    /**
+     * 详情时的资源路径
+     */
+    ::luban::String fullRes;
+    /**
+     * 未解锁时是否在列表中可见
+     */
+    bool hidden;
+    /**
+     * 建筑是否开放
+     */
+    bool isOpen;
+    /**
+     * 获取途径描述文案
+     */
+    ::luban::String desc;
+    /**
+     * 属性加成
+     */
+    ::luban::Vector<::luban::SharedPtr<attribute_bonus>> attribute;
+
+    static constexpr int __ID__ = 221561137;
 
     int getTypeId() const override { return __ID__; }
 };
@@ -1672,6 +1775,66 @@ class hero_config_container
 namespace game {
 
 /**
+ * 建筑
+ */
+
+class building_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::building_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::building_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::building_config> _v;
+            if(!game::building_config::deserializebuilding_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->itemTemplateId] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::building_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::building_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::building_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::building_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
+namespace game {
+
+/**
  * 养成
  */
 
@@ -1893,6 +2056,10 @@ class tables
      */
      game::hero_config_container hero_config_container;
     /**
+     * 建筑
+     */
+     game::building_config_container building_config_container;
+    /**
      * 养成
      */
      game::develop_config_container develop_config_container;
@@ -1938,6 +2105,9 @@ class tables
         buf.clear();
         if (!loader(buf, "hero_config_container")) return false;
         if (!hero_config_container.load(buf)) return false;
+        buf.clear();
+        if (!loader(buf, "building_config_container")) return false;
+        if (!building_config_container.load(buf)) return false;
         buf.clear();
         if (!loader(buf, "develop_config_container")) return false;
         if (!develop_config_container.load(buf)) return false;

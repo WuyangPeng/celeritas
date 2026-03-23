@@ -67,6 +67,40 @@ bool game::avatar_config::deserializeavatar_config(::luban::ByteBuf& _buf, ::lub
 }
 
 
+bool game::building_config::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(itemTemplateId)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; quality = quality_type(__enum_temp__); }
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; type = building_type(__enum_temp__); }
+    if(!_buf.readInt(produceItem)) return false;
+    if(!_buf.readInt(produceBase)) return false;
+    if(!_buf.readInt(produceMultiplying)) return false;
+    if(!_buf.readString(iconRes)) return false;
+    if(!_buf.readString(fullRes)) return false;
+    if (!_buf.readBool(hidden)) return false;
+    if (!_buf.readBool(isOpen)) return false;
+    if(!_buf.readString(desc)) return false;
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); attribute.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<attribute_bonus> _e; if(!attribute_bonus::deserializeattribute_bonus(_buf, _e)) return false; attribute.push_back(_e);}}
+
+    return true;
+}
+
+bool game::building_config::deserializebuilding_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::building_config>& _out)
+{
+    _out.reset(LUBAN_NEW(game::building_config));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
 bool game::default_item_config::deserialize(::luban::ByteBuf& _buf)
 {
 
