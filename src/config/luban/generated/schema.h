@@ -477,6 +477,7 @@ namespace game { struct develop_level_config; }
 namespace game { struct frame_config; }
 namespace game { struct hero_config; }
 namespace game { struct item_config; }
+namespace game { struct month_config; }
 namespace game { struct name_config; }
 namespace game { struct red_dot_config; }
 namespace game { struct rename_cost_config; }
@@ -486,6 +487,7 @@ namespace game { struct title_config; }
  struct interval; 
  struct item; 
  struct priority_item; 
+ struct resource_output_bonus; 
 
 
 
@@ -875,6 +877,32 @@ struct item_config : public luban::CfgBean
 
 namespace game {
 
+struct month_config : public luban::CfgBean 
+{
+    static bool deserializemonth_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<month_config>& _out);
+
+    virtual ~month_config() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 月份
+     */
+    ::luban::int32 month;
+    /**
+     * 资源产出加成
+     */
+    ::luban::Vector<::luban::SharedPtr<resource_output_bonus>> resourceOutput;
+
+    static constexpr int __ID__ = -1482889635;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+}
+
+namespace game {
+
 struct name_config : public luban::CfgBean 
 {
     static bool deserializename_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<name_config>& _out);
@@ -1166,6 +1194,35 @@ struct priority_item : public luban::CfgBean
     ::luban::int32 priority;
 
     static constexpr int __ID__ = 841097422;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+
+
+
+
+/**
+ * 资源产出加成
+ */
+struct resource_output_bonus : public luban::CfgBean 
+{
+    static bool deserializeresource_output_bonus(::luban::ByteBuf& _buf, ::luban::SharedPtr<resource_output_bonus>& _out);
+
+    virtual ~resource_output_bonus() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 物品类型
+     */
+    currency_type type;
+    /**
+     * 值
+     */
+    ::luban::int32 value;
+
+    static constexpr int __ID__ = 1493779442;
 
     int getTypeId() const override { return __ID__; }
 };
@@ -2012,6 +2069,66 @@ class task_config_container
 
 }
 
+namespace game {
+
+/**
+ * 月份
+ */
+
+class month_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::month_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::month_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::month_config> _v;
+            if(!game::month_config::deserializemonth_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->month] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::month_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::month_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::month_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::month_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
 class tables
 {
     public:
@@ -2071,6 +2188,10 @@ class tables
      * 任务
      */
      game::task_config_container task_config_container;
+    /**
+     * 月份
+     */
+     game::month_config_container month_config_container;
 
     bool load(::luban::Loader<::luban::ByteBuf> loader)
     {
@@ -2117,6 +2238,9 @@ class tables
         buf.clear();
         if (!loader(buf, "task_config_container")) return false;
         if (!task_config_container.load(buf)) return false;
+        buf.clear();
+        if (!loader(buf, "month_config_container")) return false;
+        if (!month_config_container.load(buf)) return false;
         return true;
     }
 };

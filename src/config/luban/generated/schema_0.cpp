@@ -272,6 +272,30 @@ bool game::item_config::deserializeitem_config(::luban::ByteBuf& _buf, ::luban::
 }
 
 
+bool game::month_config::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(month)) return false;
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); resourceOutput.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<resource_output_bonus> _e; if(!resource_output_bonus::deserializeresource_output_bonus(_buf, _e)) return false; resourceOutput.push_back(_e);}}
+
+    return true;
+}
+
+bool game::month_config::deserializemonth_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::month_config>& _out)
+{
+    _out.reset(LUBAN_NEW(game::month_config));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
 bool game::name_config::deserialize(::luban::ByteBuf& _buf)
 {
 
@@ -493,6 +517,30 @@ bool priority_item::deserialize(::luban::ByteBuf& _buf)
 bool priority_item::deserializepriority_item(::luban::ByteBuf& _buf, ::luban::SharedPtr<priority_item>& _out)
 {
     _out.reset(LUBAN_NEW(priority_item));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
+bool resource_output_bonus::deserialize(::luban::ByteBuf& _buf)
+{
+
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; type = currency_type(__enum_temp__); }
+    if(!_buf.readInt(value)) return false;
+
+    return true;
+}
+
+bool resource_output_bonus::deserializeresource_output_bonus(::luban::ByteBuf& _buf, ::luban::SharedPtr<resource_output_bonus>& _out)
+{
+    _out.reset(LUBAN_NEW(resource_output_bonus));
     if (_out->deserialize(_buf))
     {
         return true;
