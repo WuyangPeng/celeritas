@@ -607,6 +607,10 @@ struct building_config : public luban::CfgBean
      */
     ::luban::int32 produceMultiplying;
     /**
+     * 产出频率（毫秒）
+     */
+    ::luban::int32 frequency;
+    /**
      * 小图资源路径
      */
     ::luban::String iconRes;

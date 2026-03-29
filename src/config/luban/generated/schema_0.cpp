@@ -76,6 +76,7 @@ bool game::building_config::deserialize(::luban::ByteBuf& _buf)
     if(!_buf.readInt(produceItem)) return false;
     if(!_buf.readInt(produceBase)) return false;
     if(!_buf.readInt(produceMultiplying)) return false;
+    if(!_buf.readInt(frequency)) return false;
     if(!_buf.readString(iconRes)) return false;
     if(!_buf.readString(fullRes)) return false;
     if (!_buf.readBool(hidden)) return false;
