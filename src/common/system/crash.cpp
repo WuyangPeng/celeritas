@@ -1,8 +1,8 @@
 ﻿#include "crash.h"
 #include "common/logging/logger.h"
 
-#include <boost/stacktrace.hpp>
 #include <csignal>
+#include <stacktrace>
 
 #ifdef WIN32
 
@@ -74,7 +74,52 @@ void celeritas::crash::set_signal()
 
 void celeritas::crash::crash_handler(const int signal_number)
 {
-    LOG_CHANNEL(initializer_channel, fatal) << "signal_number = " << signal_number << ".\nstack trace:\n" << boost::stacktrace::stacktrace();
+    auto trace = std::stacktrace::current();
+
+    // 获取信号名称
+    auto signal_name = "UNKNOWN";
+    switch (signal_number)
+    {
+        case SIGSEGV:
+            signal_name = "SIGSEGV (Segmentation fault)";
+            break;
+        case SIGABRT:
+            signal_name = "SIGABRT (Abort)";
+            break;
+        case SIGFPE:
+            signal_name = "SIGFPE (Floating point exception)";
+            break;
+        case SIGILL:
+            signal_name = "SIGILL (Illegal instruction)";
+            break;
+        default:
+            break;
+    }
+
+    LOG_CHANNEL(initializer_channel, fatal)
+        << "CRASH DETECTED!\n"
+        << "Signal: "
+        << signal_name
+        << " (" << signal_number
+        << ")\n"
+        << "Stack trace ("
+        << trace.size()
+        << " frames):\n"
+        << trace;
+
+    for (auto i = 0; i < trace.size(); ++i)
+    {
+        const auto& entry = trace[i];
+        LOG_CHANNEL(initializer_channel, fatal)
+            << "#"
+            << i
+            << " "
+            << entry.description()
+            << " at "
+            << entry.source_file()
+            << ":"
+            << entry.source_line();
+    }
 
     _exit(signal_number);
 }
