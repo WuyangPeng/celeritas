@@ -100,7 +100,8 @@ void celeritas::crash::crash_handler(const int signal_number)
         << "CRASH DETECTED!\n"
         << "Signal: "
         << signal_name
-        << " (" << signal_number
+        << " ("
+        << signal_number
         << ")\n"
         << "Stack trace ("
         << trace.size()
