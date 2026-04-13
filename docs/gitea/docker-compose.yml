@@ -22,8 +22,8 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - "35005:3000" # Web 访问端口
-      - "35006:22"   # SSH 映射端口
+      - "35006:3000" # Web 访问端口
+      - "35007:22"   # SSH 映射端口
     depends_on:
       - db
 
