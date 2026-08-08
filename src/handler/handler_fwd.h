@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 namespace celeritas
 {
@@ -33,6 +33,18 @@ namespace celeritas
     class order_create_http_message_handler;
     class refund_http_message_handler;
     class reload_sdk_payment_providers_db_message_handler;
+    class admin_login_http_message_handler;
+    class admin_list_http_message_handler;
+    class admin_create_http_message_handler;
+    class admin_update_password_http_message_handler;
+    class admin_update_status_http_message_handler;
+    class admin_delete_http_message_handler;
+    class announcement_admin_list_http_message_handler;
+    class announcement_admin_create_http_message_handler;
+    class announcement_admin_update_http_message_handler;
+    class announcement_admin_delete_http_message_handler;
+    class announcement_admin_broadcast_http_message_handler;
+    class announcement_client_http_message_handler;
 
     class gateway_client_login_request_message_handler;
     class gateway_client_player_request_message_handler;

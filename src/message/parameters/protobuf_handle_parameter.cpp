@@ -1,4 +1,4 @@
-﻿#include "protobuf_handle_parameter.h"
+#include "protobuf_handle_parameter.h"
 #include "common/core/celeritas_error.h"
 #include "common/framework/resource_loader_base.h"
 #include "common/framework/session.h"
@@ -82,6 +82,11 @@ int64_t celeritas::protobuf_handle_parameter::get_user_id() const
 std::string celeritas::protobuf_handle_parameter::get_instance_id() const
 {
     return get_session()->get_instance_id();
+}
+
+std::string celeritas::protobuf_handle_parameter::get_remote_ip_address() const
+{
+    return get_session()->get_remote_ip_address();
 }
 
 celeritas::protobuf_handle_parameter::protobuf_message_shared_ptr celeritas::protobuf_handle_parameter::get_protobuf_message() const

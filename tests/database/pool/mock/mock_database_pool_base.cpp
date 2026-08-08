@@ -1,4 +1,4 @@
-﻿#include "mock_database_pool_base.h"
+#include "mock_database_pool_base.h"
 #include "database/basic/database_entity_change.h"
 
 celeritas::database_pool_base::void_awaitable_type celeritas::mock_database_pool_base::async_initialize()
@@ -31,6 +31,24 @@ celeritas::database_pool_base::optional_database_entity_change_awaitable_type ce
 celeritas::database_pool_base::result_container_awaitable_type celeritas::mock_database_pool_base::select_all(const const_database_entity_change_shared_ptr&, const database_field_container&)
 {
     co_return result_container{};
+}
+
+celeritas::database_pool_base::result_container_awaitable_type celeritas::mock_database_pool_base::select_page(const const_database_entity_change_shared_ptr&,
+                                                                                                               const database_field_container&,
+                                                                                                               const database_select_options&)
+{
+    co_return result_container{};
+}
+
+celeritas::database_pool_base::int64_awaitable_type celeritas::mock_database_pool_base::select_count(const const_database_entity_change_shared_ptr&)
+{
+    co_return 0;
+}
+
+celeritas::database_pool_base::int64_awaitable_type celeritas::mock_database_pool_base::select_count(const const_database_entity_change_shared_ptr&,
+                                                                                                      const database_select_options&)
+{
+    co_return 0;
 }
 
 void celeritas::mock_database_pool_base::set_execute_changes_result(bool result)

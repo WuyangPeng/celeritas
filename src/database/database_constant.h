@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <chrono>
 
@@ -13,7 +13,10 @@ namespace celeritas
     constexpr std::string_view mongo_auth_db_name = "mongo_auth_db";
     constexpr std::string_view mysql_player_db_name = "mysql_player_db";
     constexpr std::string_view mongo_player_db_name = "mongo_player_db";
+    constexpr std::string_view mysql_admin_db_name = "mysql_admin_db";
     constexpr std::string_view mongo_admin_db_name = "mongo_admin_db";
+
+    constexpr std::string_view mongo_log_db_name = "mongo_log_db";
     constexpr std::string_view mysql_config_db_name = "mysql_config_db";
     constexpr std::string_view payment_db_name = "mysql_payment_db";
     constexpr std::string_view redis_db_name = "redis_db";

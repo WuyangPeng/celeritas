@@ -1,4 +1,4 @@
-﻿#include "server_cell_repository.h"
+#include "server_cell_repository.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "common/core/time_helper.h"
 #include "common/logging/logger.h"
@@ -6,6 +6,7 @@
 #include "database/pool/database_pool_manager.h"
 
 #include <ranges>
+#include <unordered_set>
 
 celeritas::server_cell_repository& celeritas::server_cell_repository::get_instance()
 {
@@ -94,6 +95,35 @@ celeritas::server_cell_repository::server_cell_container celeritas::server_cell_
         }
 
         return container;
+    }
+
+    return {};
+}
+
+std::vector<std::string> celeritas::server_cell_repository::get_all_zones(const int64_t app_id)
+{
+    std::shared_lock lock{ mutex_ };
+
+    if (const auto iter = app_id_server_.find(app_id);
+        iter != app_id_server_.cend())
+    {
+        const auto current_milliseconds = time_helper::get_current_milliseconds();
+
+        std::vector<std::string> zones{};
+        std::unordered_set<std::string> unique_zones{};
+        for (const auto& server_cell : iter->second)
+        {
+            if (server_cell.get_launch_time() <= current_milliseconds)
+            {
+                const auto& zone = server_cell.get_zone();
+                if (!zone.empty() && unique_zones.insert(zone).second)
+                {
+                    zones.push_back(zone);
+                }
+            }
+        }
+
+        return zones;
     }
 
     return {};

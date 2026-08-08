@@ -1,4 +1,4 @@
-﻿#include "execute_change_item.h"
+#include "execute_change_item.h"
 #include "common/core/snowflake_generator.h"
 #include "common/logging/logger.h"
 #include "initializer/initializer_constant.h"
@@ -189,6 +189,11 @@ int64_t celeritas::execute_change_item::remove_from_existing_stacks(const int te
                 optional_inventory_iter)
             {
                 auto& inventory = optional_inventory_iter.value()->second;
+                if (inventory.is_locked())
+                {
+                    ++id_iter;
+                    continue;
+                }
                 if (inventory.get_count() >= -count)
                 {
                     inventory.add_count(count);

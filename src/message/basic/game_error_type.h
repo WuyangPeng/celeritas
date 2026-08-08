@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <string>
 
@@ -36,6 +36,18 @@ namespace celeritas
         create_account_error = 10003,
         create_user_error = 10004,
 
+        // 后台服务器错误 30000 - 39999
+        feedback_daily_limit_exceeded = 30000,
+        username_already_exists = 30001,
+        admin_account_not_found = 30002,
+        cannot_delete_super_admin = 30003,
+        cannot_delete_self = 30004,
+        insufficient_permissions = 30005,
+        admin_account_disabled = 30006,
+        cannot_disable_super_admin = 30007,
+        cannot_update_self_status = 30008,
+        announcement_not_found = 30009,
+
         // 玩家服务器错误 60000 - 69999
 
         // 角色模块
@@ -53,6 +65,7 @@ namespace celeritas
         item_selected_error = 60600,
         item_not_exist = 60601,
         item_already_exist = 60602,
+        item_locked = 60603,
 
         // 养成模块
         max_develop = 60700,

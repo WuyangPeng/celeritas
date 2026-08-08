@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "common/common_fwd.h"
 #include "common/worker_pool/thread_safe_queue.h"
@@ -53,7 +53,11 @@ namespace celeritas
 
         [[nodiscard]] std::string get_response() const;
 
+        [[nodiscard]] std::string get_body() const;
+
         [[nodiscard]] optional_string get_param(const std::string& key) const;
+
+        [[nodiscard]] std::string get_remote_ip_address() const;
 
         [[nodiscard]] void_waitable_type write_immediately(const std::string& response) const;
 

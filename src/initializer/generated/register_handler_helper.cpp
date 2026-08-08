@@ -42,6 +42,7 @@ void celeritas::register_handler_helper::register_handler() const
     message_registry_->register_handler(std::make_shared<response_message_handler>());
     message_registry_->register_handler(std::make_shared<service_auth_request_message_handler>());
     message_registry_->register_handler(std::make_shared<service_auth_response_message_handler>());
+    message_registry_->register_handler(std::make_shared<service_log_message_handler>());
     message_registry_->register_handler(std::make_shared<service_payment_request_message_handler>());
     message_registry_->register_handler(std::make_shared<service_payment_response_message_handler>());
     message_registry_->register_handler(std::make_shared<service_player_request_message_handler>());
@@ -50,7 +51,9 @@ void celeritas::register_handler_helper::register_handler() const
     message_registry_->register_handler(std::make_shared<service_registry_response_message_handler>());
     message_registry_->register_handler(std::make_shared<service_request_message_handler>());
     message_registry_->register_handler(std::make_shared<service_response_message_handler>());
+    message_registry_->register_handler(std::make_shared<service_log_request_message_handler>());
     message_registry_->register_handler(std::make_shared<reload_sdk_payment_providers_db_message_handler>());
+    message_registry_->register_handler(std::make_shared<activate_item_message_handler>());
     message_registry_->register_handler(std::make_shared<change_role_name_message_handler>());
     message_registry_->register_handler(std::make_shared<debug_message_handler>());
     message_registry_->register_handler(std::make_shared<develop_claim_reward_message_handler>());
@@ -58,6 +61,7 @@ void celeritas::register_handler_helper::register_handler() const
     message_registry_->register_handler(std::make_shared<develop_reset_message_handler>());
     message_registry_->register_handler(std::make_shared<heartbeat_request_message_handler>());
     message_registry_->register_handler(std::make_shared<item_selected_message_handler>());
+    message_registry_->register_handler(std::make_shared<lock_item_message_handler>());
     message_registry_->register_handler(std::make_shared<mail_collect_all_attachments_message_handler>());
     message_registry_->register_handler(std::make_shared<mail_collect_attachment_message_handler>());
     message_registry_->register_handler(std::make_shared<mail_delete_all_read_message_handler>());
@@ -69,7 +73,6 @@ void celeritas::register_handler_helper::register_handler() const
     message_registry_->register_handler(std::make_shared<reload_game_config_message_handler>());
     message_registry_->register_handler(std::make_shared<send_server_mail_message_handler>());
     message_registry_->register_handler(std::make_shared<service_login_request_message_handler>());
-    message_registry_->register_handler(std::make_shared<unlock_item_message_handler>());
     message_registry_->register_handler(std::make_shared<close_request_message_handler>());
     message_registry_->register_handler(std::make_shared<discover_request_message_handler>());
     message_registry_->register_handler(std::make_shared<discover_response_message_handler>());
@@ -79,8 +82,23 @@ void celeritas::register_handler_helper::register_handler() const
     message_registry_->register_handler(std::make_shared<service_heartbeat_response_message_handler>());
 
 
+    http_message_registry_->register_handler(std::make_shared<admin_create_http_message_handler>());
+    http_message_registry_->register_handler(std::make_shared<admin_delete_http_message_handler>());
+    http_message_registry_->register_handler(std::make_shared<admin_list_http_message_handler>());
+    http_message_registry_->register_handler(std::make_shared<admin_login_http_message_handler>());
+    http_message_registry_->register_handler(std::make_shared<admin_update_password_http_message_handler>());
+    http_message_registry_->register_handler(std::make_shared<admin_update_status_http_message_handler>());
+    http_message_registry_->register_handler(std::make_shared<announcement_admin_broadcast_http_message_handler>());
+    http_message_registry_->register_handler(std::make_shared<announcement_admin_create_http_message_handler>());
+    http_message_registry_->register_handler(std::make_shared<announcement_admin_delete_http_message_handler>());
+    http_message_registry_->register_handler(std::make_shared<announcement_admin_list_http_message_handler>());
+    http_message_registry_->register_handler(std::make_shared<announcement_admin_update_http_message_handler>());
+    http_message_registry_->register_handler(std::make_shared<feedback_admin_list_http_message_handler>());
+    http_message_registry_->register_handler(std::make_shared<announcement_client_http_message_handler>());
+    http_message_registry_->register_handler(std::make_shared<announcement_red_dot_http_message_handler>());
     http_message_registry_->register_handler(std::make_shared<email_bind_http_message_handler>());
     http_message_registry_->register_handler(std::make_shared<email_login_http_message_handler>());
+    http_message_registry_->register_handler(std::make_shared<feedback_submit_http_message_handler>());
     http_message_registry_->register_handler(std::make_shared<guest_login_http_message_handler>());
     http_message_registry_->register_handler(std::make_shared<login_servers_http_message_handler>());
     http_message_registry_->register_handler(std::make_shared<password_bind_http_message_handler>());

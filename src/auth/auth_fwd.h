@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <cstdint>
 
@@ -57,4 +57,8 @@ namespace celeritas
     class login_server_info;
     class login_servers_response;
     class login_servers;
+
+    class announcement_client;
+    class announcement_red_dot;
+    class feedback_submit;
 }

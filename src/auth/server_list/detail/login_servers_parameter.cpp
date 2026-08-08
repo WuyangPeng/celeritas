@@ -1,4 +1,4 @@
-﻿#include "login_servers_parameter.h"
+#include "login_servers_parameter.h"
 #include "auth/auth_constant.h"
 #include "auth/config/app_secret.h"
 #include "common/core/hmac_sha_256.h"
@@ -63,6 +63,10 @@ void celeritas::login_servers_parameter::init()
     token_ = *optional_token;
 
     zone_ = get_param(zone_describe.data());
+    if (zone_ && zone_->empty())
+    {
+        zone_ = std::nullopt;
+    }
 
     if (const auto optional_only_preferred = get_param(only_preferred_describe.data()))
     {

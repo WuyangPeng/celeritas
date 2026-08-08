@@ -1,4 +1,4 @@
-﻿#include "login_servers_response.h"
+#include "login_servers_response.h"
 #include "common/core/celeritas_error.h"
 #include "common/core/enum_cast.h"
 #include "common/logging/logger.h"
@@ -16,25 +16,31 @@ celeritas::login_servers_response::login_servers_response(const game_error_type 
 }
 
 celeritas::login_servers_response::login_servers_response(const game_error_type code, std::string message, container_type login_server_info)
-    : bass_type{ code, std::move(message) }, login_server_info_{ std::move(login_server_info) }
+    : bass_type{ code, std::move(message) }, login_server_info_{ std::move(login_server_info) }, zones_{}
+{
+    LOG_CHANNEL(auth_channel, trace) << "login servers code:" << get_game_error_description(code) << ",message:" << get_message();
+}
+
+celeritas::login_servers_response::login_servers_response(const game_error_type code, std::string message, container_type login_server_info, zones_container_type zones)
+    : bass_type{ code, std::move(message) }, login_server_info_{ std::move(login_server_info) }, zones_{ std::move(zones) }
 {
     LOG_CHANNEL(auth_channel, trace) << "login servers code:" << get_game_error_description(code) << ",message:" << get_message();
 }
 
 celeritas::login_servers_response::login_servers_response(const game_error_type code, std::string message, login_server_info login_server_info)
-    : bass_type{ code, std::move(message) }, login_server_info_{ std::move(login_server_info) }
+    : bass_type{ code, std::move(message) }, login_server_info_{ std::move(login_server_info) }, zones_{}
 {
     LOG_CHANNEL(auth_channel, trace) << "login servers code:" << get_game_error_description(code) << ",message:" << get_message();
 }
 
 celeritas::login_servers_response::login_servers_response(bass_type http_response)
-    : bass_type{ std::move(http_response) }, login_server_info_{}
+    : bass_type{ std::move(http_response) }, login_server_info_{}, zones_{}
 {
     LOG_CHANNEL(auth_channel, trace) << "login servers code:" << get_game_error_description(get_code()) << ",message:" << get_message();
 }
 
 celeritas::login_servers_response::login_servers_response(bass_type http_response, container_type login_server_info)
-    : bass_type{ std::move(http_response) }, login_server_info_{ std::move(login_server_info) }
+    : bass_type{ std::move(http_response) }, login_server_info_{ std::move(login_server_info) }, zones_{}
 {
     LOG_CHANNEL(auth_channel, trace) << "login servers code:" << get_game_error_description(get_code()) << ",message:" << get_message();
 }
@@ -42,6 +48,11 @@ celeritas::login_servers_response::login_servers_response(bass_type http_respons
 celeritas::login_servers_response::container_type celeritas::login_servers_response::get_login_server_info() const
 {
     return login_server_info_;
+}
+
+celeritas::login_servers_response::zones_container_type celeritas::login_servers_response::get_zones() const
+{
+    return zones_;
 }
 
 std::string celeritas::login_servers_response::to_json_string() const
@@ -60,8 +71,15 @@ celeritas::login_servers_response celeritas::login_servers_response::tag_invoke(
     const auto& object = value.as_object();
     auto http_response = bass_type::tag_invoke(value);
     auto login_server_info = boost::json::value_to<container_type>(object.at(login_server_info_description));
+    zones_container_type zones{};
+    if (object.contains(zones_description))
+    {
+        zones = boost::json::value_to<zones_container_type>(object.at(zones_description));
+    }
 
-    return login_servers_response{ std::move(http_response), std::move(login_server_info) };
+    login_servers_response response{ std::move(http_response), std::move(login_server_info) };
+    response.zones_ = std::move(zones);
+    return response;
 }
 
 celeritas::login_servers_response celeritas::tag_invoke(login_servers_response_tag, const login_servers_response::json_value& value)
@@ -82,9 +100,12 @@ celeritas::login_servers_response celeritas::tag_invoke(login_servers_response_t
 
 void celeritas::tag_invoke(boost::json::value_from_tag, login_servers_response::json_value& value, const login_servers_response& login_servers_response)
 {
-    value = {
-        { login_servers_response::code_description, enum_cast_underlying(login_servers_response.get_code()) },
-        { login_servers_response::message_description, login_servers_response.get_message() },
-        { login_servers_response::login_server_info_description, boost::json::value_from(login_servers_response.get_login_server_info()) }
-    };
+    auto& object = value.emplace_object();
+    object[login_servers_response::code_description] = enum_cast_underlying(login_servers_response.get_code());
+    object[login_servers_response::message_description] = login_servers_response.get_message();
+    object[login_servers_response::login_server_info_description] = boost::json::value_from(login_servers_response.get_login_server_info());
+    if (!login_servers_response.get_zones().empty())
+    {
+        object[login_servers_response::zones_description] = boost::json::value_from(login_servers_response.get_zones());
+    }
 }

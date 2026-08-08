@@ -1,9 +1,10 @@
-﻿syntax = "proto3";
+syntax = "proto3";
 
 import "proto/service/registry.proto";
 import "proto/service/auth.proto";
 import "proto/service/payment.proto";
 import "proto/service/player.proto";
+import "proto/service/log.proto";
 
 package celeritas.proto.service;
 
@@ -13,5 +14,6 @@ message service_response {
     service_auth_response auth = 2;
     service_payment_response payment = 3;
     service_player_response player = 4;
+    service_log_response log = 5;
   }
 }

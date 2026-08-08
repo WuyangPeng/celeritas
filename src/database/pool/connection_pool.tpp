@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "connection_pool.h"
 #include "database_session_guard.tpp"
@@ -189,6 +189,33 @@ celeritas::database_pool_base::result_container_awaitable_type celeritas::connec
     auto session = co_await async_get_session();
 
     co_return co_await session.get_session()->select_all(database, field_name_container);
+}
+
+template <typename SessionType>
+celeritas::database_pool_base::result_container_awaitable_type celeritas::connection_pool<SessionType>::select_page(const const_database_entity_change_shared_ptr& database,
+                                                                                                                     const database_field_container& field_name_container,
+                                                                                                                     const database_select_options& options)
+{
+    auto session = co_await async_get_session();
+
+    co_return co_await session.get_session()->select_page(database, field_name_container, options);
+}
+
+template <typename SessionType>
+celeritas::database_pool_base::int64_awaitable_type celeritas::connection_pool<SessionType>::select_count(const const_database_entity_change_shared_ptr& database)
+{
+    auto session = co_await async_get_session();
+
+    co_return co_await session.get_session()->select_count(database);
+}
+
+template <typename SessionType>
+celeritas::database_pool_base::int64_awaitable_type celeritas::connection_pool<SessionType>::select_count(const const_database_entity_change_shared_ptr& database,
+                                                                                                          const database_select_options& options)
+{
+    auto session = co_await async_get_session();
+
+    co_return co_await session.get_session()->select_count(database, options);
 }
 
 template <typename SessionType>

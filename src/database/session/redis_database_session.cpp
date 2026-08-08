@@ -1,4 +1,4 @@
-﻿#include "redis_database_session.h"
+#include "redis_database_session.h"
 #include "common/core/celeritas_error.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
@@ -13,12 +13,12 @@
 
 using namespace std::literals;
 
-celeritas::redis_database_session::redis_database_session(const std::string_view host,
+celeritas::redis_database_session::redis_database_session(const std::string& host,
                                                           const int port,
-                                                          const std::string_view user,
-                                                          const std::string_view password,
-                                                          const std::string_view uri,
-                                                          const std::string_view db_name,
+                                                          const std::string& user,
+                                                          const std::string& password,
+                                                          const std::string& uri,
+                                                          const std::string& db_name,
                                                           const int expire_seconds,
                                                           const any_io_executor& any_io_executor)
     : base_type{ any_io_executor },
@@ -223,6 +223,27 @@ celeritas::database_session::result_container_awaitable_type celeritas::redis_da
 
     co_return container;
 }
+
+celeritas::database_session::result_container_awaitable_type celeritas::redis_database_session::select_page(const const_database_entity_change_shared_ptr&,
+                                                                                                            const database_field_container&,
+                                                                                                            const database_select_options&)
+{
+    throw celeritas_error{ "select_page is not supported for redis" };
+    co_return result_container{};
+}
+
+celeritas::database_session::int64_awaitable_type celeritas::redis_database_session::select_count(const const_database_entity_change_shared_ptr&)
+{
+    throw celeritas_error{ "select_count is not supported for redis" };
+    co_return 0;
+}
+
+celeritas::database_session::int64_awaitable_type celeritas::redis_database_session::select_count(const const_database_entity_change_shared_ptr& database,
+                                                                                                   const database_select_options&)
+{
+    co_return co_await select_count(database);
+}
+
 
 void celeritas::redis_database_session::check_initialized() const
 {

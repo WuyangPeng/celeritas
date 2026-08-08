@@ -9,4 +9,11 @@
         <log_file_name>admin_server</log_file_name>
         <rotation_size>10</rotation_size>
     </logger>
+    <logger name="admin_logger">
+        <level>trace</level>
+        <console_enabled>true</console_enabled>
+        <channel_name>admin</channel_name>
+        <log_file_name>admin</log_file_name>
+        <rotation_size>50</rotation_size>
+    </logger>
 </loggers>

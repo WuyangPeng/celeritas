@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "database_session.h"
 #include "database/redis/redis_hash_commands.h"
@@ -40,12 +40,12 @@ namespace celeritas
         using sorted_set_member_score_container = std::vector<sorted_set_member_score>;
         using sorted_set_member_score_awaitable_type = boost::asio::awaitable<sorted_set_member_score_container>;
 
-        redis_database_session(std::string_view host,
+        redis_database_session(const std::string& host,
                                int port,
-                               std::string_view user,
-                               std::string_view password,
-                               std::string_view uri,
-                               std::string_view db_name,
+                               const std::string& user,
+                               const std::string& password,
+                               const std::string& uri,
+                               const std::string& db_name,
                                int expire_seconds,
                                const any_io_executor& any_io_executor);
 
@@ -101,6 +101,15 @@ namespace celeritas
         [[nodiscard]] database_entity_change_awaitable_type select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) override;
 
         [[nodiscard]] result_container_awaitable_type select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) override;
+
+        [[nodiscard]] result_container_awaitable_type select_page(const const_database_entity_change_shared_ptr& database,
+                                                                  const database_field_container& field_name_container,
+                                                                  const database_select_options& options) override;
+
+        [[nodiscard]] int64_awaitable_type select_count(const const_database_entity_change_shared_ptr& database) override;
+
+        [[nodiscard]] int64_awaitable_type select_count(const const_database_entity_change_shared_ptr& database,
+                                                        const database_select_options& options) override;
 
     private:
         using redis_context_unique_ptr = std::unique_ptr<redis_context>;

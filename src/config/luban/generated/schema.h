@@ -82,6 +82,46 @@ namespace celeritas {namespace config {
         /// 民居
         /// </summary>
         folk_house = 5,
+        /// <summary>
+        /// 府衙
+        /// </summary>
+        main_hall = 6,
+        /// <summary>
+        /// 兵营
+        /// </summary>
+        barracks = 7,
+        /// <summary>
+        /// 靶场
+        /// </summary>
+        target_range = 8,
+        /// <summary>
+        /// 马厩
+        /// </summary>
+        stable = 9,
+        /// <summary>
+        /// 工坊
+        /// </summary>
+        workshop = 10,
+        /// <summary>
+        /// 城墙
+        /// </summary>
+        wall = 11,
+        /// <summary>
+        /// 箭塔
+        /// </summary>
+        arrow_tower = 12,
+        /// <summary>
+        /// 医馆
+        /// </summary>
+        medical_clinic = 13,
+        /// <summary>
+        /// 书院
+        /// </summary>
+        academy = 14,
+        /// <summary>
+        /// 市场
+        /// </summary>
+        market = 15,
     };
 
  
@@ -106,6 +146,10 @@ namespace celeritas {namespace config {
         /// 铜钱
         /// </summary>
         copper_coin = 1001003,
+        /// <summary>
+        /// 人口
+        /// </summary>
+        population = 1001004,
         /// <summary>
         /// 粮食
         /// </summary>
@@ -186,6 +230,34 @@ namespace celeritas {namespace config {
         /// 建筑
         /// </summary>
         building = 4,
+        /// <summary>
+        /// 科技
+        /// </summary>
+        tech = 5,
+    };
+
+ 
+
+
+ 
+    enum class event_type
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        none = 0,
+        /// <summary>
+        /// 天灾
+        /// </summary>
+        disaster = 1,
+        /// <summary>
+        /// 节日
+        /// </summary>
+        festival = 2,
+        /// <summary>
+        /// 随机事件
+        /// </summary>
+        random_event = 3,
     };
 
  
@@ -230,6 +302,34 @@ namespace celeritas {namespace config {
         /// 名臣
         /// </summary>
         minister = 4,
+    };
+
+ 
+
+
+ 
+    enum class interval_buff_type
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        none = 0,
+        /// <summary>
+        /// 民心
+        /// </summary>
+        popularity = 1,
+        /// <summary>
+        /// 税率
+        /// </summary>
+        tax_rate = 2,
+        /// <summary>
+        /// 粮食赤字
+        /// </summary>
+        food_deficit = 3,
+        /// <summary>
+        /// 金钱赤字
+        /// </summary>
+        money_deficit = 4,
     };
 
  
@@ -294,6 +394,62 @@ namespace celeritas {namespace config {
         /// 资源
         /// </summary>
         resource = 10,
+        /// <summary>
+        /// 士兵
+        /// </summary>
+        soldier = 11,
+        /// <summary>
+        /// 器械
+        /// </summary>
+        machine = 12,
+        /// <summary>
+        /// 技能书
+        /// </summary>
+        skill_book = 13,
+        /// <summary>
+        /// 图纸
+        /// </summary>
+        blueprint = 14,
+        /// <summary>
+        /// 宝箱
+        /// </summary>
+        gift_box = 15,
+        /// <summary>
+        /// 珍宝
+        /// </summary>
+        treasure = 16,
+    };
+
+ 
+
+
+ 
+    enum class official_position_type
+    {
+        /// <summary>
+        /// 无
+        /// </summary>
+        none = 0,
+        /// <summary>
+        /// 农业官
+        /// </summary>
+        agricultural = 1,
+        /// <summary>
+        /// 林业官
+        /// </summary>
+        forest = 2,
+        /// <summary>
+        /// 石料官
+        /// </summary>
+        stone = 3,
+        /// <summary>
+        /// 采矿官
+        /// </summary>
+        mining = 4,
+        /// <summary>
+        /// 税务官
+        /// </summary>
+        tax = 5,
     };
 
  
@@ -362,6 +518,10 @@ namespace celeritas {namespace config {
         /// 角色功能类
         /// </summary>
         role = 10000,
+        /// <summary>
+        /// 公告
+        /// </summary>
+        announcement = 10001,
         /// <summary>
         /// 物品功能类
         /// </summary>
@@ -474,11 +634,18 @@ namespace game { struct building_config; }
 namespace game { struct default_item_config; }
 namespace game { struct develop_config; }
 namespace game { struct develop_level_config; }
+namespace game { struct event_config; }
 namespace game { struct frame_config; }
+namespace game { struct gather_node_config; }
+namespace game { struct global_config; }
 namespace game { struct hero_config; }
+namespace game { struct interval_buff_config; }
 namespace game { struct item_config; }
+namespace game { struct maintenance_config; }
 namespace game { struct month_config; }
 namespace game { struct name_config; }
+namespace game { struct official_position_config; }
+namespace game { struct recipe_config; }
 namespace game { struct red_dot_config; }
 namespace game { struct rename_cost_config; }
 namespace game { struct surname_config; }
@@ -507,7 +674,7 @@ struct attribute_bonus : public luban::CfgBean
      */
     attribute_type type;
     /**
-     * 值
+     * 加成值
      */
     ::luban::int32 value;
 
@@ -686,11 +853,34 @@ struct develop_config : public luban::CfgBean
      * id
      */
     ::luban::int32 id;
+    /**
+     * 养成系统类型
+     */
     develop_system_type developSystemType;
+    /**
+     * 养成子类型
+     */
     develop_sub_type developSubType;
+    /**
+     * 最高等级
+     */
     ::luban::int32 maxLevel;
+    /**
+     * 重置类型
+     */
     develop_reset_type developResetType;
+    /**
+     * 返还比例 (万分比)
+     */
     ::luban::int32 refundProportion;
+    /**
+     * 前置养成ID
+     */
+    ::luban::int32 preDevelopId;
+    /**
+     * 前置养成等级
+     */
+    ::luban::int32 preDevelopLevel;
 
     static constexpr int __ID__ = 1902983392;
 
@@ -713,12 +903,70 @@ struct develop_level_config : public luban::CfgBean
      * id
      */
     ::luban::int32 id;
+    /**
+     * 属性加成
+     */
+    ::luban::Vector<::luban::SharedPtr<resource_output_bonus>> attribute;
+    /**
+     * 养成ID
+     */
     ::luban::int32 developId;
+    /**
+     * 等级
+     */
     ::luban::int32 level;
+    /**
+     * 消耗物品
+     */
     ::luban::Vector<::luban::SharedPtr<item>> playerItem;
+    /**
+     * 达成奖励
+     */
     ::luban::Vector<::luban::SharedPtr<item>> reward;
 
     static constexpr int __ID__ = 1411329915;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+}
+
+namespace game {
+
+struct event_config : public luban::CfgBean 
+{
+    static bool deserializeevent_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<event_config>& _out);
+
+    virtual ~event_config() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 事件ID
+     */
+    ::luban::int32 id;
+    /**
+     * 事件类型
+     */
+    event_type type;
+    /**
+     * 触发概率(万分比)
+     */
+    ::luban::int32 triggerProbability;
+    /**
+     * 持续时间(天数)
+     */
+    ::luban::SharedPtr<interval> duration;
+    /**
+     * 资源加成Buff
+     */
+    ::luban::Vector<::luban::SharedPtr<resource_output_bonus>> buff;
+    /**
+     * 说明注释
+     */
+    ::luban::String comment;
+
+    static constexpr int __ID__ = 1252992259;
 
     int getTypeId() const override { return __ID__; }
 };
@@ -760,7 +1008,7 @@ struct frame_config : public luban::CfgBean
      */
     bool hidden;
     /**
-     * 头像是否开放
+     * 头像框是否开放
      */
     bool isOpen;
     /**
@@ -773,6 +1021,78 @@ struct frame_config : public luban::CfgBean
     ::luban::Vector<::luban::SharedPtr<attribute_bonus>> attribute;
 
     static constexpr int __ID__ = -2093864240;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+}
+
+namespace game {
+
+struct gather_node_config : public luban::CfgBean 
+{
+    static bool deserializegather_node_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<gather_node_config>& _out);
+
+    virtual ~gather_node_config() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 采集点ID
+     */
+    ::luban::int32 nodeId;
+    /**
+     * 产出资源类型
+     */
+    currency_type resourceType;
+    /**
+     * 储量上限
+     */
+    ::luban::int32 capacity;
+    /**
+     * 刷新周期(秒)
+     */
+    ::luban::int32 refreshTime;
+    /**
+     * 单日最大采集次数
+     */
+    ::luban::int32 maxGatherCount;
+    /**
+     * 说明注释
+     */
+    ::luban::String comment;
+
+    static constexpr int __ID__ = 816255831;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+}
+
+namespace game {
+
+struct global_config : public luban::CfgBean 
+{
+    static bool deserializeglobal_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<global_config>& _out);
+
+    virtual ~global_config() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 配置键名
+     */
+    ::luban::String key;
+    /**
+     * 配置数值
+     */
+    ::luban::int32 value;
+    /**
+     * 说明备注
+     */
+    ::luban::String comment;
+
+    static constexpr int __ID__ = 1445095010;
 
     int getTypeId() const override { return __ID__; }
 };
@@ -831,6 +1151,48 @@ struct hero_config : public luban::CfgBean
 
 namespace game {
 
+struct interval_buff_config : public luban::CfgBean 
+{
+    static bool deserializeinterval_buff_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<interval_buff_config>& _out);
+
+    virtual ~interval_buff_config() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 区间ID
+     */
+    ::luban::int32 id;
+    /**
+     * 区间Buff类型
+     */
+    interval_buff_type type;
+    /**
+     * 数值范围
+     */
+    ::luban::SharedPtr<interval> range;
+    /**
+     * 资源加成Buff
+     */
+    ::luban::Vector<::luban::SharedPtr<resource_output_bonus>> buff;
+    /**
+     * 道具Buff
+     */
+    ::luban::Vector<::luban::SharedPtr<item>> itemBuff;
+    /**
+     * 说明注释
+     */
+    ::luban::String comment;
+
+    static constexpr int __ID__ = 959847600;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+}
+
+namespace game {
+
 struct item_config : public luban::CfgBean 
 {
     static bool deserializeitem_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<item_config>& _out);
@@ -843,6 +1205,14 @@ struct item_config : public luban::CfgBean
      * 物品编号
      */
     ::luban::int32 itemTemplateId;
+    /**
+     * 物品名称多语言Key
+     */
+    ::luban::String nameKey;
+    /**
+     * 物品描述多语言Key
+     */
+    ::luban::String descriptionKey;
     /**
      * 物品类型
      */
@@ -871,8 +1241,54 @@ struct item_config : public luban::CfgBean
      * 关联参数1
      */
     ::luban::int32 parameter1;
+    /**
+     * 图标
+     */
+    ::luban::String icon;
 
     static constexpr int __ID__ = 1115922930;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+}
+
+namespace game {
+
+struct maintenance_config : public luban::CfgBean 
+{
+    static bool deserializemaintenance_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<maintenance_config>& _out);
+
+    virtual ~maintenance_config() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 维持条目ID
+     */
+    ::luban::int32 id;
+    /**
+     * 维持类型
+     */
+    ::luban::int32 type;
+    /**
+     * 关联目标ID
+     */
+    ::luban::int32 targetId;
+    /**
+     * 维持消耗速率
+     */
+    ::luban::Vector<::luban::SharedPtr<resource_output_bonus>> costRate;
+    /**
+     * 野外粮食消耗系数
+     */
+    ::luban::int32 wildMultiplier;
+    /**
+     * 说明备注
+     */
+    ::luban::String comment;
+
+    static constexpr int __ID__ = -1333293718;
 
     int getTypeId() const override { return __ID__; }
 };
@@ -894,7 +1310,7 @@ struct month_config : public luban::CfgBean
      */
     ::luban::int32 month;
     /**
-     * 资源产出加成
+     * 资源产出
      */
     ::luban::Vector<::luban::SharedPtr<resource_output_bonus>> resourceOutput;
 
@@ -920,11 +1336,11 @@ struct name_config : public luban::CfgBean
      */
     ::luban::int32 id;
     /**
-     * 名字
+     * 姓名
      */
     ::luban::String name;
     /**
-     * 性别
+     * 性别 (1:男, 2:女)
      */
     sex_type sexType;
     /**
@@ -933,6 +1349,78 @@ struct name_config : public luban::CfgBean
     ::luban::int32 weight;
 
     static constexpr int __ID__ = 1822542714;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+}
+
+namespace game {
+
+struct official_position_config : public luban::CfgBean 
+{
+    static bool deserializeofficial_position_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<official_position_config>& _out);
+
+    virtual ~official_position_config() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 官职ID
+     */
+    ::luban::int32 id;
+    /**
+     * 官职类型
+     */
+    official_position_type type;
+    /**
+     * 影响资源类型
+     */
+    currency_type resourceType;
+    /**
+     * 政治加成系数
+     */
+    ::luban::int32 bonusCoefficient;
+    /**
+     * 说明注释
+     */
+    ::luban::String comment;
+
+    static constexpr int __ID__ = -217698240;
+
+    int getTypeId() const override { return __ID__; }
+};
+
+}
+
+namespace game {
+
+struct recipe_config : public luban::CfgBean 
+{
+    static bool deserializerecipe_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<recipe_config>& _out);
+
+    virtual ~recipe_config() {}
+
+    bool deserialize(::luban::ByteBuf& _buf);
+
+    /**
+     * 配方ID
+     */
+    ::luban::int32 id;
+    /**
+     * 消耗道具
+     */
+    ::luban::Vector<::luban::SharedPtr<item>> consumeItems;
+    /**
+     * 产出道具
+     */
+    ::luban::Vector<::luban::SharedPtr<item>> rewardItems;
+    /**
+     * 说明备注
+     */
+    ::luban::String comment;
+
+    static constexpr int __ID__ = -334748137;
 
     int getTypeId() const override { return __ID__; }
 };
@@ -950,11 +1438,11 @@ struct red_dot_config : public luban::CfgBean
     bool deserialize(::luban::ByteBuf& _buf);
 
     /**
-     * 红点类型
+     * 节点id
      */
     red_dot_type id;
     /**
-     * 名称
+     * 节点名称
      */
     ::luban::String name;
     /**
@@ -988,15 +1476,15 @@ struct rename_cost_config : public luban::CfgBean
     bool deserialize(::luban::ByteBuf& _buf);
 
     /**
-     * 编号
+     * id
      */
     ::luban::int32 id;
     /**
-     * 区间
+     * 次数区间
      */
     ::luban::SharedPtr<interval> renameCount;
     /**
-     * 所需物品
+     * 消耗物品
      */
     ::luban::Vector<::luban::SharedPtr<priority_item>> item;
 
@@ -1022,7 +1510,7 @@ struct surname_config : public luban::CfgBean
      */
     ::luban::int32 id;
     /**
-     * 名字
+     * 姓氏
      */
     ::luban::String name;
     /**
@@ -1048,13 +1536,29 @@ struct task_config : public luban::CfgBean
     bool deserialize(::luban::ByteBuf& _buf);
 
     /**
-     * id
+     * 任务id
      */
     ::luban::int32 id;
+    /**
+     * 任务大类
+     */
     task_component_type taskComponentType;
+    /**
+     * 任务事件类型
+     */
     task_event_type taskEventType;
+    /**
+     * 目标id
+     */
     ::luban::int32 targetId;
+    /**
+     * 目标进度值
+     */
     ::luban::int32 progress;
+    /**
+     * 奖励
+     */
+    ::luban::Vector<::luban::SharedPtr<item>> reward;
 
     static constexpr int __ID__ = -757095616;
 
@@ -1156,11 +1660,11 @@ struct item : public luban::CfgBean
     bool deserialize(::luban::ByteBuf& _buf);
 
     /**
-     * 道具id
+     * 物品ID
      */
     ::luban::int32 itemId;
     /**
-     * 道具数量
+     * 物品数量
      */
     ::luban::int32 itemCount;
 
@@ -1185,11 +1689,11 @@ struct priority_item : public luban::CfgBean
     bool deserialize(::luban::ByteBuf& _buf);
 
     /**
-     * 道具id
+     * 物品ID
      */
     ::luban::int32 itemId;
     /**
-     * 道具数量
+     * 物品数量
      */
     ::luban::int32 itemCount;
     /**
@@ -1218,11 +1722,11 @@ struct resource_output_bonus : public luban::CfgBean
     bool deserialize(::luban::ByteBuf& _buf);
 
     /**
-     * 物品类型
+     * 资源类型
      */
     currency_type type;
     /**
-     * 值
+     * 加成值
      */
     ::luban::int32 value;
 
@@ -2133,6 +2637,426 @@ class month_config_container
 
 }
 
+namespace game {
+
+/**
+ * 事件
+ */
+
+class event_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::event_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::event_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::event_config> _v;
+            if(!game::event_config::deserializeevent_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->id] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::event_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::event_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::event_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::event_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
+namespace game {
+
+/**
+ * 数值区间加成
+ */
+
+class interval_buff_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::interval_buff_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::interval_buff_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::interval_buff_config> _v;
+            if(!game::interval_buff_config::deserializeinterval_buff_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->id] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::interval_buff_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::interval_buff_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::interval_buff_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::interval_buff_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
+namespace game {
+
+/**
+ * 官职
+ */
+
+class official_position_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::official_position_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::official_position_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::official_position_config> _v;
+            if(!game::official_position_config::deserializeofficial_position_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->id] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::official_position_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::official_position_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::official_position_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::official_position_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
+namespace game {
+
+/**
+ * 全局配置
+ */
+
+class global_config_container
+{
+    private:
+    ::luban::HashMap<::luban::String, ::luban::SharedPtr<game::global_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::global_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::global_config> _v;
+            if(!game::global_config::deserializeglobal_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->key] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::String, ::luban::SharedPtr<game::global_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::global_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::global_config*> getRaw(::luban::String key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::global_config>> get(::luban::String key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
+namespace game {
+
+/**
+ * 地图采集点
+ */
+
+class gather_node_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::gather_node_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::gather_node_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::gather_node_config> _v;
+            if(!game::gather_node_config::deserializegather_node_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->nodeId] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::gather_node_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::gather_node_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::gather_node_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::gather_node_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
+namespace game {
+
+/**
+ * 配方
+ */
+
+class recipe_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::recipe_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::recipe_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::recipe_config> _v;
+            if(!game::recipe_config::deserializerecipe_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->id] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::recipe_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::recipe_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::recipe_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::recipe_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
+namespace game {
+
+/**
+ * 维持消耗
+ */
+
+class maintenance_config_container
+{
+    private:
+    ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::maintenance_config>> _dataMap;
+    ::luban::Vector<::luban::SharedPtr<game::maintenance_config>> _dataList;
+    
+    public:
+    bool load(::luban::ByteBuf& _buf)
+    {        
+        int n;
+        if (!_buf.readSize(n)) return false;
+        for(; n > 0 ; --n)
+        {
+            ::luban::SharedPtr<game::maintenance_config> _v;
+            if(!game::maintenance_config::deserializemaintenance_config(_buf, _v)) return false;
+            _dataList.push_back(_v);
+            _dataMap[_v->id] = _v;
+        }
+        return true;
+    }
+
+    const ::luban::HashMap<::luban::int32, ::luban::SharedPtr<game::maintenance_config>>& getDataMap() const { return _dataMap; }
+    const ::luban::Vector<::luban::SharedPtr<game::maintenance_config>>& getDataList() const { return _dataList; }
+
+    std::optional<game::maintenance_config*> getRaw(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second.get();
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+    std::optional<::luban::SharedPtr<game::maintenance_config>> get(::luban::int32 key) const
+    { 
+        auto it = _dataMap.find(key);
+        if(it != _dataMap.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            return std::nullopt;
+        }
+    }
+
+};
+
+}
+
 class tables
 {
     public:
@@ -2196,6 +3120,34 @@ class tables
      * 月份
      */
      game::month_config_container month_config_container;
+    /**
+     * 事件
+     */
+     game::event_config_container event_config_container;
+    /**
+     * 数值区间加成
+     */
+     game::interval_buff_config_container interval_buff_config_container;
+    /**
+     * 官职
+     */
+     game::official_position_config_container official_position_config_container;
+    /**
+     * 全局配置
+     */
+     game::global_config_container global_config_container;
+    /**
+     * 地图采集点
+     */
+     game::gather_node_config_container gather_node_config_container;
+    /**
+     * 配方
+     */
+     game::recipe_config_container recipe_config_container;
+    /**
+     * 维持消耗
+     */
+     game::maintenance_config_container maintenance_config_container;
 
     bool load(::luban::Loader<::luban::ByteBuf> loader)
     {
@@ -2245,6 +3197,27 @@ class tables
         buf.clear();
         if (!loader(buf, "month_config_container")) return false;
         if (!month_config_container.load(buf)) return false;
+        buf.clear();
+        if (!loader(buf, "event_config_container")) return false;
+        if (!event_config_container.load(buf)) return false;
+        buf.clear();
+        if (!loader(buf, "interval_buff_config_container")) return false;
+        if (!interval_buff_config_container.load(buf)) return false;
+        buf.clear();
+        if (!loader(buf, "official_position_config_container")) return false;
+        if (!official_position_config_container.load(buf)) return false;
+        buf.clear();
+        if (!loader(buf, "global_config_container")) return false;
+        if (!global_config_container.load(buf)) return false;
+        buf.clear();
+        if (!loader(buf, "gather_node_config_container")) return false;
+        if (!gather_node_config_container.load(buf)) return false;
+        buf.clear();
+        if (!loader(buf, "recipe_config_container")) return false;
+        if (!recipe_config_container.load(buf)) return false;
+        buf.clear();
+        if (!loader(buf, "maintenance_config_container")) return false;
+        if (!maintenance_config_container.load(buf)) return false;
         return true;
     }
 };

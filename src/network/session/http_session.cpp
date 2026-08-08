@@ -1,4 +1,4 @@
-﻿#include "http_session.h"
+#include "http_session.h"
 #include "common/logging/logger.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "network/session_helper/detail/http_request_session_run.h"
@@ -107,5 +107,23 @@ celeritas::http_session::session_run_shared_ptr celeritas::http_session::get_ses
 celeritas::session_base::void_awaitable_type celeritas::http_session::do_write_immediately(buffer_guard data)
 {
     co_await http_write_->write_immediately(std::move(data), shared_from_this());
+}
+
+std::string celeritas::http_session::get_remote_ip_address() const
+{
+    try
+    {
+        return socket_.remote_endpoint().address().to_string();
+    }
+    catch (const std::exception& e)
+    {
+        LOG_CHANNEL(network_channel, error) << "get remote ip address error: " << e.what();
+        return "";
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(network_channel, error) << "get remote ip address error: unknown exception";
+        return "";
+    }
 }
 

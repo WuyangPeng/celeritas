@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "common/common_fwd.h"
 #include "config/config_fwd.h"
@@ -50,6 +50,8 @@ namespace celeritas
         [[nodiscard]] int64_t get_user_id() const;
 
         [[nodiscard]] std::string get_instance_id() const;
+
+        [[nodiscard]] std::string get_remote_ip_address() const;
 
         [[nodiscard]] protobuf_message_shared_ptr get_protobuf_message() const;
 

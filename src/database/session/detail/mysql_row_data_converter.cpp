@@ -153,10 +153,15 @@ celeritas::basis_database celeritas::mysql_row_data_converter::convert_double_ar
 
 celeritas::basis_database celeritas::mysql_row_data_converter::convert_byte_array(const database_field& field_name, const field_view_type& row_view)
 {
-    const std::string value{ row_view.as_string() };
+    if (row_view.is_blob())
+    {
+        const auto& blob = row_view.as_blob();
+        const basis_database::byte_array result{ blob.cbegin(), blob.cend() };
+        return basis_database{ field_name.get_field_name(), result };
+    }
 
+    const auto value = row_view.as_string();
     const basis_database::byte_array result{ value.cbegin(), value.cend() };
-
     return basis_database{ field_name.get_field_name(), result };
 }
 

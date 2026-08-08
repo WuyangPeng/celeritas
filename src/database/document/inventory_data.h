@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "custom_data.h"
 #include "database/basic/database_data_type_traits.h"
@@ -33,6 +33,10 @@ namespace celeritas
 
         void set_position(int position);
 
+        [[nodiscard]] bool is_locked() const;
+
+        void set_is_locked(bool is_locked);
+
         [[nodiscard]] custom_data get_custom_data() const;
 
         void set_custom_data(const custom_data& custom_data);
@@ -50,6 +54,7 @@ namespace celeritas
         static constexpr std::string_view count_description = "count";
         static constexpr std::string_view position_description = "position";
         static constexpr std::string_view custom_data_description = "custom_data";
+        static constexpr std::string_view is_locked_description = "is_locked";
 
     private:
         [[nodiscard]] static std::string_view get_custom_data(int template_id);
@@ -58,6 +63,7 @@ namespace celeritas
         int template_id_ = 0;
         int64_t count_ = 0;
         int position_ = 0;
+        bool is_locked_ = false;
         custom_data custom_data_;
     };
 }

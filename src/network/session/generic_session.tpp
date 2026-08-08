@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "generic_session.h"
 #include "common/core/noexcept_safe_call_and_log.h"
@@ -84,4 +84,23 @@ template <typename SocketType>
 celeritas::session_base::void_awaitable_type celeritas::generic_session<SocketType>::do_write_immediately(buffer_guard data)
 {
     co_await session_write_->write_immediately(std::move(data), shared_from_this());
+}
+
+template <typename SocketType>
+std::string celeritas::generic_session<SocketType>::get_remote_ip_address() const
+{
+    try
+    {
+        return socket_.remote_endpoint().address().to_string();
+    }
+    catch (const std::exception& e)
+    {
+        LOG_CHANNEL(network_channel, error) << "get remote ip address error: " << e.what();
+        return "";
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(network_channel, error) << "get remote ip address error: unknown exception";
+        return "";
+    }
 }

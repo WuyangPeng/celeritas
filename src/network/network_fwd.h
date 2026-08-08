@@ -6,6 +6,7 @@ namespace celeritas
     class listener;
     class network_message_callback;
     class message_header;
+    class http_parameter;
 
     template <typename SocketType>
     class generic_session;

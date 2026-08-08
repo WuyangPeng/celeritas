@@ -1,4 +1,4 @@
-﻿syntax = "proto3";
+syntax = "proto3";
 
 package celeritas.proto.service;
 
@@ -30,6 +30,7 @@ message service_login_request {
     string app_version = 7;
     int64 session_id = 8;
     int32 protocol = 9;
+    string ip_address = 10;
 }
 
 message service_login_response {

@@ -136,6 +136,8 @@ bool game::develop_config::deserialize(::luban::ByteBuf& _buf)
     if(!_buf.readInt(maxLevel)) return false;
     {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; developResetType = develop_reset_type(__enum_temp__); }
     if(!_buf.readInt(refundProportion)) return false;
+    if(!_buf.readInt(preDevelopId)) return false;
+    if(!_buf.readInt(preDevelopLevel)) return false;
 
     return true;
 }
@@ -159,6 +161,7 @@ bool game::develop_level_config::deserialize(::luban::ByteBuf& _buf)
 {
 
     if(!_buf.readInt(id)) return false;
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); attribute.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<resource_output_bonus> _e; if(!resource_output_bonus::deserializeresource_output_bonus(_buf, _e)) return false; attribute.push_back(_e);}}
     if(!_buf.readInt(developId)) return false;
     if(!_buf.readInt(level)) return false;
     {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); playerItem.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<item> _e; if(!item::deserializeitem(_buf, _e)) return false; playerItem.push_back(_e);}}
@@ -170,6 +173,34 @@ bool game::develop_level_config::deserialize(::luban::ByteBuf& _buf)
 bool game::develop_level_config::deserializedevelop_level_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::develop_level_config>& _out)
 {
     _out.reset(LUBAN_NEW(game::develop_level_config));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
+bool game::event_config::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(id)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; type = event_type(__enum_temp__); }
+    if(!_buf.readInt(triggerProbability)) return false;
+    if(!interval::deserializeinterval(_buf, duration)) return false;
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); buff.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<resource_output_bonus> _e; if(!resource_output_bonus::deserializeresource_output_bonus(_buf, _e)) return false; buff.push_back(_e);}}
+    if(!_buf.readString(comment)) return false;
+
+    return true;
+}
+
+bool game::event_config::deserializeevent_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::event_config>& _out)
+{
+    _out.reset(LUBAN_NEW(game::event_config));
     if (_out->deserialize(_buf))
     {
         return true;
@@ -213,6 +244,59 @@ bool game::frame_config::deserializeframe_config(::luban::ByteBuf& _buf, ::luban
 }
 
 
+bool game::gather_node_config::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(nodeId)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; resourceType = currency_type(__enum_temp__); }
+    if(!_buf.readInt(capacity)) return false;
+    if(!_buf.readInt(refreshTime)) return false;
+    if(!_buf.readInt(maxGatherCount)) return false;
+    if(!_buf.readString(comment)) return false;
+
+    return true;
+}
+
+bool game::gather_node_config::deserializegather_node_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::gather_node_config>& _out)
+{
+    _out.reset(LUBAN_NEW(game::gather_node_config));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
+bool game::global_config::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readString(key)) return false;
+    if(!_buf.readInt(value)) return false;
+    if(!_buf.readString(comment)) return false;
+
+    return true;
+}
+
+bool game::global_config::deserializeglobal_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::global_config>& _out)
+{
+    _out.reset(LUBAN_NEW(game::global_config));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
 bool game::hero_config::deserialize(::luban::ByteBuf& _buf)
 {
 
@@ -243,10 +327,40 @@ bool game::hero_config::deserializehero_config(::luban::ByteBuf& _buf, ::luban::
 }
 
 
+bool game::interval_buff_config::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(id)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; type = interval_buff_type(__enum_temp__); }
+    if(!interval::deserializeinterval(_buf, range)) return false;
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); buff.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<resource_output_bonus> _e; if(!resource_output_bonus::deserializeresource_output_bonus(_buf, _e)) return false; buff.push_back(_e);}}
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); itemBuff.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<item> _e; if(!item::deserializeitem(_buf, _e)) return false; itemBuff.push_back(_e);}}
+    if(!_buf.readString(comment)) return false;
+
+    return true;
+}
+
+bool game::interval_buff_config::deserializeinterval_buff_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::interval_buff_config>& _out)
+{
+    _out.reset(LUBAN_NEW(game::interval_buff_config));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
 bool game::item_config::deserialize(::luban::ByteBuf& _buf)
 {
 
     if(!_buf.readInt(itemTemplateId)) return false;
+    if(!_buf.readString(nameKey)) return false;
+    if(!_buf.readString(descriptionKey)) return false;
     {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; itemType = item_type(__enum_temp__); }
     if(!_buf.readInt(stacked)) return false;
     {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; quality = quality_type(__enum_temp__); }
@@ -254,6 +368,7 @@ bool game::item_config::deserialize(::luban::ByteBuf& _buf)
     if(!_buf.readInt(unlockTaskId)) return false;
     if(!_buf.readInt(parameter0)) return false;
     if(!_buf.readInt(parameter1)) return false;
+    if(!_buf.readString(icon)) return false;
 
     return true;
 }
@@ -261,6 +376,34 @@ bool game::item_config::deserialize(::luban::ByteBuf& _buf)
 bool game::item_config::deserializeitem_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::item_config>& _out)
 {
     _out.reset(LUBAN_NEW(game::item_config));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
+bool game::maintenance_config::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(id)) return false;
+    if(!_buf.readInt(type)) return false;
+    if(!_buf.readInt(targetId)) return false;
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); costRate.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<resource_output_bonus> _e; if(!resource_output_bonus::deserializeresource_output_bonus(_buf, _e)) return false; costRate.push_back(_e);}}
+    if(!_buf.readInt(wildMultiplier)) return false;
+    if(!_buf.readString(comment)) return false;
+
+    return true;
+}
+
+bool game::maintenance_config::deserializemaintenance_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::maintenance_config>& _out)
+{
+    _out.reset(LUBAN_NEW(game::maintenance_config));
     if (_out->deserialize(_buf))
     {
         return true;
@@ -311,6 +454,59 @@ bool game::name_config::deserialize(::luban::ByteBuf& _buf)
 bool game::name_config::deserializename_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::name_config>& _out)
 {
     _out.reset(LUBAN_NEW(game::name_config));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
+bool game::official_position_config::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(id)) return false;
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; type = official_position_type(__enum_temp__); }
+    {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; resourceType = currency_type(__enum_temp__); }
+    if(!_buf.readInt(bonusCoefficient)) return false;
+    if(!_buf.readString(comment)) return false;
+
+    return true;
+}
+
+bool game::official_position_config::deserializeofficial_position_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::official_position_config>& _out)
+{
+    _out.reset(LUBAN_NEW(game::official_position_config));
+    if (_out->deserialize(_buf))
+    {
+        return true;
+    }
+    else
+    { 
+        _out.reset();
+        return false;
+    }
+}
+
+
+bool game::recipe_config::deserialize(::luban::ByteBuf& _buf)
+{
+
+    if(!_buf.readInt(id)) return false;
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); consumeItems.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<item> _e; if(!item::deserializeitem(_buf, _e)) return false; consumeItems.push_back(_e);}}
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); rewardItems.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<item> _e; if(!item::deserializeitem(_buf, _e)) return false; rewardItems.push_back(_e);}}
+    if(!_buf.readString(comment)) return false;
+
+    return true;
+}
+
+bool game::recipe_config::deserializerecipe_config(::luban::ByteBuf& _buf, ::luban::SharedPtr<game::recipe_config>& _out)
+{
+    _out.reset(LUBAN_NEW(game::recipe_config));
     if (_out->deserialize(_buf))
     {
         return true;
@@ -408,6 +604,7 @@ bool game::task_config::deserialize(::luban::ByteBuf& _buf)
     {int __enum_temp__; if(!_buf.readInt(__enum_temp__)) return false; taskEventType = task_event_type(__enum_temp__); }
     if(!_buf.readInt(targetId)) return false;
     if(!_buf.readInt(progress)) return false;
+    {::luban::int32 n; if(!_buf.readSize(n)) return false; n = std::min(n, ::luban::int32(_buf.size())); reward.reserve(n);for(int i = 0 ; i < n ; i++) { ::luban::SharedPtr<item> _e; if(!item::deserializeitem(_buf, _e)) return false; reward.push_back(_e);}}
 
     return true;
 }

@@ -43,3 +43,8 @@ celeritas::session::any_io_executor celeritas::mock_framework_session::get_any_i
 {
     throw celeritas_error{ "io executor not support" };
 }
+
+std::string celeritas::mock_framework_session::get_remote_ip_address() const
+{
+    return "";
+}

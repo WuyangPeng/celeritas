@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "auth/auth_fwd.h"
 #include "database/document/server_role.h"
@@ -38,6 +38,14 @@ namespace celeritas
                                                                      const database_pool_shared_ptr& redis_pool);
 
         [[nodiscard]] void_awaitable_type response_is_all(const login_servers_parameter& login_servers_parameter);
+
+        [[nodiscard]] void_awaitable_type response_is_recommended(const login_servers_parameter& login_servers_parameter,
+                                                                  const session_token& session_token,
+                                                                  const database_pool_shared_ptr& redis_pool,
+                                                                  std::vector<std::string> zones);
+
+        [[nodiscard]] void_awaitable_type response_is_zone(const login_servers_parameter& login_servers_parameter,
+                                                           std::vector<std::string> zones);
 
         container server_role_;
     };

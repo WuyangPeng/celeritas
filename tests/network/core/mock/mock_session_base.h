@@ -31,6 +31,8 @@ namespace celeritas
 
         [[nodiscard]] size_t get_last_write_size() const;
 
+        [[nodiscard]] std::string get_remote_ip_address() const override;
+
     private:
         void do_write(buffer_guard data) override;
 

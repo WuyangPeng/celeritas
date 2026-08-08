@@ -42,6 +42,8 @@ namespace celeritas
 
         [[nodiscard]] header get_last_header() const;
 
+        [[nodiscard]] std::string get_remote_ip_address() const override;
+
     private:
         int write_with_header_count = 0;
         header last_header;

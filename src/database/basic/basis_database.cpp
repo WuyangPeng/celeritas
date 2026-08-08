@@ -1,4 +1,4 @@
-﻿#include "basis_database.tpp"
+#include "basis_database.tpp"
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/numeric/conversion/cast.hpp>
@@ -155,7 +155,8 @@ std::string celeritas::basis_database::get_sql_value_string() const
         data_type_ == database_data_type::int64_array_type ||
         data_type_ == database_data_type::double_array_type ||
         data_type_ == database_data_type::document_type ||
-        data_type_ == database_data_type::document_array_type)
+        data_type_ == database_data_type::document_array_type ||
+        data_type_ == database_data_type::byte_array_type)
     {
         auto result = get_string();
         boost::replace_all(result, "'", "''");

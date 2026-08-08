@@ -1,4 +1,4 @@
-﻿#include "generate_mysql_file.h"
+#include "generate_mysql_file.h"
 #include "common/core/celeritas_error.h"
 #include "common/logging/logger.h"
 
@@ -61,7 +61,7 @@ std::string celeritas::generate_mysql_file::get_mysql_data_type(const std::strin
 
     if (data_type == "byte_array")
     {
-        return "BLOB";
+        return "MEDIUMBLOB";
     }
 
     if (data_type == "document")

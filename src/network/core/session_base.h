@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "common/buffer/buffer_guard.h"
 #include "common/framework/session.h"

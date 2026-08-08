@@ -1,0 +1,23 @@
+[
+  {
+    "class_name": "item_flow_log",
+    "database_name": "item_flow_log",
+    "entity": [
+      {
+        "entity_name": "id",
+        "data_type": "int64",
+        "index_type": "key"
+      },
+      {
+        "entity_name": "header",
+        "data_type": "document",
+        "document_type": "log_header"
+      },
+      {
+        "entity_name": "item_flow",
+        "data_type": "document",
+        "document_type": "item_flow"
+      }
+    ]
+  }
+]

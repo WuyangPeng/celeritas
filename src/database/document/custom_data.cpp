@@ -1,4 +1,4 @@
-﻿#include "custom_data.h"
+#include "custom_data.h"
 #include "exp_data.h"
 #include "common/core/celeritas_error.h"
 #include "database/basic/basis_database.tpp"
@@ -60,6 +60,36 @@ celeritas::custom_data::document_type celeritas::custom_data::to_document_type()
                 document.emplace_back(type_description, std::string{ resource_description });
                 document.emplace_back(data_description, arg.to_document_type());
             }
+            else if constexpr (std::is_same_v<T, soldier_data>)
+            {
+                document.emplace_back(type_description, std::string{ soldier_description });
+                document.emplace_back(data_description, arg.to_document_type());
+            }
+            else if constexpr (std::is_same_v<T, machine_data>)
+            {
+                document.emplace_back(type_description, std::string{ machine_description });
+                document.emplace_back(data_description, arg.to_document_type());
+            }
+            else if constexpr (std::is_same_v<T, skill_book_data>)
+            {
+                document.emplace_back(type_description, std::string{ skill_book_description });
+                document.emplace_back(data_description, arg.to_document_type());
+            }
+            else if constexpr (std::is_same_v<T, blueprint_data>)
+            {
+                document.emplace_back(type_description, std::string{ blueprint_description });
+                document.emplace_back(data_description, arg.to_document_type());
+            }
+            else if constexpr (std::is_same_v<T, gift_box_data>)
+            {
+                document.emplace_back(type_description, std::string{ gift_box_description });
+                document.emplace_back(data_description, arg.to_document_type());
+            }
+            else if constexpr (std::is_same_v<T, treasure_data>)
+            {
+                document.emplace_back(type_description, std::string{ treasure_description });
+                document.emplace_back(data_description, arg.to_document_type());
+            }
             else if constexpr (std::is_same_v<T, std::monostate>)
             {
                 // monostate结果为空文档
@@ -111,6 +141,30 @@ celeritas::custom_data celeritas::custom_data::from_document(const document_type
     {
         return from_resource_description(document);
     }
+    if (type == soldier_description)
+    {
+        return from_soldier_description(document);
+    }
+    if (type == machine_description)
+    {
+        return from_machine_description(document);
+    }
+    if (type == skill_book_description)
+    {
+        return from_skill_book_description(document);
+    }
+    if (type == blueprint_description)
+    {
+        return from_blueprint_description(document);
+    }
+    if (type == gift_box_description)
+    {
+        return from_gift_box_description(document);
+    }
+    if (type == treasure_description)
+    {
+        return from_treasure_description(document);
+    }
 
     throw celeritas_error{ "custom_data::from_document() failed." };
 }
@@ -155,6 +209,41 @@ celeritas::config::item_type celeritas::custom_data::get_kind() const noexcept
     if (std::holds_alternative<building_data>(detail_))
     {
         return config::item_type::building;
+    }
+
+    if (std::holds_alternative<resource_data>(detail_))
+    {
+        return config::item_type::resource;
+    }
+
+    if (std::holds_alternative<soldier_data>(detail_))
+    {
+        return config::item_type::soldier;
+    }
+
+    if (std::holds_alternative<machine_data>(detail_))
+    {
+        return config::item_type::machine;
+    }
+
+    if (std::holds_alternative<skill_book_data>(detail_))
+    {
+        return config::item_type::skill_book;
+    }
+
+    if (std::holds_alternative<blueprint_data>(detail_))
+    {
+        return config::item_type::blueprint;
+    }
+
+    if (std::holds_alternative<gift_box_data>(detail_))
+    {
+        return config::item_type::gift_box;
+    }
+
+    if (std::holds_alternative<treasure_data>(detail_))
+    {
+        return config::item_type::treasure;
     }
 
     return config::item_type::none;
@@ -238,6 +327,66 @@ const celeritas::resource_data* celeritas::custom_data::get_resource() const
     }
 
     throw celeritas_error{ "custom_data::get_resource() failed, custom_data is not resource." };
+}
+
+const celeritas::soldier_data* celeritas::custom_data::get_soldier() const
+{
+    if (const auto result = std::get_if<soldier_data>(&detail_))
+    {
+        return result;
+    }
+
+    throw celeritas_error{ "custom_data::get_soldier() failed, custom_data is not soldier." };
+}
+
+const celeritas::machine_data* celeritas::custom_data::get_machine() const
+{
+    if (const auto result = std::get_if<machine_data>(&detail_))
+    {
+        return result;
+    }
+
+    throw celeritas_error{ "custom_data::get_machine() failed, custom_data is not machine." };
+}
+
+const celeritas::skill_book_data* celeritas::custom_data::get_skill_book() const
+{
+    if (const auto result = std::get_if<skill_book_data>(&detail_))
+    {
+        return result;
+    }
+
+    throw celeritas_error{ "custom_data::get_skill_book() failed, custom_data is not skill_book." };
+}
+
+const celeritas::blueprint_data* celeritas::custom_data::get_blueprint() const
+{
+    if (const auto result = std::get_if<blueprint_data>(&detail_))
+    {
+        return result;
+    }
+
+    throw celeritas_error{ "custom_data::get_blueprint() failed, custom_data is not blueprint." };
+}
+
+const celeritas::gift_box_data* celeritas::custom_data::get_gift_box() const
+{
+    if (const auto result = std::get_if<gift_box_data>(&detail_))
+    {
+        return result;
+    }
+
+    throw celeritas_error{ "custom_data::get_gift_box() failed, custom_data is not gift_box." };
+}
+
+const celeritas::treasure_data* celeritas::custom_data::get_treasure() const
+{
+    if (const auto result = std::get_if<treasure_data>(&detail_))
+    {
+        return result;
+    }
+
+    throw celeritas_error{ "custom_data::get_treasure() failed, custom_data is not treasure." };
 }
 
 std::string celeritas::custom_data::get_type(const document_type& document)
@@ -358,7 +507,91 @@ celeritas::custom_data celeritas::custom_data::from_resource_description(const d
     {
         if (element.get_field_name() == data_description)
         {
-            custom_data.detail_ = building_data::from_document(element.get_value<database_data_type::document_type>());
+            custom_data.detail_ = resource_data::from_document(element.get_value<database_data_type::document_type>());
+            break;
+        }
+    }
+    return custom_data;
+}
+
+celeritas::custom_data celeritas::custom_data::from_soldier_description(const document_type& document)
+{
+    custom_data custom_data{};
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == data_description)
+        {
+            custom_data.detail_ = soldier_data::from_document(element.get_value<database_data_type::document_type>());
+            break;
+        }
+    }
+    return custom_data;
+}
+
+celeritas::custom_data celeritas::custom_data::from_machine_description(const document_type& document)
+{
+    custom_data custom_data{};
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == data_description)
+        {
+            custom_data.detail_ = machine_data::from_document(element.get_value<database_data_type::document_type>());
+            break;
+        }
+    }
+    return custom_data;
+}
+
+celeritas::custom_data celeritas::custom_data::from_skill_book_description(const document_type& document)
+{
+    custom_data custom_data{};
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == data_description)
+        {
+            custom_data.detail_ = skill_book_data::from_document(element.get_value<database_data_type::document_type>());
+            break;
+        }
+    }
+    return custom_data;
+}
+
+celeritas::custom_data celeritas::custom_data::from_blueprint_description(const document_type& document)
+{
+    custom_data custom_data{};
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == data_description)
+        {
+            custom_data.detail_ = blueprint_data::from_document(element.get_value<database_data_type::document_type>());
+            break;
+        }
+    }
+    return custom_data;
+}
+
+celeritas::custom_data celeritas::custom_data::from_gift_box_description(const document_type& document)
+{
+    custom_data custom_data{};
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == data_description)
+        {
+            custom_data.detail_ = gift_box_data::from_document(element.get_value<database_data_type::document_type>());
+            break;
+        }
+    }
+    return custom_data;
+}
+
+celeritas::custom_data celeritas::custom_data::from_treasure_description(const document_type& document)
+{
+    custom_data custom_data{};
+    for (const auto& element : document)
+    {
+        if (element.get_field_name() == data_description)
+        {
+            custom_data.detail_ = treasure_data::from_document(element.get_value<database_data_type::document_type>());
             break;
         }
     }
@@ -410,6 +643,36 @@ celeritas::custom_data::variant_type celeritas::custom_data::get_variant_type(co
     if (type == resource_description)
     {
         return resource_data{};
+    }
+
+    if (type == soldier_description)
+    {
+        return soldier_data{};
+    }
+
+    if (type == machine_description)
+    {
+        return machine_data{};
+    }
+
+    if (type == skill_book_description)
+    {
+        return skill_book_data{};
+    }
+
+    if (type == blueprint_description)
+    {
+        return blueprint_data{};
+    }
+
+    if (type == gift_box_description)
+    {
+        return gift_box_data{};
+    }
+
+    if (type == treasure_description)
+    {
+        return treasure_data{};
     }
 
     throw celeritas_error{ "custom_data type failed." };

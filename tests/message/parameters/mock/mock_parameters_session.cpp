@@ -85,3 +85,8 @@ celeritas::header celeritas::mock_parameters_session::get_last_header() const
     return last_header;
 }
 
+std::string celeritas::mock_parameters_session::get_remote_ip_address() const
+{
+    return "";
+}
+

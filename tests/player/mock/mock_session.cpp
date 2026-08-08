@@ -54,3 +54,8 @@ celeritas::session::any_io_executor celeritas::mock_session::get_any_io_executor
 {
     return any_io_executor_;
 }
+
+std::string celeritas::mock_session::get_remote_ip_address() const
+{
+    return "";
+}

@@ -1,4 +1,4 @@
-﻿#include "execute_change_item.h"
+#include "execute_change_item.h"
 #include "player_item_document.h"
 #include "boost/numeric/conversion/cast.hpp"
 #include "common/core/celeritas_error.h"
@@ -7,6 +7,12 @@
 #include "config/game/game_tables.h"
 #include "database/basic/basis_database.tpp"
 #include "database/document/resource_data.h"
+#include "database/document/soldier_data.h"
+#include "database/document/machine_data.h"
+#include "database/document/skill_book_data.h"
+#include "database/document/blueprint_data.h"
+#include "database/document/gift_box_data.h"
+#include "database/document/treasure_data.h"
 #include "initializer/initializer_constant.h"
 #include "message/basic/header.h"
 #include "proto/celeritas.pb.h"
@@ -60,7 +66,23 @@ celeritas::player_item_document::bool_awaitable_type celeritas::player_item_docu
 
 bool celeritas::player_item_document::can_consume_item(const int template_id, const int64_t count) const
 {
-    return get_count(template_id) >= count;
+    auto result = 0LL;
+    if (const auto* id_container = get_id_container(template_id))
+    {
+        for (const auto& element : *id_container)
+        {
+            if (auto inventory_iter = inventory_data_.find(element);
+                inventory_iter != inventory_data_.cend())
+            {
+                if (!inventory_iter->second.is_locked())
+                {
+                    result += inventory_iter->second.get_count();
+                }
+            }
+        }
+    }
+
+    return result >= count;
 }
 
 int64_t celeritas::player_item_document::get_count(const int template_id) const
@@ -156,6 +178,7 @@ void celeritas::player_item_document::set_inventory_data_proto(proto_inventory_d
     proto_data->set_template_id(inventory_data.get_template_id());
     proto_data->set_count(inventory_data.get_count());
     proto_data->set_position(inventory_data.get_position());
+    proto_data->set_is_locked(inventory_data.is_locked());
 
     switch (const auto custom_data = inventory_data.get_custom_data();
         custom_data.get_kind())
@@ -220,6 +243,36 @@ void celeritas::player_item_document::set_inventory_data_proto(proto_inventory_d
             proto_data->mutable_resource();
         }
         break;
+        case config::item_type::soldier:
+        {
+            proto_data->mutable_soldier();
+        }
+        break;
+        case config::item_type::machine:
+        {
+            proto_data->mutable_machine();
+        }
+        break;
+        case config::item_type::skill_book:
+        {
+            proto_data->mutable_skill_book();
+        }
+        break;
+        case config::item_type::blueprint:
+        {
+            proto_data->mutable_blueprint();
+        }
+        break;
+        case config::item_type::gift_box:
+        {
+            proto_data->mutable_gift_box();
+        }
+        break;
+        case config::item_type::treasure:
+        {
+            proto_data->mutable_treasure();
+        }
+        break;
         default:
         {
             proto_data->mutable_custom();
@@ -236,6 +289,7 @@ celeritas::inventory_data celeritas::player_item_document::get_inventory_data_by
     inventory_data.set_template_id(proto_data->template_id());
     inventory_data.set_count(proto_data->count());
     inventory_data.set_position(proto_data->position());
+    inventory_data.set_is_locked(proto_data->is_locked());
 
     custom_data custom_data{};
 
@@ -303,6 +357,16 @@ celeritas::inventory_data celeritas::player_item_document::get_inventory_data_by
             custom_data = custom_data::from_document(document);
         }
         break;
+        case proto_inventory_data::kExp:
+        {
+            const exp_data exp{};
+
+            traits::document_type document{};
+            document.emplace_back(custom_data::type_description, custom_data::exp_description.data());
+            document.emplace_back(custom_data::data_description, exp.to_document_type());
+            custom_data = custom_data::from_document(document);
+        }
+        break;
         case proto_inventory_data::kBuilding:
         {
             const auto& building_proto = proto_data->building();
@@ -321,6 +385,66 @@ celeritas::inventory_data celeritas::player_item_document::get_inventory_data_by
             traits::document_type document{};
             document.emplace_back(custom_data::type_description, custom_data::resource_description.data());
             document.emplace_back(custom_data::data_description, resource.to_document_type());
+            custom_data = custom_data::from_document(document);
+        }
+        break;
+        case proto_inventory_data::kSoldier:
+        {
+            const soldier_data soldier{};
+
+            traits::document_type document{};
+            document.emplace_back(custom_data::type_description, custom_data::soldier_description.data());
+            document.emplace_back(custom_data::data_description, soldier.to_document_type());
+            custom_data = custom_data::from_document(document);
+        }
+        break;
+        case proto_inventory_data::kMachine:
+        {
+            const machine_data machine{};
+
+            traits::document_type document{};
+            document.emplace_back(custom_data::type_description, custom_data::machine_description.data());
+            document.emplace_back(custom_data::data_description, machine.to_document_type());
+            custom_data = custom_data::from_document(document);
+        }
+        break;
+        case proto_inventory_data::kSkillBook:
+        {
+            const skill_book_data skill_book{};
+
+            traits::document_type document{};
+            document.emplace_back(custom_data::type_description, custom_data::skill_book_description.data());
+            document.emplace_back(custom_data::data_description, skill_book.to_document_type());
+            custom_data = custom_data::from_document(document);
+        }
+        break;
+        case proto_inventory_data::kBlueprint:
+        {
+            const blueprint_data blueprint{};
+
+            traits::document_type document{};
+            document.emplace_back(custom_data::type_description, custom_data::blueprint_description.data());
+            document.emplace_back(custom_data::data_description, blueprint.to_document_type());
+            custom_data = custom_data::from_document(document);
+        }
+        break;
+        case proto_inventory_data::kGiftBox:
+        {
+            const gift_box_data gift_box{};
+
+            traits::document_type document{};
+            document.emplace_back(custom_data::type_description, custom_data::gift_box_description.data());
+            document.emplace_back(custom_data::data_description, gift_box.to_document_type());
+            custom_data = custom_data::from_document(document);
+        }
+        break;
+        case proto_inventory_data::kTreasure:
+        {
+            const treasure_data treasure{};
+
+            traits::document_type document{};
+            document.emplace_back(custom_data::type_description, custom_data::treasure_description.data());
+            document.emplace_back(custom_data::data_description, treasure.to_document_type());
             custom_data = custom_data::from_document(document);
         }
         break;

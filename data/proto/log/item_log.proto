@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+
+package celeritas.proto.service;
+
+message item_flow_log {
+  string action = 1;
+  int64 item_id = 2;
+  int32 template_id = 3;
+  int64 count_change = 4;
+  int64 before_count = 5;
+  int64 after_count = 6;
+  string source_id = 7;
+}
+
+message item_log_request {
+  oneof log_type {
+    item_flow_log item_flow = 1;
+  }
+}

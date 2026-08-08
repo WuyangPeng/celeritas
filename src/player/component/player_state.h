@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "player_component.h"
 #include "player_manager.h"
@@ -9,6 +9,7 @@
 #include "player/event/player_event_dispatcher.h"
 #include "player/task/detail/base/task_context.h"
 #include "proto/service/player.pb.h"
+#include "log/log_fwd.h"
 
 #include <boost/asio/awaitable.hpp>
 #include <boost/asio/io_context.hpp>
@@ -119,6 +120,10 @@ namespace celeritas
 
         [[nodiscard]] void_awaitable_type trigger_event(player_event_type event_type, bool is_login = false);
 
+        [[nodiscard]] std::string get_ip_address() const;
+
+        [[nodiscard]] log_param generate_log_param() const;
+
     private:
         using component_container_type = std::array<player_component_shared_ptr, static_cast<int>(player_component_type::max_component)>;
         using resource_loader_weak_ptr = std::weak_ptr<resource_loader_base>;
@@ -133,5 +138,6 @@ namespace celeritas
         std::string instance_id_;
         any_io_executor strand_;
         bool is_new_user_;
+        std::string ip_address_;
     };
 }

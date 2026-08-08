@@ -1,11 +1,11 @@
-﻿#include "inventory_data.h"
+#include "inventory_data.h"
 #include "common/core/celeritas_error.h"
 #include "config/game/game_config.h"
 #include "config/game/game_tables.h"
 #include "database/basic/basis_database.tpp"
 
 celeritas::inventory_data::inventory_data(const int64_t item_id, const int template_id, const int64_t count, const int position)
-    : item_id_{ item_id }, template_id_{ template_id }, count_{ count }, position_{ position }, custom_data_{ get_custom_data(template_id) }
+    : item_id_{ item_id }, template_id_{ template_id }, count_{ count }, position_{ position }, is_locked_{ false }, custom_data_{ get_custom_data(template_id) }
 {
 }
 
@@ -49,6 +49,16 @@ void celeritas::inventory_data::set_position(const int position)
     position_ = position;
 }
 
+bool celeritas::inventory_data::is_locked() const
+{
+    return is_locked_;
+}
+
+void celeritas::inventory_data::set_is_locked(const bool is_locked)
+{
+    is_locked_ = is_locked;
+}
+
 celeritas::custom_data celeritas::inventory_data::get_custom_data() const
 {
     return custom_data_;
@@ -77,6 +87,7 @@ celeritas::inventory_data::document_type celeritas::inventory_data::to_document_
     document.emplace_back(template_id_description, template_id_);
     document.emplace_back(count_description, count_);
     document.emplace_back(position_description, position_);
+    document.emplace_back(is_locked_description, is_locked_);
     document.emplace_back(custom_data_description, custom_data_.to_document_type());
 
     return document;
@@ -110,6 +121,10 @@ celeritas::inventory_data celeritas::inventory_data::from_document(const documen
             const auto custom_data = custom_data::from_document(database);
             inventory_data.set_custom_data(custom_data);
         }
+        else if (element.get_field_name() == is_locked_description)
+        {
+            inventory_data.set_is_locked(element.get_value<database_data_type::bool_type>());
+        }
     }
 
     return inventory_data;
@@ -138,6 +153,22 @@ std::string_view celeritas::inventory_data::get_custom_data(const int template_i
             return custom_data::hero_description;
         case config::item_type::exp:
             return custom_data::exp_description;
+        case config::item_type::building:
+            return custom_data::building_description;
+        case config::item_type::resource:
+            return custom_data::resource_description;
+        case config::item_type::soldier:
+            return custom_data::soldier_description;
+        case config::item_type::machine:
+            return custom_data::machine_description;
+        case config::item_type::skill_book:
+            return custom_data::skill_book_description;
+        case config::item_type::blueprint:
+            return custom_data::blueprint_description;
+        case config::item_type::gift_box:
+            return custom_data::gift_box_description;
+        case config::item_type::treasure:
+            return custom_data::treasure_description;
         default:
             throw celeritas_error("invalid item type");
     }

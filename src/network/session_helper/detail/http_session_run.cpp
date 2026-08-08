@@ -1,4 +1,4 @@
-﻿#include "buffer_consumer.h"
+#include "buffer_consumer.h"
 #include "network_session_helper_internal_constant.h"
 #include "common/buffer/buffer_guard.h"
 #include "common/core/noexcept_safe_call_and_log.h"
@@ -94,9 +94,20 @@ celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_
 
     const auto params = url_view.params();
 
-    LOG_CHANNEL(network_channel, trace) << "params:  " << params;
+    const auto& body = request.body();
 
-    call_back(path, params);
+    if (!body.empty())
+    {
+        LOG_CHANNEL(network_channel, trace) << "body:  " << body;
+
+        call_back(path, body);
+    }
+    else
+    {
+        LOG_CHANNEL(network_channel, trace) << "params:  " << params;
+
+        call_back(path, params);
+    }
 }
 
 celeritas::session_run::void_awaitable_type celeritas::http_session_run::handle_one_response_message(const std::string& path)

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "database/pool/database_pool_base.h"
 
@@ -23,6 +23,15 @@ namespace celeritas
         [[nodiscard]] optional_database_entity_change_awaitable_type select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) override;
 
         [[nodiscard]] result_container_awaitable_type select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) override;
+
+        [[nodiscard]] result_container_awaitable_type select_page(const const_database_entity_change_shared_ptr& database,
+                                                                  const database_field_container& field_name_container,
+                                                                  const database_select_options& options) override;
+
+        [[nodiscard]] int64_awaitable_type select_count(const const_database_entity_change_shared_ptr& database) override;
+
+        [[nodiscard]] int64_awaitable_type select_count(const const_database_entity_change_shared_ptr& database,
+                                                        const database_select_options& options) override;
 
         [[nodiscard]] int get_execute_changes_call_count() const;
 

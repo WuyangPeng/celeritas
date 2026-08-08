@@ -32,6 +32,8 @@ namespace celeritas
 
         [[nodiscard]] any_io_executor get_any_io_executor() override;
 
+        [[nodiscard]] std::string get_remote_ip_address() const override;
+
     private:
         int64_t session_id_ = 1;
         std::string instance_id_;

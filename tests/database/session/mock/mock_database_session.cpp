@@ -1,4 +1,4 @@
-﻿#include "mock_database_session.h"
+#include "mock_database_session.h"
 #include "database/basic/database_entity_change.h"
 
 celeritas::mock_database_session::mock_database_session(const any_io_executor& any_io_executor)
@@ -32,6 +32,24 @@ celeritas::database_session::result_container_awaitable_type celeritas::mock_dat
 {
     select_all_called_ = true;
     co_return result_container{};
+}
+
+celeritas::database_session::result_container_awaitable_type celeritas::mock_database_session::select_page(const const_database_entity_change_shared_ptr&,
+                                                                                                           const database_field_container&,
+                                                                                                           const database_select_options&)
+{
+    co_return result_container{};
+}
+
+celeritas::database_session::int64_awaitable_type celeritas::mock_database_session::select_count(const const_database_entity_change_shared_ptr&)
+{
+    co_return 0;
+}
+
+celeritas::database_session::int64_awaitable_type celeritas::mock_database_session::select_count(const const_database_entity_change_shared_ptr& database,
+                                                                                                   const database_select_options&)
+{
+    co_return co_await select_count(database);
 }
 
 bool celeritas::mock_database_session::get_is_health_called() const

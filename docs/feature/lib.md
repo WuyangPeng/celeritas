@@ -1,4 +1,4 @@
-﻿# lib（静态库）
+# lib（静态库）
 
 * [common（通用）](lib/common.md)
 * [config（配置）](lib/config.md)
@@ -7,6 +7,7 @@
 * [network（网络）](lib/network.md)
 * [service registry（服务注册）](lib/service_registry.md)
 * [auth（认证）](lib/auth.md)
+* [admin（后台管理）](lib/admin.md)
 * [payment（支付）](lib/payment.md)
 * [gateway（网关）](lib/gateway.md)
 * [player（玩家）](lib/player.md)

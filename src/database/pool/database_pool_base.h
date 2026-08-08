@@ -1,10 +1,13 @@
-﻿#pragma once
+#pragma once
 
 #include "config/basic/database_type.h"
+#include "database/basic/basis_database_container.h"
+#include "database/basic/database_select_options.h"
 #include "database/database_constant.h"
 #include "detail/cleanup_database_session_timer.h"
 
 #include <boost/asio/awaitable.hpp>
+#include <cstdint>
 
 namespace celeritas
 {
@@ -17,11 +20,13 @@ namespace celeritas
         using bool_awaitable_type = boost::asio::awaitable<bool>;
         using error_code_type = boost::system::error_code;
         using const_database_entity_change_shared_ptr = std::shared_ptr<const database_entity_change>;
+        using const_basis_database_container_shared_ptr = std::shared_ptr<const basis_database_container>;
         using result_container = std::vector<database_entity_change>;
         using database_field_container = std::vector<database_field>;
         using optional_database_entity_change = std::optional<database_entity_change>;
         using optional_database_entity_change_awaitable_type = boost::asio::awaitable<optional_database_entity_change>;
         using result_container_awaitable_type = boost::asio::awaitable<result_container>;
+        using int64_awaitable_type = boost::asio::awaitable<int64_t>;
         using duration_type = std::chrono::milliseconds;
 
         database_pool_base() noexcept = default;
@@ -54,6 +59,15 @@ namespace celeritas
 
         [[nodiscard]] virtual result_container_awaitable_type select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) = 0;
 
+        [[nodiscard]] virtual result_container_awaitable_type select_page(const const_database_entity_change_shared_ptr& database,
+                                                                          const database_field_container& field_name_container,
+                                                                          const database_select_options& options) = 0;
+
+        [[nodiscard]] virtual int64_awaitable_type select_count(const const_database_entity_change_shared_ptr& database) = 0;
+
+        [[nodiscard]] virtual int64_awaitable_type select_count(const const_database_entity_change_shared_ptr& database,
+                                                               const database_select_options& options) = 0;
+
         template <typename T>
         [[nodiscard]] result_container_awaitable_type select_all(database_type database_type)
         {
@@ -64,6 +78,28 @@ namespace celeritas
         [[nodiscard]] optional_database_entity_change_awaitable_type select_one(database_type database_type, IdType id)
         {
             co_return co_await select_one(T::get_select(database_type, id), T::get_database_field_container());
+        }
+
+        template <typename T>
+        [[nodiscard]] result_container_awaitable_type select_page(database_type database_type,
+                                                                  const const_basis_database_container_shared_ptr& key,
+                                                                  const database_select_options& options)
+        {
+            co_return co_await select_page(T::get_select(database_type, key), T::get_database_field_container(), options);
+        }
+
+        template <typename T>
+        [[nodiscard]] int64_awaitable_type select_count(database_type database_type, const const_basis_database_container_shared_ptr& key)
+        {
+            co_return co_await select_count(T::get_select(database_type, key));
+        }
+
+        template <typename T>
+        [[nodiscard]] int64_awaitable_type select_count(database_type database_type,
+                                                        const const_basis_database_container_shared_ptr& key,
+                                                        const database_select_options& options)
+        {
+            co_return co_await select_count(T::get_select(database_type, key), options);
         }
 
     private:

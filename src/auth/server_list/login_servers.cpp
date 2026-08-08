@@ -1,4 +1,4 @@
-﻿#include "login_servers.h"
+#include "login_servers.h"
 #include "login_servers_response.h"
 #include "auth/config/server_cell_repository.h"
 #include "auth/server_list/detail/login_servers_parameter.h"
@@ -13,6 +13,8 @@
 #include "initializer/initializer_constant.h"
 #include "service_registry/core/service_registry.h"
 #include "service_registry/data/service_info.h"
+
+#include <unordered_set>
 
 celeritas::login_servers::login_servers(http_handle_parameter_shared_ptr handle_parameter)
     : base_type{ std::move(handle_parameter) }, server_role_{}
@@ -46,7 +48,14 @@ celeritas::http_service_base::void_awaitable_type celeritas::login_servers::resp
         co_return co_await response_is_only_preferred(login_servers_parameter, session_token, redis_pool);
     }
 
-    co_return co_await response_is_all(login_servers_parameter);
+    auto zones = server_cell_repository::get_instance().get_all_zones(login_servers_parameter.get_app_id());
+    const auto zone = login_servers_parameter.get_zone();
+    if (!zone || zone->empty())
+    {
+        co_return co_await response_is_recommended(login_servers_parameter, session_token, redis_pool, std::move(zones));
+    }
+
+    co_return co_await response_is_zone(login_servers_parameter, std::move(zones));
 }
 
 celeritas::http_service_base::void_awaitable_type celeritas::login_servers::send_error_response()
@@ -190,4 +199,69 @@ celeritas::http_service_base::void_awaitable_type celeritas::login_servers::resp
     }
 
     co_return co_await write_immediately(login_servers_response{ game_error_type::success, "get login servers success.", std::move(container) });
+}
+
+celeritas::http_service_base::void_awaitable_type celeritas::login_servers::response_is_recommended(const login_servers_parameter& login_servers_parameter,
+                                                                                                       const session_token& session_token,
+                                                                                                       const database_pool_shared_ptr& redis_pool,
+                                                                                                       std::vector<std::string> zones)
+{
+    login_servers_response::container_type container{};
+    std::unordered_set<std::string> added_server_ids{};
+
+    // 1. Add servers where player has a role
+    for (const auto& [server_id, role] : server_role_)
+    {
+        const auto optional_server_cell = server_cell_repository::get_instance().get_server_cell(server_id);
+        if (optional_server_cell && optional_server_cell->get_launch_time() <= time_helper::get_current_milliseconds())
+        {
+            container.emplace_back(get_login_server_info(login_servers_parameter, *optional_server_cell));
+            added_server_ids.insert(server_id);
+        }
+    }
+
+    // 2. If no role servers, add last login server
+    if (container.empty() && !session_token.is_new_account())
+    {
+        auto optional_account_last_login = co_await redis_pool->select_one(account_last_login::get_select(database_type::redis, session_token.get_account_id()), account_last_login::get_database_field_container());
+        if (!optional_account_last_login)
+        {
+            optional_account_last_login = co_await redis_pool->select_one(account_last_login::get_select(database_type::mysql, session_token.get_account_id()), account_last_login::get_database_field_container());
+        }
+
+        if (optional_account_last_login)
+        {
+            account_last_login account_last_login{ *optional_account_last_login };
+            const auto optional_server_cell = server_cell_repository::get_instance().get_server_cell(account_last_login.get_game_server_id());
+            if (optional_server_cell && optional_server_cell->get_launch_time() <= time_helper::get_current_milliseconds())
+            {
+                container.emplace_back(get_login_server_info(login_servers_parameter, *optional_server_cell));
+                added_server_ids.insert(optional_server_cell->get_game_server_id());
+            }
+        }
+    }
+
+    // 3. Add the last/newest server cell if not already added
+    if (const auto optional_server_cell = server_cell_repository::get_instance().get_last_server_cell(login_servers_parameter.get_app_id()))
+    {
+        if (added_server_ids.insert(optional_server_cell->get_game_server_id()).second)
+        {
+            container.emplace_back(get_login_server_info(login_servers_parameter, *optional_server_cell));
+        }
+    }
+
+    co_return co_await write_immediately(login_servers_response{ game_error_type::success, "get login servers success.", std::move(container), std::move(zones) });
+}
+
+celeritas::http_service_base::void_awaitable_type celeritas::login_servers::response_is_zone(const login_servers_parameter& login_servers_parameter,
+                                                                                               std::vector<std::string> zones)
+{
+    const auto server_cell_container = server_cell_repository::get_instance().get_server_cell_by_app_id(login_servers_parameter.get_app_id(), login_servers_parameter.get_zone());
+    login_servers_response::container_type container{};
+    for (const auto& element : server_cell_container)
+    {
+        container.emplace_back(get_login_server_info(login_servers_parameter, element));
+    }
+
+    co_return co_await write_immediately(login_servers_response{ game_error_type::success, "get login servers success.", std::move(container), std::move(zones) });
 }

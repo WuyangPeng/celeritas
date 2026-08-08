@@ -1,8 +1,10 @@
-﻿#include "player_null_component.h"
+#include "player_null_component.h"
 #include "player_state.tpp"
 #include "player_state_type.h"
 #include "common/core/celeritas_error.h"
+#include "common/core/time_helper.h"
 #include "common/framework/resource_loader_base.h"
+#include "log/helper/log_param.h"
 #include "common/logging/logger.h"
 #include "initializer/initializer_constant.h"
 #include "player/activity/player_activity_component.h"
@@ -56,7 +58,8 @@ celeritas::player_state::player_state(const user& user,
       resource_loader_{ resource_loader },
       instance_id_{ std::move(instance_id) },
       strand_{ boost::asio::make_strand(any_io_executor) },
-      is_new_user_{ is_new_user }
+      is_new_user_{ is_new_user },
+      ip_address_{ login.ip_address() }
 {
     check();
 }
@@ -216,8 +219,19 @@ celeritas::player_state::void_awaitable_type celeritas::player_state::set_login(
 {
     set_instance_id(instance_id);
     get_component<player_role_component>()->set_login(login);
+    ip_address_ = login.ip_address();
 
     co_return;
+}
+
+std::string celeritas::player_state::get_ip_address() const
+{
+    return ip_address_;
+}
+
+celeritas::log_param celeritas::player_state::generate_log_param() const
+{
+    return log_param{ get_user_id(), time_helper::get_current_milliseconds(), get_ip_address() };
 }
 
 celeritas::player_state::any_io_executor celeritas::player_state::get_any_io_executor()

@@ -1,9 +1,11 @@
-﻿#pragma once
+#pragma once
 
+#include "database/basic/database_select_options.h"
 #include "database/database_fwd.h"
 
 #include <boost/asio/awaitable.hpp>
 #include <chrono>
+#include <cstdint>
 
 namespace celeritas
 {
@@ -22,6 +24,7 @@ namespace celeritas
         using const_database_entity_change_shared_ptr = std::shared_ptr<const database_entity_change>;
         using database_entity_change_awaitable_type = boost::asio::awaitable<optional_database_entity_change>;
         using result_container_awaitable_type = boost::asio::awaitable<result_container>;
+        using int64_awaitable_type = boost::asio::awaitable<int64_t>;
 
         explicit database_session(const any_io_executor& any_io_executor);
 
@@ -46,6 +49,15 @@ namespace celeritas
         [[nodiscard]] virtual database_entity_change_awaitable_type select_one(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) = 0;
 
         [[nodiscard]] virtual result_container_awaitable_type select_all(const const_database_entity_change_shared_ptr& database, const database_field_container& field_name_container) = 0;
+
+        [[nodiscard]] virtual result_container_awaitable_type select_page(const const_database_entity_change_shared_ptr& database,
+                                                                          const database_field_container& field_name_container,
+                                                                          const database_select_options& options) = 0;
+
+        [[nodiscard]] virtual int64_awaitable_type select_count(const const_database_entity_change_shared_ptr& database) = 0;
+
+        [[nodiscard]] virtual int64_awaitable_type select_count(const const_database_entity_change_shared_ptr& database,
+                                                               const database_select_options& options) = 0;
 
     protected:
         [[nodiscard]] any_io_executor get_any_io_executor() const;

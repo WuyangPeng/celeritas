@@ -20,6 +20,14 @@ namespace celeritas
     class task_progress;
     class task_component;
     class task_data;
+    class soldier_data;
+    class machine_data;
+    class skill_book_data;
+    class blueprint_data;
+    class gift_box_data;
+    class treasure_data;
+    class log_header;
+    class item_flow;
 
     enum class language_type;
     enum class task_status_type;

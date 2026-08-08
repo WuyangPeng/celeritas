@@ -8,6 +8,12 @@
 #include "frame_data.h"
 #include "hero_data.h"
 #include "resource_data.h"
+#include "soldier_data.h"
+#include "machine_data.h"
+#include "skill_book_data.h"
+#include "blueprint_data.h"
+#include "gift_box_data.h"
+#include "treasure_data.h"
 #include "title_data.h"
 #include "config/luban/generated/schema.h"
 #include "database/basic/database_data_type_traits.h"
@@ -42,6 +48,12 @@ namespace celeritas
         static constexpr std::string_view exp_description = "exp";
         static constexpr std::string_view building_description = "building";
         static constexpr std::string_view resource_description = "resource";
+        static constexpr std::string_view soldier_description = "soldier";
+        static constexpr std::string_view machine_description = "machine";
+        static constexpr std::string_view skill_book_description = "skill_book";
+        static constexpr std::string_view blueprint_description = "blueprint";
+        static constexpr std::string_view gift_box_description = "gift_box";
+        static constexpr std::string_view treasure_description = "treasure";
 
         [[nodiscard]] config::item_type get_kind() const noexcept;
 
@@ -61,8 +73,37 @@ namespace celeritas
 
         [[nodiscard]] const resource_data* get_resource() const;
 
+        [[nodiscard]] const soldier_data* get_soldier() const;
+
+        [[nodiscard]] const machine_data* get_machine() const;
+
+        [[nodiscard]] const skill_book_data* get_skill_book() const;
+
+        [[nodiscard]] const blueprint_data* get_blueprint() const;
+
+        [[nodiscard]] const gift_box_data* get_gift_box() const;
+
+        [[nodiscard]] const treasure_data* get_treasure() const;
+
     private:
-        using variant_type = std::variant<std::monostate, consumable_data, equipment_data, avatar_data, frame_data, title_data, hero_data, exp_data, building_data, resource_data>;
+        using variant_type = std::variant<
+            std::monostate,
+            consumable_data,
+            equipment_data,
+            avatar_data,
+            frame_data,
+            title_data,
+            hero_data,
+            exp_data,
+            building_data,
+            resource_data,
+            soldier_data,
+            machine_data,
+            skill_book_data,
+            blueprint_data,
+            gift_box_data,
+            treasure_data
+        >;
 
         [[nodiscard]] static std::string get_type(const document_type& document);
 
@@ -81,6 +122,18 @@ namespace celeritas
         [[nodiscard]] static custom_data from_building_description(const document_type& document);
 
         [[nodiscard]] static custom_data from_resource_description(const document_type& document);
+
+        [[nodiscard]] static custom_data from_soldier_description(const document_type& document);
+
+        [[nodiscard]] static custom_data from_machine_description(const document_type& document);
+
+        [[nodiscard]] static custom_data from_skill_book_description(const document_type& document);
+
+        [[nodiscard]] static custom_data from_blueprint_description(const document_type& document);
+
+        [[nodiscard]] static custom_data from_gift_box_description(const document_type& document);
+
+        [[nodiscard]] static custom_data from_treasure_description(const document_type& document);
 
         [[nodiscard]] static variant_type get_variant_type(std::string_view type);
 

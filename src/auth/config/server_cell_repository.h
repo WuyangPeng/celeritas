@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "database/generated/mysql/auth/server_cell.h"
 
@@ -30,6 +30,8 @@ namespace celeritas
         [[nodiscard]] optional_server_cell get_last_server_cell(int64_t app_id);
 
         [[nodiscard]] server_cell_container get_server_cell_by_app_id(int64_t app_id, const optional_string& zone);
+
+        [[nodiscard]] std::vector<std::string> get_all_zones(int64_t app_id);
 
     private:
         using server_cell_mapping = std::unordered_map<int64_t, server_cell>;

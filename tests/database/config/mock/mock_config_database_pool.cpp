@@ -1,4 +1,4 @@
-﻿#include "mock_config_database_pool.h"
+#include "mock_config_database_pool.h"
 #include "config/basic/database_type.h"
 #include "database/basic/database_change_type.h"
 #include "database/generated/mysql/config/time_refresh.h"
@@ -47,4 +47,22 @@ celeritas::database_pool_base::optional_database_entity_change_awaitable_type ce
     database_entity_change.modify(parameter);
 
     co_return database_entity_change;
+}
+
+celeritas::database_pool_base::result_container_awaitable_type celeritas::mock_config_database_pool::select_page(const const_database_entity_change_shared_ptr&,
+                                                                                                                 const database_field_container&,
+                                                                                                                 const database_select_options&)
+{
+    co_return result_container{};
+}
+
+celeritas::database_pool_base::int64_awaitable_type celeritas::mock_config_database_pool::select_count(const const_database_entity_change_shared_ptr&)
+{
+    co_return 0;
+}
+
+celeritas::database_pool_base::int64_awaitable_type celeritas::mock_config_database_pool::select_count(const const_database_entity_change_shared_ptr& database,
+                                                                                                      const database_select_options&)
+{
+    co_return co_await select_count(database);
 }

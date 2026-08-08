@@ -70,6 +70,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_response, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_response, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_response, _impl_.payload_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -85,19 +86,22 @@ const char descriptor_table_protodef_proto_2fservice_2fservice_5fresponse_2eprot
     "celeritas.proto.service\032\034proto/service/r"
     "egistry.proto\032\030proto/service/auth.proto\032"
     "\033proto/service/payment.proto\032\032proto/serv"
-    "ice/player.proto\"\257\002\n\020service_response\022F\n"
-    "\010registry\030\001 \001(\01322.celeritas.proto.servic"
-    "e.service_registry_responseH\000\022>\n\004auth\030\002 "
-    "\001(\0132..celeritas.proto.service.service_au"
-    "th_responseH\000\022D\n\007payment\030\003 \001(\01321.celerit"
-    "as.proto.service.service_payment_respons"
-    "eH\000\022B\n\006player\030\004 \001(\01320.celeritas.proto.se"
-    "rvice.service_player_responseH\000B\t\n\007paylo"
-    "adb\006proto3"
+    "ice/player.proto\032\027proto/service/log.prot"
+    "o\"\355\002\n\020service_response\022F\n\010registry\030\001 \001(\013"
+    "22.celeritas.proto.service.service_regis"
+    "try_responseH\000\022>\n\004auth\030\002 \001(\0132..celeritas"
+    ".proto.service.service_auth_responseH\000\022D"
+    "\n\007payment\030\003 \001(\01321.celeritas.proto.servic"
+    "e.service_payment_responseH\000\022B\n\006player\030\004"
+    " \001(\01320.celeritas.proto.service.service_p"
+    "layer_responseH\000\022<\n\003log\030\005 \001(\0132-.celerita"
+    "s.proto.service.service_log_responseH\000B\t"
+    "\n\007payloadb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
-    descriptor_table_proto_2fservice_2fservice_5fresponse_2eproto_deps[4] = {
+    descriptor_table_proto_2fservice_2fservice_5fresponse_2eproto_deps[5] = {
         &::descriptor_table_proto_2fservice_2fauth_2eproto,
+        &::descriptor_table_proto_2fservice_2flog_2eproto,
         &::descriptor_table_proto_2fservice_2fpayment_2eproto,
         &::descriptor_table_proto_2fservice_2fplayer_2eproto,
         &::descriptor_table_proto_2fservice_2fregistry_2eproto,
@@ -106,12 +110,12 @@ static ::absl::once_flag descriptor_table_proto_2fservice_2fservice_5fresponse_2
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fservice_5fresponse_2eproto = {
     false,
     false,
-    490,
+    577,
     descriptor_table_protodef_proto_2fservice_2fservice_5fresponse_2eproto,
     "proto/service/service_response.proto",
     &descriptor_table_proto_2fservice_2fservice_5fresponse_2eproto_once,
     descriptor_table_proto_2fservice_2fservice_5fresponse_2eproto_deps,
-    4,
+    5,
     1,
     schemas,
     file_default_instances,
@@ -226,6 +230,30 @@ void service_response::clear_player() {
     clear_has_payload();
   }
 }
+void service_response::set_allocated_log(::celeritas::proto::service::service_log_response* PROTOBUF_NULLABLE log) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (log) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(log)->GetArena();
+    if (message_arena != submessage_arena) {
+      log = ::google::protobuf::internal::GetOwnedMessage(message_arena, log, submessage_arena);
+    }
+    set_has_log();
+    _impl_.payload_.log_ = log;
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_response.log)
+}
+void service_response::clear_log() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kLog) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.log_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.log_);
+    }
+    clear_has_payload();
+  }
+}
 service_response::service_response(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, service_response_class_data_.base()) {
@@ -270,6 +298,9 @@ service_response::service_response(
         break;
       case kPlayer:
         _impl_.payload_.player_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.player_);
+        break;
+      case kLog:
+        _impl_.payload_.log_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.log_);
         break;
   }
 
@@ -338,6 +369,14 @@ void service_response::clear_payload() {
       }
       break;
     }
+    case kLog: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.log_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.log_);
+      }
+      break;
+    }
     case PAYLOAD_NOT_SET: {
       break;
     }
@@ -389,17 +428,17 @@ service_response::GetClassData() const {
   return service_response_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 4, 4, 0, 2>
+const ::_pbi::TcParseTable<0, 5, 5, 0, 2>
 service_response::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    4, 0,  // max_field_number, fast_idx_mask
+    5, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
-    4,  // num_aux_entries
+    5,  // num_field_entries
+    5,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     service_response_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -420,12 +459,15 @@ service_response::_table_ = {
     {PROTOBUF_FIELD_OFFSET(service_response, _impl_.payload_.payment_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .celeritas.proto.service.service_player_response player = 4;
     {PROTOBUF_FIELD_OFFSET(service_response, _impl_.payload_.player_), _Internal::kOneofCaseOffset + 0, 3, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .celeritas.proto.service.service_log_response log = 5;
+    {PROTOBUF_FIELD_OFFSET(service_response, _impl_.payload_.log_), _Internal::kOneofCaseOffset + 0, 4, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_registry_response>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_auth_response>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_payment_response>()},
       {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_player_response>()},
+      {::_pbi::TcParser::GetTable<::celeritas::proto::service::service_log_response>()},
   }},
   {{
   }},
@@ -484,6 +526,12 @@ PROTOBUF_NOINLINE void service_response::Clear() {
           stream);
       break;
     }
+    case kLog: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          5, *this_._impl_.payload_.log_, this_._impl_.payload_.log_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     default:
       break;
   }
@@ -533,6 +581,12 @@ PROTOBUF_NOINLINE void service_response::Clear() {
     case kPlayer: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.player_);
+      break;
+    }
+    // .celeritas.proto.service.service_log_response log = 5;
+    case kLog: {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.log_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -595,6 +649,14 @@ void service_response::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
           _this->_impl_.payload_.player_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.player_);
         } else {
           _this->_impl_.payload_.player_->MergeFrom(*from._impl_.payload_.player_);
+        }
+        break;
+      }
+      case kLog: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.log_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.log_);
+        } else {
+          _this->_impl_.payload_.log_->MergeFrom(*from._impl_.payload_.log_);
         }
         break;
       }

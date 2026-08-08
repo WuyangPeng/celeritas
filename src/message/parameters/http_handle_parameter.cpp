@@ -1,4 +1,4 @@
-﻿#include "http_handle_parameter.h"
+#include "http_handle_parameter.h"
 #include "common/core/celeritas_error.h"
 #include "common/framework/application_loader_base.h"
 #include "common/framework/resource_loader_base.h"
@@ -64,6 +64,20 @@ std::string celeritas::http_handle_parameter::get_response() const
     return response_;
 }
 
+std::string celeritas::http_handle_parameter::get_body() const
+{
+    return response_; // response_ 即从客户端/服务端传输过来的 body 描述字符串
+}
+
+std::string celeritas::http_handle_parameter::get_remote_ip_address() const
+{
+    if (const auto session = get_session())
+    {
+        return session->get_remote_ip_address();
+    }
+    return "";
+}
+
 celeritas::http_handle_parameter::optional_string celeritas::http_handle_parameter::get_param(const std::string& key) const
 {
     if (const auto iter = params_.find(key);
@@ -73,6 +87,31 @@ celeritas::http_handle_parameter::optional_string celeritas::http_handle_paramet
             param.has_value)
         {
             return param.value;
+        }
+    }
+
+    if (!response_.empty())
+    {
+        auto raw_body = response_;
+        if (raw_body.find('%') != std::string::npos)
+        {
+            const auto decoded = boost::urls::decode_view(raw_body);
+            raw_body = std::string(decoded.begin(), decoded.end());
+        }
+
+        if (const auto body_params = boost::urls::parse_query(raw_body))
+        {
+            if (const auto iter = body_params->find(key);
+                iter != body_params->end())
+            {
+                if (const auto& param = *iter;
+                    param.has_value)
+                {
+                    const auto val_pct = param.value;
+                    const auto decoded = boost::urls::decode_view(val_pct);
+                    return std::string(decoded.begin(), decoded.end());
+                }
+            }
         }
     }
 

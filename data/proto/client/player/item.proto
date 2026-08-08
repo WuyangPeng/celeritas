@@ -1,4 +1,4 @@
-﻿syntax = "proto3";
+syntax = "proto3";
 
 package celeritas.proto.client;
 
@@ -36,17 +36,28 @@ message item_selected_response {
     bool is_login = 2;
 }
 
-message unlock_item_request {
+message activate_item_request {
     int32 template_id = 1;
 }
 
-message unlock_item_response {
+message activate_item_response {
+}
+
+message lock_item_request {
+    int64 item_id = 1;
+    bool is_locked = 2;
+}
+
+message lock_item_response {
+    int64 item_id = 1;
+    bool is_locked = 2;
 }
 
 message client_item_request {
   oneof payload {
     item_selected_request item_selected = 1;
-    unlock_item_request unlock_item = 2;
+    activate_item_request activate_item = 2;
+    lock_item_request lock_item = 3;
   }
 }
 
@@ -55,6 +66,7 @@ message client_item_response {
     item_response item = 1;
     item_delete_response item_delete = 2;
     item_selected_response item_selected = 3;
-    unlock_item_response unlock_item = 4;
+    activate_item_response activate_item = 4;
+    lock_item_response lock_item = 5;
   }
 }

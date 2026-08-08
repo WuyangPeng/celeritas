@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databases>
+    <database name="mongo_log_db">
+        <database_type>mongo</database_type>
+        <host>127.0.0.1</host>
+        <port>27017</port>
+        <user>celeritas_user</user>
+        <password>celeritas_pass</password>
+        <db_name>log</db_name>
+        <min_connections>4</min_connections>
+        <max_connections>10</max_connections>
+        <timeout_seconds>5</timeout_seconds>
+    </database>
 </databases>

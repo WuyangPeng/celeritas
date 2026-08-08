@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "network/core/session_base.h"
 
@@ -47,6 +47,8 @@ namespace celeritas
         [[nodiscard]] bool is_full() const override;
 
         [[nodiscard]] any_io_executor get_any_io_executor() override;
+
+        [[nodiscard]] std::string get_remote_ip_address() const override;
 
     private:
         using session_run_shared_ptr = std::shared_ptr<session_run>;

@@ -1,4 +1,4 @@
-﻿#include "common/core/noexcept_safe_call_and_log.h"
+#include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
 #include "network/session/websocket_session.h"
 #include "network/session_helper/detail/websocket_session_run.h"
@@ -88,4 +88,22 @@ void celeritas::websocket_session::do_write(buffer_guard data)
 celeritas::session_base::void_awaitable_type celeritas::websocket_session::do_write_immediately(buffer_guard data)
 {
     co_await websocket_write_->write_immediately(std::move(data), shared_from_this());
+}
+
+std::string celeritas::websocket_session::get_remote_ip_address() const
+{
+    try
+    {
+        return websocket_.next_layer().socket().remote_endpoint().address().to_string();
+    }
+    catch (const std::exception& e)
+    {
+        LOG_CHANNEL(network_channel, error) << "get remote ip address error: " << e.what();
+        return "";
+    }
+    catch (...)
+    {
+        LOG_CHANNEL(network_channel, error) << "get remote ip address error: unknown exception";
+        return "";
+    }
 }

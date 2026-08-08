@@ -36,21 +36,46 @@ message building_data {
 message resource_data {
 }
 
+message soldier_data {
+}
+
+message machine_data {
+}
+
+message skill_book_data {
+}
+
+message blueprint_data {
+}
+
+message gift_box_data {
+}
+
+message treasure_data {
+}
+
 message inventory_data {
     int64 item_id = 1;
     int32 template_id = 2;
     int64 count = 3;
     int32 position = 4;
+    bool is_locked = 5;
     oneof payload {
-        custom_data custom = 5;
-        consumable_data consumable = 6;
-        equipment_data equipment = 7;
-        avatar_data avatar = 8;
-        frame_data frame = 9;
-        title_data title = 10;
-        hero_data hero = 11;
-        exp_data exp = 12;
-        building_data building = 13;
-        resource_data resource = 14;
+        custom_data custom = 6;
+        consumable_data consumable = 7;
+        equipment_data equipment = 8;
+        avatar_data avatar = 9;
+        frame_data frame = 10;
+        title_data title = 11;
+        hero_data hero = 12;
+        exp_data exp = 13;
+        building_data building = 14;
+        resource_data resource = 15;
+        soldier_data soldier = 16;
+        machine_data machine = 17;
+        skill_book_data skill_book = 18;
+        blueprint_data blueprint = 19;
+        gift_box_data gift_box = 20;
+        treasure_data treasure = 21;
     }
 }

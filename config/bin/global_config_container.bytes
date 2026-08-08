@@ -1,0 +1,1 @@
+offline_compensation_max_hours?最长离线产出与维持消耗补偿时间上限（小时）repair_minor_ratio��:轻微损坏修复消耗比例（万分比，1000为10%）repair_moderate_ratio��:中度损坏修复消耗比例（万分比，3000为30%）repair_major_ratio��:严重损坏修复消耗比例（万分比，5000为50%）

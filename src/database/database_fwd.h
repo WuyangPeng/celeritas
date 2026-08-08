@@ -15,6 +15,8 @@ namespace celeritas
     class basis_database;
     class basis_database_container;
     class database_entity_change;
+    class database_select_options;
+    enum class sort_order;
 
     template <const std::string_view& FieldName, database_data_type Type, database_index_type Index>
     class entity;

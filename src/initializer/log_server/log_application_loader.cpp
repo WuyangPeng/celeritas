@@ -1,4 +1,4 @@
-﻿#include "log_application_loader.h"
+#include "log_application_loader.h"
 #include "message/handler_base/concrete_message_handler.tpp"
 
 celeritas::log_application_loader::log_application_loader(const std::string_view server_type, app_config_shared_ptr app_config)

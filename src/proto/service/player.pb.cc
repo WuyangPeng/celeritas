@@ -70,6 +70,9 @@ inline constexpr service_login_request::Impl_::Impl_(
         app_version_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
+        ip_address_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
         account_id_{::int64_t{0}},
         account_bind_id_{::int64_t{0}},
         new_account_{false},
@@ -373,7 +376,7 @@ const ::uint32_t
         0x000, // bitmap
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_._has_bits_),
-        12, // hasbit index offset
+        13, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_.account_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_.new_account_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_.account_bind_id_),
@@ -383,15 +386,17 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_.app_version_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_.session_id_),
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_.protocol_),
-        3,
-        5,
+        PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_request, _impl_.ip_address_),
         4,
         6,
+        5,
+        7,
         0,
         1,
         2,
+        9,
         8,
-        7,
+        3,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::celeritas::proto::service::service_login_response, _impl_._has_bits_),
         7, // hasbit index offset
@@ -460,14 +465,14 @@ static const ::_pbi::MigrationSchema
         {8, sizeof(::celeritas::proto::service::reload_game_config_request)},
         {9, sizeof(::celeritas::proto::service::reload_game_config_response)},
         {10, sizeof(::celeritas::proto::service::service_login_request)},
-        {31, sizeof(::celeritas::proto::service::service_login_response)},
-        {42, sizeof(::celeritas::proto::service::offline_request)},
-        {43, sizeof(::celeritas::proto::service::server_mail_content_data)},
-        {50, sizeof(::celeritas::proto::service::server_mail_data)},
-        {69, sizeof(::celeritas::proto::service::send_server_mail_request)},
-        {74, sizeof(::celeritas::proto::service::send_server_mail_response)},
-        {75, sizeof(::celeritas::proto::service::service_player_request)},
-        {83, sizeof(::celeritas::proto::service::service_player_response)},
+        {33, sizeof(::celeritas::proto::service::service_login_response)},
+        {44, sizeof(::celeritas::proto::service::offline_request)},
+        {45, sizeof(::celeritas::proto::service::server_mail_content_data)},
+        {52, sizeof(::celeritas::proto::service::server_mail_data)},
+        {71, sizeof(::celeritas::proto::service::send_server_mail_request)},
+        {76, sizeof(::celeritas::proto::service::send_server_mail_response)},
+        {77, sizeof(::celeritas::proto::service::service_player_request)},
+        {85, sizeof(::celeritas::proto::service::service_player_response)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::celeritas::proto::service::_reload_config_db_request_default_instance_._instance,
@@ -491,47 +496,48 @@ const char descriptor_table_protodef_proto_2fservice_2fplayer_2eproto[] ABSL_ATT
     "\n\030reload_config_db_request\022\017\n\007db_name\030\001 "
     "\001(\t\022\n\n\002id\030\002 \001(\003\"\033\n\031reload_config_db_resp"
     "onse\"\034\n\032reload_game_config_request\"\035\n\033re"
-    "load_game_config_response\"\333\001\n\025service_lo"
+    "load_game_config_response\"\357\001\n\025service_lo"
     "gin_request\022\022\n\naccount_id\030\001 \001(\003\022\023\n\013new_a"
     "ccount\030\002 \001(\010\022\027\n\017account_bind_id\030\003 \001(\003\022\032\n"
     "\022new_game_server_id\030\004 \001(\010\022\026\n\016game_server"
     "_id\030\005 \001(\t\022\021\n\tdevice_id\030\006 \001(\t\022\023\n\013app_vers"
     "ion\030\007 \001(\t\022\022\n\nsession_id\030\010 \001(\003\022\020\n\010protoco"
-    "l\030\t \001(\005\"i\n\026service_login_response\022\024\n\014cur"
-    "rent_time\030\001 \001(\003\022\022\n\nsession_id\030\002 \001(\003\022\020\n\010p"
-    "rotocol\030\003 \001(\005\022\023\n\013instance_id\030\004 \001(\t\"\021\n\017of"
-    "fline_request\"9\n\030server_mail_content_dat"
-    "a\022\014\n\004type\030\001 \001(\005\022\017\n\007content\030\002 \001(\t\"\262\002\n\020ser"
-    "ver_mail_data\022\017\n\007mail_id\030\001 \001(\003\022\014\n\004type\030\002"
-    " \001(\005\022\024\n\014multilingual\030\003 \001(\010\022@\n\005title\030\004 \003("
-    "\01321.celeritas.proto.service.server_mail_"
-    "content_data\022B\n\007content\030\005 \003(\01321.celerita"
-    "s.proto.service.server_mail_content_data"
-    "\022\021\n\tsend_time\030\006 \001(\003\022\023\n\013expire_time\030\007 \001(\003"
-    "\022;\n\013attachments\030\010 \003(\0132&.celeritas.proto."
-    "common.inventory_data\"S\n\030send_server_mai"
-    "l_request\0227\n\004mail\030\001 \001(\0132).celeritas.prot"
-    "o.service.server_mail_data\"\033\n\031send_serve"
-    "r_mail_response\"\232\003\n\026service_player_reque"
-    "st\022M\n\020reload_config_db\030\001 \001(\01321.celeritas"
-    ".proto.service.reload_config_db_requestH"
-    "\000\022Q\n\022reload_game_config\030\002 \001(\01323.celerita"
-    "s.proto.service.reload_game_config_reque"
-    "stH\000\022G\n\rservice_login\030\003 \001(\0132..celeritas."
-    "proto.service.service_login_requestH\000\022;\n"
-    "\007offline\030\004 \001(\0132(.celeritas.proto.service"
-    ".offline_requestH\000\022M\n\020send_server_mail\030\005"
-    " \001(\01321.celeritas.proto.service.send_serv"
-    "er_mail_requestH\000B\t\n\007payload\"\342\002\n\027service"
-    "_player_response\022N\n\020reload_config_db\030\001 \001"
-    "(\01322.celeritas.proto.service.reload_conf"
-    "ig_db_responseH\000\022R\n\022reload_game_config\030\002"
-    " \001(\01324.celeritas.proto.service.reload_ga"
-    "me_config_responseH\000\022H\n\rservice_login\030\003 "
-    "\001(\0132/.celeritas.proto.service.service_lo"
-    "gin_responseH\000\022N\n\020send_server_mail\030\005 \001(\013"
-    "22.celeritas.proto.service.send_server_m"
-    "ail_responseH\000B\t\n\007payloadb\006proto3"
+    "l\030\t \001(\005\022\022\n\nip_address\030\n \001(\t\"i\n\026service_l"
+    "ogin_response\022\024\n\014current_time\030\001 \001(\003\022\022\n\ns"
+    "ession_id\030\002 \001(\003\022\020\n\010protocol\030\003 \001(\005\022\023\n\013ins"
+    "tance_id\030\004 \001(\t\"\021\n\017offline_request\"9\n\030ser"
+    "ver_mail_content_data\022\014\n\004type\030\001 \001(\005\022\017\n\007c"
+    "ontent\030\002 \001(\t\"\262\002\n\020server_mail_data\022\017\n\007mai"
+    "l_id\030\001 \001(\003\022\014\n\004type\030\002 \001(\005\022\024\n\014multilingual"
+    "\030\003 \001(\010\022@\n\005title\030\004 \003(\01321.celeritas.proto."
+    "service.server_mail_content_data\022B\n\007cont"
+    "ent\030\005 \003(\01321.celeritas.proto.service.serv"
+    "er_mail_content_data\022\021\n\tsend_time\030\006 \001(\003\022"
+    "\023\n\013expire_time\030\007 \001(\003\022;\n\013attachments\030\010 \003("
+    "\0132&.celeritas.proto.common.inventory_dat"
+    "a\"S\n\030send_server_mail_request\0227\n\004mail\030\001 "
+    "\001(\0132).celeritas.proto.service.server_mai"
+    "l_data\"\033\n\031send_server_mail_response\"\232\003\n\026"
+    "service_player_request\022M\n\020reload_config_"
+    "db\030\001 \001(\01321.celeritas.proto.service.reloa"
+    "d_config_db_requestH\000\022Q\n\022reload_game_con"
+    "fig\030\002 \001(\01323.celeritas.proto.service.relo"
+    "ad_game_config_requestH\000\022G\n\rservice_logi"
+    "n\030\003 \001(\0132..celeritas.proto.service.servic"
+    "e_login_requestH\000\022;\n\007offline\030\004 \001(\0132(.cel"
+    "eritas.proto.service.offline_requestH\000\022M"
+    "\n\020send_server_mail\030\005 \001(\01321.celeritas.pro"
+    "to.service.send_server_mail_requestH\000B\t\n"
+    "\007payload\"\342\002\n\027service_player_response\022N\n\020"
+    "reload_config_db\030\001 \001(\01322.celeritas.proto"
+    ".service.reload_config_db_responseH\000\022R\n\022"
+    "reload_game_config\030\002 \001(\01324.celeritas.pro"
+    "to.service.reload_game_config_responseH\000"
+    "\022H\n\rservice_login\030\003 \001(\0132/.celeritas.prot"
+    "o.service.service_login_responseH\000\022N\n\020se"
+    "nd_server_mail\030\005 \001(\01322.celeritas.proto.s"
+    "ervice.send_server_mail_responseH\000B\t\n\007pa"
+    "yloadb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_proto_2fservice_2fplayer_2eproto_deps[1] = {
@@ -541,7 +547,7 @@ static ::absl::once_flag descriptor_table_proto_2fservice_2fplayer_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_proto_2fservice_2fplayer_2eproto = {
     false,
     false,
-    1833,
+    1853,
     descriptor_table_protodef_proto_2fservice_2fplayer_2eproto,
     "proto/service/player.proto",
     &descriptor_table_proto_2fservice_2fplayer_2eproto_once,
@@ -1214,7 +1220,8 @@ PROTOBUF_NDEBUG_INLINE service_login_request::Impl_::Impl_(
         _cached_size_{0},
         game_server_id_(arena, from.game_server_id_),
         device_id_(arena, from.device_id_),
-        app_version_(arena, from.app_version_) {}
+        app_version_(arena, from.app_version_),
+        ip_address_(arena, from.ip_address_) {}
 
 service_login_request::service_login_request(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
@@ -1245,7 +1252,8 @@ PROTOBUF_NDEBUG_INLINE service_login_request::Impl_::Impl_(
       : _cached_size_{0},
         game_server_id_(arena),
         device_id_(arena),
-        app_version_(arena) {}
+        app_version_(arena),
+        ip_address_(arena) {}
 
 inline void service_login_request::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
@@ -1270,6 +1278,7 @@ inline void service_login_request::SharedDtor(MessageLite& self) {
   this_._impl_.game_server_id_.Destroy();
   this_._impl_.device_id_.Destroy();
   this_._impl_.app_version_.Destroy();
+  this_._impl_.ip_address_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -1316,16 +1325,16 @@ service_login_request::GetClassData() const {
   return service_login_request_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<4, 9, 0, 96, 2>
+const ::_pbi::TcParseTable<4, 10, 0, 106, 2>
 service_login_request::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(service_login_request, _impl_._has_bits_),
     0, // no _extensions_
-    9, 120,  // max_field_number, fast_idx_mask
+    10, 120,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294966784,  // skipmap
+    4294966272,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    9,  // num_field_entries
+    10,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     service_login_request_class_data_.base(),
@@ -1337,17 +1346,17 @@ service_login_request::_table_ = {
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
     // int64 account_id = 1;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(service_login_request, _impl_.account_id_), 3>(),
-     {8, 3, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.account_id_)}},
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(service_login_request, _impl_.account_id_), 4>(),
+     {8, 4, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.account_id_)}},
     // bool new_account = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(service_login_request, _impl_.new_account_), 5>(),
-     {16, 5, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.new_account_)}},
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(service_login_request, _impl_.new_account_), 6>(),
+     {16, 6, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.new_account_)}},
     // int64 account_bind_id = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(service_login_request, _impl_.account_bind_id_), 4>(),
-     {24, 4, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.account_bind_id_)}},
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(service_login_request, _impl_.account_bind_id_), 5>(),
+     {24, 5, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.account_bind_id_)}},
     // bool new_game_server_id = 4;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(service_login_request, _impl_.new_game_server_id_), 6>(),
-     {32, 6, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.new_game_server_id_)}},
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(service_login_request, _impl_.new_game_server_id_), 7>(),
+     {32, 7, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.new_game_server_id_)}},
     // string game_server_id = 5;
     {::_pbi::TcParser::FastUS1,
      {42, 0, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.game_server_id_)}},
@@ -1358,12 +1367,14 @@ service_login_request::_table_ = {
     {::_pbi::TcParser::FastUS1,
      {58, 2, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.app_version_)}},
     // int64 session_id = 8;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(service_login_request, _impl_.session_id_), 8>(),
-     {64, 8, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.session_id_)}},
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(service_login_request, _impl_.session_id_), 9>(),
+     {64, 9, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.session_id_)}},
     // int32 protocol = 9;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(service_login_request, _impl_.protocol_), 7>(),
-     {72, 7, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.protocol_)}},
-    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(service_login_request, _impl_.protocol_), 8>(),
+     {72, 8, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.protocol_)}},
+    // string ip_address = 10;
+    {::_pbi::TcParser::FastUS1,
+     {82, 3, 0, PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.ip_address_)}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -1373,13 +1384,13 @@ service_login_request::_table_ = {
     65535, 65535
   }}, {{
     // int64 account_id = 1;
-    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.account_id_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.account_id_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
     // bool new_account = 2;
-    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.new_account_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.new_account_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
     // int64 account_bind_id = 3;
-    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.account_bind_id_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.account_bind_id_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
     // bool new_game_server_id = 4;
-    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.new_game_server_id_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.new_game_server_id_), _Internal::kHasBitsOffset + 7, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
     // string game_server_id = 5;
     {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.game_server_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // string device_id = 6;
@@ -1387,17 +1398,20 @@ service_login_request::_table_ = {
     // string app_version = 7;
     {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.app_version_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // int64 session_id = 8;
-    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.session_id_), _Internal::kHasBitsOffset + 8, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.session_id_), _Internal::kHasBitsOffset + 9, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
     // int32 protocol = 9;
-    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.protocol_), _Internal::kHasBitsOffset + 7, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.protocol_), _Internal::kHasBitsOffset + 8, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // string ip_address = 10;
+    {PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.ip_address_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\55\0\0\0\0\16\11\13\0\0\0\0\0\0\0\0"
+    "\55\0\0\0\0\16\11\13\0\0\12\0\0\0\0\0"
     "celeritas.proto.service.service_login_request"
     "game_server_id"
     "device_id"
     "app_version"
+    "ip_address"
   }},
 };
 PROTOBUF_NOINLINE void service_login_request::Clear() {
@@ -1408,7 +1422,7 @@ PROTOBUF_NOINLINE void service_login_request::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if ((cached_has_bits & 0x00000007U) != 0) {
+  if ((cached_has_bits & 0x0000000fU) != 0) {
     if ((cached_has_bits & 0x00000001U) != 0) {
       _impl_.game_server_id_.ClearNonDefaultToEmpty();
     }
@@ -1418,13 +1432,20 @@ PROTOBUF_NOINLINE void service_login_request::Clear() {
     if ((cached_has_bits & 0x00000004U) != 0) {
       _impl_.app_version_.ClearNonDefaultToEmpty();
     }
+    if ((cached_has_bits & 0x00000008U) != 0) {
+      _impl_.ip_address_.ClearNonDefaultToEmpty();
+    }
   }
-  if ((cached_has_bits & 0x000000f8U) != 0) {
+  if ((cached_has_bits & 0x000000f0U) != 0) {
     ::memset(&_impl_.account_id_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.protocol_) -
-        reinterpret_cast<char*>(&_impl_.account_id_)) + sizeof(_impl_.protocol_));
+        reinterpret_cast<char*>(&_impl_.new_game_server_id_) -
+        reinterpret_cast<char*>(&_impl_.account_id_)) + sizeof(_impl_.new_game_server_id_));
   }
-  _impl_.session_id_ = ::int64_t{0};
+  if ((cached_has_bits & 0x00000300U) != 0) {
+    ::memset(&_impl_.protocol_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.session_id_) -
+        reinterpret_cast<char*>(&_impl_.protocol_)) + sizeof(_impl_.session_id_));
+  }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -1448,7 +1469,7 @@ PROTOBUF_NOINLINE void service_login_request::Clear() {
   (void)cached_has_bits;
 
   // int64 account_id = 1;
-  if ((this_._impl_._has_bits_[0] & 0x00000008U) != 0) {
+  if ((this_._impl_._has_bits_[0] & 0x00000010U) != 0) {
     if (this_._internal_account_id() != 0) {
       target =
           ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<1>(
@@ -1457,7 +1478,7 @@ PROTOBUF_NOINLINE void service_login_request::Clear() {
   }
 
   // bool new_account = 2;
-  if ((this_._impl_._has_bits_[0] & 0x00000020U) != 0) {
+  if ((this_._impl_._has_bits_[0] & 0x00000040U) != 0) {
     if (this_._internal_new_account() != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteBoolToArray(
@@ -1466,7 +1487,7 @@ PROTOBUF_NOINLINE void service_login_request::Clear() {
   }
 
   // int64 account_bind_id = 3;
-  if ((this_._impl_._has_bits_[0] & 0x00000010U) != 0) {
+  if ((this_._impl_._has_bits_[0] & 0x00000020U) != 0) {
     if (this_._internal_account_bind_id() != 0) {
       target =
           ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<3>(
@@ -1475,7 +1496,7 @@ PROTOBUF_NOINLINE void service_login_request::Clear() {
   }
 
   // bool new_game_server_id = 4;
-  if ((this_._impl_._has_bits_[0] & 0x00000040U) != 0) {
+  if ((this_._impl_._has_bits_[0] & 0x00000080U) != 0) {
     if (this_._internal_new_game_server_id() != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteBoolToArray(
@@ -1514,7 +1535,7 @@ PROTOBUF_NOINLINE void service_login_request::Clear() {
   }
 
   // int64 session_id = 8;
-  if ((this_._impl_._has_bits_[0] & 0x00000100U) != 0) {
+  if ((this_._impl_._has_bits_[0] & 0x00000200U) != 0) {
     if (this_._internal_session_id() != 0) {
       target =
           ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<8>(
@@ -1523,11 +1544,21 @@ PROTOBUF_NOINLINE void service_login_request::Clear() {
   }
 
   // int32 protocol = 9;
-  if ((this_._impl_._has_bits_[0] & 0x00000080U) != 0) {
+  if ((this_._impl_._has_bits_[0] & 0x00000100U) != 0) {
     if (this_._internal_protocol() != 0) {
       target =
           ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<9>(
               stream, this_._internal_protocol(), target);
+    }
+  }
+
+  // string ip_address = 10;
+  if ((this_._impl_._has_bits_[0] & 0x00000008U) != 0) {
+    if (!this_._internal_ip_address().empty()) {
+      const ::std::string& _s = this_._internal_ip_address();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "celeritas.proto.service.service_login_request.ip_address");
+      target = stream->WriteStringMaybeAliased(10, _s, target);
     }
   }
 
@@ -1578,43 +1609,50 @@ PROTOBUF_NOINLINE void service_login_request::Clear() {
                                         this_._internal_app_version());
       }
     }
-    // int64 account_id = 1;
+    // string ip_address = 10;
     if ((cached_has_bits & 0x00000008U) != 0) {
+      if (!this_._internal_ip_address().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_ip_address());
+      }
+    }
+    // int64 account_id = 1;
+    if ((cached_has_bits & 0x00000010U) != 0) {
       if (this_._internal_account_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
             this_._internal_account_id());
       }
     }
     // int64 account_bind_id = 3;
-    if ((cached_has_bits & 0x00000010U) != 0) {
+    if ((cached_has_bits & 0x00000020U) != 0) {
       if (this_._internal_account_bind_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
             this_._internal_account_bind_id());
       }
     }
     // bool new_account = 2;
-    if ((cached_has_bits & 0x00000020U) != 0) {
+    if ((cached_has_bits & 0x00000040U) != 0) {
       if (this_._internal_new_account() != 0) {
         total_size += 2;
       }
     }
     // bool new_game_server_id = 4;
-    if ((cached_has_bits & 0x00000040U) != 0) {
+    if ((cached_has_bits & 0x00000080U) != 0) {
       if (this_._internal_new_game_server_id() != 0) {
         total_size += 2;
       }
     }
+  }
+  if ((cached_has_bits & 0x00000300U) != 0) {
     // int32 protocol = 9;
-    if ((cached_has_bits & 0x00000080U) != 0) {
+    if ((cached_has_bits & 0x00000100U) != 0) {
       if (this_._internal_protocol() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
             this_._internal_protocol());
       }
     }
-  }
-   {
     // int64 session_id = 8;
-    if ((cached_has_bits & 0x00000100U) != 0) {
+    if ((cached_has_bits & 0x00000200U) != 0) {
       if (this_._internal_session_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
             this_._internal_session_id());
@@ -1666,34 +1704,45 @@ void service_login_request::MergeImpl(::google::protobuf::MessageLite& to_msg, c
       }
     }
     if ((cached_has_bits & 0x00000008U) != 0) {
+      if (!from._internal_ip_address().empty()) {
+        _this->_internal_set_ip_address(from._internal_ip_address());
+      } else {
+        if (_this->_impl_.ip_address_.IsDefault()) {
+          _this->_internal_set_ip_address("");
+        }
+      }
+    }
+    if ((cached_has_bits & 0x00000010U) != 0) {
       if (from._internal_account_id() != 0) {
         _this->_impl_.account_id_ = from._impl_.account_id_;
       }
     }
-    if ((cached_has_bits & 0x00000010U) != 0) {
+    if ((cached_has_bits & 0x00000020U) != 0) {
       if (from._internal_account_bind_id() != 0) {
         _this->_impl_.account_bind_id_ = from._impl_.account_bind_id_;
       }
     }
-    if ((cached_has_bits & 0x00000020U) != 0) {
+    if ((cached_has_bits & 0x00000040U) != 0) {
       if (from._internal_new_account() != 0) {
         _this->_impl_.new_account_ = from._impl_.new_account_;
       }
     }
-    if ((cached_has_bits & 0x00000040U) != 0) {
+    if ((cached_has_bits & 0x00000080U) != 0) {
       if (from._internal_new_game_server_id() != 0) {
         _this->_impl_.new_game_server_id_ = from._impl_.new_game_server_id_;
       }
     }
-    if ((cached_has_bits & 0x00000080U) != 0) {
+  }
+  if ((cached_has_bits & 0x00000300U) != 0) {
+    if ((cached_has_bits & 0x00000100U) != 0) {
       if (from._internal_protocol() != 0) {
         _this->_impl_.protocol_ = from._impl_.protocol_;
       }
     }
-  }
-  if ((cached_has_bits & 0x00000100U) != 0) {
-    if (from._internal_session_id() != 0) {
-      _this->_impl_.session_id_ = from._impl_.session_id_;
+    if ((cached_has_bits & 0x00000200U) != 0) {
+      if (from._internal_session_id() != 0) {
+        _this->_impl_.session_id_ = from._impl_.session_id_;
+      }
     }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
@@ -1717,6 +1766,7 @@ void service_login_request::InternalSwap(service_login_request* PROTOBUF_RESTRIC
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.game_server_id_, &other->_impl_.game_server_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.device_id_, &other->_impl_.device_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.app_version_, &other->_impl_.app_version_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.ip_address_, &other->_impl_.ip_address_, arena);
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(service_login_request, _impl_.session_id_)
       + sizeof(service_login_request::_impl_.session_id_)

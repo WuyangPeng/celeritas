@@ -504,6 +504,7 @@ class service_login_request final : public ::google::protobuf::Message
     kGameServerIdFieldNumber = 5,
     kDeviceIdFieldNumber = 6,
     kAppVersionFieldNumber = 7,
+    kIpAddressFieldNumber = 10,
     kAccountIdFieldNumber = 1,
     kAccountBindIdFieldNumber = 3,
     kNewAccountFieldNumber = 2,
@@ -554,6 +555,21 @@ class service_login_request final : public ::google::protobuf::Message
   const ::std::string& _internal_app_version() const;
   PROTOBUF_ALWAYS_INLINE void _internal_set_app_version(const ::std::string& value);
   ::std::string* PROTOBUF_NONNULL _internal_mutable_app_version();
+
+  public:
+  // string ip_address = 10;
+  void clear_ip_address() ;
+  const ::std::string& ip_address() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_ip_address(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_ip_address();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_ip_address();
+  void set_allocated_ip_address(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_ip_address() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_ip_address(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_ip_address();
 
   public:
   // int64 account_id = 1;
@@ -620,8 +636,8 @@ class service_login_request final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<4, 9,
-                                   0, 96,
+  static const ::google::protobuf::internal::TcParseTable<4, 10,
+                                   0, 106,
                                    2>
       _table_;
 
@@ -645,6 +661,7 @@ class service_login_request final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr game_server_id_;
     ::google::protobuf::internal::ArenaStringPtr device_id_;
     ::google::protobuf::internal::ArenaStringPtr app_version_;
+    ::google::protobuf::internal::ArenaStringPtr ip_address_;
     ::int64_t account_id_;
     ::int64_t account_bind_id_;
     bool new_account_;
@@ -2954,7 +2971,7 @@ inline void reload_config_db_request::_internal_set_id(::int64_t value) {
 inline void service_login_request::clear_account_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.account_id_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000008U;
+  _impl_._has_bits_[0] &= ~0x00000010U;
 }
 inline ::int64_t service_login_request::account_id() const {
   // @@protoc_insertion_point(field_get:celeritas.proto.service.service_login_request.account_id)
@@ -2962,7 +2979,7 @@ inline ::int64_t service_login_request::account_id() const {
 }
 inline void service_login_request::set_account_id(::int64_t value) {
   _internal_set_account_id(value);
-  _impl_._has_bits_[0] |= 0x00000008U;
+  _impl_._has_bits_[0] |= 0x00000010U;
   // @@protoc_insertion_point(field_set:celeritas.proto.service.service_login_request.account_id)
 }
 inline ::int64_t service_login_request::_internal_account_id() const {
@@ -2978,7 +2995,7 @@ inline void service_login_request::_internal_set_account_id(::int64_t value) {
 inline void service_login_request::clear_new_account() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.new_account_ = false;
-  _impl_._has_bits_[0] &= ~0x00000020U;
+  _impl_._has_bits_[0] &= ~0x00000040U;
 }
 inline bool service_login_request::new_account() const {
   // @@protoc_insertion_point(field_get:celeritas.proto.service.service_login_request.new_account)
@@ -2986,7 +3003,7 @@ inline bool service_login_request::new_account() const {
 }
 inline void service_login_request::set_new_account(bool value) {
   _internal_set_new_account(value);
-  _impl_._has_bits_[0] |= 0x00000020U;
+  _impl_._has_bits_[0] |= 0x00000040U;
   // @@protoc_insertion_point(field_set:celeritas.proto.service.service_login_request.new_account)
 }
 inline bool service_login_request::_internal_new_account() const {
@@ -3002,7 +3019,7 @@ inline void service_login_request::_internal_set_new_account(bool value) {
 inline void service_login_request::clear_account_bind_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.account_bind_id_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000010U;
+  _impl_._has_bits_[0] &= ~0x00000020U;
 }
 inline ::int64_t service_login_request::account_bind_id() const {
   // @@protoc_insertion_point(field_get:celeritas.proto.service.service_login_request.account_bind_id)
@@ -3010,7 +3027,7 @@ inline ::int64_t service_login_request::account_bind_id() const {
 }
 inline void service_login_request::set_account_bind_id(::int64_t value) {
   _internal_set_account_bind_id(value);
-  _impl_._has_bits_[0] |= 0x00000010U;
+  _impl_._has_bits_[0] |= 0x00000020U;
   // @@protoc_insertion_point(field_set:celeritas.proto.service.service_login_request.account_bind_id)
 }
 inline ::int64_t service_login_request::_internal_account_bind_id() const {
@@ -3026,7 +3043,7 @@ inline void service_login_request::_internal_set_account_bind_id(::int64_t value
 inline void service_login_request::clear_new_game_server_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.new_game_server_id_ = false;
-  _impl_._has_bits_[0] &= ~0x00000040U;
+  _impl_._has_bits_[0] &= ~0x00000080U;
 }
 inline bool service_login_request::new_game_server_id() const {
   // @@protoc_insertion_point(field_get:celeritas.proto.service.service_login_request.new_game_server_id)
@@ -3034,7 +3051,7 @@ inline bool service_login_request::new_game_server_id() const {
 }
 inline void service_login_request::set_new_game_server_id(bool value) {
   _internal_set_new_game_server_id(value);
-  _impl_._has_bits_[0] |= 0x00000040U;
+  _impl_._has_bits_[0] |= 0x00000080U;
   // @@protoc_insertion_point(field_set:celeritas.proto.service.service_login_request.new_game_server_id)
 }
 inline bool service_login_request::_internal_new_game_server_id() const {
@@ -3245,7 +3262,7 @@ inline void service_login_request::set_allocated_app_version(::std::string* PROT
 inline void service_login_request::clear_session_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.session_id_ = ::int64_t{0};
-  _impl_._has_bits_[0] &= ~0x00000100U;
+  _impl_._has_bits_[0] &= ~0x00000200U;
 }
 inline ::int64_t service_login_request::session_id() const {
   // @@protoc_insertion_point(field_get:celeritas.proto.service.service_login_request.session_id)
@@ -3253,7 +3270,7 @@ inline ::int64_t service_login_request::session_id() const {
 }
 inline void service_login_request::set_session_id(::int64_t value) {
   _internal_set_session_id(value);
-  _impl_._has_bits_[0] |= 0x00000100U;
+  _impl_._has_bits_[0] |= 0x00000200U;
   // @@protoc_insertion_point(field_set:celeritas.proto.service.service_login_request.session_id)
 }
 inline ::int64_t service_login_request::_internal_session_id() const {
@@ -3269,7 +3286,7 @@ inline void service_login_request::_internal_set_session_id(::int64_t value) {
 inline void service_login_request::clear_protocol() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.protocol_ = 0;
-  _impl_._has_bits_[0] &= ~0x00000080U;
+  _impl_._has_bits_[0] &= ~0x00000100U;
 }
 inline ::int32_t service_login_request::protocol() const {
   // @@protoc_insertion_point(field_get:celeritas.proto.service.service_login_request.protocol)
@@ -3277,7 +3294,7 @@ inline ::int32_t service_login_request::protocol() const {
 }
 inline void service_login_request::set_protocol(::int32_t value) {
   _internal_set_protocol(value);
-  _impl_._has_bits_[0] |= 0x00000080U;
+  _impl_._has_bits_[0] |= 0x00000100U;
   // @@protoc_insertion_point(field_set:celeritas.proto.service.service_login_request.protocol)
 }
 inline ::int32_t service_login_request::_internal_protocol() const {
@@ -3287,6 +3304,71 @@ inline ::int32_t service_login_request::_internal_protocol() const {
 inline void service_login_request::_internal_set_protocol(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.protocol_ = value;
+}
+
+// string ip_address = 10;
+inline void service_login_request::clear_ip_address() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.ip_address_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000008U;
+}
+inline const ::std::string& service_login_request::ip_address() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:celeritas.proto.service.service_login_request.ip_address)
+  return _internal_ip_address();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void service_login_request::set_ip_address(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000008U;
+  _impl_.ip_address_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:celeritas.proto.service.service_login_request.ip_address)
+}
+inline ::std::string* PROTOBUF_NONNULL service_login_request::mutable_ip_address()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_ip_address();
+  // @@protoc_insertion_point(field_mutable:celeritas.proto.service.service_login_request.ip_address)
+  return _s;
+}
+inline const ::std::string& service_login_request::_internal_ip_address() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.ip_address_.Get();
+}
+inline void service_login_request::_internal_set_ip_address(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000008U;
+  _impl_.ip_address_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL service_login_request::_internal_mutable_ip_address() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000008U;
+  return _impl_.ip_address_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE service_login_request::release_ip_address() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:celeritas.proto.service.service_login_request.ip_address)
+  if ((_impl_._has_bits_[0] & 0x00000008U) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000008U;
+  auto* released = _impl_.ip_address_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.ip_address_.Set("", GetArena());
+  }
+  return released;
+}
+inline void service_login_request::set_allocated_ip_address(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000008U;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000008U;
+  }
+  _impl_.ip_address_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.ip_address_.IsDefault()) {
+    _impl_.ip_address_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:celeritas.proto.service.service_login_request.ip_address)
 }
 
 // -------------------------------------------------------------------

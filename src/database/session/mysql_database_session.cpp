@@ -1,4 +1,4 @@
-﻿#include "mysql_database_session.tpp"
+#include "mysql_database_session.tpp"
 #include "common/core/celeritas_error.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "common/logging/logger.h"
@@ -85,6 +85,30 @@ celeritas::database_session::result_container_awaitable_type celeritas::mysql_da
 {
     co_return co_await execute_with_retry([this, database,field_name_container] {
         return do_select_all(database, field_name_container);
+    });
+}
+
+celeritas::database_session::result_container_awaitable_type celeritas::mysql_database_session::select_page(const const_database_entity_change_shared_ptr& database,
+                                                                                                            const database_field_container& field_name_container,
+                                                                                                            const database_select_options& options)
+{
+    co_return co_await execute_with_retry([this, database, field_name_container, options] {
+        return do_select_page(database, field_name_container, options);
+    });
+}
+
+celeritas::database_session::int64_awaitable_type celeritas::mysql_database_session::select_count(const const_database_entity_change_shared_ptr& database)
+{
+    co_return co_await execute_with_retry([this, database] {
+        return do_select_count(database);
+    });
+}
+
+celeritas::database_session::int64_awaitable_type celeritas::mysql_database_session::select_count(const const_database_entity_change_shared_ptr& database,
+                                                                                                   const database_select_options& options)
+{
+    co_return co_await execute_with_retry([this, database, options] {
+        return do_select_count(database, options);
     });
 }
 
@@ -206,4 +230,47 @@ celeritas::database_session::result_container_awaitable_type celeritas::mysql_da
     }
 
     co_return container;
+}
+
+celeritas::database_session::result_container_awaitable_type celeritas::mysql_database_session::do_select_page(const const_database_entity_change_shared_ptr& database,
+                                                                                                               const database_field_container& field_name_container,
+                                                                                                               const database_select_options& options)
+{
+    const auto result = co_await async_query(mysql_statement_generator::generate_select_statement(field_name_container, database, options) + ";");
+
+    result_container container{};
+
+    for (const auto& entity : result.rows())
+    {
+        container.emplace_back(populate_database_from_row(database, field_name_container, entity));
+    }
+
+    co_return container;
+}
+
+celeritas::database_session::int64_awaitable_type celeritas::mysql_database_session::do_select_count(const const_database_entity_change_shared_ptr& database)
+{
+    const auto result = co_await async_query(mysql_statement_generator::generate_count_statement(database) + ";");
+
+    if (const auto& rows = result.rows();
+        !rows.empty() && !rows.at(0).empty())
+    {
+        co_return rows.at(0).at(0).as_int64();
+    }
+
+    co_return 0;
+}
+
+celeritas::database_session::int64_awaitable_type celeritas::mysql_database_session::do_select_count(const const_database_entity_change_shared_ptr& database,
+                                                                                                     const database_select_options& options)
+{
+    const auto result = co_await async_query(mysql_statement_generator::generate_count_statement(database, options) + ";");
+
+    if (const auto& rows = result.rows();
+        !rows.empty() && !rows.at(0).empty())
+    {
+        co_return rows.at(0).at(0).as_int64();
+    }
+
+    co_return 0;
 }

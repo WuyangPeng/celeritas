@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "detail/player_item_database.h"
 #include "detail/player_item_document.h"
@@ -7,6 +7,7 @@
 #include "detail/player_resource.h"
 #include "player/component/player_component.h"
 #include "player/component/player_component_type.h"
+#include "log/log_fwd.h"
 
 namespace celeritas
 {
@@ -59,10 +60,22 @@ namespace celeritas
 
         [[nodiscard]] bool has_item(int64_t item_id) const;
 
+        [[nodiscard]] bool lock_item(int64_t item_id, bool is_locked);
+
+        [[nodiscard]] item_flow_log_param generate_item_flow_log_param(const std::string& action,
+                                                                        int64_t item_id,
+                                                                        int32_t template_id,
+                                                                        int64_t count_change,
+                                                                        int64_t before_count,
+                                                                        int64_t after_count,
+                                                                        const std::string& source_id) const;
+
     private:
         using delete_item_id_container = std::vector<int64_t>;
 
         void update_document();
+
+        void log_item_flow(const std::string& action, int template_id, int64_t count_change, int64_t before_count, int64_t after_count);
 
         player_item_database database_;
         player_item_document document_;

@@ -1,4 +1,4 @@
-﻿#include "resource_loader.h"
+#include "resource_loader.h"
 #include "common/core/noexcept_safe_call_and_log.h"
 #include "common/core/random_helper.h"
 #include "common/logging/logger.h"
@@ -16,6 +16,7 @@
 #include "initializer/initializer_constant.h"
 #include "network/client/tcp_client.h"
 #include "proto/celeritas.pb.h"
+#include "log/core/log_client.h"
 #include "service_registry/core/detail/service_registry_core_internal_constant.h"
 #include "service_registry/data/health_check_level_type.h"
 #include "service_registry/data/service_info.h"
@@ -56,6 +57,7 @@ void celeritas::resource_loader::initialize(const any_io_executor& any_io_execut
     start_service_registry_timer(any_io_executor);
     start_buffer_pool_timer(any_io_executor);
     initialize_game_config();
+    log_client::get_instance().initialize(any_io_executor, shared_from_this());
     service_initialize_resource(any_io_executor, network_message_callback);
 }
 
@@ -93,6 +95,8 @@ void celeritas::resource_loader::release_resource()
     {
         service_registry_timer_->stop();
     }
+
+    log_client::get_instance().stop();
 }
 
 bool celeritas::resource_loader::write_to_server(const std::string& server_type, const header& header, const protobuf_message& request)

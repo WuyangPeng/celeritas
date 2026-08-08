@@ -1,4 +1,4 @@
-﻿#include "gateway_login.h"
+#include "gateway_login.h"
 #include "common/logging/logger.h"
 #include "database/database_constant.h"
 #include "database/pool/database_pool_manager.h"
@@ -36,6 +36,7 @@ void celeritas::gateway_login::write_to_server(const session_token& session_toke
     service_login->set_new_game_server_id(new_game_server_id);
     service_login->set_session_id(protobuf_handle_parameter_->get_session_id());
     service_login->set_protocol(static_cast<int>(protobuf_handle_parameter_->get_server_network_type()));
+    service_login->set_ip_address(protobuf_handle_parameter_->get_remote_ip_address());
 
     protobuf_handle_parameter_->write_to_server(player_type.data(), instance_id, request);
 }

@@ -1,4 +1,4 @@
-﻿#include "game_error_type.h"
+#include "game_error_type.h"
 
 #include <map>
 
@@ -30,6 +30,17 @@ std::string celeritas::get_game_error_description(const game_error_type game_err
                                                 { game_error_type::create_account_error, "create account error" },
                                                 { game_error_type::create_user_error, "create user error" },
 
+                                                { game_error_type::feedback_daily_limit_exceeded, "feedback daily limit exceeded" },
+                                                { game_error_type::username_already_exists, "username already exists" },
+                                                { game_error_type::admin_account_not_found, "admin account not found" },
+                                                { game_error_type::cannot_delete_super_admin, "cannot delete super admin" },
+                                                { game_error_type::cannot_delete_self, "cannot delete self" },
+                                                { game_error_type::insufficient_permissions, "insufficient permissions" },
+                                                { game_error_type::admin_account_disabled, "admin account disabled" },
+                                                { game_error_type::cannot_disable_super_admin, "cannot disable super admin" },
+                                                { game_error_type::cannot_update_self_status, "cannot update self status" },
+                                                { game_error_type::announcement_not_found, "announcement not found" },
+
                                                 { game_error_type::duplicate_name, "duplicate name error" },
                                                 { game_error_type::insufficient_number_of_name_changes, "insufficient number of name changes" },
                                                 { game_error_type::insufficient_item_of_name_change, "insufficient item of name change" },
@@ -42,6 +53,7 @@ std::string celeritas::get_game_error_description(const game_error_type game_err
                                                 { game_error_type::item_selected_error, "item selected error" },
                                                 { game_error_type::item_not_exist, "item not exist" },
                                                 { game_error_type::item_already_exist, "item already exist" },
+                                                { game_error_type::item_locked, "item is locked" },
 
                                                 { game_error_type::max_develop, "max develop" },
                                                 { game_error_type::non_resettable, "non resettable" },

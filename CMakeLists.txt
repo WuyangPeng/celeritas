@@ -367,6 +367,8 @@ add_subdirectory(cmake/network)
 add_subdirectory(cmake/service_registry)
 add_subdirectory(cmake/auth)
 add_subdirectory(cmake/payment)
+add_subdirectory(cmake/admin)
+add_subdirectory(cmake/log)
 add_subdirectory(cmake/gateway)
 add_subdirectory(cmake/player)
 add_subdirectory(cmake/handler)
@@ -381,6 +383,8 @@ target_link_libraries(celeritas_lib INTERFACE
         gateway
         payment
         auth
+        admin
+        log
         service_registry
         network
         database

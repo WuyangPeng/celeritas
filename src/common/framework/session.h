@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "config/config_fwd.h"
 #include "message/message_fwd.h"
@@ -47,5 +47,7 @@ namespace celeritas
         [[nodiscard]] virtual std::string get_instance_id() const = 0;
 
         [[nodiscard]] virtual any_io_executor get_any_io_executor() = 0;
+
+        [[nodiscard]] virtual std::string get_remote_ip_address() const = 0;
     };
 }

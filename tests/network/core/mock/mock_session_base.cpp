@@ -49,6 +49,11 @@ size_t celeritas::mock_session_base::get_last_write_size() const
     return last_write_size_;
 }
 
+std::string celeritas::mock_session_base::get_remote_ip_address() const
+{
+    return "";
+}
+
 void celeritas::mock_session_base::do_write(buffer_guard data)
 {
     do_write_called_ = true;

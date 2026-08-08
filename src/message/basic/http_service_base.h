@@ -5,6 +5,8 @@
 
 #include <boost/asio/awaitable.hpp>
 
+#include <utility>
+
 namespace celeritas
 {
     class http_service_base
@@ -31,6 +33,12 @@ namespace celeritas
         [[nodiscard]] virtual void_awaitable_type response() = 0;
 
         [[nodiscard]] void_awaitable_type write_immediately(const http_response& response) const;
+
+        template <typename ResponseType, typename... Args>
+        [[nodiscard]] void_awaitable_type write_immediately(Args&&... args) const
+        {
+            co_return co_await write_immediately(ResponseType{ std::forward<Args>(args)... });
+        }
 
         [[nodiscard]] virtual void_awaitable_type send_error_response() = 0;
 

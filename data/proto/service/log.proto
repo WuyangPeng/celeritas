@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+import "proto/log/item_log.proto";
+
+package celeritas.proto.service;
+
+message log_header {
+  int64 player_id = 1;
+  int64 timestamp = 2;
+  string ip_address = 3;
+}
+
+message service_log {
+  log_header header = 1;
+  oneof payload {
+    item_log_request item = 2;
+  }
+}
+
+message service_log_request {
+  repeated service_log service_log = 1;
+}
+
+message service_log_response {
+}

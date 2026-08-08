@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "login_server_info.h"
 #include "message/basic/http_response.h"
@@ -11,6 +11,7 @@ namespace celeritas
         using class_type = login_servers_response;
         using bass_type = http_response;
         using container_type = std::vector<login_server_info>;
+        using zones_container_type = std::vector<std::string>;
 
         login_servers_response() noexcept = default;
 
@@ -20,6 +21,8 @@ namespace celeritas
 
         login_servers_response(game_error_type code, std::string message, container_type login_server_info);
 
+        login_servers_response(game_error_type code, std::string message, container_type login_server_info, zones_container_type zones);
+
         login_servers_response(game_error_type code, std::string message, login_server_info login_server_info);
 
         explicit login_servers_response(bass_type http_response);
@@ -28,6 +31,8 @@ namespace celeritas
 
         [[nodiscard]] container_type get_login_server_info() const;
 
+        [[nodiscard]] zones_container_type get_zones() const;
+
         [[nodiscard]] std::string to_json_string() const override;
 
         [[nodiscard]] static login_servers_response from_json_string(const std::string& json_string);
@@ -35,9 +40,11 @@ namespace celeritas
         [[nodiscard]] static login_servers_response tag_invoke(const json_value& value);
 
         static constexpr std::string_view login_server_info_description = "login_server_info";
+        static constexpr std::string_view zones_description = "zones";
 
     private:
         container_type login_server_info_;
+        zones_container_type zones_;
     };
 
     using login_servers_response_tag = boost::json::value_to_tag<login_servers_response>;

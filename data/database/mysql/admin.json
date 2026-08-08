@@ -1,0 +1,208 @@
+[
+  {
+    "class_name": "admin_account",
+    "database_name": "admin_account",
+    "entity": [
+      {
+        "entity_name": "account_id",
+        "data_type": "int64",
+        "index_type": "key",
+        "comment": "后台账号ID"
+      },
+      {
+        "entity_name": "username",
+        "data_type": "string",
+        "index_type": "composite_unique_index",
+        "comment": "用户名"
+      },
+      {
+        "entity_name": "app_id",
+        "data_type": "int64",
+        "index_type": "composite_unique_key_and_index",
+        "comment": "应用ID"
+      },
+      {
+        "entity_name": "password_hash",
+        "data_type": "string",
+        "comment": "密码哈希"
+      },
+      {
+        "entity_name": "salt",
+        "data_type": "string",
+        "comment": "盐值"
+      },
+      {
+        "entity_name": "role",
+        "data_type": "int32",
+        "comment": "角色权限"
+      },
+      {
+        "entity_name": "nickname",
+        "data_type": "string",
+        "comment": "用户昵称"
+      },
+      {
+        "entity_name": "avatar",
+        "data_type": "string",
+        "comment": "头像地址"
+      },
+      {
+        "entity_name": "creator_account_id",
+        "data_type": "int64",
+        "comment": "创建者的账号ID"
+      },
+      {
+        "entity_name": "status",
+        "data_type": "int32",
+        "comment": "账号状态 （1:正常 0:禁用）"
+      },
+      {
+        "entity_name": "create_time",
+        "data_type": "int64",
+        "comment": "创建时间戳"
+      },
+      {
+        "entity_name": "update_time",
+        "data_type": "int64",
+        "comment": "更新时间戳"
+      },
+      {
+        "entity_name": "last_login_time",
+        "data_type": "int64",
+        "comment": "最后登录时间戳"
+      },
+      {
+        "entity_name": "last_login_ip",
+        "data_type": "string",
+        "comment": "最后登录IP"
+      }
+    ]
+  },
+  {
+    "class_name": "announcement",
+    "database_name": "announcement",
+    "entity": [
+      {
+        "entity_name": "id",
+        "data_type": "int64",
+        "index_type": "key",
+        "comment": "公告ID"
+      },
+      {
+        "entity_name": "app_id",
+        "data_type": "int64",
+        "index_type": "index",
+        "comment": "应用ID"
+      },
+      {
+        "entity_name": "title",
+        "data_type": "string",
+        "comment": "公告标题"
+      },
+      {
+        "entity_name": "tag",
+        "data_type": "int32",
+        "comment": "标签 （0:无 1:新 2:热 3:维）"
+      },
+      {
+        "entity_name": "banner_url",
+        "data_type": "string",
+        "comment": "横幅图片URL"
+      },
+      {
+        "entity_name": "content",
+        "data_type": "string",
+        "comment": "公告正文"
+      },
+      {
+        "entity_name": "priority",
+        "data_type": "int32",
+        "comment": "优先级 （0-99, 越大越靠前）"
+      },
+      {
+        "entity_name": "publish_time",
+        "data_type": "int64",
+        "comment": "发布时间戳（毫秒）"
+      },
+      {
+        "entity_name": "status",
+        "data_type": "int32",
+        "comment": "状态 （0:draft 1:published 2:archived）"
+      },
+      {
+        "entity_name": "server",
+        "data_type": "string",
+        "comment": "目标区服 （all 或具体服ID如 s1001）"
+      },
+      {
+        "entity_name": "create_time",
+        "data_type": "int64",
+        "comment": "创建时间戳"
+      },
+      {
+        "entity_name": "update_time",
+        "data_type": "int64",
+        "comment": "更新时间戳"
+      }
+    ]
+  },
+  {
+    "class_name": "feedback",
+    "database_name": "feedback",
+    "entity": [
+      {
+        "entity_name": "id",
+        "data_type": "int64",
+        "index_type": "key",
+        "comment": "反馈ID"
+      },
+      {
+        "entity_name": "app_id",
+        "data_type": "int64",
+        "index_type": "composite_index",
+        "comment": "应用ID"
+      },
+      {
+        "entity_name": "type",
+        "data_type": "int32",
+        "index_type": "composite_index",
+        "comment": "反馈类型 （0:问题反馈 1:意见建议 2:举报他人）"
+      },
+      {
+        "entity_name": "content",
+        "data_type": "string",
+        "comment": "反馈内容"
+      },
+      {
+        "entity_name": "device_info",
+        "data_type": "string",
+        "comment": "设备信息"
+      },
+      {
+        "entity_name": "server",
+        "data_type": "string",
+        "comment": "服务器名称"
+      },
+      {
+        "entity_name": "player_id",
+        "data_type": "string",
+        "comment": "玩家ID"
+      },
+      {
+        "entity_name": "is_anonymous",
+        "data_type": "bool",
+        "comment": "是否匿名"
+      },
+      {
+        "entity_name": "image_data",
+        "data_type": "byte_array",
+        "comment": "图片二进制数据"
+      },
+      {
+        "entity_name": "create_time",
+        "data_type": "int64",
+        "comment": "创建时间戳"
+      }
+    ]
+  }
+]
